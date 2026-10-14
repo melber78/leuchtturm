@@ -38,7 +38,7 @@ function erlaubt($pfad){
 }
 
 function github($url, $token, $binaer = false){
-    $kopf = ["User-Agent: Leuchtturm-Update", "Accept: " . ($binaer ? "application/octet-stream" : "application/vnd.github+json"), "X-GitHub-Api-Version: 2022-11-28"];
+    $kopf = ["User-Agent: Leuchtturm-Update", "Accept: application/vnd.github+json", "X-GitHub-Api-Version: 2022-11-28"];
     if ($token) $kopf[] = "Authorization: Bearer " . $token;
     if (function_exists("curl_init")) {
         $c = curl_init($url);
