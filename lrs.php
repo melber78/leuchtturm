@@ -9,6 +9,12 @@ function lrsJsonLesen($datei){
 $lrsOrdner = array_values(array_unique(array_map(fn($m) => $m["ordner"] ?? "Allgemein", lrsJsonLesen(__DIR__ . "/material-daten/materialien.json"))));
 sort($lrsOrdner);
 $lrsKinder = array_map(fn($k) => $k["code"], lrsJsonLesen(__DIR__ . "/material-daten/kinder.json"));
+// Kinder-Akten: gespeicherte Förderplan-Schwerpunkte und Klasse je Kürzel
+$lrsAkten = [];
+foreach (lrsJsonLesen(__DIR__ . "/material-daten/akten.json") as $code => $a) {
+    if (!in_array((string)$code, $lrsKinder, true) || !is_array($a)) continue;
+    $lrsAkten[(string)$code] = ["klasse" => (string)($a["klasse"] ?? ""), "f" => $a["plan"]["f"] ?? [], "r" => $a["plan"]["r"] ?? [], "ziele" => count($a["plan"]["ziele"] ?? [])];
+}
 // Förderkartei: Fehlerwörter je Kürzel (für Blätter mit den eigenen Wörtern eines Kindes)
 $lrsKartei = [];
 foreach (lrsJsonLesen(__DIR__ . "/material-daten/foerderkartei.json") as $code => $d) {
@@ -734,6 +740,14 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .fp-uebersicht{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; }
 .fp-uebersicht > div{ border:2px solid #D8DFE7; border-radius:14px; padding:10px 14px; font-size:15px; }
 .fp-uebersicht b{ display:block; font-size:13px; color:#4A5866; margin-bottom:4px; text-transform:uppercase; letter-spacing:.3px; }
+.fp-kindleiste{ display:flex; align-items:flex-end; gap:16px; flex-wrap:wrap; background:#eef4f8; border-radius:18px; padding:14px 18px; margin:6px 0 14px; }
+.fp-kindleiste .fp-select{ min-width:180px; }
+.fp-kind-info{ flex:1; min-width:220px; font-size:13px; font-weight:700; color:#4A5866; }
+.fp-kind-info a{ color:var(--meer); }
+.fp-kind-knoepfe{ display:flex; gap:8px; flex-wrap:wrap; }
+.fp-kind-knoepfe .btn{ margin-top:0; }
+.std-akte{ margin-top:12px; display:none; align-items:center; gap:10px; flex-wrap:wrap; background:#eef4f8; border-radius:14px; padding:10px 14px; font-size:13px; font-weight:700; }
+.std-akte .btn{ margin-top:0; }
 /* ---------- Aufmerksamkeit: Bilder-Blätter ---------- */
 .lt-bild{ display:inline-block; vertical-align:middle; flex:none; object-fit:contain; }
 .au-x{ position:relative; display:inline-flex; align-items:center; justify-content:center; }
@@ -1280,6 +1294,14 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             </div>
             <a class="btn sekundaer klein" href="gutachten.php" target="_blank"><i class="fa-solid fa-file-signature"></i> Zum Gutachten</a>
         </div>
+        <div class="fp-kindleiste">
+            <div><div class="fp-label">Für welches Kind?</div><select id="fp-kind" class="fp-select" onchange="fp_kindWechsel()"></select></div>
+            <div class="fp-kind-info" id="fp-kind-info">Ohne Kürzel entsteht ein allgemeines Paket. Mit Kürzel werden der gespeicherte Förderplan und die eigenen Fehlerwörter genutzt.</div>
+            <div class="fp-kind-knoepfe">
+                <button type="button" class="btn sekundaer klein" id="fp-laden" onclick="fp_planLaden(true)" style="display:none;"><i class="fa-solid fa-rotate"></i> Förderplan laden</button>
+                <button type="button" class="btn klein" id="fp-speichern" onclick="fp_planSpeichern()" style="display:none;"><i class="fa-solid fa-floppy-disk"></i> Als Förderplan speichern</button>
+            </div>
+        </div>
         <div id="fp-herkunft"></div>
 
         <section class="fp-schritt">
@@ -1309,10 +1331,6 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
                             <button type="button" data-wert="1">1</button><button type="button" data-wert="2" class="an">2</button><button type="button" data-wert="3">3</button>
                         </div>
                         <select id="fp-anzahl" hidden><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select>
-                    </div>
-                    <div>
-                        <div class="fp-label">Eigene Fehlerwörter (Kürzel)</div>
-                        <select id="fp-kind" class="fp-select"></select>
                     </div>
                     <div class="fp-extras">
                         <div class="fp-label">Dazu</div>
@@ -1360,6 +1378,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             <label><input type="checkbox" id="std-eltern"> Elternblatt mitgeben</label>
         </div>
         <button class="btn" onclick="fs_erstellen('stunde')"><i class="fa-solid fa-layer-group"></i> Stunde zusammenstellen</button>
+        <div class="std-akte" id="std-akte"></div>
     </div>
 </div>
 
@@ -6281,6 +6300,7 @@ const FS_SERIEN = {
    =============================================================== */
 
 const LRS_KINDER = <?= json_encode(array_values($lrsKinder), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
+const LRS_AKTEN = <?= json_encode((object)$lrsAkten, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
 const LRS_KARTEI = <?= json_encode((object)$lrsKartei, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
 
 function lt_wert(id){ const el = document.getElementById(id); return el ? el.value : ""; }
@@ -6941,6 +6961,7 @@ function std_auswahlAufbauen(){
     document.getElementById("std-symptom").addEventListener("change", std_blattListen);
     document.getElementById("std-kind").addEventListener("change", () => {
         std_klasseAusKuerzel();
+        std_ausAkte(lt_wert("std-kind"));
         if (lt_wert("std-kind") && kt_woerter(lt_wert("std-kind")).length) document.getElementById("std-symptom").value = "kartei";
         std_blattListen();
     });
@@ -7113,6 +7134,8 @@ function std_dynamisch(){
 
     std_zeitenVerteilen(phasen, dauer);
     const info = { kind: code, phasen, geuebt, merksatz, dauer };
+    std_letzte = info;
+    setTimeout(std_akteLeiste, 0);
     const ergebnis = [];
     if (lt_an("std-plan")) ergebnis.push({ nr: "0", kurz: "Ablaufplan", name: "Ablaufplan (für dich)", bau: () => std_ablaufplan(info) });
     ergebnis.push(...blaetter);
@@ -7122,6 +7145,84 @@ function std_dynamisch(){
         ergebnis.push({ nr: "0", kurz: "Elternblatt", name: "Elternblatt", bau: () => eb_blatt(foki, code) });
     }
     return ergebnis.map((b, i) => ({ ...b, nr: String(i + 1) }));
+}
+
+
+/* ---------- Kinder-Akte: Förderplan laden/speichern ---------- */
+function fp_akteLink(code, tab = "plan"){ return `trainingshefte.php?kind=${encodeURIComponent(code)}&tab=${tab}`; }
+function fp_kindWechsel(){
+    const code = lt_wert("fp-kind"), akte = code && LRS_AKTEN[code];
+    const info = document.getElementById("fp-kind-info");
+    document.getElementById("fp-speichern").style.display = code ? "" : "none";
+    document.getElementById("fp-laden").style.display = akte && (akte.f.length || akte.r.length) ? "" : "none";
+    if (!code) info.innerHTML = "Ohne Kürzel entsteht ein allgemeines Paket. Mit Kürzel werden der gespeicherte Förderplan und die eigenen Fehlerwörter genutzt.";
+    else if (akte && (akte.f.length || akte.r.length)){
+        // nur automatisch laden, wenn noch nichts angeklickt ist (z. B. nicht nach einem Gutachten-Import)
+        const leer = !document.querySelector(".fp-f:checked, .fp-r:checked");
+        if (leer) fp_planLaden(false);
+        info.innerHTML = `${leer ? "✅ Förderplan geladen" : "Für " + ws_esc(code) + " gibt es einen Förderplan"}: ${akte.f.length} Funktionsbereiche, ${akte.r.length} Rechtschreib-Schwerpunkte${akte.ziele ? `, ${akte.ziele} Ziele` : ""}. <a href="${fp_akteLink(code)}" target="_blank">Akte öffnen</a>`;
+    } else info.innerHTML = `Für ${ws_esc(code)} ist noch kein Förderplan gespeichert. Wähle die Bereiche aus und tippe auf „Als Förderplan speichern“. <a href="${fp_akteLink(code, "uebersicht")}" target="_blank">Akte öffnen</a>`;
+    fp_aktualisieren();
+}
+function fp_planLaden(fragen){
+    const code = lt_wert("fp-kind"), akte = LRS_AKTEN[code];
+    if (!akte) return;
+    if (fragen && document.querySelector(".fp-f:checked, .fp-r:checked") && !confirm("Die aktuelle Auswahl durch den gespeicherten Förderplan ersetzen?")) return;
+    document.querySelectorAll(".fp-f, .fp-r").forEach(c => c.checked = false);
+    fp_rsAufbauen(akte.r);
+    akte.f.forEach(k => { const cb = document.querySelector(`.fp-f[value="${k}"]`); if (cb) cb.checked = true; });
+    akte.r.forEach(k => { const cb = document.querySelector(`.fp-r[value="${k}"]`); if (cb) cb.checked = true; });
+    if (/^[1-8]$/.test(akte.klasse)){ const g = document.getElementById("g-klasse"); if (g.value !== akte.klasse){ g.value = akte.klasse; g.dispatchEvent(new Event("change")); } }
+    fp_aktualisieren();
+}
+async function fp_planSpeichern(){
+    const code = lt_wert("fp-kind"), info = document.getElementById("fp-kind-info");
+    const f = [...document.querySelectorAll(".fp-f:checked")].map(c => c.value), r = [...document.querySelectorAll(".fp-r:checked")].map(c => c.value);
+    if (!code) return;
+    if (!f.length && !r.length){ info.textContent = "Bitte zuerst Bereiche auswählen."; return; }
+    try {
+        const antwort = await fetch("akte.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ aktion: "schwerpunkte_speichern", kind: code, f, r, klasse: lt_wert("g-klasse") }) });
+        const j = await antwort.json().catch(() => ({ ok: false, fehler: "Keine Antwort – liegt akte.php im Leuchtturm-Ordner?" }));
+        if (!j.ok) throw new Error(j.fehler);
+        LRS_AKTEN[code] = { klasse: j.akte.klasse, f: j.akte.plan.f, r: j.akte.plan.r, ziele: (j.akte.plan.ziele || []).length };
+        info.innerHTML = `✅ ${ws_esc(j.meldung)} Ziele und Maßnahmen ergänzt du in der <a href="${fp_akteLink(code)}" target="_blank">Akte von ${ws_esc(code)}</a>.`;
+        document.getElementById("fp-laden").style.display = "";
+    } catch (e){ info.textContent = "⚠️ " + (e.message || "Speichern fehlgeschlagen."); }
+}
+
+/* ---------- Kinder-Akte: Stunde eintragen ---------- */
+let std_letzte = null;
+function std_akteLeiste(){
+    const el = document.getElementById("std-akte");
+    if (!el) return;
+    const code = std_letzte && std_letzte.kind;
+    el.style.display = code ? "flex" : "none";
+    if (!code) return;
+    el.innerHTML = `<i class="fa-solid fa-folder-open" style="color:var(--meer);"></i> Stunde (${std_letzte.dauer} Min.) für <b>${ws_esc(code)}</b>
+        <input type="date" id="std-akte-datum" value="${new Date().toISOString().slice(0, 10)}" style="width:auto; padding:6px 10px;">
+        <button class="btn klein" onclick="std_inAkte()"><i class="fa-solid fa-floppy-disk"></i> In die Akte eintragen</button><span id="std-akte-status"></span>`;
+}
+async function std_inAkte(){
+    const st = document.getElementById("std-akte-status"), info = std_letzte;
+    const inhalt = info.phasen.map(p => `${p.phase} (${p.zeit}): ${p.inhalt.replace(/<[^>]+>/g, "").replace(/&[a-z]+;/g, " ")}`).join("\n");
+    try {
+        const antwort = await fetch("akte.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ aktion: "stunde_hinzu", kind: info.kind, stunde: { datum: lt_wert("std-akte-datum"), dauer: info.dauer, inhalt } }) });
+        const j = await antwort.json().catch(() => ({ ok: false, fehler: "Keine Antwort – liegt akte.php im Leuchtturm-Ordner?" }));
+        if (!j.ok) throw new Error(j.fehler);
+        st.innerHTML = `✅ ${ws_esc(j.meldung)} <a href="${fp_akteLink(info.kind, "stunden")}" target="_blank">Zur Akte</a>`;
+    } catch (e){ st.textContent = "⚠️ " + e.message; }
+}
+// Kind gewählt: Klasse und Schwerpunkte aus der Akte vorschlagen
+function std_ausAkte(code){
+    const akte = LRS_AKTEN[code];
+    if (!akte) return;
+    if (/^[1-8]$/.test(akte.klasse)){ const l = document.getElementById("std-klasse"); if (l.value !== akte.klasse){ l.value = akte.klasse; l.dispatchEvent(new Event("change")); } }
+    const f = akte.f.find(k => STD_FUNKTIONEN.includes(k));
+    if (f) document.getElementById("std-funktion").value = f;
+    const r = akte.r.find(k => RS_SCHWERPUNKTE[k]);
+    if (r && !(lt_wert("std-kind") && kt_woerter(code).length)) document.getElementById("std-symptom").value = "rs:" + r;
 }
 
 function erstelleExtras(){}
@@ -8573,8 +8674,26 @@ lt_init();
 ["std-kind", "fp-kind", "ws-kt-kind"].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = kt_kindOptionen(id === "ws-kt-kind" ? "— Kürzel —" : "— ohne —"); });
 (function startParameter(){
     if (fp_hashLesen()) return;
+    const q = new URLSearchParams(location.search);
+    // aus der Kinder-Akte: Förderpaket mit dem gespeicherten Plan
+    const paket = q.get("paket");
+    if (paket && LRS_KINDER.includes(paket)){
+        document.querySelector('.tabs .tab[data-bereich="plan"]').click();
+        document.getElementById("fp-kind").value = paket;
+        fp_kindWechsel();
+        return;
+    }
+    // aus der Kinder-Akte: Stunde für ein Kind planen
+    const stunde = q.get("stunde");
+    if (stunde && LRS_KINDER.includes(stunde)){
+        document.querySelector('.tabs .tab[data-bereich="stunde"]').click();
+        const sk = document.getElementById("std-kind");
+        sk.value = stunde;
+        sk.dispatchEvent(new Event("change"));
+        return;
+    }
     // aus der Förderkartei: lrs.php?kartei=KÜRZEL öffnet die Blätter mit den Fehlerwörtern
-    const code = new URLSearchParams(location.search).get("kartei");
+    const code = q.get("kartei");
     if (code && LRS_KINDER.includes(code)){
         document.querySelector('.tabs .tab[data-bereich="symptom"]').click();
         const typ = document.getElementById("sy-typ");
