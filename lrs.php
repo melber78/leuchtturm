@@ -806,6 +806,7 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 
 <a href="index.php" class="zurueck"><i class="fa-solid fa-arrow-left"></i> Zurück zum Leuchtturm</a>
 
+<div id="update-test" style="background:linear-gradient(90deg,#ff6b6b,#f2a93b,#ffd93d,#6bcb77,#4d96ff,#9b5de5); color:#fff; font-weight:900; font-size:22px; text-align:center; padding:18px; border-radius:18px; margin-bottom:18px; text-shadow:0 2px 4px rgba(0,0,0,.3);">🎉 Update-Test erfolgreich! Diese Nachricht kam direkt von GitHub. 🚀</div>
 <header class="kopf">
 <h1><i class="fa-solid fa-pen-nib"></i> LRS-Förderung</h1>
 <p>Arbeitsblatt-Generator nach der AFS-Methode</p>
