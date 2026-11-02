@@ -55,8 +55,8 @@ Jonas merkt: Die Wut war trotzdem da. Aber diesmal hat er entschieden, was passi
     ab34: { titel: "Mein Wut-Werkzeugkasten", aufgaben: [
         { typ: "luecken", text: "Meine Wut-Warnsignale: Woran merkst du, dass du wütend wirst?", nummern: false,
           saetze: ["In meinem Körper: ___", "In meinem Gesicht: ___", "In meinem Kopf denke ich: ___"] },
-        { typ: "tabelle", text: "Hilft das oder macht es schlimmer? Schreibe H oder S.", spalten: ["Was ich tue", "H / S"],
-          zeilen: [["Ich atme dreimal tief durch.", ""], ["Ich werfe mit Sachen.", ""], ["Ich gehe kurz aus der Situation.", ""], ["Ich beschimpfe den anderen.", ""], ["Ich erzähle es später einem Erwachsenen.", ""], ["Ich drücke ganz fest ein Kissen.", ""]] },
+        { typ: "tabelle", text: "Hilft das (H) oder macht es schlimmer (S)? Kreuze die richtige Spalte an.", spalten: ["Was ich tue", "H", "S"],
+          zeilen: [["Ich atme dreimal tief durch.", "", ""], ["Ich werfe mit Sachen.", "", ""], ["Ich gehe kurz aus der Situation.", "", ""], ["Ich beschimpfe den anderen.", "", ""], ["Ich erzähle es später einem Erwachsenen.", "", ""], ["Ich drücke ganz fest ein Kissen.", "", ""]] },
         { typ: "luecken", text: "Wähle deine drei besten Wut-Werkzeuge.", nummern: true, saetze: ["___", "___", "___"] },
         { typ: "luecken", text: "Stopp – Atmen – Denken: Wann probierst du es diese Woche aus?", nummern: false, saetze: ["___"] }
     ]}
@@ -103,13 +103,13 @@ Am Ende sagt Finn: „Danke, Aylin. Das hat gutgetan.“
         { titel: "Trost-Post für den Teddy", fuer: "alle", dauer: "4 Min",
           text: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind macht ihm an seinem Platz eine Trostkarte: Kl. 1/2 malen, Kl. 3/4 schreiben zwei Sätze. Die Karten werden vorn neben den Teddy gelegt." }
     ],
-    ab12: { titel: "Ich kann trösten", aufgaben: [
+    ab12: { titel: "Ich kann trösten", kontext: "Zur Geschichte: Emmas Luftballon fliegt weg und sie weint. Ben setzt sich zu ihr und tröstet sie.", aufgaben: [
         { typ: "gesichter", text: "So fühlt sich Emma vorher – und nachher.", gefuehle: ["traurig", "froh"], leer: false },
         { typ: "ankreuzen", text: "Was hilft, wenn jemand traurig ist? Kreuze an.", nebeneinander: false,
           optionen: ["mich neben ihn setzen", "ihn auslachen", "ein Taschentuch geben", "einfach weglaufen", "fragen: „Was ist los?“"] },
         { typ: "malen", text: "Male, wie du jemanden tröstest.", bild: "" }
     ]},
-    ab34: { titel: "Trösten – aber wie?", aufgaben: [
+    ab34: { titel: "Trösten – aber wie?", kontext: "Zur Geschichte: Finns Kaninchen Hoppel ist gestorben. Leon sagt: „Ist doch nur ein Kaninchen.“ Aylin setzt sich zu Finn und hört ihm zu.", aufgaben: [
         { typ: "tabelle", text: "Hilft der Satz einem traurigen Kind? Schreibe ja oder nein und warum.", spalten: ["Satz", "Hilft das? Warum?"],
           zeilen: [["„Ist doch nicht so schlimm!“", ""], ["„Ich bin für dich da.“", ""], ["„Hör auf zu weinen!“", ""], ["„Willst du erzählen, was passiert ist?“", ""]] },
         { typ: "luecken", text: "Wenn ich traurig bin …", nummern: false,
@@ -168,8 +168,8 @@ Auf der Heimfahrt sagt Mila: „Mutig sein heißt nicht, keine Angst zu haben. M
         { typ: "malen", text: "Male: Davor hatte ich Angst – und dann war ich mutig.", bild: "" }
     ]},
     ab34: { titel: "Mutig mit meiner Angst", aufgaben: [
-        { typ: "tabelle", text: "Schützt mich die Angst (S) oder ist sie zu laut (L)? Schreibe S oder L.", spalten: ["Situation", "S / L"],
-          zeilen: [["Ein fremder Hund knurrt mich an.", ""], ["Ich soll vor der Klasse sprechen.", ""], ["Die Herdplatte ist rot.", ""], ["Ich spreche ein neues Kind an.", ""], ["Ich will bei Rot über die Straße.", ""]] },
+        { typ: "tabelle", text: "Schützt mich die Angst (S) oder ist sie zu laut (L)? Kreuze die richtige Spalte an.", spalten: ["Situation", "S", "L"],
+          zeilen: [["Ein fremder Hund knurrt mich an.", "", ""], ["Ich soll vor der Klasse sprechen.", "", ""], ["Die Herdplatte ist rot.", "", ""], ["Ich spreche ein neues Kind an.", "", ""], ["Ich will bei Rot über die Straße.", "", ""]] },
         { typ: "luecken", text: "Meine Mut-Treppe: Schreibe eine Angst auf und drei kleine Schritte, um mutiger zu werden.", nummern: false,
           saetze: ["Meine Angst: ___", "Schritt 1: ___", "Schritt 2: ___", "Schritt 3: ___"] },
         { typ: "luecken", text: "Mein Mutmacher-Satz:", nummern: false, saetze: ["___"] }
@@ -215,7 +215,7 @@ Am Nachmittag erzählt die Lehrerin der Klasse, dass Tims Opa krank ist. Lara wi
         { titel: "Die Perspektiv-Brille", fuer: "34", dauer: "5 Min",
           text: "Du liest eine Situation vor. Ein Kind setzt die Perspektiv-Brille auf und erzählt in der Ich-Form, was die andere Person fühlt und denkt. Danach gibt es die Brille weiter.\n\n- Ein neues Kind sitzt in der Pause allein auf der Bank.\n- Die Lehrerin schimpft, obwohl sie sonst nett ist.\n- Dein Freund hat beim Spiel verloren und knallt die Tür zu." }
     ],
-    ab12: { titel: "Wie geht es dir?", aufgaben: [
+    ab12: { titel: "Wie geht es dir?", kontext: "Zur Geschichte: Ella stößt aus Versehen Lios Turm um. Lio ist traurig – Ella hilft ihm, den Turm wieder aufzubauen.", aufgaben: [
         { typ: "zuordnen", text: "Wie fühlt sich das Kind? Verbinde.",
           links: ["Paul ist hingefallen.", "Mia hat Geburtstag.", "Ben wird ausgelacht.", "Ein Hund bellt Lea an."],
           rechts: ["ängstlich", "traurig", "wütend", "froh"] },
@@ -282,8 +282,8 @@ Später fragt Lukas: „War ich jetzt eine Petze?“ Die Lehrerin schüttelt den
         { typ: "malen", text: "Male die Ampel an: Rot heißt „Stopp – Hilfe holen!“", bild: "ampel" }
     ]},
     ab34: { titel: "Petzen oder Hilfe holen?", aufgaben: [
-        { typ: "tabelle", text: "Petzen (P) oder Hilfe holen (H)? Ordne zu.", spalten: ["Situation", "P / H"],
-          zeilen: [["Ich erzähle, dass Ali beim Diktat abgeschrieben hat.", ""], ["Ich sage, dass ein Kind auf der Toilette eingesperrt ist.", ""], ["Ich melde, dass Lena ihr Pausenbrot nicht isst.", ""], ["Ich erzähle, dass ein Kind seit Wochen bedroht wird.", ""], ["Ich sage, dass Paul gerannt ist.", ""]] },
+        { typ: "tabelle", text: "Petzen (P) oder Hilfe holen (H)? Kreuze die richtige Spalte an.", spalten: ["Situation", "P", "H"],
+          zeilen: [["Ich erzähle, dass Ali beim Diktat abgeschrieben hat.", "", ""], ["Ich sage, dass ein Kind auf der Toilette eingesperrt ist.", "", ""], ["Ich melde, dass Lena ihr Pausenbrot nicht isst.", "", ""], ["Ich erzähle, dass ein Kind seit Wochen bedroht wird.", "", ""], ["Ich sage, dass Paul gerannt ist.", "", ""]] },
         { typ: "luecken", text: "Erkläre den Unterschied mit eigenen Worten.", nummern: false,
           saetze: ["Petzen ist, wenn ___", "Hilfe holen ist, wenn ___"] },
         { typ: "luecken", text: "Jemand nennt dich „Petze“, weil du Hilfe geholt hast. Was antwortest du?", nummern: false, saetze: ["„___“"] }
@@ -333,7 +333,7 @@ Eine Woche später setzt Merve sich in der Pause wieder neben Nora.
         { titel: "Wiedergutmach-Ideen", fuer: "34", dauer: "2 Min",
           text: "Sammelt an der Tafel, wie man etwas wieder gutmachen kann: helfen, ersetzen, etwas Nettes tun, den anderen verteidigen, eine Karte schreiben." }
     ],
-    ab12: { titel: "Es tut mir leid", aufgaben: [
+    ab12: { titel: "Es tut mir leid", kontext: "Zur Geschichte: Sam kippt aus Versehen Malwasser über Leas Bild. Erst murmelt er nur „’Tschuldigung“ – dann entschuldigt er sich richtig.", aufgaben: [
         { typ: "ankreuzen", text: "Eine gute Entschuldigung … Kreuze an.", nebeneinander: false,
           optionen: ["schaut den anderen an.", "ist ehrlich gemeint.", "wird genervt gesagt.", "sagt, was passiert ist.", "macht etwas wieder gut."] },
         { typ: "luecken", text: "Sam entschuldigt sich bei Lea. Was sagt er?", nummern: false, saetze: ["„Es tut mir leid, dass ___.“"] },
@@ -342,8 +342,8 @@ Eine Woche später setzt Merve sich in der Pause wieder neben Nora.
     ab34: { titel: "Die Entschuldigungs-Treppe", aufgaben: [
         { typ: "luecken", text: "Du hast aus Versehen die Federmappe deines Tischnachbarn kaputt gemacht. Schreibe deine Entschuldigung in vier Stufen.", nummern: true,
           saetze: ["Was ich getan habe: ___", "Dass es falsch war: ___", "Wie du dich fühlst: ___", "Wie ich es wieder gutmache: ___"] },
-        { typ: "tabelle", text: "Echt oder unecht? Schreibe E oder U.", spalten: ["Entschuldigung", "E / U"],
-          zeilen: [["„Sorry, aber du hast angefangen!“", ""], ["„Es tut mir leid, dass ich dich geschubst habe.“", ""], ["„Ja, ja, ’tschuldigung.“", ""]] },
+        { typ: "tabelle", text: "Echt (E) oder unecht (U)? Kreuze die richtige Spalte an.", spalten: ["Entschuldigung", "E", "U"],
+          zeilen: [["„Sorry, aber du hast angefangen!“", "", ""], ["„Es tut mir leid, dass ich dich geschubst habe.“", "", ""], ["„Ja, ja, ’tschuldigung.“", "", ""]] },
         { typ: "luecken", text: "Verzeihen …", nummern: false,
           saetze: ["… fällt mir leicht, wenn ___", "… fällt mir schwer, wenn ___"] }
     ]}
@@ -390,7 +390,7 @@ Am Ende stimmen alle 22 Kinder dafür. Niemand hat alles bekommen, was er wollte
         { titel: "Fair-Check", fuer: "34", dauer: "2 Min",
           text: "Die anderen prüfen jede vorgestellte Lösung mit dem Daumen: Bekommen beide etwas? Fühlt sich keiner übergangen? Dann Daumen hoch." }
     ],
-    ab12: { titel: "Beide bekommen etwas", aufgaben: [
+    ab12: { titel: "Beide bekommen etwas", kontext: "Zur Geschichte: Zwei Ziegen treffen sich auf einer schmalen Brücke. Die einen streiten und fallen ins Wasser. Die anderen finden eine Lösung: Eine legt sich hin, die andere steigt drüber.", aufgaben: [
         { typ: "ankreuzen", text: "Lea und Ben wollen beide das rote Auto. Was ist fair? Kreuze an.", nebeneinander: false,
           optionen: ["Lea nimmt es einfach weg.", "Sie spielen abwechselnd.", "Ben schreit, bis er es bekommt.", "Sie spielen zusammen damit."] },
         { typ: "zuordnen", nur: "2", text: "Welche Lösung passt? Verbinde.",

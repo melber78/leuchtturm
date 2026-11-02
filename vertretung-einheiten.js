@@ -79,7 +79,7 @@ Lina holt ihren Globus. Zusammen suchen sie den Weg. Zum Dank darf Lina eine Run
         { typ: "malen", text: "Am Ende …", bild: "" },
         { typ: "luecken", text: "", nummern: false, saetze: ["Meine Geschichte heißt: ___"] }
     ]},
-    ab34: { titel: "Meine Würfel-Geschichte", aufgaben: [
+    ab34: { titel: "Meine Würfel-Geschichte", kontext: "Ziehe drei Bildkarten. Aus diesen drei Bildern wird deine Geschichte.", aufgaben: [
         { typ: "luecken", text: "Meine drei Bilder:", nummern: false, saetze: ["1. ___   2. ___   3. ___"] },
         { typ: "luecken", text: "Überschrift:", nummern: false, saetze: ["___"] },
         { typ: "schreiben", text: "Schreibe deine Geschichte. Denk an Anfang, Mitte und Schluss.", zeilen: 10 }
@@ -486,7 +486,7 @@ Mia zeichnet daraus ein Säulendiagramm: Für jedes Kind ein Kästchen nach oben
     ]},
     ab34: { titel: "Unsere Klassen-Umfrage", aufgaben: [
         { typ: "luecken", text: "Unsere Frage:", nummern: false, saetze: ["___"] },
-        { typ: "tabelle", text: "Strichliste:", spalten: ["Antwort", "Striche", "Anzahl"], zeilen: [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]] },
+        { typ: "tabelle", text: "Mach für jede Antwort einen Strich. Zähle am Ende und schreib die Anzahl dazu.", spalten: ["Antwort", "Striche", "Anzahl"], zeilen: [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]] },
         { typ: "malen", text: "Zeichne ein Säulendiagramm: Für jedes Kind ein Kästchen nach oben.", bild: "" },
         { typ: "luecken", text: "", nummern: false, saetze: ["Die meisten Kinder ___"] }
     ]}
@@ -541,7 +541,7 @@ Emil geht zum Fußballplatz – und findet den Ball im Tor. Cara wird rot: „Ic
         { typ: "ankreuzen", text: "Hör gut zu: Das Tier ist klein, hat Stacheln und schläft im Winter.", nebeneinander: true, optionen: ["Hase", "Igel", "Frosch"] },
         { typ: "malen", text: "Male dich als Detektiv mit einer Lupe.", bild: "" }
     ]},
-    ab34: { titel: "Detektiv-Akte", aufgaben: [
+    ab34: { titel: "Detektiv-Akte", kontext: "Zum Fall: Nach der Pause ist der Klassenball weg. Ali hat Rost an den Händen, Ben nasse Schuhe, an Caras Schuhen klebt Sand vom Fußballplatz, Dana hat auf der Bank gelesen.", aufgaben: [
         { typ: "luecken", text: "Der Fall des verschwundenen Balls:", nummern: false, saetze: ["Der Ball war bei: ___", "Mein Beweis: ___"] },
         { typ: "tabelle", text: "Wer isst was am liebsten? Apfel · Nudeln · Gummibärchen. Hinweise: Mia mag kein Obst. Tom isst gern Süßes. Lea liebt Äpfel.", spalten: ["Kind", "Lieblingsessen"],
           zeilen: [["Mia", ""], ["Tom", ""], ["Lea", ""]] },

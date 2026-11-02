@@ -106,8 +106,8 @@ Später sagt die Lehrerin: „Kevin wollte bewundert werden und hat sich in Gefa
         { typ: "malen", text: "Male, wann du schon einmal mutig warst.", bild: "" }
     ]},
     ab34: { titel: "Mutig oder leichtsinnig?", aufgaben: [
-        { typ: "tabelle", text: "Mutig (M) oder leichtsinnig (L)? Schreibe M oder L.", spalten: ["Situation", "M / L"],
-          zeilen: [["Ich gebe zu, dass ich gelogen habe.", ""], ["Ich springe vom Dreier, obwohl ich nicht schwimmen kann.", ""], ["Ich frage nach, wenn ich etwas nicht verstehe.", ""], ["Ich fahre ohne Helm, damit die anderen mich cool finden.", ""], ["Ich sage Erwachsenen Bescheid, wenn jemand gemobbt wird.", ""]] },
+        { typ: "tabelle", text: "Mutig (M) oder leichtsinnig (L)? Kreuze die richtige Spalte an.", spalten: ["Situation", "M", "L"],
+          zeilen: [["Ich gebe zu, dass ich gelogen habe.", "", ""], ["Ich springe vom Dreier, obwohl ich nicht schwimmen kann.", "", ""], ["Ich frage nach, wenn ich etwas nicht verstehe.", "", ""], ["Ich fahre ohne Helm, damit die anderen mich cool finden.", "", ""], ["Ich sage Erwachsenen Bescheid, wenn jemand gemobbt wird.", "", ""]] },
         { typ: "luecken", text: "Ein Kind wird ausgelacht. Was kannst du mutig tun?", nummern: true, saetze: ["___", "___"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Ich war mutig, als ___"] }
     ]}
@@ -217,8 +217,8 @@ Am Nachmittag erzählt Leonie ihrer Freundin Fatma, dass keiner mehr mit ihr red
     ]},
     ab34: { titel: "Mein Stolz-Tagebuch", aufgaben: [
         { typ: "luecken", text: "Darauf bin ich stolz:", nummern: true, saetze: ["___", "___", "___"] },
-        { typ: "tabelle", text: "Stolz (S) oder angeben (A)?", spalten: ["Satz", "S / A"],
-          zeilen: [["„Ich habe lange geübt und jetzt kann ich es.“", ""], ["„Ohne mich hättet ihr verloren, ihr Nieten.“", ""], ["„Ich freue mich, dass mein Bild so schön geworden ist.“", ""], ["„Ich kann alles besser als du.“", ""]] },
+        { typ: "tabelle", text: "Stolz sein (S) oder angeben (A)? Kreuze die richtige Spalte an.", spalten: ["Satz", "S", "A"],
+          zeilen: [["„Ich habe lange geübt und jetzt kann ich es.“", "", ""], ["„Ohne mich hättet ihr verloren, ihr Nieten.“", "", ""], ["„Ich freue mich, dass mein Bild so schön geworden ist.“", "", ""], ["„Ich kann alles besser als du.“", "", ""]] },
         { typ: "luecken", text: "Jemand lobt dich. Was antwortest du?", nummern: false, saetze: ["„___“"] }
     ]}
 }),
@@ -273,8 +273,8 @@ Am Nachmittag entschuldigt sich Lea. „Ich war heute Morgen total in Gedanken. 
         { typ: "malen", text: "Male das Ohr an. Was hörst du gern?", bild: "ohr" }
     ]},
     ab34: { titel: "Aktiv zuhören", aufgaben: [
-        { typ: "tabelle", text: "Hört das Kind gut zu? Schreibe ja oder nein.", spalten: ["Verhalten", "ja / nein"],
-          zeilen: [["Es schaut beim Zuhören auf sein Handy.", ""], ["Es fragt nach: „Wie meinst du das?“", ""], ["Es unterbricht und erzählt von sich.", ""], ["Es wiederholt: „Du meinst also …“", ""], ["Es nickt und schaut den anderen an.", ""]] },
+        { typ: "tabelle", text: "Hört das Kind gut zu? Kreuze ja oder nein an.", spalten: ["Verhalten", "ja", "nein"],
+          zeilen: [["Es schaut beim Zuhören auf sein Handy.", "", ""], ["Es fragt nach: „Wie meinst du das?“", "", ""], ["Es unterbricht und erzählt von sich.", "", ""], ["Es wiederholt: „Du meinst also …“", "", ""], ["Es nickt und schaut den anderen an.", "", ""]] },
         { typ: "luecken", text: "Dein Freund sagt: „Mein Hamster ist krank.“ Was kannst du nachfragen?", nummern: true, saetze: ["„___“", "„___“"] },
         { typ: "luecken", text: "Zuhören fällt mir schwer, wenn …", nummern: false, saetze: ["___"] }
     ]}

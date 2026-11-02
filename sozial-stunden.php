@@ -259,6 +259,9 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .zu-r{ display:flex; align-items:center; gap:.5em; }
 .punkt{ flex:0 0 auto; width:.62em; height:.62em; border-radius:50%; background:#333; }
 table.ab-tab{ width:100%; border-collapse:collapse; }
+.blatt-kontext{ background:#f3f6f8; border-left:1.2mm solid #3d7ea6; border-radius:0 2mm 2mm 0; padding:.3em .7em; margin:.1em 0 .5em; font-size:.88em; line-height:1.35; }
+td.tab-kreuz-zelle{ text-align:center; }
+.tab-kreuz{ display:inline-block; width:1.05em; height:1.05em; border:.35mm solid #555; border-radius:1mm; vertical-align:middle; }
 .wortspeicher{ border:.4mm dashed #9aa9b2; border-radius:3mm; padding:.35em .6em; margin:.2em 0 .45em; display:flex; flex-wrap:wrap; gap:.3em .5em; align-items:center; font-size:.92em; }
 .wortspeicher b{ font-family:"Nunito",sans-serif; font-size:.8em; text-transform:uppercase; letter-spacing:.04em; color:#55636a; margin-right:.2em; }
 .wortspeicher span{ background:#f3f6f8; border:.3mm solid #c9d6e3; border-radius:2mm; padding:.05em .45em; white-space:nowrap; }
@@ -653,10 +656,12 @@ function aufgabeHtml(a, stufe = "34"){
             });
             const speicher = (a.woerter || []).filter(w => String(w).trim()).length
                 ? `<div class="wortspeicher"><b>Wortspeicher:</b>${a.woerter.filter(w => String(w).trim()).map(w => `<span>${inline(w)}</span>`).join("")}</div>` : "";
+            const kreuzSpalte = sp.map((s, i) => i > 0 && String(s).trim().length <= 4 && (a.zeilen || []).every(z => !String(z[i] ?? "").trim()));
             return speicher + '<table class="ab-tab">' +
                 (sp.length ? "<tr>" + sp.map((s, i) => `<th${breite[i] ? ` style="width:${breite[i]}"` : ""}>${inline(s)}</th>`).join("") + "</tr>" : "") +
                 (a.zeilen || []).map((z, zi) => "<tr>" + (sp.length ? sp.map((_, i) => z[i]) : z).map((c, ci) => {
                     if (ci === 0 && c) { const x = eintrag(c, zi); return `<td><div class="zelle-kopf">${x.vorn}${x.bild}<div>${linienText(x.text)}</div></div></td>`; }
+                    if (!c && kreuzSpalte[ci]) return '<td class="tab-kreuz-zelle"><span class="tab-kreuz"></span></td>';
                     return `<td>${c ? linienText(c) : ""}</td>`;
                 }).join("") + "</tr>").join("") +
                 "</table>";
@@ -677,7 +682,10 @@ function blattBauen(e, stufe){
     blatt.className = "blatt " + (stufe === "34" ? "stufe34" : "stufe12 kl" + stufe);
     const aufgaben = (ab.aufgaben || []).filter(a => stufe === "34" || !aufgabeFuer(a) || aufgabeFuer(a) === stufe);
     let nr = 0, teile = [];
-    for (const a of aufgaben) {
+    for (const a0 of aufgaben) {
+        // Sätze zum Ergänzen ohne eigene Anweisung bekommen eine klare Überschrift
+        const a = (!String(a0.text || "").trim() && a0.typ === "luecken")
+            ? { ...a0, text: (a0.saetze || []).length > 1 ? "Ergänze die Sätze." : "Ergänze den Satz." } : a0;
         const mitKopf = String(a.text || "").trim() !== "";
         if (mitKopf) nr++;
         const dehnbar = a.typ === "malen" ? " dehnbar" : "";
@@ -698,6 +706,7 @@ function blattBauen(e, stufe){
         `<div class="blatt-kopf"><div class="blatt-titel">${inline(ab.titel || e.titel || "Arbeitsblatt")}</div>` +
         `<div class="blatt-meta"><i class="fa-solid fa-tower-observation"></i> ${esc(window.BEREICH.name)}<br>Klasse ${stufe === "34" ? "3/4" : stufe}</div></div>` +
         `<div class="blatt-name"><span>Name:</span><span class="ln"></span>${stufe === "1" ? "" : '<span>Datum:</span><span class="ln kurz"></span>'}</div>` +
+        (ab.kontext ? `<div class="blatt-kontext">📖 ${inline(ab.kontext)}</div>` : "") +
         `<div class="blatt-inhalt">${inhaltHtml}</div>`;
     return blatt;
 }
@@ -1254,6 +1263,7 @@ function zeigeEditor(id, entwurfBehalten = false){
         ${["12", "34"].map(s => `<div class="karte${s === "12" ? " nur12" : ""}"><h2>Arbeitsblatt Klasse ${s === "12" ? "1/2" : "3/4"}</h2>
             <div class="ed-ab">
                 <div>${feld("Titel des Arbeitsblatts", `ab${s}.titel`, e["ab" + s].titel)}
+                    ${feld("Erinnerung an die Geschichte (optional, erscheint oben auf dem Blatt)", `ab${s}.kontext`, e["ab" + s].kontext || "")}
                     <div id="edAufgaben${s}" style="margin-top:12px"></div>
                     <div class="knopfleiste"><select id="neuTyp${s}" style="width:auto">${Object.entries(TYPEN).map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}</select>
                     <button class="btn klein" type="button" data-plus="${s}"><i class="fa-solid fa-plus"></i> Aufgabe</button></div>

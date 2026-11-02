@@ -62,7 +62,7 @@ Später sagt ihm sein Onkel: „Kevin kennt deine Mutter gar nicht. Der Spruch h
     ],
     ab34: { titel: "Meine Familie kriegst du nicht", aufgaben: [
         { typ: "ankreuzen", text: "Warum trifft ein Spruch über die Mutter so hart? Kreuze an, was für dich stimmt.", optionen: ["Sie ist mir am wichtigsten.", "Ich will sie beschützen.", "Es ist vor allen peinlich.", "Es geht um Ehre.", "Ich weiß nicht, was ich sagen soll."] },
-        { typ: "tabelle", text: "Was passiert dann?", spalten: ["Wenn ich ausraste …", "Wenn ich ruhig bleibe …"], zeilen: [["", ""], ["", ""]] },
+        { typ: "tabelle", text: "Was passiert dann? Schreib in jede Spalte, was danach passieren kann.", spalten: ["Wenn ich ausraste …", "Wenn ich ruhig bleibe …"], zeilen: [["", ""], ["", ""]] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Mein Schutzsatz: ___", "Danach mache ich: ___"] },
         { typ: "schreiben", text: "Was würde deine Mutter (oder wer für dich wichtig ist) sich wünschen, wie du reagierst?", zeilen: 3 }
     ]}
@@ -131,7 +131,7 @@ Alle unterschrieben. Nach vier Wochen zählten sie: Statt fast jeden Tag gab es 
     ],
     ab34: { titel: "Unser Deal", aufgaben: [
         { typ: "luecken", text: "Unsere Sprach-Regel:", nummern: false, saetze: ["Bei uns ist verboten: ___", "Unser Stopp-Wort: ___"] },
-        { typ: "tabelle", text: "Wenn es doch passiert:", spalten: ["Wer?", "Was passiert dann?"], zeilen: [["Wer den Spruch sagt", ""], ["Wer ihn hört", ""], ["Wer zurückschlägt", ""]] },
+        { typ: "tabelle", text: "Wenn es doch passiert: Was gilt dann für wen? Schreib es daneben.", spalten: ["Wer?", "Was passiert dann?"], zeilen: [["Wer den Spruch sagt", ""], ["Wer ihn hört", ""], ["Wer zurückschlägt", ""]] },
         { typ: "luecken", text: "Mein persönliches Versprechen:", nummern: false, saetze: ["Ich achte darauf, dass ich ___", "Wenn ich doch ausraste, mache ich es wieder gut, indem ich ___"] },
         { typ: "schreiben", text: "Unterschrift und Datum:", zeilen: 1 }
     ]}
@@ -164,7 +164,7 @@ Marco sagt später: „Ich wollte ihn nicht so schlimm verletzen. Ich war einfac
         { titel: "Die absoluten Grenzen", dauer: "7 Min",
           text: "Gemeinsam die Grenzen festlegen, die bei euch NIE überschritten werden, und aufs Plakat schreiben. Vorschlag:\n\n- Nie gegen den Kopf schlagen oder treten.\n- Wer am Boden liegt: sofort Schluss.\n- Keine Gegenstände, keine Waffen.\n- Nie zu mehreren auf einen.\n\nDann der Zuschauer-Plan: **Nicht filmen – laut „Stopp!“ rufen – sofort einen Erwachsenen holen – wenn jemand nicht mehr reagiert: 112.** Jedes Kind sagt einmal laut vom Platz, was es als Zuschauer tun würde." }
     ],
-    ab34: { titel: "Die absoluten Grenzen", aufgaben: [
+    ab34: { titel: "Die absoluten Grenzen", kontext: "Zum Fall: Bei einer Prügelei liegt Jason am Boden. Marco tritt ihm gegen den Kopf. Jason muss eine Woche ins Krankenhaus.", aufgaben: [
         { typ: "ankreuzen", text: "Was kann ein Tritt gegen den Kopf auslösen?", optionen: ["Gehirnerschütterung", "Blutung im Kopf", "Probleme beim Lernen", "bleibende Schäden", "nur eine Beule"], nebeneinander: true },
         { typ: "luecken", text: "Unsere absoluten Grenzen:", nummern: true, saetze: ["___", "___", "___"] },
         { typ: "luecken", text: "Ich bin Zuschauer bei einer Prügelei. Ich mache:", nummern: true, saetze: ["___", "___", "Wenn jemand nicht mehr reagiert, rufe ich: ___"] },

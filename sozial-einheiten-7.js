@@ -53,8 +53,8 @@ Niklas merkt: Eine Lüge ist schnell erzählt. Vertrauen zurückzuholen dauert W
         { titel: "Lüge oder nicht?", dauer: "6 Min",
           text: "Du liest Situationen vor, die Kinder zeigen rot (= Lüge, die schadet) oder grün (= ehrlich bzw. harmlos). Diskutiert die schwierigen Fälle.\n\n- „Ich hab die Hausaufgaben vergessen“ – obwohl man keine Lust hatte.\n- Oma fragt, ob dir der Pullover gefällt. Du sagst ja, obwohl er hässlich ist.\n- Du sagst, du warst es nicht, obwohl du das Fenster kaputt gemacht hast.\n- Du verrätst nicht, wo dein Freund sein Geburtstagsgeschenk versteckt hat.\n- Du erzählst, du hättest ein neues Handy – stimmt aber nicht.\n- Du sagst der Lehrerin nicht, wer die Wand beschmiert hat." }
     ],
-    ab34: { titel: "Mein Vertrauens-Konto", aufgaben: [
-        { typ: "tabelle", text: "Was zahlt auf das Vertrauens-Konto ein – was hebt ab?", spalten: ["Einzahlung (macht Vertrauen)", "Abhebung (macht Vertrauen kaputt)"], zeilen: [["", ""], ["", ""], ["", ""]] },
+    ab34: { titel: "Mein Vertrauens-Konto", kontext: "Zum Fall: Niklas lügt seine Mutter und seine Lehrerin an. Als er später die Wahrheit sagt, glaubt ihm keiner mehr.", aufgaben: [
+        { typ: "tabelle", text: "Was zahlt auf das Vertrauens-Konto ein – was hebt ab? Schreib in jede Spalte drei Beispiele.", spalten: ["Einzahlung (macht Vertrauen)", "Abhebung (macht Vertrauen kaputt)"], zeilen: [["", ""], ["", ""], ["", ""]] },
         { typ: "ankreuzen", text: "Warum lügen Menschen? Kreuze an, was du kennst.", optionen: ["um Ärger zu vermeiden", "um besser dazustehen", "um jemanden zu schützen", "aus Gewohnheit", "aus Angst"] },
         { typ: "luecken", text: "Niklas will Vertrauen zurückgewinnen. Gib ihm drei Tipps:", nummern: true, saetze: ["___", "___", "___"] },
         { typ: "schreiben", text: "Wem vertraust du – und warum?", zeilen: 3 }
@@ -118,7 +118,7 @@ Eine Woche später hat Merve Streit mit Lena. Plötzlich ist sie raus aus der Ch
         { titel: "Reinholen üben", dauer: "6 Min",
           text: "Jedes Kind sucht sich eine Möglichkeit aus, wie es jemanden reinholen kann, und sagt den Satz einmal laut vom Platz:\n\n- „Komm, setz dich zu uns.“\n- „Willst du mitspielen? Wir brauchen noch einen.“\n- „Du kannst mit in unsere Gruppe.“\n- Beim Wählen jemanden früh nehmen, der sonst als Letzter drankommt.\n\nAbmachung für die Woche: Jeder holt einmal jemanden rein." }
     ],
-    ab34: { titel: "Draußen – und wieder drinnen", aufgaben: [
+    ab34: { titel: "Draußen – und wieder drinnen", kontext: "Zum Fall: Anna ist neu und möchte zur Clique dazu. „Hier ist kein Platz mehr“, sagt Lena – und Anna bleibt allein.", aufgaben: [
         { typ: "tabelle", text: "Sortiere die Begriffe aus dem Wortspeicher: Was schließt aus – was holt rein?", spalten: ["Schließt aus", "Holt rein"], zeilen: [["", ""], ["", ""], ["", ""], ["", ""]],
           woerter: ["wegdrehen", "„Setz dich zu uns.“", "aus dem Chat werfen", "zum Mitspielen fragen", "„Hier ist besetzt.“", "früh ins Team wählen", "als Letzten wählen", "in die Gruppe holen"] },
         { typ: "ankreuzen", text: "Wie fühlt sich jemand, der ausgeschlossen wird?", optionen: ["einsam", "wütend", "unsichtbar", "egal", "traurig", "beschämt"], nebeneinander: true },
@@ -186,7 +186,7 @@ Die Schulleiterin malt einen Kreis an die Tafel. „Jeder von euch hat gedacht, 
         { titel: "Rache oder Lösung?", dauer: "6 Min",
           text: "Du liest Situationen vor. Die Kinder sagen zuerst ehrlich, was sie gern tun würden (Rache) – und dann, was das Problem wirklich löst.\n\n- Jemand hat dein Fahrrad zerkratzt.\n- Jemand hat dich im Chat lächerlich gemacht.\n- Jemand hat dir beim Fußball absichtlich ein Bein gestellt.\n- Jemand hat dein Geheimnis weitererzählt.\n- Jemand hat deinen kleinen Bruder geschubst." }
     ],
-    ab34: { titel: "Den Kreis stoppen", aufgaben: [
+    ab34: { titel: "Den Kreis stoppen", kontext: "Zum Fall: Montag versteckt Ole Cans Mütze. Dienstag kippt Can Wasser über Oles Heft. Mittwoch zeigt Ole ein peinliches Foto von Can herum. Donnerstag schlägt Can Ole.", aufgaben: [
         { typ: "luecken", text: "Ole und Can – trag die Tage ein:", nummern: false, saetze: ["Montag: ___", "Dienstag: ___", "Mittwoch: ___", "Donnerstag: ___"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Hier hätte man aussteigen können: ___", "So hätte man aussteigen können: ___"] },
         { typ: "ankreuzen", text: "Was passiert oft nach Rache?", optionen: ["Der andere rächt sich auch.", "Der Streit ist vorbei.", "Es wird schlimmer.", "Am Ende haben beide Ärger.", "Man fühlt sich lange gut."] }
@@ -220,7 +220,7 @@ Kevins alter Freund Marc ist nicht so cool. Aber als Kevin krank war, hat Marc i
           text: "Gemeinsam fünf Fragen formulieren, mit denen man eine Freundschaft prüfen kann, z. B.: „Fühle ich mich wohl, wenn ich mit ihm/ihr zusammen bin?“ · „Kann ich Nein sagen, ohne Angst zu haben?“ · „Hört er/sie mir auch zu?“ Schreib sie an die Tafel." }
     ],
     ab34: { titel: "Mein Freundschafts-Test", aufgaben: [
-        { typ: "tabelle", text: "Was macht einen echten Freund aus – was einen falschen?", spalten: ["Echter Freund", "Falscher Freund"], zeilen: [["", ""], ["", ""], ["", ""]] },
+        { typ: "tabelle", text: "Was macht einen echten Freund aus – was einen falschen? Schreib in jede Spalte drei Beispiele.", spalten: ["Echter Freund", "Falscher Freund"], zeilen: [["", ""], ["", ""], ["", ""]] },
         { typ: "ankreuzen", text: "Denk an einen Freund oder eine Freundin. Was stimmt?", optionen: ["Ich kann Nein sagen.", "Er/sie hält zu mir.", "Er/sie hört mir zu.", "Ich fühle mich wohl.", "Ich muss mich verstellen.", "Ich habe manchmal Angst vor ihm/ihr."] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Das bin ich für meine Freunde: ___", "Das wünsche ich mir von einem Freund: ___"] }
     ]}
@@ -286,8 +286,8 @@ Die Lehrerin sagt: „Weißt du, wer weint? Fußballprofis nach einem verlorenen
         { titel: "Stark oder schwach?", dauer: "6 Min",
           text: "Du liest vor, die Kinder entscheiden mit Daumen: Braucht das Mut (hoch) oder ist es schwach (runter)? Diskutiert.\n\n- Vor anderen zugeben, dass man Angst hat.\n- Weinen, wenn etwas Schlimmes passiert.\n- Sagen: „Das hat mich verletzt.“\n- Einem Freund sagen, dass man ihn mag.\n- Um Hilfe bitten." }
     ],
-    ab34: { titel: "Meine Maske", aufgaben: [
-        { typ: "tabelle", text: "Was zeigst du nach außen – und was ist manchmal innen?", spalten: ["Außen (was andere sehen)", "Innen (was ich fühle)"], zeilen: [["", ""], ["", ""], ["", ""]] },
+    ab34: { titel: "Meine Maske", kontext: "Zum Fall: Mo spielt immer den Coolen. Als sein Hund stirbt, weint er heimlich auf dem Klo und hat Angst, ein „Weichei“ zu sein.", aufgaben: [
+        { typ: "tabelle", text: "Was zeigst du nach außen – und was fühlst du manchmal innen? Schreib drei Beispiele.", spalten: ["Außen (was andere sehen)", "Innen (was ich fühle)"], zeilen: [["", ""], ["", ""], ["", ""]] },
         { typ: "ankreuzen", text: "Bei wem kannst du deine Maske abnehmen?", optionen: ["Mutter", "Vater", "Geschwister", "Freund/Freundin", "Lehrkraft", "Schulsozialarbeit", "Haustier", "niemand"], nebeneinander: true },
         { typ: "schreiben", text: "Was würdest du Mo sagen, damit er sich nicht schämt?", zeilen: 3 }
     ]}
@@ -355,8 +355,8 @@ Abends kann Sami nicht schlafen. Was, wenn der Lehrer nicht gekommen wäre?
         { titel: "Wie sag ich's?", dauer: "5 Min",
           text: "Sammelt: Wem kann man so etwas sagen? (Lehrkraft, Schulsozialarbeit, Eltern, Nummer gegen Kummer 116 111) Und wie, damit es keiner merkt? (nach der Stunde, Zettel, Eltern bitten anzurufen …)" }
     ],
-    ab34: { titel: "Schützen statt schweigen", aufgaben: [
-        { typ: "tabelle", text: "Petzen oder Hilfe holen? Trag je zwei Beispiele ein.", spalten: ["Petzen (will Ärger machen)", "Hilfe holen (will schützen)"], zeilen: [["", ""], ["", ""]] },
+    ab34: { titel: "Schützen statt schweigen", kontext: "Zum Fall: Yannick zeigt seinem Freund Sami ein Taschenmesser im Rucksack. Sami sagt niemandem etwas, weil er nicht petzen will.", aufgaben: [
+        { typ: "tabelle", text: "Petzen oder Hilfe holen? Schreib in jede Spalte zwei Beispiele.", spalten: ["Petzen (will Ärger machen)", "Hilfe holen (will schützen)"], zeilen: [["", ""], ["", ""]] },
         { typ: "ankreuzen", text: "Hier hole ich auf jeden Fall Hilfe:", optionen: ["Jemand wird bedroht.", "Jemand hat eine Waffe.", "Jemand wird zu Hause verletzt.", "Jemand hat seine Hausaufgaben vergessen.", "Jemand wird ständig gemobbt."] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Diesen Erwachsenen kann ich mich anvertrauen: ___", "Nummer gegen Kummer (kostenlos): 116 111"] },
         { typ: "schreiben", text: "Was hätte Sami tun können?", zeilen: 2 }
@@ -390,7 +390,7 @@ Dann fragt Amira: „Was wünscht ihr euch vom anderen?“ Am Ende einigen sich 
           text: "Drei Kinder üben vom Platz aus: zwei Streitende, ein Schlichter (du hilfst). Ausgedachter, harmloser Streit, z. B.:\n\n- Wer darf an den PC?\n- Einer hat den Stift des anderen ausgeliehen und kaputt gemacht.\n- Beide wollen am Fenster sitzen.\n\nDie anderen achten darauf: Wurde jeder ausreden gelassen? Blieb der Schlichter neutral?" }
     ],
     ab34: { titel: "So schlichte ich einen Streit", aufgaben: [
-        { typ: "luecken", text: "Die 4 Schritte der Schlichtung:", nummern: true, saetze: ["___", "___", "___", "___"] },
+        { typ: "luecken", text: "Schreib die 4 Schritte der Schlichtung in der richtigen Reihenfolge auf:", nummern: true, saetze: ["___", "___", "___", "___"] },
         { typ: "ankreuzen", text: "Ein guter Schlichter …", optionen: ["hält zu seinem Freund.", "lässt beide ausreden.", "bleibt ruhig.", "bestimmt die Strafe.", "fragt, was beide sich wünschen."] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Ein Streit, den ich schlichten könnte: ___", "Eine Lösung, mit der beide leben können: ___"] }
     ]}
@@ -422,7 +422,7 @@ Marlon denkt an seine alte Schule. Dort hätte das niemand gesagt. Er fragt sich
           text: "Gemeinsam überlegen: Was kann die GRUPPE tun, damit jemand seinen Ruf ändern kann? (nicht sofort beschuldigen, Gutes bemerken und sagen, Vergangenes ruhen lassen …) Abmachung: Diese Woche sagt jeder einem anderen etwas Gutes, das ihm aufgefallen ist." }
     ],
     ab34: { titel: "Wer ich sein will", aufgaben: [
-        { typ: "tabelle", text: "Sei ehrlich zu dir:", spalten: ["So sehen mich andere vielleicht", "So will ich gesehen werden"], zeilen: [["", ""], ["", ""], ["", ""]] },
+        { typ: "tabelle", text: "Sei ehrlich zu dir und schreib je drei Wörter oder Sätze:", spalten: ["So sehen mich andere vielleicht", "So will ich gesehen werden"], zeilen: [["", ""], ["", ""], ["", ""]] },
         { typ: "luecken", text: "Mein Ziel für die nächsten vier Wochen:", nummern: false, saetze: ["Ich will ___", "Daran merken andere es: ___", "Das hilft mir dabei: ___"] },
         { typ: "schreiben", text: "Ein Brief an mich selbst in vier Wochen:", zeilen: 3 }
     ]}

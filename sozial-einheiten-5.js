@@ -44,12 +44,12 @@ Das Floß von Gruppe B trägt den Teddy sicher über den Teich. Gruppe A ist ent
         { titel: "Team-Regeln", fuer: "34", dauer: "2 Min",
           text: "Die Kinder sammeln vom Platz aus drei Regeln für gute Teamarbeit (z. B. erst planen, alle Ideen anhören, Aufgaben verteilen)." }
     ],
-    ab12: { titel: "Zusammen sind wir stark", aufgaben: [
+    ab12: { titel: "Zusammen sind wir stark", kontext: "Zur Geschichte: Großvater, Großmutter, Enkelkind, Hund und Katze ziehen an der Riesenrübe – erst mit der kleinen Maus schaffen sie es.", aufgaben: [
         { typ: "ankreuzen", text: "Was hilft im Team? Kreuze an.", nebeneinander: false,
           optionen: ["zusammen helfen", "schubsen", "abwechseln", "zuhören", "allein bestimmen"] },
         { typ: "malen", text: "Male, wie alle zusammen an der Riesenrübe ziehen.", bild: "" }
     ]},
-    ab34: { titel: "Teamarbeit planen", aufgaben: [
+    ab34: { titel: "Teamarbeit planen", kontext: "Zur Geschichte: Zwei Gruppen bauen ein Floß. In Gruppe A fängt jeder einfach an, keiner spricht sich ab. Gruppe B verteilt zuerst die Aufgaben und hört sich gegenseitig zu.", aufgaben: [
         { typ: "tabelle", text: "Plane mit deinem Tischnachbarn ein Plakat über unsere Schule. Wer macht was?", spalten: ["Aufgabe", "Wer?"],
           zeilen: [["Überschrift schreiben", ""], ["Bilder malen", ""], ["Texte schreiben", ""], ["Alles aufkleben", ""], ["___", ""]] },
         { typ: "luecken", text: "Was hat Gruppe B besser gemacht als Gruppe A?", nummern: true, saetze: ["___", "___"] },
@@ -155,14 +155,14 @@ Am Ende ist ihre Zeitung die beliebteste der ganzen Schule. Die Rektorin sagt: �
         { titel: "Wer kann was?", fuer: "34", dauer: "4 Min",
           text: "Stellt euch vor, die Gruppe plant ein Fest. Die Kinder sagen vom Platz aus, welche Aufgabe sie übernehmen würden und warum (einladen, Musik, Spiele, Essen, Deko, Aufräumen). Kl. 1/2 zeigen am Platz, was sie gut können." }
     ],
-    ab12: { titel: "Jeder ist wichtig", aufgaben: [
+    ab12: { titel: "Jeder ist wichtig", kontext: "Zur Geschichte: Im Tier-Orchester spielt jeder, wann er will. Erst als die kleine Maus den Takt trommelt, klingt es schön.", aufgaben: [
         { typ: "zuordnen", text: "Wer macht welchen Ton? Verbinde.",
           links: ["Elefant", "Vogel", "Frosch", "Maus"],
           rechts: ["quaken", "[bild:trommel] trommeln", "[bild:trompete] tröten", "[bild:floete] pfeifen"] },
         { typ: "malen", text: "Male dich im Tier-Orchester. Welches Instrument spielst du?", bild: "" },
         { typ: "luecken", text: "", nummern: false, saetze: ["In unserer Gruppe bin ich wichtig, weil ich ___"] }
     ]},
-    ab34: { titel: "Unser Team-Puzzle", aufgaben: [
+    ab34: { titel: "Unser Team-Puzzle", kontext: "Zur Geschichte: Finn glaubt, er sei für die Schülerzeitung unwichtig, weil er nicht gern schreibt. Dann wird er der Fotograf der Gruppe.", aufgaben: [
         { typ: "tabelle", text: "Eure Gruppe macht eine Schülerzeitung. Wer kann was gut? Schreibe Namen aus der Gruppe.", spalten: ["Aufgabe", "Wer kann das gut?"],
           zeilen: [["Schreiben", ""], ["Fotografieren", ""], ["Zeichnen", ""], ["Organisieren", ""], ["Ideen haben", ""]] },
         { typ: "luecken", text: "Warum war Finn für die Zeitung wichtig, obwohl er nicht gern schreibt?", nummern: false, saetze: ["___"] },
@@ -219,7 +219,7 @@ Vor dem nächsten Test macht Nora das Kasten-Atmen ganz heimlich unter dem Tisch
           optionen: ["[bild:teddy] kuscheln", "[bild:gitarre] Musik", "[bild:pinsel] malen", "atmen", "[bild:baum] draußen sein", "___"] },
         { typ: "malen", text: "Male die Ruhe-Wolke an. Male hinein, was dich ruhig macht.", bild: "wolke" }
     ]},
-    ab34: { titel: "Meine Ruhe-Werkzeuge", aufgaben: [
+    ab34: { titel: "Meine Ruhe-Werkzeuge", kontext: "Diese Übungen habt ihr ausprobiert: Stille-Minute (still sein, bis der Ton weg ist) · Schildkröten-Trick (Kopf auf die Arme, langsam atmen) · Kasten-Atmen (4 ein – 4 halten – 4 aus – 4 halten) · 5-4-3-2-1 (Dinge sehen, spüren, hören …).", aufgaben: [
         { typ: "luecken", text: "Ich merke, dass ich Ruhe brauche, wenn …", nummern: false, saetze: ["___"] },
         { typ: "tabelle", text: "Wie gut hat die Übung dir geholfen? Gib 1 bis 5 Sterne.", spalten: ["Übung", "Sterne (1–5)"],
           zeilen: [["Stille-Minute", ""], ["Schildkröten-Trick", ""], ["Kasten-Atmen", ""], ["5-4-3-2-1", ""]] },
@@ -279,7 +279,7 @@ Dann legen alle die Rosine auf die Zunge, ohne zu kauen. Kerem spürt, wie sein 
           rechts: ["riechen", "fühlen", "sehen", "schmecken", "hören"] },
         { typ: "malen", text: "Male etwas, das du heute Schönes gesehen, gehört oder gerochen hast.", bild: "" }
     ]},
-    ab34: { titel: "Achtsam wahrnehmen", aufgaben: [
+    ab34: { titel: "Achtsam wahrnehmen", kontext: "In der Stunde hast du eine Rosine (oder ein Apfelstück) ganz langsam erkundet: anschauen, fühlen, ans Ohr halten, riechen, schmecken.", aufgaben: [
         { typ: "tabelle", text: "Beschreibe deine Rosine (oder dein Apfelstück) mit allen Sinnen.", spalten: ["Sinn", "Was ich wahrgenommen habe"],
           zeilen: [["Sehen", ""], ["Fühlen", ""], ["Hören", ""], ["Riechen", ""], ["Schmecken", ""]] },
         { typ: "luecken", text: "Wann bist du im Alltag ganz achtsam – ganz bei einer Sache?", nummern: false, saetze: ["___"] },
@@ -390,8 +390,8 @@ Am Ende schreibt Frau Novak an die Tafel: „Unsere Klasse ist wie ein Obstsalat
     ab34: { titel: "Vielfalt in unserer Gruppe", aufgaben: [
         { typ: "luecken", text: "Mein Tischnachbar und ich:", nummern: false,
           saetze: ["Das haben wir gemeinsam: ___", "Das ist bei uns verschieden: ___"] },
-        { typ: "tabelle", text: "Vorurteil (V) oder Tatsache (T)? Schreibe V oder T.", spalten: ["Satz", "V / T"],
-          zeilen: [["„Jungen weinen nicht.“", ""], ["„Menschen haben verschiedene Hautfarben.“", ""], ["„Mädchen können nicht Fußball spielen.“", ""], ["„Ältere Menschen verstehen nichts von Technik.“", ""]] },
+        { typ: "tabelle", text: "Vorurteil (V) oder Tatsache (T)? Kreuze die richtige Spalte an.", spalten: ["Satz", "V", "T"],
+          zeilen: [["„Jungen weinen nicht.“", "", ""], ["„Menschen haben verschiedene Hautfarben.“", "", ""], ["„Mädchen können nicht Fußball spielen.“", "", ""], ["„Ältere Menschen verstehen nichts von Technik.“", "", ""]] },
         { typ: "luecken", text: "Was wäre, wenn alle Menschen gleich wären?", nummern: false, saetze: ["___"] }
     ]}
 }),
@@ -446,8 +446,8 @@ Es dauert noch ein paar Wochen. Aber dann hört es auf. Jonas sagt später: „D
         { typ: "malen", text: "Male, wie du dem Kind hilfst.", bild: "" }
     ]},
     ab34: { titel: "Hinschauen statt mitlachen", aufgaben: [
-        { typ: "tabelle", text: "Spaß (S) oder Hänseln (H)? Schreibe S oder H.", spalten: ["Situation", "S / H"],
-          zeilen: [["Alle lachen über einen Witz, den Tim erzählt.", ""], ["Jeden Tag wird Mara wegen ihrer Zähne nachgemacht.", ""], ["Ole lacht selbst am meisten über sein Missgeschick.", ""], ["Im Klassenchat werden Fotos von Ali verspottet.", ""]] },
+        { typ: "tabelle", text: "Spaß (S) oder Hänseln (H)? Kreuze die richtige Spalte an.", spalten: ["Situation", "S", "H"],
+          zeilen: [["Alle lachen über einen Witz, den Tim erzählt.", "", ""], ["Jeden Tag wird Mara wegen ihrer Zähne nachgemacht.", "", ""], ["Ole lacht selbst am meisten über sein Missgeschick.", "", ""], ["Im Klassenchat werden Fotos von Ali verspottet.", "", ""]] },
         { typ: "luecken", text: "Was ist Mobbing? Erkläre mit eigenen Worten.", nummern: false, saetze: ["___"] },
         { typ: "luecken", text: "Das kann ich als Zuschauer tun:", nummern: true, saetze: ["___", "___", "___"] }
     ]}
@@ -556,7 +556,7 @@ Leon denkt nach. „Dann ist es wie bei Jakob mit der Brille. Der bekommt ja auc
           optionen: ["Alle bekommen genau gleich viel Hilfe.", "Wer mehr Hilfe braucht, bekommt mehr Hilfe."] },
         { typ: "malen", text: "Male drei Kinder am Zaun: groß, mittel und klein. Male so viele Kisten dazu, dass alle zuschauen können.", bild: "" }
     ]},
-    ab34: { titel: "Gleich oder gerecht?", aufgaben: [
+    ab34: { titel: "Gleich oder gerecht?", kontext: "Zur Geschichte: Mia bekommt im Test mehr Zeit. Frau Schröder erklärt es mit dem Pflaster-Beispiel: Wer sich verletzt hat, bekommt ein Pflaster – nicht einfach alle.", aufgaben: [
         { typ: "luecken", text: "Erkläre das Pflaster-Beispiel mit eigenen Worten.", nummern: false, saetze: ["___", "___"] },
         { typ: "tabelle", text: "Was braucht das Kind, damit es gerecht ist?", spalten: ["Kind", "Was braucht es?"],
           zeilen: [["Lea sieht schlecht.", ""], ["Kian spricht erst seit einem Jahr Deutsch.", ""], ["Mia fällt das Lesen und Schreiben schwer.", ""], ["Tim sitzt im Rollstuhl.", ""]] },

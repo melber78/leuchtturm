@@ -44,17 +44,17 @@ Die Mädchen beschließen eine neue Club-Regel: **Jede, die mitmachen will, darf
         { titel: "Pausen-Ideen für alle", fuer: "34", dauer: "4 Min",
           text: "Die Kinder sammeln vom Platz aus Spiele, bei denen beliebig viele mitmachen können (Fangen, Seilspringen mit langem Seil, Ochs am Berg …) und eine Regel für die Klasse: „Wer fragt, darf mitmachen.“" }
     ],
-    ab12: { titel: "Komm, spiel mit!", aufgaben: [
+    ab12: { titel: "Komm, spiel mit!", kontext: "Zur Geschichte: Der kleine Hase darf beim Ballspiel nicht mitmachen und sitzt allein unter einem Baum. Am Ende spielen alle zusammen.", aufgaben: [
         { typ: "gesichter", text: "Male: So fühlt sich der Hase allein – und so beim Mitspielen.", gefuehle: ["traurig", "froh"], leer: true },
         { typ: "ankreuzen", text: "Ein Kind steht allein. Was machst du? Kreuze an.", nebeneinander: false,
           optionen: ["Ich frage: „Willst du mitspielen?“", "Ich lache es aus.", "Ich gehe einfach weiter.", "Ich erkläre ihm unser Spiel."] },
         { typ: "malen", text: "Male ein Spiel, bei dem alle mitmachen können.", bild: "" }
     ]},
-    ab34: { titel: "Niemand bleibt draußen", aufgaben: [
+    ab34: { titel: "Niemand bleibt draußen", kontext: "Zur Geschichte: Maya darf nicht in den „Club der Sterne“ und steht jede Pause allein am Rand. Lisa setzt sich für sie ein.", aufgaben: [
         { typ: "luecken", text: "Versetze dich in Maya.", nummern: false,
           saetze: ["Maya fühlt sich ___", "Sie denkt: „___“"] },
-        { typ: "tabelle", text: "Ausgrenzen (A) oder einladen (E)? Ordne zu.", spalten: ["Was passiert?", "A / E"],
-          zeilen: [["„Du darfst nur mitmachen, wenn du mir deine Chips gibst.“", ""], ["„Komm, du kannst in unser Team.“", ""], ["Alle drehen sich weg, als Tom kommt.", ""], ["„Wir sind schon zu viele, aber morgen bist du dabei.“", ""], ["„Mit dir spielt keiner.“", ""]] },
+        { typ: "tabelle", text: "Ausgrenzen (A) oder einladen (E)? Kreuze die richtige Spalte an.", spalten: ["Was passiert?", "A", "E"],
+          zeilen: [["„Du darfst nur mitmachen, wenn du mir deine Chips gibst.“", "", ""], ["„Komm, du kannst in unser Team.“", "", ""], ["Alle drehen sich weg, als Tom kommt.", "", ""], ["„Wir sind schon zu viele, aber morgen bist du dabei.“", "", ""], ["„Mit dir spielt keiner.“", "", ""]] },
         { typ: "luecken", text: "Schreibe zwei Einladungs-Sätze, die du in der Pause sagen kannst.", nummern: true, saetze: ["„___“", "„___“"] }
     ]}
 }),
@@ -271,7 +271,7 @@ Am Abend klingeln Selma und Deniz bei Herrn Schulze. Deniz erklärt mit roten Oh
         { typ: "luecken", text: "", nummern: false, saetze: ["Mein Dienst im Sozialtraining: ___"] },
         { typ: "malen", text: "Male, wie du deinen Dienst erledigst.", bild: "" }
     ]},
-    ab34: { titel: "Ich stehe dazu", aufgaben: [
+    ab34: { titel: "Ich stehe dazu", kontext: "Zur Geschichte: Beim Fußball schießt Deniz ein Kellerfenster kaputt, alle rennen weg. Selma überredet Deniz, es Herrn Schulze zu sagen – und geht mit.", aufgaben: [
         { typ: "luecken", text: "Was hat Selma getan? Was hätte sie noch tun können?", nummern: false,
           saetze: ["Selma hat ___", "Sie hätte auch ___"] },
         { typ: "tabelle", text: "Verantwortung übernehmen – aber wie?", spalten: ["Was ist passiert?", "Was tue ich?"],

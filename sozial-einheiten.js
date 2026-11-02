@@ -241,9 +241,9 @@ Hanna fragt: „Was könnte eine Lösung sein, mit der ihr beide zufrieden seid?
     ab34: {
         titel: "Mit Worten statt mit Fäusten",
         aufgaben: [
-            { typ: "tabelle", text: "Du-Botschaft oder Ich-Botschaft? Schreibe D oder I.",
-              spalten: ["Satz", "D / I"],
-              zeilen: [["Du bist immer so gemein!", ""], ["Ich bin traurig, weil du mich ausgelacht hast.", ""], ["Du machst alles kaputt!", ""], ["Ich ärgere mich, weil ich warten musste.", ""]] },
+            { typ: "tabelle", text: "Du-Botschaft (D) oder Ich-Botschaft (I)? Kreuze die richtige Spalte an.",
+              spalten: ["Satz", "D", "I"],
+              zeilen: [["Du bist immer so gemein!", "", ""], ["Ich bin traurig, weil du mich ausgelacht hast.", "", ""], ["Du machst alles kaputt!", "", ""], ["Ich ärgere mich, weil ich warten musste.", "", ""]] },
             { typ: "luecken", text: "Verwandle in eine Ich-Botschaft.", nummern: true,
               saetze: ["„Du lässt mich nie mitspielen!“\nIch fühle mich ___, weil ___.\nIch wünsche mir, dass ___.",
                        "„Du hast meine Zeichnung zerknittert!“\nIch fühle mich ___, weil ___.\nIch wünsche mir, dass ___."] },

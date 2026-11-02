@@ -90,8 +90,8 @@ Jamal wird still. Dann schubst er Deniz so heftig, dass der hinfällt. „Bist d
         { titel: "Grenze klar sagen", dauer: "5 Min",
           text: "Sammelt Sätze, mit denen man eine Grenze setzt – kurz, klar, ohne Beleidigung. Schreib sie an die Tafel. Beispiele:\n\n- „Stopp. Das ist nicht mehr lustig.“\n- „Über meine Familie redest du nicht.“\n- „Lass es. Ich hab keinen Bock mehr.“\n\nZwei, drei Kinder sagen ihren Satz laut vom Platz aus – mit fester Stimme, Blick nach vorn." }
     ],
-    ab34: { titel: "Wo ist meine Grenze?", aufgaben: [
-        { typ: "tabelle", text: "Trage je ein Beispiel ein.", spalten: ["Spaß", "Grenze", "Zu weit"], zeilen: [["", "", ""], ["", "", ""]] },
+    ab34: { titel: "Wo ist meine Grenze?", kontext: "Zum Fall: Jamal und Deniz machen ein Spruch-Battle. Es wird immer härter – bis Deniz über Jamals Mutter redet und Jamal ihn schubst.", aufgaben: [
+        { typ: "tabelle", text: "Schreib in jede Spalte ein Beispiel (einen Spruch oder eine Situation): Was ist noch Spaß, was ist an der Grenze, was geht zu weit?", spalten: ["Spaß", "Grenze", "Zu weit"], zeilen: [["", "", ""], ["", "", ""]] },
         { typ: "ankreuzen", text: "Woran merkst du, dass es für jemanden kein Spaß mehr ist?", optionen: ["Er lacht nicht mehr mit.", "Er wird still oder rot.", "Er geht weg.", "Er sagt „Stopp“.", "Er wird plötzlich wütend."] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Mein Satz, wenn mir jemand zu weit geht: ___", "Das mache ich, wenn er trotzdem weitermacht: ___"] },
         { typ: "schreiben", text: "Was hättest du an Jamals Stelle gemacht, statt zu schubsen?", zeilen: 3 }
@@ -156,7 +156,7 @@ Danach setzt er sich wieder hin. Er ist immer noch sauer – aber er hat niemand
           text: "Alle probieren am Platz drei Werkzeuge aus und bewerten sie danach mit Daumen:\n\n- Kasten-Atmen: 4 Sekunden ein, 4 halten, 4 aus, 4 halten.\n- Fäuste 5 Sekunden ganz fest drücken – dann loslassen.\n- Füße fest auf den Boden drücken und 5 Dinge im Raum zählen, die blau sind.\n\nAbsprache für die Gruppe: Wer eine Pause braucht, zeigt das vereinbarte Zeichen (z. B. Hand mit „T“ für Time-out)." }
     ],
     ab34: { titel: "Mein Wut-Notfallplan", aufgaben: [
-        { typ: "tabelle", text: "So fühlt sich meine Wut an:", spalten: ["Stufe", "Das merke ich in meinem Körper"], zeilen: [["leicht (1–3)", ""], ["mittel (4–6)", ""], ["stark (7–10)", ""]] },
+        { typ: "tabelle", text: "So fühlt sich meine Wut an – schreib zu jeder Stufe, was du im Körper merkst:", spalten: ["Stufe", "Das merke ich in meinem Körper"], zeilen: [["leicht (1–3)", ""], ["mittel (4–6)", ""], ["stark (7–10)", ""]] },
         { typ: "luecken", text: "Mein Notfallplan – wenn ich bei Stufe 4 bin:", nummern: true, saetze: ["Zuerst: ___", "Dann: ___", "Wenn das nicht reicht: ___"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Diese Person kann mir helfen: ___", "Mein Zeichen für „Ich brauche eine Pause“: ___"] }
     ]}
@@ -188,7 +188,7 @@ Ali merkt, wie sein Herz klopft. Er will nicht der Außenseiter sein. Er will ab
         { titel: "Ausstiegs-Sätze", dauer: "5 Min",
           text: "Gemeinsam Sätze sammeln, mit denen man aussteigt, **ohne uncool zu wirken**. Schreib sie an die Tafel:\n\n- „Nee, da hab ich keinen Bock drauf.“\n- „Lass mal, das gibt nur Ärger.“\n- „Macht ihr. Ich bin raus.“\n- Ablenken: „Kommt, wir gehen lieber Fußball spielen.“\n\nDann sagt jedes Kind seinen Lieblingssatz einmal laut – lässig, aber klar." }
     ],
-    ab34: { titel: "Ich bin raus", aufgaben: [
+    ab34: { titel: "Ich bin raus", kontext: "Zum Fall: Marvin will die Jacke vom neuen Mitschüler Paul in den Müll werfen. Drei Jungs machen mit. Ali findet das fies – aber alle schauen ihn an.", aufgaben: [
         { typ: "ankreuzen", text: "Woran erkennst du Gruppendruck?", optionen: ["„Trau dich doch!“", "„Alle machen das.“", "„Sonst bist du nicht mehr dabei.“", "„Willst du mitmachen? Du musst nicht.“", "Alle schauen dich an und warten."] },
         { typ: "luecken", text: "Ali in der Umkleide – schreib drei Möglichkeiten auf:", nummern: true, saetze: ["___", "___", "___"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Mein Ausstiegs-Satz: ___", "Das macht es mir leichter, Nein zu sagen: ___"] }
@@ -221,7 +221,7 @@ Tom will nicht mehr in die Schule. Seine Mutter geht zur Polizei. Jetzt gibt es 
         { titel: "Was tun, wenn's im Chat landet?", dauer: "6 Min",
           text: "Gemeinsam einen Plan in vier Schritten an die Tafel schreiben:\n\n- Nicht anschauen, nicht liken, nicht kommentieren.\n- Auf keinen Fall weiterleiten.\n- Einem Erwachsenen zeigen (Eltern, Lehrkraft) – das ist kein Petzen.\n- Dem betroffenen Kind schreiben: „Ich find das nicht okay. Kann ich helfen?“\n\nFrage zum Schluss: Was davon kostet am meisten Mut?" }
     ],
-    ab34: { titel: "Filmen oder helfen?", aufgaben: [
+    ab34: { titel: "Filmen oder helfen?", kontext: "Zum Fall: Jannik hält Tom am Boden fest. Lara filmt. Abends ist das Video im Klassenchat und wird weitergeleitet.", aufgaben: [
         { typ: "zuordnen", text: "Verbinde die Person mit ihrer Rolle.", links: ["Jannik", "Lara", "Wer weiterleitet", "Wer nur zuschaut"], rechts: ["macht mit", "macht es", "schaut zu", "verbreitet es"] },
         { typ: "ankreuzen", text: "Ein peinliches Video von jemandem ist im Chat. Was ist richtig?", optionen: ["weiterleiten, ist doch lustig", "einem Erwachsenen zeigen", "„😂“ drunter schreiben", "nicht kommentieren und nicht teilen", "dem Kind schreiben, dass du zu ihm hältst"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Wenn ich sehe, dass jemand gefilmt wird, mache ich: ___", "Das könnte ich Tom schreiben: ___"] }
@@ -256,7 +256,7 @@ Am nächsten Tag kommt der Spruch wieder. Nico atmet durch, schaut Yusuf an und 
     ab34: { titel: "Meine Fernbedienung gehört mir", aufgaben: [
         { typ: "ankreuzen", text: "Was will jemand, der dich provoziert? Kreuze an, was oft stimmt.", optionen: ["Er will, dass du ausrastest.", "Er will, dass andere lachen.", "Er will dir helfen.", "Er will, dass DU Ärger bekommst.", "Er will sich stark fühlen."] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Mein Knopf (ein Spruch, der mich schnell wütend macht): ___", "Meine Cool-Antwort darauf: ___", "Danach mache ich: ___"] },
-        { typ: "tabelle", text: "Was passiert dann?", spalten: ["Wenn ich ausraste …", "Wenn ich cool bleibe …"], zeilen: [["", ""], ["", ""]] }
+        { typ: "tabelle", text: "Was passiert dann? Schreib in jede Spalte, was danach passieren kann.", spalten: ["Wenn ich ausraste …", "Wenn ich cool bleibe …"], zeilen: [["", ""], ["", ""]] }
     ]}
 }),
 
@@ -285,7 +285,7 @@ Zwei Tage später geht Benni allein zur Lehrerin. „Ich hab das Mäppchen gewor
         { titel: "Wiedergutmachen – aber wie?", dauer: "6 Min",
           text: "Sammelt zu drei Fällen konkrete Wiedergutmachungen (nicht nur „Sorry“): Jemandem das Pausenbrot weggenommen · Jemanden vor allen ausgelacht · Jemandem die Jacke dreckig gemacht. Regel: Die Wiedergutmachung soll zur Tat passen und dem anderen wirklich etwas bringen." }
     ],
-    ab34: { titel: "Verantwortung statt Ausrede", aufgaben: [
+    ab34: { titel: "Verantwortung statt Ausrede", kontext: "Zum Fall: Benni wirft aus Spaß ein Mäppchen, ein Tablet geht kaputt. Erst schieben Benni und Kevin die Schuld hin und her – später übernimmt Benni die Verantwortung.", aufgaben: [
         { typ: "tabelle", text: "Schreib zu jeder Ausrede einen Satz, der Verantwortung übernimmt.", spalten: ["Ausrede", "Verantwortung"], zeilen: [["„Der hat angefangen.“", ""], ["„War nur Spaß.“", ""], ["„Ich war's nicht!“", ""]] },
         { typ: "luecken", text: "Mein Wiedergutmachungs-Plan (für etwas, das wirklich passiert ist – oder ausgedacht):", nummern: true, saetze: ["Das ist passiert: ___", "Das sage ich: ___", "Das mache ich wieder gut: ___"] }
     ]}
@@ -383,7 +383,7 @@ Was keiner weiß: Jana hat Ärger zu Hause und fühlt sich seit Wochen mies. Wen
         { titel: "Lästern stoppen", dauer: "6 Min",
           text: "Sätze sammeln, die Lästern stoppen, ohne selbst fies zu werden. Dann reihum vom Platz aus laut sagen:\n\n- „Lass mal, die ist doch gar nicht da.“\n- „Ich find das nicht witzig.“\n- „Was hat sie dir getan?“\n- Thema wechseln: „Habt ihr gestern das Spiel gesehen?“\n- Privat schreiben wie Kim." }
     ],
-    ab34: { titel: "Lästern stoppen", aufgaben: [
+    ab34: { titel: "Lästern stoppen", kontext: "Zum Fall: Jana lästert über Saras Schuhe – erst in der Pause, dann im Gruppenchat. Sara zieht die Schuhe nicht mehr an.", aufgaben: [
         { typ: "ankreuzen", text: "Warum lästern Menschen? Kreuze an, was du für wahr hältst.", optionen: ["Sie wollen dazugehören.", "Sie fühlen sich selbst schlecht.", "Sie sind neidisch.", "Es ist ihnen langweilig.", "Sie haben Angst, sonst selbst dran zu sein."] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Was Sara jetzt helfen würde: ___", "Mein Satz, um Lästern zu stoppen: ___", "Das schreibe ich, wenn im Chat gelästert wird: ___"] },
         { typ: "schreiben", text: "Schreib Sara eine kurze Nachricht, die ihr guttut.", zeilen: 4 }
@@ -416,7 +416,7 @@ Sein großer Cousin erzählt ihm später: „Kenn ich. Ich hab jetzt eine Regel:
         { titel: "Anti-Rage-Plan", dauer: "7 Min",
           text: "Gemeinsam Strategien sammeln und abstimmen (Daumen), welche am besten klingen:\n\n- Nach zwei verlorenen Runden Pause machen.\n- Pöbler stummschalten oder melden.\n- Controller weglegen, bevor man ihn wirft.\n- Kurz aufstehen, Wasser trinken, ans Fenster.\n- Feste Spielzeit mit den Eltern abmachen – Wecker stellen.\n- Nicht mehr direkt vor dem Schlafen zocken." }
     ],
-    ab34: { titel: "Mein Anti-Rage-Plan", aufgaben: [
+    ab34: { titel: "Mein Anti-Rage-Plan", kontext: "Zum Fall: Luca verliert beim Zocken, wird im Chat beleidigt, brüllt und macht den Controller kaputt. Am nächsten Tag ist er immer noch wütend.", aufgaben: [
         { typ: "luecken", text: "Ich als Spieler:", nummern: false, saetze: ["Ich spiele am liebsten: ___", "Ich werde sauer, wenn ___", "Das merke ich dann in meinem Körper: ___"] },
         { typ: "ankreuzen", text: "Das will ich ausprobieren:", optionen: ["Pause nach zwei verlorenen Runden", "Pöbler stummschalten", "Controller weglegen", "aufstehen und trinken", "Wecker für die Spielzeit", "nicht vor dem Schlafen zocken"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Meine wichtigste Regel: ___"] },

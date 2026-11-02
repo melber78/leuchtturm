@@ -140,7 +140,7 @@ Jonas hat nur fünf Fragen gebraucht. Sein Trick: Erst große Gruppen ausschlie�
         { typ: "malen", text: "Male dein Lieblingstier.", bild: "" }
     ]},
     ab34: { titel: "Tier-Detektive", aufgaben: [
-        { typ: "tabelle", text: "Ja oder nein? Trage ein.", spalten: ["Frage", "Igel", "Pinguin", "Krokodil"],
+        { typ: "tabelle", text: "Schreib in jedes Feld ja oder nein.", spalten: ["Frage", "Igel", "Pinguin", "Krokodil"],
           zeilen: [["Legt es Eier?", "", "", ""], ["Hat es Federn?", "", "", ""], ["Lebt es auch im Wasser?", "", "", ""], ["Hält es Winterschlaf?", "", "", ""]] },
         { typ: "luecken", text: "Schreibe ein eigenes Tier-Rätsel:", nummern: false, saetze: ["Ich habe ___", "Ich lebe ___", "Ich kann ___", "Wer bin ich? (Lösung: ___)"] }
     ]}
