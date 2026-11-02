@@ -72,6 +72,7 @@ const STOPP_ROT = `<svg viewBox="0 0 120 172" xmlns="http://www.w3.org/2000/svg"
 const BRILLE = `<svg viewBox="0 0 220 90" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#222" stroke-width="2.6" stroke-linejoin="round"><rect x="14" y="16" width="80" height="58" rx="24"/><rect x="126" y="16" width="80" height="58" rx="24"/><rect x="28" y="28" width="52" height="34" rx="14" stroke-dasharray="5 4"/><rect x="140" y="28" width="52" height="34" rx="14" stroke-dasharray="5 4"/><path d="M94 38 Q110 26 126 38"/><path d="M14 34 L2 30 M206 34 L218 30"/><text x="110" y="88" text-anchor="middle" font-family="Arial" font-size="9" stroke="none" fill="#777">gestrichelt = Gucklöcher ausschneiden</text></svg>`;
 const PIZZA = `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#222" stroke-width="2.4"><circle cx="60" cy="60" r="56"/><circle cx="60" cy="60" r="46" stroke-dasharray="3 4"/><circle cx="42" cy="44" r="8"/><circle cx="76" cy="40" r="7"/><circle cx="62" cy="70" r="8"/><circle cx="38" cy="76" r="6"/><circle cx="84" cy="74" r="7"/><path d="M50 58 l6 3 M80 58 l-4 5 M58 32 l5 4"/></svg>`;
 const PFLASTER = `<svg viewBox="0 0 200 76" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="194" height="70" rx="34" fill="#f6d7b9" stroke="#b7865a" stroke-width="2.4"/><rect x="66" y="12" width="68" height="52" rx="10" fill="#fff4e8" stroke="#b7865a" stroke-width="2"/>${[0,1,2,3].map(r => [0,1,2,3,4,5].map(c => `<circle cx="${18 + c * 7 + (c > 2 ? 108 : 0) - (c > 2 ? 21 : 0)}" cy="${22 + r * 11}" r="1.6" fill="#b7865a"/>`).join("")).join("")}</svg>`;
+const GLAS = `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg"><rect x="52" y="8" width="96" height="22" rx="6" fill="#c9d6e3" stroke="#16324a" stroke-width="3"/><path d="M60 30 Q40 46 40 70 L40 210 Q40 232 62 232 L138 232 Q160 232 160 210 L160 70 Q160 46 140 30 Z" fill="#eef6fb" stroke="#16324a" stroke-width="4"/>${[[70,205],[100,205],[130,205],[70,175],[100,175],[130,175],[70,145],[100,145],[130,145],[100,115]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="13" fill="white" stroke="#3d7ea6" stroke-width="2.5" stroke-dasharray="4 3"/><text x="${x}" y="${y+5}" text-anchor="middle" font-family="Arial" font-weight="700" font-size="13" fill="#9aa6ab">${i+1}</text>`).join("")}<path d="M52 60 L52 200" stroke="white" stroke-width="6" stroke-linecap="round" opacity=".8"/></svg>`;
 const KASTEN = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" font-family="Arial" font-weight="700"><rect x="35" y="35" width="130" height="130" rx="8" fill="#e7f1fb" stroke="#3d7ea6" stroke-width="5"/><g fill="#16324a" font-size="13" text-anchor="middle"><text x="100" y="26">1 · einatmen (4)</text><text x="100" y="186">3 · ausatmen (4)</text><text x="186" y="104" transform="rotate(90 186 100)">2 · halten (4)</text><text x="14" y="104" transform="rotate(-90 14 100)">4 · halten (4)</text></g><g fill="#f2a93b"><polygon points="150,27 162,35 150,43"/><polygon points="173,150 165,162 157,150"/><polygon points="50,173 38,165 50,157"/><polygon points="27,50 35,38 43,50"/></g><text x="100" y="108" text-anchor="middle" font-size="16" fill="#3d7ea6">Kasten-Atmen</text></svg>`;
 
 const FARBE = { froh: "#ffe08a", traurig: "#a9cff0", wuetend: "#f5a3a3", angst: "#d5c4f0", ruhig: "#bfe6c3", ueberrascht: "#ffd1a3", stolz: "#f9d56e", muede: "#d8dde0", gelangweilt: "#e3e0d7", neutral: "#eeeeee" };
@@ -85,17 +86,45 @@ const G = (g, extra) => Object.assign({ gesicht: g, text: g }, extra || {});
 const leer = (n, vorlage) => Array.from({ length: n }, () => Object.assign({}, vorlage));
 const B = {
     /* --- Für jede Stunde --- */
-    "gefuehlsbarometer": { titel: "Gefühlsbarometer (5 Gesichter)", gruppe: "Für jede Stunde", art: "karten", proSeite: 2,
+    "gefuehlsbarometer": { titel: "Gefühlsbarometer (5 Gesichter)", gruppe: "Rituale", art: "karten", proSeite: 2,
         items: ["froh", "traurig", "wütend", "ängstlich", "ruhig"].map(g => G(g)), hinweis: "Farbig drucken und an Tafel oder Plakat hängen; daneben die Namensklammern." },
-    "gespraechsregeln": { titel: "Plakat: Gesprächsregeln", gruppe: "Für jede Stunde", art: "plakat",
+    "gespraechsregeln": { titel: "Plakat: Gesprächsregeln", gruppe: "Rituale", art: "plakat",
         punkte: [{ emoji: "🪨", text: "Wer den Redestein hat, spricht." }, { emoji: "👂", text: "Wir hören zu und lachen niemanden aus." }, { emoji: "✋", text: "Ich darf „Ich passe“ sagen." }, { emoji: "🤫", text: "Was hier gesagt wird, bleibt hier." }] },
-    "namenszettel": { titel: "Namenszettel (8 pro Seite)", gruppe: "Für jede Stunde", art: "karten", proSeite: 8,
+    "namenszettel": { titel: "Namenszettel (8 pro Seite)", gruppe: "Rituale", art: "karten", proSeite: 8,
         items: leer(8, { emoji: "🙂", text: "Name:", linien: 1 }), hinweis: "Die Namen schreibst du von Hand – sie werden nirgends gespeichert." },
+    "ablauf-karten": { titel: "Stundenablauf: Bildkarten für die Tafel", gruppe: "Rituale", art: "karten", proSeite: 6,
+        items: [{ emoji: "👋", text: "Ankommen", klein: "Hallo & Gefühlsbarometer" }, { emoji: "📖", text: "Geschichte", klein: "zuhören & reden" }, { emoji: "🎲", text: "Spiel & Übung", klein: "mitmachen" },
+            { emoji: "✏️", text: "Arbeitsblatt", klein: "jeder an seinem Platz" }, { emoji: "👏", text: "Abschluss", klein: "Das nehme ich mit" }, { emoji: "📍", text: "Wir sind hier!", klein: "Zeiger zum Umhängen" }],
+        hinweis: "Mit Magneten untereinander an die Tafel – der Zeiger wandert mit. Kinder sehen jederzeit, wie lange es noch geht." },
+    "ruhezeichen": { titel: "Ruhezeichen-Karte", gruppe: "Rituale", art: "karten", proSeite: 1,
+        items: [{ emoji: "✋", text: "Hand hoch = leise", klein: "Ich sehe die Hand · ich hebe auch meine Hand · Mund zu · Augen nach vorn" }],
+        hinweis: "Ins Blickfeld hängen. Du hebst die Hand und wartest – nicht reinrufen." },
+    "redekarte": { titel: "Redekarte (statt Redestein)", gruppe: "Rituale", art: "karten", proSeite: 2,
+        items: leer(2, { emoji: "🪨", text: "Ich bin dran!", klein: "Wer die Karte hat, spricht. Die anderen hören zu." }),
+        hinweis: "Laminiert wird sie zum Redestein-Ersatz – wird von Platz zu Platz weitergegeben." },
+    "begruessung-plakat": { titel: "Plakat: So begrüßen wir uns", gruppe: "Rituale", art: "plakat",
+        punkte: [{ emoji: "🪨", text: "Der Redestein kommt zu mir." }, { emoji: "🙋", text: "Ich stehe kurz auf: „Hallo, ich bin da!“" }, { emoji: "😊", text: "Kl. 3/4: „… und heute freue ich mich auf …“" }, { emoji: "👋", text: "Alle anderen winken zurück." }] },
+    "klammer-etiketten": { titel: "Namensschilder für die Barometer-Klammern", gruppe: "Rituale", art: "karten", proSeite: 12,
+        items: leer(12, { emoji: "📎", linien: 1 }), hinweis: "Ausschneiden, Namen von Hand eintragen und auf Wäscheklammern kleben – nichts wird gespeichert." },
+    "barometer-plakat": { titel: "Plakat: Wie geht es mir heute?", gruppe: "Rituale", art: "plakat",
+        punkte: [{ emoji: "😄", text: "froh", symbolfeld: true }, { emoji: "😢", text: "traurig", symbolfeld: true }, { emoji: "😠", text: "wütend", symbolfeld: true }, { emoji: "😨", text: "ängstlich", symbolfeld: true }, { emoji: "😌", text: "ruhig", symbolfeld: true }],
+        fuss: "Steck deine Klammer dahin, wo du gerade bist. Du musst nichts erklären." },
+    "abschluss-saetze": { titel: "Satzstreifen für die Abschlussrunde", gruppe: "Rituale", art: "karten", proSeite: 6,
+        items: [{ emoji: "💡", text: "Heute habe ich gelernt …" }, { emoji: "😊", text: "Mir hat gefallen …" }, { emoji: "🧗", text: "Schwierig war …" }, { emoji: "🎒", text: "Ich nehme mit …" }, { emoji: "⭐", text: "Ich bin stolz, weil …" }, { emoji: "🔜", text: "Nächstes Mal will ich …" }],
+        hinweis: "Kl. 3/4: Ein Kind zieht verdeckt einen Satzanfang und beendet ihn." },
+    "abschluss-gesichter": { titel: "Abschluss-Karten: Wie war die Stunde?", gruppe: "Rituale", art: "karten", proSeite: 6,
+        items: [G("froh", { text: "super" }), G("neutral", { text: "geht so" }), G("traurig", { text: "schwierig" }), G("froh", { text: "super" }), G("neutral", { text: "geht so" }), G("traurig", { text: "schwierig" })],
+        hinweis: "Für Kl. 1/2 statt Worten – Karte hochhalten. Zwei Sätze pro Seite." },
+    "murmelglas": { titel: "Murmelglas zum Ausmalen", gruppe: "Rituale", art: "karten", proSeite: 1,
+        items: [{ svg: GLAS, text: "Unser Murmelglas", klein: "Für jede gelungene Stunde malen wir eine Murmel aus. Bei 10 Murmeln: Gruppenspiel nach Wahl!" }],
+        hinweis: "Falls kein echtes Glas da ist – an die Tür hängen." },
+    "gutschein-spiel": { titel: "Gutschein: Gruppenspiel nach Wahl", gruppe: "Rituale", art: "karten", proSeite: 4,
+        items: leer(4, { emoji: "🎉", text: "Gutschein", klein: "Unser Murmelglas ist voll! Wir dürfen ein Gruppenspiel aussuchen.", linien: 1 }) },
     "gefuehlskarten-gross": { titel: "Gefühlskarten groß (4 Grundgefühle)", gruppe: "Gefühle", art: "karten", proSeite: 1,
         items: ["froh", "traurig", "wütend", "ängstlich"].map(g => G(g)), hinweis: "Eine Karte pro Seite – zum Hochhalten und für die Tafel." },
     "gefuehlskarten-klein": { titel: "Gefühlskarten klein (8 Gefühle)", gruppe: "Gefühle", art: "karten", proSeite: 8,
         items: ["froh", "traurig", "wütend", "ängstlich", "ruhig", "überrascht", "stolz", "müde"].map(g => G(g)), hinweis: "Für Pantomime und Gefühlsdetektiv – verdeckt ziehen." },
-    "rot-gruen": { titel: "Rote und grüne Karten", gruppe: "Für jede Stunde", art: "karten", proSeite: 4,
+    "rot-gruen": { titel: "Rote und grüne Karten", gruppe: "Rituale", art: "karten", proSeite: 4,
         items: [{ farbe: "#e74c3c", textfarbe: "#fff", emoji: "✋", text: "Rot" }, { farbe: "#2e8b57", textfarbe: "#fff", emoji: "👍", text: "Grün" }, { farbe: "#e74c3c", textfarbe: "#fff", emoji: "✋", text: "Rot" }, { farbe: "#2e8b57", textfarbe: "#fff", emoji: "👍", text: "Grün" }],
         hinweis: "Farbig drucken (oder schwarz-weiß auf rotes/grünes Papier). Pro Seite zwei Kinder – für 9 Kinder 5 Seiten." },
 
@@ -248,7 +277,17 @@ const ZUORDNUNG = {
     "v-hilfsbereitschaft": ["helfer-auftrag", "namenszettel"],
     "v-gerecht": ["pflaster"]
 };
-const ALLGEMEIN = ["gefuehlsbarometer", "gespraechsregeln", "namenszettel", "rot-gruen"];
+const ALLGEMEIN = ["ablauf-karten", "ruhezeichen", "redekarte", "begruessung-plakat", "namenszettel", "gefuehlsbarometer", "barometer-plakat", "klammer-etiketten",
+    "gespraechsregeln", "rot-gruen", "abschluss-saetze", "abschluss-gesichter", "murmelglas", "gutschein-spiel"];
+/* Material je Ritual (Reihenfolge wie in der Stunde) */
+const RITUAL_MATERIAL = [
+    { ritual: "Stundenablauf & Ruhezeichen", text: "Hängt die ganze Stunde sichtbar – die Kinder wissen immer, wo ihr seid.", ids: ["ablauf-karten", "ruhezeichen"] },
+    { ritual: "Begrüßung", text: "Redestein oder Redekarte, Ablauf als Plakat.", ids: ["redekarte", "begruessung-plakat", "namenszettel"] },
+    { ritual: "Gefühlsbarometer", text: "Gesichter oder Plakat an die Tafel, dazu eine Klammer pro Kind.", ids: ["gefuehlsbarometer", "barometer-plakat", "klammer-etiketten"] },
+    { ritual: "Gesprächsregeln", text: "Hängen dauerhaft im Raum.", ids: ["gespraechsregeln", "rot-gruen"] },
+    { ritual: "Abschluss", text: "Satzanfänge für Kl. 3/4, Gesichter für Kl. 1/2.", ids: ["abschluss-saetze", "abschluss-gesichter"] },
+    { ritual: "Belohnung", text: "Murmelglas und Gutschein für das Gruppenspiel.", ids: ["murmelglas", "gutschein-spiel"] },
+];
 
 /* ---------------- Material einer Stunde ---------------- */
 function aufzaehlung(text){ return String(text || "").split("\n").filter(z => /^\s*[-•]\s+/.test(z)).map(z => z.replace(/^\s*[-•]\s+/, "").trim()); }
@@ -386,5 +425,5 @@ async function drucken(liste, titel){
 }
 function seitenZahl(m){ return m.art === "karten" ? Math.max(1, Math.ceil((m.items || []).length / (RASTER[m.proSeite] ? m.proSeite : 8))) : 1; }
 
-window.sozialMaterial = { bibliothek: B, zuordnung: ZUORDNUNG, allgemein: ALLGEMEIN, fuer: materialFuer, bibIds, vorschau, drucken, seitenZahl, seitenBauen, einpassen, cssLaden };
+window.sozialMaterial = { bibliothek: B, zuordnung: ZUORDNUNG, allgemein: ALLGEMEIN, rituale: RITUAL_MATERIAL, fuer: materialFuer, bibIds, vorschau, drucken, seitenZahl, seitenBauen, einpassen, cssLaden };
 })();

@@ -25,23 +25,35 @@ window.SOZIAL_KATEGORIEN = [
 ];
 
 window.SOZIAL_RITUALE_STANDARD =
-`### Begrüßung (1 Min)
+`### Vor der Stunde
+Stundenablauf-Karten untereinander an die Tafel, der Zeiger steht bei „Ankommen“. Gefühlsbarometer und Gesprächsregeln hängen, Redestein (oder Redekarte) liegt bereit.
+*Material: Stundenablauf-Bildkarten, Ruhezeichen-Karte*
+
+### Ruhezeichen
+Du hebst die Hand und wartest. Wer es sieht, hebt auch die Hand und wird leise – bis alle still sind. Nicht reinrufen, nicht ermahnen: einfach warten. Gilt die ganze Stunde.
+
+### Begrüßung (1 Min)
 Alle sitzen an ihrem Platz. Du gehst mit dem Redestein durch die Reihe; das Kind, bei dem er liegt, steht kurz auf und sagt „Hallo, ich bin da!“ – die anderen winken zurück. Kl. 3/4 ergänzen: „… und heute freue ich mich auf …“
+*Material: Redekarte, Plakat „So begrüßen wir uns“*
 
 ### Gefühlsbarometer (4 Min)
-Ein Plakat mit vier Feldern (froh – traurig – wütend – ängstlich), dazu in der Mitte „ruhig“. Die Kinder kommen nacheinander nach vorn und stecken ihre Namensklammer an ein Feld. Kl. 1/2 dürfen nur zeigen, Kl. 3/4 sagen einen Satz dazu. Niemand muss erklären.
+Ein Plakat mit fünf Feldern (froh – traurig – wütend – ängstlich – ruhig). Die Kinder kommen nacheinander nach vorn und stecken ihre Namensklammer an ein Feld. Kl. 1/2 dürfen nur zeigen, Kl. 3/4 sagen einen Satz dazu. Niemand muss erklären.
+*Material: Gefühlsbarometer oder Plakat „Wie geht es mir heute?“, Namensschilder für die Klammern*
 
 ### Gesprächsregeln (hängen sichtbar)
 1. Wer den Redestein hat, spricht.
 2. Wir hören zu und lachen niemanden aus.
 3. Ich darf „Ich passe“ sagen.
 4. Was hier gesagt wird, bleibt hier.
+*Material: Plakat „Gesprächsregeln“, rote und grüne Karten*
 
 ### Abschluss (5 Min)
-Jedes Kind nennt einen Satz: „Heute habe ich gelernt …“ (Kl. 1/2 auch per Daumen hoch/mittel/runter). Danach die **Applauswelle**: Du zeigst nacheinander auf jeden Platz, das Kind klatscht einmal – so läuft eine Welle durch den Raum, zum Schluss klatschen alle gemeinsam.
+Jedes Kind nennt einen Satz: „Heute habe ich gelernt …“ (Kl. 1/2 halten stattdessen eine Gesichter-Karte hoch: super – geht so – schwierig). Danach die **Applauswelle**: Du zeigst nacheinander auf jeden Platz, das Kind klatscht einmal – so läuft eine Welle durch den Raum, zum Schluss klatschen alle gemeinsam.
+*Material: Satzstreifen für die Abschlussrunde, Abschluss-Gesichter*
 
 ### Belohnung (optional)
-Ein Sammelglas für die Gruppe. Für jede gelungene Stunde kommt eine Murmel hinein; bei 10 Murmeln gibt es ein Gruppenspiel nach Wahl.`;
+Ein Sammelglas für die Gruppe. Für jede gelungene Stunde kommt eine Murmel hinein (oder wird auf dem Plakat ausgemalt); bei 10 Murmeln gibt es ein Gruppenspiel nach Wahl.
+*Material: Murmelglas zum Ausmalen, Gutschein*`;
 
 /* Ablauf, mit dem jede neue Stunde startet */
 window.SOZIAL_VERLAUF_STANDARD = [

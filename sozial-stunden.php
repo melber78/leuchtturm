@@ -150,6 +150,8 @@ table.verlauf td:nth-child(2){ font-weight:800; }
 @media (max-width:800px){ .ed-zeile{ grid-template-columns:1fr 1fr; } }
 .ed-zeile textarea{ min-height:42px; }
 .ed-block{ border:2px solid var(--linie); border-radius:14px; padding:12px 14px; margin-bottom:12px; background:#fcfdfc; }
+.rit-gruppe{ border-top:2px solid var(--linie); padding-top:14px; margin-top:14px; }
+.rit-gruppe h3{ margin:0 0 2px; }
 .ed-block-kopf{ display:flex; gap:8px; align-items:center; margin-bottom:6px; flex-wrap:wrap; }
 .ed-block-kopf .nr{ width:30px; height:30px; border-radius:50%; background:var(--meer); color:white; display:flex; align-items:center; justify-content:center; font-weight:900; flex:0 0 auto; }
 .ed-block-kopf select{ width:auto; flex:0 1 200px; }
@@ -767,7 +769,10 @@ function lehrerHtml(e){
 async function drucken(e, was){
     const ziel = document.getElementById("druck");
     ziel.innerHTML = "";
-    if (was === "rituale") {
+    if (was === "regie12" || was === "regie34") {
+        const st = was.slice(5);
+        ziel.innerHTML = `<div class="lehrer-druck"><div class="ld-kopf"><div class="ld-meta">${esc(window.BEREICH.name)} · ${esc(e.kategorie)} · ${esc(e.dauer || 40)} Minuten · Klasse ${st === "12" ? "1/2" : "3/4"}</div><h1>${esc(e.titel)} – Schritt für Schritt</h1></div>${window.sozialRegie.bauen(e, st)}</div>`;
+    } else if (was === "rituale") {
         ziel.innerHTML = `<div class="lehrer-druck"><div class="ld-kopf"><div class="ld-meta">Sozialtraining · gilt für jede Stunde</div><h1>Feste Rituale</h1></div><div class="md">${md(rituale())}</div></div>`;
     } else {
         if (was === "lehrer" || was === "alles") ziel.insertAdjacentHTML("beforeend", lehrerHtml(e));
@@ -781,7 +786,7 @@ async function drucken(e, was){
         if (voll.length && !confirm("Ein Arbeitsblatt ist zu voll für eine Seite und wird unten abgeschnitten. Trotzdem drucken?")) { ziel.innerHTML = ""; return; }
     }
     const titel = document.title;
-    document.title = (e ? e.titel : "Rituale") + ({ ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 2", ab34: " – AB Kl. 3-4" }[was] || "");
+    document.title = (e ? e.titel : "Rituale") + ({ regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 2", ab34: " – AB Kl. 3-4" }[was] || "");
     window.addEventListener("afterprint", () => { ziel.innerHTML = ""; document.title = titel; }, { once: true });
     setTimeout(() => window.print(), 60);
 }
@@ -967,6 +972,8 @@ function zeigeStunde(id){
         <div class="karte"><h2><i class="fa-solid fa-print"></i> Drucken</h2>
             <div class="knopfleiste">
                 <button class="btn blau" data-druck="lehrer"><i class="fa-solid fa-chalkboard-user"></i> Stundenvorbereitung</button>
+                ${window.sozialRegie ? `<button class="btn blau" data-druck="regie12"><i class="fa-solid fa-list-ol"></i> Ablauf Schritt für Schritt Kl. 1/2</button>
+                <button class="btn blau" data-druck="regie34"><i class="fa-solid fa-list-ol"></i> Ablauf Schritt für Schritt Kl. 3/4</button>` : ""}
                 <button class="btn blau" data-druck="ab1"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 1</button>
                 <button class="btn blau" data-druck="ab2"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 2</button>
                 <button class="btn blau" data-druck="ab34"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 3/4</button>
@@ -996,7 +1003,10 @@ function zeigeStunde(id){
             <h3>Material</h3>${materialListe(e.material).replace("<ul>", '<ul class="material-liste">')}
         </div>
 
-        <div class="karte"><h2>Stundenverlauf (${esc(e.dauer || 40)} Min)</h2><div style="overflow-x:auto">${verlaufTabelle(e, "verlauf")}</div></div>
+        <div class="karte"><div class="detail-kopf" style="margin:0 0 12px"><div class="titel"><h2 style="margin:0">Stundenverlauf (${esc(e.dauer || 40)} Min)</h2>
+            ${window.sozialRegie ? `<p class="ed-hilfe" style="margin:4px 0 0">„Schritt für Schritt“ erklärt dir jede Phase: was du tust, was du sagst und worauf du achtest.</p>` : ""}</div>
+            ${window.sozialRegie ? `<div class="knopfleiste" id="verlaufWahl"><button class="btn nacht" data-va="tabelle">Überblick</button><button class="btn" data-va="12"><i class="fa-solid fa-list-ol"></i> Schritt für Schritt Kl. 1/2</button><button class="btn" data-va="34"><i class="fa-solid fa-list-ol"></i> Schritt für Schritt Kl. 3/4</button></div>` : ""}</div>
+            <div id="verlaufInhalt" style="overflow-x:auto">${verlaufTabelle(e, "verlauf")}</div></div>
 
         <div class="karte"><h2>Lerntexte</h2><div class="zwei">
             <div class="lerntext"><div class="stufe-label">Klasse 1/2</div><h3>${esc(e.lerntext12?.titel || "–")}</h3><div class="md">${md(e.lerntext12?.text)}</div></div>
@@ -1017,6 +1027,18 @@ function zeigeStunde(id){
     vorschauZeigen(document.getElementById("v2"), e, "2");
     vorschauZeigen(document.getElementById("v34"), e, "34");
     inhalt.querySelectorAll("[data-druck]").forEach(b => b.addEventListener("click", () => drucken(e, b.dataset.druck)));
+    const verlaufWahl = document.getElementById("verlaufWahl");
+    if (verlaufWahl) {
+        const zeigen = art => {
+            verlaufWahl.querySelectorAll("[data-va]").forEach(b => b.classList.toggle("nacht", b.dataset.va === art));
+            document.getElementById("verlaufInhalt").innerHTML = art === "tabelle" ? verlaufTabelle(e, "verlauf") : window.sozialRegie.bauen(e, art);
+            try { localStorage.setItem("sozialVerlaufAnsicht", art); } catch (err) {}
+        };
+        verlaufWahl.querySelectorAll("[data-va]").forEach(b => b.addEventListener("click", () => zeigen(b.dataset.va)));
+        let gemerkt = "tabelle";
+        try { gemerkt = localStorage.getItem("sozialVerlaufAnsicht") || "tabelle"; } catch (err) {}
+        if (gemerkt !== "tabelle") zeigen(gemerkt);
+    }
     if (window.sozialMaterial) {
         window.sozialMaterial.cssLaden();
         const mats = window.sozialMaterial.fuer(e);
@@ -1421,6 +1443,7 @@ function materialBibliothekZeigen(bib){
 function rituale(){ return typeof DATEN.rituale === "string" && DATEN.rituale.trim() ? DATEN.rituale : (window.SOZIAL_RITUALE_STANDARD || ""); }
 function zeigeRituale(bearbeiten = false){
     reiterSetzen("rituale");
+    const SM = window.sozialMaterial || {};
     if (!bearbeiten && window.BEREICH.key === "vertretung") {
         inhalt.innerHTML = window.sozialMaterial ? `<div class="karte"><h2><i class="fa-solid fa-box-archive"></i> Material-Bibliothek</h2><p class="ed-hilfe" style="margin-top:0">Alle Vorlagen zum Ausdrucken. Thema aufklappen, um die Vorschau zu sehen.</p><div id="ritBib"></div></div>` : "";
         if (window.sozialMaterial) materialBibliothekZeigen(document.getElementById("ritBib"));
@@ -1432,11 +1455,15 @@ function zeigeRituale(bearbeiten = false){
             <div class="knopfleiste"><button class="btn nacht" id="ritBearb"><i class="fa-solid fa-pen"></i> Bearbeiten</button>
             <button class="btn blau" id="ritDruck"><i class="fa-solid fa-print"></i> Drucken</button></div></div>
             <div class="md" style="margin-top:16px">${md(rituale())}</div></div>
-            ${window.sozialMaterial ? `<div class="karte"><h2><i class="fa-solid fa-scissors"></i> Material für jede Stunde</h2><div class="m-uebersicht" id="ritMaterial"></div></div>
+            ${window.sozialMaterial ? `<div class="karte"><div class="detail-kopf" style="margin:0 0 6px"><div class="titel"><h2 style="margin:0"><i class="fa-solid fa-scissors"></i> Material für die Rituale</h2>
+                <p class="ed-hilfe" style="margin:4px 0 0">Einmal drucken (am besten laminieren) – hält das ganze Schuljahr.</p></div>
+                <div class="knopfleiste"><button class="btn gold" id="ritAlles"><i class="fa-solid fa-print"></i> Ritual-Set komplett drucken</button></div></div>
+                ${(SM.rituale || []).map((g, k) => `<div class="rit-gruppe"><h3>${esc(g.ritual)}</h3><p class="ed-hilfe" style="margin:0 0 10px">${esc(g.text)}</p><div class="m-uebersicht" id="ritMat${k}"></div></div>`).join("")}</div>
             <div class="karte"><h2><i class="fa-solid fa-box-archive"></i> Ganze Material-Bibliothek</h2><p class="ed-hilfe" style="margin-top:0">Alle Vorlagen zum Ausdrucken – auch für eigene Stunden. Thema aufklappen, um die Vorschau zu sehen.</p><div id="ritBib"></div></div>` : ""}`;
         document.getElementById("ritBearb").onclick = () => zeigeRituale(true);
         if (window.sozialMaterial) {
-            materialEintraege(SM.allgemein, document.getElementById("ritMaterial"));
+            (SM.rituale || []).forEach((g, k) => materialEintraege(g.ids, document.getElementById("ritMat" + k)));
+            document.getElementById("ritAlles").onclick = () => SM.drucken(SM.allgemein.map(id => Object.assign({ id }, SM.bibliothek[id])), "Ritual-Set Sozialtraining");
             materialBibliothekZeigen(document.getElementById("ritBib"));
         }
         document.getElementById("ritDruck").onclick = () => drucken(null, "rituale");
@@ -1460,7 +1487,7 @@ function zeigeRituale(bearbeiten = false){
 
 route();
 </script>
-<?php foreach (["sozial-medien.js", "sozial-praesentation.js", "sozial-material.js"] as $zusatz): if (file_exists(__DIR__ . "/" . $zusatz)): ?>
+<?php foreach (["sozial-medien.js", "sozial-praesentation.js", "sozial-material.js", "sozial-regie.js"] as $zusatz): if (file_exists(__DIR__ . "/" . $zusatz)): ?>
 <script src="<?= $zusatz ?>?v=<?= @filemtime(__DIR__ . "/" . $zusatz) ?: 1 ?>"></script>
 <?php endif; endforeach; ?>
 <script>
