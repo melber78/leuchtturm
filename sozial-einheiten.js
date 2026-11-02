@@ -221,7 +221,7 @@ Hanna fragt: „Was könnte eine Lösung sein, mit der ihr beide zufrieden seid?
               optionen: ["Ich haue zurück.", "Ich sage laut: „Stopp! Das will ich nicht!“", "Ich schreie ein böses Wort.", "Ich hole Hilfe bei einem Erwachsenen."] },
             { typ: "luecken", text: "Wer kann mir helfen? Schreibe oder male.", nummern: false,
               saetze: ["In der Schule hilft mir: ___", "Zu Hause hilft mir: ___"] },
-            { typ: "zuordnen", text: "Was passiert dann? Verbinde.",
+            { typ: "zuordnen", nur: "2", text: "Was passiert dann? Verbinde.",
               links: ["Ich sage Stopp.", "Ich hole Hilfe.", "Wir finden eine Lösung."],
               rechts: ["Wir vertragen uns.", "Der andere hört auf.", "Ein Erwachsener kommt."] }
         ]
@@ -309,7 +309,7 @@ Ida schweigt kurz. Dann sagt sie: „Ich war richtig traurig. Aber ich finde gut
             { typ: "malen", text: "Male deinen Freund oder deine Freundin.", bild: "" },
             { typ: "luecken", text: "", nummern: false, saetze: ["Mein Freund / meine Freundin heißt: ___"] },
             { typ: "ankreuzen", text: "Was macht ihr gern zusammen?", nebeneinander: true,
-              optionen: ["spielen", "malen", "lachen", "Fußball", "lesen", "___"] },
+              optionen: ["[bild:wuerfel] spielen", "[bild:pinsel] malen", "[gesicht:froh] lachen", "[bild:fussball] Fußball", "[bild:buch] lesen", "___"] },
             { typ: "luecken", text: "Ich bin ein guter Freund, weil ich …", nummern: false, saetze: ["___"] }
         ]
     },
@@ -391,7 +391,7 @@ Nach einer Woche klappt das Inselleben richtig gut. Moritz sagt: „Komisch – 
         aufgaben: [
             { typ: "zuordnen", text: "Wo gilt welche Regel? Verbinde.",
               links: ["Bei Rot bleibe ich stehen.", "Ich melde mich, wenn ich etwas sagen will.", "Ich räume mein Zimmer auf."],
-              rechts: ["zu Hause", "Straße", "Schule"] },
+              rechts: ["[bild:haus] zu Hause", "[bild:auto] Straße", "[bild:rucksack] Schule"] },
             { typ: "tabelle", text: "Richtig oder falsch? Male den Daumen hoch oder runter.",
               spalten: ["Was passiert?", "Daumen"],
               zeilen: [["Ich warte, bis ich dran bin.", ""], ["Ich drängle mich vor.", ""], ["Ich sage bitte und danke.", ""], ["Ich werfe Müll auf den Boden.", ""]] },

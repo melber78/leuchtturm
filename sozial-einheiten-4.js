@@ -46,7 +46,7 @@ Oskar klebt die Zettel zu Hause über seinen Schreibtisch.
     ],
     ab12: { titel: "Das kann ich gut", aufgaben: [
         { typ: "ankreuzen", text: "Ich kann gut … Kreuze an.", nebeneinander: true,
-          optionen: ["malen", "rennen", "helfen", "lachen", "zuhören", "bauen", "singen", "___"] },
+          optionen: ["[bild:pinsel] malen", "[bild:turnschuh] rennen", "helfen", "[gesicht:froh] lachen", "zuhören", "[bild:hammer] bauen", "[bild:gitarre] singen", "___"] },
         { typ: "malen", text: "Male etwas, das du richtig gut kannst.", bild: "" },
         { typ: "luecken", text: "", nummern: false, saetze: ["Ich bin stolz, dass ich ___ kann."] }
     ]},
@@ -326,7 +326,7 @@ Am nächsten Tag probiert Sophie es selbst aus. „Can, deine Idee mit dem Regen
     ab12: { titel: "Etwas Nettes sagen", aufgaben: [
         { typ: "ankreuzen", text: "Was ist ein Kompliment? Kreuze an.", nebeneinander: false,
           optionen: ["„Du malst schön.“", "„Du bist doof.“", "„Du kannst toll rennen.“", "„Danke für deine Hilfe!“", "„Geh weg!“"] },
-        { typ: "malen", text: "Male das Herz an und schreibe einen Namen hinein. Was ist toll an diesem Kind?", bild: "herz" }
+        { typ: "malen", text: "Male das Herz an. Male hinein, was du an einem Kind aus der Gruppe toll findest.", bild: "herz" }
     ]},
     ab34: { titel: "Komplimente, die ankommen", aufgaben: [
         { typ: "tabelle", text: "Mach das Kompliment genauer.", spalten: ["Allgemein", "Genauer"],

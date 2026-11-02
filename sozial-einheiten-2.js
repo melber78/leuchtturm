@@ -164,7 +164,7 @@ Auf der Heimfahrt sagt Mila: „Mutig sein heißt nicht, keine Angst zu haben. M
     ab12: { titel: "Was macht mir Mut?", aufgaben: [
         { typ: "gesichter", text: "Male die Gesichter fertig: ängstlich – und wieder ruhig.", gefuehle: ["ängstlich", "ruhig"], leer: true },
         { typ: "ankreuzen", text: "Was hilft mir gegen Angst? Kreuze an.", nebeneinander: true,
-          optionen: ["Kuscheltier", "Licht", "jemandem erzählen", "tief atmen", "Mama oder Papa", "___"] },
+          optionen: ["[bild:teddy] Kuscheltier", "[bild:lampe] Licht", "jemandem erzählen", "tief atmen", "Mama oder Papa", "___"] },
         { typ: "malen", text: "Male: Davor hatte ich Angst – und dann war ich mutig.", bild: "" }
     ]},
     ab34: { titel: "Mutig mit meiner Angst", aufgaben: [
@@ -393,7 +393,7 @@ Am Ende stimmen alle 22 Kinder dafür. Niemand hat alles bekommen, was er wollte
     ab12: { titel: "Beide bekommen etwas", aufgaben: [
         { typ: "ankreuzen", text: "Lea und Ben wollen beide das rote Auto. Was ist fair? Kreuze an.", nebeneinander: false,
           optionen: ["Lea nimmt es einfach weg.", "Sie spielen abwechselnd.", "Ben schreit, bis er es bekommt.", "Sie spielen zusammen damit."] },
-        { typ: "zuordnen", text: "Welche Lösung passt? Verbinde.",
+        { typ: "zuordnen", nur: "2", text: "Welche Lösung passt? Verbinde.",
           links: ["Beide wollen schaukeln.", "Es gibt nur einen Keks.", "Beide wollen das Buch lesen."],
           rechts: ["Wir teilen ihn.", "Wir lesen zusammen.", "Jeder schaukelt bis 20."] },
         { typ: "malen", text: "Male die zwei Ziegen, die gut über die Brücke kommen.", bild: "" }
@@ -456,7 +456,7 @@ Elias merkt: Nein sagen war schwer. Aber hinterher fühlt er sich stark.
     ab12: { titel: "Ich darf Nein sagen", aufgaben: [
         { typ: "ankreuzen", text: "Wann ist ein Nein wichtig? Kreuze an.", nebeneinander: false,
           optionen: ["Jemand kitzelt mich, und ich mag das nicht mehr.", "Ein Fremder will, dass ich mitkomme.", "Jemand will mir etwas wegnehmen.", "Meine Freundin sagt: „Hallo!“"] },
-        { typ: "malen", text: "Schreibe NEIN in die Sprechblase und male sie bunt an.", bild: "sprechblase" },
+        { typ: "malen", text: "Schreibe NEIN in die Sprechblase (von der Tafel abschreiben) und male sie bunt an.", bild: "sprechblase" },
         { typ: "ankreuzen", text: "So sage ich Nein:", nebeneinander: true, optionen: ["laut", "leise", "mit Blick", "mit Hand"] }
     ]},
     ab34: { titel: "Nein sagen – auch wenn's schwer ist", aufgaben: [

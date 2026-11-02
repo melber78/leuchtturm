@@ -100,7 +100,7 @@ Am Nachmittag will Ben Miras Notizbuch anschauen. „Wir teilen doch alles!“, 
     ],
     ab12: { titel: "Teilen macht froh", aufgaben: [
         { typ: "ankreuzen", text: "Was kann man gut teilen? Kreuze an.", nebeneinander: true,
-          optionen: ["Buntstifte", "Zahnbürste", "Spielzeug", "Kekse", "Ball", "Taschentuch"] },
+          optionen: ["[bild:wachsmal] Buntstifte", "[bild:zahnbuerste] Zahnbürste", "[bild:teddy] Spielzeug", "[bild:keks] Kekse", "[bild:fussball] Ball", "Taschentuch"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Ich habe schon einmal geteilt mit: ___"] },
         { typ: "malen", text: "Male, was du gern mit anderen teilst.", bild: "" }
     ]},
@@ -210,10 +210,12 @@ Dann klingelt ihr Wecker – es war nur ein Traum! Beim Frühstück sagt ihr Bru
           text: "Welche höflichen Wörter und Gesten passen? Im Bus, wenn eine ältere Person einsteigt – beim Arzt – am Telefon mit Oma – wenn ich jemanden nicht verstanden habe („Wie bitte?“ statt „Hä?“). Die Kinder sammeln vom Platz aus." }
     ],
     ab12: { titel: "Meine Zauberwörter", aufgaben: [
-        { typ: "zuordnen", text: "Was sagst du? Verbinde.",
+        { typ: "zuordnen", nur: "2", text: "Was sagst du? Verbinde.",
           links: ["Ich möchte etwas haben.", "Ich bekomme etwas.", "Ich komme in die Klasse.", "Ich habe jemanden angerempelt."],
           rechts: ["Hallo!", "Entschuldigung!", "Bitte!", "Danke!"] },
-        { typ: "malen", text: "Male den Stern an und schreibe dein Lieblings-Zauberwort hinein.", bild: "stern" }
+        { typ: "ankreuzen", nur: "1", text: "Du bekommst ein Geschenk. Was sagst du? Kreuze an.", nebeneinander: false, optionen: ["[bild:geschenk] Danke!", "Weg da!", "Gib her!"] },
+        { typ: "malen", text: "Male den Stern an. Sag deinem Nachbarn dein Lieblings-Zauberwort.", bild: "stern" },
+        { typ: "luecken", text: "", nummern: false, saetze: ["Mein Lieblings-Zauberwort: ___"] }
     ]},
     ab34: { titel: "Höflich sein wirkt", aufgaben: [
         { typ: "tabelle", text: "Mach es höflich: Schreibe den Satz freundlich auf.", spalten: ["Unhöflich", "Höflich"],
@@ -265,7 +267,7 @@ Am Abend klingeln Selma und Deniz bei Herrn Schulze. Deniz erklärt mit roten Oh
     ],
     ab12: { titel: "Ich kümmere mich", aufgaben: [
         { typ: "ankreuzen", text: "Wofür bist du zu Hause verantwortlich? Kreuze an.", nebeneinander: true,
-          optionen: ["Zimmer aufräumen", "Tisch decken", "Haustier füttern", "Ranzen packen", "___"] },
+          optionen: ["[bild:besen] Zimmer aufräumen", "[bild:loeffel] Tisch decken", "[bild:hamster] Haustier füttern", "[bild:rucksack] Ranzen packen", "___"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Mein Dienst im Sozialtraining: ___"] },
         { typ: "malen", text: "Male, wie du deinen Dienst erledigst.", bild: "" }
     ]},

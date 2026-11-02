@@ -158,7 +158,7 @@ Am Ende ist ihre Zeitung die beliebteste der ganzen Schule. Die Rektorin sagt: �
     ab12: { titel: "Jeder ist wichtig", aufgaben: [
         { typ: "zuordnen", text: "Wer macht welchen Ton? Verbinde.",
           links: ["Elefant", "Vogel", "Frosch", "Maus"],
-          rechts: ["quaken", "trommeln", "tröten", "pfeifen"] },
+          rechts: ["quaken", "[bild:trommel] trommeln", "[bild:trompete] tröten", "[bild:floete] pfeifen"] },
         { typ: "malen", text: "Male dich im Tier-Orchester. Welches Instrument spielst du?", bild: "" },
         { typ: "luecken", text: "", nummern: false, saetze: ["In unserer Gruppe bin ich wichtig, weil ich ___"] }
     ]},
@@ -216,7 +216,7 @@ Vor dem nächsten Test macht Nora das Kasten-Atmen ganz heimlich unter dem Tisch
     ],
     ab12: { titel: "So werde ich ruhig", aufgaben: [
         { typ: "ankreuzen", text: "Das macht mich ruhig. Kreuze an.", nebeneinander: true,
-          optionen: ["kuscheln", "Musik", "malen", "atmen", "draußen sein", "___"] },
+          optionen: ["[bild:teddy] kuscheln", "[bild:gitarre] Musik", "[bild:pinsel] malen", "atmen", "[bild:baum] draußen sein", "___"] },
         { typ: "malen", text: "Male die Ruhe-Wolke an. Male hinein, was dich ruhig macht.", bild: "wolke" }
     ]},
     ab34: { titel: "Meine Ruhe-Werkzeuge", aufgaben: [
@@ -272,7 +272,9 @@ Dann legen alle die Rosine auf die Zunge, ohne zu kauen. Kerem spürt, wie sein 
           text: "Jedes Kind bekommt eine Rosine oder ein Apfelstück. Du leitest langsam an: anschauen – fühlen – ans Ohr halten – riechen – auf die Zunge legen, ohne zu kauen – ganz langsam kauen – schlucken. Danach erzählen die Kinder vom Platz aus, was sie bemerkt haben." }
     ],
     ab12: { titel: "Meine fünf Sinne", aufgaben: [
-        { typ: "zuordnen", text: "Womit mache ich das? Verbinde.",
+        { typ: "ankreuzen", nur: "1", text: "Was riecht gut? Kreuze an.", nebeneinander: true,
+          optionen: ["[bild:rose] Blume", "[bild:pizza] Pizza", "[bild:seife] Seife", "[bild:zitrone] Zitrone", "[bild:kuchen] Kuchen"] },
+        { typ: "zuordnen", nur: "2", text: "Womit mache ich das? Verbinde.",
           links: ["Augen", "Ohren", "Nase", "Mund", "Hände"],
           rechts: ["riechen", "fühlen", "sehen", "schmecken", "hören"] },
         { typ: "malen", text: "Male etwas, das du heute Schönes gesehen, gehört oder gerochen hast.", bild: "" }
@@ -496,7 +498,7 @@ Am Freitag erzählen alle von ihren Erlebnissen. Die meisten sagen dasselbe: Hel
     ],
     ab12: { titel: "Ich helfe gern", aufgaben: [
         { typ: "ankreuzen", text: "Wo kann ich helfen? Kreuze an.", nebeneinander: true,
-          optionen: ["Tisch decken", "Stifte aufheben", "trösten", "Tür aufhalten", "___"] },
+          optionen: ["[bild:loeffel] Tisch decken", "[bild:stift] Stifte aufheben", "trösten", "[bild:tuer] Tür aufhalten", "___"] },
         { typ: "malen", text: "Male, wie du jemandem hilfst.", bild: "" },
         { typ: "luecken", text: "", nummern: false, saetze: ["Diese Woche helfe ich ___"] }
     ]},
