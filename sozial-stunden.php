@@ -81,6 +81,7 @@ button, input, select, textarea{ font-family:inherit; font-size:15px; }
 .chip{ display:inline-block; border-radius:99px; padding:3px 10px; font-size:12px; font-weight:800; background:#e7f1fb; color:var(--meer); }
 .chip.gold{ background:#f9eeda; color:#8a5a12; }
 .chip.gruen{ background:#e5f4e4; color:var(--gruen); }
+.chip.rot{ background:#fdecea; color:#c0392b; }
 .chip.lila{ background:#efedff; color:#5b4fc4; }
 .hinweis{ background:#f9eeda; border-radius:14px; padding:12px 16px; font-weight:700; margin-bottom:18px; }
 .hinweis.rot{ background:#fbebeb; color:var(--rot); }
@@ -176,6 +177,23 @@ table.plan tr.frei td{ color:#a0aaa6; }
 table.plan tr.erledigt td .plan-wahl{ opacity:.65; }
 table.plan td.kw{ font-weight:900; white-space:nowrap; color:var(--meer); }
 table.plan td.datum{ white-space:nowrap; font-weight:700; }
+table.plan th.kl-th{ text-align:center; }
+table.plan td.kl-zelle{ text-align:center; position:relative; white-space:nowrap; }
+.kl-status{ width:34px; height:34px; border-radius:10px; border:2px solid #d6dee3; background:#fff; font-size:17px; font-weight:900; color:#9aa6ab; cursor:pointer; }
+.kl-status.gehalten{ background:#2e8b57; border-color:#2e8b57; color:#fff; }
+.kl-status.ausgefallen{ background:#fdecea; border-color:#e74c3c; color:#c0392b; }
+.kl-status:disabled{ opacity:.35; cursor:default; }
+.kl-punkt{ position:absolute; top:6px; right:calc(50% - 21px); width:8px; height:8px; border-radius:50%; background:var(--gold); }
+tr.kl-details td{ background:#f6f9fb; }
+.kl-detail-raster{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; }
+.kl-detail{ display:flex; flex-direction:column; gap:6px; background:#fff; border:1.5px solid var(--linie); border-radius:12px; padding:8px 10px; }
+.kl-zeile{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.kl-stand{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; }
+.kl-karte{ border:2px solid var(--linie); border-radius:14px; padding:12px 14px; display:flex; flex-direction:column; gap:6px; }
+.kl-kopf{ display:flex; justify-content:space-between; align-items:center; font-size:18px; }
+.kl-zahlen{ display:flex; gap:12px; font-weight:800; font-size:14px; }
+.kl-zahlen .ok{ color:#2e8b57; } .kl-zahlen .aus{ color:#c0392b; }
+.kl-nach{ font-size:13.5px; line-height:1.45; } .kl-nach.leer{ color:var(--grau); font-weight:700; }
 table.plan select, table.plan input[type=text]{ padding:6px 8px; }
 table.plan input[type=checkbox]{ width:20px; height:20px; }
 @media (max-width:760px){
@@ -952,7 +970,10 @@ function zeigeStunde(id){
         <div class="detail-kopf">
             <div class="titel"><a href="#bibliothek" style="color:var(--grau);font-weight:800;text-decoration:none"><i class="fa-solid fa-arrow-left"></i> Alle Stunden</a>
                 <div style="margin-top:8px">${artChip(e)} ${e.ohneVorbereitung ? '<span class="chip gruen"><i class="fa-solid fa-bolt"></i> ohne Vorbereitung</span> ' : ""}<span class="chip">${esc(e.kategorie)}</span> <span class="chip">${esc(e.dauer || 40)} Min</span>
-                ${geplant.length ? `<span class="chip gold"><i class="fa-solid fa-calendar-check"></i> geplant KW ${geplant.map(kw).join(", ")}</span>` : ""}</div>
+                ${geplant.length ? `<span class="chip gold"><i class="fa-solid fa-calendar-check"></i> geplant KW ${geplant.map(kw).join(", ")}</span>` : ""}
+                ${(() => { if (!DATEN.jahresplan) return ""; const ids = [e.id, e.ersetzt].filter(Boolean);
+                    const st = klassenStand(), mit = st.filter(x => x.gehalten.some(g => ids.includes(g.id))).map(x => x.k.name), nach = st.filter(x => x.nachholen.some(g => ids.includes(g.id))).map(x => x.k.name);
+                    return (mit.length ? `<span class="chip gruen"><i class="fa-solid fa-check"></i> gehalten: ${esc(mit.join(", "))}</span> ` : "") + (nach.length ? `<span class="chip rot"><i class="fa-solid fa-rotate"></i> nachholen: ${esc(nach.join(", "))}</span>` : ""); })()}</div>
                 <h2>${esc(e.titel)}</h2></div>
             <div class="knopfleiste">${bearbeitenKnopf}<button class="btn" id="kopieren"><i class="fa-solid fa-copy"></i> Als neue Stunde kopieren</button>${loeschKnopf}</div>
         </div>
@@ -1358,21 +1379,58 @@ function zeigeEditor(id, entwurfBehalten = false){
 }
 
 /* ---------- Jahresplan ---------- */
+/* ---------- Klassen im Jahresplan (z. B. GS1–GS4) ---------- */
+const KLASSEN_STANDARD = [{ id: "gs1", name: "GS1", stufe: "12" }, { id: "gs2", name: "GS2", stufe: "12" }, { id: "gs3", name: "GS3", stufe: "34" }, { id: "gs4", name: "GS4", stufe: "34" }];
+const STATUS = { "": { zeichen: "○", text: "offen" }, gehalten: { zeichen: "✓", text: "gehalten" }, ausgefallen: { zeichen: "✗", text: "ausgefallen" } };
+const STATUS_FOLGE = ["", "gehalten", "ausgefallen"];
+function planKlassen(){
+    const p = plan();
+    if (window.BEREICH.key === "vertretung") return [];
+    if (!Array.isArray(p.klassen)) p.klassen = KLASSEN_STANDARD.map(k => ({ ...k }));
+    return p.klassen;
+}
+// Eintrag einer Klasse in einer Woche (ältere Pläne: „erledigt“ gilt für alle Klassen)
+function klasseInWoche(w, k){
+    const x = (w.klassen && w.klassen[k.id]) || {};
+    return { status: x.status || (w.erledigt && !w.klassen ? "gehalten" : ""), einheit: x.einheit || "", notiz: x.notiz || "" };
+}
+function einheitFuer(w, k){ const x = klasseInWoche(w, k); return x.einheit || w.einheit || ""; }
+// Auswertung je Klasse: gehalten · ausgefallen · nachzuholen (ausgefallen und später nicht gehalten)
+function klassenStand(){
+    const p = plan(), wochen = planWochen();
+    return planKlassen().map(k => {
+        const gehalten = [], ausgefallen = [];
+        wochen.forEach(d => {
+            const w = p.wochen[iso(d)];
+            if (!w || w.frei) return;
+            const x = klasseInWoche(w, k), id = einheitFuer(w, k);
+            if (x.status === "gehalten" && id) gehalten.push({ d, id });
+            if (x.status === "ausgefallen" && id) ausgefallen.push({ d, id });
+            // Klasse hat in dieser Woche etwas anderes gemacht (z. B. nachgeholt) → das geplante Thema fehlt ihr noch
+            if (x.status === "gehalten" && w.einheit && id !== w.einheit) ausgefallen.push({ d, id: w.einheit, verschoben: true });
+        });
+        const gehaltenIds = new Set(gehalten.map(g => finde(g.id)?.id || g.id));
+        const nachholen = ausgefallen.filter(a => !gehaltenIds.has(finde(a.id)?.id || a.id));
+        return { k, gehalten, ausgefallen, nachholen };
+    });
+}
 function zeigeJahresplan(){
     reiterSetzen("jahresplan");
     const p = plan();
+    const klassen = planKlassen();
     const wochen = planWochen();
     const heute = montag(heuteUtc());
     const alle = alleEinheiten().sort(katSort);
     const gruppen = [...new Set(alle.map(e => e.kategorie))];
-    const optionen = sel => `<option value="">– noch offen –</option><option value="@frei" ${sel === "@frei" ? "selected" : ""}>Ferien / fällt aus</option>` +
+    const optionen = (sel, leerText = "– noch offen –", mitFrei = true) => `<option value="">${leerText}</option>${mitFrei ? `<option value="@frei" ${sel === "@frei" ? "selected" : ""}>Ferien / fällt aus</option>` : ""}` +
         gruppen.map(g => `<optgroup label="${esc(g)}">${alle.filter(e => e.kategorie === g).map(e => {
             const wert = e.ersetzt || e.id;
             return `<option value="${esc(wert)}" ${sel === wert || sel === e.id ? "selected" : ""}>${esc(e.titel)}</option>`; }).join("")}</optgroup>`).join("");
     const verplant = new Set(Object.values(p.wochen).map(w => w && w.einheit).filter(Boolean).map(id => finde(id)?.id));
     const offen = alle.filter(e => !verplant.has(e.id));
     const anzahl = wochen.filter(d => p.wochen[iso(d)]?.einheit).length;
-    const erledigt = wochen.filter(d => p.wochen[iso(d)]?.erledigt).length;
+    const stand = klassenStand();
+    const stufeName = st => st === "34" ? "Kl. 3/4" : "Kl. 1/2";
 
     inhalt.innerHTML = `
         <div class="karte"><h2>Schuljahr</h2>
@@ -1381,23 +1439,49 @@ function zeigeJahresplan(){
                 <div><label class="feld">Letzte Woche</label><input type="date" id="planEnde" value="${esc(p.ende)}"></div>
                 <div style="flex:1 1 200px"><span class="speicherstatus" id="planStatus"></span></div>
             </div>
-            <p style="margin:12px 0 0;font-weight:700">${anzahl} von ${wochen.length} Wochen verplant · ${erledigt} erledigt</p>
+            <p style="margin:12px 0 0;font-weight:700">${anzahl} von ${wochen.length} Wochen verplant</p>
+            ${klassen.length ? `<details class="ed-block" style="margin:14px 0 0"><summary style="font-weight:900;cursor:pointer">Meine Klassen (${klassen.map(k => esc(k.name)).join(", ")}) bearbeiten</summary>
+                <div id="klassenListe" style="display:flex;flex-direction:column;gap:8px;margin-top:10px">${klassen.map((k, i) => `<div class="kl-zeile" data-i="${i}">
+                    <input type="text" class="kl-name" value="${esc(k.name)}" maxlength="12" style="max-width:140px">
+                    <select class="kl-stufe" style="max-width:140px"><option value="12" ${k.stufe === "12" ? "selected" : ""}>Kl. 1/2</option><option value="34" ${k.stufe === "34" ? "selected" : ""}>Kl. 3/4</option></select>
+                    <button class="btn klein rot kl-weg" title="Klasse entfernen"><i class="fa-solid fa-trash"></i></button></div>`).join("")}</div>
+                <button class="btn klein" id="klasseNeu" style="margin-top:10px"><i class="fa-solid fa-plus"></i> Klasse hinzufügen</button>
+                <p class="ed-hilfe">Nur Klassenbezeichnungen – keine Namen von Kindern.</p></details>` : ""}
         </div>
+        ${klassen.length ? `<div class="karte"><h2>Stand je Klasse</h2><div class="kl-stand">${stand.map(s => `<div class="kl-karte">
+            <div class="kl-kopf"><b>${esc(s.k.name)}</b><span class="chip ${s.k.stufe === "34" ? "gold" : ""}">${stufeName(s.k.stufe)}</span></div>
+            <div class="kl-zahlen"><span class="ok">✓ ${s.gehalten.length} gehalten</span><span class="aus">✗ ${s.ausgefallen.filter(a => !a.verschoben).length} ausgefallen</span></div>
+            ${s.nachholen.length ? `<div class="kl-nach"><b>Nachholen:</b> ${s.nachholen.map(n => { const e = finde(n.id); return e ? `<a href="#stunde/${encodeURIComponent(e.id)}">${esc(e.titel)}</a> <small>(KW ${kw(n.d)})</small>` : ""; }).join(", ")}</div>` : `<div class="kl-nach leer">Nichts nachzuholen 👍</div>`}
+            </div>`).join("")}</div></div>` : ""}
         ${offen.length ? `<div class="karte"><h2>Noch nicht verplant</h2><div class="chips" style="display:flex;gap:8px;flex-wrap:wrap">${offen.map(e => `<a class="chip" style="text-decoration:none;font-size:13px" href="#stunde/${encodeURIComponent(e.id)}">${esc(e.titel)}</a>`).join("")}</div></div>` : ""}
-        <div class="karte" style="padding:12px 14px"><table class="plan">
-            <thead><tr><th>KW</th><th>Woche ab</th><th>Stunde</th><th>Notiz</th><th title="erledigt"><i class="fa-solid fa-check"></i></th><th></th></tr></thead>
+        <div class="karte" style="padding:12px 14px">
+            ${klassen.length ? `<p class="ed-hilfe" style="margin:0 0 8px">Klick auf das Kästchen einer Klasse: ○ offen → ✓ gehalten → ✗ ausgefallen. Mit <i class="fa-solid fa-sliders"></i> kannst du für eine Klasse ein anderes Thema (z. B. Nachholstunde) und eine Notiz eintragen.</p>` : ""}
+            <div style="overflow-x:auto"><table class="plan">
+            <thead><tr><th>KW</th><th>Woche ab</th><th>Stunde</th>${klassen.map(k => `<th class="kl-th" title="${stufeName(k.stufe)}">${esc(k.name)}</th>`).join("")}<th>Notiz</th>${klassen.length ? "" : `<th title="erledigt"><i class="fa-solid fa-check"></i></th>`}<th></th></tr></thead>
             <tbody>${wochen.map(d => {
                 const k = iso(d), w = p.wochen[k] || {};
                 const wert = w.frei ? "@frei" : (w.einheit || "");
                 const e = w.einheit && !w.frei ? finde(w.einheit) : null;
                 const fehlt = w.einheit && !w.frei && !e;
+                const zellen = klassen.map(kl => {
+                    const x = klasseInWoche(w, kl);
+                    const anders = x.einheit && x.einheit !== w.einheit ? finde(x.einheit) : null;
+                    return `<td class="kl-zelle"><button class="kl-status ${x.status || "offen"}" data-kl="${esc(kl.id)}" ${w.frei ? "disabled" : ""} title="${esc(kl.name)}: ${STATUS[x.status].text}${anders ? " · " + esc(anders.titel) : ""}${x.notiz ? " · " + esc(x.notiz) : ""}">${STATUS[x.status].zeichen}</button>${anders || x.notiz ? '<span class="kl-punkt" title="eigenes Thema / Notiz"></span>' : ""}</td>`;
+                }).join("");
+                const details = klassen.length && !w.frei ? `<tr class="kl-details" data-fuer="${k}" hidden><td colspan="${5 + klassen.length}"><div class="kl-detail-raster">${klassen.map(kl => {
+                    const x = klasseInWoche(w, kl);
+                    return `<div class="kl-detail" data-kl="${esc(kl.id)}"><b>${esc(kl.name)}</b>
+                        <select class="kl-d-status">${STATUS_FOLGE.map(st => `<option value="${st}" ${x.status === st ? "selected" : ""}>${STATUS[st].zeichen} ${STATUS[st].text}</option>`).join("")}</select>
+                        <select class="kl-d-einheit">${optionen(x.einheit, "wie geplant", false)}</select>
+                        <input type="text" class="kl-d-notiz" value="${esc(x.notiz)}" placeholder="Notiz (z. B. Ausflug, Wandertag)"></div>`; }).join("")}</div></td></tr>` : "";
                 return `<tr data-woche="${k}" class="${+d === +heute ? "jetzt" : ""} ${w.frei ? "frei" : ""} ${w.erledigt ? "erledigt" : ""}">
                     <td class="kw">KW ${kw(d)}</td><td class="datum">${kurzDatum(d)}${+d === +heute ? ' <span class="chip gold">jetzt</span>' : ""}</td>
                     <td><select class="plan-wahl">${optionen(wert)}${fehlt ? `<option value="${esc(w.einheit)}" selected>(gelöschte Stunde)</option>` : ""}</select></td>
+                    ${zellen}
                     <td><input type="text" class="plan-notiz" value="${esc(w.notiz || "")}" placeholder="Notiz"></td>
-                    <td><input type="checkbox" class="plan-erledigt" ${w.erledigt ? "checked" : ""} ${w.frei ? "disabled" : ""} title="erledigt"></td>
-                    <td>${e ? `<a class="btn klein" href="#stunde/${encodeURIComponent(e.id)}" title="öffnen"><i class="fa-solid fa-arrow-right"></i></a>` : ""}</td></tr>`;
-            }).join("")}</tbody></table></div>`;
+                    ${klassen.length ? "" : `<td><input type="checkbox" class="plan-erledigt" ${w.erledigt ? "checked" : ""} ${w.frei ? "disabled" : ""} title="erledigt"></td>`}
+                    <td style="white-space:nowrap">${klassen.length && !w.frei ? `<button class="btn klein kl-mehr" title="Je Klasse: anderes Thema, Notiz"><i class="fa-solid fa-sliders"></i></button> ` : ""}${e ? `<a class="btn klein" href="#stunde/${encodeURIComponent(e.id)}" title="öffnen"><i class="fa-solid fa-arrow-right"></i></a>` : ""}</td></tr>${details}`;
+            }).join("")}</tbody></table></div></div>`;
 
     const datumAendern = () => {
         const s = document.getElementById("planStart").value, en = document.getElementById("planEnde").value;
@@ -1408,9 +1492,31 @@ function zeigeJahresplan(){
     };
     document.getElementById("planStart").addEventListener("change", datumAendern);
     document.getElementById("planEnde").addEventListener("change", datumAendern);
+
+    // Klassen bearbeiten
+    const kl = document.getElementById("klassenListe");
+    if (kl) {
+        kl.querySelectorAll(".kl-zeile").forEach(z => {
+            const k = p.klassen[+z.dataset.i];
+            z.querySelector(".kl-name").addEventListener("change", ev => { k.name = ev.target.value.trim().slice(0, 12) || k.name; planSpeichern(); zeigeJahresplan(); });
+            z.querySelector(".kl-stufe").addEventListener("change", ev => { k.stufe = ev.target.value; planSpeichern(); zeigeJahresplan(); });
+            z.querySelector(".kl-weg").addEventListener("click", () => {
+                if (!confirm(`Klasse ${k.name} entfernen? Die Häkchen dieser Klasse werden nicht mehr angezeigt.`)) return;
+                p.klassen.splice(+z.dataset.i, 1); planSpeichern(); zeigeJahresplan();
+            });
+        });
+        document.getElementById("klasseNeu").addEventListener("click", () => {
+            if (p.klassen.length >= 8) { toast("Höchstens 8 Klassen.", true); return; }
+            let n = p.klassen.length + 1; while (p.klassen.some(k => k.id === "gs" + n)) n++;
+            p.klassen.push({ id: "gs" + n, name: "GS" + n, stufe: "12" }); planSpeichern(); zeigeJahresplan();
+            const d = inhalt.querySelector("details"); if (d) d.open = true;
+        });
+    }
+
     inhalt.querySelectorAll("tr[data-woche]").forEach(tr => {
         const k = tr.dataset.woche;
         const eintrag = () => (p.wochen[k] = p.wochen[k] || {});
+        const klEintrag = id => { const w = eintrag(); if (!w.klassen) { w.klassen = {}; if (w.erledigt) planKlassen().forEach(x => w.klassen[x.id] = { status: "gehalten" }); } return (w.klassen[id] = w.klassen[id] || {}); };
         tr.querySelector(".plan-wahl").addEventListener("change", ev => {
             const v = ev.target.value, w = eintrag();
             if (v === "@frei") { w.frei = true; w.einheit = ""; w.erledigt = false; }
@@ -1418,9 +1524,29 @@ function zeigeJahresplan(){
             planSpeichern(); zeigeJahresplan();
         });
         tr.querySelector(".plan-notiz").addEventListener("input", ev => { eintrag().notiz = ev.target.value; planSpeichern(); });
-        tr.querySelector(".plan-erledigt").addEventListener("change", ev => { eintrag().erledigt = ev.target.checked; tr.classList.toggle("erledigt", ev.target.checked); planSpeichern(); });
+        const erl = tr.querySelector(".plan-erledigt");
+        if (erl) erl.addEventListener("change", ev => { eintrag().erledigt = ev.target.checked; tr.classList.toggle("erledigt", ev.target.checked); planSpeichern(); });
+        tr.querySelectorAll(".kl-status").forEach(btn => btn.addEventListener("click", () => {
+            const x = klEintrag(btn.dataset.kl);
+            x.status = STATUS_FOLGE[(STATUS_FOLGE.indexOf(x.status || "") + 1) % STATUS_FOLGE.length];
+            planSpeichern(); zeigeJahresplanBehalten();
+        }));
+        const mehr = tr.querySelector(".kl-mehr"), det = inhalt.querySelector(`tr.kl-details[data-fuer="${k}"]`);
+        if (mehr && det) {
+            mehr.addEventListener("click", () => { det.hidden = !det.hidden; });
+            det.querySelectorAll(".kl-detail").forEach(box => {
+                const id = box.dataset.kl;
+                box.querySelector(".kl-d-status").addEventListener("change", ev => { klEintrag(id).status = ev.target.value; planSpeichern(); });
+                box.querySelector(".kl-d-einheit").addEventListener("change", ev => { klEintrag(id).einheit = ev.target.value; planSpeichern(); });
+                box.querySelector(".kl-d-notiz").addEventListener("input", ev => { klEintrag(id).notiz = ev.target.value.slice(0, 200); planSpeichern(); });
+                // Zeile neu zeichnen, wenn die Details zugeklappt werden
+            });
+            mehr.addEventListener("click", () => { if (det.hidden) zeigeJahresplanBehalten(); });
+        }
     });
 }
+// neu zeichnen und Scrollposition behalten
+function zeigeJahresplanBehalten(){ const y = window.scrollY; zeigeJahresplan(); window.scrollTo(0, y); }
 
 /* ---------- Material-Bibliothek (alle Vorlagen nach Thema) ---------- */
 function materialEintraege(ids, ziel){
