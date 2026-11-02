@@ -106,13 +106,18 @@ const CSS = `
 /* Overlays (Glücksrad, Timer wählen) */
 #praes .p-overlay{ position:absolute; inset:0; background:rgba(22,50,74,.55); display:flex; align-items:center; justify-content:center; z-index:10; animation:pFade .2s; }
 @keyframes pFade{ from{ opacity:0; } }
-#praes .p-dialog{ background:white; border-radius:30px; padding:3vh 3vw; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.3); max-width:92vw; }
+#praes .p-dialog{ background:white; border-radius:30px; padding:3vh 3vw; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.3); max-width:92vw; max-height:calc(100% - 16px); overflow-y:auto; box-sizing:border-box; }
+#praes .p-dialog.mit-namen .p-rad-wrap{ width:min(32vh,60vw); height:min(32vh,60vw); }
 #praes .p-dialog h2{ font-size:clamp(24px,3vw,44px); }
 #praes .p-rad-wrap{ position:relative; width:min(50vh,78vw); height:min(50vh,78vw); margin:0 auto 1vh; }
-#praes .p-dialog{ max-height:94vh; overflow:auto; }
 #praes .p-rad-wrap canvas{ width:100%; height:100%; }
 #praes .p-zeiger{ position:absolute; top:-10px; left:50%; margin-left:-22px; width:0; height:0; border-left:22px solid transparent; border-right:22px solid transparent; border-top:44px solid #16324a; filter:drop-shadow(0 3px 4px rgba(0,0,0,.3)); }
 #praes .p-ergebnis{ font-size:clamp(36px,6vh,90px); font-weight:900; color:#f2a93b; min-height:1.2em; }
+#praes .p-vorleser{ display:inline-flex; align-items:center; gap:.4em; background:#fff4dc; color:#16324a; border-radius:18px; padding:.45em 1em; font-weight:900; font-size:clamp(16px,1.9vw,28px); box-shadow:0 4px 14px rgba(22,50,74,.1); }
+#praes .p-rad-optionen{ display:flex; gap:1.2em; justify-content:center; align-items:center; flex-wrap:wrap; font-weight:800; margin-top:.4em; }
+#praes .p-rad-optionen label{ display:inline-flex; gap:.4em; align-items:center; cursor:pointer; }
+#praes .p-rad-optionen input[type=checkbox]{ width:1.2em; height:1.2em; }
+#praes .p-namen{ width:min(560px,80vw); min-height:4em; height:4.5em; font:inherit; font-size:18px; border:2px solid #dfe5e2; border-radius:12px; padding:.4em .6em; margin-top:.5em; }
 #praes .p-dialog input{ font:inherit; font-size:22px; width:4.5em; text-align:center; border:2px solid #dfe5e2; border-radius:12px; padding:.2em; }
 #praes .p-konfetti{ position:absolute; inset:0; pointer-events:none; z-index:20; }
 `;
@@ -266,7 +271,7 @@ function praesentationStarten(e, startStufe){
     document.body.appendChild(wurzel);
     let anzahl = 9;
     try { anzahl = Math.max(2, Math.min(30, parseInt(localStorage.getItem("sozial_anzahl"), 10) || 9)); } catch (err) {}
-    zustand = { e, stufe: startStufe || "12", wurzel, buehne: wurzel.querySelector(".p-buehne"), i: 0, folien: [], stimmen: {}, anzahl, timer: null };
+    zustand = { e, stufe: startStufe || "12", wurzel, buehne: wurzel.querySelector(".p-buehne"), i: 0, folien: [], stimmen: {}, anzahl, timer: null, gelesen: new Set(), vorleser: {} };
     zustand.folien = folienBauen(e, zustand.stufe);
     wurzel.addEventListener("click", leistenKlick);
     document.addEventListener("keydown", tasten);
@@ -365,8 +370,9 @@ function folieHtml(f, e){
         case "geschichte": {
             const bilder = bilderImText(f.text, 3);
             const lang = f.text.length > (bilder.length ? 300 : 380);
+            const leser = zustand.vorleser[zustand.i];
             return `<div class="p-klein">${esc(f.titel)} · ${f.nr} / ${f.von}</div>${bilderHtml(bilder)}<div class="p-text"${lang ? ' style="font-size:clamp(18px,min(2.6vw,4.1vh),42px)"' : ""}>${md(f.text)}</div>
-                <div class="p-reihe"><button class="p-knopf hell" data-vorlesen="1">🔊 Vorlesen lassen</button></div>`;
+                <div class="p-reihe"><button class="p-knopf gold" data-vorleser="1">🎡 Wer liest vor?</button><span class="p-vorleser"${leser ? "" : " hidden"}>📖 Es liest: <b>${esc(leser || "")}</b></span><button class="p-knopf hell" data-vorlesen="1">🔊 Vorlesen lassen</button></div>`;
         }
         case "fragen":
             return `<h2>Lass uns darüber sprechen</h2><div class="p-fragen">${f.fragen.map((q, k) => `<div class="p-frage ${k === 0 ? "an" : ""}" data-frage="${k}"><span class="nr">${k + 1}</span><span>${esc(q)}</span></div>`).join("")}</div>
@@ -423,6 +429,14 @@ function folieAktivieren(el, f){
     el.querySelectorAll("[data-start]").forEach(b => b.addEventListener("click", () => timerStarten(+b.dataset.start * 60)));
     el.querySelectorAll("[data-schale]").forEach(b => b.addEventListener("click", () => klangschale()));
     el.querySelectorAll("[data-vorlesen]").forEach(b => b.addEventListener("click", () => vorlesen(f.text, b)));
+    el.querySelectorAll("[data-vorleser]").forEach(b => b.addEventListener("click", () => {
+        const nr = zustand.i;
+        gluecksrad({ titel: "📖 Wer liest vor?", lesen: true, fertig: name => {
+            zustand.vorleser[nr] = name;
+            const badge = el.querySelector(".p-vorleser");
+            if (badge) { badge.hidden = false; badge.innerHTML = "📖 Es liest: <b>" + esc(name) + "</b>"; }
+        } });
+    }));
     el.querySelectorAll("[data-welle]").forEach(b => b.addEventListener("click", () => applauswelle(el)));
 }
 
@@ -486,26 +500,43 @@ function overlay(html){
     zustand.buehne.appendChild(o);
     return o;
 }
-function gluecksrad(){
+// Namen fürs Rad: nur im Arbeitsspeicher dieser Seite – werden nie gespeichert oder gesendet
+let radNamen = [];
+let radNurEinmal = true;
+function gluecksrad(opt = {}){
     const z = zustand;
-    const o = overlay(`<h2>🎡 Wer ist dran?</h2>
+    const titel = opt.titel || "🎡 Wer ist dran?";
+    const o = overlay(`<h2>${esc(titel)}</h2>
         <div class="p-rad-wrap"><div class="p-zeiger"></div><canvas width="800" height="800"></canvas></div>
         <div class="p-ergebnis">&nbsp;</div>
         <div class="p-reihe" style="align-items:center"><button class="p-knopf gold" data-dreh="1">Drehen!</button>
-        <span style="font-weight:800">Plätze: <input type="number" min="2" max="30" value="${z.anzahl}" data-anzahl="1"></span></div>`);
+        <span style="font-weight:800" data-anzahl-box="1">Plätze: <input type="number" min="2" max="30" value="${z.anzahl}" data-anzahl="1"></span></div>
+        <div class="p-rad-optionen">
+            <label><input type="checkbox" data-einmal="1" ${radNurEinmal ? "checked" : ""}> Jeder nur einmal</label>
+            <button class="p-knopf hell" data-neu="1" style="font-size:16px;padding:.35em .8em">↺ Alle wieder frei</button>
+            <button class="p-knopf hell" data-namen-auf="1" style="font-size:16px;padding:.35em .8em">✏️ Namen statt Nummern</button>
+        </div>
+        <div data-namen-box="1" hidden><textarea class="p-namen" data-namen="1" placeholder="Ein Vorname pro Zeile (oder mit Komma getrennt) – wird nicht gespeichert">${esc(radNamen.join("\n"))}</textarea>
+            <div style="font-size:14px;color:#7c8a85;font-weight:700">Die Namen bleiben nur, solange diese Seite offen ist. Leer lassen = Platznummern.</div></div>`);
     const c = o.querySelector("canvas"), x = c.getContext("2d");
     const farben = ["#f2a93b", "#3d7ea6", "#e74c3c", "#2e8b57", "#c0399b", "#e67e22", "#17a2b8", "#16324a", "#8e44ad", "#27ae60"];
     let winkel = 0, laeuft = false;
+    const etiketten = () => radNamen.length >= 2 ? radNamen.slice(0, 30) : Array.from({ length: z.anzahl }, (_, k) => "Platz " + (k + 1));
+    const kurz = t => t.startsWith("Platz ") ? t.slice(6) : (t.length > 9 ? t.slice(0, 8) + "…" : t);
+    const gesperrt = t => radNurEinmal && z.gelesen.has(t);
     const zeichnen = () => {
-        const n = z.anzahl, r = 390, st = Math.PI * 2 / n;
+        const liste = etiketten(), n = liste.length, r = 390, st = Math.PI * 2 / n;
         x.clearRect(0, 0, 800, 800);
         for (let k = 0; k < n; k++) {
-            const a0 = winkel + k * st - Math.PI / 2;
+            const a0 = winkel + k * st - Math.PI / 2, grau = gesperrt(liste[k]);
             x.beginPath(); x.moveTo(400, 400); x.arc(400, 400, r, a0, a0 + st); x.closePath();
-            x.fillStyle = farben[k % farben.length]; x.fill(); x.strokeStyle = "white"; x.lineWidth = 4; x.stroke();
-            x.save(); x.translate(400, 400); x.rotate(a0 + st / 2); x.fillStyle = "white"; x.font = "900 " + Math.min(90, 520 / n + 20) + "px Nunito, sans-serif"; x.textAlign = "right"; x.textBaseline = "middle"; x.fillText(String(k + 1), r - 30, 0); x.restore();
+            x.fillStyle = grau ? "#d5dbd8" : farben[k % farben.length]; x.fill(); x.strokeStyle = "white"; x.lineWidth = 4; x.stroke();
+            const text = kurz(liste[k]), gross = text.length <= 2;
+            x.save(); x.translate(400, 400); x.rotate(a0 + st / 2); x.fillStyle = grau ? "#9aa6ab" : "white";
+            x.font = "900 " + (gross ? Math.min(90, 520 / n + 20) : Math.min(46, 300 / n + 18)) + "px Nunito, sans-serif"; x.textAlign = "right"; x.textBaseline = "middle"; x.fillText(text, r - 30, 0); x.restore();
         }
         x.beginPath(); x.arc(400, 400, 46, 0, Math.PI * 2); x.fillStyle = "white"; x.fill();
+        o.querySelector("[data-anzahl-box]").style.display = radNamen.length >= 2 ? "none" : "";
     };
     zeichnen();
     o.querySelector("[data-anzahl]").addEventListener("input", ev => {
@@ -513,22 +544,42 @@ function gluecksrad(){
         try { localStorage.setItem("sozial_anzahl", z.anzahl); } catch (err) {}
         zeichnen();
     });
+    o.querySelector("[data-einmal]").addEventListener("change", ev => { radNurEinmal = ev.target.checked; zeichnen(); });
+    o.querySelector("[data-neu]").addEventListener("click", () => { z.gelesen.clear(); zeichnen(); o.querySelector(".p-ergebnis").innerHTML = "&nbsp;"; });
+    o.querySelector("[data-namen-auf]").addEventListener("click", () => { const b = o.querySelector("[data-namen-box]"); b.hidden = !b.hidden; o.querySelector(".p-dialog").classList.toggle("mit-namen", !b.hidden); });
+    o.querySelector("[data-namen]").addEventListener("input", ev => {
+        radNamen = ev.target.value.split(/[\n,;]+/).map(t => t.trim().slice(0, 20)).filter(Boolean).slice(0, 30);
+        z.gelesen.clear(); zeichnen();
+    });
     o.querySelector("[data-dreh]").addEventListener("click", () => {
-        if (laeuft) return; laeuft = true; audio();
-        const n = z.anzahl, st = Math.PI * 2 / n, ziel = Math.floor(Math.random() * n);
+        if (laeuft) return;
+        const liste = etiketten(), n = liste.length, st = Math.PI * 2 / n;
+        let frei = liste.map((t, k) => k).filter(k => !gesperrt(liste[k]));
+        if (!frei.length) { z.gelesen.clear(); zeichnen(); frei = liste.map((t, k) => k); o.querySelector(".p-ergebnis").textContent = "Alle waren dran – neue Runde!"; }
+        laeuft = true; audio();
+        const ziel = frei[Math.floor(Math.random() * frei.length)];
         // Zielwinkel: Die Mitte von Feld „ziel“ steht am Ende genau unter dem Zeiger (oben); nur ganze Zusatz-Umdrehungen
         const zufall = (Math.random() - .5) * st * .7;
         const start = winkel, ende = winkel + Math.PI * 2 * (5 + Math.floor(Math.random() * 3)) + ((((-(ziel + .5) * st + zufall) - winkel) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
         const dauer = 4200, t0 = performance.now();
         let letzteSegment = -1;
-        o.querySelector(".p-ergebnis").innerHTML = "&nbsp;";
+        if (frei.length !== n || !z.gelesen.size) o.querySelector(".p-ergebnis").innerHTML = "&nbsp;";
         (function schritt(t){
             const p = Math.min(1, (t - t0) / dauer), e = 1 - Math.pow(1 - p, 4);
             winkel = start + (ende - start) * e; zeichnen();
             const seg = Math.floor(((-winkel % (Math.PI * 2)) + Math.PI * 4) % (Math.PI * 2) / st);
             if (seg !== letzteSegment) { tick(); letzteSegment = seg; }
             if (p < 1) requestAnimationFrame(schritt);
-            else { laeuft = false; const feld = Math.floor(((((-winkel) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) / st); o.querySelector(".p-ergebnis").textContent = "Platz " + (feld + 1) + "!"; fanfare(); }
+            else {
+                laeuft = false;
+                const feld = Math.floor(((((-winkel) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) / st);
+                const name = liste[feld];
+                z.gelesen.add(name);
+                o.querySelector(".p-ergebnis").textContent = name + (opt.lesen ? " liest vor!" : "!");
+                fanfare();
+                if (opt.fertig) { opt.fertig(name); setTimeout(() => { if (o.isConnected) o.remove(); }, 1600); }
+                else zeichnen();
+            }
         })(t0);
     });
 }
