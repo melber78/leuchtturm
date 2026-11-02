@@ -90,6 +90,12 @@ body{
 <p>Generator, Methodenpool & fertige Vorlagen</p>
 </a>
 
+<a href="sozial-stunden.php" class="portal-card">
+<i class="fa-solid fa-calendar-week"></i>
+<h2>Sozialtraining-Stunden</h2>
+<p>Fertige Stunden, eigene Stunden &amp; Jahresplan – Arbeitsblätter Kl. 1/2 und 3/4</p>
+</a>
+
 <a href="materialien.php" class="portal-card">
 <i class="fa-solid fa-folder-open"></i>
 <h2>Materialien</h2>

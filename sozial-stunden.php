@@ -1,0 +1,1192 @@
+<?php require __DIR__ . "/auth.php"; ?>
+<?php
+/* ============================================================
+   Leuchtturm – Sozialtraining-Stunden
+   Stundenbibliothek (fertige Vorlagen + eigene Stunden), Editor,
+   Jahresplan und Druck (Stundenvorbereitung + Arbeitsblätter,
+   jedes Arbeitsblatt füllt genau eine A4-Seite).
+   Vorlagen: sozial-einheiten.js (kommt per Update)
+   Eigene Daten: material-daten/sozialtraining.json (nie überschrieben)
+   ============================================================ */
+if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+if (empty($_SESSION["sozial_csrf"])) $_SESSION["sozial_csrf"] = bin2hex(random_bytes(16));
+
+$datei = __DIR__ . "/material-daten/sozialtraining.json";
+$dateiKaputt = false;
+$daten = [];
+if (file_exists($datei)) {
+    $inhalt = file_get_contents($datei);
+    $daten = json_decode($inhalt, true);
+    if (!is_array($daten)) { $dateiKaputt = trim((string)$inhalt) !== ""; $daten = []; }
+}
+$daten += ["einheiten" => [], "jahresplan" => null, "rituale" => null];
+$JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE;
+$version = @filemtime(__DIR__ . "/sozial-einheiten.js") ?: 1;
+?>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sozialtraining-Stunden – Leuchtturm</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+:root{
+    --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4;
+    --text:#1f2d36; --grau:#7c8a85; --linie:#dfe5e2;
+    --schatten:0 6px 24px rgba(22,50,74,.1);
+    --rot:#c0392b; --gruen:#2e8b57;
+}
+*{ box-sizing:border-box; }
+body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; }
+button, input, select, textarea{ font-family:inherit; font-size:15px; }
+
+/* ---------- Kopf ---------- */
+.kopf{ background:linear-gradient(135deg,var(--nacht),var(--meer)); color:white; }
+.kopf-innen{ width:min(1200px,95%); margin:0 auto; padding:18px 0 0; }
+.kopf-zeile{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.kopf a.zurueck{ color:rgba(255,255,255,.8); text-decoration:none; font-weight:800; font-size:14px; }
+.kopf h1{ margin:0; font-size:26px; font-weight:900; flex:1; }
+.reiter{ display:flex; gap:4px; margin-top:16px; flex-wrap:wrap; }
+.reiter a{ color:rgba(255,255,255,.8); text-decoration:none; font-weight:800; padding:10px 18px; border-radius:14px 14px 0 0; }
+.reiter a.aktiv{ background:var(--schaum); color:var(--nacht); }
+
+.seite{ width:min(1200px,95%); margin:24px auto 60px; }
+
+/* ---------- Bausteine ---------- */
+.btn{ border:0; border-radius:12px; padding:10px 16px; font-weight:800; cursor:pointer; background:white; color:var(--nacht); box-shadow:0 2px 8px rgba(22,50,74,.1); display:inline-flex; align-items:center; gap:8px; text-decoration:none; }
+.btn:hover{ filter:brightness(.96); }
+.btn.gold{ background:var(--gold); color:var(--nacht); }
+.btn.blau{ background:var(--meer); color:white; }
+.btn.nacht{ background:var(--nacht); color:white; }
+.btn.rot{ background:#fbebeb; color:var(--rot); }
+.btn.klein{ padding:6px 10px; font-size:13px; border-radius:9px; }
+.btn:disabled{ opacity:.5; cursor:default; }
+.karte{ background:white; border-radius:20px; box-shadow:var(--schatten); padding:22px 24px; margin-bottom:20px; }
+.karte h2{ margin:0 0 12px; font-size:19px; font-weight:900; color:var(--nacht); }
+.karte h3{ margin:16px 0 6px; font-size:16px; font-weight:900; }
+.chip{ display:inline-block; border-radius:99px; padding:3px 10px; font-size:12px; font-weight:800; background:#e7f1fb; color:var(--meer); }
+.chip.gold{ background:#f9eeda; color:#8a5a12; }
+.chip.gruen{ background:#e5f4e4; color:var(--gruen); }
+.chip.lila{ background:#efedff; color:#5b4fc4; }
+.hinweis{ background:#f9eeda; border-radius:14px; padding:12px 16px; font-weight:700; margin-bottom:18px; }
+.hinweis.rot{ background:#fbebeb; color:var(--rot); }
+.leer{ color:var(--grau); font-weight:700; text-align:center; padding:30px; }
+input[type=text], input[type=search], input[type=date], input[type=number], select, textarea{
+    border:2px solid var(--linie); border-radius:10px; padding:8px 10px; background:white; color:var(--text); width:100%;
+}
+textarea{ resize:vertical; line-height:1.45; }
+input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--meer); }
+label.feld{ display:block; font-weight:800; font-size:13px; color:var(--grau); margin:10px 0 4px; }
+
+/* ---------- Bibliothek ---------- */
+.werkzeug{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
+.werkzeug input{ flex:1 1 220px; width:auto; }
+.werkzeug select{ flex:0 1 230px; width:auto; }
+.diese-woche{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; background:white; border-left:6px solid var(--gold); border-radius:16px; padding:16px 20px; box-shadow:var(--schatten); margin-bottom:22px; }
+.diese-woche .dw-text{ flex:1; font-weight:800; }
+.diese-woche .dw-text small{ display:block; color:var(--grau); font-weight:700; }
+.kat-titel{ font-size:15px; font-weight:900; color:var(--grau); text-transform:uppercase; letter-spacing:.04em; margin:22px 0 10px; }
+.karten{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+.einheit-karte{ background:white; border-radius:18px; box-shadow:var(--schatten); padding:18px 20px; cursor:pointer; text-decoration:none; color:var(--text); display:flex; flex-direction:column; gap:8px; transition:.15s; border:2px solid transparent; }
+.einheit-karte:hover{ transform:translateY(-3px); border-color:#e7f1fb; }
+.einheit-karte h3{ margin:0; font-size:18px; font-weight:900; }
+.einheit-karte p{ margin:0; font-size:13.5px; color:#55636a; }
+.einheit-karte .chips{ display:flex; gap:6px; flex-wrap:wrap; }
+
+/* ---------- Detail ---------- */
+.detail-kopf{ display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap; margin-bottom:18px; }
+.detail-kopf .titel{ flex:1 1 300px; }
+.detail-kopf h2{ font-size:28px; font-weight:900; margin:6px 0 0; }
+.knopfleiste{ display:flex; gap:8px; flex-wrap:wrap; }
+.zwei{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+@media (max-width:800px){ .zwei{ grid-template-columns:1fr; } }
+.stufe-label{ font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:.05em; color:var(--meer); margin-bottom:4px; }
+.stufe-label.s34{ color:#8a5a12; }
+table.verlauf{ width:100%; border-collapse:collapse; font-size:14.5px; }
+table.verlauf th{ text-align:left; background:var(--schaum); padding:8px 10px; font-weight:900; font-size:13px; color:var(--grau); }
+table.verlauf td{ border-top:1px solid var(--linie); padding:8px 10px; vertical-align:top; }
+table.verlauf td:first-child{ white-space:nowrap; font-weight:800; color:var(--meer); }
+table.verlauf td:nth-child(2){ font-weight:800; }
+@media (max-width:640px){ table.verlauf{ font-size:13px; } table.verlauf th, table.verlauf td{ padding:6px; } }
+.md p{ margin:0 0 10px; line-height:1.55; }
+.md ul, .md ol{ margin:0 0 10px; padding-left:22px; line-height:1.5; }
+.md h4{ margin:14px 0 6px; font-size:15.5px; font-weight:900; color:var(--nacht); }
+.lerntext{ background:#fbfcfb; border:2px solid var(--linie); border-radius:16px; padding:16px 18px; }
+.lerntext h3{ margin-top:0; }
+.uebung{ border:2px solid var(--linie); border-radius:16px; padding:14px 18px; margin-bottom:12px; }
+.uebung-kopf{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:6px; }
+.uebung-kopf strong{ font-size:16px; }
+.material-liste{ margin:0; padding-left:22px; line-height:1.7; }
+.vorschau-paar{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+@media (max-width:800px){ .vorschau-paar{ grid-template-columns:1fr; } }
+.vorschau{ position:relative; overflow:hidden; border-radius:6px; box-shadow:0 2px 14px rgba(22,50,74,.18); background:white; }
+.vorschau > .blatt{ position:absolute; top:0; left:0; transform-origin:top left; }
+.vorschau-status{ font-size:13px; font-weight:800; margin-top:8px; }
+.vorschau-status.ok{ color:var(--gruen); }
+.vorschau-status.voll{ color:var(--rot); }
+
+/* ---------- Editor ---------- */
+.ed-raster{ display:grid; grid-template-columns:1fr 1fr; gap:14px 20px; }
+@media (max-width:800px){ .ed-raster{ grid-template-columns:1fr; } }
+.ed-zeile{ display:grid; grid-template-columns:90px 120px 1fr 1fr 34px; gap:8px; margin-bottom:8px; align-items:start; }
+@media (max-width:800px){ .ed-zeile{ grid-template-columns:1fr 1fr; } }
+.ed-zeile textarea{ min-height:42px; }
+.ed-block{ border:2px solid var(--linie); border-radius:14px; padding:12px 14px; margin-bottom:12px; background:#fcfdfc; }
+.ed-block-kopf{ display:flex; gap:8px; align-items:center; margin-bottom:6px; flex-wrap:wrap; }
+.ed-block-kopf .nr{ width:30px; height:30px; border-radius:50%; background:var(--meer); color:white; display:flex; align-items:center; justify-content:center; font-weight:900; flex:0 0 auto; }
+.ed-block-kopf select{ width:auto; flex:0 1 200px; }
+.ed-block-kopf .platz{ flex:1; }
+.ed-ab{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.85fr); gap:22px; align-items:start; }
+.ed-ab .ed-ab-vorschau{ position:sticky; top:12px; }
+@media (max-width:900px){ .ed-ab{ grid-template-columns:1fr; } .ed-ab .ed-ab-vorschau{ position:static; } }
+.ed-hilfe{ font-size:12.5px; color:var(--grau); font-weight:700; margin-top:4px; }
+.ed-check{ display:flex; align-items:center; gap:8px; font-weight:700; font-size:14px; margin-top:8px; }
+.ed-check input{ width:auto; }
+.ed-paar{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.speicherleiste{ position:sticky; bottom:0; background:rgba(244,246,244,.95); backdrop-filter:blur(4px); padding:12px 0; display:flex; gap:10px; justify-content:flex-end; border-top:2px solid var(--linie); z-index:5; }
+
+/* ---------- Jahresplan ---------- */
+.plan-einstellung{ display:flex; gap:14px; align-items:flex-end; flex-wrap:wrap; }
+.plan-einstellung > div{ flex:0 1 190px; }
+table.plan{ width:100%; border-collapse:collapse; }
+table.plan th{ text-align:left; font-size:13px; color:var(--grau); padding:8px; font-weight:900; }
+table.plan td{ border-top:1px solid var(--linie); padding:6px 8px; vertical-align:middle; }
+table.plan tr.jetzt td{ background:#fff7e8; }
+table.plan tr.frei td{ color:#a0aaa6; }
+table.plan tr.erledigt td .plan-wahl{ opacity:.65; }
+table.plan td.kw{ font-weight:900; white-space:nowrap; color:var(--meer); }
+table.plan td.datum{ white-space:nowrap; font-weight:700; }
+table.plan select, table.plan input[type=text]{ padding:6px 8px; }
+table.plan input[type=checkbox]{ width:20px; height:20px; }
+@media (max-width:760px){
+    table.plan, table.plan tbody, table.plan tr, table.plan td{ display:block; width:100%; }
+    table.plan thead{ display:none; }
+    table.plan tr{ border-top:2px solid var(--linie); padding:8px 0; }
+    table.plan td{ border:0; padding:3px 4px; }
+    table.plan td.kw, table.plan td.datum{ display:inline-block; width:auto; }
+}
+.speicherstatus{ font-weight:800; font-size:13px; color:var(--grau); }
+.speicherstatus.ok{ color:var(--gruen); }
+.speicherstatus.fehler{ color:var(--rot); }
+
+/* ---------- Meldung ---------- */
+#toast{ position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(120px); background:var(--nacht); color:white; padding:12px 20px; border-radius:14px; font-weight:800; box-shadow:var(--schatten); transition:.25s; z-index:50; max-width:90vw; }
+#toast.zeigen{ transform:translateX(-50%) translateY(0); }
+#toast.fehler{ background:var(--rot); }
+
+/* ============================================================
+   ARBEITSBLATT (A4) – wird für Vorschau und Druck genutzt
+   ============================================================ */
+.blatt{
+    width:210mm; height:297mm; overflow:hidden; background:white; color:#1b1b1b;
+    padding:12mm 14mm 10mm; display:flex; flex-direction:column;
+    font-family:"Andika","Nunito",sans-serif; font-size:14pt; line-height:1.35;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+.blatt.zu-voll{ outline:4px solid var(--rot); outline-offset:-4px; }
+.blatt > *{ flex-shrink:0; }
+.blatt-kopf{ display:flex; align-items:flex-end; justify-content:space-between; gap:4mm; border-bottom:.6mm solid var(--meer); padding-bottom:2mm; }
+.blatt-titel{ font-size:1.55em; font-weight:700; line-height:1.15; color:var(--nacht); }
+.blatt-meta{ font-family:"Nunito",sans-serif; font-size:8pt; font-weight:800; color:#8a979c; white-space:nowrap; text-align:right; }
+.blatt-meta i{ color:var(--gold); }
+.blatt-name{ display:flex; gap:2mm; align-items:flex-end; margin:3.5mm 0 1mm; font-size:.85em; }
+.blatt-name .ln{ flex:1; }
+.blatt-name .ln.kurz{ flex:0 0 32mm; }
+.blatt-inhalt{ flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
+.blatt-inhalt > *{ flex-shrink:0; }
+.luft{ flex:1 0 2.5mm; }
+.aufgabe.dehnbar{ flex:6 0 auto; display:flex; flex-direction:column; }
+.af-kopf{ display:flex; gap:2.5mm; align-items:flex-start; font-weight:700; margin-bottom:1.6mm; }
+.af-nr{ flex:0 0 auto; width:1.45em; height:1.45em; border-radius:50%; background:var(--meer); color:white; font-family:"Nunito",sans-serif; font-weight:900; font-size:.85em; display:flex; align-items:center; justify-content:center; margin-top:.05em; }
+.af-text{ flex:1; }
+.af-body{ padding-left:calc(1.45em * .85 + 2.5mm); }
+.aufgabe.ohne-kopf .af-body{ padding-left:calc(1.45em * .85 + 2.5mm); }
+.ln.vorne{ flex:0 0 3.2em; min-width:3.2em; margin-left:0; margin-right:.4em; }
+.ln{ display:inline-block; border-bottom:.35mm solid #555; min-width:3.5em; height:1.3em; flex:1 1 3.5em; margin:0 .15em; }
+.lz{ display:flex; flex-wrap:wrap; align-items:flex-end; min-height:1.9em; }
+.lz + .lz{ margin-top:.25em; }
+.lz > span.t{ white-space:pre-wrap; }
+.box{ display:inline-block; width:.9em; height:.9em; border:.35mm solid #333; border-radius:.12em; vertical-align:-.1em; margin-right:.15em; flex:0 0 auto; background:white; }
+.schreiblinie{ height:2.1em; border-bottom:.35mm solid #555; }
+.blatt.stufe12 .schreiblinie{ height:2.4em; }
+.kreuz-liste{ display:flex; flex-direction:column; gap:.45em; }
+.kreuz-liste.reihe{ flex-direction:row; flex-wrap:wrap; gap:.4em 1.4em; }
+.kreuz{ display:flex; align-items:flex-end; gap:.45em; }
+.kreuz .box{ width:1em; height:1em; margin:0; align-self:center; }
+.kreuz .lz{ min-height:0; flex:1; }
+.zuordnen{ display:grid; grid-template-columns:minmax(0,max-content) 18mm minmax(0,max-content); justify-content:center; row-gap:.55em; align-items:center; }
+.zu-l{ display:flex; align-items:center; justify-content:flex-end; gap:.5em; text-align:right; }
+.zu-r{ display:flex; align-items:center; gap:.5em; }
+.punkt{ flex:0 0 auto; width:.62em; height:.62em; border-radius:50%; background:#333; }
+table.ab-tab{ width:100%; border-collapse:collapse; }
+table.ab-tab th{ background:#eef4f8; text-align:left; font-weight:700; padding:.3em .5em; border:.3mm solid #9aa9b2; font-size:.9em; }
+table.ab-tab td{ border:.3mm solid #9aa9b2; padding:.35em .5em; vertical-align:middle; height:2.3em; }
+table.ab-tab td .lz{ min-height:0; }
+.gesichter{ display:flex; justify-content:space-around; gap:3mm; flex-wrap:wrap; }
+.gesicht{ text-align:center; width:5.2em; }
+.gesicht svg{ width:4.6em; height:4.6em; display:block; margin:0 auto .2em; }
+.blatt.stufe34 .gesicht svg{ width:3.8em; height:3.8em; }
+.malfeld.mit-bild{ min-height:62mm; }
+.malfeld{ flex:1 1 auto; min-height:30mm; border:.5mm dashed #9aa9b2; border-radius:4mm; position:relative; }
+.malfeld svg{ position:absolute; left:6%; top:7%; width:88%; height:86%; }
+.satz-liste{ display:flex; flex-direction:column; gap:.5em; }
+.satz{ display:flex; gap:.4em; }
+.satz .snr{ font-weight:700; flex:0 0 1.2em; padding-top:.45em; }
+.satz .sinhalt{ flex:1; }
+
+/* Stundenvorbereitung (Lehrkraft) – Druck */
+.lehrer-druck{ font-family:"Nunito",sans-serif; font-size:10.5pt; line-height:1.45; color:#1f2d36; background:white; }
+.lehrer-druck .ld-kopf{ border-bottom:.7mm solid var(--meer); padding-bottom:3mm; margin-bottom:4mm; }
+.lehrer-druck .ld-meta{ font-size:9pt; font-weight:800; color:#7c8a85; }
+.lehrer-druck h1{ font-size:20pt; margin:1mm 0 0; font-weight:900; color:var(--nacht); }
+.lehrer-druck h2{ font-size:13pt; margin:5mm 0 2mm; font-weight:900; color:var(--nacht); break-after:avoid; }
+.lehrer-druck h3{ font-size:11pt; margin:3mm 0 1mm; font-weight:900; break-after:avoid; }
+.lehrer-druck table{ width:100%; border-collapse:collapse; font-size:9.5pt; }
+.lehrer-druck th{ background:#eef4f8; text-align:left; padding:1.5mm 2mm; border:.3mm solid #c5d0d6; }
+.lehrer-druck td{ padding:1.5mm 2mm; border:.3mm solid #c5d0d6; vertical-align:top; }
+.lehrer-druck tr{ break-inside:avoid; }
+.lehrer-druck .md p{ margin:0 0 2mm; }
+.lehrer-druck .ld-uebung{ break-inside:avoid; margin-bottom:3mm; }
+.lehrer-druck .ld-badge{ font-size:8.5pt; font-weight:800; color:var(--meer); }
+
+/* ---------- Druck ---------- */
+#druck{ position:absolute; left:-10000px; top:0; visibility:hidden; }
+@page{ size:A4; margin:0; }
+@page lehrer{ size:A4; margin:14mm 15mm 14mm; }
+@media print{
+    body{ background:white; }
+    body > *:not(#druck){ display:none !important; }
+    #druck{ position:static; visibility:visible; }
+    #druck .blatt{ break-after:page; outline:none; }
+    #druck > :last-child{ break-after:auto; }
+    #druck .lehrer-druck{ page:lehrer; break-after:page; }
+}
+</style>
+</head>
+<body>
+
+<header class="kopf">
+    <div class="kopf-innen">
+        <div class="kopf-zeile">
+            <a class="zurueck" href="index.php"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
+            <h1><i class="fa-solid fa-people-group"></i> Sozialtraining-Stunden</h1>
+        </div>
+        <nav class="reiter">
+            <a href="#bibliothek" data-reiter="bibliothek"><i class="fa-solid fa-book-open"></i> Stunden</a>
+            <a href="#jahresplan" data-reiter="jahresplan"><i class="fa-solid fa-calendar-week"></i> Jahresplan</a>
+            <a href="#rituale" data-reiter="rituale"><i class="fa-solid fa-hands-holding-circle"></i> Rituale</a>
+        </nav>
+    </div>
+</header>
+
+<main class="seite">
+    <?php if ($dateiKaputt): ?>
+    <div class="hinweis rot"><i class="fa-solid fa-triangle-exclamation"></i> Die Datei material-daten/sozialtraining.json ist beschädigt. Deine eigenen Stunden werden deshalb gerade nicht angezeigt, und Speichern ist gesperrt, damit nichts verloren geht. Eine Sicherung findest du unter update-backup/.</div>
+    <?php endif; ?>
+    <div id="inhalt"></div>
+</main>
+
+<div id="toast"></div>
+<div id="druck"></div>
+
+<script src="sozial-einheiten.js?v=<?= $version ?>"></script>
+<script>
+window.SOZIAL_DATEN = <?= json_encode($daten, $JSON) ?>;
+window.SOZIAL_CSRF = <?= json_encode($_SESSION["sozial_csrf"], $JSON) ?>;
+window.SOZIAL_GESPERRT = <?= $dateiKaputt ? "true" : "false" ?>;
+</script>
+<script>
+"use strict";
+
+/* ============================================================
+   Grundlagen
+   ============================================================ */
+const VORLAGEN = window.SOZIAL_VORLAGEN || [];
+const KATEGORIEN = window.SOZIAL_KATEGORIEN || ["Sonstiges"];
+const DATEN = window.SOZIAL_DATEN;
+DATEN.einheiten = Array.isArray(DATEN.einheiten) ? DATEN.einheiten : [];
+const inhalt = document.getElementById("inhalt");
+
+const FUER = { alle: "Alle", "12": "Kl. 1/2", "34": "Kl. 3/4" };
+const TYPEN = {
+    schreiben: "Schreiblinien",
+    luecken:   "Sätze mit Lücken",
+    ankreuzen: "Ankreuzen",
+    zuordnen:  "Verbinden",
+    tabelle:   "Tabelle",
+    gesichter: "Gesichter / Gefühle",
+    malen:     "Malfeld"
+};
+const BILDER = { "": "– kein Bild –", stopp: "Stopp-Schild", herz: "Herz", stern: "Stern", ampel: "Ampel", sprechblase: "Sprechblase", sonne: "Sonne", haende: "Zwei Hände" };
+
+function esc(s){ return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c])); }
+function inline(s){
+    return esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/(^|[^*])\*([^*\n]+?)\*/g, "$1<em>$2</em>");
+}
+// Kleine Textformatierung: Absätze, Listen, **fett**, *kursiv*, ### Überschrift
+function md(text){
+    const zeilen = String(text ?? "").replace(/\r/g, "").split("\n");
+    let html = "", liste = null, absatz = [];
+    const absatzEnde = () => { if (absatz.length) { html += "<p>" + absatz.map(inline).join("<br>") + "</p>"; absatz = []; } };
+    const listeEnde = () => { if (liste) { html += `<${liste.typ}>` + liste.items.map(i => "<li>" + inline(i) + "</li>").join("") + `</${liste.typ}>`; liste = null; } };
+    for (const z of zeilen) {
+        let m;
+        if (!z.trim()) { absatzEnde(); listeEnde(); continue; }
+        if ((m = z.match(/^###\s+(.*)/))) { absatzEnde(); listeEnde(); html += "<h4>" + inline(m[1]) + "</h4>"; continue; }
+        if ((m = z.match(/^\s*[-•]\s+(.*)/)) || (m = z.match(/^\s*\d+[.)]\s+(.*)/))) {
+            const typ = /^\s*\d/.test(z) ? "ol" : "ul";
+            absatzEnde();
+            if (liste && liste.typ !== typ) listeEnde();
+            if (!liste) liste = { typ, items: [] };
+            liste.items.push(m[1]);
+            continue;
+        }
+        listeEnde();
+        absatz.push(z);
+    }
+    absatzEnde(); listeEnde();
+    return html;
+}
+function kopie(o){ return JSON.parse(JSON.stringify(o)); }
+function sauber(e){ const k = kopie(e); for (const s of Object.keys(k)) if (s.startsWith("_")) delete k[s]; return k; }
+
+let toastZeit;
+function toast(text, fehler = false){
+    const t = document.getElementById("toast");
+    t.textContent = text; t.classList.toggle("fehler", fehler); t.classList.add("zeigen");
+    clearTimeout(toastZeit); toastZeit = setTimeout(() => t.classList.remove("zeigen"), fehler ? 6000 : 2600);
+}
+
+async function senden(daten){
+    if (window.SOZIAL_GESPERRT) throw new Error("Speichern ist gesperrt, weil sozialtraining.json beschädigt ist.");
+    let r;
+    try {
+        r = await fetch("sozial-speichern.php", { method: "POST", credentials: "same-origin",
+            headers: { "Content-Type": "application/json", "X-CSRF": window.SOZIAL_CSRF }, body: JSON.stringify(daten) });
+    } catch (e) { throw new Error("Keine Verbindung zum Server. Bitte gleich noch einmal versuchen."); }
+    let antwort;
+    try { antwort = await r.json(); } catch (e) { throw new Error("Der Server hat unerwartet geantwortet (Code " + r.status + ")."); }
+    if (!antwort.ok) throw new Error(antwort.fehler || "Speichern hat nicht geklappt.");
+    return antwort;
+}
+
+/* ============================================================
+   Stunden-Verwaltung
+   ============================================================ */
+function alleEinheiten(){
+    const eigene = DATEN.einheiten;
+    const ersetzt = new Set(eigene.map(e => e.ersetzt).filter(Boolean));
+    return [
+        ...VORLAGEN.filter(v => !ersetzt.has(v.id)).map(v => ({ ...v, _art: "vorlage" })),
+        ...eigene.map(e => ({ ...e, _art: e.ersetzt ? "angepasst" : "eigen" }))
+    ];
+}
+// Findet eine Stunde – eine angepasste Vorlage ersetzt dabei das Original (auch im Jahresplan)
+function finde(id){
+    if (!id) return null;
+    const eigen = DATEN.einheiten.find(e => e.id === id);
+    if (eigen) return { ...eigen, _art: eigen.ersetzt ? "angepasst" : "eigen" };
+    const anpassung = DATEN.einheiten.find(e => e.ersetzt === id);
+    if (anpassung) return { ...anpassung, _art: "angepasst" };
+    const v = VORLAGEN.find(v => v.id === id);
+    return v ? { ...v, _art: "vorlage" } : null;
+}
+function artChip(e){
+    if (e._art === "vorlage") return '<span class="chip">Vorlage</span>';
+    if (e._art === "angepasst") return '<span class="chip lila">Angepasst</span>';
+    return '<span class="chip gruen">Eigene</span>';
+}
+function katSort(a, b){
+    const ia = KATEGORIEN.indexOf(a.kategorie), ib = KATEGORIEN.indexOf(b.kategorie);
+    return ((ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib)) || String(a.titel).localeCompare(String(b.titel), "de");
+}
+function leereEinheit(){
+    return {
+        titel: "", kategorie: KATEGORIEN[0], dauer: 40, ziel12: "", ziel34: "", material: "",
+        verlauf: kopie(window.SOZIAL_VERLAUF_STANDARD || []),
+        lerntext12: { titel: "", text: "" }, lerntext34: { titel: "", text: "" },
+        uebungen: [{ titel: "", fuer: "alle", dauer: "5 Min", text: "" }],
+        ab12: { titel: "", aufgaben: [{ typ: "ankreuzen", text: "", optionen: [], nebeneinander: false }, { typ: "malen", text: "Male ein Bild dazu.", bild: "" }] },
+        ab34: { titel: "", aufgaben: [{ typ: "luecken", text: "", saetze: [], nummern: true }] }
+    };
+}
+
+/* ============================================================
+   Bilder: Gesichter und Ausmalbilder (eigene Strichzeichnungen)
+   ============================================================ */
+function gefuehlArt(name){
+    const n = String(name).toLowerCase();
+    if (/froh|fröhlich|freu|glücklich|lustig/.test(n)) return "froh";
+    if (/traurig|trauer|einsam/.test(n)) return "traurig";
+    if (/wut|wüt|sauer|ärger|zorn/.test(n)) return "wuetend";
+    if (/angst|ängst|furcht|sorge|nervös/.test(n)) return "angst";
+    if (/ruhig|entspannt|gelassen|zufrieden/.test(n)) return "ruhig";
+    if (/überrasch|staun/.test(n)) return "ueberrascht";
+    if (/stolz/.test(n)) return "stolz";
+    return "neutral";
+}
+function gesichtSvg(art, leer){
+    const s = 'fill="none" stroke="#222" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"';
+    let teile = `<circle cx="50" cy="50" r="45" ${s}/>`;
+    if (!leer) {
+        const augen = `<circle cx="35" cy="42" r="4.2" fill="#222"/><circle cx="65" cy="42" r="4.2" fill="#222"/>`;
+        const f = {
+            froh: augen + `<path d="M29 60 Q50 82 71 60" ${s}/>`,
+            traurig: augen + `<path d="M30 75 Q50 56 70 75" ${s}/><path d="M66 52 Q63 58 66 61 Q69 58 66 52 Z" fill="#7fb3d5" stroke="#222" stroke-width="1.5"/>`,
+            wuetend: `<path d="M24 29 L43 37" ${s}/><path d="M76 29 L57 37" ${s}/>` + `<circle cx="35" cy="44" r="4.2" fill="#222"/><circle cx="65" cy="44" r="4.2" fill="#222"/>` + `<path d="M32 72 Q50 61 68 72" ${s}/>`,
+            angst: `<path d="M26 31 Q35 24 44 30" ${s}/><path d="M56 30 Q65 24 74 31" ${s}/><circle cx="35" cy="43" r="6.5" ${s}/><circle cx="65" cy="43" r="6.5" ${s}/><circle cx="35" cy="43" r="2.4" fill="#222"/><circle cx="65" cy="43" r="2.4" fill="#222"/>` + `<path d="M31 70 Q37 63 43 70 Q50 77 57 70 Q63 63 69 70" ${s}/>`,
+            ruhig: `<path d="M27 43 Q35 48 43 43" ${s}/><path d="M57 43 Q65 48 73 43" ${s}/><path d="M37 64 Q50 72 63 64" ${s}/>`,
+            ueberrascht: `<path d="M27 30 Q35 25 43 30" ${s}/><path d="M57 30 Q65 25 73 30" ${s}/>` + augen + `<ellipse cx="50" cy="68" rx="7" ry="9" ${s}/>`,
+            stolz: `<path d="M27 43 Q35 37 43 43" ${s}/><path d="M57 43 Q65 37 73 43" ${s}/><path d="M32 60 Q50 76 68 60" ${s}/>`,
+            neutral: augen + `<path d="M35 66 L65 66" ${s}/>`
+        };
+        teile += f[art] || f.neutral;
+    }
+    return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">${teile}</svg>`;
+}
+function ausmalbild(name){
+    const s = 'fill="none" stroke="#222" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"';
+    const b = {
+        stopp: `<svg viewBox="0 0 120 150"><polygon points="38,5 82,5 115,38 115,82 82,115 38,115 5,82 5,38" ${s}/><polygon points="41,12 79,12 108,41 108,79 79,108 41,108 12,79 12,41" ${s}/><text x="60" y="70" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="27" ${s} stroke-width="1.6">STOPP</text><rect x="55" y="115" width="10" height="33" ${s}/></svg>`,
+        herz: `<svg viewBox="0 0 120 110"><path d="M60 102 C20 72 5 52 5 32 C5 15 18 5 33 5 C45 5 54 12 60 22 C66 12 75 5 87 5 C102 5 115 15 115 32 C115 52 100 72 60 102 Z" ${s}/></svg>`,
+        stern: `<svg viewBox="0 0 120 115"><polygon points="60,5 74,42 114,43 82,67 94,107 60,83 26,107 38,67 6,43 46,42" ${s}/></svg>`,
+        ampel: `<svg viewBox="0 0 70 160"><rect x="8" y="5" width="54" height="128" rx="12" ${s}/><circle cx="35" cy="30" r="15" ${s}/><circle cx="35" cy="69" r="15" ${s}/><circle cx="35" cy="108" r="15" ${s}/><rect x="30" y="133" width="10" height="24" ${s}/></svg>`,
+        sprechblase: `<svg viewBox="0 0 140 110"><path d="M20 5 H120 Q135 5 135 20 V65 Q135 80 120 80 H55 L28 104 L33 80 H20 Q5 80 5 65 V20 Q5 5 20 5 Z" ${s}/></svg>`,
+        sonne: `<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="26" ${s}/>${[0,45,90,135,180,225,270,315].map(w => { const r = w * Math.PI / 180; return `<line x1="${60 + 36 * Math.cos(r)}" y1="${60 + 36 * Math.sin(r)}" x2="${60 + 54 * Math.cos(r)}" y2="${60 + 54 * Math.sin(r)}" ${s}/>`; }).join("")}</svg>`,
+        haende: `<svg viewBox="0 0 160 110"><path d="M10 70 Q10 50 30 45 L62 38 Q74 36 76 46 Q77 54 66 57 L52 60" ${s}/><path d="M150 70 Q150 50 130 45 L98 38 Q86 36 84 46 Q83 54 94 57 L108 60" ${s}/><path d="M10 70 Q20 95 50 95 L110 95 Q140 95 150 70" ${s}/><path d="M60 68 Q80 58 100 68" ${s}/></svg>`
+    };
+    return b[name] || "";
+}
+
+/* ============================================================
+   Arbeitsblatt bauen (A4) und einpassen
+   ============================================================ */
+// Text mit ___ (Schreiblinie) und ☐ (Kästchen), mehrzeilig
+function linienText(text){
+    return String(text ?? "").split("\n").map(zeile => {
+        const teile = zeile.split(/_{3,}/);
+        let html = "";
+        teile.forEach((t, i) => {
+            if (t) html += `<span class="t">${inline(t).replace(/☐/g, '<span class="box"></span>')}</span>`;
+            // Linie ganz vorn mit Text dahinter = kurzes Feld (z. B. zum Nummerieren oder für F/K)
+            if (i < teile.length - 1) html += (i === 0 && !t && teile[1].trim()) ? '<span class="ln vorne"></span>' : '<span class="ln"></span>';
+        });
+        return `<div class="lz">${html || '<span class="ln"></span>'}</div>`;
+    }).join("");
+}
+function aufgabeHtml(a){
+    const typ = a.typ || "schreiben";
+    switch (typ) {
+        case "schreiben":
+            return Array.from({ length: Math.max(1, Math.min(15, +a.zeilen || 2)) }, () => '<div class="schreiblinie"></div>').join("");
+        case "luecken":
+            return '<div class="satz-liste">' + (a.saetze || []).map((s, i) =>
+                `<div class="satz">${a.nummern ? `<span class="snr">${i + 1}.</span>` : ""}<div class="sinhalt">${linienText(s)}</div></div>`).join("") + "</div>";
+        case "ankreuzen":
+            return `<div class="kreuz-liste${a.nebeneinander ? " reihe" : ""}">` + (a.optionen || []).map(o =>
+                `<div class="kreuz"><span class="box"></span>${linienText(o)}</div>`).join("") + "</div>";
+        case "zuordnen": {
+            const l = a.links || [], r = a.rechts || [], n = Math.max(l.length, r.length);
+            let html = '<div class="zuordnen">';
+            for (let i = 0; i < n; i++) {
+                html += `<div class="zu-l">${l[i] != null ? `<span>${inline(l[i])}</span><span class="punkt"></span>` : ""}</div><div></div>`;
+                html += `<div class="zu-r">${r[i] != null ? `<span class="punkt"></span><span>${inline(r[i])}</span>` : ""}</div>`;
+            }
+            return html + "</div>";
+        }
+        case "tabelle":
+            return '<table class="ab-tab">' +
+                ((a.spalten || []).length ? "<tr>" + a.spalten.map(s => `<th>${inline(s)}</th>`).join("") + "</tr>" : "") +
+                (a.zeilen || []).map(z => "<tr>" + (a.spalten?.length ? a.spalten.map((_, i) => z[i]) : z).map(c => `<td>${c ? linienText(c) : ""}</td>`).join("") + "</tr>").join("") +
+                "</table>";
+        case "gesichter":
+            return '<div class="gesichter">' + (a.gefuehle || []).map(g =>
+                `<div class="gesicht">${gesichtSvg(gefuehlArt(g), !!a.leer)}<div>${inline(g)}</div></div>`).join("") + "</div>";
+        case "malen":
+            return `<div class="malfeld${a.bild ? " mit-bild" : ""}">${ausmalbild(a.bild)}</div>`;
+    }
+    return "";
+}
+function blattBauen(e, stufe){
+    const ab = e["ab" + stufe] || { titel: "", aufgaben: [] };
+    const blatt = document.createElement("div");
+    blatt.className = "blatt stufe" + stufe;
+    let nr = 0, teile = [];
+    for (const a of (ab.aufgaben || [])) {
+        const mitKopf = String(a.text || "").trim() !== "";
+        if (mitKopf) nr++;
+        const dehnbar = a.typ === "malen" ? " dehnbar" : "";
+        teile.push(`<div class="aufgabe${dehnbar}${mitKopf ? "" : " ohne-kopf"}">` +
+            (mitKopf ? `<div class="af-kopf"><span class="af-nr">${nr}</span><span class="af-text">${inline(a.text)}</span></div>` : "") +
+            `<div class="af-body"${a.typ === "malen" ? ' style="flex:1;display:flex;flex-direction:column"' : ""}>${aufgabeHtml(a)}</div></div>`);
+    }
+    // Aufgaben ohne eigene Überschrift hängen direkt an der vorherigen
+    let inhaltHtml = "";
+    teile.forEach((t, i) => {
+        const ohneKopf = t.includes("ohne-kopf");
+        if (i > 0 && !ohneKopf) inhaltHtml += '<div class="luft"></div>';
+        else if (i > 0) inhaltHtml += '<div style="height:1.5mm"></div>';
+        inhaltHtml += t;
+    });
+    inhaltHtml += '<div class="luft"></div>';
+    blatt.innerHTML =
+        `<div class="blatt-kopf"><div class="blatt-titel">${inline(ab.titel || e.titel || "Arbeitsblatt")}</div>` +
+        `<div class="blatt-meta"><i class="fa-solid fa-tower-observation"></i> Sozialtraining<br>Klasse ${stufe === "12" ? "1/2" : "3/4"}</div></div>` +
+        `<div class="blatt-name"><span>Name:</span><span class="ln"></span><span>Datum:</span><span class="ln kurz"></span></div>` +
+        `<div class="blatt-inhalt">${inhaltHtml}</div>`;
+    return blatt;
+}
+// Größte Schrift suchen, bei der alles auf genau eine Seite passt; der Rest der Seite
+// geht an Malfelder bzw. gleichmäßig an die Abstände.
+function passt(b){ return b.scrollHeight <= b.clientHeight + 1; }
+function einpassen(blatt){
+    const [min, max] = blatt.classList.contains("stufe12") ? [10, 19] : [9, 16];
+    blatt.style.fontSize = max + "pt";
+    if (passt(blatt)) { blatt.classList.remove("zu-voll"); return true; }
+    let lo = min, hi = max;
+    for (let i = 0; i < 9; i++) {
+        const m = (lo + hi) / 2;
+        blatt.style.fontSize = m + "pt";
+        if (passt(blatt)) lo = m; else hi = m;
+    }
+    blatt.style.fontSize = lo + "pt";
+    const ok = passt(blatt);
+    blatt.classList.toggle("zu-voll", !ok);
+    return ok;
+}
+let schriftenBereit = null;
+function schriften(){
+    if (!schriftenBereit) schriftenBereit = Promise.race([
+        Promise.all([document.fonts.load("700 16px Andika"), document.fonts.load("400 16px Andika"), document.fonts.load("900 16px Nunito")]).then(() => document.fonts.ready),
+        new Promise(r => setTimeout(r, 2500))
+    ]);
+    return schriftenBereit;
+}
+// Blatt in einen Vorschau-Rahmen setzen (verkleinert dargestellt, gemessen in Originalgröße)
+async function vorschauZeigen(rahmen, e, stufe){
+    rahmen.innerHTML = "";
+    const blatt = blattBauen(e, stufe);
+    rahmen.appendChild(blatt);
+    const skalieren = () => {
+        const w = rahmen.clientWidth || 300;
+        const f = w / blatt.offsetWidth;
+        blatt.style.transform = `scale(${f})`;
+        rahmen.style.height = (blatt.offsetHeight * f) + "px";
+    };
+    skalieren();
+    if (!rahmen._beobachter) { rahmen._beobachter = new ResizeObserver(() => { const b = rahmen.querySelector(".blatt"); if (b) { const f = rahmen.clientWidth / b.offsetWidth; b.style.transform = `scale(${f})`; rahmen.style.height = (b.offsetHeight * f) + "px"; } }); rahmen._beobachter.observe(rahmen); }
+    let ok = einpassen(blatt);
+    await schriften();
+    if (rahmen.contains(blatt)) ok = einpassen(blatt);
+    const status = rahmen.parentElement.querySelector(".vorschau-status");
+    if (status) {
+        status.className = "vorschau-status " + (ok ? "ok" : "voll");
+        status.innerHTML = ok ? '<i class="fa-solid fa-check"></i> Passt genau auf eine A4-Seite'
+                              : '<i class="fa-solid fa-triangle-exclamation"></i> Zu viel für eine Seite – bitte Aufgaben kürzen oder weglassen';
+    }
+    return ok;
+}
+
+/* ============================================================
+   Stundenvorbereitung (Lehrkraft) und Druck
+   ============================================================ */
+function materialListe(text){
+    const z = String(text || "").split("\n").map(s => s.trim()).filter(Boolean);
+    return z.length ? "<ul>" + z.map(s => "<li>" + inline(s) + "</li>").join("") + "</ul>" : "<p>–</p>";
+}
+function verlaufTabelle(e, klasse){
+    return `<table class="${klasse}"><tr><th>Min</th><th>Phase</th><th>Kl. 1/2</th><th>Kl. 3/4</th></tr>` +
+        (e.verlauf || []).map(v => `<tr><td>${esc(v.zeit)}</td><td>${esc(v.phase)}</td><td>${inline(v.k12)}</td><td>${inline(v.k34)}</td></tr>`).join("") + "</table>";
+}
+function lehrerHtml(e){
+    return `<div class="lehrer-druck">
+        <div class="ld-kopf"><div class="ld-meta">Sozialtraining · ${esc(e.kategorie)} · ${esc(e.dauer || 40)} Minuten · Klasse 1/2 und 3/4</div><h1>${esc(e.titel)}</h1></div>
+        <table><tr><th style="width:50%">Ziel Kl. 1/2</th><th>Ziel Kl. 3/4</th></tr><tr><td>${inline(e.ziel12)}</td><td>${inline(e.ziel34)}</td></tr></table>
+        <h2>Material</h2>${materialListe(e.material)}
+        <h2>Stundenverlauf</h2>${verlaufTabelle(e, "")}
+        ${e.lerntext12?.text ? `<h2>Lerntext Kl. 1/2: ${esc(e.lerntext12.titel)}</h2><div class="md">${md(e.lerntext12.text)}</div>` : ""}
+        ${e.lerntext34?.text ? `<h2>Lerntext Kl. 3/4: ${esc(e.lerntext34.titel)}</h2><div class="md">${md(e.lerntext34.text)}</div>` : ""}
+        ${(e.uebungen || []).length ? "<h2>Übungen</h2>" + e.uebungen.map(u => `<div class="ld-uebung"><h3>${esc(u.titel)} <span class="ld-badge">· ${FUER[u.fuer] || "Alle"}${u.dauer ? " · " + esc(u.dauer) : ""}</span></h3><div class="md">${md(u.text)}</div></div>`).join("") : ""}
+    </div>`;
+}
+async function drucken(e, was){
+    const ziel = document.getElementById("druck");
+    ziel.innerHTML = "";
+    if (was === "rituale") {
+        ziel.innerHTML = `<div class="lehrer-druck"><div class="ld-kopf"><div class="ld-meta">Sozialtraining · gilt für jede Stunde</div><h1>Feste Rituale</h1></div><div class="md">${md(rituale())}</div></div>`;
+    } else {
+        if (was === "lehrer" || was === "alles") ziel.insertAdjacentHTML("beforeend", lehrerHtml(e));
+        const blaetter = [];
+        if (was === "ab12" || was === "alles") blaetter.push(blattBauen(e, "12"));
+        if (was === "ab34" || was === "alles") blaetter.push(blattBauen(e, "34"));
+        blaetter.forEach(b => ziel.appendChild(b));
+        await schriften();
+        const voll = blaetter.filter(b => !einpassen(b));
+        if (voll.length && !confirm("Ein Arbeitsblatt ist zu voll für eine Seite und wird unten abgeschnitten. Trotzdem drucken?")) { ziel.innerHTML = ""; return; }
+    }
+    const titel = document.title;
+    document.title = (e ? e.titel : "Rituale") + (was === "ab12" ? " – AB Kl. 1-2" : was === "ab34" ? " – AB Kl. 3-4" : "");
+    window.addEventListener("afterprint", () => { ziel.innerHTML = ""; document.title = titel; }, { once: true });
+    setTimeout(() => window.print(), 60);
+}
+
+/* ============================================================
+   Jahresplan – Datumshilfen
+   ============================================================ */
+function tag(iso){ const [j, m, t] = iso.split("-").map(Number); return new Date(Date.UTC(j, m - 1, t)); }
+function iso(d){ return d.toISOString().slice(0, 10); }
+function montag(d){ const x = new Date(d); const w = (x.getUTCDay() + 6) % 7; x.setUTCDate(x.getUTCDate() - w); return x; }
+function heuteUtc(){ const n = new Date(); return new Date(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate())); }
+function kw(d){ const x = new Date(d); x.setUTCDate(x.getUTCDate() + 3 - ((x.getUTCDay() + 6) % 7)); const j = new Date(Date.UTC(x.getUTCFullYear(), 0, 4)); return 1 + Math.round(((x - j) / 864e5 - 3 + ((j.getUTCDay() + 6) % 7)) / 7); }
+function kurzDatum(d){ return String(d.getUTCDate()).padStart(2, "0") + "." + String(d.getUTCMonth() + 1).padStart(2, "0") + "."; }
+function plan(){
+    if (!DATEN.jahresplan || !DATEN.jahresplan.start) {
+        const s = montag(heuteUtc()), en = new Date(s); en.setUTCDate(en.getUTCDate() + 7 * 35);
+        DATEN.jahresplan = { start: iso(s), ende: iso(en), wochen: {} };
+    }
+    if (!DATEN.jahresplan.wochen || Array.isArray(DATEN.jahresplan.wochen)) DATEN.jahresplan.wochen = {};
+    return DATEN.jahresplan;
+}
+function planWochen(){
+    const p = plan(), liste = [];
+    let d = montag(tag(p.start)); const ende = tag(p.ende);
+    while (d <= ende && liste.length < 60) { liste.push(new Date(d)); d.setUTCDate(d.getUTCDate() + 7); }
+    return liste;
+}
+let planTimer = null;
+function planSpeichern(){
+    const st = document.getElementById("planStatus");
+    if (st) { st.className = "speicherstatus"; st.textContent = "Speichert …"; }
+    clearTimeout(planTimer);
+    planTimer = setTimeout(async () => {
+        try {
+            await senden({ aktion: "jahresplan_speichern", jahresplan: DATEN.jahresplan });
+            const s = document.getElementById("planStatus");
+            if (s) { s.className = "speicherstatus ok"; s.innerHTML = '<i class="fa-solid fa-check"></i> Gespeichert'; }
+        } catch (err) {
+            const s = document.getElementById("planStatus");
+            if (s) { s.className = "speicherstatus fehler"; s.textContent = err.message; }
+            toast(err.message, true);
+        }
+    }, 700);
+}
+// Welche Stunde ist diese (oder die nächste offene) Woche dran?
+function aktuelleWoche(){
+    if (!DATEN.jahresplan) return null;
+    const heute = montag(heuteUtc());
+    for (const d of planWochen()) {
+        if (d < heute) continue;
+        const w = DATEN.jahresplan.wochen[iso(d)];
+        if (w && w.einheit && !w.frei && !w.erledigt) return { datum: d, eintrag: w, einheit: finde(w.einheit), diese: +d === +heute };
+    }
+    return null;
+}
+function planVerwendung(e){
+    if (!DATEN.jahresplan) return [];
+    const ids = [e.id, e.ersetzt].filter(Boolean);
+    return planWochen().filter(d => { const w = DATEN.jahresplan.wochen[iso(d)]; return w && ids.includes(w.einheit); });
+}
+
+/* ============================================================
+   Ansichten
+   ============================================================ */
+let editor = null;   // { entwurf, geaendert, quelleId }
+let ignoriereHash = false;
+
+function reiterSetzen(name){
+    document.querySelectorAll(".reiter a").forEach(a => a.classList.toggle("aktiv", a.dataset.reiter === name));
+}
+function route(){
+    if (ignoriereHash) { ignoriereHash = false; return; }
+    const [ansicht, id] = decodeURIComponent(location.hash.slice(1)).split("/");
+    if (editor && editor.geaendert && ansicht !== "bearbeiten" && ansicht !== "neu") {
+        if (!confirm("Deine Änderungen sind noch nicht gespeichert. Trotzdem verlassen?")) {
+            ignoriereHash = true; history.back(); return;
+        }
+    }
+    if (ansicht !== "bearbeiten" && ansicht !== "neu") editor = null;
+    window.scrollTo(0, 0);
+    if (ansicht === "stunde") return zeigeStunde(id);
+    if (ansicht === "bearbeiten") return zeigeEditor(id);
+    if (ansicht === "neu") return zeigeEditor(null);
+    if (ansicht === "jahresplan") return zeigeJahresplan();
+    if (ansicht === "rituale") return zeigeRituale();
+    zeigeBibliothek();
+}
+window.addEventListener("hashchange", route);
+// Zu einer Ansicht wechseln – auch wenn die Adresse gleich bleibt, wird neu gezeichnet
+function gehe(hash){ if (location.hash === hash) route(); else location.hash = hash; }
+window.addEventListener("beforeunload", ev => { if (editor && editor.geaendert) { ev.preventDefault(); ev.returnValue = ""; } });
+
+/* ---------- Bibliothek ---------- */
+let filterText = "", filterKat = "";
+function zeigeBibliothek(){
+    reiterSetzen("bibliothek");
+    const kats = [...new Set([...KATEGORIEN, ...alleEinheiten().map(e => e.kategorie).filter(Boolean)])];
+    inhalt.innerHTML = `
+        <div id="dieseWoche"></div>
+        <div class="werkzeug">
+            <input type="search" id="suche" placeholder="Stunde suchen …" value="${esc(filterText)}">
+            <select id="filterKat"><option value="">Alle Themen</option>${kats.map(k => `<option ${k === filterKat ? "selected" : ""}>${esc(k)}</option>`).join("")}</select>
+            <a class="btn gold" href="#neu"><i class="fa-solid fa-plus"></i> Neue Stunde</a>
+        </div>
+        <div id="kartenListe"></div>`;
+    const dw = aktuelleWoche();
+    if (dw && dw.einheit) {
+        document.getElementById("dieseWoche").innerHTML = `<div class="diese-woche">
+            <i class="fa-solid fa-calendar-day" style="font-size:26px;color:var(--gold)"></i>
+            <div class="dw-text">${dw.diese ? "Diese Woche" : "Als Nächstes"}: ${esc(dw.einheit.titel)}<small>KW ${kw(dw.datum)} · ab ${kurzDatum(dw.datum)}${dw.eintrag.notiz ? " · " + esc(dw.eintrag.notiz) : ""}</small></div>
+            <a class="btn blau" href="#stunde/${encodeURIComponent(dw.einheit.id)}">Öffnen</a></div>`;
+    }
+    const liste = () => {
+        const q = filterText.toLowerCase();
+        const alle = alleEinheiten().filter(e => (!filterKat || e.kategorie === filterKat) &&
+            (!q || [e.titel, e.kategorie, e.ziel12, e.ziel34, e.lerntext12?.titel, e.lerntext34?.titel].join(" ").toLowerCase().includes(q))).sort(katSort);
+        const ziel = document.getElementById("kartenListe");
+        if (!alle.length) { ziel.innerHTML = '<div class="leer">Keine Stunde gefunden.</div>'; return; }
+        let html = "", letzte = null;
+        for (const e of alle) {
+            if (e.kategorie !== letzte) { if (letzte !== null) html += "</div>"; html += `<div class="kat-titel">${esc(e.kategorie || "Ohne Thema")}</div><div class="karten">`; letzte = e.kategorie; }
+            const geplant = planVerwendung(e);
+            html += `<a class="einheit-karte" href="#stunde/${encodeURIComponent(e.id)}">
+                <div class="chips">${artChip(e)}${geplant.length ? `<span class="chip gold"><i class="fa-solid fa-calendar-check"></i> KW ${geplant.map(kw).join(", ")}</span>` : ""}</div>
+                <h3>${esc(e.titel)}</h3>
+                <p><strong>1/2:</strong> ${esc(e.ziel12)}</p><p><strong>3/4:</strong> ${esc(e.ziel34)}</p></a>`;
+        }
+        ziel.innerHTML = html + "</div>";
+    };
+    liste();
+    document.getElementById("suche").addEventListener("input", ev => { filterText = ev.target.value; liste(); });
+    document.getElementById("filterKat").addEventListener("change", ev => { filterKat = ev.target.value; liste(); });
+}
+
+/* ---------- Detail ---------- */
+function zeigeStunde(id){
+    reiterSetzen("bibliothek");
+    const e = finde(id);
+    if (!e) { inhalt.innerHTML = '<div class="leer">Diese Stunde gibt es nicht (mehr). <a href="#bibliothek">Zur Übersicht</a></div>'; return; }
+    const wochen = planWochen();
+    const heute = montag(heuteUtc());
+    const kommende = wochen.filter(d => d >= heute);
+    const geplant = planVerwendung(e);
+    const bearbeitenKnopf = e._art === "vorlage"
+        ? `<a class="btn nacht" href="#bearbeiten/${encodeURIComponent(e.id)}"><i class="fa-solid fa-pen"></i> Anpassen</a>`
+        : `<a class="btn nacht" href="#bearbeiten/${encodeURIComponent(e.id)}"><i class="fa-solid fa-pen"></i> Bearbeiten</a>`;
+    const loeschKnopf = e._art === "eigen" ? `<button class="btn rot" id="loeschen"><i class="fa-solid fa-trash"></i> Löschen</button>`
+        : e._art === "angepasst" ? `<button class="btn rot" id="loeschen"><i class="fa-solid fa-rotate-left"></i> Original wiederherstellen</button>` : "";
+    const uebungen = (e.uebungen || []).map(u => `<div class="uebung"><div class="uebung-kopf"><strong>${esc(u.titel)}</strong>
+        <span class="chip ${u.fuer === "34" ? "gold" : u.fuer === "12" ? "" : "gruen"}">${FUER[u.fuer] || "Alle"}</span>${u.dauer ? `<span class="chip">${esc(u.dauer)}</span>` : ""}</div><div class="md">${md(u.text)}</div></div>`).join("");
+
+    inhalt.innerHTML = `
+        <div class="detail-kopf">
+            <div class="titel"><a href="#bibliothek" style="color:var(--grau);font-weight:800;text-decoration:none"><i class="fa-solid fa-arrow-left"></i> Alle Stunden</a>
+                <div style="margin-top:8px">${artChip(e)} <span class="chip">${esc(e.kategorie)}</span> <span class="chip">${esc(e.dauer || 40)} Min</span>
+                ${geplant.length ? `<span class="chip gold"><i class="fa-solid fa-calendar-check"></i> geplant KW ${geplant.map(kw).join(", ")}</span>` : ""}</div>
+                <h2>${esc(e.titel)}</h2></div>
+            <div class="knopfleiste">${bearbeitenKnopf}<button class="btn" id="kopieren"><i class="fa-solid fa-copy"></i> Als neue Stunde kopieren</button>${loeschKnopf}</div>
+        </div>
+
+        <div class="karte"><h2><i class="fa-solid fa-print"></i> Drucken</h2>
+            <div class="knopfleiste">
+                <button class="btn blau" data-druck="lehrer"><i class="fa-solid fa-chalkboard-user"></i> Stundenvorbereitung</button>
+                <button class="btn blau" data-druck="ab12"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 1/2</button>
+                <button class="btn blau" data-druck="ab34"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 3/4</button>
+                <button class="btn gold" data-druck="alles"><i class="fa-solid fa-layer-group"></i> Alles zusammen</button>
+            </div>
+            <p class="ed-hilfe" style="margin-top:10px">Tipp: Im Druckfenster „Als PDF sichern“ wählen, um die Stunde als PDF abzulegen.</p>
+        </div>
+
+        <div class="karte"><h2><i class="fa-solid fa-calendar-plus"></i> In den Jahresplan</h2>
+            <div class="knopfleiste" style="align-items:center">
+                <select id="planWoche" style="width:auto;flex:1 1 260px">${kommende.map(d => {
+                    const w = DATEN.jahresplan?.wochen?.[iso(d)];
+                    const belegt = w?.frei ? " – frei/Ferien" : w?.einheit ? " – belegt: " + (finde(w.einheit)?.titel || "?") : "";
+                    return `<option value="${iso(d)}">KW ${kw(d)} · ${kurzDatum(d)}${esc(belegt)}</option>`; }).join("")}</select>
+                <button class="btn gold" id="einplanen"><i class="fa-solid fa-check"></i> Eintragen</button>
+            </div>
+        </div>
+
+        <div class="karte"><div class="zwei">
+            <div><div class="stufe-label">Ziel Klasse 1/2</div><div style="font-weight:700">${inline(e.ziel12) || "–"}</div></div>
+            <div><div class="stufe-label s34">Ziel Klasse 3/4</div><div style="font-weight:700">${inline(e.ziel34) || "–"}</div></div>
+        </div>
+            <h3>Material</h3>${materialListe(e.material).replace("<ul>", '<ul class="material-liste">')}
+        </div>
+
+        <div class="karte"><h2>Stundenverlauf (${esc(e.dauer || 40)} Min)</h2><div style="overflow-x:auto">${verlaufTabelle(e, "verlauf")}</div></div>
+
+        <div class="karte"><h2>Lerntexte</h2><div class="zwei">
+            <div class="lerntext"><div class="stufe-label">Klasse 1/2</div><h3>${esc(e.lerntext12?.titel || "–")}</h3><div class="md">${md(e.lerntext12?.text)}</div></div>
+            <div class="lerntext"><div class="stufe-label s34">Klasse 3/4</div><h3>${esc(e.lerntext34?.titel || "–")}</h3><div class="md">${md(e.lerntext34?.text)}</div></div>
+        </div></div>
+
+        <div class="karte"><h2>Übungen</h2>${uebungen || '<div class="leer">Keine Übungen.</div>'}</div>
+
+        <div class="karte"><h2>Arbeitsblätter</h2><div class="vorschau-paar">
+            <div><div class="stufe-label">Klasse 1/2</div><div class="vorschau" id="v12"></div><div class="vorschau-status"></div></div>
+            <div><div class="stufe-label s34">Klasse 3/4</div><div class="vorschau" id="v34"></div><div class="vorschau-status"></div></div>
+        </div></div>`;
+
+    vorschauZeigen(document.getElementById("v12"), e, "12");
+    vorschauZeigen(document.getElementById("v34"), e, "34");
+    inhalt.querySelectorAll("[data-druck]").forEach(b => b.addEventListener("click", () => drucken(e, b.dataset.druck)));
+    document.getElementById("kopieren").addEventListener("click", () => {
+        editor = { entwurf: { ...sauber(e), id: undefined, ersetzt: undefined, titel: e.titel + " (Kopie)" }, geaendert: true, quelleId: null };
+        ignoriereHash = true; location.hash = "#neu"; zeigeEditor(null, true);
+    });
+    const lk = document.getElementById("loeschen");
+    if (lk) lk.addEventListener("click", async () => {
+        const frage = e._art === "angepasst" ? `Deine Anpassungen an „${e.titel}“ verwerfen und die ursprüngliche Vorlage wiederherstellen?` : `„${e.titel}“ wirklich löschen?`;
+        if (!confirm(frage)) return;
+        try {
+            await senden({ aktion: "einheit_loeschen", id: e.id });
+            DATEN.einheiten = DATEN.einheiten.filter(x => x.id !== e.id);
+            toast(e._art === "angepasst" ? "Original wiederhergestellt" : "Stunde gelöscht");
+            gehe(e._art === "angepasst" ? "#stunde/" + encodeURIComponent(e.ersetzt) : "#bibliothek");
+        } catch (err) { toast(err.message, true); }
+    });
+    document.getElementById("einplanen").addEventListener("click", () => {
+        const datum = document.getElementById("planWoche").value;
+        if (!datum) return;
+        const p = plan();
+        const alt = p.wochen[datum];
+        if (alt && alt.einheit && !confirm("In dieser Woche ist schon „" + (finde(alt.einheit)?.titel || "eine Stunde") + "“ eingetragen. Ersetzen?")) return;
+        p.wochen[datum] = { ...(alt || {}), einheit: e.ersetzt || e.id, frei: false };
+        planSpeichern();
+        toast("Eingetragen für KW " + kw(tag(datum)));
+        setTimeout(() => zeigeStunde(id), 50);
+    });
+}
+
+/* ---------- Editor ---------- */
+function holen(o, pfad){ return pfad.split(".").reduce((x, k) => x == null ? x : x[k], o); }
+function setzen(o, pfad, wert){
+    const k = pfad.split("."); let x = o;
+    for (let i = 0; i < k.length - 1; i++) { if (x[k[i]] == null) x[k[i]] = /^\d+$/.test(k[i + 1]) ? [] : {}; x = x[k[i]]; }
+    x[k[k.length - 1]] = wert;
+}
+function zeilen(text){ return String(text || "").split("\n").map(s => s.trim()).filter(Boolean); }
+
+function feld(label, pfad, wert, art = "text", extra = ""){
+    if (art === "textarea") return `<label class="feld">${label}</label><textarea data-pfad="${pfad}" ${extra}>${esc(wert)}</textarea>`;
+    return `<label class="feld">${label}</label><input type="text" data-pfad="${pfad}" value="${esc(wert)}" ${extra}>`;
+}
+function aufgabeEditor(stufe, i, a, anzahl){
+    const p = `ab${stufe}.aufgaben.${i}`;
+    let spezial = "";
+    switch (a.typ) {
+        case "schreiben":
+            spezial = `<label class="feld">Anzahl Schreiblinien</label><input type="number" min="1" max="15" data-pfad="${p}.zeilen" data-art="zahl" value="${esc(a.zeilen || 2)}" style="width:110px">`; break;
+        case "luecken":
+            spezial = `<label class="feld">Sätze (einer pro Zeile)</label><textarea rows="4" data-pfad="${p}.saetze" data-art="luecken">${esc((a.saetze || []).map(s => s.replace(/\n/g, " // ")).join("\n"))}</textarea>
+                <div class="ed-hilfe">___ = Schreiblinie · ☐ = Kästchen · // = Zeilenumbruch innerhalb eines Eintrags</div>
+                <label class="ed-check"><input type="checkbox" data-pfad="${p}.nummern" data-art="check" ${a.nummern ? "checked" : ""}> nummerieren</label>`; break;
+        case "ankreuzen":
+            spezial = `<label class="feld">Antworten (eine pro Zeile)</label><textarea rows="4" data-pfad="${p}.optionen" data-art="liste">${esc((a.optionen || []).join("\n"))}</textarea>
+                <div class="ed-hilfe">___ = Schreiblinie zum Selbst-Ausfüllen</div>
+                <label class="ed-check"><input type="checkbox" data-pfad="${p}.nebeneinander" data-art="check" ${a.nebeneinander ? "checked" : ""}> nebeneinander statt untereinander</label>`; break;
+        case "zuordnen":
+            spezial = `<div class="ed-paar"><div><label class="feld">Links (eine pro Zeile)</label><textarea rows="4" data-pfad="${p}.links" data-art="liste">${esc((a.links || []).join("\n"))}</textarea></div>
+                <div><label class="feld">Rechts – schon gemischt</label><textarea rows="4" data-pfad="${p}.rechts" data-art="liste">${esc((a.rechts || []).join("\n"))}</textarea></div></div>
+                <button class="btn klein" type="button" data-mischen="${p}" style="margin-top:6px"><i class="fa-solid fa-shuffle"></i> rechte Seite mischen</button>`; break;
+        case "tabelle":
+            spezial = `<label class="feld">Tabelle</label><textarea rows="5" data-pfad="${p}" data-art="tabelle">${esc([(a.spalten || []).join(" | "), ...(a.zeilen || []).map(z => z.join(" | "))].join("\n"))}</textarea>
+                <div class="ed-hilfe">Erste Zeile = Überschriften. Spalten mit | trennen. Leere Zelle = Schreibfeld (z. B. „Ich bin froh. | “).</div>`; break;
+        case "gesichter":
+            spezial = `<label class="feld">Gefühle (eines pro Zeile)</label><textarea rows="3" data-pfad="${p}.gefuehle" data-art="liste">${esc((a.gefuehle || []).join("\n"))}</textarea>
+                <div class="ed-hilfe">Erkannt werden z. B. froh, traurig, wütend, ängstlich, ruhig, überrascht, stolz.</div>
+                <label class="ed-check"><input type="checkbox" data-pfad="${p}.leer" data-art="check" ${a.leer ? "checked" : ""}> leere Kreise – die Kinder malen das Gesicht selbst</label>`; break;
+        case "malen":
+            spezial = `<label class="feld">Bild zum Ausmalen</label><select data-pfad="${p}.bild">${Object.entries(BILDER).map(([k, v]) => `<option value="${k}" ${a.bild === k ? "selected" : ""}>${v}</option>`).join("")}</select>
+                <div class="ed-hilfe">Das Malfeld wächst automatisch und füllt den freien Platz der Seite.</div>`; break;
+    }
+    return `<div class="ed-block">
+        <div class="ed-block-kopf"><span class="nr">${i + 1}</span>
+            <select data-typ="${p}">${Object.entries(TYPEN).map(([k, v]) => `<option value="${k}" ${a.typ === k ? "selected" : ""}>${v}</option>`).join("")}</select>
+            <span class="platz"></span>
+            <button class="btn klein" type="button" data-schieben="${stufe}|${i}|-1" ${i === 0 ? "disabled" : ""} title="nach oben"><i class="fa-solid fa-arrow-up"></i></button>
+            <button class="btn klein" type="button" data-schieben="${stufe}|${i}|1" ${i === anzahl - 1 ? "disabled" : ""} title="nach unten"><i class="fa-solid fa-arrow-down"></i></button>
+            <button class="btn klein rot" type="button" data-weg="${stufe}|${i}" title="entfernen"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        ${feld("Aufgabe (leer lassen = gehört zur vorherigen Aufgabe)", p + ".text", a.text)}
+        ${spezial}
+    </div>`;
+}
+function standardAufgabe(typ){
+    return ({
+        schreiben: { typ, text: "", zeilen: 3 }, luecken: { typ, text: "", saetze: ["___"], nummern: true },
+        ankreuzen: { typ, text: "", optionen: [], nebeneinander: false }, zuordnen: { typ, text: "", links: [], rechts: [] },
+        tabelle: { typ, text: "", spalten: ["", ""], zeilen: [["", ""]] }, gesichter: { typ, text: "", gefuehle: ["froh", "traurig", "wütend", "ängstlich"], leer: true },
+        malen: { typ, text: "", bild: "" }
+    })[typ];
+}
+
+function zeigeEditor(id, entwurfBehalten = false){
+    reiterSetzen("bibliothek");
+    if (!entwurfBehalten || !editor) {
+        if (id) {
+            const e = finde(id);
+            if (!e) { inhalt.innerHTML = '<div class="leer">Diese Stunde gibt es nicht (mehr).</div>'; return; }
+            const entwurf = sauber(e);
+            if (e._art === "vorlage") { delete entwurf.id; entwurf.ersetzt = e.id; }
+            editor = { entwurf, geaendert: false, quelleId: e.id, art: e._art };
+        } else if (!editor) {
+            editor = { entwurf: leereEinheit(), geaendert: false, quelleId: null, art: "neu" };
+        }
+    }
+    const e = editor.entwurf;
+    ["verlauf", "uebungen"].forEach(k => { if (!Array.isArray(e[k])) e[k] = []; });
+    ["12", "34"].forEach(s => { if (!e["ab" + s]) e["ab" + s] = { titel: "", aufgaben: [] }; if (!e["lerntext" + s]) e["lerntext" + s] = { titel: "", text: "" }; });
+    const kats = [...new Set([...KATEGORIEN, e.kategorie].filter(Boolean))];
+    const ueberschrift = editor.art === "vorlage" ? "Vorlage anpassen" : editor.quelleId ? "Stunde bearbeiten" : "Neue Stunde";
+
+    inhalt.innerHTML = `<div id="ed">
+        <div class="detail-kopf"><div class="titel"><a href="${editor.quelleId ? "#stunde/" + encodeURIComponent(editor.quelleId) : "#bibliothek"}" style="color:var(--grau);font-weight:800;text-decoration:none"><i class="fa-solid fa-arrow-left"></i> Zurück</a>
+            <h2>${ueberschrift}</h2></div></div>
+        ${editor.art === "vorlage" ? '<div class="hinweis"><i class="fa-solid fa-circle-info"></i> Du passt eine fertige Vorlage an. Deine Fassung ersetzt danach die Vorlage – auch im Jahresplan. Das Original kannst du jederzeit wiederherstellen.</div>' : ""}
+
+        <div class="karte"><h2>Grunddaten</h2>
+            <div class="ed-raster">
+                <div>${feld("Titel der Stunde", "titel", e.titel, "text", 'placeholder="z. B. Mutig sein"')}</div>
+                <div><label class="feld">Thema</label><select data-pfad="kategorie">${kats.map(k => `<option ${k === e.kategorie ? "selected" : ""}>${esc(k)}</option>`).join("")}</select></div>
+                <div>${feld("Ziel Klasse 1/2", "ziel12", e.ziel12)}</div>
+                <div>${feld("Ziel Klasse 3/4", "ziel34", e.ziel34)}</div>
+            </div>
+            ${feld("Material (eines pro Zeile)", "material", e.material, "textarea", 'rows="3"')}
+        </div>
+
+        <div class="karte"><h2>Stundenverlauf</h2><div id="edVerlauf"></div>
+            <button class="btn klein" type="button" id="verlaufPlus"><i class="fa-solid fa-plus"></i> Zeile</button></div>
+
+        <div class="karte"><h2>Lerntexte</h2><div class="zwei">
+            <div><div class="stufe-label">Klasse 1/2</div>${feld("Titel", "lerntext12.titel", e.lerntext12.titel)}${feld("Text", "lerntext12.text", e.lerntext12.text, "textarea", 'rows="12"')}</div>
+            <div><div class="stufe-label s34">Klasse 3/4</div>${feld("Titel", "lerntext34.titel", e.lerntext34.titel)}${feld("Text", "lerntext34.text", e.lerntext34.text, "textarea", 'rows="12"')}</div>
+        </div><div class="ed-hilfe">Leerzeile = neuer Absatz · „- “ = Aufzählung · „1. “ = Nummerierung · **fett** · *kursiv*</div></div>
+
+        <div class="karte"><h2>Übungen</h2><div id="edUebungen"></div>
+            <button class="btn klein" type="button" id="uebungPlus"><i class="fa-solid fa-plus"></i> Übung</button></div>
+
+        ${["12", "34"].map(s => `<div class="karte"><h2>Arbeitsblatt Klasse ${s === "12" ? "1/2" : "3/4"}</h2>
+            <div class="ed-ab">
+                <div>${feld("Titel des Arbeitsblatts", `ab${s}.titel`, e["ab" + s].titel)}
+                    <div id="edAufgaben${s}" style="margin-top:12px"></div>
+                    <div class="knopfleiste"><select id="neuTyp${s}" style="width:auto">${Object.entries(TYPEN).map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}</select>
+                    <button class="btn klein" type="button" data-plus="${s}"><i class="fa-solid fa-plus"></i> Aufgabe</button></div>
+                </div>
+                <div class="ed-ab-vorschau"><div class="vorschau" id="edV${s}"></div><div class="vorschau-status"></div></div>
+            </div></div>`).join("")}
+
+        <div class="speicherleiste">
+            <a class="btn" href="${editor.quelleId ? "#stunde/" + encodeURIComponent(editor.quelleId) : "#bibliothek"}">Abbrechen</a>
+            <button class="btn gold" id="speichern"><i class="fa-solid fa-floppy-disk"></i> Speichern</button>
+        </div></div>`;
+    const wurzel = document.getElementById("ed");
+
+    const verlaufZeichnen = () => {
+        document.getElementById("edVerlauf").innerHTML = e.verlauf.map((v, i) => `<div class="ed-zeile">
+            <input type="text" data-pfad="verlauf.${i}.zeit" value="${esc(v.zeit)}" placeholder="Min">
+            <input type="text" data-pfad="verlauf.${i}.phase" value="${esc(v.phase)}" placeholder="Phase">
+            <textarea rows="1" data-pfad="verlauf.${i}.k12" placeholder="Klasse 1/2">${esc(v.k12)}</textarea>
+            <textarea rows="1" data-pfad="verlauf.${i}.k34" placeholder="Klasse 3/4">${esc(v.k34)}</textarea>
+            <button class="btn klein rot" type="button" data-verlaufweg="${i}" title="entfernen"><i class="fa-solid fa-xmark"></i></button></div>`).join("");
+    };
+    const uebungenZeichnen = () => {
+        document.getElementById("edUebungen").innerHTML = e.uebungen.map((u, i) => `<div class="ed-block">
+            <div class="ed-block-kopf"><span class="nr">${i + 1}</span>
+                <input type="text" data-pfad="uebungen.${i}.titel" value="${esc(u.titel)}" placeholder="Name der Übung" style="flex:1 1 200px;width:auto">
+                <select data-pfad="uebungen.${i}.fuer" style="width:auto">${Object.entries(FUER).map(([k, v]) => `<option value="${k}" ${u.fuer === k ? "selected" : ""}>${v}</option>`).join("")}</select>
+                <input type="text" data-pfad="uebungen.${i}.dauer" value="${esc(u.dauer)}" placeholder="Dauer" style="width:90px">
+                <button class="btn klein" type="button" data-uschieben="${i}|-1" ${i === 0 ? "disabled" : ""}><i class="fa-solid fa-arrow-up"></i></button>
+                <button class="btn klein" type="button" data-uschieben="${i}|1" ${i === e.uebungen.length - 1 ? "disabled" : ""}><i class="fa-solid fa-arrow-down"></i></button>
+                <button class="btn klein rot" type="button" data-uweg="${i}"><i class="fa-solid fa-xmark"></i></button></div>
+            <textarea rows="4" data-pfad="uebungen.${i}.text" placeholder="So geht die Übung …">${esc(u.text)}</textarea></div>`).join("");
+    };
+    const aufgabenZeichnen = s => {
+        const liste = e["ab" + s].aufgaben;
+        document.getElementById("edAufgaben" + s).innerHTML = liste.length ? liste.map((a, i) => aufgabeEditor(s, i, a, liste.length)).join("") : '<div class="leer">Noch keine Aufgaben.</div>';
+    };
+    const vorschauTimer = {};
+    const vorschau = (s, sofort) => {
+        clearTimeout(vorschauTimer[s]);
+        vorschauTimer[s] = setTimeout(() => vorschauZeigen(document.getElementById("edV" + s), e, s), sofort ? 0 : 250);
+    };
+    const geaendert = () => { editor.geaendert = true; };
+
+    verlaufZeichnen(); uebungenZeichnen(); aufgabenZeichnen("12"); aufgabenZeichnen("34");
+    vorschau("12", true); vorschau("34", true);
+
+    // Eingaben übernehmen
+    const uebernehmen = ev => {
+        const t = ev.target;
+        const pfad = t.dataset.pfad;
+        if (!pfad) return;
+        const art = t.dataset.art;
+        if (art === "check") setzen(e, pfad, t.checked);
+        else if (art === "zahl") setzen(e, pfad, Math.max(1, Math.min(15, parseInt(t.value, 10) || 1)));
+        else if (art === "liste") setzen(e, pfad, zeilen(t.value));
+        else if (art === "luecken") setzen(e, pfad, zeilen(t.value).map(z => z.replace(/\s*\/\/\s*/g, "\n")));
+        else if (art === "tabelle") {
+            const z = String(t.value).split("\n").filter(x => x.trim() !== "").map(x => x.split("|").map(c => c.trim()));
+            const a = holen(e, pfad);
+            a.spalten = z[0] || [];
+            a.zeilen = z.slice(1);
+        }
+        else setzen(e, pfad, t.value);
+        geaendert();
+        const m = pfad.match(/^ab(12|34)\./);
+        if (m) vorschau(m[1]);
+    };
+    wurzel.addEventListener("input", uebernehmen);
+    wurzel.addEventListener("change", ev => {
+        const t = ev.target;
+        if (t.dataset.typ) {
+            const mm = t.dataset.typ.match(/^ab(12|34)\.aufgaben\.(\d+)$/);
+            if (!mm) return;
+            const stufe = mm[1], idx = +mm[2];
+            const alt = e["ab" + stufe].aufgaben[idx];
+            e["ab" + stufe].aufgaben[idx] = { ...standardAufgabe(t.value), text: alt.text };
+            geaendert(); aufgabenZeichnen(stufe); vorschau(stufe, true);
+            return;
+        }
+        if (t.tagName === "SELECT" || t.type === "checkbox") uebernehmen(ev);
+    });
+    wurzel.addEventListener("click", ev => {
+        const b = ev.target.closest("button");
+        if (!b) return;
+        if (b.id === "verlaufPlus") { e.verlauf.push({ zeit: "", phase: "", k12: "", k34: "" }); geaendert(); verlaufZeichnen(); }
+        else if (b.dataset.verlaufweg != null) { e.verlauf.splice(+b.dataset.verlaufweg, 1); geaendert(); verlaufZeichnen(); }
+        else if (b.id === "uebungPlus") { e.uebungen.push({ titel: "", fuer: "alle", dauer: "", text: "" }); geaendert(); uebungenZeichnen(); }
+        else if (b.dataset.uweg != null) { if (confirm("Übung entfernen?")) { e.uebungen.splice(+b.dataset.uweg, 1); geaendert(); uebungenZeichnen(); } }
+        else if (b.dataset.uschieben) { const [i, r] = b.dataset.uschieben.split("|").map(Number); const x = e.uebungen.splice(i, 1)[0]; e.uebungen.splice(i + r, 0, x); geaendert(); uebungenZeichnen(); }
+        else if (b.dataset.plus) { const s = b.dataset.plus; e["ab" + s].aufgaben.push(standardAufgabe(document.getElementById("neuTyp" + s).value)); geaendert(); aufgabenZeichnen(s); vorschau(s, true); }
+        else if (b.dataset.weg) { const [s, i] = b.dataset.weg.split("|"); if (confirm("Aufgabe entfernen?")) { e["ab" + s].aufgaben.splice(+i, 1); geaendert(); aufgabenZeichnen(s); vorschau(s, true); } }
+        else if (b.dataset.schieben) { const [s, i, r] = b.dataset.schieben.split("|"); const l = e["ab" + s].aufgaben; const x = l.splice(+i, 1)[0]; l.splice(+i + +r, 0, x); geaendert(); aufgabenZeichnen(s); vorschau(s, true); }
+        else if (b.dataset.mischen) {
+            const a = holen(e, b.dataset.mischen); const r = [...(a.rechts || [])];
+            for (let k = r.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [r[k], r[j]] = [r[j], r[k]]; }
+            a.rechts = r; geaendert(); const s = b.dataset.mischen.slice(2, 4); aufgabenZeichnen(s); vorschau(s, true);
+        }
+        else if (b.id === "speichern") speichern();
+    });
+
+    async function speichern(){
+        if (!String(e.titel || "").trim()) { toast("Bitte einen Titel eingeben.", true); wurzel.querySelector('[data-pfad="titel"]').focus(); return; }
+        const knopf = document.getElementById("speichern");
+        knopf.disabled = true;
+        try {
+            const antwort = await senden({ aktion: "einheit_speichern", einheit: sauber(e) });
+            const gespeichert = { ...sauber(e), id: antwort.id, geaendert: antwort.geaendert };
+            const i = DATEN.einheiten.findIndex(x => x.id === antwort.id);
+            if (i >= 0) DATEN.einheiten[i] = gespeichert; else DATEN.einheiten.push(gespeichert);
+            editor.geaendert = false;
+            toast("Gespeichert");
+            gehe("#stunde/" + encodeURIComponent(antwort.id));
+        } catch (err) { toast(err.message, true); knopf.disabled = false; }
+    }
+}
+
+/* ---------- Jahresplan ---------- */
+function zeigeJahresplan(){
+    reiterSetzen("jahresplan");
+    const p = plan();
+    const wochen = planWochen();
+    const heute = montag(heuteUtc());
+    const alle = alleEinheiten().sort(katSort);
+    const gruppen = [...new Set(alle.map(e => e.kategorie))];
+    const optionen = sel => `<option value="">– noch offen –</option><option value="@frei" ${sel === "@frei" ? "selected" : ""}>Ferien / fällt aus</option>` +
+        gruppen.map(g => `<optgroup label="${esc(g)}">${alle.filter(e => e.kategorie === g).map(e => {
+            const wert = e.ersetzt || e.id;
+            return `<option value="${esc(wert)}" ${sel === wert || sel === e.id ? "selected" : ""}>${esc(e.titel)}</option>`; }).join("")}</optgroup>`).join("");
+    const verplant = new Set(Object.values(p.wochen).map(w => w && w.einheit).filter(Boolean).map(id => finde(id)?.id));
+    const offen = alle.filter(e => !verplant.has(e.id));
+    const anzahl = wochen.filter(d => p.wochen[iso(d)]?.einheit).length;
+    const erledigt = wochen.filter(d => p.wochen[iso(d)]?.erledigt).length;
+
+    inhalt.innerHTML = `
+        <div class="karte"><h2>Schuljahr</h2>
+            <div class="plan-einstellung">
+                <div><label class="feld">Erste Woche</label><input type="date" id="planStart" value="${esc(p.start)}"></div>
+                <div><label class="feld">Letzte Woche</label><input type="date" id="planEnde" value="${esc(p.ende)}"></div>
+                <div style="flex:1 1 200px"><span class="speicherstatus" id="planStatus"></span></div>
+            </div>
+            <p style="margin:12px 0 0;font-weight:700">${anzahl} von ${wochen.length} Wochen verplant · ${erledigt} erledigt</p>
+        </div>
+        ${offen.length ? `<div class="karte"><h2>Noch nicht verplant</h2><div class="chips" style="display:flex;gap:8px;flex-wrap:wrap">${offen.map(e => `<a class="chip" style="text-decoration:none;font-size:13px" href="#stunde/${encodeURIComponent(e.id)}">${esc(e.titel)}</a>`).join("")}</div></div>` : ""}
+        <div class="karte" style="padding:12px 14px"><table class="plan">
+            <thead><tr><th>KW</th><th>Woche ab</th><th>Stunde</th><th>Notiz</th><th title="erledigt"><i class="fa-solid fa-check"></i></th><th></th></tr></thead>
+            <tbody>${wochen.map(d => {
+                const k = iso(d), w = p.wochen[k] || {};
+                const wert = w.frei ? "@frei" : (w.einheit || "");
+                const e = w.einheit && !w.frei ? finde(w.einheit) : null;
+                const fehlt = w.einheit && !w.frei && !e;
+                return `<tr data-woche="${k}" class="${+d === +heute ? "jetzt" : ""} ${w.frei ? "frei" : ""} ${w.erledigt ? "erledigt" : ""}">
+                    <td class="kw">KW ${kw(d)}</td><td class="datum">${kurzDatum(d)}${+d === +heute ? ' <span class="chip gold">jetzt</span>' : ""}</td>
+                    <td><select class="plan-wahl">${optionen(wert)}${fehlt ? `<option value="${esc(w.einheit)}" selected>(gelöschte Stunde)</option>` : ""}</select></td>
+                    <td><input type="text" class="plan-notiz" value="${esc(w.notiz || "")}" placeholder="Notiz"></td>
+                    <td><input type="checkbox" class="plan-erledigt" ${w.erledigt ? "checked" : ""} ${w.frei ? "disabled" : ""} title="erledigt"></td>
+                    <td>${e ? `<a class="btn klein" href="#stunde/${encodeURIComponent(e.id)}" title="öffnen"><i class="fa-solid fa-arrow-right"></i></a>` : ""}</td></tr>`;
+            }).join("")}</tbody></table></div>`;
+
+    const datumAendern = () => {
+        const s = document.getElementById("planStart").value, en = document.getElementById("planEnde").value;
+        if (!s || !en || s > en) { toast("Bitte gültige Daten eingeben (erste Woche vor letzter Woche).", true); return; }
+        if ((tag(en) - tag(s)) / 864e5 > 7 * 59) { toast("Höchstens 60 Wochen.", true); return; }
+        p.start = iso(montag(tag(s))); p.ende = en;
+        planSpeichern(); zeigeJahresplan();
+    };
+    document.getElementById("planStart").addEventListener("change", datumAendern);
+    document.getElementById("planEnde").addEventListener("change", datumAendern);
+    inhalt.querySelectorAll("tr[data-woche]").forEach(tr => {
+        const k = tr.dataset.woche;
+        const eintrag = () => (p.wochen[k] = p.wochen[k] || {});
+        tr.querySelector(".plan-wahl").addEventListener("change", ev => {
+            const v = ev.target.value, w = eintrag();
+            if (v === "@frei") { w.frei = true; w.einheit = ""; w.erledigt = false; }
+            else { w.frei = false; w.einheit = v; }
+            planSpeichern(); zeigeJahresplan();
+        });
+        tr.querySelector(".plan-notiz").addEventListener("input", ev => { eintrag().notiz = ev.target.value; planSpeichern(); });
+        tr.querySelector(".plan-erledigt").addEventListener("change", ev => { eintrag().erledigt = ev.target.checked; tr.classList.toggle("erledigt", ev.target.checked); planSpeichern(); });
+    });
+}
+
+/* ---------- Rituale ---------- */
+function rituale(){ return typeof DATEN.rituale === "string" && DATEN.rituale.trim() ? DATEN.rituale : (window.SOZIAL_RITUALE_STANDARD || ""); }
+function zeigeRituale(bearbeiten = false){
+    reiterSetzen("rituale");
+    if (!bearbeiten) {
+        inhalt.innerHTML = `<div class="karte"><div class="detail-kopf" style="margin:0"><div class="titel"><h2 style="margin:0">Feste Rituale</h2>
+            <p style="color:var(--grau);font-weight:700;margin:6px 0 0">Gelten für jede Stunde – geben den Kindern Sicherheit und sparen Erklärzeit.</p></div>
+            <div class="knopfleiste"><button class="btn nacht" id="ritBearb"><i class="fa-solid fa-pen"></i> Bearbeiten</button>
+            <button class="btn blau" id="ritDruck"><i class="fa-solid fa-print"></i> Drucken</button></div></div>
+            <div class="md" style="margin-top:16px">${md(rituale())}</div></div>`;
+        document.getElementById("ritBearb").onclick = () => zeigeRituale(true);
+        document.getElementById("ritDruck").onclick = () => drucken(null, "rituale");
+        return;
+    }
+    inhalt.innerHTML = `<div class="karte"><h2>Rituale bearbeiten</h2>
+        <textarea id="ritText" rows="22">${esc(rituale())}</textarea>
+        <div class="ed-hilfe">### = Zwischenüberschrift · „1. “ = Nummerierung · **fett**</div>
+        <div class="knopfleiste" style="margin-top:12px;justify-content:flex-end">
+            <button class="btn rot" id="ritStandard"><i class="fa-solid fa-rotate-left"></i> Standard wiederherstellen</button>
+            <button class="btn" id="ritAbbr">Abbrechen</button>
+            <button class="btn gold" id="ritSpeichern"><i class="fa-solid fa-floppy-disk"></i> Speichern</button></div></div>`;
+    const speichern = async wert => {
+        try { await senden({ aktion: "rituale_speichern", rituale: wert }); DATEN.rituale = wert; toast("Gespeichert"); zeigeRituale(); }
+        catch (err) { toast(err.message, true); }
+    };
+    document.getElementById("ritAbbr").onclick = () => zeigeRituale();
+    document.getElementById("ritSpeichern").onclick = () => speichern(document.getElementById("ritText").value);
+    document.getElementById("ritStandard").onclick = () => { if (confirm("Deine Rituale verwerfen und den Standardtext wiederherstellen?")) speichern(null); };
+}
+
+route();
+</script>
+</body>
+</html>
