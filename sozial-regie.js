@@ -130,7 +130,7 @@ function lerntext(e, st){
         " Die letzte (persönliche) Frage ist freiwillig."));
     if (st === "34" && !fragen.length && nachher12) schritte.push(li("<b>Nach dem Vorlesen:</b>", `<div class="regie-text"><div class="md">${md(nachher12)}</div></div>`));
     schritte.push(li("Lass ein, zwei Kinder in eigenen Worten nacherzählen – so merkst du, ob alle mitgekommen sind.", sag("Wer kann in zwei Sätzen erzählen, was in der Geschichte passiert ist?")));
-    return { zweck: "Das Thema über eine Geschichte erleben – die Kinder fühlen mit der Figur mit, bevor sie selbst üben.", schritte,
+    return { zweck: e.nur34 ? "Ein echter Fall aus dem Schulalltag – mit Abstand darüber reden fällt leichter als über sich selbst." : "Das Thema über eine Geschichte erleben – die Kinder fühlen mit der Figur mit, bevor sie selbst üben.", schritte,
         tipp: "Antworten nicht bewerten („Danke, das ist eine Idee.“). Stille Kinder dürfen mit dem Daumen antworten. „Ich passe“ ist erlaubt." };
 }
 
@@ -147,7 +147,9 @@ function uebung(e, st, vertretung){
     });
     schritte.push(li("Kurz auswerten.", sag(vertretung ? "Was hat euch am meisten Spaß gemacht?" : "Wie war das für euch? Was war leicht, was war schwer?")));
     return { zweck: vertretung ? "Bewegung und gemeinsames Spiel – die Klasse kommt zusammen und hat Spaß." : "Das Thema selbst ausprobieren – erst spielen, dann darüber reden.", schritte,
-        tipp: "Alle Übungen gehen vom Platz aus. Wer nicht vorspielen möchte, darf raten oder zuschauen und später einsteigen. Fürs Drankommen hilft das Glücksrad „Wer ist dran?“ in der Präsentation." };
+        tipp: e.nur34
+            ? "Bei echten Erlebnissen wird es schnell persönlich: Vorher ansagen, dass <b>keine Namen</b> von Kindern aus der Schule genannt werden („jemand aus meiner Klasse“). Wer etwas Belastendes erzählt (Gewalt, Bedrohung, Zuhause), nicht vor der Gruppe vertiefen – nach der Stunde allein ansprechen und ggf. weitergeben. Sprüche nicht wiederholen lassen, nur beschreiben („ein Spruch über die Familie“)."
+            : "Alle Übungen gehen vom Platz aus. Wer nicht vorspielen möchte, darf raten oder zuschauen und später einsteigen. Fürs Drankommen hilft das Glücksrad „Wer ist dran?“ in der Präsentation." };
 }
 
 function arbeitsblatt(e, st){
@@ -159,10 +161,10 @@ function arbeitsblatt(e, st){
     if (st === "12") {
         const k1 = abAufgaben(ab, "1");
         schritte.push(li("<b>Kinder der Kl. 1 (Blatt ohne Lesen):</b> Lies jede Aufgabe gemeinsam vor und zeig auf das Farbsymbol am Rand.",
-            sag("Wir sind beim roten Kreis. Da steht: …"), `<ol class="regie-ab">${k1.map(a => `<li>${inline(a.text || TYP_NAMEN[a.typ] || "")} <i>(${TYP_NAMEN[a.typ] || a.typ})</i></li>`).join("")}</ol>`));
+            sag("Wir sind beim roten Kreis. Da steht: …"), `<ol class="regie-ab">${k1.map(a => `<li>${a.text ? `${inline(a.text)} <i>(${TYP_NAMEN[a.typ] || a.typ})</i>` : esc(TYP_NAMEN[a.typ] || a.typ)}</li>`).join("")}</ol>`));
         schritte.push(li("<b>Kinder der Kl. 2:</b> Aufgaben gemeinsam lesen, dann allein arbeiten. Schreibaufgaben gibt es nur auf ihrem Blatt."));
     } else {
-        schritte.push(li("Lest die Aufgaben einmal gemeinsam, dann arbeitet jeder allein.", `<ol class="regie-ab">${abAufgaben(ab, "34").map(a => `<li>${inline(a.text || TYP_NAMEN[a.typ] || "")} <i>(${TYP_NAMEN[a.typ] || a.typ})</i></li>`).join("")}</ol>`));
+        schritte.push(li("Lest die Aufgaben einmal gemeinsam, dann arbeitet jeder allein.", `<ol class="regie-ab">${abAufgaben(ab, "34").map(a => `<li>${a.text ? `${inline(a.text)} <i>(${TYP_NAMEN[a.typ] || a.typ})</i>` : esc(TYP_NAMEN[a.typ] || a.typ)}</li>`).join("")}</ol>`));
     }
     schritte.push(li("Geh herum, lobe konkret („Du hast drei Ideen gefunden!“) und frag bei Unklarheiten nach, statt zu verbessern."));
     schritte.push(li("Wer früher fertig ist, gestaltet das Malfeld aus oder malt auf der Rückseite ein Bild zum Thema."));

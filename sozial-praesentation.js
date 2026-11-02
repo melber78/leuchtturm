@@ -386,8 +386,8 @@ function folieHtml(f, e){
         case "arbeitsblatt":
             return `<div class="p-bilder">${ltBild("stift")}${ltBild("heft")}</div><h2>Jetzt bist du dran!</h2>
                 <div class="p-reihe" style="margin-top:1vh">
-                    <span class="p-chip">Klasse 1: ${esc(e.ab12 && e.ab12.titel || "")}</span>
-                    <span class="p-chip">Klasse 2: ${esc(e.ab12 && e.ab12.titel || "")}</span>
+                    ${e.nur34 ? "" : `<span class="p-chip">Klasse 1: ${esc(e.ab12 && e.ab12.titel || "")}</span>
+                    <span class="p-chip">Klasse 2: ${esc(e.ab12 && e.ab12.titel || "")}</span>`}
                     <span class="p-chip gold">Klasse 3/4: ${esc(e.ab34 && e.ab34.titel || "")}</span></div>
                 <div class="p-reihe"><button class="p-knopf gold" data-start="10">⏱ 10 Minuten starten</button><button class="p-knopf hell" data-schale="1">🔔 Ruhe-Signal</button></div>`;
         case "abschluss":
@@ -601,7 +601,7 @@ async function pptxExport(e, stufe = "12"){
                 const bilder = bilderImText((stufe === "34" ? e.lerntext34 : e.lerntext12 || {}).text, 3);
                 await bilderSetzen(s, bilder.length ? bilder : [KAT_BILD[e.kategorie]].filter(Boolean), 1.6, 1.7);
                 s.addText(e.titel, { x: .5, y: 3.6, w: W - 1, h: 1.6, align: "center", fontFace: FONT, fontSize: 60, bold: true, color: "FFFFFF" });
-                s.addText([e.ziel12 && "Kl. 1/2: " + e.ziel12, e.ziel34 && "Kl. 3/4: " + e.ziel34].filter(Boolean).join("\n"), { x: 1, y: 5.4, w: W - 2, h: 1.2, align: "center", fontFace: TEXT, fontSize: 16, color: "C9D7E1" });
+                s.addText([!e.nur34 && e.ziel12 && "Kl. 1/2: " + e.ziel12, e.ziel34 && "Kl. 3/4: " + e.ziel34].filter(Boolean).join("\n"), { x: 1, y: 5.4, w: W - 2, h: 1.2, align: "center", fontFace: TEXT, fontSize: 16, color: "C9D7E1" });
                 s.addNotes("Ziele – Kl. 1/2: " + (e.ziel12 || "") + "\nKl. 3/4: " + (e.ziel34 || "") + "\nMaterial: " + (e.material || "").replace(/\n/g, ", "));
                 break;
             }
@@ -657,11 +657,10 @@ async function pptxExport(e, stufe = "12"){
             case "arbeitsblatt":
                 await bilderSetzen(s, ["stift", "heft"], .8, 1.4);
                 s.addText("Jetzt bist du dran!", { x: 0, y: 2.4, w: W, h: 1.1, align: "center", fontFace: FONT, fontSize: 52, bold: true, color: NACHT });
-                s.addText([
-                    { text: "Klasse 1 und 2: " + (e.ab12 && e.ab12.titel || ""), options: { breakLine: true } },
+                s.addText((e.nur34 ? [] : [{ text: "Klasse 1 und 2: " + (e.ab12 && e.ab12.titel || ""), options: { breakLine: true } }]).concat([
                     { text: "Klasse 3/4: " + (e.ab34 && e.ab34.titel || "") }
-                ], { x: 1, y: 3.8, w: W - 2, h: 1.4, align: "center", fontFace: TEXT, fontSize: 24, color: MEER });
-                s.addNotes("Arbeitsphase ca. 10 Minuten. Klasse 1 bekommt die Vorlese-Fassung: Aufgaben und Antworten vorlesen, die Farbsymbole zeigen die Zeile.");
+                ]), { x: 1, y: 3.8, w: W - 2, h: 1.4, align: "center", fontFace: TEXT, fontSize: 24, color: MEER });
+                s.addNotes(e.nur34 ? "Arbeitsphase ca. 10 Minuten." : "Arbeitsphase ca. 10 Minuten. Klasse 1 bekommt die Vorlese-Fassung: Aufgaben und Antworten vorlesen, die Farbsymbole zeigen die Zeile.");
                 break;
             case "abschluss":
                 s.background = { color: NACHT };

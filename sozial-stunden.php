@@ -183,6 +183,7 @@ table.plan td.kl-zelle{ text-align:center; position:relative; white-space:nowrap
 .kl-status.gehalten{ background:#2e8b57; border-color:#2e8b57; color:#fff; }
 .kl-status.ausgefallen{ background:#fdecea; border-color:#e74c3c; color:#c0392b; }
 .kl-status:disabled{ opacity:.35; cursor:default; }
+td.kl-zelle.unpassend .kl-status{ border-style:dashed; border-color:var(--gold); }
 .kl-punkt{ position:absolute; top:6px; right:calc(50% - 21px); width:8px; height:8px; border-radius:50%; background:var(--gold); }
 tr.kl-details td{ background:#f6f9fb; }
 .kl-detail-raster{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; }
@@ -775,9 +776,9 @@ function verlaufTabelle(e, klasse){
 function lehrerHtml(e){
     return `<div class="lehrer-druck">
         <div class="ld-kopf"><div class="ld-meta">${esc(window.BEREICH.name)} · ${esc(e.kategorie)} · ${esc(e.dauer || 40)} Minuten · Klasse 1/2 und 3/4</div><h1>${esc(e.titel)}</h1></div>
-        <table><tr><th style="width:50%">Ziel Kl. 1/2</th><th>Ziel Kl. 3/4</th></tr><tr><td>${inline(e.ziel12)}</td><td>${inline(e.ziel34)}</td></tr></table>
+        ${e.nur34 ? `<table><tr><th>Ziel Kl. 3/4</th></tr><tr><td>${inline(e.ziel34)}</td></tr></table>` : `<table><tr><th style="width:50%">Ziel Kl. 1/2</th><th>Ziel Kl. 3/4</th></tr><tr><td>${inline(e.ziel12)}</td><td>${inline(e.ziel34)}</td></tr></table>`}
         <h2>Material</h2>${materialListe(e.material)}
-        <p style="font-size:9pt;color:#55636a"><strong>Arbeitsblatt Kl. 1:</strong> Aufgaben und Antworten vorlesen – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Schreibaufgaben gibt es nur auf dem Blatt für Kl. 2.</p>
+        ${e.nur34 ? "" : `<p style="font-size:9pt;color:#55636a"><strong>Arbeitsblatt Kl. 1:</strong> Aufgaben und Antworten vorlesen – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Schreibaufgaben gibt es nur auf dem Blatt für Kl. 2.</p>`}
         <h2>Stundenverlauf</h2>${verlaufTabelle(e, "")}
         ${e.lerntext12?.text ? `<h2>Lerntext Kl. 1/2: ${esc(e.lerntext12.titel)}</h2><div class="md">${md(e.lerntext12.text)}</div>` : ""}
         ${e.lerntext34?.text ? `<h2>Lerntext Kl. 3/4: ${esc(e.lerntext34.titel)}</h2><div class="md">${md(e.lerntext34.text)}</div>` : ""}
@@ -795,8 +796,8 @@ async function drucken(e, was){
     } else {
         if (was === "lehrer" || was === "alles") ziel.insertAdjacentHTML("beforeend", lehrerHtml(e));
         const blaetter = [];
-        if (was === "ab1" || was === "alles") blaetter.push(blattBauen(e, "1"));
-        if (was === "ab2" || was === "ab12" || was === "alles") blaetter.push(blattBauen(e, "2"));
+        if (was === "ab1" || (was === "alles" && !e.nur34)) blaetter.push(blattBauen(e, "1"));
+        if (was === "ab2" || was === "ab12" || (was === "alles" && !e.nur34)) blaetter.push(blattBauen(e, "2"));
         if (was === "ab34" || was === "alles") blaetter.push(blattBauen(e, "34"));
         blaetter.forEach(b => ziel.appendChild(b));
         await schriften();
@@ -930,9 +931,9 @@ function zeigeBibliothek(){
             if (e.kategorie !== letzte) { if (letzte !== null) html += "</div>"; html += `<div class="kat-titel">${esc(e.kategorie || "Ohne Thema")}</div><div class="karten">`; letzte = e.kategorie; }
             const geplant = planVerwendung(e);
             html += `<a class="einheit-karte" href="#stunde/${encodeURIComponent(e.id)}">
-                <div class="chips">${artChip(e)}${e.ohneVorbereitung ? '<span class="chip gruen"><i class="fa-solid fa-bolt"></i> ohne Vorbereitung</span>' : ""}${geplant.length ? `<span class="chip gold"><i class="fa-solid fa-calendar-check"></i> KW ${geplant.map(kw).join(", ")}</span>` : ""}</div>
+                <div class="chips">${artChip(e)}${e.nur34 ? '<span class="chip gold">nur Kl. 3/4</span>' : ""}${e.ohneVorbereitung ? '<span class="chip gruen"><i class="fa-solid fa-bolt"></i> ohne Vorbereitung</span>' : ""}${geplant.length ? `<span class="chip gold"><i class="fa-solid fa-calendar-check"></i> KW ${geplant.map(kw).join(", ")}</span>` : ""}</div>
                 <h3>${esc(e.titel)}</h3>
-                <p><strong>1/2:</strong> ${esc(e.ziel12)}</p><p><strong>3/4:</strong> ${esc(e.ziel34)}</p></a>`;
+                ${e.nur34 ? "" : `<p><strong>1/2:</strong> ${esc(e.ziel12)}</p>`}<p><strong>3/4:</strong> ${esc(e.ziel34)}</p></a>`;
         }
         ziel.innerHTML = html + "</div>";
     };
@@ -969,7 +970,7 @@ function zeigeStunde(id){
     inhalt.innerHTML = `
         <div class="detail-kopf">
             <div class="titel"><a href="#bibliothek" style="color:var(--grau);font-weight:800;text-decoration:none"><i class="fa-solid fa-arrow-left"></i> Alle Stunden</a>
-                <div style="margin-top:8px">${artChip(e)} ${e.ohneVorbereitung ? '<span class="chip gruen"><i class="fa-solid fa-bolt"></i> ohne Vorbereitung</span> ' : ""}<span class="chip">${esc(e.kategorie)}</span> <span class="chip">${esc(e.dauer || 40)} Min</span>
+                <div style="margin-top:8px">${artChip(e)} ${e.nur34 ? '<span class="chip gold">nur Kl. 3/4</span> ' : ""}${e.ohneVorbereitung ? '<span class="chip gruen"><i class="fa-solid fa-bolt"></i> ohne Vorbereitung</span> ' : ""}<span class="chip">${esc(e.kategorie)}</span> <span class="chip">${esc(e.dauer || 40)} Min</span>
                 ${geplant.length ? `<span class="chip gold"><i class="fa-solid fa-calendar-check"></i> geplant KW ${geplant.map(kw).join(", ")}</span>` : ""}
                 ${(() => { if (!DATEN.jahresplan) return ""; const ids = [e.id, e.ersetzt].filter(Boolean);
                     const st = klassenStand(), mit = st.filter(x => x.gehalten.some(g => ids.includes(g.id))).map(x => x.k.name), nach = st.filter(x => x.nachholen.some(g => ids.includes(g.id))).map(x => x.k.name);
@@ -1018,7 +1019,7 @@ function zeigeStunde(id){
         </div>
 
         <div class="karte"><div class="zwei">
-            <div><div class="stufe-label">Ziel Klasse 1/2</div><div style="font-weight:700">${inline(e.ziel12) || "–"}</div></div>
+            <div class="nur12"><div class="stufe-label">Ziel Klasse 1/2</div><div style="font-weight:700">${inline(e.ziel12) || "–"}</div></div>
             <div><div class="stufe-label s34">Ziel Klasse 3/4</div><div style="font-weight:700">${inline(e.ziel34) || "–"}</div></div>
         </div>
             <h3>Material</h3>${materialListe(e.material).replace("<ul>", '<ul class="material-liste">')}
@@ -1030,7 +1031,7 @@ function zeigeStunde(id){
             <div id="verlaufInhalt" style="overflow-x:auto">${verlaufTabelle(e, "verlauf")}</div></div>
 
         <div class="karte"><h2>Lerntexte</h2><div class="zwei">
-            <div class="lerntext"><div class="stufe-label">Klasse 1/2</div><h3>${esc(e.lerntext12?.titel || "–")}</h3><div class="md">${md(e.lerntext12?.text)}</div></div>
+            <div class="lerntext nur12"><div class="stufe-label">Klasse 1/2</div><h3>${esc(e.lerntext12?.titel || "–")}</h3><div class="md">${md(e.lerntext12?.text)}</div></div>
             <div class="lerntext"><div class="stufe-label s34">Klasse 3/4</div><h3>${esc(e.lerntext34?.titel || "–")}</h3><div class="md">${md(e.lerntext34?.text)}</div></div>
         </div></div>
 
@@ -1047,6 +1048,10 @@ function zeigeStunde(id){
     vorschauZeigen(document.getElementById("v1"), e, "1");
     vorschauZeigen(document.getElementById("v2"), e, "2");
     vorschauZeigen(document.getElementById("v34"), e, "34");
+    if (e.nur34) {
+        inhalt.querySelectorAll('[data-einstieg="12"], [data-pptx="12"], [data-druck="ab1"], [data-druck="ab2"], [data-druck="regie12"], [data-va="12"], .nur12').forEach(x => x.remove());
+        const start34 = inhalt.querySelector('[data-einstieg="34"]'); if (start34) start34.classList.add("gold");
+    }
     inhalt.querySelectorAll("[data-druck]").forEach(b => b.addEventListener("click", () => drucken(e, b.dataset.druck)));
     const verlaufWahl = document.getElementById("verlaufWahl");
     if (verlaufWahl) {
@@ -1058,6 +1063,7 @@ function zeigeStunde(id){
         verlaufWahl.querySelectorAll("[data-va]").forEach(b => b.addEventListener("click", () => zeigen(b.dataset.va)));
         let gemerkt = "tabelle";
         try { gemerkt = localStorage.getItem("sozialVerlaufAnsicht") || "tabelle"; } catch (err) {}
+        if (gemerkt === "12" && e.nur34) gemerkt = "34";
         if (gemerkt !== "tabelle") zeigen(gemerkt);
     }
     if (window.sozialMaterial) {
@@ -1205,6 +1211,7 @@ function zeigeEditor(id, entwurfBehalten = false){
             </div>
             ${feld("Material (eines pro Zeile)", "material", e.material, "textarea", 'rows="3"')}
             <label class="ed-check"><input type="checkbox" data-pfad="ohneVorbereitung" data-art="check" ${e.ohneVorbereitung ? "checked" : ""}> Ohne Vorbereitung (nur Papier, Stifte, Tafel)</label>
+            <label class="ed-check"><input type="checkbox" data-pfad="nur34" data-art="check" ${e.nur34 ? "checked" : ""}> Nur für Kl. 3/4 (Teile für Kl. 1/2 werden ausgeblendet)</label>
             <label class="feld">Filme & Links für den Einstieg (einer pro Zeile)</label>
             <textarea rows="3" data-pfad="medien" data-art="medien" placeholder="Titel | https://… | Quelle, Dauer">${esc((window.sozialMedien ? window.sozialMedien(e) : (e.medien || [])).map(m => [m.titel || "", m.url, [m.quelle, m.dauer].filter(Boolean).join(", ")].join(" | ").replace(/ \| $/, "")).join("\n"))}</textarea>
             <div class="ed-hilfe">Format: Titel | Link | Quelle (optional). Die Filme erscheinen in der Tafel-Präsentation und auf der Stundenseite.</div>
@@ -1466,7 +1473,8 @@ function zeigeJahresplan(){
                 const zellen = klassen.map(kl => {
                     const x = klasseInWoche(w, kl);
                     const anders = x.einheit && x.einheit !== w.einheit ? finde(x.einheit) : null;
-                    return `<td class="kl-zelle"><button class="kl-status ${x.status || "offen"}" data-kl="${esc(kl.id)}" ${w.frei ? "disabled" : ""} title="${esc(kl.name)}: ${STATUS[x.status].text}${anders ? " · " + esc(anders.titel) : ""}${x.notiz ? " · " + esc(x.notiz) : ""}">${STATUS[x.status].zeichen}</button>${anders || x.notiz ? '<span class="kl-punkt" title="eigenes Thema / Notiz"></span>' : ""}</td>`;
+                    const unpassend = !anders && e && e.nur34 && kl.stufe === "12";
+                    return `<td class="kl-zelle${unpassend ? " unpassend" : ""}"><button class="kl-status ${x.status || "offen"}" data-kl="${esc(kl.id)}" ${w.frei ? "disabled" : ""} title="${esc(kl.name)}: ${STATUS[x.status].text}${unpassend ? " · Achtung: Stunde nur für Kl. 3/4 – über die Schieberegler ein anderes Thema wählen" : ""}${anders ? " · " + esc(anders.titel) : ""}${x.notiz ? " · " + esc(x.notiz) : ""}">${STATUS[x.status].zeichen}</button>${anders || x.notiz ? '<span class="kl-punkt" title="eigenes Thema / Notiz"></span>' : ""}</td>`;
                 }).join("");
                 const details = klassen.length && !w.frei ? `<tr class="kl-details" data-fuer="${k}" hidden><td colspan="${5 + klassen.length}"><div class="kl-detail-raster">${klassen.map(kl => {
                     const x = klasseInWoche(w, kl);
