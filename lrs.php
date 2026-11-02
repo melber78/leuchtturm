@@ -9315,6 +9315,21 @@ lt_init();
         fp_kindWechsel();
         return;
     }
+    // aus der Kinder-Akte: Lesetraining mit den gespeicherten Lesestufen und Buchstaben
+    const lesen = q.get("lesen");
+    if (lesen && LRS_KINDER.includes(lesen)){
+        const akte = LRS_AKTEN[lesen] || {};
+        if (/^[1-8]$/.test(akte.klasse || "")){ const g = document.getElementById("g-klasse"); if (g.value !== akte.klasse){ g.value = akte.klasse; g.dispatchEvent(new Event("change")); } }
+        document.querySelector('.tabs .tab[data-bereich="lesen"]').click();
+        const typ = document.getElementById("ld-typ");
+        typ.value = "lesetraining";
+        typ.dispatchEvent(new Event("change"));
+        const stufen = (akte.l || []).length ? akte.l : ["silben"];
+        document.querySelectorAll(".ld-le-stufe").forEach(c => c.checked = stufen.includes(c.value));
+        document.getElementById("ld-le-buchstaben").value = akte.lb || "";
+        silben_laden().then(() => erstelleLesen());
+        return;
+    }
     // aus der Kinder-Akte: Stunde für ein Kind planen
     const stunde = q.get("stunde");
     if (stunde && LRS_KINDER.includes(stunde)){

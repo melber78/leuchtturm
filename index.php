@@ -64,6 +64,24 @@ body{
     color:#a0a0a0; font-weight:700; font-size:13px; text-decoration:none;
 }
 
+.gruppe{ font-size:15px; font-weight:900; text-transform:uppercase; letter-spacing:.06em; color:#7c8a85; margin:28px 0 12px; display:flex; gap:8px; align-items:center; }
+.gruppe i{ color:var(--meer); }
+.portal-grid{ grid-template-columns:repeat(4, 1fr) !important; gap:16px !important; margin-bottom:8px !important; }
+@media (max-width:860px){ .portal-grid{ grid-template-columns:1fr 1fr !important; } }
+@media (max-width:520px){ .portal-grid{ grid-template-columns:1fr !important; } }
+.portal-card{ padding:22px 16px !important; }
+.portal-card i{ font-size:30px !important; margin-bottom:10px !important; }
+.portal-card h2{ font-size:17px !important; }
+.portal-card p{ font-size:13px !important; }
+.portal-card.haupt{ background:linear-gradient(135deg, #eef6fb, #fff); outline:2px solid #cfe2ef; }
+.neu{ background:#fff8e6; border:2px solid #f6dfa6; border-radius:20px; padding:14px 16px; margin-bottom:10px; }
+.neu-kopf{ display:flex; justify-content:space-between; align-items:center; font-weight:900; color:#8a5a00; margin-bottom:8px; }
+.neu-kopf button{ border:none; background:none; font-size:18px; color:#8a5a00; cursor:pointer; }
+.neu-eintrag{ display:flex; gap:12px; align-items:center; text-decoration:none; color:var(--text); background:#fff; border-radius:12px; padding:10px 14px; margin-top:6px; }
+.neu-eintrag b{ flex:none; width:230px; }
+.neu-eintrag span{ flex:1; font-size:13px; color:#55636b; }
+.neu-eintrag i{ color:var(--gold); }
+@media (max-width:650px){ .neu-eintrag{ flex-wrap:wrap; } .neu-eintrag b{ width:100%; } }
 </style>
 </head>
 <body>
@@ -73,57 +91,75 @@ body{
 <header class="portal-header">
 <div class="portal-icon"><i class="fa-solid fa-tower-observation"></i></div>
 <h1>Leuchtturm</h1>
-<p>Orientierung & Material für LRS-Förderung und Sozialtraining</p>
+<p>Orientierung &amp; Material für LRS-Förderung, Sozialtraining und Vertretung</p>
 </header>
 
+<?php
+// Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
+$NEU = [
+    ["2026-11-02", "Lesetraining von Buchstaben bis Text", "In der Kinder-Akte unter <b>Förderplan</b>: Lesestufen 1–5 und bekannte Buchstaben wählen – das Förderpaket nimmt sie mit.", "trainingshefte.php"],
+    ["2026-11-02", "Vertretungsstunden", "22 fertige 40-Minuten-Stunden für Kl. 1–4 mit Zufallsauswahl und Arbeitsblättern.", "sozial-stunden.php?bereich=vertretung"],
+    ["2026-10-30", "Sozialtraining: Präsentation & Material", "Tafel-Präsentation, PowerPoint, Filme und Gefühlskarten zu jeder Stunde.", "sozial-stunden.php"],
+];
+$neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strtotime("-21 days")));
+?>
+<?php if ($neuAktuell): ?>
+<section class="neu" id="neu" data-stand="<?= htmlspecialchars($neuAktuell[0][0]) ?>" hidden>
+    <div class="neu-kopf"><span><i class="fa-solid fa-star"></i> Neu im Leuchtturm</span><button type="button" onclick="neuWeg()" title="Ausblenden"><i class="fa-solid fa-xmark"></i></button></div>
+    <?php foreach ($neuAktuell as [$datum, $titel, $text, $link]): ?>
+        <a class="neu-eintrag" href="<?= htmlspecialchars($link) ?>"><b><?= htmlspecialchars($titel) ?></b><span><?= $text ?></span><i class="fa-solid fa-arrow-right"></i></a>
+    <?php endforeach; ?>
+</section>
+<?php endif; ?>
+
+<h2 class="gruppe"><i class="fa-solid fa-pen-nib"></i> LRS-Förderung</h2>
 <section class="portal-grid">
 
-<a href="lrs.php" class="portal-card">
-<i class="fa-solid fa-pen-nib"></i>
-<h2>LRS-Förderung</h2>
-<p>Arbeitsblatt-Generator nach der AFS-Methode</p>
-</a>
-
-<a href="sozialtraining.php" class="portal-card">
-<i class="fa-solid fa-people-group"></i>
-<h2>Sozialtraining</h2>
-<p>Generator, Methodenpool & fertige Vorlagen</p>
-</a>
-
-<a href="sozial-stunden.php" class="portal-card">
-<i class="fa-solid fa-calendar-week"></i>
-<h2>Sozialtraining-Stunden</h2>
-<p>Fertige Stunden, eigene Stunden &amp; Jahresplan – Arbeitsblätter Kl. 1/2 und 3/4</p>
-</a>
-
-<a href="sozial-stunden.php?bereich=vertretung" class="portal-card">
-<i class="fa-solid fa-shuffle"></i>
-<h2>Vertretungsstunden</h2>
-<p>Fertige 40-Minuten-Stunden für Kl. 1–4 – mit Zufallsauswahl, Arbeitsblättern &amp; Tafel-Präsentation</p>
-</a>
-
-<a href="materialien.php" class="portal-card">
-<i class="fa-solid fa-folder-open"></i>
-<h2>Materialien</h2>
-<p>Eigenes Material hochladen & einordnen</p>
-</a>
-
-<a href="trainingshefte.php" class="portal-card">
-<i class="fa-solid fa-folder-open"></i>
+<a href="trainingshefte.php" class="portal-card haupt">
+<i class="fa-solid fa-user-graduate"></i>
 <h2>Kinder-Akten</h2>
-<p>Förderplan, Trainingsheft, Lernbox &amp; Stunden pro Kind (nur Kürzel)</p>
+<p>Pro Kind (nur Kürzel): Förderplan mit Lesetraining, Förderpaket, Trainingsheft, Lernbox &amp; Stunden</p>
 </a>
 
-<a href="foerderkartei.php" class="portal-card">
-<i class="fa-solid fa-box-archive"></i>
-<h2>Förderkartei</h2>
-<p>Fehlerwörter-Lernbox &amp; Lernverlauf pro Kind (nur Kürzel)</p>
+<a href="lrs.php" class="portal-card">
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+<h2>Material-Generator</h2>
+<p>Arbeitsblätter nach AFS – Aufmerksamkeit, Funktion, Lesen, Rechtschreiben</p>
 </a>
 
 <a href="gutachten.php" class="portal-card">
 <i class="fa-solid fa-file-signature"></i>
 <h2>Gutachten</h2>
 <p>Förderdiagnostik-Gutachten erstellen (lokal, nicht gespeichert)</p>
+</a>
+
+<a href="materialien.php" class="portal-card">
+<i class="fa-solid fa-folder-open"></i>
+<h2>Materialien</h2>
+<p>Gespeicherte und eigene Blätter hochladen &amp; einordnen</p>
+</a>
+
+</section>
+
+<h2 class="gruppe"><i class="fa-solid fa-people-group"></i> Sozialtraining &amp; Vertretung</h2>
+<section class="portal-grid">
+
+<a href="sozial-stunden.php" class="portal-card haupt">
+<i class="fa-solid fa-calendar-week"></i>
+<h2>Sozialtraining-Stunden</h2>
+<p>36 fertige Stunden, Jahresplan, Präsentation &amp; Material – Kl. 1/2 und 3/4</p>
+</a>
+
+<a href="sozial-stunden.php?bereich=vertretung" class="portal-card">
+<i class="fa-solid fa-shuffle"></i>
+<h2>Vertretungsstunden</h2>
+<p>Fertige 40-Minuten-Stunden für Kl. 1–4 mit Zufallsauswahl</p>
+</a>
+
+<a href="sozialtraining.php" class="portal-card">
+<i class="fa-solid fa-lightbulb"></i>
+<h2>Sozialtraining-Generator</h2>
+<p>Methodenpool &amp; Vorlagen</p>
 </a>
 
 </section>
@@ -133,6 +169,22 @@ body{
 </div>
 
 </div>
+
+<script>
+// „Neu“-Kasten: bleibt weg, bis es wieder etwas Neues gibt
+(function(){
+    const box = document.getElementById("neu");
+    if (!box) return;
+    let weg = "";
+    try { weg = localStorage.getItem("lt-neu-weg") || ""; } catch (e) {}
+    if (weg !== box.dataset.stand) box.hidden = false;
+})();
+function neuWeg(){
+    const box = document.getElementById("neu");
+    try { localStorage.setItem("lt-neu-weg", box.dataset.stand); } catch (e) {}
+    box.hidden = true;
+}
+</script>
 
 </body>
 </html>

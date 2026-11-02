@@ -69,7 +69,7 @@ switch ($aktion) {
         $ziele = [];
         foreach (array_slice((array)($p["ziele"] ?? []), 0, 40) as $z) {
             $bereich = (string)($z["bereich"] ?? "sonstiges");
-            if (!in_array($bereich, array_merge($FUNKTIONEN, $RS, $WEITERE), true)) $bereich = "sonstiges";
+            if (!in_array($bereich, array_merge($FUNKTIONEN, $RS, $LESEN, $WEITERE), true)) $bereich = "sonstiges";
             $ziel = $text($z["ziel"] ?? "", 400);
             $massnahme = $text($z["massnahme"] ?? "", 600);
             if ($ziel === "" && $massnahme === "") continue;

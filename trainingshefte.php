@@ -210,7 +210,7 @@ if ($kindDaten) {
     $alleAkten = json_decode((string)@file_get_contents($aktenDatei), true);
     if (is_array($alleAkten) && isset($alleAkten[$aktuellesKind])) $akte = array_merge($akte, $alleAkten[$aktuellesKind]);
     $akte["erledigt"] = (object)($akte["erledigt"] ?? []);
-    $akte["plan"] = array_merge(["von" => "", "bis" => "", "f" => [], "r" => [], "ziele" => [], "notiz" => "", "geaendert" => ""], (array)$akte["plan"]);
+    $akte["plan"] = array_merge(["von" => "", "bis" => "", "f" => [], "r" => [], "l" => [], "lb" => "", "ziele" => [], "notiz" => "", "geaendert" => ""], (array)$akte["plan"]);
     $alleKartei = json_decode((string)@file_get_contents($karteiDatei), true);
     if (is_array($alleKartei) && isset($alleKartei[$aktuellesKind])) $kartei = array_merge($kartei, $alleKartei[$aktuellesKind]);
 }
@@ -324,6 +324,11 @@ input[type="text"], select{ width:100%; border:2px solid #ececec; border-radius:
 .sp-chips{ display:flex; flex-wrap:wrap; gap:6px; }
 .sp-chip{ font-size:12px; font-weight:800; padding:4px 10px; border-radius:999px; background:#eef4f8; color:var(--nacht); }
 .sp-chip.rs{ background:#fff3dc; color:#7a5200; }
+.sp-chip.le{ background:#e6f5ea; color:#1f6b35; }
+.lesen-box{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; }
+.lesen-box > div{ flex:1; min-width:240px; }
+.lesen-box .schnell{ display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+.lesen-box .schnell button{ border:none; background:#eef1f4; border-radius:999px; padding:4px 10px; font:inherit; font-size:12px; font-weight:800; color:var(--nacht); cursor:pointer; }
 .leer-text{ font-size:13px; color:#a0a7ad; font-weight:700; }
 /* Förderplan */
 .plan-raster{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:14px; }
@@ -440,7 +445,7 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
 <div class="kacheln">
     <div class="kachel">
         <h3><i class="fa-solid fa-compass"></i> Förderplan</h3>
-        <?php if (!$plan["f"] && !$plan["r"] && !$ziele): ?>
+        <?php if (!$plan["f"] && !$plan["r"] && !$plan["l"] && !$ziele): ?>
             <p class="leer-text" style="margin:0;">Noch kein Förderplan. Lege die Schwerpunkte fest – oder übernimm sie aus dem Gutachten über den Generator.</p>
         <?php else: ?>
             <div class="klein"><?= $plan["von"] ? "Zeitraum " . h(date("d.m.Y", strtotime($plan["von"]))) . ($plan["bis"] ? " – " . h(date("d.m.Y", strtotime($plan["bis"]))) : "") : "Zeitraum noch offen" ?></div>
@@ -498,6 +503,16 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
     <div class="wahl-chips" id="p-f"></div>
     <label style="margin-top:14px;">Rechtschreib-Schwerpunkte</label>
     <div class="wahl-chips" id="p-r"></div>
+    <label style="margin-top:14px;">Lesetraining – kleinschrittig von Buchstaben bis Text</label>
+    <div class="wahl-chips" id="p-l"></div>
+    <div class="lesen-box">
+        <div>
+            <label style="margin-top:6px;">Diese Buchstaben kennt das Kind schon (optional)</label>
+            <input type="text" id="p-lb" placeholder="z. B. a m o l i s e u n r – Silben und Wörter werden dann möglichst nur daraus gebildet">
+            <div class="schnell"><button type="button" onclick="plan_lb('a m o l i s e u n r')">a m o l i s e u n r</button><button type="button" onclick="plan_lb('a m o l i s e u n r t f w h d b k ei au')">+ t f w h d b k ei au</button><button type="button" onclick="plan_lb('')">alle Buchstaben</button></div>
+        </div>
+        <a class="knopf" href="lrs.php?lesen=<?= urlencode($aktuellesKind) ?>" onclick="return plan_vorDemWechsel()"><i class="fa-solid fa-book-open-reader"></i> Lesetraining-Blätter erzeugen</a>
+    </div>
 
     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:22px; gap:10px; flex-wrap:wrap;">
         <h2 style="font-size:18px;">Ziele & Maßnahmen</h2>
@@ -645,8 +660,9 @@ let AKTE = <?= json_encode($akte, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
 const AF_FUNKTIONEN = { aufmerksamkeit: "Aufmerksamkeit/Konzentration", optdiff: "Optische Differenzierung", optged: "Optisches Gedächtnis", optser: "Optische Serialität",
     akdiff: "Akustische Differenzierung", akged: "Akustisches Gedächtnis", akser: "Akustische Serialität", koerper: "Körperschema", raum: "Raumorientierung" };
 const AF_WEITERE = { lesen: "Lesen", schreiben: "Schreiben/Abschreiben", sonstiges: "Sonstiges" };
+const AF_LESEN = { buchstaben: "Lesen 1 · Buchstaben", silben: "Lesen 2 · Silben", woerter: "Lesen 3 · Wörter", saetze: "Lesen 4 · Sätze", texte: "Lesen 5 · Texte" };
 const AF_RS = Object.fromEntries(Object.entries(typeof RS_NAMEN !== "undefined" ? RS_NAMEN : {}).filter(([k]) => k !== "sonstige").map(([k, v]) => [k, v.name]));
-function af_name(k){ return AF_FUNKTIONEN[k] || AF_RS[k] || AF_WEITERE[k] || k; }
+function af_name(k){ return AF_FUNKTIONEN[k] || AF_RS[k] || AF_LESEN[k] || AF_WEITERE[k] || k; }
 function af_esc(s){ return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 function af_datum(d){ return d ? d.split("-").reverse().join(".") : ""; }
 
@@ -676,6 +692,11 @@ const AF_VORSCHLAG = {
     spst: ["sp und st am Wortanfang werden richtig geschrieben (nicht schp/scht).", "Hören und schreiben, Wörter sortieren, Wortbausteine."],
     silbenh: ["Das silbentrennende h wird durch Verlängern erkannt.", "Verlängern (Schuh → Schuhe), Silben schwingen, Lückenwörter."],
     chsx: ["Wörter mit chs, x und ks werden als Merkwörter sicher geschrieben.", "Merkwortkartei, Wortbilder, Lückenwörter."],
+    buchstaben: ["Das Kind erkennt die erarbeiteten Buchstaben sicher und ordnet ihnen den richtigen Laut zu (auch groß/klein).", "Buchstaben-Blitz mit Lautgebärden, Anlaute zu Bildern, Groß-/Kleinbuchstaben zuordnen; neue Buchstaben einzeln einführen."],
+    silben: ["Das Kind zieht Laute zu Silben zusammen und liest einfache Silben flüssig.", "Silbenteppich (M + a = Ma), Silben-Blitz mit Zeitprotokoll, Silben zum Wort zusammenschieben."],
+    woerter: ["Das Kind erliest Wörter silbenweise und versteht ihre Bedeutung.", "Wort-Bild-Zuordnung, Wörter-Blitz (Silben farbig), Quatschwörter erkennen."],
+    saetze: ["Das Kind liest kurze Sätze genau und versteht ihren Inhalt.", "Satz-Bild-Zuordnung, Ja/Nein-Sätze, Lies-und-male-Aufträge, Satztreppen."],
+    texte: ["Das Kind liest kurze Texte flüssig und beantwortet Fragen dazu.", "Kurze Texte mit Fragen und Richtig/Falsch, wiederholtes Lautlesen mit Zeit- und Fehlerprotokoll."],
 };
 
 async function akte_api(daten){
@@ -691,7 +712,7 @@ async function akte_klasse(k){ try { await akte_api({ aktion: "klasse", klasse: 
 (function(){
     const el = document.getElementById("ue-chips");
     if (!el) return;
-    el.innerHTML = [...(AKTE.plan.f || []).map(k => `<span class="sp-chip">${af_esc(af_name(k))}</span>`), ...(AKTE.plan.r || []).map(k => `<span class="sp-chip rs">${af_esc(af_name(k))}</span>`)].join("");
+    el.innerHTML = [...(AKTE.plan.f || []).map(k => `<span class="sp-chip">${af_esc(af_name(k))}</span>`), ...(AKTE.plan.r || []).map(k => `<span class="sp-chip rs">${af_esc(af_name(k))}</span>`), ...(AKTE.plan.l || []).map(k => `<span class="sp-chip le">${af_esc(af_name(k))}</span>`)].join("");
 })();
 
 /* --- Förderplan --- */
@@ -702,7 +723,7 @@ function plan_chips(id, namen, gewaehlt){
 }
 function plan_gewaehlt(id){ return [...document.querySelectorAll(`#${id} input:checked`)].map(c => c.value); }
 function plan_bereichOptionen(wert){
-    const gruppen = [["Schwerpunkte dieses Plans", [...plan_gewaehlt("p-f"), ...plan_gewaehlt("p-r")]], ["Funktionsbereiche", Object.keys(AF_FUNKTIONEN)], ["Rechtschreibung", Object.keys(AF_RS)], ["Weitere", Object.keys(AF_WEITERE)]];
+    const gruppen = [["Schwerpunkte dieses Plans", [...plan_gewaehlt("p-f"), ...plan_gewaehlt("p-r"), ...plan_gewaehlt("p-l")]], ["Funktionsbereiche", Object.keys(AF_FUNKTIONEN)], ["Rechtschreibung", Object.keys(AF_RS)], ["Lesetraining", Object.keys(AF_LESEN)], ["Weitere", Object.keys(AF_WEITERE)]];
     return gruppen.map(([t, keys]) => keys.length ? `<optgroup label="${t}">${keys.map(k => `<option value="${k}" ${k === wert ? "selected" : ""}>${af_esc(af_name(k))}</option>`).join("")}</optgroup>` : "").join("");
 }
 function plan_zielHtml(z){
@@ -731,20 +752,28 @@ function plan_zielNeu(z = { bereich: "sonstiges", ziel: "", massnahme: "", stand
 }
 function plan_vorschlaege(){
     const vorhanden = new Set(plan_zieleLesen().map(z => z.bereich));
-    const neu = [...plan_gewaehlt("p-f"), ...plan_gewaehlt("p-r")].filter(k => !vorhanden.has(k) && AF_VORSCHLAG[k]);
-    if (!neu.length){ alert(plan_gewaehlt("p-f").length + plan_gewaehlt("p-r").length ? "Zu allen gewählten Schwerpunkten gibt es schon ein Ziel." : "Bitte zuerst oben Schwerpunkte auswählen."); return; }
+    const neu = [...plan_gewaehlt("p-f"), ...plan_gewaehlt("p-r"), ...plan_gewaehlt("p-l")].filter(k => !vorhanden.has(k) && AF_VORSCHLAG[k]);
+    if (!neu.length){ alert(plan_gewaehlt("p-f").length + plan_gewaehlt("p-r").length + plan_gewaehlt("p-l").length ? "Zu allen gewählten Schwerpunkten gibt es schon ein Ziel." : "Bitte zuerst oben Schwerpunkte auswählen."); return; }
     const bis = document.getElementById("p-bis").value;
     neu.forEach(k => plan_zielNeu({ bereich: k, ziel: AF_VORSCHLAG[k][0], massnahme: AF_VORSCHLAG[k][1], stand: "offen", pruefung: bis }));
     document.getElementById("p-status").textContent = `${neu.length} Ziele vorgeschlagen – du kannst sie anpassen. Speichern nicht vergessen!`;
 }
 let plan_ungespeichert = false;
+function plan_lb(text){ document.getElementById("p-lb").value = text; plan_geaendert(); }
+// Vor dem Wechsel in den Generator: ungespeicherte Lesestufen erst speichern
+function plan_vorDemWechsel(){
+    if (!plan_ungespeichert) return true;
+    plan_speichern().then(() => { location.href = "lrs.php?lesen=" + encodeURIComponent(AKTE_KIND); });
+    return false;
+}
 function plan_geaendert(){ plan_ungespeichert = true; const st = document.getElementById("p-status"); if (st) st.textContent = "Ungespeicherte Änderungen."; }
 async function plan_speichern(){
     const st = document.getElementById("p-status");
     st.textContent = "Wird gespeichert …";
     try {
         const j = await akte_api({ aktion: "plan_speichern", plan: { von: document.getElementById("p-von").value, bis: document.getElementById("p-bis").value,
-            f: plan_gewaehlt("p-f"), r: plan_gewaehlt("p-r"), ziele: plan_zieleLesen(), notiz: document.getElementById("p-notiz").value } });
+            f: plan_gewaehlt("p-f"), r: plan_gewaehlt("p-r"), l: plan_gewaehlt("p-l"), lb: document.getElementById("p-lb").value,
+            ziele: plan_zieleLesen(), notiz: document.getElementById("p-notiz").value } });
         plan_ungespeichert = false;
         st.textContent = "✅ " + j.meldung;
         document.getElementById("p-geaendert").textContent = af_datum(AKTE.plan.geaendert);
@@ -756,7 +785,7 @@ async function plan_speichern(){
 function plan_drucken(){
     const ziele = plan_zieleLesen().filter(z => z.ziel || z.massnahme);
     const klasse = document.getElementById("akte-klasse").value;
-    const sp = [...plan_gewaehlt("p-f"), ...plan_gewaehlt("p-r")].map(af_name);
+    const sp = [...plan_gewaehlt("p-f"), ...plan_gewaehlt("p-r"), ...plan_gewaehlt("p-l")].map(af_name);
     const druck = document.getElementById("druck-plan");
     if (druck.parentElement !== document.body) document.body.appendChild(druck);
     druck.innerHTML = `
@@ -780,8 +809,10 @@ if (document.getElementById("p-ziele")){
     document.getElementById("p-geaendert").textContent = p.geaendert ? af_datum(p.geaendert) : "noch nie";
     plan_chips("p-f", AF_FUNKTIONEN, p.f || []);
     plan_chips("p-r", AF_RS, p.r || []);
+    plan_chips("p-l", AF_LESEN, p.l || []);
+    document.getElementById("p-lb").value = p.lb || "";
     document.getElementById("p-ziele").innerHTML = (p.ziele || []).map(plan_zielHtml).join("");
-    document.querySelector(".wrap").addEventListener("input", e => { if (e.target.closest("#p-ziele, #p-notiz, #p-von, #p-bis")) plan_geaendert(); });
+    document.querySelector(".wrap").addEventListener("input", e => { if (e.target.closest("#p-ziele, #p-notiz, #p-von, #p-bis, #p-lb")) plan_geaendert(); });
     window.addEventListener("beforeunload", e => { if (plan_ungespeichert){ e.preventDefault(); e.returnValue = ""; } });
 }
 
