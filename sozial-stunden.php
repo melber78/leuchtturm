@@ -1037,16 +1037,19 @@ function zeigeStunde(id){
 
         <div class="karte"><h2>Übungen</h2>${uebungen || '<div class="leer">Keine Übungen.</div>'}</div>
 
-        <div class="karte"><h2>Arbeitsblätter</h2>
+        ${e.nur34 ? `<div class="karte"><h2>Arbeitsblatt</h2>
+            <div class="vorschau-paar"><div><div class="stufe-label s34">Klasse 3/4</div><div class="vorschau" id="v34"></div><div class="vorschau-status"></div></div></div></div>` : `<div class="karte"><h2>Arbeitsblätter</h2>
             <p class="ed-hilfe" style="margin:0 0 12px">Klasse 1 ist eine Vorlese-Fassung: Lies die Aufgaben und Antworten vor – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Schreibaufgaben gibt es nur in Klasse 2.</p>
             <div class="vorschau-paar drei">
             <div><div class="stufe-label">Klasse 1</div><div class="vorschau" id="v1"></div><div class="vorschau-status"></div></div>
             <div><div class="stufe-label">Klasse 2</div><div class="vorschau" id="v2"></div><div class="vorschau-status"></div></div>
             <div><div class="stufe-label s34">Klasse 3/4</div><div class="vorschau" id="v34"></div><div class="vorschau-status"></div></div>
-        </div></div>`;
+        </div></div>`}`;
 
-    vorschauZeigen(document.getElementById("v1"), e, "1");
-    vorschauZeigen(document.getElementById("v2"), e, "2");
+    if (!e.nur34) {
+        vorschauZeigen(document.getElementById("v1"), e, "1");
+        vorschauZeigen(document.getElementById("v2"), e, "2");
+    }
     vorschauZeigen(document.getElementById("v34"), e, "34");
     if (e.nur34) {
         inhalt.querySelectorAll('[data-einstieg="12"], [data-pptx="12"], [data-druck="ab1"], [data-druck="ab2"], [data-druck="regie12"], [data-va="12"], .nur12').forEach(x => x.remove());
@@ -1206,7 +1209,7 @@ function zeigeEditor(id, entwurfBehalten = false){
             <div class="ed-raster">
                 <div>${feld("Titel der Stunde", "titel", e.titel, "text", 'placeholder="z. B. Mutig sein"')}</div>
                 <div><label class="feld">Thema</label><select data-pfad="kategorie">${kats.map(k => `<option ${k === e.kategorie ? "selected" : ""}>${esc(k)}</option>`).join("")}</select></div>
-                <div>${feld("Ziel Klasse 1/2", "ziel12", e.ziel12)}</div>
+                <div class="nur12">${feld("Ziel Klasse 1/2", "ziel12", e.ziel12)}</div>
                 <div>${feld("Ziel Klasse 3/4", "ziel34", e.ziel34)}</div>
             </div>
             ${feld("Material (eines pro Zeile)", "material", e.material, "textarea", 'rows="3"')}
@@ -1221,7 +1224,7 @@ function zeigeEditor(id, entwurfBehalten = false){
             <button class="btn klein" type="button" id="verlaufPlus"><i class="fa-solid fa-plus"></i> Zeile</button></div>
 
         <div class="karte"><h2>Lerntexte</h2><div class="zwei">
-            <div><div class="stufe-label">Klasse 1/2</div>${feld("Titel", "lerntext12.titel", e.lerntext12.titel)}${feld("Text", "lerntext12.text", e.lerntext12.text, "textarea", 'rows="12"')}</div>
+            <div class="nur12"><div class="stufe-label">Klasse 1/2</div>${feld("Titel", "lerntext12.titel", e.lerntext12.titel)}${feld("Text", "lerntext12.text", e.lerntext12.text, "textarea", 'rows="12"')}</div>
             <div><div class="stufe-label s34">Klasse 3/4</div>${feld("Titel", "lerntext34.titel", e.lerntext34.titel)}${feld("Text", "lerntext34.text", e.lerntext34.text, "textarea", 'rows="12"')}</div>
         </div><div class="ed-hilfe">Leerzeile = neuer Absatz · „- “ = Aufzählung · „1. “ = Nummerierung · **fett** · *kursiv*</div></div>
 
@@ -1241,7 +1244,7 @@ function zeigeEditor(id, entwurfBehalten = false){
                 <textarea rows="5" data-meigene="1" placeholder="# Titel des Kartensatzes&#10;Text der ersten Karte&#10;Text der zweiten Karte">${esc(eigene)}</textarea>
                 <div class="ed-hilfe">Eine Zeile mit # beginnt einen neuen Kartensatz, jede weitere Zeile wird eine Karte (8 pro Seite).</div></div>`;
         })() : ""}
-        ${["12", "34"].map(s => `<div class="karte"><h2>Arbeitsblatt Klasse ${s === "12" ? "1/2" : "3/4"}</h2>
+        ${["12", "34"].map(s => `<div class="karte${s === "12" ? " nur12" : ""}"><h2>Arbeitsblatt Klasse ${s === "12" ? "1/2" : "3/4"}</h2>
             <div class="ed-ab">
                 <div>${feld("Titel des Arbeitsblatts", `ab${s}.titel`, e["ab" + s].titel)}
                     <div id="edAufgaben${s}" style="margin-top:12px"></div>
@@ -1256,6 +1259,8 @@ function zeigeEditor(id, entwurfBehalten = false){
             <button class="btn gold" id="speichern"><i class="fa-solid fa-floppy-disk"></i> Speichern</button>
         </div></div>`;
     const wurzel = document.getElementById("ed");
+    const nur12Zeigen = () => wurzel.querySelectorAll(".nur12").forEach(x => { x.style.display = e.nur34 ? "none" : ""; });
+    nur12Zeigen();
 
     const verlaufZeichnen = () => {
         document.getElementById("edVerlauf").innerHTML = e.verlauf.map((v, i) => `<div class="ed-zeile">
@@ -1297,7 +1302,7 @@ function zeigeEditor(id, entwurfBehalten = false){
         const pfad = t.dataset.pfad;
         if (!pfad) return;
         const art = t.dataset.art;
-        if (art === "check") setzen(e, pfad, t.checked);
+        if (art === "check") { setzen(e, pfad, t.checked); if (pfad === "nur34") nur12Zeigen(); }
         else if (art === "zahl") setzen(e, pfad, Math.max(1, Math.min(15, parseInt(t.value, 10) || 1)));
         else if (art === "liste") setzen(e, pfad, zeilen(t.value));
         else if (art === "luecken") setzen(e, pfad, zeilen(t.value).map(z => z.replace(/\s*\/\/\s*/g, "\n")));
