@@ -21,7 +21,10 @@ if (file_exists($datei)) {
 }
 $daten += ["einheiten" => [], "jahresplan" => null, "rituale" => null];
 $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE;
-$version = @filemtime(__DIR__ . "/sozial-einheiten.js") ?: 1;
+// Alle Vorlagen-Dateien: sozial-einheiten.js zuerst, dann -2, -3 … (neue Dateien werden automatisch geladen)
+$vorlagenDateien = glob(__DIR__ . "/sozial-einheiten*.js") ?: [];
+natsort($vorlagenDateien);
+usort($vorlagenDateien, fn($a, $b) => (basename($a) === "sozial-einheiten.js" ? -1 : (basename($b) === "sozial-einheiten.js" ? 1 : strnatcmp($a, $b))));
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -186,7 +189,7 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .blatt{
     width:210mm; height:297mm; overflow:hidden; background:white; color:#1b1b1b;
     padding:12mm 14mm 10mm; display:flex; flex-direction:column;
-    font-family:"Andika","Nunito",sans-serif; font-size:14pt; line-height:1.35;
+    font-family:"Andika","Nunito",sans-serif; font-size:14pt; line-height:1.35; --z:1;
     -webkit-print-color-adjust:exact; print-color-adjust:exact;
 }
 .blatt.zu-voll{ outline:4px solid var(--rot); outline-offset:-4px; }
@@ -209,24 +212,25 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .aufgabe.ohne-kopf .af-body{ padding-left:calc(1.45em * .85 + 2.5mm); }
 .ln.vorne{ flex:0 0 3.2em; min-width:3.2em; margin-left:0; margin-right:.4em; }
 .ln{ display:inline-block; border-bottom:.35mm solid #555; min-width:3.5em; height:1.3em; flex:1 1 3.5em; margin:0 .15em; }
-.lz{ display:flex; flex-wrap:wrap; align-items:flex-end; min-height:1.9em; }
+.lz{ display:flex; flex-wrap:wrap; align-items:flex-end; min-height:calc(1.9em * var(--z)); }
 .lz + .lz{ margin-top:.25em; }
+.lz.nur-text{ min-height:0; padding-top:.15em; }
 .lz > span.t{ white-space:pre-wrap; }
 .box{ display:inline-block; width:.9em; height:.9em; border:.35mm solid #333; border-radius:.12em; vertical-align:-.1em; margin-right:.15em; flex:0 0 auto; background:white; }
-.schreiblinie{ height:2.1em; border-bottom:.35mm solid #555; }
-.blatt.stufe12 .schreiblinie{ height:2.4em; }
-.kreuz-liste{ display:flex; flex-direction:column; gap:.45em; }
+.schreiblinie{ height:calc(2.1em * var(--z)); border-bottom:.35mm solid #555; }
+.blatt.stufe12 .schreiblinie{ height:calc(2.4em * var(--z)); }
+.kreuz-liste{ display:flex; flex-direction:column; gap:calc(.45em * var(--z)); }
 .kreuz-liste.reihe{ flex-direction:row; flex-wrap:wrap; gap:.4em 1.4em; }
 .kreuz{ display:flex; align-items:flex-end; gap:.45em; }
 .kreuz .box{ width:1em; height:1em; margin:0; align-self:center; }
 .kreuz .lz{ min-height:0; flex:1; }
-.zuordnen{ display:grid; grid-template-columns:minmax(0,max-content) 18mm minmax(0,max-content); justify-content:center; row-gap:.55em; align-items:center; }
+.zuordnen{ display:grid; grid-template-columns:minmax(0,max-content) 18mm minmax(0,max-content); justify-content:center; row-gap:calc(.55em * var(--z)); align-items:center; }
 .zu-l{ display:flex; align-items:center; justify-content:flex-end; gap:.5em; text-align:right; }
 .zu-r{ display:flex; align-items:center; gap:.5em; }
 .punkt{ flex:0 0 auto; width:.62em; height:.62em; border-radius:50%; background:#333; }
 table.ab-tab{ width:100%; border-collapse:collapse; }
 table.ab-tab th{ background:#eef4f8; text-align:left; font-weight:700; padding:.3em .5em; border:.3mm solid #9aa9b2; font-size:.9em; }
-table.ab-tab td{ border:.3mm solid #9aa9b2; padding:.35em .5em; vertical-align:middle; height:2.3em; }
+table.ab-tab td{ border:.3mm solid #9aa9b2; padding:.35em .5em; vertical-align:middle; height:calc(2.3em * var(--z)); }
 table.ab-tab td .lz{ min-height:0; }
 .gesichter{ display:flex; justify-content:space-around; gap:3mm; flex-wrap:wrap; }
 .gesicht{ text-align:center; width:5.2em; }
@@ -235,9 +239,10 @@ table.ab-tab td .lz{ min-height:0; }
 .malfeld.mit-bild{ min-height:62mm; }
 .malfeld{ flex:1 1 auto; min-height:30mm; border:.5mm dashed #9aa9b2; border-radius:4mm; position:relative; }
 .malfeld svg{ position:absolute; left:6%; top:7%; width:88%; height:86%; }
-.satz-liste{ display:flex; flex-direction:column; gap:.5em; }
+.satz-liste{ display:flex; flex-direction:column; gap:calc(.5em * var(--z)); }
 .satz{ display:flex; gap:.4em; }
-.satz .snr{ font-weight:700; flex:0 0 1.2em; padding-top:.45em; }
+.satz .snr{ font-weight:700; flex:0 0 1.2em; padding-top:.15em; }
+.satz .snr.mit-linie{ padding-top:calc(1.9em * var(--z) - 1.35em); }
 .satz .sinhalt{ flex:1; }
 
 /* Stundenvorbereitung (Lehrkraft) – Druck */
@@ -295,7 +300,9 @@ table.ab-tab td .lz{ min-height:0; }
 <div id="toast"></div>
 <div id="druck"></div>
 
-<script src="sozial-einheiten.js?v=<?= $version ?>"></script>
+<?php foreach ($vorlagenDateien as $vd): ?>
+<script src="<?= htmlspecialchars(basename($vd)) ?>?v=<?= @filemtime($vd) ?: 1 ?>"></script>
+<?php endforeach; ?>
 <script>
 window.SOZIAL_DATEN = <?= json_encode($daten, $JSON) ?>;
 window.SOZIAL_CSRF = <?= json_encode($_SESSION["sozial_csrf"], $JSON) ?>;
@@ -323,7 +330,7 @@ const TYPEN = {
     gesichter: "Gesichter / Gefühle",
     malen:     "Malfeld"
 };
-const BILDER = { "": "– kein Bild –", stopp: "Stopp-Schild", herz: "Herz", stern: "Stern", ampel: "Ampel", sprechblase: "Sprechblase", sonne: "Sonne", haende: "Zwei Hände" };
+const BILDER = { "": "– kein Bild –", stopp: "Stopp-Schild", herz: "Herz", stern: "Stern", ampel: "Ampel", sprechblase: "Sprechblase", sonne: "Sonne", ohr: "Ohr", blume: "Blume", wolke: "Wolke", pokal: "Pokal" };
 
 function esc(s){ return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c])); }
 function inline(s){
@@ -459,6 +466,10 @@ function ausmalbild(name){
         ampel: `<svg viewBox="0 0 70 160"><rect x="8" y="5" width="54" height="128" rx="12" ${s}/><circle cx="35" cy="30" r="15" ${s}/><circle cx="35" cy="69" r="15" ${s}/><circle cx="35" cy="108" r="15" ${s}/><rect x="30" y="133" width="10" height="24" ${s}/></svg>`,
         sprechblase: `<svg viewBox="0 0 140 110"><path d="M20 5 H120 Q135 5 135 20 V65 Q135 80 120 80 H55 L28 104 L33 80 H20 Q5 80 5 65 V20 Q5 5 20 5 Z" ${s}/></svg>`,
         sonne: `<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="26" ${s}/>${[0,45,90,135,180,225,270,315].map(w => { const r = w * Math.PI / 180; return `<line x1="${60 + 36 * Math.cos(r)}" y1="${60 + 36 * Math.sin(r)}" x2="${60 + 54 * Math.cos(r)}" y2="${60 + 54 * Math.sin(r)}" ${s}/>`; }).join("")}</svg>`,
+        ohr: `<svg viewBox="0 0 100 140"><path d="M28 50 Q28 8 62 8 Q95 8 92 50 Q90 72 72 86 Q62 95 62 112 Q60 132 42 132 Q26 132 24 116" ${s}/><path d="M45 52 Q46 30 62 30 Q76 30 74 50 Q73 62 63 66 Q55 70 57 82" ${s}/></svg>`,
+        blume: `<svg viewBox="0 0 120 160"><circle cx="60" cy="52" r="15" ${s}/>${[0,60,120,180,240,300].map(w => { const r = w * Math.PI / 180; return `<ellipse cx="${60 + 30 * Math.cos(r)}" cy="${52 + 30 * Math.sin(r)}" rx="15" ry="12" transform="rotate(${w} ${60 + 30 * Math.cos(r)} ${52 + 30 * Math.sin(r)})" ${s}/>`; }).join("")}<path d="M60 84 V155" ${s}/><path d="M60 125 Q40 105 22 115 Q40 132 60 125" ${s}/><path d="M60 112 Q80 92 98 102 Q80 119 60 112" ${s}/></svg>`,
+        wolke: `<svg viewBox="0 0 160 100"><path d="M35 88 Q8 88 8 66 Q8 46 30 44 Q30 16 60 14 Q82 12 92 30 Q104 18 120 24 Q138 30 136 48 Q154 52 152 70 Q150 88 128 88 Z" ${s}/></svg>`,
+        pokal: `<svg viewBox="0 0 120 150"><path d="M30 10 H90 V50 Q90 85 60 88 Q30 85 30 50 Z" ${s}/><path d="M30 22 Q8 22 10 42 Q12 60 32 62" ${s}/><path d="M90 22 Q112 22 110 42 Q108 60 88 62" ${s}/><path d="M52 88 V112 H68 V88" ${s}/><rect x="34" y="112" width="52" height="16" rx="3" ${s}/><rect x="26" y="128" width="68" height="14" rx="3" ${s}/></svg>`,
         haende: `<svg viewBox="0 0 160 110"><path d="M10 70 Q10 50 30 45 L62 38 Q74 36 76 46 Q77 54 66 57 L52 60" ${s}/><path d="M150 70 Q150 50 130 45 L98 38 Q86 36 84 46 Q83 54 94 57 L108 60" ${s}/><path d="M10 70 Q20 95 50 95 L110 95 Q140 95 150 70" ${s}/><path d="M60 68 Q80 58 100 68" ${s}/></svg>`
     };
     return b[name] || "";
@@ -467,6 +478,7 @@ function ausmalbild(name){
 /* ============================================================
    Arbeitsblatt bauen (A4) und einpassen
    ============================================================ */
+const t0 = teile => teile[0].trim() !== "";
 // Text mit ___ (Schreiblinie) und ☐ (Kästchen), mehrzeilig
 function linienText(text){
     return String(text ?? "").split("\n").map(zeile => {
@@ -477,7 +489,8 @@ function linienText(text){
             // Linie ganz vorn mit Text dahinter = kurzes Feld (z. B. zum Nummerieren oder für F/K)
             if (i < teile.length - 1) html += (i === 0 && !t && teile[1].trim()) ? '<span class="ln vorne"></span>' : '<span class="ln"></span>';
         });
-        return `<div class="lz">${html || '<span class="ln"></span>'}</div>`;
+        const nurText = teile.length === 1 && t0(teile);
+        return `<div class="lz${nurText ? " nur-text" : ""}">${html || '<span class="ln"></span>'}</div>`;
     }).join("");
 }
 function aufgabeHtml(a){
@@ -487,7 +500,7 @@ function aufgabeHtml(a){
             return Array.from({ length: Math.max(1, Math.min(15, +a.zeilen || 2)) }, () => '<div class="schreiblinie"></div>').join("");
         case "luecken":
             return '<div class="satz-liste">' + (a.saetze || []).map((s, i) =>
-                `<div class="satz">${a.nummern ? `<span class="snr">${i + 1}.</span>` : ""}<div class="sinhalt">${linienText(s)}</div></div>`).join("") + "</div>";
+                `<div class="satz">${a.nummern ? `<span class="snr${/_{3,}/.test(s.split("\n")[0]) ? " mit-linie" : ""}">${i + 1}.</span>` : ""}<div class="sinhalt">${linienText(s)}</div></div>`).join("") + "</div>";
         case "ankreuzen":
             return `<div class="kreuz-liste${a.nebeneinander ? " reihe" : ""}">` + (a.optionen || []).map(o =>
                 `<div class="kreuz"><span class="box"></span>${linienText(o)}</div>`).join("") + "</div>";
@@ -500,11 +513,19 @@ function aufgabeHtml(a){
             }
             return html + "</div>";
         }
-        case "tabelle":
+        case "tabelle": {
+            // Spalten, in die geschrieben wird (alle Zellen leer) und deren Überschrift länger ist
+            // als ein Kürzel wie „D / I“, bekommen Platz zum Schreiben.
+            const sp = a.spalten || [];
+            const breite = sp.map((s, i) => {
+                const leer = (a.zeilen || []).every(z => !String(z[i] ?? "").trim() || String(z[i]).trim() === "☐");
+                return leer && String(s).replace(/\s/g, "").length > 8 ? (sp.length > 2 ? "34%" : "48%") : "";
+            });
             return '<table class="ab-tab">' +
-                ((a.spalten || []).length ? "<tr>" + a.spalten.map(s => `<th>${inline(s)}</th>`).join("") + "</tr>" : "") +
+                (sp.length ? "<tr>" + sp.map((s, i) => `<th${breite[i] ? ` style="width:${breite[i]}"` : ""}>${inline(s)}</th>`).join("") + "</tr>" : "") +
                 (a.zeilen || []).map(z => "<tr>" + (a.spalten?.length ? a.spalten.map((_, i) => z[i]) : z).map(c => `<td>${c ? linienText(c) : ""}</td>`).join("") + "</tr>").join("") +
                 "</table>";
+        }
         case "gesichter":
             return '<div class="gesichter">' + (a.gefuehle || []).map(g =>
                 `<div class="gesicht">${gesichtSvg(gefuehlArt(g), !!a.leer)}<div>${inline(g)}</div></div>`).join("") + "</div>";
@@ -547,8 +568,23 @@ function blattBauen(e, stufe){
 function passt(b){ return b.scrollHeight <= b.clientHeight + 1; }
 function einpassen(blatt){
     const [min, max] = blatt.classList.contains("stufe12") ? [10, 19] : [9, 16];
+    blatt.style.setProperty("--z", "1");
     blatt.style.fontSize = max + "pt";
-    if (passt(blatt)) { blatt.classList.remove("zu-voll"); return true; }
+    if (passt(blatt)) {
+        blatt.classList.remove("zu-voll");
+        // Noch Platz übrig und kein Malfeld? Dann bekommen die Kinder größere Schreibzeilen statt großer Lücken.
+        if (!blatt.querySelector(".dehnbar")) {
+            let zlo = 1, zhi = 1.9;
+            for (let i = 0; i < 8; i++) {
+                const m = (zlo + zhi) / 2;
+                blatt.style.setProperty("--z", m.toFixed(3));
+                if (passt(blatt)) zlo = m; else zhi = m;
+            }
+            // etwas Luft zwischen den Aufgaben behalten
+            blatt.style.setProperty("--z", Math.max(1, zlo * 0.93).toFixed(3));
+        }
+        return true;
+    }
     let lo = min, hi = max;
     for (let i = 0; i < 9; i++) {
         const m = (lo + hi) / 2;

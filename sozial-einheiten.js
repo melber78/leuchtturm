@@ -52,6 +52,24 @@ window.SOZIAL_VERLAUF_STANDARD = [
     { zeit: "35–40", phase: "Abschluss",    k12: "Daumenrunde, Applauswelle", k34: "„Heute habe ich gelernt …“, Applauswelle" }
 ];
 
+/* Helfer für weitere Vorlagen-Dateien (sozial-einheiten-2.js usw.):
+   ergänzt die Dauer und baut den Stundenverlauf aus Lerntexten, Übungen und
+   Arbeitsblättern, wenn eine Stunde keinen eigenen Verlauf mitbringt. */
+window.SOZIAL_EINHEIT = function (o) {
+    o.dauer = o.dauer || 40;
+    if (!o.verlauf) {
+        const namen = stufe => (o.uebungen || []).filter(u => u.fuer === "alle" || u.fuer === stufe).map(u => u.titel).join(", ");
+        o.verlauf = [
+            { zeit: "0–5",   phase: "Ankommen",     k12: "Begrüßung, Gefühlsbarometer (zeigen)", k34: "Begrüßung, Gefühlsbarometer (ein Satz)" },
+            { zeit: "5–13",  phase: "Lerntext",     k12: "„" + o.lerntext12.titel + "“ hören, kurzes Gespräch", k34: "„" + o.lerntext34.titel + "“ hören, Fragen besprechen" },
+            { zeit: "13–25", phase: "Übung",        k12: namen("12"), k34: namen("34") },
+            { zeit: "25–35", phase: "Arbeitsblatt", k12: "AB 1/2: " + o.ab12.titel, k34: "AB 3/4: " + o.ab34.titel },
+            { zeit: "35–40", phase: "Abschluss",    k12: "Daumenrunde, Applauswelle", k34: "„Heute habe ich gelernt …“, Applauswelle" }
+        ];
+    }
+    return o;
+};
+
 window.SOZIAL_VORLAGEN = [
 
 /* ------------------------------------------------------------ */
