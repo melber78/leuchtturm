@@ -235,6 +235,12 @@ const B = {
         items: ["elefant", "giraffe", "pinguin", "krokodil", "affe", "loewe", "schildkroete", "hase", "eule", "frosch", "kaenguru", "igel"].map(b => ({ bild: b, text: (window.LT_BILDER && window.LT_BILDER[b] ? window.LT_BILDER[b][0] : b) })) },
     "schatz-hinweise": { titel: "Hinweiskarten für die Schatzsuche", gruppe: "Vertretung", art: "karten", proSeite: 8,
         items: Array.from({ length: 8 }, (_, i) => ({ emoji: "🗺️", text: "Hinweis " + (i + 1), linien: 2 })), hinweis: "Hinweise von Hand eintragen und im Raum verstecken." },
+    "schutzsaetze-familie": { titel: "Plakat: Familie ist tabu – meine Schutzsätze", gruppe: "Klartext (Kl. 3/4)", art: "plakat",
+        punkte: [{ emoji: "🛡️", text: "„Meine Mutter kennst du gar nicht.“" }, { emoji: "🚫", text: "„Lass meine Familie da raus.“" }, { emoji: "🪞", text: "„Das sagt mehr über dich als über sie.“" }, { emoji: "🧊", text: "„Ich geb dir nicht, was du willst.“" }, { emoji: "🚶", text: "Umdrehen, weggehen, Aufsicht holen." }],
+        fuss: "Wer auf Familie geht, will dich ausrasten sehen. Gib ihm das nicht." },
+    "grenzen-gewalt": { titel: "Plakat: Die absoluten Grenzen", gruppe: "Klartext (Kl. 3/4)", art: "plakat",
+        punkte: [{ emoji: "🧠", text: "Nie gegen den Kopf – kein Schlag, kein Tritt." }, { emoji: "🛑", text: "Wer am Boden liegt: sofort Schluss." }, { emoji: "🔪", text: "Keine Gegenstände, keine Waffen." }, { emoji: "👥", text: "Nie zu mehreren auf einen." }, { emoji: "📵", text: "Zuschauer filmen nicht – sie holen Hilfe." }],
+        fuss: "Notfall: 112 · Diese Grenzen gelten immer – auch wenn du wütend bist." },
     "pflaster": { titel: "Papier-Pflaster fürs Pflaster-Spiel", gruppe: "Vielfalt & Respekt", art: "karten", proSeite: 8, sym: 34, items: leer(8, { svg: PFLASTER }), hinweis: "Ausschneiden; mit etwas Klebeband aufkleben." }
 };
 
@@ -384,9 +390,11 @@ function seitenBauen(m){
 function passt(el){ return el.scrollHeight <= el.clientHeight + 1 && el.scrollWidth <= el.clientWidth + 1; }
 function einpassen(s){
     if (s.classList.contains("mplakat")) {
+        // Seite UND jeder einzelne Punkt müssen passen (Punkte schrumpfen sonst unbemerkt)
+        const ok = () => passt(s) && [...s.querySelectorAll(".mp-punkt")].every(passt);
         let lo = 9, hi = 30;
         s.style.fontSize = hi + "pt";
-        if (!passt(s)) { for (let i = 0; i < 10; i++) { const m = (lo + hi) / 2; s.style.fontSize = m + "pt"; if (passt(s)) lo = m; else hi = m; } s.style.fontSize = lo + "pt"; }
+        if (!ok()) { for (let i = 0; i < 10; i++) { const m = (lo + hi) / 2; s.style.fontSize = m + "pt"; if (ok()) lo = m; else hi = m; } s.style.fontSize = lo + "pt"; }
         return;
     }
     s.querySelectorAll(".mkarte").forEach(k => {
