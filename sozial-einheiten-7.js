@@ -119,7 +119,8 @@ Eine Woche später hat Merve Streit mit Lena. Plötzlich ist sie raus aus der Ch
           text: "Jedes Kind sucht sich eine Möglichkeit aus, wie es jemanden reinholen kann, und sagt den Satz einmal laut vom Platz:\n\n- „Komm, setz dich zu uns.“\n- „Willst du mitspielen? Wir brauchen noch einen.“\n- „Du kannst mit in unsere Gruppe.“\n- Beim Wählen jemanden früh nehmen, der sonst als Letzter drankommt.\n\nAbmachung für die Woche: Jeder holt einmal jemanden rein." }
     ],
     ab34: { titel: "Draußen – und wieder drinnen", aufgaben: [
-        { typ: "tabelle", text: "Sortiere: Was schließt aus – was holt rein?", spalten: ["Schließt aus", "Holt rein"], zeilen: [["", ""], ["", ""], ["", ""]] },
+        { typ: "tabelle", text: "Sortiere die Begriffe aus dem Wortspeicher: Was schließt aus – was holt rein?", spalten: ["Schließt aus", "Holt rein"], zeilen: [["", ""], ["", ""], ["", ""], ["", ""]],
+          woerter: ["wegdrehen", "„Setz dich zu uns.“", "aus dem Chat werfen", "zum Mitspielen fragen", "„Hier ist besetzt.“", "früh ins Team wählen", "als Letzten wählen", "in die Gruppe holen"] },
         { typ: "ankreuzen", text: "Wie fühlt sich jemand, der ausgeschlossen wird?", optionen: ["einsam", "wütend", "unsichtbar", "egal", "traurig", "beschämt"], nebeneinander: true },
         { typ: "schreiben", text: "Schreib Anna eine Nachricht, die ihr zeigt: Du gehörst dazu.", zeilen: 3 },
         { typ: "luecken", text: "", nummern: false, saetze: ["Diese Woche hole ich jemanden rein, indem ich ___"] }

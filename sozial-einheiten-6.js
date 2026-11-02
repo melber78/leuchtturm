@@ -58,7 +58,8 @@ Eines Tages bricht Kai sich den Arm und fehlt zwei Wochen. An der Tischtennispla
           text: "An der Tafel zwei Spalten: **So macht man anderen Angst** und **So bekommt man Respekt**. Die Kinder rufen Ideen vom Platz aus zu (melden). Zum Schluss die Frage: Was davon hält länger?" }
     ],
     ab34: { titel: "Respekt oder Angst?", aufgaben: [
-        { typ: "tabelle", text: "Sortiere: Wodurch bekommt man Angst – wodurch echten Respekt?", spalten: ["Macht anderen Angst", "Bringt echten Respekt"], zeilen: [["", ""], ["", ""], ["", ""], ["", ""]] },
+        { typ: "tabelle", text: "Sortiere die Begriffe aus dem Wortspeicher: Was macht Angst – was bringt echten Respekt?", spalten: ["Macht anderen Angst", "Bringt echten Respekt"], zeilen: [["", ""], ["", ""], ["", ""], ["", ""]],
+          woerter: ["drohen", "zuhören", "schubsen", "ehrlich sein", "auslachen", "Wort halten", "„Opfer“ sagen", "fair sein"] },
         { typ: "ankreuzen", text: "Welche Sätze zeigen echten Respekt? Kreuze an.", optionen: ["„Ich hör dir zu.“", "„Mach Platz, sonst …“", "„Das war fair von dir.“", "„Du Opfer.“", "„Sorry, das war nicht okay von mir.“"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Eine Person, die ich respektiere: ___", "Ich respektiere sie, weil ___", "So will ich respektiert werden: ___"] }
     ]}
@@ -317,7 +318,8 @@ Dann kommt Jonas rein, der Torwart. Jonas ist klein und kann kaum zwei Liegestü
           text: "Jedes Kind nennt eine innere Stärke von seinem linken Nachbarn (z. B. „Du gibst nicht auf“, „Du bist ehrlich“, „Du hilfst anderen“). Regel: nur echte, ernst gemeinte Stärken – Witze zählen nicht. Wer niemanden links hat, bekommt eine Stärke von dir." }
     ],
     ab34: { titel: "Meine Stärke", aufgaben: [
-        { typ: "tabelle", text: "Sortiere: Was ist Muskel-Stärke, was ist innere Stärke?", spalten: ["Muskel-Stärke", "Innere Stärke"], zeilen: [["", ""], ["", ""], ["", ""]] },
+        { typ: "tabelle", text: "Sortiere die Begriffe aus dem Wortspeicher: Was ist Muskel-Stärke, was ist innere Stärke?", spalten: ["Muskel-Stärke", "Innere Stärke"], zeilen: [["", ""], ["", ""], ["", ""], ["", ""]],
+          woerter: ["Liegestütze", "Fehler zugeben", "Armdrücken gewinnen", "Nein sagen", "schwere Kisten tragen", "sich entschuldigen", "schnell rennen", "ruhig bleiben"] },
         { typ: "ankreuzen", text: "Welche innere Stärke hast du schon? Kreuze an.", optionen: ["ehrlich sein", "Nein sagen", "mich entschuldigen", "anderen helfen", "ruhig bleiben", "nicht aufgeben", "Fehler zugeben"], nebeneinander: true },
         { typ: "luecken", text: "", nummern: false, saetze: ["Diese innere Stärke will ich trainieren: ___", "So fange ich diese Woche an: ___"] }
     ]}

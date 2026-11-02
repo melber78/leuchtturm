@@ -259,6 +259,9 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .zu-r{ display:flex; align-items:center; gap:.5em; }
 .punkt{ flex:0 0 auto; width:.62em; height:.62em; border-radius:50%; background:#333; }
 table.ab-tab{ width:100%; border-collapse:collapse; }
+.wortspeicher{ border:.4mm dashed #9aa9b2; border-radius:3mm; padding:.35em .6em; margin:.2em 0 .45em; display:flex; flex-wrap:wrap; gap:.3em .5em; align-items:center; font-size:.92em; }
+.wortspeicher b{ font-family:"Nunito",sans-serif; font-size:.8em; text-transform:uppercase; letter-spacing:.04em; color:#55636a; margin-right:.2em; }
+.wortspeicher span{ background:#f3f6f8; border:.3mm solid #c9d6e3; border-radius:2mm; padding:.05em .45em; white-space:nowrap; }
 table.ab-tab th{ background:#eef4f8; text-align:left; font-weight:700; padding:.3em .5em; border:.3mm solid #9aa9b2; font-size:.9em; }
 table.ab-tab td{ border:.3mm solid #9aa9b2; padding:.35em .5em; vertical-align:middle; height:calc(2.3em * var(--z)); }
 table.ab-tab td .lz{ min-height:0; }
@@ -648,7 +651,9 @@ function aufgabeHtml(a, stufe = "34"){
                 const leer = (a.zeilen || []).every(z => !String(z[i] ?? "").trim() || String(z[i]).trim() === "☐");
                 return leer && String(s).replace(/\s/g, "").length > 8 ? (sp.length > 2 ? "34%" : "48%") : "";
             });
-            return '<table class="ab-tab">' +
+            const speicher = (a.woerter || []).filter(w => String(w).trim()).length
+                ? `<div class="wortspeicher"><b>Wortspeicher:</b>${a.woerter.filter(w => String(w).trim()).map(w => `<span>${inline(w)}</span>`).join("")}</div>` : "";
+            return speicher + '<table class="ab-tab">' +
                 (sp.length ? "<tr>" + sp.map((s, i) => `<th${breite[i] ? ` style="width:${breite[i]}"` : ""}>${inline(s)}</th>`).join("") + "</tr>" : "") +
                 (a.zeilen || []).map((z, zi) => "<tr>" + (sp.length ? sp.map((_, i) => z[i]) : z).map((c, ci) => {
                     if (ci === 0 && c) { const x = eintrag(c, zi); return `<td><div class="zelle-kopf">${x.vorn}${x.bild}<div>${linienText(x.text)}</div></div></td>`; }
@@ -1149,7 +1154,9 @@ function aufgabeEditor(stufe, i, a, anzahl){
                 <button class="btn klein" type="button" data-mischen="${p}" style="margin-top:6px"><i class="fa-solid fa-shuffle"></i> rechte Seite mischen</button>`; break;
         case "tabelle":
             spezial = `<label class="feld">Tabelle</label><textarea rows="5" data-pfad="${p}" data-art="tabelle">${esc([(a.spalten || []).join(" | "), ...(a.zeilen || []).map(z => z.join(" | "))].join("\n"))}</textarea>
-                <div class="ed-hilfe">Erste Zeile = Überschriften. Spalten mit | trennen. Leere Zelle = Schreibfeld (z. B. „Ich bin froh. | “).</div>`; break;
+                <div class="ed-hilfe">Erste Zeile = Überschriften. Spalten mit | trennen. Leere Zelle = Schreibfeld (z. B. „Ich bin froh. | “).</div>
+                <label class="feld">Wortspeicher (optional, ein Begriff pro Zeile)</label><textarea rows="3" data-pfad="${p}.woerter" data-art="liste">${esc((a.woerter || []).join("\n"))}</textarea>
+                <div class="ed-hilfe">Begriffe, die die Kinder in die Tabelle einsortieren – erscheinen in einem Kasten über der Tabelle.</div>`; break;
         case "gesichter":
             spezial = `<label class="feld">Gefühle (eines pro Zeile)</label><textarea rows="3" data-pfad="${p}.gefuehle" data-art="liste">${esc((a.gefuehle || []).join("\n"))}</textarea>
                 <div class="ed-hilfe">Erkannt werden z. B. froh, traurig, wütend, ängstlich, ruhig, überrascht, stolz.</div>
