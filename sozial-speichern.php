@@ -32,7 +32,7 @@ if (strlen($roh) > 2 * 1024 * 1024) antwort(false, ["fehler" => "Die Daten sind 
 $anfrage = json_decode($roh, true);
 if (!is_array($anfrage)) antwort(false, ["fehler" => "Ungültige Anfrage."]);
 
-$datei = __DIR__ . "/material-daten/sozialtraining.json";
+$datei = __DIR__ . "/material-daten/" . ((($_GET["bereich"] ?? "") === "vertretung") ? "vertretung.json" : "sozialtraining.json");
 if (!is_dir(dirname($datei))) mkdir(dirname($datei), 0775, true);
 if (!file_exists($datei)) file_put_contents($datei, json_encode(["einheiten" => [], "jahresplan" => null, "rituale" => null]));
 
@@ -86,7 +86,7 @@ if ($aktion === "einheit_speichern") {
     $id = (string)($e["id"] ?? "");
     if (!preg_match('/^eigen-[a-z0-9]{6,40}$/', $id)) $id = "eigen-" . bin2hex(random_bytes(6));
     $e["id"] = $id;
-    if (isset($e["ersetzt"]) && !preg_match('/^v-[a-z0-9-]{1,60}$/', (string)$e["ersetzt"])) unset($e["ersetzt"]);
+    if (isset($e["ersetzt"]) && !preg_match('/^[vw]-[a-z0-9-]{1,60}$/', (string)$e["ersetzt"])) unset($e["ersetzt"]);
     $e["geaendert"] = date("Y-m-d H:i");
 
     [$ok, $erg] = aktualisieren($datei, function (&$d) use ($e) {

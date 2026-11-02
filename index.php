@@ -96,6 +96,12 @@ body{
 <p>Fertige Stunden, eigene Stunden &amp; Jahresplan – Arbeitsblätter Kl. 1/2 und 3/4</p>
 </a>
 
+<a href="sozial-stunden.php?bereich=vertretung" class="portal-card">
+<i class="fa-solid fa-shuffle"></i>
+<h2>Vertretungsstunden</h2>
+<p>Fertige 40-Minuten-Stunden für Kl. 1–4 – mit Zufallsauswahl, Arbeitsblättern &amp; Tafel-Präsentation</p>
+</a>
+
 <a href="materialien.php" class="portal-card">
 <i class="fa-solid fa-folder-open"></i>
 <h2>Materialien</h2>

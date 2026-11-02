@@ -11,7 +11,12 @@
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 if (empty($_SESSION["sozial_csrf"])) $_SESSION["sozial_csrf"] = bin2hex(random_bytes(16));
 
-$datei = __DIR__ . "/material-daten/sozialtraining.json";
+// Zwei Bereiche auf einer Seite: Sozialtraining (Standard) und Vertretungsstunden (?bereich=vertretung)
+$BEREICH = (($_GET["bereich"] ?? "") === "vertretung") ? "vertretung" : "sozial";
+$B_INFO = $BEREICH === "vertretung"
+    ? ["name" => "Vertretung", "titel" => "Vertretungsstunden", "icon" => "fa-shuffle", "datei" => "vertretung.json", "vorlagen" => "vertretung-einheiten"]
+    : ["name" => "Sozialtraining", "titel" => "Sozialtraining-Stunden", "icon" => "fa-people-group", "datei" => "sozialtraining.json", "vorlagen" => "sozial-einheiten"];
+$datei = __DIR__ . "/material-daten/" . $B_INFO["datei"];
 $dateiKaputt = false;
 $daten = [];
 if (file_exists($datei)) {
@@ -22,16 +27,16 @@ if (file_exists($datei)) {
 $daten += ["einheiten" => [], "jahresplan" => null, "rituale" => null];
 $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE;
 // Alle Vorlagen-Dateien: sozial-einheiten.js zuerst, dann -2, -3 … (neue Dateien werden automatisch geladen)
-$vorlagenDateien = glob(__DIR__ . "/sozial-einheiten*.js") ?: [];
-natsort($vorlagenDateien);
-usort($vorlagenDateien, fn($a, $b) => (basename($a) === "sozial-einheiten.js" ? -1 : (basename($b) === "sozial-einheiten.js" ? 1 : strnatcmp($a, $b))));
+$vorlagenDateien = glob(__DIR__ . "/" . $B_INFO["vorlagen"] . "*.js") ?: [];
+$basisDatei = $B_INFO["vorlagen"] . ".js";
+usort($vorlagenDateien, fn($a, $b) => (basename($a) === $basisDatei ? -1 : (basename($b) === $basisDatei ? 1 : strnatcmp($a, $b))));
 ?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sozialtraining-Stunden – Leuchtturm</title>
+<title><?= htmlspecialchars($B_INFO["titel"]) ?> – Leuchtturm</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -296,12 +301,17 @@ table.ab-tab td .lz{ min-height:0; }
     <div class="kopf-innen">
         <div class="kopf-zeile">
             <a class="zurueck" href="index.php"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
-            <h1><i class="fa-solid fa-people-group"></i> Sozialtraining-Stunden</h1>
+            <h1><i class="fa-solid <?= $B_INFO["icon"] ?>"></i> <?= htmlspecialchars($B_INFO["titel"]) ?></h1>
         </div>
         <nav class="reiter">
             <a href="#bibliothek" data-reiter="bibliothek"><i class="fa-solid fa-book-open"></i> Stunden</a>
+<?php if ($BEREICH === "sozial"): ?>
             <a href="#jahresplan" data-reiter="jahresplan"><i class="fa-solid fa-calendar-week"></i> Jahresplan</a>
             <a href="#rituale" data-reiter="rituale"><i class="fa-solid fa-hands-holding-circle"></i> Rituale</a>
+<?php else: ?>
+            <a href="#rituale" data-reiter="rituale"><i class="fa-solid fa-box-archive"></i> Material</a>
+            <a href="sozial-stunden.php" style="margin-left:auto"><i class="fa-solid fa-people-group"></i> Zum Sozialtraining</a>
+<?php endif; ?>
         </nav>
     </div>
 </header>
@@ -324,6 +334,7 @@ table.ab-tab td .lz{ min-height:0; }
 window.SOZIAL_DATEN = <?= json_encode($daten, $JSON) ?>;
 window.SOZIAL_CSRF = <?= json_encode($_SESSION["sozial_csrf"], $JSON) ?>;
 window.SOZIAL_GESPERRT = <?= $dateiKaputt ? "true" : "false" ?>;
+window.BEREICH = <?= json_encode(["key" => $BEREICH, "name" => $B_INFO["name"], "titel" => $B_INFO["titel"]], $JSON) ?>;
 </script>
 <script>
 "use strict";
@@ -391,7 +402,7 @@ async function senden(daten){
     if (window.SOZIAL_GESPERRT) throw new Error("Speichern ist gesperrt, weil sozialtraining.json beschädigt ist.");
     let r;
     try {
-        r = await fetch("sozial-speichern.php", { method: "POST", credentials: "same-origin",
+        r = await fetch("sozial-speichern.php" + (window.BEREICH.key === "vertretung" ? "?bereich=vertretung" : ""), { method: "POST", credentials: "same-origin",
             headers: { "Content-Type": "application/json", "X-CSRF": window.SOZIAL_CSRF }, body: JSON.stringify(daten) });
     } catch (e) { throw new Error("Keine Verbindung zum Server. Bitte gleich noch einmal versuchen."); }
     let antwort;
@@ -659,7 +670,7 @@ function blattBauen(e, stufe){
     inhaltHtml += '<div class="luft"></div>';
     blatt.innerHTML =
         `<div class="blatt-kopf"><div class="blatt-titel">${inline(ab.titel || e.titel || "Arbeitsblatt")}</div>` +
-        `<div class="blatt-meta"><i class="fa-solid fa-tower-observation"></i> Sozialtraining<br>Klasse ${stufe === "34" ? "3/4" : stufe}</div></div>` +
+        `<div class="blatt-meta"><i class="fa-solid fa-tower-observation"></i> ${esc(window.BEREICH.name)}<br>Klasse ${stufe === "34" ? "3/4" : stufe}</div></div>` +
         `<div class="blatt-name"><span>Name:</span><span class="ln"></span>${stufe === "1" ? "" : '<span>Datum:</span><span class="ln kurz"></span>'}</div>` +
         `<div class="blatt-inhalt">${inhaltHtml}</div>`;
     return blatt;
@@ -743,7 +754,7 @@ function verlaufTabelle(e, klasse){
 }
 function lehrerHtml(e){
     return `<div class="lehrer-druck">
-        <div class="ld-kopf"><div class="ld-meta">Sozialtraining · ${esc(e.kategorie)} · ${esc(e.dauer || 40)} Minuten · Klasse 1/2 und 3/4</div><h1>${esc(e.titel)}</h1></div>
+        <div class="ld-kopf"><div class="ld-meta">${esc(window.BEREICH.name)} · ${esc(e.kategorie)} · ${esc(e.dauer || 40)} Minuten · Klasse 1/2 und 3/4</div><h1>${esc(e.titel)}</h1></div>
         <table><tr><th style="width:50%">Ziel Kl. 1/2</th><th>Ziel Kl. 3/4</th></tr><tr><td>${inline(e.ziel12)}</td><td>${inline(e.ziel34)}</td></tr></table>
         <h2>Material</h2>${materialListe(e.material)}
         <p style="font-size:9pt;color:#55636a"><strong>Arbeitsblatt Kl. 1:</strong> Aufgaben und Antworten vorlesen – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Schreibaufgaben gibt es nur auf dem Blatt für Kl. 2.</p>
@@ -864,7 +875,7 @@ function gehe(hash){ if (location.hash === hash) route(); else location.hash = h
 window.addEventListener("beforeunload", ev => { if (editor && editor.geaendert) { ev.preventDefault(); ev.returnValue = ""; } });
 
 /* ---------- Bibliothek ---------- */
-let filterText = "", filterKat = "";
+let filterText = "", filterKat = "", filterOhne = false;
 function zeigeBibliothek(){
     reiterSetzen("bibliothek");
     const kats = [...new Set([...KATEGORIEN, ...alleEinheiten().map(e => e.kategorie).filter(Boolean)])];
@@ -873,10 +884,12 @@ function zeigeBibliothek(){
         <div class="werkzeug">
             <input type="search" id="suche" placeholder="Stunde suchen …" value="${esc(filterText)}">
             <select id="filterKat"><option value="">Alle Themen</option>${kats.map(k => `<option ${k === filterKat ? "selected" : ""}>${esc(k)}</option>`).join("")}</select>
+            ${window.BEREICH.key === "vertretung" ? `<label class="ed-check" style="margin:0;background:white;border-radius:10px;padding:0 14px;display:flex;align-items:center;gap:8px;white-space:nowrap;width:auto"><input type="checkbox" id="nurOhne" style="width:auto;margin:0" ${filterOhne ? "checked" : ""}> nur ohne Vorbereitung</label>
+            <button class="btn blau" id="zufall"><i class="fa-solid fa-dice"></i> Zufallsstunde</button>` : ""}
             <a class="btn gold" href="#neu"><i class="fa-solid fa-plus"></i> Neue Stunde</a>
         </div>
         <div id="kartenListe"></div>`;
-    const dw = aktuelleWoche();
+    const dw = window.BEREICH.key === "sozial" ? aktuelleWoche() : null;
     if (dw && dw.einheit) {
         document.getElementById("dieseWoche").innerHTML = `<div class="diese-woche">
             <i class="fa-solid fa-calendar-day" style="font-size:26px;color:var(--gold)"></i>
@@ -885,7 +898,7 @@ function zeigeBibliothek(){
     }
     const liste = () => {
         const q = filterText.toLowerCase();
-        const alle = alleEinheiten().filter(e => (!filterKat || e.kategorie === filterKat) &&
+        const alle = alleEinheiten().filter(e => (!filterKat || e.kategorie === filterKat) && (!filterOhne || e.ohneVorbereitung) &&
             (!q || [e.titel, e.kategorie, e.ziel12, e.ziel34, e.lerntext12?.titel, e.lerntext34?.titel].join(" ").toLowerCase().includes(q))).sort(katSort);
         const ziel = document.getElementById("kartenListe");
         if (!alle.length) { ziel.innerHTML = '<div class="leer">Keine Stunde gefunden.</div>'; return; }
@@ -894,7 +907,7 @@ function zeigeBibliothek(){
             if (e.kategorie !== letzte) { if (letzte !== null) html += "</div>"; html += `<div class="kat-titel">${esc(e.kategorie || "Ohne Thema")}</div><div class="karten">`; letzte = e.kategorie; }
             const geplant = planVerwendung(e);
             html += `<a class="einheit-karte" href="#stunde/${encodeURIComponent(e.id)}">
-                <div class="chips">${artChip(e)}${geplant.length ? `<span class="chip gold"><i class="fa-solid fa-calendar-check"></i> KW ${geplant.map(kw).join(", ")}</span>` : ""}</div>
+                <div class="chips">${artChip(e)}${e.ohneVorbereitung ? '<span class="chip gruen"><i class="fa-solid fa-bolt"></i> ohne Vorbereitung</span>' : ""}${geplant.length ? `<span class="chip gold"><i class="fa-solid fa-calendar-check"></i> KW ${geplant.map(kw).join(", ")}</span>` : ""}</div>
                 <h3>${esc(e.titel)}</h3>
                 <p><strong>1/2:</strong> ${esc(e.ziel12)}</p><p><strong>3/4:</strong> ${esc(e.ziel34)}</p></a>`;
         }
@@ -903,6 +916,14 @@ function zeigeBibliothek(){
     liste();
     document.getElementById("suche").addEventListener("input", ev => { filterText = ev.target.value; liste(); });
     document.getElementById("filterKat").addEventListener("change", ev => { filterKat = ev.target.value; liste(); });
+    const nurOhne = document.getElementById("nurOhne");
+    if (nurOhne) nurOhne.addEventListener("change", ev => { filterOhne = ev.target.checked; liste(); });
+    const zufall = document.getElementById("zufall");
+    if (zufall) zufall.addEventListener("click", () => {
+        const pool = alleEinheiten().filter(e => (!filterKat || e.kategorie === filterKat) && (!filterOhne || e.ohneVorbereitung));
+        if (!pool.length) { toast("Keine Stunde passt zum Filter.", true); return; }
+        location.hash = "#stunde/" + encodeURIComponent(pool[Math.floor(Math.random() * pool.length)].id);
+    });
 }
 
 /* ---------- Detail ---------- */
@@ -925,7 +946,7 @@ function zeigeStunde(id){
     inhalt.innerHTML = `
         <div class="detail-kopf">
             <div class="titel"><a href="#bibliothek" style="color:var(--grau);font-weight:800;text-decoration:none"><i class="fa-solid fa-arrow-left"></i> Alle Stunden</a>
-                <div style="margin-top:8px">${artChip(e)} <span class="chip">${esc(e.kategorie)}</span> <span class="chip">${esc(e.dauer || 40)} Min</span>
+                <div style="margin-top:8px">${artChip(e)} ${e.ohneVorbereitung ? '<span class="chip gruen"><i class="fa-solid fa-bolt"></i> ohne Vorbereitung</span> ' : ""}<span class="chip">${esc(e.kategorie)}</span> <span class="chip">${esc(e.dauer || 40)} Min</span>
                 ${geplant.length ? `<span class="chip gold"><i class="fa-solid fa-calendar-check"></i> geplant KW ${geplant.map(kw).join(", ")}</span>` : ""}</div>
                 <h2>${esc(e.titel)}</h2></div>
             <div class="knopfleiste">${bearbeitenKnopf}<button class="btn" id="kopieren"><i class="fa-solid fa-copy"></i> Als neue Stunde kopieren</button>${loeschKnopf}</div>
@@ -1140,6 +1161,7 @@ function zeigeEditor(id, entwurfBehalten = false){
                 <div>${feld("Ziel Klasse 3/4", "ziel34", e.ziel34)}</div>
             </div>
             ${feld("Material (eines pro Zeile)", "material", e.material, "textarea", 'rows="3"')}
+            <label class="ed-check"><input type="checkbox" data-pfad="ohneVorbereitung" data-art="check" ${e.ohneVorbereitung ? "checked" : ""}> Ohne Vorbereitung (nur Papier, Stifte, Tafel)</label>
             <label class="feld">Filme & Links für den Einstieg (einer pro Zeile)</label>
             <textarea rows="3" data-pfad="medien" data-art="medien" placeholder="Titel | https://… | Quelle, Dauer">${esc((window.sozialMedien ? window.sozialMedien(e) : (e.medien || [])).map(m => [m.titel || "", m.url, [m.quelle, m.dauer].filter(Boolean).join(", ")].join(" | ").replace(/ \| $/, "")).join("\n"))}</textarea>
             <div class="ed-hilfe">Format: Titel | Link | Quelle (optional). Die Filme erscheinen in der Tafel-Präsentation und auf der Stundenseite.</div>
@@ -1378,10 +1400,32 @@ function zeigeJahresplan(){
     });
 }
 
+/* ---------- Material-Bibliothek (alle Vorlagen nach Thema) ---------- */
+function materialEintraege(ids, ziel){
+    const SM = window.sozialMaterial; SM.cssLaden();
+    const mats = ids.map(id => Object.assign({ id }, SM.bibliothek[id]));
+    ziel.innerHTML = mats.map((m, k) => `<div class="m-eintrag"><div class="vorschau" data-k="${k}"></div><strong>${esc(m.titel)}</strong><small>${SM.seitenZahl(m)} Seite${SM.seitenZahl(m) > 1 ? "n" : ""}${m.hinweis ? " · " + esc(m.hinweis) : ""}</small><button class="btn klein blau" data-d="${k}"><i class="fa-solid fa-print"></i> Drucken</button></div>`).join("");
+    ziel.querySelectorAll("[data-k]").forEach(r => SM.vorschau(r, mats[+r.dataset.k]));
+    ziel.querySelectorAll("[data-d]").forEach(btn => btn.addEventListener("click", () => SM.drucken([mats[+btn.dataset.d]], mats[+btn.dataset.d].titel)));
+}
+function materialBibliothekZeigen(bib){
+    const SM = window.sozialMaterial, gruppen = {};
+    Object.entries(SM.bibliothek).forEach(([id, m]) => (gruppen[m.gruppe] = gruppen[m.gruppe] || []).push(id));
+    // Im Vertretungsbereich die Vertretungs-Vorlagen zuerst
+    const namen = Object.keys(gruppen).sort((a, b) => (window.BEREICH.key === "vertretung" ? (b.startsWith("Vertretung") - a.startsWith("Vertretung")) : (a.startsWith("Vertretung") - b.startsWith("Vertretung"))));
+    bib.innerHTML = namen.map((g, k) => `<details class="ed-block" data-g="${esc(g)}"><summary style="font-weight:900;cursor:pointer">${esc(g)} <span class="chip">${gruppen[g].length}</span></summary><div class="m-uebersicht" style="margin-top:12px"></div></details>`).join("");
+    bib.querySelectorAll("details").forEach(d => d.addEventListener("toggle", () => { const z = d.querySelector(".m-uebersicht"); if (d.open && !z.childElementCount) materialEintraege(gruppen[d.dataset.g], z); }));
+}
+
 /* ---------- Rituale ---------- */
 function rituale(){ return typeof DATEN.rituale === "string" && DATEN.rituale.trim() ? DATEN.rituale : (window.SOZIAL_RITUALE_STANDARD || ""); }
 function zeigeRituale(bearbeiten = false){
     reiterSetzen("rituale");
+    if (!bearbeiten && window.BEREICH.key === "vertretung") {
+        inhalt.innerHTML = window.sozialMaterial ? `<div class="karte"><h2><i class="fa-solid fa-box-archive"></i> Material-Bibliothek</h2><p class="ed-hilfe" style="margin-top:0">Alle Vorlagen zum Ausdrucken. Thema aufklappen, um die Vorschau zu sehen.</p><div id="ritBib"></div></div>` : "";
+        if (window.sozialMaterial) materialBibliothekZeigen(document.getElementById("ritBib"));
+        return;
+    }
     if (!bearbeiten) {
         inhalt.innerHTML = `<div class="karte"><div class="detail-kopf" style="margin:0"><div class="titel"><h2 style="margin:0">Feste Rituale</h2>
             <p style="color:var(--grau);font-weight:700;margin:6px 0 0">Gelten für jede Stunde – geben den Kindern Sicherheit und sparen Erklärzeit.</p></div>
@@ -1392,19 +1436,8 @@ function zeigeRituale(bearbeiten = false){
             <div class="karte"><h2><i class="fa-solid fa-box-archive"></i> Ganze Material-Bibliothek</h2><p class="ed-hilfe" style="margin-top:0">Alle Vorlagen zum Ausdrucken – auch für eigene Stunden. Thema aufklappen, um die Vorschau zu sehen.</p><div id="ritBib"></div></div>` : ""}`;
         document.getElementById("ritBearb").onclick = () => zeigeRituale(true);
         if (window.sozialMaterial) {
-            const SM = window.sozialMaterial; SM.cssLaden();
-            const eintraege = (ids, ziel) => {
-                const mats = ids.map(id => Object.assign({ id }, SM.bibliothek[id]));
-                ziel.innerHTML = mats.map((m, k) => `<div class="m-eintrag"><div class="vorschau" data-k="${k}"></div><strong>${esc(m.titel)}</strong><small>${SM.seitenZahl(m)} Seite${SM.seitenZahl(m) > 1 ? "n" : ""}${m.hinweis ? " · " + esc(m.hinweis) : ""}</small><button class="btn klein blau" data-d="${k}"><i class="fa-solid fa-print"></i> Drucken</button></div>`).join("");
-                ziel.querySelectorAll("[data-k]").forEach(r => SM.vorschau(r, mats[+r.dataset.k]));
-                ziel.querySelectorAll("[data-d]").forEach(btn => btn.addEventListener("click", () => SM.drucken([mats[+btn.dataset.d]], mats[+btn.dataset.d].titel)));
-            };
-            eintraege(SM.allgemein, document.getElementById("ritMaterial"));
-            const gruppen = {};
-            Object.entries(SM.bibliothek).forEach(([id, m]) => (gruppen[m.gruppe] = gruppen[m.gruppe] || []).push(id));
-            const bib = document.getElementById("ritBib");
-            bib.innerHTML = Object.keys(gruppen).map((g, k) => `<details class="ed-block" data-g="${k}"><summary style="font-weight:900;cursor:pointer">${esc(g)} <span class="chip">${gruppen[g].length}</span></summary><div class="m-uebersicht" style="margin-top:12px"></div></details>`).join("");
-            bib.querySelectorAll("details").forEach(d => d.addEventListener("toggle", () => { const z = d.querySelector(".m-uebersicht"); if (d.open && !z.childElementCount) eintraege(gruppen[Object.keys(gruppen)[+d.dataset.g]], z); }));
+            materialEintraege(SM.allgemein, document.getElementById("ritMaterial"));
+            materialBibliothekZeigen(document.getElementById("ritBib"));
         }
         document.getElementById("ritDruck").onclick = () => drucken(null, "rituale");
         return;

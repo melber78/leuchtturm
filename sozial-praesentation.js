@@ -221,7 +221,7 @@ window.sozialMedien = medienFuer;
 function folienBauen(e, stufe){
     const f = [];
     f.push({ typ: "titel" });
-    f.push({ typ: "barometer" });
+    if (!(window.BEREICH && window.BEREICH.key === "vertretung")) f.push({ typ: "barometer" });
     const lt = stufe === "34" ? e.lerntext34 : e.lerntext12;
     const { erz, nach } = geschichteZerlegen(lt && lt.text);
     erz.forEach((a, i) => f.push({ typ: "geschichte", titel: lt.titel, text: a, nr: i + 1, von: erz.length }));
@@ -355,7 +355,7 @@ function folieHtml(f, e){
             const bilder = bilderImText(lt && lt.text, 3);
             const k = bilder.length ? bilder : (KAT_BILD[e.kategorie] ? [KAT_BILD[e.kategorie]] : []);
             return `<div class="p-strahl-box"><div class="p-strahl"></div></div>
-                <div class="p-klein">SOZIALTRAINING · ${esc(String(e.kategorie || "").toUpperCase())}</div>
+                <div class="p-klein">${esc(String((window.BEREICH && window.BEREICH.name) || "Sozialtraining").toUpperCase())} · ${esc(String(e.kategorie || "").toUpperCase())}</div>
                 ${bilderHtml(k)}
                 <h1>${esc(e.titel)}</h1>
                 <div class="p-wahl"><button class="p-knopf ${zustand.stufe === "12" ? "an" : ""}" data-stufe="12">Geschichte Kl. 1/2</button><button class="p-knopf ${zustand.stufe === "34" ? "an" : ""}" data-stufe="34">Geschichte Kl. 3/4</button></div>`;
@@ -569,14 +569,14 @@ async function pptxExport(e, stufe = "12"){
     await skriptLaden("pptxgen.bundle.js");
     const p = new window.PptxGenJS();
     p.layout = "LAYOUT_WIDE"; // 13,33 × 7,5 Zoll
-    p.title = e.titel; p.subject = "Sozialtraining"; p.company = "Leuchtturm";
+    p.title = e.titel; p.subject = (window.BEREICH && window.BEREICH.name) || "Sozialtraining"; p.company = "Leuchtturm";
     const NACHT = "16324A", MEER = "3D7EA6", GOLD = "F2A93B", CREME = "FDFAF3", GRAU = "7C8A85";
     const W = 13.33, H = 7.5, FONT = "Arial Rounded MT Bold", TEXT = "Arial";
     const folien = folienBauen(e, stufe);
     const bildCache = {};
     const ltPng = async k => { if (!k) return null; if (!(k in bildCache)) bildCache[k] = await svgZuPng(window.LT_BILDER && window.LT_BILDER[k] && window.LT_BILDER[k][2]); return bildCache[k]; };
     const gesPng = async g => { const k = "g_" + gefuehlArt(g); if (!(k in bildCache)) bildCache[k] = await svgZuPng(gesichtSvg(gefuehlArt(g), false).replace("<svg", '<svg style="background:white"')); return bildCache[k]; };
-    const fuss = s => s.addText("Sozialtraining · " + e.titel, { x: .4, y: H - .45, w: 8, h: .3, fontFace: TEXT, fontSize: 10, color: GRAU });
+    const fuss = s => s.addText(((window.BEREICH && window.BEREICH.name) || "Sozialtraining") + " · " + e.titel, { x: .4, y: H - .45, w: 8, h: .3, fontFace: TEXT, fontSize: 10, color: GRAU });
     const bilderSetzen = async (s, keys, y, groesse) => {
         const pngs = (await Promise.all(keys.map(ltPng))).filter(Boolean);
         const gesamt = pngs.length * groesse + (pngs.length - 1) * .4;
@@ -597,7 +597,7 @@ async function pptxExport(e, stufe = "12"){
         switch (f.typ) {
             case "titel": {
                 s.background = { color: NACHT };
-                s.addText("SOZIALTRAINING · " + String(e.kategorie || "").toUpperCase(), { x: 0, y: .7, w: W, h: .5, align: "center", fontFace: FONT, fontSize: 18, color: "F2C97B", charSpacing: 2 });
+                s.addText(String((window.BEREICH && window.BEREICH.name) || "Sozialtraining").toUpperCase() + " · " + String(e.kategorie || "").toUpperCase(), { x: 0, y: .7, w: W, h: .5, align: "center", fontFace: FONT, fontSize: 18, color: "F2C97B", charSpacing: 2 });
                 const bilder = bilderImText((stufe === "34" ? e.lerntext34 : e.lerntext12 || {}).text, 3);
                 await bilderSetzen(s, bilder.length ? bilder : [KAT_BILD[e.kategorie]].filter(Boolean), 1.6, 1.7);
                 s.addText(e.titel, { x: .5, y: 3.6, w: W - 1, h: 1.6, align: "center", fontFace: FONT, fontSize: 60, bold: true, color: "FFFFFF" });

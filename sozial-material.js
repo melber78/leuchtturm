@@ -194,6 +194,18 @@ const B = {
         punkte: [{ emoji: "🙅", text: "Nicht mitlachen." }, { emoji: "🧍", text: "Mich zu dem Kind stellen." }, { emoji: "✋", text: "„Hör auf, das ist gemein!“ sagen." }, { emoji: "🧑‍🏫", text: "Hilfe holen." }, { emoji: "💙", text: "Das Kind später trösten." }] },
     "helfer-auftrag": { titel: "Karten: Geheimer Helfer-Auftrag", gruppe: "Vielfalt & Respekt", art: "karten", proSeite: 8,
         items: leer(8, { emoji: "🕵️", text: "Geheimer Auftrag", klein: "Tu diesem Kind diese Woche heimlich etwas Gutes:", linien: 1 }) },
+    /* --- Vertretung --- */
+    "geschichten-bildkarten": { titel: "Bildkarten für den Geschichten-Würfel", gruppe: "Vertretung", art: "karten", proSeite: 12,
+        items: ["einhorn", "rakete", "schluessel", "krone", "schiff", "dino", "geschenk", "lupe", "ufo", "regenbogen", "pinguin", "kuchen"].map(b => ({ bild: b })), hinweis: "Ausschneiden; verdeckt drei Karten ziehen lassen." },
+    "montagsmaler-begriffe": { titel: "Begriffskarten für Montagsmaler", gruppe: "Vertretung", art: "karten", proSeite: 12,
+        items: [["☀️", "Sonne"], ["🏠", "Haus"], ["🐱", "Katze"], ["🌳", "Baum"], ["🚗", "Auto"], ["🐟", "Fisch"], ["⛄", "Schneemann"], ["🍦", "Eis"], ["🌷", "Blume"], ["🚀", "Rakete"], ["👓", "Brille"], ["🎂", "Kuchen"]].map(([e, t]) => ({ emoji: e, text: t })),
+        hinweis: "Das Bild hilft Kindern, die noch nicht lesen. Verdeckt ziehen." },
+    "bewegungs-karten": { titel: "Bewegungskarten", gruppe: "Vertretung", art: "karten", proSeite: 8,
+        items: [{ emoji: "🐸", text: "5-mal hüpfen wie ein Frosch" }, { emoji: "🦩", text: "Auf einem Bein stehen bis 10" }, { emoji: "🌀", text: "Arme kreisen – vorwärts und rückwärts" }, { emoji: "🐢", text: "In Zeitlupe aufstehen und hinsetzen" }, { emoji: "🏃", text: "10 Sekunden auf der Stelle rennen" }, { emoji: "🙆", text: "Ganz groß machen – ganz klein machen" }, { emoji: "👏", text: "3-mal klatschen, 3-mal stampfen" }, { emoji: "🌳", text: "Baum-Stellung: still wie ein Baum" }] },
+    "tier-karten": { titel: "Tierkarten für „Wer bin ich?“", gruppe: "Vertretung", art: "karten", proSeite: 12,
+        items: ["elefant", "giraffe", "pinguin", "krokodil", "affe", "loewe", "schildkroete", "hase", "eule", "frosch", "kaenguru", "igel"].map(b => ({ bild: b, text: (window.LT_BILDER && window.LT_BILDER[b] ? window.LT_BILDER[b][0] : b) })) },
+    "schatz-hinweise": { titel: "Hinweiskarten für die Schatzsuche", gruppe: "Vertretung", art: "karten", proSeite: 8,
+        items: Array.from({ length: 8 }, (_, i) => ({ emoji: "🗺️", text: "Hinweis " + (i + 1), linien: 2 })), hinweis: "Hinweise von Hand eintragen und im Raum verstecken." },
     "pflaster": { titel: "Papier-Pflaster fürs Pflaster-Spiel", gruppe: "Vielfalt & Respekt", art: "karten", proSeite: 8, sym: 34, items: leer(8, { svg: PFLASTER }), hinweis: "Ausschneiden; mit etwas Klebeband aufkleben." }
 };
 
@@ -242,6 +254,7 @@ const ALLGEMEIN = ["gefuehlsbarometer", "gespraechsregeln", "namenszettel", "rot
 function aufzaehlung(text){ return String(text || "").split("\n").filter(z => /^\s*[-•]\s+/.test(z)).map(z => z.replace(/^\s*[-•]\s+/, "").trim()); }
 function bibIds(e){
     if (e.materialien && Array.isArray(e.materialien.bib)) return e.materialien.bib.filter(id => B[id]);
+    if (Array.isArray(e.materialIds)) return e.materialIds.filter(id => B[id]);
     return ZUORDNUNG[e.ersetzt || e.id] || [];
 }
 function materialFuer(e){
@@ -264,7 +277,7 @@ function materialFuer(e){
 const RASTER = { 1: [1, 1], 2: [1, 2], 4: [2, 2], 6: [2, 3], 8: [2, 4], 12: [3, 4] };
 const GROESSE = { 1: { sym: 150, txt: 46, kopf: 11 }, 2: { sym: 78, txt: 34, kopf: 10 }, 4: { sym: 46, txt: 22, kopf: 9 }, 6: { sym: 36, txt: 18, kopf: 8 }, 8: { sym: 28, txt: 15, kopf: 7.5 }, 12: { sym: 20, txt: 12, kopf: 7 } };
 function seite(klasse){ const s = document.createElement("div"); s.className = "mseite " + (klasse || ""); return s; }
-function fussHtml(m, nr, von){ return `<div class="m-fuss"><span>Sozialtraining · ${esc(m.titel)}</span><span>${von > 1 ? nr + " / " + von : ""}</span></div>`; }
+function fussHtml(m, nr, von){ return `<div class="m-fuss"><span>${esc((window.BEREICH && window.BEREICH.name) || "Sozialtraining")} · ${esc(m.titel)}</span><span>${von > 1 ? nr + " / " + von : ""}</span></div>`; }
 function symbolHtml(it){
     if (it.svg) return it.svg;
     if (it.gesicht) return gesichtBunt(it.gesicht);
