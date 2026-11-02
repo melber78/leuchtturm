@@ -453,6 +453,8 @@ function gefuehlArt(name){
     if (/ruhig|entspannt|gelassen|zufrieden/.test(n)) return "ruhig";
     if (/überrasch|staun/.test(n)) return "ueberrascht";
     if (/stolz/.test(n)) return "stolz";
+    if (/müde|schläfrig/.test(n)) return "muede";
+    if (/gelangweilt|langweil/.test(n)) return "gelangweilt";
     return "neutral";
 }
 function gesichtSvg(art, leer){
@@ -468,6 +470,8 @@ function gesichtSvg(art, leer){
             ruhig: `<path d="M27 43 Q35 48 43 43" ${s}/><path d="M57 43 Q65 48 73 43" ${s}/><path d="M37 64 Q50 72 63 64" ${s}/>`,
             ueberrascht: `<path d="M27 30 Q35 25 43 30" ${s}/><path d="M57 30 Q65 25 73 30" ${s}/>` + augen + `<ellipse cx="50" cy="68" rx="7" ry="9" ${s}/>`,
             stolz: `<path d="M27 43 Q35 37 43 43" ${s}/><path d="M57 43 Q65 37 73 43" ${s}/><path d="M32 60 Q50 76 68 60" ${s}/>`,
+            muede: `<path d="M27 44 Q35 47 43 44" ${s}/><path d="M57 44 Q65 47 73 44" ${s}/><path d="M28 38 L43 40" ${s}/><path d="M72 38 L57 40" ${s}/><ellipse cx="50" cy="68" rx="5" ry="6" ${s}/><text x="72" y="26" font-family="Arial" font-weight="900" font-size="16" fill="#222">z</text><text x="82" y="16" font-family="Arial" font-weight="900" font-size="12" fill="#222">z</text>`,
+            gelangweilt: `<path d="M27 42 H43" ${s}/><path d="M57 42 H73" ${s}/><circle cx="35" cy="45" r="2.6" fill="#222"/><circle cx="65" cy="45" r="2.6" fill="#222"/><path d="M36 68 Q50 64 64 68" ${s}/>`,
             neutral: augen + `<path d="M35 66 L65 66" ${s}/>`
         };
         teile += f[art] || f.neutral;
@@ -950,6 +954,10 @@ function zeigeStunde(id){
             <p class="ed-hilfe" style="margin-top:10px">Tipp: Im Druckfenster „Als PDF sichern“ wählen, um die Stunde als PDF abzulegen.</p>
         </div>
 
+        ${window.sozialMaterial ? `<div class="karte"><div class="detail-kopf" style="margin:0 0 12px"><div class="titel"><h2 style="margin:0"><i class="fa-solid fa-scissors"></i> Arbeitsmaterial</h2>
+            <p class="ed-hilfe" style="margin:4px 0 0">Karten, Plakate und Vorlagen für diese Stunde – jede Seite füllt genau eine A4-Seite.</p></div>
+            <div class="knopfleiste"><button class="btn gold" id="materialAlle"><i class="fa-solid fa-print"></i> Alles Material drucken</button></div></div>
+            <div class="m-uebersicht" id="materialListe"></div></div>` : ""}
         <div class="karte"><h2><i class="fa-solid fa-calendar-plus"></i> In den Jahresplan</h2>
             <div class="knopfleiste" style="align-items:center">
                 <select id="planWoche" style="width:auto;flex:1 1 260px">${kommende.map(d => {
@@ -988,6 +996,18 @@ function zeigeStunde(id){
     vorschauZeigen(document.getElementById("v2"), e, "2");
     vorschauZeigen(document.getElementById("v34"), e, "34");
     inhalt.querySelectorAll("[data-druck]").forEach(b => b.addEventListener("click", () => drucken(e, b.dataset.druck)));
+    if (window.sozialMaterial) {
+        window.sozialMaterial.cssLaden();
+        const mats = window.sozialMaterial.fuer(e);
+        const ml = document.getElementById("materialListe");
+        ml.innerHTML = mats.length ? mats.map((m, k) => `<div class="m-eintrag"><div class="vorschau" data-mvorschau="${k}"></div>
+            <strong>${esc(m.titel)}</strong><small>${window.sozialMaterial.seitenZahl(m)} Seite${window.sozialMaterial.seitenZahl(m) > 1 ? "n" : ""}${m.hinweis ? " · " + esc(m.hinweis) : ""}</small>
+            <button class="btn klein blau" data-mdruck="${k}"><i class="fa-solid fa-print"></i> Drucken</button></div>`).join("") : '<div class="leer">Für diese Stunde ist kein Material hinterlegt. Über „Bearbeiten“ kannst du welches aus der Bibliothek auswählen.</div>';
+        ml.querySelectorAll("[data-mvorschau]").forEach(r => window.sozialMaterial.vorschau(r, mats[+r.dataset.mvorschau]));
+        ml.querySelectorAll("[data-mdruck]").forEach(b => b.addEventListener("click", () => window.sozialMaterial.drucken([mats[+b.dataset.mdruck]], e.titel + " – " + mats[+b.dataset.mdruck].titel)));
+        const alle = document.getElementById("materialAlle");
+        if (alle) { alle.disabled = !mats.length; alle.addEventListener("click", () => window.sozialMaterial.drucken(mats, e.titel + " – Material")); }
+    }
     inhalt.querySelectorAll("[data-einstieg]").forEach(b => b.addEventListener("click", () => window.sozialPraesentation.starten(e, b.dataset.einstieg)));
     inhalt.querySelectorAll("[data-pptx]").forEach(b => b.addEventListener("click", async () => {
         const alt = b.innerHTML; b.disabled = true; b.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Wird erstellt …';
@@ -1136,6 +1156,19 @@ function zeigeEditor(id, entwurfBehalten = false){
         <div class="karte"><h2>Übungen</h2><div id="edUebungen"></div>
             <button class="btn klein" type="button" id="uebungPlus"><i class="fa-solid fa-plus"></i> Übung</button></div>
 
+        ${window.sozialMaterial ? (() => {
+            const SM = window.sozialMaterial, gewaehlt = new Set(SM.bibIds(e)), gruppen = {};
+            Object.entries(SM.bibliothek).forEach(([id, m]) => (gruppen[m.gruppe] = gruppen[m.gruppe] || []).push(id));
+            const eigene = ((e.materialien && e.materialien.eigene) || []).map(k => "# " + (k.titel || "Eigene Karten") + "\n" + (k.karten || []).join("\n")).join("\n\n");
+            return `<div class="karte" id="edMaterial"><h2>Arbeitsmaterial zum Ausdrucken</h2>
+                <p class="ed-hilfe" style="margin-top:0">Wähle Vorlagen aus der Bibliothek. Situationskarten entstehen automatisch aus Übungen mit Aufzählung.</p>
+                ${Object.keys(gruppen).map(g => `<details class="ed-block" ${gruppen[g].some(id => gewaehlt.has(id)) ? "open" : ""}><summary style="font-weight:900;cursor:pointer">${esc(g)}</summary>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:4px 16px;margin-top:8px">${gruppen[g].map(id => `<label class="ed-check" style="margin:0"><input type="checkbox" data-mbib="${id}" ${gewaehlt.has(id) ? "checked" : ""}> ${esc(SM.bibliothek[id].titel)}</label>`).join("")}</div></details>`).join("")}
+                <label class="ed-check"><input type="checkbox" data-mauto="1" ${e.materialien && e.materialien.ohneAuto ? "" : "checked"}> Situationskarten automatisch aus den Übungen erzeugen</label>
+                <label class="feld">Eigene Kartensätze</label>
+                <textarea rows="5" data-meigene="1" placeholder="# Titel des Kartensatzes&#10;Text der ersten Karte&#10;Text der zweiten Karte">${esc(eigene)}</textarea>
+                <div class="ed-hilfe">Eine Zeile mit # beginnt einen neuen Kartensatz, jede weitere Zeile wird eine Karte (8 pro Seite).</div></div>`;
+        })() : ""}
         ${["12", "34"].map(s => `<div class="karte"><h2>Arbeitsblatt Klasse ${s === "12" ? "1/2" : "3/4"}</h2>
             <div class="ed-ab">
                 <div>${feld("Titel des Arbeitsblatts", `ab${s}.titel`, e["ab" + s].titel)}
@@ -1213,6 +1246,20 @@ function zeigeEditor(id, entwurfBehalten = false){
         if (m) vorschau(m[1]);
     };
     wurzel.addEventListener("input", uebernehmen);
+    const materialUebernehmen = () => {
+        const box = document.getElementById("edMaterial"); if (!box) return;
+        const bib = [...box.querySelectorAll("[data-mbib]")].filter(x => x.checked).map(x => x.dataset.mbib);
+        const eigene = []; let aktuell = null;
+        String(box.querySelector("[data-meigene]").value).split("\n").forEach(z => {
+            const t = z.trim(); if (!t) return;
+            if (t.startsWith("#")) { aktuell = { titel: t.replace(/^#+\s*/, ""), karten: [] }; eigene.push(aktuell); }
+            else { if (!aktuell) { aktuell = { titel: "Eigene Karten", karten: [] }; eigene.push(aktuell); } aktuell.karten.push(t); }
+        });
+        e.materialien = { bib, eigene, ohneAuto: !box.querySelector("[data-mauto]").checked };
+        geaendert();
+    };
+    const mBox = document.getElementById("edMaterial");
+    if (mBox) { mBox.addEventListener("change", materialUebernehmen); mBox.addEventListener("input", ev => { if (ev.target.dataset.meigene) materialUebernehmen(); }); }
     wurzel.addEventListener("change", ev => {
         const t = ev.target;
         if (t.dataset.typ) {
@@ -1340,8 +1387,25 @@ function zeigeRituale(bearbeiten = false){
             <p style="color:var(--grau);font-weight:700;margin:6px 0 0">Gelten für jede Stunde – geben den Kindern Sicherheit und sparen Erklärzeit.</p></div>
             <div class="knopfleiste"><button class="btn nacht" id="ritBearb"><i class="fa-solid fa-pen"></i> Bearbeiten</button>
             <button class="btn blau" id="ritDruck"><i class="fa-solid fa-print"></i> Drucken</button></div></div>
-            <div class="md" style="margin-top:16px">${md(rituale())}</div></div>`;
+            <div class="md" style="margin-top:16px">${md(rituale())}</div></div>
+            ${window.sozialMaterial ? `<div class="karte"><h2><i class="fa-solid fa-scissors"></i> Material für jede Stunde</h2><div class="m-uebersicht" id="ritMaterial"></div></div>
+            <div class="karte"><h2><i class="fa-solid fa-box-archive"></i> Ganze Material-Bibliothek</h2><p class="ed-hilfe" style="margin-top:0">Alle Vorlagen zum Ausdrucken – auch für eigene Stunden. Thema aufklappen, um die Vorschau zu sehen.</p><div id="ritBib"></div></div>` : ""}`;
         document.getElementById("ritBearb").onclick = () => zeigeRituale(true);
+        if (window.sozialMaterial) {
+            const SM = window.sozialMaterial; SM.cssLaden();
+            const eintraege = (ids, ziel) => {
+                const mats = ids.map(id => Object.assign({ id }, SM.bibliothek[id]));
+                ziel.innerHTML = mats.map((m, k) => `<div class="m-eintrag"><div class="vorschau" data-k="${k}"></div><strong>${esc(m.titel)}</strong><small>${SM.seitenZahl(m)} Seite${SM.seitenZahl(m) > 1 ? "n" : ""}${m.hinweis ? " · " + esc(m.hinweis) : ""}</small><button class="btn klein blau" data-d="${k}"><i class="fa-solid fa-print"></i> Drucken</button></div>`).join("");
+                ziel.querySelectorAll("[data-k]").forEach(r => SM.vorschau(r, mats[+r.dataset.k]));
+                ziel.querySelectorAll("[data-d]").forEach(btn => btn.addEventListener("click", () => SM.drucken([mats[+btn.dataset.d]], mats[+btn.dataset.d].titel)));
+            };
+            eintraege(SM.allgemein, document.getElementById("ritMaterial"));
+            const gruppen = {};
+            Object.entries(SM.bibliothek).forEach(([id, m]) => (gruppen[m.gruppe] = gruppen[m.gruppe] || []).push(id));
+            const bib = document.getElementById("ritBib");
+            bib.innerHTML = Object.keys(gruppen).map((g, k) => `<details class="ed-block" data-g="${k}"><summary style="font-weight:900;cursor:pointer">${esc(g)} <span class="chip">${gruppen[g].length}</span></summary><div class="m-uebersicht" style="margin-top:12px"></div></details>`).join("");
+            bib.querySelectorAll("details").forEach(d => d.addEventListener("toggle", () => { const z = d.querySelector(".m-uebersicht"); if (d.open && !z.childElementCount) eintraege(gruppen[Object.keys(gruppen)[+d.dataset.g]], z); }));
+        }
         document.getElementById("ritDruck").onclick = () => drucken(null, "rituale");
         return;
     }
@@ -1363,7 +1427,7 @@ function zeigeRituale(bearbeiten = false){
 
 route();
 </script>
-<?php foreach (["sozial-medien.js", "sozial-praesentation.js"] as $zusatz): if (file_exists(__DIR__ . "/" . $zusatz)): ?>
+<?php foreach (["sozial-medien.js", "sozial-praesentation.js", "sozial-material.js"] as $zusatz): if (file_exists(__DIR__ . "/" . $zusatz)): ?>
 <script src="<?= $zusatz ?>?v=<?= @filemtime(__DIR__ . "/" . $zusatz) ?: 1 ?>"></script>
 <?php endif; endforeach; ?>
 <script>
