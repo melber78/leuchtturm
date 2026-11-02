@@ -927,6 +927,18 @@ function zeigeStunde(id){
             <div class="knopfleiste">${bearbeitenKnopf}<button class="btn" id="kopieren"><i class="fa-solid fa-copy"></i> Als neue Stunde kopieren</button>${loeschKnopf}</div>
         </div>
 
+        ${window.sozialPraesentation ? `<div class="karte" style="background:linear-gradient(135deg,#16324a,#3d7ea6);color:white">
+            <h2 style="color:white"><i class="fa-solid fa-display"></i> Einstieg für die Tafel</h2>
+            <p style="margin:0 0 14px;font-weight:700;opacity:.85">Interaktive Präsentation im Vollbild: Gefühls-Abstimmung, Geschichte mit Bildern und Vorlesestimme, Fragen, Daumen-Abstimmungen, Übungen mit Timer, Glücksrad „Wer ist dran?“ und Applauswelle. Steuerung mit Tippen, Pfeiltasten oder Presenter.</p>
+            <div class="knopfleiste">
+                <button class="btn gold" data-einstieg="12"><i class="fa-solid fa-play"></i> Starten (Geschichte Kl. 1/2)</button>
+                <button class="btn" data-einstieg="34"><i class="fa-solid fa-play"></i> Starten (Geschichte Kl. 3/4)</button>
+                <button class="btn" data-pptx="12"><i class="fa-solid fa-file-powerpoint"></i> PowerPoint Kl. 1/2</button>
+                <button class="btn" data-pptx="34"><i class="fa-solid fa-file-powerpoint"></i> PowerPoint Kl. 3/4</button>
+            </div></div>` : ""}
+        ${(window.sozialMedien ? window.sozialMedien(e) : []).length ? `<div class="karte"><h2><i class="fa-solid fa-film"></i> Filme</h2>
+            ${window.sozialMedien(e).map(m => `<div class="uebung"><div class="uebung-kopf"><strong><a href="${esc(m.url)}" target="_blank" rel="noopener">${esc(m.titel || m.url)}</a></strong>${m.quelle ? `<span class="chip">${esc(m.quelle)}</span>` : ""}${m.dauer ? `<span class="chip">${esc(m.dauer)}</span>` : ""}${m.fuer ? `<span class="chip gold">${esc(m.fuer)}</span>` : ""}</div>${m.hinweis ? `<div class="md"><p>${esc(m.hinweis)}</p></div>` : ""}</div>`).join("")}
+            <p class="ed-hilfe">Mediathek-Links können nach einiger Zeit ablaufen – bitte vor der Stunde kurz prüfen. Eigene Filme trägst du über „Bearbeiten“ bzw. „Anpassen“ ein.</p></div>` : ""}
         <div class="karte"><h2><i class="fa-solid fa-print"></i> Drucken</h2>
             <div class="knopfleiste">
                 <button class="btn blau" data-druck="lehrer"><i class="fa-solid fa-chalkboard-user"></i> Stundenvorbereitung</button>
@@ -976,6 +988,13 @@ function zeigeStunde(id){
     vorschauZeigen(document.getElementById("v2"), e, "2");
     vorschauZeigen(document.getElementById("v34"), e, "34");
     inhalt.querySelectorAll("[data-druck]").forEach(b => b.addEventListener("click", () => drucken(e, b.dataset.druck)));
+    inhalt.querySelectorAll("[data-einstieg]").forEach(b => b.addEventListener("click", () => window.sozialPraesentation.starten(e, b.dataset.einstieg)));
+    inhalt.querySelectorAll("[data-pptx]").forEach(b => b.addEventListener("click", async () => {
+        const alt = b.innerHTML; b.disabled = true; b.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Wird erstellt …';
+        try { await window.sozialPraesentation.pptx(e, b.dataset.pptx); toast("PowerPoint heruntergeladen"); }
+        catch (err) { toast("PowerPoint konnte nicht erstellt werden: " + err.message, true); }
+        b.disabled = false; b.innerHTML = alt;
+    }));
     document.getElementById("kopieren").addEventListener("click", () => {
         editor = { entwurf: { ...sauber(e), id: undefined, ersetzt: undefined, titel: e.titel + " (Kopie)" }, geaendert: true, quelleId: null };
         ignoriereHash = true; location.hash = "#neu"; zeigeEditor(null, true);
@@ -1101,6 +1120,9 @@ function zeigeEditor(id, entwurfBehalten = false){
                 <div>${feld("Ziel Klasse 3/4", "ziel34", e.ziel34)}</div>
             </div>
             ${feld("Material (eines pro Zeile)", "material", e.material, "textarea", 'rows="3"')}
+            <label class="feld">Filme & Links für den Einstieg (einer pro Zeile)</label>
+            <textarea rows="3" data-pfad="medien" data-art="medien" placeholder="Titel | https://… | Quelle, Dauer">${esc((window.sozialMedien ? window.sozialMedien(e) : (e.medien || [])).map(m => [m.titel || "", m.url, [m.quelle, m.dauer].filter(Boolean).join(", ")].join(" | ").replace(/ \| $/, "")).join("\n"))}</textarea>
+            <div class="ed-hilfe">Format: Titel | Link | Quelle (optional). Die Filme erscheinen in der Tafel-Präsentation und auf der Stundenseite.</div>
         </div>
 
         <div class="karte"><h2>Stundenverlauf</h2><div id="edVerlauf"></div>
@@ -1174,6 +1196,11 @@ function zeigeEditor(id, entwurfBehalten = false){
         else if (art === "zahl") setzen(e, pfad, Math.max(1, Math.min(15, parseInt(t.value, 10) || 1)));
         else if (art === "liste") setzen(e, pfad, zeilen(t.value));
         else if (art === "luecken") setzen(e, pfad, zeilen(t.value).map(z => z.replace(/\s*\/\/\s*/g, "\n")));
+        else if (art === "medien") setzen(e, pfad, zeilen(t.value).map(z => {
+            const [titel, url, quelle] = z.split("|").map(x => (x || "").trim());
+            const link = /^https?:\/\//i.test(url || "") ? url : (/^https?:\/\//i.test(titel) ? titel : "");
+            return link ? { titel: link === titel ? "" : titel, url: link, quelle: quelle || "" } : null;
+        }).filter(Boolean));
         else if (art === "tabelle") {
             const z = String(t.value).split("\n").filter(x => x.trim() !== "").map(x => x.split("|").map(c => c.trim()));
             const a = holen(e, pfad);
@@ -1335,6 +1362,13 @@ function zeigeRituale(bearbeiten = false){
 }
 
 route();
+</script>
+<?php foreach (["sozial-medien.js", "sozial-praesentation.js"] as $zusatz): if (file_exists(__DIR__ . "/" . $zusatz)): ?>
+<script src="<?= $zusatz ?>?v=<?= @filemtime(__DIR__ . "/" . $zusatz) ?: 1 ?>"></script>
+<?php endif; endforeach; ?>
+<script>
+// Ansicht neu zeichnen, sobald Präsentation und Filmliste geladen sind (Knöpfe/Filme erscheinen dann)
+if (location.hash.startsWith("#stunde/")) route();
 </script>
 </body>
 </html>
