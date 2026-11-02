@@ -29,6 +29,8 @@ if (!is_array($eingabe)) $antwort(false, ["fehler" => "Ungültige Anfrage."]);
 $FUNKTIONEN = ["aufmerksamkeit", "optdiff", "optged", "optser", "akdiff", "akged", "akser", "koerper", "raum"];
 $RS = ["schaerfung", "cktz", "dehnung", "ie", "sss", "auslaut", "aeau", "dasdass", "grossklein", "vf", "doppelvokal", "iglich", "spst", "silbenh", "chsx"];
 $WEITERE = ["lesen", "schreiben", "sonstiges"];
+$LESEN = ["buchstaben", "silben", "woerter", "saetze", "texte"];
+$lesebuchstaben = fn($t) => mb_substr(trim(preg_replace('/[^a-zäöüß ,]/u', '', mb_strtolower((string)$t))), 0, 120);
 $STAND = ["offen", "teilweise", "erreicht"];
 
 $aktion = (string)($eingabe["aktion"] ?? "");
@@ -54,7 +56,7 @@ if (!is_array($alle)) {
 }
 $akte = $alle[$kind] ?? [];
 $akte += ["klasse" => "", "plan" => [], "erledigt" => [], "stunden" => []];
-$akte["plan"] += ["von" => "", "bis" => "", "f" => [], "r" => [], "ziele" => [], "notiz" => "", "geaendert" => ""];
+$akte["plan"] += ["von" => "", "bis" => "", "f" => [], "r" => [], "l" => [], "lb" => "", "ziele" => [], "notiz" => "", "geaendert" => ""];
 $geaendert = false; $meldung = "";
 
 switch ($aktion) {
@@ -82,6 +84,9 @@ switch ($aktion) {
         $akte["plan"] = [
             "von" => $datum($p["von"] ?? "", true), "bis" => $datum($p["bis"] ?? "", true),
             "f" => $liste($p["f"] ?? [], $FUNKTIONEN), "r" => $liste($p["r"] ?? [], $RS),
+            // Lesestufen bleiben erhalten, wenn die Akte-Seite sie (noch) nicht mitschickt
+            "l" => isset($p["l"]) ? $liste($p["l"], $LESEN) : $akte["plan"]["l"],
+            "lb" => isset($p["lb"]) ? $lesebuchstaben($p["lb"]) : $akte["plan"]["lb"],
             "ziele" => $ziele, "notiz" => $text($p["notiz"] ?? "", 3000), "geaendert" => date("Y-m-d"),
         ];
         if (preg_match('/^[1-8]$/', (string)($eingabe["klasse"] ?? ""))) $akte["klasse"] = (string)$eingabe["klasse"];
@@ -92,11 +97,13 @@ switch ($aktion) {
     case "schwerpunkte_speichern":
         $akte["plan"]["f"] = $liste($eingabe["f"] ?? [], $FUNKTIONEN);
         $akte["plan"]["r"] = $liste($eingabe["r"] ?? [], $RS);
+        $akte["plan"]["l"] = $liste($eingabe["l"] ?? [], $LESEN);
+        $akte["plan"]["lb"] = $lesebuchstaben($eingabe["lb"] ?? "");
         if (!$akte["plan"]["von"]) $akte["plan"]["von"] = date("Y-m-d");
         $akte["plan"]["geaendert"] = date("Y-m-d");
         if (preg_match('/^[1-8]$/', (string)($eingabe["klasse"] ?? ""))) $akte["klasse"] = (string)$eingabe["klasse"];
         $geaendert = true;
-        $meldung = count($akte["plan"]["f"]) . " Funktionsbereiche und " . count($akte["plan"]["r"]) . " Rechtschreib-Schwerpunkte im Förderplan gespeichert.";
+        $meldung = count($akte["plan"]["f"]) . " Funktionsbereiche, " . count($akte["plan"]["r"]) . " Rechtschreib-Schwerpunkte und " . count($akte["plan"]["l"]) . " Lesestufen im Förderplan gespeichert.";
         break;
 
     case "klasse":

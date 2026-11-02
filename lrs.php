@@ -13,7 +13,7 @@ $lrsKinder = array_map(fn($k) => $k["code"], lrsJsonLesen(__DIR__ . "/material-d
 $lrsAkten = [];
 foreach (lrsJsonLesen(__DIR__ . "/material-daten/akten.json") as $code => $a) {
     if (!in_array((string)$code, $lrsKinder, true) || !is_array($a)) continue;
-    $lrsAkten[(string)$code] = ["klasse" => (string)($a["klasse"] ?? ""), "f" => $a["plan"]["f"] ?? [], "r" => $a["plan"]["r"] ?? [], "ziele" => count($a["plan"]["ziele"] ?? [])];
+    $lrsAkten[(string)$code] = ["klasse" => (string)($a["klasse"] ?? ""), "f" => $a["plan"]["f"] ?? [], "r" => $a["plan"]["r"] ?? [], "l" => $a["plan"]["l"] ?? [], "lb" => (string)($a["plan"]["lb"] ?? ""), "ziele" => count($a["plan"]["ziele"] ?? [])];
 }
 // Förderkartei: Fehlerwörter je Kürzel (für Blätter mit den eigenen Wörtern eines Kindes)
 $lrsKartei = [];
@@ -812,6 +812,22 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .au-ziffer{ font-size:22px; font-weight:600; min-width:14px; text-align:center; }
 .au-rs .au-rot{ color:#C0392B; text-decoration:underline; text-decoration-thickness:3px; text-underline-offset:5px; }
 .au-gruppe-titel{ font-size:12px; font-weight:900; color:var(--meer); margin:8px 0 4px; text-transform:uppercase; letter-spacing:.3px; }
+
+/* Lesetraining */
+.le-reihe{ flex:1; display:flex; justify-content:space-around; align-items:center; gap:8px; flex-wrap:wrap; }
+.le-protokoll{ display:flex; justify-content:space-around; gap:14px; font-size:17px; background:#F4F7FA; border-radius:12px; padding:8px 12px; }
+.le-protokoll .ws-linie2, .le-tab .ws-linie2, .std-tabelle .ws-linie2{ display:inline-block; width:60px; border-bottom:2px solid #1E2A36; }
+.le-bild{ display:inline-flex; padding:3px; }
+.le-silbenkarte{ display:inline-block; border:2px solid #C9D6E3; background:#F4F7FA; border-radius:10px; padding:0 10px; }
+.le-malfeld{ border:2px dashed #C9D6E3; border-radius:12px; min-height:130px; flex:1; }
+.le-treppe{ display:flex; flex-direction:column; gap:6px; flex:1; }
+.le-treppe > div{ display:flex; align-items:center; }
+.le-text{ border:2px solid #C9D6E3; border-radius:14px; padding:12px 18px; line-height:1.9; background:#FBFCFD; }
+.le-text-titel{ font-weight:700; font-size:1.1em; text-align:center; margin-bottom:4px; }
+.le-frage{ display:flex; flex-direction:column; gap:6px; }
+.le-antworten{ display:flex; gap:22px; flex-wrap:wrap; padding-left:26px; }
+.le-antworten span{ display:inline-flex; align-items:center; gap:8px; }
+.le-rf td, .le-rf th{ font-size:inherit !important; vertical-align:middle !important; }
 </style>
 </head>
 <body>
@@ -1290,7 +1306,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
         <div class="fp-kopf">
             <div>
                 <h2 class="titel">Förderplan</h2>
-                <p class="beschreibung">In drei Schritten zum fertigen Förderpaket. Tipp: Im Gutachten führt der Knopf „Förderplan im Generator öffnen“ direkt hierher – dann ist alles schon vorausgewählt.</p>
+                <p class="beschreibung">In vier Schritten zum fertigen Förderpaket. Tipp: Im Gutachten führt der Knopf „Förderplan im Generator öffnen“ direkt hierher – dann ist alles schon vorausgewählt.</p>
             </div>
             <a class="btn sekundaer klein" href="gutachten.php" target="_blank"><i class="fa-solid fa-file-signature"></i> Zum Gutachten</a>
         </div>
@@ -1322,6 +1338,16 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
 
         <section class="fp-schritt">
             <div class="fp-nr">3</div>
+            <div class="fp-teil">
+                <div class="fp-titelzeile"><h3>Lesetraining</h3><span class="fp-zaehler" id="fp-n-l"></span></div>
+                <p class="beschreibung" style="margin:-4px 0 10px;">Kleinschrittig aufbauend – wähle die Stufe, an der das Kind gerade arbeitet (gern auch die nächste dazu). Differenziert wird über die Schwierigkeit oben (leicht/mittel/schwer).</p>
+                <div class="fp-raster fp-lesen" id="fp-lesen"></div>
+                <div id="fp-lesen-optionen"></div>
+            </div>
+        </section>
+
+        <section class="fp-schritt">
+            <div class="fp-nr">4</div>
             <div class="fp-teil">
                 <div class="fp-titelzeile"><h3>Paket zusammenstellen</h3></div>
                 <div class="fp-optionen">
@@ -6730,6 +6756,8 @@ function fp_uebersicht(info){
             ${liste("Rechtschreib-Schwerpunkte", info.rs.map(k => `• ${ws_esc(RS_SCHWERPUNKTE[k].name)}${info.zahl[k] ? ` – ${info.zahl[k]} Fehler im Diktat` : ""}`))}
             ${liste("Ziele Funktionstraining", info.funktionen.map(k => `• ${ws_esc(FP_ZIELE[k])}`))}
             ${liste("Ziele Symptomtraining", info.rs.map(k => `• ${RS_SCHWERPUNKTE[k].merksatz}`))}
+            ${(info.lesen || []).length ? liste("Lesetraining", info.lesen.map(k => `• Stufe ${LE_STUFEN[k].nr} ${ws_esc(LE_STUFEN[k].name)}`).concat(info.buchstaben && info.buchstaben.length ? [`• bekannte Buchstaben: ${ws_esc(info.buchstaben.join(" "))}`] : [])) : ""}
+            ${(info.lesen || []).length ? liste("Ziele Lesetraining", info.lesen.map(k => `• ${ws_esc(LE_STUFEN[k].ziel)}`)) : ""}
         </div>
         ${info.beispiele.length ? `<div class="rs-beispiele" style="grid-template-columns:1fr;"><div><b>Beispiele aus dem Diktat (richtig / so geschrieben)</b>${info.beispiele.map(ws_esc).join(" · ")}</div></div>` : ""}
         <div><b style="font-size:15px;">Inhalt dieses Förderpakets</b><ol class="rs-schritte" style="columns:2; column-gap:30px;">${info.inhalt.map(t => `<li>${ws_esc(t)}</li>`).join("")}</ol></div>
@@ -6757,6 +6785,8 @@ function fp_auswahlAufbauen(){
     if (!f || f.children.length) return;
     f.innerHTML = FP_GRUPPEN.map(g => `<div class="fp-gruppe"><div class="fp-gruppe-titel"><i class="fa-solid ${g.icon}"></i> ${g.titel}</div>${g.keys.map(k => fp_chip("fp-f", k, ws_esc(FP_KURZ[k]), "", "fp-stufe-" + k)).join("")}</div>`).join("");
     fp_rsAufbauen([]);
+    document.getElementById("fp-lesen").innerHTML = Object.entries(LE_STUFEN).map(([k, st]) => fp_chip("fp-l", k, `${st.nr} · ${ws_esc(st.name)}`, ws_esc(st.unter), "fp-lstufe-" + k)).join("");
+    document.getElementById("fp-lesen-optionen").innerHTML = le_optionenHtml("fp", "Wird mit dem Förderplan gespeichert.");
     document.getElementById("bereich-plan").addEventListener("change", fp_aktualisieren);
     document.getElementById("fp-anzahl-knoepfe").addEventListener("click", e => {
         const k = e.target.closest("button");
@@ -6786,14 +6816,16 @@ function fp_badge(id, text, art){
 function fp_aktualisieren(){
     document.querySelectorAll("#bereich-plan .fp-chip").forEach(c => c.classList.toggle("an", !!c.querySelector("input").checked));
     const f = document.querySelectorAll(".fp-f:checked").length, r = document.querySelectorAll(".fp-r:checked").length;
+    const l = [...document.querySelectorAll(".fp-l:checked")].map(c => c.value);
     const n = parseInt(lt_wert("fp-anzahl"), 10) || 2;
     const code = lt_wert("fp-kind");
-    const blaetter = (lt_an("fp-uebersicht") ? 1 : 0) + f * n + r * (n + 1) + (code && kt_woerter(code).length ? 2 : 0)
+    const blaetter = (lt_an("fp-uebersicht") ? 1 : 0) + f * n + r * (n + 1) + l.reduce((summe, k) => summe + Math.min(n + 1, LE_BLAETTER[k].length), 0) + (code && kt_woerter(code).length ? 2 : 0)
         + (lt_an("fp-kaertchen") && r ? Math.ceil(r / 8) : 0) + (lt_an("fp-eltern") ? 1 : 0);
     document.getElementById("fp-n-f").textContent = f ? `${f} gewählt` : "";
     document.getElementById("fp-n-r").textContent = r ? `${r} gewählt` : "";
-    document.getElementById("fp-summe").innerHTML = (f || r)
-        ? `<b>${blaetter}</b> Blätter <span>· ${f} ${f === 1 ? "Funktionsbereich" : "Funktionsbereiche"} · ${r} ${r === 1 ? "Schwerpunkt" : "Schwerpunkte"}</span>`
+    document.getElementById("fp-n-l").textContent = l.length ? `${l.length} gewählt` : "";
+    document.getElementById("fp-summe").innerHTML = (f || r || l.length)
+        ? `<b>${blaetter}</b> Blätter <span>· ${f} ${f === 1 ? "Funktionsbereich" : "Funktionsbereiche"} · ${r} ${r === 1 ? "Schwerpunkt" : "Schwerpunkte"}${l.length ? ` · ${l.length} ${l.length === 1 ? "Lesestufe" : "Lesestufen"}` : ""}</span>`
         : `<span>Wähle oben mindestens einen Bereich aus.</span>`;
 }
 
@@ -6891,6 +6923,7 @@ function fp_rsEintrag(key, fn, name, nr, code){
 function fp_dynamisch(){
     const funktionen = [...document.querySelectorAll(".fp-f:checked")].map(c => c.value);
     const rs = [...document.querySelectorAll(".fp-r:checked")].map(c => c.value);
+    const lesen = [...document.querySelectorAll(".fp-l:checked")].map(c => c.value);
     const anzahl = parseInt(lt_wert("fp-anzahl"), 10) || 2;
     const code = lt_wert("fp-kind");
     const blaetter = [];
@@ -6905,6 +6938,9 @@ function fp_dynamisch(){
     });
     const RS_FOLGE = [[rsB_regel, "Regel & Strategie"], [rsB_luecken, "Lückenwörter"], [rsB_fehler, "Fehlerdetektiv"], [rsB_strategie, "Strategie-Check"]];
     rs.forEach(key => RS_FOLGE.slice(0, anzahl + 1).forEach(([fn, name]) => { blaetter.push(fp_rsEintrag(key, fn, name, 0, code)); inhalt.push(`${RS_SCHWERPUNKTE[key].name}: ${name}`); }));
+    // Lesetraining: je Stufe die ersten Blätter (kleinschrittig) – ein Blatt mehr als bei den Funktionsbereichen
+    const le = le_kontext("fp");
+    lesen.forEach(key => LE_BLAETTER[key].slice(0, anzahl + 1).forEach(b => { blaetter.push(le_eintrag(key, b, le)); inhalt.push(`Lesen ${LE_STUFEN[key].nr} ${LE_STUFEN[key].name}: ${b.name}`); }));
     if (code && kt_woerter(code).length){
         const kt = kt_kontextFuer(code, "offen");
         [KT_BLAETTER[0], KT_BLAETTER[2]].forEach(b => {
@@ -6913,11 +6949,11 @@ function fp_dynamisch(){
         });
     }
     if (lt_an("fp-kaertchen") && rs.length){ sk_blaetter(rs).forEach(b => { blaetter.push({ ...b, kurz: "Kärtchen" }); }); inhalt.push("Strategie-Kärtchen"); }
-    if (lt_an("fp-eltern")){ blaetter.push({ nr: "0", kurz: "Elternblatt", name: "Elternblatt", bau: () => eb_blatt([...funktionen, ...rs], code) }); inhalt.push("Elternblatt (10 Minuten am Tag)"); }
+    if (lt_an("fp-eltern")){ blaetter.push({ nr: "0", kurz: "Elternblatt", name: "Elternblatt", bau: () => eb_blatt([...funktionen, ...rs, ...(lesen.length ? ["lesen"] : [])], code) }); inhalt.push("Elternblatt (10 Minuten am Tag)"); }
     if (uebersicht){
         const stufen = (fp_import && fp_import.f) || {};
         const beispiele = ((fp_import && fp_import.woerter) || []).filter(w => w.sp.some(k => rs.includes(k))).slice(0, 10).map(w => `${w.wort} / ${w.falsch}`);
-        const info = { kind: code, funktionen, rs, stufen, zahl: (fp_import && fp_import.zahl) || {}, beispiele, inhalt };
+        const info = { kind: code, funktionen, rs, lesen, buchstaben: le.bekannt, stufen, zahl: (fp_import && fp_import.zahl) || {}, beispiele, inhalt };
         blaetter[0] = { nr: "0", kurz: "Förderplan", name: "Förderplan-Übersicht", bau: () => fp_uebersicht(info) };
     }
     return blaetter.filter(Boolean).map((b, i) => ({ ...b, nr: String(i + 1) }));
@@ -7154,21 +7190,24 @@ function fp_kindWechsel(){
     const code = lt_wert("fp-kind"), akte = code && LRS_AKTEN[code];
     const info = document.getElementById("fp-kind-info");
     document.getElementById("fp-speichern").style.display = code ? "" : "none";
-    document.getElementById("fp-laden").style.display = akte && (akte.f.length || akte.r.length) ? "" : "none";
+    document.getElementById("fp-laden").style.display = akte && (akte.f.length || akte.r.length || (akte.l || []).length) ? "" : "none";
     if (!code) info.innerHTML = "Ohne Kürzel entsteht ein allgemeines Paket. Mit Kürzel werden der gespeicherte Förderplan und die eigenen Fehlerwörter genutzt.";
-    else if (akte && (akte.f.length || akte.r.length)){
+    else if (akte && (akte.f.length || akte.r.length || (akte.l || []).length)){
         // nur automatisch laden, wenn noch nichts angeklickt ist (z. B. nicht nach einem Gutachten-Import)
-        const leer = !document.querySelector(".fp-f:checked, .fp-r:checked");
+        const leer = !document.querySelector(".fp-f:checked, .fp-r:checked, .fp-l:checked");
         if (leer) fp_planLaden(false);
-        info.innerHTML = `${leer ? "✅ Förderplan geladen" : "Für " + ws_esc(code) + " gibt es einen Förderplan"}: ${akte.f.length} Funktionsbereiche, ${akte.r.length} Rechtschreib-Schwerpunkte${akte.ziele ? `, ${akte.ziele} Ziele` : ""}. <a href="${fp_akteLink(code)}" target="_blank">Akte öffnen</a>`;
+        info.innerHTML = `${leer ? "✅ Förderplan geladen" : "Für " + ws_esc(code) + " gibt es einen Förderplan"}: ${akte.f.length} Funktionsbereiche, ${akte.r.length} Rechtschreib-Schwerpunkte${(akte.l || []).length ? `, ${akte.l.length} Lesestufen` : ""}${akte.ziele ? `, ${akte.ziele} Ziele` : ""}. <a href="${fp_akteLink(code)}" target="_blank">Akte öffnen</a>`;
     } else info.innerHTML = `Für ${ws_esc(code)} ist noch kein Förderplan gespeichert. Wähle die Bereiche aus und tippe auf „Als Förderplan speichern“. <a href="${fp_akteLink(code, "uebersicht")}" target="_blank">Akte öffnen</a>`;
     fp_aktualisieren();
 }
 function fp_planLaden(fragen){
     const code = lt_wert("fp-kind"), akte = LRS_AKTEN[code];
     if (!akte) return;
-    if (fragen && document.querySelector(".fp-f:checked, .fp-r:checked") && !confirm("Die aktuelle Auswahl durch den gespeicherten Förderplan ersetzen?")) return;
-    document.querySelectorAll(".fp-f, .fp-r").forEach(c => c.checked = false);
+    if (fragen && document.querySelector(".fp-f:checked, .fp-r:checked, .fp-l:checked") && !confirm("Die aktuelle Auswahl durch den gespeicherten Förderplan ersetzen?")) return;
+    document.querySelectorAll(".fp-f, .fp-r, .fp-l").forEach(c => c.checked = false);
+    (akte.l || []).forEach(k => { const cb = document.querySelector(`.fp-l[value="${k}"]`); if (cb) cb.checked = true; });
+    const lb = document.getElementById("fp-le-buchstaben");
+    if (lb) lb.value = akte.lb || "";
     fp_rsAufbauen(akte.r);
     akte.f.forEach(k => { const cb = document.querySelector(`.fp-f[value="${k}"]`); if (cb) cb.checked = true; });
     akte.r.forEach(k => { const cb = document.querySelector(`.fp-r[value="${k}"]`); if (cb) cb.checked = true; });
@@ -7178,14 +7217,15 @@ function fp_planLaden(fragen){
 async function fp_planSpeichern(){
     const code = lt_wert("fp-kind"), info = document.getElementById("fp-kind-info");
     const f = [...document.querySelectorAll(".fp-f:checked")].map(c => c.value), r = [...document.querySelectorAll(".fp-r:checked")].map(c => c.value);
+    const l = [...document.querySelectorAll(".fp-l:checked")].map(c => c.value), lb = lt_wert("fp-le-buchstaben").trim();
     if (!code) return;
-    if (!f.length && !r.length){ info.textContent = "Bitte zuerst Bereiche auswählen."; return; }
+    if (!f.length && !r.length && !l.length){ info.textContent = "Bitte zuerst Bereiche auswählen."; return; }
     try {
         const antwort = await fetch("akte.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ aktion: "schwerpunkte_speichern", kind: code, f, r, klasse: lt_wert("g-klasse") }) });
+            body: JSON.stringify({ aktion: "schwerpunkte_speichern", kind: code, f, r, l, lb, klasse: lt_wert("g-klasse") }) });
         const j = await antwort.json().catch(() => ({ ok: false, fehler: "Keine Antwort – liegt akte.php im Leuchtturm-Ordner?" }));
         if (!j.ok) throw new Error(j.fehler);
-        LRS_AKTEN[code] = { klasse: j.akte.klasse, f: j.akte.plan.f, r: j.akte.plan.r, ziele: (j.akte.plan.ziele || []).length };
+        LRS_AKTEN[code] = { klasse: j.akte.klasse, f: j.akte.plan.f, r: j.akte.plan.r, l: j.akte.plan.l || [], lb: j.akte.plan.lb || "", ziele: (j.akte.plan.ziele || []).length };
         info.innerHTML = `✅ ${ws_esc(j.meldung)} Ziele und Maßnahmen ergänzt du in der <a href="${fp_akteLink(code)}" target="_blank">Akte von ${ws_esc(code)}</a>.`;
         document.getElementById("fp-laden").style.display = "";
     } catch (e){ info.textContent = "⚠️ " + (e.message || "Speichern fehlgeschlagen."); }
@@ -8464,6 +8504,584 @@ function lt_init(){
     document.getElementById("g-umfang").addEventListener("change", () => document.getElementById("lt-umfang").value = lt_wert("g-umfang"));
 }
 
+/* ===============================================================
+   Lesetraining – kleinschrittig aufbauend:
+   ① Buchstaben → ② Silben → ③ Wörter → ④ Sätze → ⑤ Texte
+   Differenzierung: Schwierigkeit oben (leicht/mittel/schwer),
+   bekannte Buchstaben (nur Silben/Wörter aus diesen Buchstaben),
+   Silben farbig an/aus.
+   =============================================================== */
+const LE_STUFEN = {
+    buchstaben: { nr: 1, name: "Buchstaben", unter: "Laut – Buchstabe, Anlaut, groß/klein", ziel: "Buchstaben sicher erkennen und dem richtigen Laut zuordnen" },
+    silben:     { nr: 2, name: "Silben", unter: "Laute verbinden, Silbenteppich, Silben zum Wort", ziel: "Laute zu Silben zusammenziehen und Silben flüssig lesen" },
+    woerter:    { nr: 3, name: "Wörter", unter: "Wort und Bild, Blitzlesen, Quatschwörter", ziel: "Wörter silbenweise erlesen und ihre Bedeutung erfassen" },
+    saetze:     { nr: 4, name: "Sätze", unter: "Satz und Bild, ja/nein, lesen & malen, Satztreppe", ziel: "Sätze genau lesen und ihren Inhalt verstehen" },
+    texte:      { nr: 5, name: "Texte", unter: "Kurze Texte mit Fragen, richtig/falsch, Lautlesen", ziel: "kurze Texte flüssig lesen und Fragen dazu beantworten" },
+};
+const LE_STANDARD_BUCHSTABEN = [
+    ["a", "m", "o", "l", "i", "s", "e", "u", "n", "r"],
+    ["a", "m", "o", "l", "i", "s", "e", "u", "n", "r", "t", "f", "w", "h", "d", "b", "k", "ei", "au"],
+    ["a", "b", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "w", "z", "ä", "ö", "ü", "au", "ei", "eu", "ie", "sch", "ch", "pf", "st", "sp"],
+];
+const LE_VOKALE = ["a", "e", "i", "o", "u", "ä", "ö", "ü", "au", "ei", "eu", "ie"];
+const le_istVokal = z => LE_VOKALE.includes(z);
+
+// Bild-Wörter: nur eindeutige, einfache Namen aus der Bildersammlung
+const LE_BILD_AUS = new Set(("eichhoernchen gapfel tropenfisch hut muetze klavier zug taschenrechner zange lampe uhr setzling herbstblatt karussell puzzle trex jojo pinata " +
+    "regen kugelfisch heidelbeere palette wachsmal geodreieck klammer rucksack schraubenschluessel schraubenzieher werkzeugkasten croissant hotdog burger donut avocado " +
+    "aubergine frisbee bumerang baseball bowling banjo saxofon akkordeon krawatte badeanzug shorts tshirt kirsche traube erbse joystick mikroskop globus brokkoli " +
+    "knoblauch chili kokos faultier koala krake marienkaefer schmetterling schildkroete nilpferd fledermaus feuerwehr krankenwagen hubschrauber skateboard " +
+    "zahnbuerste fernseher sonnenblume schneeflocke kleeblatt handschuhe medaille rollschuh kaenguru").split(" "));
+let le_bildCache = null;
+function le_bildWoerter(){
+    if (le_bildCache) return le_bildCache;
+    if (!bild_da()) return (le_bildCache = []);
+    le_bildCache = bilder_alle().filter(k => !LE_BILD_AUS.has(k) && /^[A-ZÄÖÜ][a-zäöüß]{1,10}$/.test(bild_name(k)))
+        .map(k => { const w = bild_name(k); return { k, w, s: silben_trennen(w), l: bs_laute(w) }; });
+    return le_bildCache;
+}
+const LE_ECHTE = new Set([...BS_WOERTER].map(w => w.toLowerCase()));
+
+/* --- Einstellungen lesen (Förderplan: Präfix "fp", Lesen-Tab: "ld") --- */
+function le_buchstabenLesen(text){
+    const t = String(text || "").toLowerCase().replace(/[^a-zäöüß ,]/g, " ");
+    const erg = [];
+    t.split(/[\s,]+/).filter(Boolean).forEach(teil => {
+        // „malo“ ohne Leerzeichen → m a l o (Mehrfachlaute erkennen)
+        if (BS_ZIELE.includes(teil)) { erg.push(teil); return; }
+        bs_laute(teil).forEach(l => erg.push(l));
+    });
+    return [...new Set(erg)].filter(z => BS_ZIELE.includes(z) || z === "ß");
+}
+function le_kontext(p){
+    const liste = le_buchstabenLesen(lt_wert(p + "-le-buchstaben"));
+    const el = document.getElementById(p + "-le-farbig");
+    return { bekannt: liste, set: liste.length ? new Set(liste) : null, farbig: el ? el.checked : true, texte: null };
+}
+function le_buchstabenSetzen(p, text){
+    const el = document.getElementById(p + "-le-buchstaben");
+    if (el){ el.value = text; el.dispatchEvent(new Event("change", { bubbles: true })); }
+}
+function le_buchstabenKnoepfe(p){
+    const k = (t, v) => `<button type="button" class="btn klein" style="background:#7c8a94;" onclick="le_buchstabenSetzen('${p}', '${v}')">${t}</button>`;
+    return `${k("Start: a m o l i s e u n r", "a m o l i s e u n r")}${k("+ t f w h d b k ei au", "a m o l i s e u n r t f w h d b k ei au")}${k("alle", "")}`;
+}
+
+/* --- Bausteine --- */
+function le_ctx(ctx){ return ctx.le || (ctx.le = le_kontext("ld")); }
+function le_buchstaben(ctx){
+    const le = le_ctx(ctx);
+    return le.bekannt.length ? le.bekannt : LE_STANDARD_BUCHSTABEN[fs_stufe(ctx)];
+}
+function le_passt(w, le){ return !le.set || bs_laute(w).every(l => le.set.has(l)); }
+function le_silben(w){ return silben_trennen(w); }
+function le_wort(w, le){
+    if (!le.farbig) return ws_esc(w);
+    return le_silben(w).map((s, i) => `<span class="ws-t${i % 2 + 1}">${ws_esc(s)}</span>`).join("");
+}
+function le_satz(text, le){ return st_html(st_tokens(text), { art: le.farbig ? "farbig" : "normal" }).replace(/^<p>|<\/p>$/g, ""); }
+// Wörter je Stufe: leicht kurz (≤ 2 Silben), mittel ≤ 3 Silben, schwer alle – bevorzugt aus bekannten Buchstaben
+function le_bildPool(ctx, extra){
+    const le = le_ctx(ctx), st = fs_stufe(ctx);
+    const grenze = x => st === 0 ? x.s.length <= 2 && x.w.length <= 5 : (st === 1 ? x.s.length <= 3 && x.w.length <= 8 : true);
+    const alle = le_bildWoerter().filter(x => grenze(x) && (!extra || extra(x)));
+    const bekannt = alle.filter(x => le_passt(x.w, le));
+    return mische(bekannt.length >= 8 ? bekannt : alle.length >= 6 ? alle : le_bildWoerter().filter(x => !extra || extra(x)));
+}
+function le_wortPool(ctx){
+    const le = le_ctx(ctx), st = fs_stufe(ctx);
+    const max = [5, 8, 12][st], maxS = [2, 3, 5][st];
+    const alle = [...new Set([...wortpool(), ...BS_WOERTER])].filter(w => /^[A-Za-zÄÖÜäöüß]+$/.test(w) && w.length <= max && le_silben(w).length <= maxS);
+    const bekannt = alle.filter(w => le_passt(w, le));
+    return mische(bekannt.length >= 12 ? bekannt : alle);
+}
+function le_quatsch(w){
+    const tausch = { a: "o", o: "u", u: "i", i: "e", e: "a", ä: "ö", ö: "ü", ü: "ä" };
+    for (let v = 0; v < 12; v++){
+        const stellen = [...w].map((z, i) => tausch[z.toLowerCase()] ? i : -1).filter(i => i >= 0);
+        if (!stellen.length) break;
+        const i = zufallsElement(stellen), z = w[i], neu = tausch[z.toLowerCase()];
+        const ergebnis = w.slice(0, i) + (z === z.toUpperCase() ? neu.toUpperCase() : neu) + w.slice(i + 1);
+        if (!LE_ECHTE.has(ergebnis.toLowerCase())) return ergebnis;
+    }
+    return w.length > 3 ? w[0] + w[2] + w[1] + w.slice(3) : w + "e";
+}
+function le_vertauscht(w){
+    if (w.length < 4) return le_quatsch(w);
+    const i = zufallsZahl(1, w.length - 3);
+    return w.slice(0, i) + w[i + 1] + w[i] + w.slice(i + 2);
+}
+const LE_KAESTCHEN = n => `<span style="display:flex; gap:6px; flex:none;">${'<span class="fs-kaestchen-klein" style="width:24px; height:24px;"></span>'.repeat(n)}</span>`;
+const LE_PROTOKOLL = `<div class="le-protokoll"><span><b>1.</b> Mal: <span class="ws-linie2"></span> Sek.</span><span><b>2.</b> Mal: <span class="ws-linie2"></span> Sek.</span><span><b>3.</b> Mal: <span class="ws-linie2"></span> Sek.</span></div>`;
+function le_bildOption(k, richtig, gr = 46){
+    const b = `<span class="le-bild">${bild(k, gr)}</span>`;
+    return k === richtig ? LM(b) : b;
+}
+function le_bilderZuWahl(richtig, pool, n = 3){
+    const name = x => typeof x === "string" ? x : x.k;
+    const andere = mische(pool.map(name).filter(k => k !== richtig && bild_name(k) !== bild_name(richtig))).slice(0, n - 1);
+    return mische([richtig, ...andere]);
+}
+function le_ohneBilder(titel){
+    return { titel, html: `<div class="fs-ziel">Die Bildersammlung (bilder.js) fehlt auf dem Server. Bitte die Datei bilder.js in den Leuchtturm-Ordner hochladen.</div>` };
+}
+
+/* ---------- ① Buchstaben ---------- */
+function leB_blitz(ctx){
+    const st = fs_stufe(ctx), bu = le_buchstaben(ctx);
+    const zeile = i => {
+        const reihe = [...Array(st === 0 ? 7 : 8)].map(() => {
+            const z = zufallsElement(bu);
+            return st > 0 && Math.random() < 0.4 ? bs_gross(z) : z;
+        });
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><div class="le-reihe" style="font-size:34px;">${reihe.map((z, k) => `<span class="${k % 2 ? "ws-t2" : "ws-t1"}">${ws_esc(z)}</span>`).join("")}</div>${LE_KAESTCHEN(3)}</div>`;
+    };
+    return { titel: "Buchstaben-Blitz", zeile, html: `
+        <div class="fs-ziel">Diese Buchstaben kenne ich: <b style="font-size:26px; letter-spacing:4px;">${bu.map(ws_esc).join(" ")}</b></div>
+        ${ws_aufgabe(1, "Lies jede Reihe laut: Sag zu jedem Buchstaben seinen <b>Laut</b> (mmm, aaa, sss). Für jedes Mal Lesen ein Kästchen ankreuzen.")}
+        ${LE_PROTOKOLL}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+function leB_anlaut(ctx){
+    if (!bild_da()) return le_ohneBilder("Welcher Laut ist am Anfang?");
+    const st = fs_stufe(ctx), bu = le_buchstaben(ctx);
+    const pool = le_bildPool(ctx, x => bs_hoerbar(x.l, 0) && !["c", "q", "x", "y", "j", "v"].includes(x.l[0]));
+    const passend = pool.filter(x => bu.includes(x.l[0]));
+    const liste = passend.length >= 8 ? passend : pool;
+    const zeile = i => {
+        const x = liste[i % liste.length];
+        if (!x || i >= Math.max(liste.length, 20)) return "";
+        const r = x.l[0];
+        const wahl = mische([r, ...mische([...(BS_KLANG[r] || []), ...bu].filter(z => z !== r && z.length <= 3)).slice(0, st === 0 ? 1 : 2)]);
+        return `<div class="fs-karte">${bild(x.k, 56)}<div class="fs-chips">${wahl.map(z => { const t = `<span class="fs-gross" style="min-width:52px; text-align:center; white-space:nowrap;">${ws_esc(z.length > 1 ? bs_gross(z) : bs_gross(z) + " " + z)}</span>`; return z === r ? LM(t) : t; }).join("")}</div></div>`;
+    };
+    return { titel: "Welcher Laut ist am Anfang?", zeile, schritt: 2, html: `
+        ${ws_aufgabe(1, "Sag das Bild laut und langsam: <b>Mmm-aus</b>. Welchen Laut hörst du ganz am Anfang? Kreise den passenden Buchstaben ein.")}
+        <div class="fs-zweispaltig fs-fuell"></div>` };
+}
+function leB_grossKlein(ctx){
+    const st = fs_stufe(ctx);
+    const bu = le_buchstaben(ctx).filter(z => z.length === 1 && z !== "ß");
+    const zeile = i => {
+        const z = bu[i % bu.length];
+        if (!z || i >= Math.max(bu.length * 2, 16)) return "";
+        const aehnlich = [...(BS_OPTISCH[z] || "")].filter(x => x !== z);
+        const wahl = mische([z, ...mische([...aehnlich, ...mische(bu)]).filter((x, k, a) => x !== z && a.indexOf(x) === k).slice(0, [2, 3, 4][st])]);
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><span class="bs-zielchip" style="width:54px; height:54px; font-size:32px;">${ws_esc(z.toUpperCase())}</span><span style="font-size:24px; color:#7c8a94;">→</span><div class="fs-chips">${wahl.map(x => { const t = `<span class="fs-gross" style="min-width:40px; text-align:center;">${ws_esc(x)}</span>`; return x === z ? LM(t) : t; }).join("")}</div></div>`;
+    };
+    return { titel: "Großer und kleiner Buchstabe", zeile, html: `
+        ${ws_aufgabe(1, "Links steht der <b>große</b> Buchstabe. Finde den passenden <b>kleinen</b> Buchstaben und kreise ihn ein. Sag dabei den Laut.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* ---------- ② Silben ---------- */
+function le_konsonanten(ctx){
+    const k = le_buchstaben(ctx).filter(z => !le_istVokal(z) && !["c", "q", "x", "y", "ß", "sp", "st", "ch"].includes(z));
+    return k.length ? k : ["m", "l", "s", "r", "n"];
+}
+function le_vokale(ctx){
+    const st = fs_stufe(ctx);
+    const v = le_buchstaben(ctx).filter(z => le_istVokal(z) && (st > 0 || z.length === 1));
+    return v.length >= 2 ? v : ["a", "e", "i", "o", "u"];
+}
+function leS_teppich(ctx){
+    const st = fs_stufe(ctx), K = le_konsonanten(ctx), V = le_vokale(ctx).slice(0, 7);
+    const reihen = [];
+    K.forEach(k => reihen.push(V.map(v => bs_gross(k) + v)));                        // Ma Me Mi …
+    if (st >= 1) K.forEach(k => reihen.push(V.filter(v => v.length === 1).map(v => bs_gross(v) + k)));   // Am Em Im …
+    if (st >= 2) K.forEach(k => { const e = zufallsElement(K.filter(x => x.length === 1)) || "l"; reihen.push(V.filter(v => v.length === 1).map(v => bs_gross(k) + v + e)); });  // Mal Mel …
+    const alle = reihen.flat();
+    const zeile = i => {
+        if (i >= Math.max(reihen.length, 12)) return "";
+        const r = reihen[i] || mische(alle).slice(0, Math.min(6, alle.length));
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><div class="le-reihe" style="font-size:32px;">${r.map((s, k) => `<span class="${k % 2 ? "ws-t2" : "ws-t1"}">${ws_esc(s)}</span>`).join("")}</div>${LE_KAESTCHEN(2)}</div>`;
+    };
+    return { titel: "Silbenteppich", zeile, html: `
+        <div class="fs-ziel" style="font-size:26px;"><b class="ws-t1">M</b> + <b class="ws-t2">a</b> = <b><span class="ws-t1">M</span><span class="ws-t2">a</span></b> <span style="font-size:17px; color:#4A5866;">Den ersten Laut lang ziehen und in den zweiten hineinrutschen: Mmmmaaa → Ma</span></div>
+        ${ws_aufgabe(1, "Lies jede Reihe von links nach rechts. Rutsche die Laute zusammen. Die letzten Reihen sind gemischt – ganz genau hinschauen! Für jedes Mal Lesen ein Kästchen ankreuzen.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+function leS_blitz(ctx){
+    const st = fs_stufe(ctx), K = le_konsonanten(ctx), V = le_vokale(ctx);
+    const BLEND = ["Bl", "Br", "Dr", "Fl", "Fr", "Gr", "Kl", "Kr", "Pl", "Sch", "Schw", "Sp", "St", "Tr"];
+    const silbe = () => {
+        const k = zufallsElement(K), v = zufallsElement(V), r = Math.random();
+        if (st === 0) return bs_gross(k) + v;
+        if (st === 1) return r < 0.7 ? bs_gross(k) + v : bs_gross(v) + zufallsElement(K);
+        return r < 0.35 ? bs_gross(k) + v + zufallsElement(K) : (r < 0.7 ? zufallsElement(BLEND) + v : bs_gross(k) + v);
+    };
+    const LE_SPERRE = /^(fik|fic|sex|nazi|pis|kak|arsch|fot|sau|nut|hur|tit|pim|wix|schei)/i;
+    const gute = () => { for (let v = 0; v < 20; v++){ const x = silbe(); if (!LE_SPERRE.test(x)) return x; } return "Ma"; };
+    const zeile = i => `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><div class="le-reihe" style="font-size:30px;">${[...Array(6)].map((_, k) => `<span class="${k % 2 ? "ws-t2" : "ws-t1"}">${ws_esc(gute())}</span>`).join("")}</div>${LE_KAESTCHEN(3)}</div>`;
+    return { titel: "Silben-Blitz", zeile, html: `
+        ${ws_aufgabe(1, "Lies die Silben so flüssig du kannst. Stoppt die Zeit für das ganze Blatt – beim zweiten und dritten Mal wirst du schneller!")}
+        ${LE_PROTOKOLL}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+function leS_zumWort(ctx){
+    if (!bild_da()) return le_ohneBilder("Silben zum Wort");
+    const st = fs_stufe(ctx), le = le_ctx(ctx);
+    const pool = le_bildPool(ctx, x => x.s.length >= 2 && (st > 0 || x.s.length === 2));
+    const zeile = i => {
+        const x = pool[i % pool.length];
+        if (!x || i >= Math.max(pool.length, 16)) return "";
+        const wahl = le_bilderZuWahl(x.k, pool, 3);
+        return `<div class="fs-karte" style="flex-direction:column; align-items:stretch; gap:8px;">
+            <div style="display:flex; align-items:center; gap:10px; font-size:30px;">${x.s.map((s, k) => `<span class="le-silbenkarte${le.farbig ? (k % 2 ? " ws-t2" : " ws-t1") : ""}">${ws_esc(s)}</span>`).join('<span style="font-size:20px; color:#7c8a94;">+</span>')}<span style="flex:1; border-bottom:2px solid #8FA3B8; margin-left:8px; min-height:34px; display:flex; align-items:flex-end; font-size:24px;">${L(ws_esc(x.w))}</span></div>
+            <div class="fs-chips">${wahl.map(k => le_bildOption(k, x.k, 44)).join("")}</div></div>`;
+    };
+    return { titel: "Silben zum Wort", zeile, schritt: 2, html: `
+        ${ws_aufgabe(1, "Lies die Silben nacheinander und schiebe sie zusammen. Schreibe das Wort auf die Linie und kreise das passende Bild ein.")}
+        <div class="fs-zweispaltig fs-fuell"></div>` };
+}
+function leS_fehlt(ctx){
+    if (!bild_da()) return le_ohneBilder("Welche Silbe fehlt?");
+    const pool = le_bildPool(ctx, x => x.s.length >= 2);
+    const alleSilben = [...new Set(le_bildWoerter().flatMap(x => x.s.map(s => s.toLowerCase())))];
+    const zeile = i => {
+        const x = pool[i % pool.length];
+        if (!x || i >= Math.max(pool.length, 16)) return "";
+        const lk = zufallsZahl(0, x.s.length - 1), richtig = x.s[lk];
+        const andere = mische(alleSilben.filter(s => s !== richtig.toLowerCase())).slice(0, 2).map(s => lk === 0 ? bs_gross(s) : s);
+        const wahl = mische([richtig, ...andere]);
+        const wort = x.s.map((s, k) => k === lk ? `<span class="fs-box" style="min-width:${Math.max(52, s.length * 18)}px;">${L(ws_esc(s))}</span>` : `<span class="${k % 2 ? "ws-t2" : "ws-t1"}">${ws_esc(s)}</span>`).join("");
+        return `<div class="fs-karte">${bild(x.k, 52)}<div style="flex:1; display:flex; flex-direction:column; gap:6px;"><div style="font-size:28px; display:flex; align-items:center;">${wort}</div><div class="fs-chips" style="justify-content:flex-start; gap:10px;">${wahl.map(s => { const t = `<span class="le-silbenkarte" style="font-size:20px;">${ws_esc(s)}</span>`; return s === richtig ? LM(t) : t; }).join("")}</div></div></div>`;
+    };
+    return { titel: "Welche Silbe fehlt?", zeile, schritt: 2, html: `
+        ${ws_aufgabe(1, "Schau das Bild an und sprich das Wort in Silben. Welche Silbe fehlt? Kreise sie ein und schreibe sie in das Kästchen.")}
+        <div class="fs-zweispaltig fs-fuell"></div>` };
+}
+
+/* ---------- ③ Wörter ---------- */
+function leW_wortBild(ctx){
+    if (!bild_da()) return le_ohneBilder("Welches Bild passt zum Wort?");
+    const le = le_ctx(ctx), pool = le_bildPool(ctx);
+    const zeile = i => {
+        const x = pool[i % pool.length];
+        if (!x || i >= Math.max(pool.length, 20)) return "";
+        return `<div class="fs-karte"><span style="font-size:30px; min-width:130px;">${le_wort(x.w, le)}</span><div class="fs-chips">${le_bilderZuWahl(x.k, pool, 3).map(k => le_bildOption(k, x.k, 44)).join("")}</div></div>`;
+    };
+    return { titel: "Welches Bild passt zum Wort?", zeile, schritt: 2, html: `
+        ${ws_aufgabe(1, "Lies das Wort Silbe für Silbe. Kreise das passende Bild ein.")}
+        <div class="fs-zweispaltig fs-fuell"></div>` };
+}
+function leW_bildWort(ctx){
+    if (!bild_da()) return le_ohneBilder("Welches Wort passt zum Bild?");
+    const st = fs_stufe(ctx), le = le_ctx(ctx), pool = le_bildPool(ctx);
+    const zeile = i => {
+        const x = pool[i % pool.length];
+        if (!x || i >= Math.max(pool.length, 20)) return "";
+        let falsch;
+        if (st === 0){
+            const gleich = pool.filter(y => y.w !== x.w && y.w[0] === x.w[0]);
+            falsch = mische(gleich.length >= 2 ? gleich : pool.filter(y => y.w !== x.w)).slice(0, 2).map(y => y.w);
+        } else if (st === 1) falsch = [le_quatsch(x.w), le_quatsch(x.w)];
+        else falsch = [le_vertauscht(x.w), le_quatsch(x.w)];
+        falsch = [...new Set(falsch.filter(w => w !== x.w))];
+        while (falsch.length < 2) falsch.push(le_vertauscht(x.w + "e").slice(0, x.w.length));
+        const wahl = mische([x.w, ...falsch.slice(0, 2)]);
+        return `<div class="fs-karte">${bild(x.k, 54)}<div class="fs-chips" style="flex-direction:column; align-items:flex-start; gap:4px;">${wahl.map(w => { const t = `<span style="font-size:24px; padding:0 8px;">${st === 0 ? le_wort(w, le) : ws_esc(w)}</span>`; return w === x.w ? LM(t) : t; }).join("")}</div></div>`;
+    };
+    return { titel: "Welches Wort passt zum Bild?", zeile, schritt: 2, html: `
+        ${ws_aufgabe(1, `Schau das Bild an. Lies alle drei Wörter <b>ganz genau</b> – ${st === 0 ? "nur eins passt" : "Vorsicht, manche Wörter sind nur fast richtig"}! Kreise das richtige Wort ein.`)}
+        <div class="fs-zweispaltig fs-fuell"></div>` };
+}
+function leW_blitz(ctx){
+    const le = le_ctx(ctx), pool = le_wortPool(ctx), st = fs_stufe(ctx);
+    let n = 0;
+    const zeile = i => {
+        const reihe = [...Array([3, 4, 4][st])].map(() => pool[n++ % pool.length]);
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><div class="le-reihe" style="font-size:${[30, 28, 25][st]}px;">${reihe.map(w => `<span>${le_wort(w, le)}</span>`).join("")}</div>${LE_KAESTCHEN(3)}</div>`;
+    };
+    return { titel: "Wörter-Blitz", zeile, html: `
+        ${ws_aufgabe(1, "Lies jedes Wort in Silben – erst langsam, dann schneller. Für jedes Mal Lesen ein Kästchen ankreuzen.")}
+        ${LE_PROTOKOLL}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+function leW_quatsch(ctx){
+    const le = le_ctx(ctx), pool = le_wortPool(ctx);
+    const zeile = i => {
+        const w = pool[i % pool.length];
+        if (!w || i >= Math.max(pool.length, 24)) return "";
+        const echt = Math.random() < 0.5, zeigen = echt ? w : le_quatsch(w);
+        return `<div class="fs-karte"><span class="fs-satz" style="font-size:27px;">${le_wort(zeigen, le)}</span><span class="fs-kreuz" style="flex-direction:column; gap:4px;"><span>${fs_kreuzBox(echt)} echt</span><span>${fs_kreuzBox(!echt)} Quatsch</span></span></div>`;
+    };
+    return { titel: "Echtes Wort oder Quatschwort?", zeile, schritt: 2, html: `
+        ${ws_aufgabe(1, "Lies jedes Wort genau. Gibt es das Wort wirklich? Kreuze an: <b>echt</b> oder <b>Quatsch</b>.")}
+        <div class="fs-zweispaltig fs-fuell"></div>` };
+}
+
+/* ---------- ④ Sätze ---------- */
+const LE_SATZ_BILD = [
+    [["Das ist ein Hund.", "hund"], ["Da ist eine Maus.", "maus"], ["Die Sonne scheint.", "sonne"], ["Der Fisch schwimmt.", "fisch"], ["Das Auto ist rot.", "auto"],
+     ["Ein Eis ist kalt.", "eis"], ["Die Rose blüht.", "rose"], ["Der Hase hoppelt.", "hase"], ["Das Haus ist groß.", "haus"], ["Die Ente sagt quak.", "ente"],
+     ["Der Mond ist da.", "mond"], ["Die Kuh gibt Milch.", "kuh"], ["Das Brot ist lecker.", "brot"], ["Ein Baum im Wald.", "baum"], ["Der Bus hält an.", "bus"],
+     ["Die Biene summt.", "biene"], ["Die Torte ist süß.", "torte"], ["Der Löwe brüllt.", "loewe"], ["Ein Stern leuchtet.", "stern"], ["Das Buch ist neu.", "buch"]],
+    [["Der Elefant hat einen langen Rüssel.", "elefant"], ["Die Giraffe hat einen langen Hals.", "giraffe"], ["Der Igel hat viele Stacheln.", "igel"],
+     ["Mit der Schere kann man schneiden.", "schere"], ["Die Rakete fliegt ins All.", "rakete"], ["Mit dem Schlitten fährt man im Schnee.", "schlitten"],
+     ["Der Pinguin lebt im kalten Eis.", "pinguin"], ["Die Banane ist krumm und gelb.", "banane"], ["Die Zitrone schmeckt sauer.", "zitrone"],
+     ["Mit dem Schirm wird man nicht nass.", "schirm"], ["Auf der Gitarre kann man Musik machen.", "gitarre"], ["Der Frosch springt in den Teich.", "frosch"],
+     ["Die Schnecke trägt ihr Haus.", "schnecke"], ["Mit dem Löffel isst man Suppe.", "loeffel"], ["Der Traktor fährt auf dem Feld.", "traktor"],
+     ["Die Kerze brennt hell.", "kerze"], ["Mit dem Besen fegt man den Boden.", "besen"], ["Die Eule sitzt nachts im Baum.", "eule"]],
+    [["Es hat Flügel, ist aber kein Vogel. Es bringt Menschen in ferne Länder.", "flugzeug"], ["Man braucht ihn, wenn es regnet, und hält ihn über den Kopf.", "schirm"],
+     ["Dieses Tier hat schwarze und weiße Streifen und sieht aus wie ein Pferd.", "zebra"], ["Diese Frucht ist außen grün und innen rot mit schwarzen Kernen.", "melone"],
+     ["Damit schlägt man Nägel in die Wand.", "hammer"], ["Er leuchtet nachts am Himmel und ist manchmal rund, manchmal schmal.", "mond"],
+     ["Dieses Tier ist sehr langsam und trägt sein Haus auf dem Rücken.", "schnecke"], ["Man schreibt ihn, steckt ihn in einen Umschlag und schickt ihn mit der Post.", "brief"],
+     ["Er ist aus Schnee, hat eine Nase aus einer Möhre und schmilzt in der Sonne.", "schneemann"], ["Damit kann man ganz kleine Dinge groß sehen.", "lupe"],
+     ["Man findet sie am Strand. Hält man sie ans Ohr, rauscht das Meer.", "muschel"], ["Dieses Tier hat einen Panzer und kann sehr alt werden.", "schildkroete"],
+     ["Dieses Tier hat acht Arme und lebt im Meer.", "krake"], ["Sie hat Zeiger und zeigt dir, wie spät es ist.", "uhr"],
+     ["Man spielt damit auf dem Schulhof und tritt mit dem Fuß dagegen.", "fussball"], ["Dieses Tier ist der König der Tiere und hat eine Mähne.", "loewe"]],
+];
+const LE_JANEIN = [
+    [["Der Hund bellt.", 1], ["Ein Fisch kann laufen.", 0], ["Die Sonne ist gelb.", 1], ["Eine Maus ist riesig.", 0], ["Im Winter schneit es.", 1], ["Ein Auto hat Flügel.", 0],
+     ["Milch ist weiß.", 1], ["Eine Kuh kann fliegen.", 0], ["Ein Ball ist rund.", 1], ["Oma ist ein Baby.", 0], ["Ein Eis ist kalt.", 1], ["Ein Hase hat lange Ohren.", 1],
+     ["Ein Baum kann lesen.", 0], ["Wasser ist nass.", 1], ["Ein Haus hat Beine.", 0], ["Die Ente sagt quak.", 1], ["Ein Stein ist weich.", 0], ["Ein Igel hat Stacheln.", 1],
+     ["Eine Tomate ist blau.", 0], ["Ein Hut ist zum Essen.", 0]],
+    [["Ein Elefant ist kleiner als eine Maus.", 0], ["Mit einer Schere kann man schneiden.", 1], ["Pinguine können fliegen.", 0], ["Eine Woche hat sieben Tage.", 1],
+     ["Bananen wachsen im Schnee.", 0], ["Im Herbst fallen die Blätter von den Bäumen.", 1], ["Ein Fahrrad hat vier Räder.", 0], ["Bienen machen Honig.", 1],
+     ["Nachts scheint meistens die Sonne.", 0], ["Ein Frosch kann gut springen.", 1], ["Zum Schlafen legt man sich in den Kühlschrank.", 0], ["Kühe fressen Gras.", 1],
+     ["Ein Jahr hat zwölf Monate.", 1], ["Man putzt die Zähne mit einem Kamm.", 0], ["Eine Schnecke ist schneller als ein Pferd.", 0], ["Im Winter tragen viele Kinder eine Mütze.", 1],
+     ["Ein Baby ist älter als seine Oma.", 0], ["Feuer ist heiß.", 1]],
+    [["Wenn Wasser sehr kalt wird, wird es zu Eis.", 1], ["Ein Wal ist ein Fisch.", 0], ["Der Mond wird von der Sonne angestrahlt.", 1], ["Eine Stunde hat sechzig Minuten.", 1],
+     ["Ein Dreieck hat vier Ecken.", 0], ["Spinnen haben acht Beine.", 1], ["Ein Kilo Federn ist leichter als ein Kilo Steine.", 0], ["Aus Raupen werden oft Schmetterlinge.", 1],
+     ["Wer Fieber hat, sollte draußen im Schnee spielen.", 0], ["Im Dezember ist bei uns Sommer.", 0], ["Pflanzen brauchen Licht und Wasser zum Wachsen.", 1],
+     ["Igel halten im Sommer Winterschlaf.", 0], ["Der Februar ist der kürzeste Monat.", 1], ["Bei Gewitter ist man unter einem einzelnen Baum sicher.", 0],
+     ["Eine Brücke führt über einen Fluss oder eine Straße.", 1], ["Auf dem Mond kann man ohne Raumanzug atmen.", 0], ["Ein Hund hat mehr Beine als ein Huhn.", 1],
+     ["Wer rückwärts geht, kommt immer schneller an.", 0]],
+];
+const LE_MALEN = [
+    ["Male einen roten Ball.", "Male eine gelbe Sonne.", "Male einen Baum.", "Male ein Haus.", "Male zwei Äpfel.", "Male einen blauen Fisch.", "Male eine Maus.",
+     "Male drei Sterne.", "Male ein Eis.", "Male eine Blume.", "Male einen Mond.", "Male ein rotes Herz."],
+    ["Male einen Hund mit einem roten Halsband.", "Male drei grüne Äpfel an einen Baum.", "Male eine Katze auf einem Stuhl.", "Male ein Haus mit zwei Fenstern und einer Tür.",
+     "Male eine Wolke mit Regentropfen.", "Male einen Schneemann mit einem Hut.", "Male eine Blume mit fünf blauen Blättern.", "Male ein Auto mit vier Rädern.",
+     "Male einen Fisch mit Streifen.", "Male eine Torte mit vier Kerzen.", "Male einen Drachen am Himmel.", "Male ein Boot auf dem Wasser."],
+    ["Male links einen Baum und rechts daneben ein kleines Haus.", "Male einen Tisch. Unter den Tisch einen Ball, auf den Tisch eine Tasse.",
+     "Male eine Ampel. Nur das untere Licht leuchtet grün.", "Male ein Gesicht, das sich freut. Es trägt eine Brille.",
+     "Male drei Luftballons: rot, gelb und grün. Der gelbe ist der größte.", "Male eine Uhr, die drei Uhr anzeigt.",
+     "Male einen Hund vor seiner Hütte. Über der Hütte scheint die Sonne.", "Male einen Turm aus vier Klötzen. Der unterste ist blau.",
+     "Male einen Teller mit zwei Würstchen und drei Erbsen.", "Male eine Katze, die einen Fisch im Maul hat.",
+     "Male einen Schmetterling mit zwei Punkten auf jedem Flügel.", "Male einen Schneemann, dem die Sonne auf den Kopf scheint. Er weint."],
+];
+const LE_TREPPEN = [
+    [["Mia", "Mia malt.", "Mia malt eine Sonne."], ["Der Hund", "Der Hund bellt.", "Der Hund bellt laut."], ["Opa", "Opa liest.", "Opa liest ein Buch."],
+     ["Die Ente", "Die Ente schwimmt.", "Die Ente schwimmt im Teich."], ["Tom", "Tom isst.", "Tom isst ein Eis."], ["Die Katze", "Die Katze schläft.", "Die Katze schläft auf dem Sofa."],
+     ["Lea", "Lea rennt.", "Lea rennt nach Hause."], ["Der Ball", "Der Ball rollt.", "Der Ball rollt unter den Tisch."], ["Mama", "Mama lacht.", "Mama lacht laut."],
+     ["Die Maus", "Die Maus isst.", "Die Maus isst Käse."]],
+    [["Paul", "Paul spielt.", "Paul spielt Fußball.", "Paul spielt mit Ben Fußball."], ["Die Biene", "Die Biene fliegt.", "Die Biene fliegt zur Blume.", "Die Biene fliegt schnell zur roten Blume."],
+     ["Mama", "Mama backt.", "Mama backt einen Kuchen.", "Mama backt heute einen Kuchen mit Äpfeln."], ["Der Vogel", "Der Vogel singt.", "Der Vogel singt im Baum.", "Der kleine Vogel singt fröhlich im Baum."],
+     ["Wir", "Wir fahren.", "Wir fahren ans Meer.", "Wir fahren im Sommer mit dem Zug ans Meer."], ["Das Pferd", "Das Pferd läuft.", "Das Pferd läuft über die Wiese.", "Das braune Pferd läuft schnell über die Wiese."],
+     ["Lina", "Lina schreibt.", "Lina schreibt einen Brief.", "Lina schreibt ihrer Oma einen langen Brief."], ["Der Igel", "Der Igel sucht.", "Der Igel sucht Futter.", "Der hungrige Igel sucht im Laub nach Futter."]],
+    [["Der Junge", "Der Junge rennt.", "Der Junge rennt zum Bus.", "Der Junge rennt am Morgen schnell zum Bus.", "Der Junge rennt am Morgen schnell zum Bus, weil er spät dran ist."],
+     ["Die Kinder", "Die Kinder bauen.", "Die Kinder bauen eine Höhle.", "Die Kinder bauen im Wald eine Höhle aus Ästen.", "Die Kinder bauen im Wald eine Höhle aus Ästen und Blättern, damit sie nicht nass werden."],
+     ["Unser Hund", "Unser Hund wartet.", "Unser Hund wartet an der Tür.", "Unser Hund wartet jeden Tag an der Tür.", "Unser Hund wartet jeden Tag an der Tür, bis ich aus der Schule komme."],
+     ["Die Katze", "Die Katze klettert.", "Die Katze klettert auf den Baum.", "Die junge Katze klettert mutig auf den hohen Baum.", "Die junge Katze klettert mutig auf den hohen Baum und kommt nicht mehr herunter."],
+     ["Ich", "Ich lese.", "Ich lese ein Buch.", "Ich lese abends im Bett ein spannendes Buch.", "Ich lese abends im Bett ein spannendes Buch über Piraten, bis mir die Augen zufallen."],
+     ["Der Bäcker", "Der Bäcker backt.", "Der Bäcker backt Brötchen.", "Der Bäcker backt schon früh am Morgen Brötchen.", "Der Bäcker backt schon früh am Morgen Brötchen, wenn alle anderen noch schlafen."]],
+];
+function leZ_satzBild(ctx){
+    if (!bild_da()) return le_ohneBilder("Welches Bild passt zum Satz?");
+    const st = fs_stufe(ctx), le = le_ctx(ctx);
+    const liste = mische(LE_SATZ_BILD[st].filter(s => LT_BILDER[s[1]]));
+    const keys = liste.map(s => s[1]);
+    const zeile = i => {
+        const s = liste[i];
+        if (!s) return "";
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><span class="fs-satz" style="font-size:${[28, 25, 22][st]}px;">${le_satz(s[0], le)}</span><div class="fs-chips" style="flex:none; gap:14px;">${le_bilderZuWahl(s[1], keys, 3).map(k => le_bildOption(k, s[1], 46)).join("")}</div></div>`;
+    };
+    return { titel: "Welches Bild passt zum Satz?", zeile, html: `
+        ${ws_aufgabe(1, "Lies den Satz genau. Kreise das Bild ein, das dazu passt.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+function leZ_janein(ctx){
+    const st = fs_stufe(ctx), le = le_ctx(ctx), liste = mische(LE_JANEIN[st]);
+    const zeile = i => {
+        const s = liste[i];
+        if (!s) return "";
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><span class="fs-satz" style="font-size:${[28, 24, 22][st]}px;">${le_satz(s[0], le)}</span><span class="fs-kreuz"><span>${fs_kreuzBox(s[1] === 1)} ja</span><span>${fs_kreuzBox(s[1] === 0)} nein</span></span></div>`;
+    };
+    return { titel: "Stimmt das?", zeile, html: `
+        ${ws_aufgabe(1, "Lies jeden Satz. Stimmt das, was da steht? Kreuze <b>ja</b> oder <b>nein</b> an. Achtung – manche Sätze sind Quatsch!")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+function leZ_malen(ctx){
+    const st = fs_stufe(ctx), le = le_ctx(ctx), liste = mische(LE_MALEN[st]);
+    const zeile = i => {
+        const s = liste[i];
+        if (!s) return "";
+        return `<div class="fs-karte" style="flex-direction:column; align-items:stretch; gap:8px;"><div style="font-size:${[24, 21, 19][st]}px; min-height:2.6em;">${le_satz(s, le)}</div><div class="le-malfeld"></div></div>`;
+    };
+    return { titel: "Lies und male", zeile, schritt: 2, html: `
+        ${ws_aufgabe(1, "Lies genau, was du malen sollst. Achte auf jedes Wort: Farbe, Anzahl und wo es hinkommt!")}
+        <div class="fs-zweispaltig fs-fuell"></div>` };
+}
+function leZ_treppe(ctx){
+    const st = fs_stufe(ctx), le = le_ctx(ctx), liste = mische(LE_TREPPEN[st]);
+    const zeile = i => {
+        const t = liste[i];
+        if (!t) return "";
+        return `<div class="fs-karte" style="align-items:flex-start;"><div class="fs-reihe-nr" style="padding-top:6px;">${i + 1}</div><div class="le-treppe">${t.map((s, k) => `<div style="padding-left:${k * 18}px; font-size:${[27, 24, 21][st]}px;"><span class="fs-kaestchen-klein" style="width:20px; height:20px; margin-right:10px; flex:none;"></span><span>${le_satz(s, le)}</span></div>`).join("")}</div></div>`;
+    };
+    return { titel: "Satztreppe", zeile, html: `
+        ${ws_aufgabe(1, "Lies die Treppe von oben nach unten. Jede Stufe wird ein bisschen länger. Hake jede Stufe ab, die du geschafft hast.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* ---------- ⑤ Texte ---------- */
+// f = Fragen [Frage, richtig, falsch, falsch] · rf = Aussagen [Text, stimmt?] · m = Malauftrag
+const LE_TEXTE = [
+    [{ t: "Mia und Max", x: "Mia hat einen Hund. Der Hund heißt Max. Max ist braun. Max mag Wurst. Mia und Max laufen in den Park.",
+       f: [["Wie heißt der Hund?", "Max", "Mia", "Moritz"], ["Welche Farbe hat Max?", "braun", "weiß", "schwarz"], ["Was mag Max?", "Wurst", "Eis", "Salat"]],
+       rf: [["Mia hat eine Katze.", 0], ["Max ist braun.", 1], ["Max mag Wurst.", 1], ["Mia und Max laufen in die Schule.", 0]], m: "Male Mia und Max im Park." },
+     { t: "Die Rakete", x: "Tom malt eine Rakete. Die Rakete ist rot. Sie fliegt zum Mond. Auf dem Mond sitzt ein Hase. Der Hase winkt.",
+       f: [["Was malt Tom?", "eine Rakete", "ein Auto", "ein Haus"], ["Wohin fliegt die Rakete?", "zum Mond", "zur Sonne", "nach Hause"], ["Wer sitzt auf dem Mond?", "ein Hase", "ein Hund", "Tom"]],
+       rf: [["Die Rakete ist rot.", 1], ["Die Rakete fliegt zur Oma.", 0], ["Auf dem Mond sitzt ein Hase.", 1], ["Der Hase schläft.", 0]], m: "Male die Rakete und den Hasen auf dem Mond." },
+     { t: "Im Garten", x: "Oma ist im Garten. Sie hat eine Rose. Die Rose ist rot. Eine Biene sitzt auf der Rose. Oma lacht.",
+       f: [["Wo ist Oma?", "im Garten", "im Haus", "im Auto"], ["Welche Farbe hat die Rose?", "rot", "gelb", "blau"], ["Wer sitzt auf der Rose?", "eine Biene", "eine Maus", "ein Vogel"]],
+       rf: [["Oma ist im Garten.", 1], ["Die Rose ist blau.", 0], ["Eine Biene sitzt auf der Rose.", 1], ["Oma weint.", 0]], m: "Male Oma mit der Rose und der Biene." },
+     { t: "Der Schneemann", x: "Es schneit. Lena baut einen Schneemann. Er hat eine Möhre als Nase. Er hat einen Hut. Lena ist froh.",
+       f: [["Was baut Lena?", "einen Schneemann", "eine Burg", "ein Haus"], ["Was ist die Nase?", "eine Möhre", "ein Apfel", "ein Stein"], ["Wie geht es Lena?", "Sie ist froh.", "Sie ist müde.", "Sie ist traurig."]],
+       rf: [["Es regnet.", 0], ["Der Schneemann hat einen Hut.", 1], ["Die Nase ist eine Möhre.", 1], ["Lena ist sauer.", 0]], m: "Male Lena und den Schneemann." },
+     { t: "Das Eis", x: "Es ist warm. Ben kauft ein Eis. Das Eis ist lila. Ben leckt am Eis. Oh nein, das Eis tropft!",
+       f: [["Wie ist das Wetter?", "warm", "kalt", "nass"], ["Was kauft Ben?", "ein Eis", "ein Brot", "einen Ball"], ["Welche Farbe hat das Eis?", "lila", "grün", "weiß"]],
+       rf: [["Es ist kalt.", 0], ["Ben kauft ein Eis.", 1], ["Das Eis ist lila.", 1], ["Das Eis tropft.", 1]], m: "Male Ben mit seinem lila Eis." },
+     { t: "Die Maus", x: "Die Maus ist klein. Sie wohnt in einem Loch. Sie mag Käse. Die Katze sucht die Maus. Die Maus ist schnell weg.",
+       f: [["Wo wohnt die Maus?", "in einem Loch", "auf dem Baum", "im Bett"], ["Was mag die Maus?", "Käse", "Wurst", "Äpfel"], ["Wer sucht die Maus?", "die Katze", "der Hund", "die Oma"]],
+       rf: [["Die Maus ist groß.", 0], ["Die Maus mag Käse.", 1], ["Die Katze sucht die Maus.", 1], ["Die Katze fängt die Maus.", 0]], m: "Male die Maus in ihrem Loch mit Käse." }],
+    [{ t: "Der verlorene Ball", x: "Paul spielt mit seinem roten Ball im Garten. Er schießt zu fest. Der Ball fliegt über den Zaun. Paul klingelt beim Nachbarn. Herr Klein gibt ihm den Ball zurück. Paul sagt: „Danke!“",
+       f: [["Wo spielt Paul?", "im Garten", "in der Schule", "im Park"], ["Wohin fliegt der Ball?", "über den Zaun", "auf das Dach", "in den Teich"], ["Wer gibt Paul den Ball zurück?", "Herr Klein", "Pauls Mama", "ein Hund"]],
+       rf: [["Der Ball ist rot.", 1], ["Paul schießt zu fest.", 1], ["Paul klettert über den Zaun.", 0], ["Paul bedankt sich.", 1]], m: "Male, wie der Ball über den Zaun fliegt." },
+     { t: "Ein Tag am Meer", x: "Familie Sommer fährt ans Meer. Lisa baut eine große Sandburg. Ihr Bruder sucht Muscheln. Papa liegt in der Sonne. Plötzlich kommt eine Welle. Die Sandburg ist weg, aber alle lachen.",
+       f: [["Wohin fährt die Familie?", "ans Meer", "in die Berge", "in den Zoo"], ["Was sucht Lisas Bruder?", "Muscheln", "Steine", "Krebse"], ["Was macht die Welle?", "Sie nimmt die Sandburg mit.", "Sie macht Papa nass.", "Sie bringt einen Fisch."]],
+       rf: [["Lisa baut eine Sandburg.", 1], ["Papa sucht Muscheln.", 0], ["Am Ende sind alle traurig.", 0], ["Eine Welle kommt.", 1]], m: "Male Lisas Sandburg am Meer." },
+     { t: "Der Igel im Herbst", x: "Im Herbst sammelt der Igel Laub. Er baut sich ein warmes Nest unter einer Hecke. Dort schläft er den ganzen Winter. Er wacht erst im Frühling wieder auf. Dann hat er großen Hunger.",
+       f: [["Was sammelt der Igel?", "Laub", "Äpfel", "Steine"], ["Wo baut er sein Nest?", "unter einer Hecke", "auf einem Baum", "im Wasser"], ["Wann wacht er auf?", "im Frühling", "im Herbst", "im Winter"]],
+       rf: [["Der Igel schläft im Winter.", 1], ["Das Nest ist kalt.", 0], ["Im Frühling hat der Igel Hunger.", 1], ["Der Igel baut sein Nest im Sommer.", 0]], m: "Male den Igel in seinem Nest unter der Hecke." },
+     { t: "Das Geburtstagsgeschenk", x: "Morgen hat Oma Geburtstag. Emil und Ida wollen ihr etwas schenken. Emil malt ein Bild mit Blumen. Ida backt mit Mama einen Kuchen. Oma freut sich sehr über die Geschenke.",
+       f: [["Wer hat Geburtstag?", "Oma", "Mama", "Emil"], ["Was malt Emil?", "ein Bild mit Blumen", "ein Haus", "eine Karte"], ["Mit wem backt Ida?", "mit Mama", "mit Oma", "mit Emil"]],
+       rf: [["Oma hat heute Geburtstag.", 0], ["Ida backt einen Kuchen.", 1], ["Emil kauft ein Geschenk.", 0], ["Oma freut sich.", 1]], m: "Male Omas Geburtstagstisch." },
+     { t: "Der kleine Drache", x: "Fridolin ist ein kleiner Drache. Er kann noch kein Feuer spucken. Wenn er es versucht, kommt nur Rauch heraus. Die anderen Drachen lachen. Doch eines Tages niest Fridolin – und eine kleine Flamme kommt heraus!",
+       f: [["Wer ist Fridolin?", "ein kleiner Drache", "ein Ritter", "ein Hund"], ["Was kommt zuerst heraus?", "nur Rauch", "Wasser", "Feuer"], ["Wann kommt die Flamme?", "als er niest", "als er schläft", "als er lacht"]],
+       rf: [["Fridolin kann von Anfang an Feuer spucken.", 0], ["Die anderen Drachen lachen.", 1], ["Am Ende kommt eine Flamme heraus.", 1], ["Fridolin ist ein großer Drache.", 0]], m: "Male Fridolin, wie er niest." },
+     { t: "Im Zoo", x: "Die Klasse 2b macht einen Ausflug in den Zoo. Zuerst sehen sie die Affen. Ein Affe klaut einer Frau die Mütze. Dann gehen sie zu den Pinguinen. Die Pinguine werden gerade gefüttert. Zum Schluss essen alle ein Eis.",
+       f: [["Wohin geht die Klasse?", "in den Zoo", "ins Kino", "ins Schwimmbad"], ["Was klaut der Affe?", "eine Mütze", "eine Banane", "einen Schuh"], ["Was machen alle zum Schluss?", "Sie essen ein Eis.", "Sie fahren Bus.", "Sie füttern die Affen."]],
+       rf: [["Zuerst sehen sie die Pinguine.", 0], ["Ein Affe klaut eine Mütze.", 1], ["Die Pinguine werden gefüttert.", 1], ["Die Klasse heißt 3a.", 0]], m: "Male den Affen mit der Mütze." }],
+    [{ t: "Bienen", x: "Bienen leben in einem großen Volk zusammen. Im Sommer wohnen in einem Bienenstock viele tausend Bienen. Die Königin legt die Eier. Die Arbeiterinnen fliegen zu den Blüten und sammeln Nektar und Blütenstaub. Aus dem Nektar machen sie Honig. Hat eine Biene viele Blüten gefunden, tanzt sie im Stock. So zeigt sie den anderen den Weg.",
+       f: [["Wer legt die Eier?", "die Königin", "die Arbeiterinnen", "der Imker"], ["Woraus machen Bienen Honig?", "aus Nektar", "aus Wasser", "aus Blättern"], ["Warum tanzt eine Biene?", "Sie zeigt den Weg zu den Blüten.", "Sie freut sich über die Sonne.", "Sie ruft die Königin."], ["Wie viele Bienen leben im Sommer in einem Stock?", "viele tausend", "zehn", "hundert"]],
+       rf: [["Bienen leben allein.", 0], ["Die Arbeiterinnen sammeln Nektar.", 1], ["Der Tanz zeigt den Weg zu Blüten.", 1], ["Honig wird aus Blättern gemacht.", 0]], m: "Male einen Bienenstock und Bienen, die zu Blüten fliegen." },
+     { t: "Die Klassenfahrt", x: "Endlich ist es so weit: Die Klasse 4a fährt für drei Tage an einen See. Jonas ist ein bisschen aufgeregt, denn er hat noch nie woanders geschlafen. In der ersten Nacht kann er nicht einschlafen. Sein Freund Ali leiht ihm seine Taschenlampe. Gemeinsam lesen sie unter der Decke ein Comicheft. Am nächsten Morgen ist Jonas zwar müde, aber sehr glücklich.",
+       f: [["Wie lange dauert die Klassenfahrt?", "drei Tage", "eine Woche", "einen Tag"], ["Warum ist Jonas aufgeregt?", "Er hat noch nie woanders geschlafen.", "Er kann nicht schwimmen.", "Er hat Angst vor Ali."], ["Was leiht Ali ihm?", "eine Taschenlampe", "ein Kissen", "ein Buch"], ["Wie fühlt sich Jonas am Morgen?", "müde, aber glücklich", "traurig", "krank"]],
+       rf: [["Die Klasse fährt ans Meer.", 0], ["Jonas kann in der ersten Nacht nicht einschlafen.", 1], ["Die beiden lesen ein Comicheft.", 1], ["Jonas möchte sofort nach Hause.", 0]], m: "Male Jonas und Ali mit der Taschenlampe unter der Decke." },
+     { t: "Der Löwenzahn", x: "Der Löwenzahn wächst fast überall: auf Wiesen, am Wegrand und sogar in Ritzen zwischen Steinen. Seine Blüte ist leuchtend gelb. Später wird aus der Blüte eine weiße Kugel, die Pusteblume. Sie besteht aus vielen kleinen Schirmchen. Daran hängen die Samen. Wenn der Wind weht, fliegen die Schirmchen davon. So wachsen an neuen Orten neue Pflanzen.",
+       f: [["Welche Farbe hat die Blüte?", "gelb", "weiß", "rot"], ["Was hängt an den Schirmchen?", "die Samen", "die Blätter", "kleine Käfer"], ["Wie kommen die Samen an neue Orte?", "mit dem Wind", "mit dem Regen", "mit der Gießkanne"], ["Wo wächst der Löwenzahn?", "fast überall", "nur im Wald", "nur im Garten"]],
+       rf: [["Aus der gelben Blüte wird eine Pusteblume.", 1], ["Löwenzahn wächst nur auf Wiesen.", 0], ["Die Pusteblume besteht aus vielen Schirmchen.", 1], ["Der Wind trägt die Samen fort.", 1]], m: "Male einen Löwenzahn als Blüte und als Pusteblume." },
+     { t: "Der neue Mitschüler", x: "Am Montag steht ein fremder Junge vor der Klasse. Er heißt Luca und ist gerade mit seiner Familie hergezogen. Luca schaut auf den Boden und sagt kein Wort. In der Pause steht er allein am Zaun. Da geht Emma zu ihm und fragt, ob er mit Fangen spielen will. Luca lächelt zum ersten Mal. Nach der Pause setzt er sich neben Emma.",
+       f: [["Warum ist Luca neu?", "Seine Familie ist hergezogen.", "Er war krank.", "Er hat die Klasse gewechselt."], ["Wo steht Luca in der Pause?", "allein am Zaun", "bei der Lehrerin", "am Klettergerüst"], ["Was fragt Emma?", "ob er mit Fangen spielt", "wie er heißt", "ob er ihr hilft"], ["Woran merkt man, dass es Luca besser geht?", "Er lächelt.", "Er weint.", "Er geht nach Hause."]],
+       rf: [["Luca kommt am Freitag in die Klasse.", 0], ["Luca ist am Anfang schüchtern.", 1], ["Emma spricht Luca an.", 1], ["Luca setzt sich neben die Lehrerin.", 0]], m: "Male Emma und Luca in der Pause." },
+     { t: "Pinguine", x: "Pinguine sind Vögel, aber fliegen können sie nicht. Dafür sind sie hervorragende Schwimmer. Mit ihren Flügeln rudern sie wie mit Flossen durch das Wasser. Die meisten Pinguine leben im Süden der Erde, wo es sehr kalt ist. Ein dickes Fettpolster und dichte Federn schützen sie vor der Kälte. Kaiserpinguine stehen im Winter eng zusammen, um sich gegenseitig zu wärmen.",
+       f: [["Was können Pinguine nicht?", "fliegen", "schwimmen", "laufen"], ["Wozu nutzen sie ihre Flügel?", "zum Rudern im Wasser", "zum Bauen von Nestern", "zum Fliegen"], ["Was schützt sie vor Kälte?", "Fett und dichte Federn", "ein dickes Fell", "warme Höhlen"], ["Was machen Kaiserpinguine im Winter?", "Sie stehen eng zusammen.", "Sie fliegen nach Süden.", "Sie halten Winterschlaf."]],
+       rf: [["Pinguine sind Vögel.", 1], ["Pinguine leben im heißen Norden.", 0], ["Pinguine schwimmen sehr gut.", 1], ["Kaiserpinguine wärmen sich gegenseitig.", 1]], m: "Male Pinguine, die im Wasser schwimmen und auf dem Eis stehen." },
+     { t: "Das Geheimnis im Keller", x: "Seit Tagen hört Mira nachts ein leises Kratzen aus dem Keller. Ihr großer Bruder behauptet, dort wohne ein Gespenst. Mira glaubt das nicht. Mutig nimmt sie eine Taschenlampe und schleicht die Treppe hinunter. Hinter einer alten Kiste leuchten zwei kleine Augen. Es ist eine Katze mit drei winzigen Jungen! Die Familie stellt ihnen eine Schale Milch und eine warme Decke hin.",
+       f: [["Was hört Mira nachts?", "ein leises Kratzen", "laute Musik", "ein Bellen"], ["Was behauptet ihr Bruder?", "Im Keller wohnt ein Gespenst.", "Im Keller ist ein Schatz.", "Der Keller ist leer."], ["Was findet Mira?", "eine Katze mit Jungen", "eine Maus", "ein Gespenst"], ["Wie ist Mira?", "mutig", "ängstlich", "faul"]],
+       rf: [["Mira glaubt an das Gespenst.", 0], ["Mira nimmt eine Taschenlampe mit.", 1], ["Hinter der Kiste leuchten zwei Augen.", 1], ["Die Katze hat fünf Junge.", 0]], m: "Male, was Mira hinter der Kiste entdeckt." }],
+];
+function le_text(ctx){
+    const le = le_ctx(ctx), st = fs_stufe(ctx);
+    if (!le.texte || le.texteStufe !== st){ le.texte = mische(LE_TEXTE[st]); le.texteStufe = st; le.textNr = 0; }
+    return le.texte[le.textNr++ % le.texte.length];
+}
+function le_textBox(t, ctx){
+    const le = le_ctx(ctx), st = fs_stufe(ctx);
+    return `<div class="le-text" style="font-size:${[28, 24, 21][st]}px;"><div class="le-text-titel">${ws_esc(t.t)}</div>${le_satz(t.x, le)}</div>`;
+}
+function leT_fragen(ctx){
+    const t = le_text(ctx), st = fs_stufe(ctx);
+    const fragen = t.f.map((f, i) => {
+        const wahl = mische(f.slice(1));
+        return `<div class="le-frage"><div><b>${i + 2}.</b> ${ws_esc(f[0])}</div><div class="le-antworten">${wahl.map(a => `<span>${fs_kreuzBox(a === f[1])} ${ws_esc(a)}</span>`).join("")}</div></div>`;
+    }).join("");
+    return { titel: "Lesen und verstehen", html: `
+        ${ws_aufgabe(1, st === 0 ? "Lies den Text zweimal – einmal leise, einmal laut." : "Lies den Text genau. Lies ihn danach noch einmal laut.")}
+        ${le_textBox(t, ctx)}
+        <div style="font-size:${[22, 20, 18][st]}px; display:flex; flex-direction:column; gap:12px;">${fragen}</div>
+        ${ws_aufgabe(t.f.length + 2, ws_esc(t.m))}
+        <div class="le-malfeld" style="flex:1; min-height:170px;"></div>` };
+}
+function leT_richtigFalsch(ctx){
+    const t = le_text(ctx), st = fs_stufe(ctx), le = le_ctx(ctx);
+    return { titel: "Richtig oder falsch?", html: `
+        ${ws_aufgabe(1, "Lies den Text. Danach liest du die Sätze darunter: Steht das so im Text? Kreuze an.")}
+        ${le_textBox(t, ctx)}
+        <table class="std-tabelle le-rf" style="font-size:${[22, 20, 18][st]}px;"><thead><tr><th>Stimmt das?</th><th style="width:90px; text-align:center;">richtig</th><th style="width:90px; text-align:center;">falsch</th></tr></thead>
+        <tbody>${mische(t.rf).map(r => `<tr><td>${le_satz(r[0], le)}</td><td style="text-align:center;">${fs_kreuzBox(r[1] === 1, "width:26px; height:26px;")}</td><td style="text-align:center;">${fs_kreuzBox(r[1] === 0, "width:26px; height:26px;")}</td></tr>`).join("")}</tbody></table>
+        ${ws_aufgabe(2, "Schreibe einen Satz: Was hat dir am Text gefallen?")}
+        <div style="${LT_LINIENFELD} min-height:80px;"></div>` };
+}
+function leT_lautlesen(ctx){
+    const t = le_text(ctx), st = fs_stufe(ctx);
+    const runde = n => `<tr><td><b>${n}. Mal</b></td><td>${n === 1 ? "allein, langsam" : (n === 2 ? "mit Partner / Lehrkraft" : "vorlesen wie ein Profi")}</td><td><span class="ws-linie2" style="width:70px;"></span> Sek.</td><td><span class="ws-linie2" style="width:50px;"></span></td><td style="text-align:center;">${["😐", "🙂", "😃"].map(s => `<span style="font-size:22px; margin:0 3px;">${s}</span>`).join("")}</td></tr>`;
+    return { titel: "Lautlesen wie ein Profi", html: `
+        ${ws_aufgabe(1, "Lies den Text dreimal laut. Jedes Mal ein bisschen flüssiger. Die Lehrkraft (oder dein Partner) stoppt die Zeit und zählt die Verleser.")}
+        ${le_textBox(t, ctx)}
+        <table class="std-tabelle" style="font-size:${[19, 18, 17][st]}px;"><thead><tr><th>Runde</th><th>Wie?</th><th>Zeit</th><th>Verleser</th><th style="text-align:center;">Wie war's?</th></tr></thead><tbody>${runde(1)}${runde(2)}${runde(3)}</tbody></table>
+        <div class="rs-merksatz" style="font-size:18px;">Profi-Tipp: Bei einem schweren Wort in Silben lesen – dann das ganze Wort noch einmal flüssig.</div>
+        ${ws_aufgabe(2, ws_esc(t.m))}
+        <div class="le-malfeld" style="flex:1; min-height:150px;"></div>` };
+}
+
+/* --- Blätter je Stufe (Reihenfolge = kleinschrittig vom Leichten zum Schweren) --- */
+const LE_BLAETTER = {
+    buchstaben: [
+        { kurz: "Buchstaben-Blitz", name: "Buchstaben-Blitz (Laute lesen)", bau: leB_blitz },
+        { kurz: "Anlaut", name: "Welcher Laut ist am Anfang?", bau: leB_anlaut },
+        { kurz: "Groß/klein", name: "Großer und kleiner Buchstabe", bau: leB_grossKlein },
+    ],
+    silben: [
+        { kurz: "Silbenteppich", name: "Silbenteppich", bau: leS_teppich },
+        { kurz: "Silben-Blitz", name: "Silben-Blitz", bau: leS_blitz },
+        { kurz: "Silben zum Wort", name: "Silben zum Wort", bau: leS_zumWort },
+        { kurz: "Silbe fehlt", name: "Welche Silbe fehlt?", bau: leS_fehlt },
+    ],
+    woerter: [
+        { kurz: "Wort → Bild", name: "Welches Bild passt zum Wort?", bau: leW_wortBild },
+        { kurz: "Bild → Wort", name: "Welches Wort passt zum Bild?", bau: leW_bildWort },
+        { kurz: "Wörter-Blitz", name: "Wörter-Blitz", bau: leW_blitz },
+        { kurz: "Quatschwörter", name: "Echtes Wort oder Quatschwort?", bau: leW_quatsch },
+    ],
+    saetze: [
+        { kurz: "Satz → Bild", name: "Welches Bild passt zum Satz?", bau: leZ_satzBild },
+        { kurz: "Stimmt das?", name: "Stimmt das? (ja/nein)", bau: leZ_janein },
+        { kurz: "Lies und male", name: "Lies und male", bau: leZ_malen },
+        { kurz: "Satztreppe", name: "Satztreppe", bau: leZ_treppe },
+    ],
+    texte: [
+        { kurz: "Text + Fragen", name: "Lesen und verstehen", bau: leT_fragen },
+        { kurz: "Richtig/falsch", name: "Richtig oder falsch?", bau: leT_richtigFalsch },
+        { kurz: "Lautlesen", name: "Lautlesen wie ein Profi", bau: leT_lautlesen },
+    ],
+};
+const LE_AFS = "Symptomtraining: Lesen";
+function le_eintrag(stufe, b, le){
+    const s = LE_STUFEN[stufe];
+    return { nr: "0", kurz: `Lesen ${s.nr}: ${b.kurz}`, name: `Lesetraining ${s.nr} ${s.name} – ${b.name}`,
+        bau: c => b.bau({ ...c, le }), extra: { label: `Lesetraining · ${s.nr} ${s.name}`, afs: LE_AFS, reif: lt_klasse() >= 5 } };
+}
+// Lesen-Tab: alle Blätter der angehakten Stufen
+function le_dynamisch(ctx){
+    const le = le_kontext("ld");
+    ctx.le = le;
+    const stufen = [...document.querySelectorAll(".ld-le-stufe:checked")].map(c => c.value);
+    return stufen.flatMap(k => LE_BLAETTER[k].map(b => le_eintrag(k, b, le))).map((b, i) => ({ ...b, nr: String(i + 1) }));
+}
+function le_optionenHtml(p, klasseStufe){
+    return `
+        <div class="fp-label" style="margin-top:12px;">Bekannte Buchstaben (optional)</div>
+        <input type="text" id="${p}-le-buchstaben" placeholder="z. B. a m o l i s e u n r  – leer = passend zur Schwierigkeit" style="margin-top:4px;">
+        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; align-items:center;">${le_buchstabenKnoepfe(p)}
+            <label style="display:flex; gap:6px; align-items:center; margin:0 0 0 10px; text-transform:none; letter-spacing:0; font-size:14px;"><input type="checkbox" id="${p}-le-farbig" checked style="width:auto;"> Silben farbig</label></div>
+        <p class="beschreibung" style="margin:6px 0 0;">Silben und Wörter werden möglichst nur aus diesen Buchstaben gebildet – so liest das Kind nur, was es schon kennt. ${klasseStufe}</p>`;
+}
+
+
 /* ---------- Neue Serien anmelden ---------- */
 Object.assign(FS_SERIEN, {
     lesetext: { tab: "lesen", mat: "symptom", wert: "lesetext", select: "#ld-typ", erstellen: "erstelleLesen", ohneMischen: false,
@@ -8574,10 +9192,24 @@ Object.assign(FS_SERIEN, {
         kind: () => lt_wert("kt-kind"),
         blaetter: KT_BLAETTER },
 
+    lesetraining: { tab: "lesen", mat: "symptom", wert: "lesetraining", select: "#ld-typ", erstellen: "erstelleLesen",
+        optionText: "Lesetraining – kleinschrittig: Buchstaben · Silben · Wörter · Sätze · Texte",
+        label: "Lesetraining", afs: LE_AFS, ordner: "Lesetraining",
+        reif: () => lt_klasse() >= 5,
+        tipp: "Schwierigkeit oben = Differenzierung (leicht/mittel/schwer): Wortlänge, Silbenzahl, Satzlänge und Text.",
+        optionenHtml: `
+            <label style="margin-top:12px;">Welche Lesestufen?</label>
+            <div class="fp-wahl">${Object.entries(LE_STUFEN).map(([k, s]) => `<label title="${ws_esc(s.unter)}"><input type="checkbox" class="ld-le-stufe" value="${k}"${k === "silben" ? " checked" : ""}> ${s.nr} ${ws_esc(s.name)}</label>`).join("")}</div>
+            ${le_optionenHtml("ld", "Je Stufe entstehen 3–4 Blätter, vom Leichten zum Schweren.")}`,
+        pruefen: () => document.querySelectorAll(".ld-le-stufe:checked").length ? null : "Bitte mindestens eine Lesestufe anhaken.",
+        dynamisch: le_dynamisch,
+        speicherName: () => "Lesetraining – " + [...document.querySelectorAll(".ld-le-stufe:checked")].map(c => LE_STUFEN[c.value].name).join(", "),
+        blaetter: [] },
+
     foerderpaket: { tab: "plan", mat: "foerderplan", ohneAuswahl: true, label: "Förderpaket", afs: "Förderplan", ordner: "Förderpakete",
         tippVoll: "Das Förderpaket enthält passende Blätter zu jedem gewählten Bereich. Blätter abwählen, neu mischen oder direkt auf dem Blatt ändern – wie gewohnt.",
         dynamisch: fp_dynamisch,
-        pruefen: () => (document.querySelectorAll(".fp-f:checked, .fp-r:checked").length || lt_an("fp-eltern")) ? null : "Bitte mindestens einen Funktionsbereich oder Rechtschreib-Schwerpunkt anhaken.",
+        pruefen: () => (document.querySelectorAll(".fp-f:checked, .fp-r:checked, .fp-l:checked").length || lt_an("fp-eltern")) ? null : "Bitte mindestens einen Funktionsbereich, Rechtschreib-Schwerpunkt oder eine Lesestufe anhaken.",
         speicherName: () => "Förderpaket" + (lt_wert("fp-kind") ? " " + lt_wert("fp-kind") : ""), einzelTitel: false,
         kind: () => lt_wert("fp-kind"),
         blaetter: [] },
