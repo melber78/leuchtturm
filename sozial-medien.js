@@ -101,7 +101,7 @@
         "k-gefuehle-zeigen":    [F.gefuehle, F.traurigkeit],
         "k-neid":               [F.glueck],
         "k-verpetzen":          [F.gewissen, F.logoMobbing],
-        "k-schlichten":         [F.miteinander],
+        "k-schlichten":         [F.mausStreit],
         "k-ruf":                [F.ich],
         "k-mutter":             [F.respekt],
         "k-schimpfwoerter":     [F.respekt, F.elliCyber],

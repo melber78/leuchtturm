@@ -413,40 +413,78 @@ Abends kann Sami nicht schlafen. Was, wenn der Lehrer nicht gekommen wäre?
 /* ------------------------------------------------------------ */
 K({
     id: "k-schlichten",
-    titel: "Streit schlichten",
-    ziel34: "Die Schritte einer Streitschlichtung kennen und als neutrale Person helfen können",
-    material: "Tafel: die 4 Schritte der Schlichtung",
-    materialIds: [],
-    lerntext34: { titel: "Die Schlichterin", text:
-`In der 4c gibt es zwei Streitschlichter: Amira und Paul. Heute kommen Jonas und Elias zu ihnen. Sie haben sich in der Pause um den Ball gestritten, Elias hat Jonas getreten.
-
-Amira erklärt die Regeln: „Jeder darf ausreden. Keine Beleidigungen. Wir sind auf keiner Seite.“ Dann erzählt zuerst Jonas, dann Elias. Paul fasst zusammen, was er gehört hat. „Jonas, du warst sauer, weil Elias den Ball nicht abgeben wollte. Elias, du hast dich bedrängt gefühlt.“
-
-Dann fragt Amira: „Was wünscht ihr euch vom anderen?“ Am Ende einigen sich die beiden: Der Ball wird abwechselnd jede Pause von einem anderen mitgenommen, und Elias entschuldigt sich für den Tritt.
-
-**Fragen zum Gespräch:**
-1. Welche Regeln gibt es beim Schlichten? Warum sind sie wichtig?
-2. Warum sind die Schlichter „auf keiner Seite“?
-3. Was macht Paul, als er zusammenfasst? Warum hilft das?
-4. Warum ist eine Lösung, die beide finden, besser als eine Strafe?
-5. Was bräuchtest du, um ein guter Schlichter zu sein?` },
-    uebungen: [
-        { titel: "Die 4 Schritte", dauer: "5 Min",
-          text: "Die vier Schritte an die Tafel schreiben:\n\n- Regeln klären (ausreden lassen, keine Beleidigungen).\n- Jeder erzählt seine Sicht.\n- Schlichter fasst zusammen: Was fühlen beide?\n- Gemeinsam eine Lösung finden, mit der beide leben können.",
-          quiz: "keine",
-          folie: "Wie schlichtet man einen **Streit**? ⚖️\n\nDie vier Schritte." },
-        { titel: "Schlichtung üben", dauer: "8 Min",
-          text: "Drei Kinder üben vom Platz aus: zwei Streitende, ein Schlichter (du hilfst). Ausgedachter, harmloser Streit, z. B.:\n\n- Wer darf an den PC?\n- Einer hat den Stift des anderen ausgeliehen und kaputt gemacht.\n- Beide wollen am Fenster sitzen.\n\nDie anderen achten darauf: Wurde jeder ausreden gelassen? Blieb der Schlichter neutral?",
-          quiz: "karten",
-          frage: "Zwei streiten, einer schlichtet. Wurde jeder ausreden gelassen? Blieb der Schlichter neutral?",
-          folie: "Drei Kinder: **zwei streiten**, **einer schlichtet**.\n\nDie anderen achten: Wurde jeder ausreden gelassen? Blieb der Schlichter neutral?",
-          kern: ["34"] }
+    titel: "Streit klären – wenn alle ruhig sind",
+    ziel34: "Verstehen, dass ein Streit erst geklärt wird, wenn alle ruhig sind, und sich in einem Klärungsgespräch mit einem Erwachsenen fair verhalten",
+    material: "Plakat „Erst raus, dann reden“ (Arbeitsmaterial)\nrote und grüne Karten",
+    materialIds: [
+      "erst-raus",
+      "rot-gruen"
     ],
-    ab34: { titel: "So schlichte ich einen Streit", aufgaben: [
-        { typ: "luecken", text: "Schreib die 4 Schritte der Schlichtung in der richtigen Reihenfolge auf:", nummern: true, saetze: ["___", "___", "___", "___"] },
-        { typ: "ankreuzen", text: "Ein guter Schlichter …", optionen: ["hält zu seinem Freund.", "lässt beide ausreden.", "bleibt ruhig.", "bestimmt die Strafe.", "fragt, was beide sich wünschen."] },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Ein Streit, den ich schlichten könnte: ___", "Eine Lösung, mit der beide leben können: ___"] }
-    ]}
+    lerntext34: {
+      "titel": "Am nächsten Morgen",
+      "text": "In der Pause gab es Stress: Elias wollte den Ball nicht abgeben, Jonas hat ihn geschubst, Elias hat Jonas getreten. Die Aufsicht hat die beiden getrennt. Jonas saß im Klassenraum, Elias auf der Bank vor dem Büro. Beide waren noch lange wütend.\n\nErst am nächsten Morgen holt Frau Yilmaz, die Schulsozialarbeiterin, beide in ihr Zimmer. Jetzt sind sie ruhig. Frau Yilmaz sagt: „Hier gelten drei Regeln: Jeder darf ausreden. Keine Beleidigungen. Ich bin auf keiner Seite.“\n\nZuerst erzählt Jonas, Elias hört zu. Dann erzählt Elias. Frau Yilmaz fasst zusammen: „Jonas, du warst sauer, weil Elias den Ball nicht abgeben wollte. Elias, du hast dich bedrängt gefühlt, als Jonas dich geschubst hat.“ Beide nicken.\n\nDann fragt sie: „Was wünscht ihr euch vom anderen – und was könnt ihr wieder gutmachen?“ Elias sagt: „Das mit dem Treten tut mir leid.“ Jonas sagt: „Ich hätte nicht schubsen sollen.“ Sie verabreden: Ab jetzt nimmt jede Pause ein anderer den Ball mit.\n\n**Fragen zum Gespräch:**\n1. Warum haben Jonas und Elias den Streit nicht gleich in der Pause geklärt?\n2. Welche Regeln gelten bei Frau Yilmaz? Warum sind sie wichtig?\n3. Warum hilft es, wenn jemand zusammenfasst, was beide gesagt haben?\n4. Wer kann bei euch an der Schule so ein Gespräch mit euch führen?\n\n**Tafelbild:** Erst raus – dann ruhig werden – dann mit Hilfe klären"
+    },
+    uebungen: [
+      {
+        "titel": "Hilft das im Gespräch?",
+        "dauer": "7 Min",
+        "kern": [
+          "34"
+        ],
+        "quiz": "ampel",
+        "antworten": [
+          "🟢 hilft",
+          "🔴 macht es schlimmer"
+        ],
+        "text": "Du liest Sätze und Verhaltensweisen vor, wie sie in einem Klärungsgespräch vorkommen. Die Kinder halten die grüne Karte hoch (hilft beim Klären) oder die rote (macht es schlimmer). Danach kurz fragen: Warum?\n\n- „Der hat angefangen!“\n- „Ich war sauer, weil du den Ball nicht abgegeben hast.“\n- Augen verdrehen, während der andere erzählt.\n- Den anderen ausreden lassen.\n- „Du lügst doch!“\n- „Es tut mir leid, dass ich dich getreten habe.“\n- „Ich wünsche mir, dass du mich nicht mehr schubst.“",
+        "folie": "So ein Gespräch gibt es, **wenn alle wieder ruhig sind** – mit einem Erwachsenen.\n\nHilft das beim Klären 🟢 – oder macht es den Streit schlimmer 🔴?\n\nHalte die **rote oder grüne Karte** hoch."
+      },
+      {
+        "titel": "Wiedergutmachen – aber passend",
+        "dauer": "5 Min",
+        "quiz": "karten",
+        "frage": "Wie kann man das wieder gutmachen? Es soll zur Tat passen.",
+        "text": "Du liest Taten vor. Die Kinder schlagen vom Platz aus vor, wie man es wieder gutmachen kann – passend zur Tat und so, dass der andere wirklich etwas davon hat.\n\n- Ich habe jemanden getreten.\n- Ich habe jemandem den Ball weggenommen.\n- Ich habe jemanden vor allen beleidigt.\n- Ich habe ein Heft zerrissen.",
+        "folie": "Ein „Sorry“ ist der Anfang. 🔧\n\nWie kannst du es **wieder gutmachen** – passend zur Tat?"
+      }
+    ],
+    ab34: {
+      "titel": "Wenn wir den Streit klären",
+      "aufgaben": [
+        {
+          "typ": "ankreuzen",
+          "text": "Im Klärungsgespräch … Kreuze an, was hilft.",
+          "nebeneinander": false,
+          "optionen": [
+            "lasse ich den anderen ausreden.",
+            "rufe ich dazwischen.",
+            "sage ich, warum ich wütend war.",
+            "verdrehe ich die Augen.",
+            "sage ich, was ich mir wünsche.",
+            "überlege ich, wie ich es wieder gutmache."
+          ]
+        },
+        {
+          "typ": "luecken",
+          "text": "Denk an einen Streit, den du hattest. So würde ich ihn klären:",
+          "nummern": true,
+          "saetze": [
+            "Das ist passiert: ___",
+            "Ich war wütend, weil ___.",
+            "Ich wünsche mir, dass ___.",
+            "Wieder gutmachen kann ich so: ___"
+          ]
+        },
+        {
+          "typ": "luecken",
+          "text": "Mit diesem Erwachsenen kann ich einen Streit klären:",
+          "nummern": false,
+          "saetze": [
+            "___"
+          ]
+        }
+      ]
+    }
 }),
 
 /* ------------------------------------------------------------ */
