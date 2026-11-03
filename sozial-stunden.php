@@ -772,12 +772,12 @@ function aufgabeHtml(a, stufe = "34"){
 }
 // stufe: "1" (Vorlese-Fassung Kl. 1), "2" (Kl. 2) oder "34" – Kl. 1 und 2 nutzen beide das 1/2-Blatt
 function blattBauen(e, stufe){
-    if (stufe === "12" && !gemeinsam12()) stufe = "2";
+    // Sozialtraining: ein Blatt für Kl. 1 und 2. Vertretung: „12“ = gemischte Gruppe (Vorlese-Fassung ohne Schreibaufgaben), „1“/„2“ = einzelne Stufe
     if ((stufe === "1" || stufe === "2") && gemeinsam12()) stufe = "12";
     const ab = (stufe === "34" ? e.ab34 : e.ab12) || { titel: "", aufgaben: [] };
     const blatt = document.createElement("div");
     blatt.className = "blatt " + (stufe === "34" ? "stufe34" : "stufe12 kl" + (stufe === "12" ? "1" : stufe));
-    const aufgaben = (ab.aufgaben || []).filter(a => stufe === "34" || stufe === "12" || !aufgabeFuer(a) || aufgabeFuer(a) === stufe);
+    const aufgaben = (ab.aufgaben || []).filter(a => stufe === "34" || (stufe === "12" ? (gemeinsam12() || aufgabeFuer(a) !== "2") : (!aufgabeFuer(a) || aufgabeFuer(a) === stufe)));
     let nr = 0, teile = [];
     for (const a0 of aufgaben) {
         // Sätze zum Ergänzen ohne eigene Anweisung bekommen eine klare Überschrift
@@ -980,12 +980,9 @@ async function drucken(e, was){
         if (/^(lehrer|alles)/.test(was)) ziel.insertAdjacentHTML("beforeend", lehrerHtml(e, st));
         const alles = /^alles/.test(was);
         const blaetter = [];
-        if (gemeinsam12()) {
-            if (was === "ab12" || was === "ab1" || was === "ab2" || (alles && st !== "34" && !e.nur34)) blaetter.push([blattBauen(e, "12"), druckAnzahl("ab12")]);
-        } else {
-            if (was === "ab1" || (alles && st !== "34" && !e.nur34)) blaetter.push([blattBauen(e, "1"), druckAnzahl("ab1")]);
-            if (was === "ab2" || was === "ab12" || (alles && st !== "34" && !e.nur34)) blaetter.push([blattBauen(e, "2"), druckAnzahl("ab2")]);
-        }
+        if (was === "ab12" || (gemeinsam12() && (was === "ab1" || was === "ab2")) || (alles && st !== "34" && !e.nur34)) blaetter.push([blattBauen(e, "12"), druckAnzahl("ab12")]);
+        else if (was === "ab1") blaetter.push([blattBauen(e, "1"), druckAnzahl("ab1")]);
+        else if (was === "ab2") blaetter.push([blattBauen(e, "2"), druckAnzahl("ab2")]);
         if (was === "ab34" || (alles && st !== "12")) blaetter.push([blattBauen(e, "34"), druckAnzahl("ab34")]);
         blaetter.forEach(([b]) => ziel.appendChild(b));
         await schriften();
@@ -994,7 +991,7 @@ async function drucken(e, was){
         blaetter.forEach(([b, n]) => { let nach = b; for (let k = 1; k < n; k++) { const c = b.cloneNode(true); nach.after(c); nach = c; } });
     }
     const titel = document.title;
-    document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", lehrer12: " – Vorbereitung Kl. 1-2", lehrer34: " – Vorbereitung Kl. 3-4", alles12: " – Kl. 1-2", alles34: " – Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: gemeinsam12() ? " – AB Kl. 1-2" : " – AB Kl. 2", ab34: " – AB Kl. 3-4" }[was] || "");
+    document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", lehrer12: " – Vorbereitung Kl. 1-2", lehrer34: " – Vorbereitung Kl. 3-4", alles12: " – Kl. 1-2", alles34: " – Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 1-2", ab34: " – AB Kl. 3-4" }[was] || "");
     window.addEventListener("afterprint", () => { ziel.innerHTML = ""; document.title = titel; }, { once: true });
     setTimeout(() => window.print(), 60);
 }
@@ -1217,8 +1214,8 @@ function zeigeStunde(id){
                 <button class="btn blau" data-druck="regie34"><i class="fa-solid fa-list-ol"></i> Ablauf Schritt für Schritt Kl. 3/4</button>` : ""}
             </div>
             <div class="druck-raster">
-                ${gemeinsam12() ? `<div class="druck-posten nur12">${anzahlFeld("ab12")}<button class="btn blau" data-druck="ab12"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 1/2</button></div>` : `<div class="druck-posten nur12">${anzahlFeld("ab1")}<button class="btn blau" data-druck="ab1"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 1</button></div>
-                <div class="druck-posten nur12">${anzahlFeld("ab2")}<button class="btn blau" data-druck="ab2"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 2</button></div>`}
+                ${gemeinsam12() ? `<div class="druck-posten nur12">${anzahlFeld("ab12")}<button class="btn blau" data-druck="ab12"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 1/2 (einzeln oder gemischt)</button></div>` : `<div class="druck-posten nur12">${anzahlFeld("ab12")}<button class="btn blau" data-druck="ab12"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 1/2 gemischt (auch nur Kl. 1)</button></div>
+                <div class="druck-posten nur12">${anzahlFeld("ab2")}<button class="btn blau" data-druck="ab2"><i class="fa-solid fa-file"></i> Arbeitsblatt nur Kl. 2 (mit Schreibaufgaben)</button></div>`}
                 <div class="druck-posten">${anzahlFeld("ab34")}<button class="btn blau" data-druck="ab34"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 3/4</button></div>
                 <div class="druck-posten nur12">${anzahlFeld("lese12")}<button class="btn" data-druck="lese12"><i class="fa-solid fa-book-open"></i> Lesetext Kl. 1/2</button></div>
                 <div class="druck-posten">${anzahlFeld("lese34")}<button class="btn" data-druck="lese34"><i class="fa-solid fa-book-open"></i> Lesetext Kl. 3/4</button></div>
@@ -1265,16 +1262,16 @@ function zeigeStunde(id){
             <div class="vorschau-paar"><div><div class="stufe-label s34">Klasse 3/4</div><div class="vorschau" id="v34"></div><div class="vorschau-status"></div></div></div></div>` : `<div class="karte"><h2>Arbeitsblätter</h2>
             ${gemeinsam12() ? `<p class="ed-hilfe" style="margin:0 0 12px">Ein Blatt für alle Kinder aus Kl. 1 und 2 – ohne Lesen und Schreiben: Lies jede Aufgabe und jede Zeile vor („Beim roten Kreis steht …“). Die Kinder malen, kreuzen Bilder an oder kreisen 👍/👎 bzw. ein Gesicht ein.</p>
             <div class="vorschau-paar">
-            <div><div class="stufe-label">Klasse 1/2</div><div class="vorschau" id="v12"></div><div class="vorschau-status"></div></div>` : `<p class="ed-hilfe" style="margin:0 0 12px">Klasse 1 ist eine Vorlese-Fassung: Lies die Aufgaben und Antworten vor – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Schreibaufgaben gibt es nur in Klasse 2.</p>
+            <div><div class="stufe-label">Klasse 1/2</div><div class="vorschau" id="v12"></div><div class="vorschau-status"></div></div>` : `<p class="ed-hilfe" style="margin:0 0 12px"><b>Gemischte Gruppe Kl. 1/2 (oder nur Kl. 1):</b> Vorlese-Fassung ohne Schreibaufgaben – lies Aufgaben und Antworten vor, die Farbsymbole zeigen die Zeile. <b>Nur Kl. 2:</b> mit Schreibaufgaben.</p>
             <div class="vorschau-paar drei">
-            <div><div class="stufe-label">Klasse 1</div><div class="vorschau" id="v1"></div><div class="vorschau-status"></div></div>
-            <div><div class="stufe-label">Klasse 2</div><div class="vorschau" id="v2"></div><div class="vorschau-status"></div></div>`}
+            <div><div class="stufe-label">Kl. 1/2 gemischt</div><div class="vorschau" id="v12"></div><div class="vorschau-status"></div></div>
+            <div><div class="stufe-label">nur Kl. 2</div><div class="vorschau" id="v2"></div><div class="vorschau-status"></div></div>`}
             <div><div class="stufe-label s34">Klasse 3/4</div><div class="vorschau" id="v34"></div><div class="vorschau-status"></div></div>
         </div></div>`}`;
 
     if (!e.nur34) {
-        if (gemeinsam12()) vorschauZeigen(document.getElementById("v12"), e, "12");
-        else { vorschauZeigen(document.getElementById("v1"), e, "1"); vorschauZeigen(document.getElementById("v2"), e, "2"); }
+        vorschauZeigen(document.getElementById("v12"), e, "12");
+        if (!gemeinsam12()) vorschauZeigen(document.getElementById("v2"), e, "2");
     }
     vorschauZeigen(document.getElementById("v34"), e, "34");
     if (e.nur34) {

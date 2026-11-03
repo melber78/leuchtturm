@@ -166,9 +166,9 @@ function arbeitsblatt(e, st){
         schritte.push(li("Wer schneller fertig ist, malt die Bilder weiter aus. Kinder der Kl. 2 dürfen zu ihrem Bild ein Wort dazuschreiben."));
     } else if (st === "12") {
         const k1 = abAufgaben(ab, "1");
-        schritte.push(li("<b>Kinder der Kl. 1 (Blatt ohne Lesen):</b> Lies jede Aufgabe gemeinsam vor und zeig auf das Farbsymbol am Rand.",
+        schritte.push(li("<b>Gemischte Gruppe oder Kl. 1 (Blatt „Kl. 1/2 gemischt“, ohne Schreiben):</b> Lies jede Aufgabe gemeinsam vor und zeig auf das Farbsymbol am Rand.",
             sag("Wir sind beim roten Kreis. Da steht: …"), `<ol class="regie-ab">${k1.map(a => `<li>${a.text ? `${inline(a.text)} <i>(${TYP_NAMEN[a.typ] || a.typ})</i>` : esc(TYP_NAMEN[a.typ] || a.typ)}</li>`).join("")}</ol>`));
-        schritte.push(li("<b>Kinder der Kl. 2:</b> Aufgaben gemeinsam lesen, dann allein arbeiten. Schreibaufgaben gibt es nur auf ihrem Blatt."));
+        schritte.push(li("<b>Nur Kl. 2 (Blatt „nur Kl. 2“):</b> Aufgaben gemeinsam lesen, dann allein arbeiten – hier gibt es zusätzlich Schreibaufgaben."));
     } else {
         schritte.push(li("Lest die Aufgaben einmal gemeinsam, dann arbeitet jeder allein.", `<ol class="regie-ab">${abAufgaben(ab, "34").map(a => `<li>${a.text ? `${inline(a.text)} <i>(${TYP_NAMEN[a.typ] || a.typ})</i>` : esc(TYP_NAMEN[a.typ] || a.typ)}</li>`).join("")}</ol>`));
     }
