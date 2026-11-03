@@ -142,7 +142,7 @@ function uebung(e, st, vertretung){
     liste.forEach((u, i) => {
         const karten = mats.filter(m => m.uebung === u.titel || (m.auto && m.kopf === u.titel)).map(m => "„" + esc(m.titel) + "“");
         schritte.push(li(`<b>${esc(u.titel)}</b>${u.dauer ? ` (${esc(u.dauer)})` : ""}`,
-            `<div class="regie-text"><div class="md">${md(u.text)}</div></div>`,
+            `<div class="regie-text"><div class="md">${md(window.stufenText ? window.stufenText(u, st) : u.text)}</div></div>`,
             karten.length ? `Material: ${karten.join(", ")} (unter Arbeitsmaterial).` : ""));
     });
     schritte.push(li("Kurz auswerten.", sag(vertretung ? "Was hat euch am meisten Spaß gemacht?" : "Wie war das für euch? Was war leicht, was war schwer?")));

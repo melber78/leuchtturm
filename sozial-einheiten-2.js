@@ -101,7 +101,9 @@ Am Ende sagt Finn: „Danke, Aylin. Das hat gutgetan.“
         { titel: "Hilft das wirklich?", fuer: "34", dauer: "4 Min",
           text: "Du liest Reaktionen vor, die Kinder zeigen Daumen hoch oder runter und begründen kurz:\n\n- „Hör auf zu heulen!“\n- „Ich bin für dich da.“\n- „Ist doch nicht so schlimm.“\n- „Willst du darüber reden?“\n- Einfach still daneben sitzen." },
         { titel: "Trost-Post für den Teddy", fuer: "alle", dauer: "4 Min",
-          text: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind macht ihm an seinem Platz eine Trostkarte: Kl. 1/2 malen, Kl. 3/4 schreiben zwei Sätze. Die Karten werden vorn neben den Teddy gelegt." }
+          text: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind macht ihm an seinem Platz eine Trostkarte: Kl. 1/2 malen, Kl. 3/4 schreiben zwei Sätze. Die Karten werden vorn neben den Teddy gelegt.",
+          text12: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind malt ihm an seinem Platz eine Trostkarte. Die Karten werden vorn neben den Teddy gelegt.",
+          text34: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind schreibt ihm an seinem Platz eine Trostkarte mit zwei Sätzen. Die Karten werden vorn neben den Teddy gelegt." }
     ],
     ab12: { titel: "Ich kann trösten", kontext: "Zur Geschichte: Emmas Luftballon fliegt weg und sie weint. Ben setzt sich zu ihr und tröstet sie.", aufgaben: [
         { typ: "gesichter", text: "So fühlt sich Emma vorher – und nachher.", gefuehle: ["traurig", "froh"], leer: false },
@@ -329,7 +331,9 @@ Eine Woche später setzt Merve sich in der Pause wieder neben Nora.
         { titel: "Echt oder unecht?", fuer: "alle", dauer: "4 Min",
           text: "Du sagst Entschuldigungen auf verschiedene Arten: genervt mit Augenrollen, ohne Blickkontakt, ehrlich mit Blick und ruhiger Stimme, mit einem „aber du hast …“ hinten dran. Die Kinder zeigen am Platz Daumen hoch (echt) oder runter (unecht) und sagen, woran sie es merken." },
         { titel: "Die Entschuldigungs-Treppe", fuer: "alle", dauer: "6 Min",
-          text: "An der Tafel: **1. Ich sage, was ich getan habe. 2. Ich sage, dass es falsch war. 3. Ich verstehe, wie du dich fühlst. 4. Ich mache es wieder gut.** Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung. Kl. 1/2 nutzen die Stufen 1 und 4, Kl. 3/4 alle vier. Zwei Paare zeigen sie vorn." },
+          text: "An der Tafel: **1. Ich sage, was ich getan habe. 2. Ich sage, dass es falsch war. 3. Ich verstehe, wie du dich fühlst. 4. Ich mache es wieder gut.** Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung. Kl. 1/2 nutzen die Stufen 1 und 4, Kl. 3/4 alle vier. Zwei Paare zeigen sie vorn.",
+          text12: "An der Tafel: **1. Ich sage, was ich getan habe. 4. Ich mache es wieder gut.** (Die Stufen 2 und 3 lässt du weg.) Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung: „Ich habe … – Ich mache es wieder gut, indem …“. Zwei Paare zeigen sie vorn.",
+          text34: "An der Tafel: **1. Ich sage, was ich getan habe. 2. Ich sage, dass es falsch war. 3. Ich verstehe, wie du dich fühlst. 4. Ich mache es wieder gut.** Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung mit allen vier Stufen. Zwei Paare zeigen sie vorn." },
         { titel: "Wiedergutmach-Ideen", fuer: "34", dauer: "2 Min",
           text: "Sammelt an der Tafel, wie man etwas wieder gutmachen kann: helfen, ersetzen, etwas Nettes tun, den anderen verteidigen, eine Karte schreiben." }
     ],

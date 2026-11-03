@@ -267,7 +267,9 @@ Dann legen alle die Rosine auf die Zunge, ohne zu kauen. Kerem spürt, wie sein 
 4. Wann könnte Achtsamkeit dir im Alltag helfen?` },
     uebungen: [
         { titel: "Fühl-Säckchen", fuer: "alle", dauer: "5 Min",
-          text: "Das Säckchen wandert von Platz zu Platz. Jedes Kind greift hinein, ohne zu schauen, und beschreibt einen Gegenstand: Kl. 1/2 mit einem Wort (weich, hart, rund), Kl. 3/4 mit drei Eigenschaften. Die anderen raten, was es ist. Erst am Ende wird ausgepackt." },
+          text: "Das Säckchen wandert von Platz zu Platz. Jedes Kind greift hinein, ohne zu schauen, und beschreibt einen Gegenstand: Kl. 1/2 mit einem Wort (weich, hart, rund), Kl. 3/4 mit drei Eigenschaften. Die anderen raten, was es ist. Erst am Ende wird ausgepackt.",
+          text12: "Das Säckchen wandert von Platz zu Platz. Jedes Kind greift hinein, ohne zu schauen, und beschreibt einen Gegenstand mit einem Wort (weich, hart, rund). Die anderen raten, was es ist. Erst am Ende wird ausgepackt.",
+          text34: "Das Säckchen wandert von Platz zu Platz. Jedes Kind greift hinein, ohne zu schauen, und beschreibt einen Gegenstand mit drei Eigenschaften. Die anderen raten, was es ist. Erst am Ende wird ausgepackt." },
         { titel: "Achtsam essen", fuer: "alle", dauer: "6 Min",
           text: "Jedes Kind bekommt eine Rosine oder ein Apfelstück. Du leitest langsam an: anschauen – fühlen – ans Ohr halten – riechen – auf die Zunge legen, ohne zu kauen – ganz langsam kauen – schlucken. Danach erzählen die Kinder vom Platz aus, was sie bemerkt haben." }
     ],

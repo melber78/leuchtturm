@@ -402,6 +402,42 @@ DATEN.einheiten = Array.isArray(DATEN.einheiten) ? DATEN.einheiten : [];
 const inhalt = document.getElementById("inhalt");
 
 const FUER = { alle: "Alle", "12": "Kl. 1/2", "34": "Kl. 3/4" };
+/* Übungstext nur für eine Stufe: eigene Fassung (text12/text34) oder automatisch –
+   Sätze/Satzteile „Kl. x/y …“ der anderen Stufe fallen weg, die eigenen werden zu „Die Kinder …“. */
+const KL_RE = /Kl\.\s*(1\/2|3\/4)/;
+function stufeVon(t){ const m = KL_RE.exec(t); return m ? (m[1] === "1/2" ? "12" : "34") : ""; }
+function klammerFiltern(t, st){
+    return t.replace(/\s*\(([^()]*Kl\.\s*(?:1\/2|3\/4)[^()]*)\)/g, (_, inn) => {
+        const teile = inn.split(/,\s*/).map(x => x.trim());
+        const rest = teile.filter(x => !stufeVon(x) || stufeVon(x) === st).map(x => x.replace(/^Kl\.\s*(1\/2|3\/4)\s*:?\s*/, "").replace(/\s*\(?Kl\.\s*(1\/2|3\/4)\)?/, ""));
+        return rest.filter(Boolean).length ? " (" + rest.filter(Boolean).join(", ") + ")" : "";
+    });
+}
+function satzFiltern(satz, st){
+    if (!/^\**Kl\.\s*(1\/2|3\/4)/.test(satz)) return satz;
+    const teile = satz.split(/,\s*(?=Kl\.\s*(?:1\/2|3\/4))/);
+    const eigene = teile.filter(x => stufeVon(x) === st).map(x => x.replace(/^(\**)Kl\.\s*(1\/2|3\/4):?\s*/, "$1Die Kinder ").replace(/([^“”])[.!]$/, "$1"));
+    if (!eigene.length) return "";
+    const t = eigene.join(", ");
+    return /[.!?…“”)]$/.test(t) ? t : t + ".";
+}
+function stufenText(u, st){
+    if (!u) return "";
+    if (!st || (u.fuer && u.fuer !== "alle")) return u.text || "";
+    if (u["text" + st]) return u["text" + st];
+    const anders = st === "12" ? "34" : "12";
+    return String(u.text || "").split(/\n\s*\n/).map(abs => {
+        const kopf = /^\*\*[^*]*\((Kl\.\s*(1\/2|3\/4))\)[^*]*\*\*/.exec(abs);
+        if (kopf) { if (stufeVon(kopf[1]) === anders) return ""; abs = abs.replace(/\s*\(Kl\.\s*(1\/2|3\/4)\)/, ""); }
+        return abs.split("\n").map(zeile => {
+            zeile = klammerFiltern(zeile, st);
+            const geschuetzt = zeile.replace(/z\. B\./g, "z. B.");
+            const saetze = geschuetzt.split(/(?<=[.!?…“])\s+(?=\**[A-ZÄÖÜ„])/);
+            return saetze.map(x => satzFiltern(x, st)).filter(Boolean).join(" ").replace(/z\. B\./g, "z. B.");
+        }).join("\n");
+    }).filter(x => x.trim()).join("\n\n");
+}
+window.stufenText = stufenText;
 const TYPEN = {
     schreiben: "Schreiblinien",
     luecken:   "Sätze mit Lücken",
@@ -840,20 +876,26 @@ function materialListe(text){
     const z = String(text || "").split("\n").map(s => s.trim()).filter(Boolean);
     return z.length ? "<ul>" + z.map(s => "<li>" + inline(s) + "</li>").join("") + "</ul>" : "<p>–</p>";
 }
-function verlaufTabelle(e, klasse){
+function verlaufTabelle(e, klasse, st){
+    if (st) return `<table class="${klasse}"><tr><th style="width:14%">Min</th><th style="width:20%">Phase</th><th>Ablauf</th></tr>` +
+        (e.verlauf || []).map(v => `<tr><td>${esc(v.zeit)}</td><td>${esc(v.phase)}</td><td>${inline(st === "12" ? v.k12 : v.k34)}</td></tr>`).join("") + "</table>";
     return `<table class="${klasse}"><tr><th>Min</th><th>Phase</th><th>Kl. 1/2</th><th>Kl. 3/4</th></tr>` +
         (e.verlauf || []).map(v => `<tr><td>${esc(v.zeit)}</td><td>${esc(v.phase)}</td><td>${inline(v.k12)}</td><td>${inline(v.k34)}</td></tr>`).join("") + "</table>";
 }
-function lehrerHtml(e){
+function uebungenFuer(e, st){ return (e.uebungen || []).filter(u => !st || !u.fuer || u.fuer === "alle" || u.fuer === st); }
+function lehrerHtml(e, st){
+    if (e.nur34 && !st) st = "34";
+    const kl = st === "12" ? "1/2" : st === "34" ? "3/4" : "";
+    const zeig12 = !e.nur34 && st !== "34", zeig34 = st !== "12";
     return `<div class="lehrer-druck">
-        <div class="ld-kopf"><div class="ld-meta">${esc(window.BEREICH.name)} · ${esc(e.kategorie)} · ${esc(e.dauer || 40)} Minuten · Klasse 1/2 und 3/4</div><h1>${esc(e.titel)}</h1></div>
-        ${e.nur34 ? `<table><tr><th>Ziel Kl. 3/4</th></tr><tr><td>${inline(e.ziel34)}</td></tr></table>` : `<table><tr><th style="width:50%">Ziel Kl. 1/2</th><th>Ziel Kl. 3/4</th></tr><tr><td>${inline(e.ziel12)}</td><td>${inline(e.ziel34)}</td></tr></table>`}
+        <div class="ld-kopf"><div class="ld-meta">${esc(window.BEREICH.name)} · ${esc(e.kategorie)} · ${esc(e.dauer || 40)} Minuten · ${kl ? "Klasse " + kl : "Klasse 1/2 und 3/4"}</div><h1>${esc(e.titel)}</h1></div>
+        ${kl ? `<table><tr><th>Ziel</th></tr><tr><td>${inline(st === "12" ? e.ziel12 : e.ziel34)}</td></tr></table>` : `<table><tr><th style="width:50%">Ziel Kl. 1/2</th><th>Ziel Kl. 3/4</th></tr><tr><td>${inline(e.ziel12)}</td><td>${inline(e.ziel34)}</td></tr></table>`}
         <h2>Material</h2>${materialListe(e.material)}
-        ${e.nur34 ? "" : `<p style="font-size:9pt;color:#55636a"><strong>Arbeitsblatt Kl. 1:</strong> Aufgaben und Antworten vorlesen – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Schreibaufgaben gibt es nur auf dem Blatt für Kl. 2.</p>`}
-        <h2>Stundenverlauf</h2>${verlaufTabelle(e, "")}
-        ${e.lerntext12?.text ? `<h2>Lerntext Kl. 1/2: ${esc(e.lerntext12.titel)}</h2><div class="md">${md(e.lerntext12.text)}</div>` : ""}
-        ${e.lerntext34?.text ? `<h2>Lerntext Kl. 3/4: ${esc(e.lerntext34.titel)}</h2><div class="md">${md(e.lerntext34.text)}</div>` : ""}
-        ${(e.uebungen || []).length ? "<h2>Übungen</h2>" + e.uebungen.map(u => `<div class="ld-uebung"><h3>${esc(u.titel)} <span class="ld-badge">· ${FUER[u.fuer] || "Alle"}${u.dauer ? " · " + esc(u.dauer) : ""}</span></h3><div class="md">${md(u.text)}</div></div>`).join("") : ""}
+        ${zeig12 ? `<p style="font-size:9pt;color:#55636a"><strong>Arbeitsblatt Kl. 1:</strong> Aufgaben und Antworten vorlesen – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Schreibaufgaben gibt es nur auf dem Blatt für Kl. 2.</p>` : ""}
+        <h2>Stundenverlauf</h2>${verlaufTabelle(e, "", st)}
+        ${zeig12 && e.lerntext12?.text ? `<h2>Lerntext${kl ? "" : " Kl. 1/2"}: ${esc(e.lerntext12.titel)}</h2><div class="md">${md(e.lerntext12.text)}</div>` : ""}
+        ${zeig34 && e.lerntext34?.text ? `<h2>Lerntext${kl ? "" : " Kl. 3/4"}: ${esc(e.lerntext34.titel)}</h2><div class="md">${md(e.lerntext34.text)}</div>` : ""}
+        ${uebungenFuer(e, st).length ? "<h2>Übungen</h2>" + uebungenFuer(e, st).map(u => `<div class="ld-uebung"><h3>${esc(u.titel)} <span class="ld-badge">${kl ? "" : "· " + (FUER[u.fuer] || "Alle")}${u.dauer ? " · " + esc(u.dauer) : ""}</span></h3><div class="md">${md(stufenText(u, st))}</div></div>`).join("") : ""}
     </div>`;
 }
 function anzahlGemerkt(k){ try { const v = parseInt(localStorage.getItem("sozial_anz_" + k), 10); if (v > 0) return v; if (k.startsWith("lese")) return parseInt(localStorage.getItem("sozial_anzahl"), 10) || 1; } catch (err) {} return 1; }
@@ -881,11 +923,13 @@ async function drucken(e, was){
     } else if (was === "rituale") {
         ziel.innerHTML = `<div class="lehrer-druck"><div class="ld-kopf"><div class="ld-meta">Sozialtraining · gilt für jede Stunde</div><h1>Feste Rituale</h1></div><div class="md">${md(rituale())}</div></div>`;
     } else {
-        if (was === "lehrer" || was === "alles") ziel.insertAdjacentHTML("beforeend", lehrerHtml(e));
+        const st = /^(lehrer|alles)(12|34)$/.test(was) ? was.slice(-2) : "";
+        if (/^(lehrer|alles)/.test(was)) ziel.insertAdjacentHTML("beforeend", lehrerHtml(e, st));
+        const alles = /^alles/.test(was);
         const blaetter = [];
-        if (was === "ab1" || (was === "alles" && !e.nur34)) blaetter.push([blattBauen(e, "1"), druckAnzahl("ab1")]);
-        if (was === "ab2" || was === "ab12" || (was === "alles" && !e.nur34)) blaetter.push([blattBauen(e, "2"), druckAnzahl("ab2")]);
-        if (was === "ab34" || was === "alles") blaetter.push([blattBauen(e, "34"), druckAnzahl("ab34")]);
+        if (was === "ab1" || (alles && st !== "34" && !e.nur34)) blaetter.push([blattBauen(e, "1"), druckAnzahl("ab1")]);
+        if (was === "ab2" || was === "ab12" || (alles && st !== "34" && !e.nur34)) blaetter.push([blattBauen(e, "2"), druckAnzahl("ab2")]);
+        if (was === "ab34" || (alles && st !== "12")) blaetter.push([blattBauen(e, "34"), druckAnzahl("ab34")]);
         blaetter.forEach(([b]) => ziel.appendChild(b));
         await schriften();
         const voll = blaetter.filter(([b]) => !einpassen(b));
@@ -893,7 +937,7 @@ async function drucken(e, was){
         blaetter.forEach(([b, n]) => { let nach = b; for (let k = 1; k < n; k++) { const c = b.cloneNode(true); nach.after(c); nach = c; } });
     }
     const titel = document.title;
-    document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 2", ab34: " – AB Kl. 3-4" }[was] || "");
+    document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", lehrer12: " – Vorbereitung Kl. 1-2", lehrer34: " – Vorbereitung Kl. 3-4", alles12: " – Kl. 1-2", alles34: " – Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 2", ab34: " – AB Kl. 3-4" }[was] || "");
     window.addEventListener("afterprint", () => { ziel.innerHTML = ""; document.title = titel; }, { once: true });
     setTimeout(() => window.print(), 60);
 }
@@ -1104,7 +1148,8 @@ function zeigeStunde(id){
             <p class="ed-hilfe">Mediathek-Links können nach einiger Zeit ablaufen – bitte vor der Stunde kurz prüfen. Eigene Filme trägst du über „Bearbeiten“ bzw. „Anpassen“ ein.</p></div>` : ""}
         <div class="karte"><h2><i class="fa-solid fa-print"></i> Drucken</h2>
             <div class="knopfleiste">
-                <button class="btn blau" data-druck="lehrer"><i class="fa-solid fa-chalkboard-user"></i> Stundenvorbereitung</button>
+                <button class="btn blau" data-druck="lehrer12"><i class="fa-solid fa-chalkboard-user"></i> Stundenvorbereitung Kl. 1/2</button>
+                <button class="btn blau" data-druck="lehrer34"><i class="fa-solid fa-chalkboard-user"></i> Stundenvorbereitung Kl. 3/4</button>
                 ${window.sozialRegie ? `<button class="btn blau" data-druck="regie12"><i class="fa-solid fa-list-ol"></i> Ablauf Schritt für Schritt Kl. 1/2</button>
                 <button class="btn blau" data-druck="regie34"><i class="fa-solid fa-list-ol"></i> Ablauf Schritt für Schritt Kl. 3/4</button>` : ""}
             </div>
@@ -1115,7 +1160,7 @@ function zeigeStunde(id){
                 <div class="druck-posten nur12">${anzahlFeld("lese12")}<button class="btn" data-druck="lese12"><i class="fa-solid fa-book-open"></i> Lesetext Kl. 1/2</button></div>
                 <div class="druck-posten">${anzahlFeld("lese34")}<button class="btn" data-druck="lese34"><i class="fa-solid fa-book-open"></i> Lesetext Kl. 3/4</button></div>
             </div>
-            <div class="knopfleiste" style="margin-top:10px"><button class="btn gold" data-druck="alles"><i class="fa-solid fa-layer-group"></i> Alles zusammen</button><span class="ed-hilfe" style="margin:0;align-self:center">Stundenvorbereitung + alle Arbeitsblätter in der eingestellten Anzahl</span></div>
+            <div class="knopfleiste" style="margin-top:10px"><button class="btn gold" data-druck="alles12"><i class="fa-solid fa-layer-group"></i> Alles für Kl. 1/2</button><button class="btn gold" data-druck="alles34"><i class="fa-solid fa-layer-group"></i> Alles für Kl. 3/4</button><span class="ed-hilfe" style="margin:0;align-self:center">Stundenvorbereitung nur für diese Stufe + ihre Arbeitsblätter in der eingestellten Anzahl</span></div>
             <p class="ed-hilfe" style="margin-top:10px">Die Zahl vor jedem Knopf ist die Anzahl der Exemplare – sie wird gemerkt. Der Lesetext kommt ohne deine Hinweise auf eine A4-Seite – die Abschnitt-Nummern passen zu den Folien („Wer liest vor?“). Tipp: Im Druckfenster „Als PDF sichern“ wählen, um die Stunde als PDF abzulegen.</p>
         </div>
 
@@ -1168,7 +1213,7 @@ function zeigeStunde(id){
     }
     vorschauZeigen(document.getElementById("v34"), e, "34");
     if (e.nur34) {
-        inhalt.querySelectorAll('[data-einstieg="12"], [data-pptx="12"], [data-druck="ab1"], [data-druck="ab2"], [data-druck="regie12"], [data-druck="lese12"], [data-va="12"], .nur12').forEach(x => x.remove());
+        inhalt.querySelectorAll('[data-einstieg="12"], [data-pptx="12"], [data-druck="ab1"], [data-druck="ab2"], [data-druck="regie12"], [data-druck="lese12"], [data-druck="lehrer12"], [data-druck="alles12"], [data-va="12"], .nur12').forEach(x => x.remove());
         const start34 = inhalt.querySelector('[data-einstieg="34"]'); if (start34) start34.classList.add("gold");
     }
     inhalt.querySelectorAll("[data-druck]").forEach(b => b.addEventListener("click", () => drucken(e, b.dataset.druck)));
@@ -1402,7 +1447,10 @@ function zeigeEditor(id, entwurfBehalten = false){
                 <button class="btn klein" type="button" data-uschieben="${i}|-1" ${i === 0 ? "disabled" : ""}><i class="fa-solid fa-arrow-up"></i></button>
                 <button class="btn klein" type="button" data-uschieben="${i}|1" ${i === e.uebungen.length - 1 ? "disabled" : ""}><i class="fa-solid fa-arrow-down"></i></button>
                 <button class="btn klein rot" type="button" data-uweg="${i}"><i class="fa-solid fa-xmark"></i></button></div>
-            <textarea rows="4" data-pfad="uebungen.${i}.text" placeholder="So geht die Übung …">${esc(u.text)}</textarea></div>`).join("");
+            <textarea rows="4" data-pfad="uebungen.${i}.text" placeholder="So geht die Übung …">${esc(u.text)}</textarea>
+            ${(u.fuer || "alle") === "alle" ? `<details style="margin-top:6px"${u.text12 || u.text34 ? " open" : ""}><summary class="ed-hilfe" style="cursor:pointer">Eigene Fassung je Stufe (für „Stundenvorbereitung Kl. 1/2 bzw. 3/4“) – leer lassen = wird automatisch aus dem Text oben gekürzt</summary>
+                <label class="ed-hilfe">Nur Kl. 1/2</label><textarea rows="3" data-pfad="uebungen.${i}.text12" placeholder="automatisch">${esc(u.text12 || "")}</textarea>
+                <label class="ed-hilfe">Nur Kl. 3/4</label><textarea rows="3" data-pfad="uebungen.${i}.text34" placeholder="automatisch">${esc(u.text34 || "")}</textarea></details>` : ""}</div>`).join("");
     };
     const aufgabenZeichnen = s => {
         const liste = e["ab" + s].aufgaben;

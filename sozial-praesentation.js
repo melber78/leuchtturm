@@ -234,10 +234,10 @@ function folienBauen(e, stufe){
     if (fragen.length) f.push({ typ: "fragen", titel: lt.titel, fragen });
     const medien = medienFuer(e);
     if (medien.length) f.push({ typ: "film", medien });
-    (e.uebungen || []).forEach(u => {
-        if (u.fuer !== "alle" && u.fuer !== stufe && !(stufe === "12" && u.fuer === "12")) {
-            // Übungen der anderen Stufe trotzdem zeigen (gemischte Gruppen), aber markiert
-        }
+    (e.uebungen || []).forEach(u0 => {
+        // Klassen sind getrennt: nur Übungen dieser Stufe, Text passend zur Stufe
+        if (u0.fuer && u0.fuer !== "alle" && u0.fuer !== stufe) return;
+        const u = Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text });
         f.push({ typ: "uebung", u });
         const punkte = aufzaehlung(u.text).slice(0, 8);
         const art = quizArt(u.text);
