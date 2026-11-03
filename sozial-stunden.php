@@ -1312,8 +1312,10 @@ function zeigeStunde(id){
         const ml = document.getElementById("materialListe");
         ml.innerHTML = mats.length ? mats.map((m, k) => `<div class="m-eintrag"><div class="vorschau" data-mvorschau="${k}"></div>
             <strong>${esc(m.titel)}</strong>${m.wozu ? `<div class="m-wozu"><b>Wofür?</b> ${esc(m.wozu)}</div>` : ""}<small>${window.sozialMaterial.seitenZahl(m)} Seite${window.sozialMaterial.seitenZahl(m) > 1 ? "n" : ""}${m.hinweis ? " · " + esc(m.hinweis) : ""}</small>
-            <button class="btn klein blau" data-mdruck="${k}"><i class="fa-solid fa-print"></i> Drucken</button></div>`).join("") : '<div class="leer">Für diese Stunde ist kein Material hinterlegt. Über „Bearbeiten“ kannst du welches aus der Bibliothek auswählen.</div>';
+            ${m.art === "liste" ? `<button class="btn klein gold" data-mfuell="${k}"><i class="fa-solid fa-pen"></i> Digital ausfüllen</button>` : ""}<button class="btn klein blau" data-mdruck="${k}"><i class="fa-solid fa-print"></i> Drucken</button></div>`).join("") : '<div class="leer">Für diese Stunde ist kein Material hinterlegt. Über „Bearbeiten“ kannst du welches aus der Bibliothek auswählen.</div>';
         ml.querySelectorAll("[data-mvorschau]").forEach(r => window.sozialMaterial.vorschau(r, mats[+r.dataset.mvorschau]));
+        ml.querySelectorAll("[data-mfuell]").forEach(b => b.addEventListener("click", () => { const m = mats[+b.dataset.mfuell];
+            window.sozialMaterial.ausfuellen(m, () => { const r = ml.querySelectorAll("[data-mvorschau]")[+b.dataset.mfuell]; if (r) { r.innerHTML = ""; window.sozialMaterial.vorschau(r, m); } }); }));
         ml.querySelectorAll("[data-mdruck]").forEach(b => b.addEventListener("click", () => window.sozialMaterial.drucken([mats[+b.dataset.mdruck]], e.titel + " – " + mats[+b.dataset.mdruck].titel)));
         const alle = document.getElementById("materialAlle");
         if (alle) { alle.disabled = !mats.length; alle.addEventListener("click", () => window.sozialMaterial.drucken(mats, e.titel + " – Material")); }

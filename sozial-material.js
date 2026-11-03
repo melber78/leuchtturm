@@ -64,10 +64,28 @@ const CSS = `
 .m-eintrag .vorschau{ border-radius:5px; }
 .m-eintrag strong{ font-size:14.5px; line-height:1.25; }
 .m-eintrag small{ color:#7c8a85; font-weight:700; font-size:12px; line-height:1.35; }
-.mliste .mp-titel{ font-family:"Nunito",sans-serif; font-weight:900; font-size:30pt; line-height:1.1; color:#16324a; text-align:center; margin-bottom:5mm; }
-.mliste .mp-fuss{ font-family:"Nunito",sans-serif; font-weight:900; font-size:16pt; color:#3d7ea6; text-align:center; }
-.mliste .ml-tab{ width:100%; border-collapse:collapse; font-family:"Nunito",sans-serif; }
-.mliste .ml-tab td{ height:19mm; }
+.mliste{ position:relative; }
+.mliste .ml-band{ position:absolute; left:0; right:0; top:0; height:7mm; background:linear-gradient(90deg,#2e8b57,#3d7ea6,#c98a1b,#8e44ad); }
+.mliste .ml-kopf{ display:flex; align-items:center; gap:5mm; margin:6mm 0 6mm; }
+.mliste .ml-icon{ font-size:24mm; line-height:1; }
+.mliste .ml-titel{ font-family:"Nunito",sans-serif; font-weight:900; font-size:32pt; line-height:1.05; color:#16324a; }
+.mliste .ml-unter{ font-family:"Nunito",sans-serif; font-weight:700; font-size:14pt; color:#55636a; margin-top:1.5mm; }
+.mliste .ml-tab{ width:100%; border-collapse:separate; border-spacing:0; font-family:"Nunito",sans-serif; border:.6mm solid #16324a; border-radius:4mm; overflow:hidden; }
+.mliste .ml-tab th{ color:white; font-size:13pt; font-weight:900; padding:3mm; text-align:left; border:0; }
+.mliste .ml-tab td{ height:17.5mm; border:0; border-top:.3mm solid #c9d6e3; border-left:.3mm solid #e1e8ee; padding:0 3mm; font-size:15pt; font-weight:700; color:#16324a; }
+.mliste .ml-tab td:first-child{ border-left:0; font-weight:900; }
+.mliste .ml-tab tr:nth-child(odd) td{ background:#f6f9fb; }
+.mliste .ml-fuss{ margin-top:5mm; background:#fff4dc; border-radius:4mm; padding:3mm 5mm; font-family:"Nunito",sans-serif; font-weight:900; font-size:16pt; color:#16324a; text-align:center; }
+.ml-dialog-hg{ position:fixed; inset:0; background:rgba(22,50,74,.55); z-index:200; display:flex; align-items:center; justify-content:center; padding:12px; }
+.ml-dialog{ background:white; border-radius:18px; padding:18px; max-width:960px; width:100%; max-height:calc(100vh - 24px); display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.ml-dialog h2{ margin:0 0 6px; }
+.ml-hinweis{ margin:0 0 10px; font-size:14px; color:#55636a; font-weight:700; }
+.ml-scroll{ overflow:auto; flex:1; }
+.ml-form{ width:100%; border-collapse:collapse; min-width:560px; }
+.ml-form th{ text-align:left; font-size:13px; padding:4px; color:#16324a; }
+.ml-form td{ padding:3px; }
+.ml-form input{ box-sizing:border-box; width:100%; padding:8px; border:2px solid #dfe5e2; border-radius:8px; font:inherit; font-size:15px; }
+.ml-knoepfe{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
 .mliste .ml-tab th{ background:#eef4f8; border:.4mm solid #9aa9b2; padding:2.5mm; font-size:13pt; text-align:left; }
 .mliste .ml-tab td{ border:.4mm solid #9aa9b2; }
 .mliste .mp-fuss{ margin-top:4mm; }
@@ -157,7 +175,7 @@ const B = {
     "loesungskarten": { titel: "Lösungskarten (2 Sätze pro Seite)", gruppe: "Konflikte lösen", art: "karten", proSeite: 8, uebung: "Lösungs-Karten",
         items: [1, 2].flatMap(() => [{ emoji: "🔄", text: "Abwechseln" }, { emoji: "🍕", text: "Teilen" }, { emoji: "🤝", text: "Zusammen machen" }, { emoji: "🙋", text: "Hilfe holen" }]),
         hinweis: "Ausschneiden – jedes Kind bekommt einen Satz mit 4 Karten." },
-    "ruheplaetze-liste": { titel: "Liste: Unsere Ruheplätze", gruppe: "Konflikte lösen", art: "liste", zeilen: 10,
+    "ruheplaetze-liste": { titel: "Liste: Unsere Ruheplätze", gruppe: "Konflikte lösen", art: "liste", zeilen: 10, icon: "🪑", unter: "Hier kann ich runterkommen, wenn es in mir kocht.",
         spalten: ["Name", "🪑 Mein Ruheplatz im Raum", "🌳 Auf dem Schulhof", "🙋 Mein Erwachsener"],
         fuss: "Wer am Ruheplatz ist, wird in Ruhe gelassen." },
     "ruheplatz-karten": { titel: "Kärtchen: Mein Ruheplatz (4 pro Seite)", gruppe: "Konflikte lösen", art: "karten", proSeite: 4,
@@ -306,7 +324,7 @@ const ZUORDNUNG = {
 };
 // Wofür ist das Material? (wird beim Material angezeigt)
 const WOZU = {
-"ruheplaetze-liste": "Für „Unser Ruheplatz“: Trag mit den Kindern von Hand ein, wo jeder hingeht, wenn es kocht – und welchen Erwachsenen er holt. Dann im Klassenraum aufhängen. Die Namen stehen nur auf dem Papier, nicht im Programm.",
+"ruheplaetze-liste": "Für „Unser Ruheplatz“: Trag ein, wo jedes Kind hingeht, wenn es kocht – und welchen Erwachsenen es holt. Entweder von Hand auf dem Ausdruck oder mit „Digital ausfüllen“ (wird nicht gespeichert). Dann im Klassenraum aufhängen.",
 "ruheplatz-karten": "Jedes Kind schreibt oder malt seinen Ruheplatz auf ein Kärtchen – für die Mappe oder das Mäppchen.",
 "erst-raus": "Hängt die ganze Stunde an der Tafel: Bei „Was jetzt?“ zeigen die Kinder 1, 2 oder 3 – das Plakat erklärt, was die Zahlen heißen. Danach dauerhaft im Raum lassen.",
 "gefuehlsbarometer": "Für das Ritual am Anfang: Die Gesichter hängen an der Tafel, jedes Kind steckt seine Klammer an sein Gefühl.",
@@ -481,15 +499,42 @@ function urkundeSeite(m){
         <div class="mu-unten"><div>Datum</div><div>Unterschrift</div></div></div>`;
     return s;
 }
-// Liste zum Aufhängen: Tabelle mit leeren Zeilen – wird von Hand ausgefüllt (keine Namen im Programm)
+// Liste zum Aufhängen: Tabelle – auf Papier von Hand oder hier digital ausfüllen.
+// Digital eingetragene Werte (z. B. Vornamen) bleiben NUR im Arbeitsspeicher dieser Seite – nie gespeichert oder gesendet.
+const listenWerte = {};
+const LISTEN_FARBEN = ["#16324a", "#2e8b57", "#3d7ea6", "#c98a1b", "#8e44ad"];
 function listeSeite(m){
     const s = seite("mliste");
-    const n = m.zeilen || 10, sp = m.spalten || [];
-    s.innerHTML = `<div class="mp-titel">${esc(m.titel.replace(/^Liste:\s*/, ""))}</div>
-        <table class="ml-tab"><tr>${sp.map((c, i) => `<th${i === 0 ? ' style="width:24%"' : ""}>${inline(c)}</th>`).join("")}</tr>
-        ${Array.from({ length: n }, () => "<tr>" + sp.map(() => "<td></td>").join("") + "</tr>").join("")}</table>
-        ${m.fuss ? `<div class="mp-fuss">${inline(m.fuss)}</div>` : ""}` + fussHtml(m, 1, 1);
+    const sp = m.spalten || [], werte = listenWerte[m.id] || [];
+    const n = Math.max(m.zeilen || 10, werte.filter(z => z && z.some(Boolean)).length);
+    s.innerHTML = `<div class="ml-band"></div>
+        <div class="ml-kopf"><span class="ml-icon">${esc(m.icon || "🪑")}</span><div><div class="ml-titel">${esc(m.titel.replace(/^Liste:\s*/, ""))}</div>${m.unter ? `<div class="ml-unter">${inline(m.unter)}</div>` : ""}</div></div>
+        <table class="ml-tab"><tr>${sp.map((c, i) => `<th style="background:${LISTEN_FARBEN[i % LISTEN_FARBEN.length]}${i === 0 ? ";width:22%" : ""}">${inline(c)}</th>`).join("")}</tr>
+        ${Array.from({ length: n }, (_, z) => "<tr>" + sp.map((_, i) => `<td>${esc((werte[z] || [])[i] || "")}</td>`).join("") + "</tr>").join("")}</table>
+        ${m.fuss ? `<div class="ml-fuss">🤫 ${inline(m.fuss)}</div>` : ""}` + fussHtml(m, 1, 1);
     return s;
+}
+function ausfuellen(m, fertig){
+    cssLaden();
+    const sp = m.spalten || [], n = m.zeilen || 10;
+    const werte = listenWerte[m.id] = listenWerte[m.id] || [];
+    const o = document.createElement("div");
+    o.className = "ml-dialog-hg";
+    o.innerHTML = `<div class="ml-dialog" role="dialog" aria-modal="true">
+        <h2>${esc(m.icon || "")} ${esc(m.titel.replace(/^Liste:\s*/, ""))} ausfüllen</h2>
+        <p class="ml-hinweis">🔒 Wird nicht gespeichert – die Einträge bleiben nur, solange diese Seite offen ist. Danach einfach drucken.</p>
+        <div class="ml-scroll"><table class="ml-form"><tr>${sp.map(c => `<th>${inline(c)}</th>`).join("")}</tr>
+        ${Array.from({ length: n }, (_, z) => "<tr>" + sp.map((_, i) => `<td><input type="text" data-z="${z}" data-s="${i}" value="${esc((werte[z] || [])[i] || "")}" maxlength="40"></td>`).join("") + "</tr>").join("")}</table></div>
+        <div class="ml-knoepfe"><button class="btn gold" data-ml="drucken"><i class="fa-solid fa-print"></i> Drucken</button><button class="btn" data-ml="fertig">Fertig</button><button class="btn rot" data-ml="leeren">Alles leeren</button></div></div>`;
+    o.addEventListener("input", ev => { const t = ev.target; if (!t.dataset.z) return; (werte[+t.dataset.z] = werte[+t.dataset.z] || [])[+t.dataset.s] = t.value; });
+    o.addEventListener("click", ev => {
+        const a = ev.target.closest("[data-ml]"); if (ev.target === o) { o.remove(); fertig && fertig(); return; } if (!a) return;
+        if (a.dataset.ml === "leeren") { if (!confirm("Alle Einträge löschen?")) return; werte.length = 0; o.querySelectorAll("input").forEach(x => x.value = ""); return; }
+        o.remove(); fertig && fertig();
+        if (a.dataset.ml === "drucken") drucken([m], m.titel);
+    });
+    document.body.appendChild(o);
+    const erstes = o.querySelector("input"); if (erstes) erstes.focus();
 }
 function seitenBauen(m){
     if (m.art === "liste") return [listeSeite(m)];
@@ -545,5 +590,5 @@ async function drucken(liste, titel){
 }
 function seitenZahl(m){ return m.art === "karten" ? Math.max(1, Math.ceil((m.items || []).length / (RASTER[m.proSeite] ? m.proSeite : 8))) : 1; }
 
-window.sozialMaterial = { bibliothek: B, zuordnung: ZUORDNUNG, allgemein: ALLGEMEIN, rituale: RITUAL_MATERIAL, fuer: materialFuer, bibIds, vorschau, drucken, seitenZahl, seitenBauen, einpassen, cssLaden };
+window.sozialMaterial = { ausfuellen, bibliothek: B, zuordnung: ZUORDNUNG, allgemein: ALLGEMEIN, rituale: RITUAL_MATERIAL, fuer: materialFuer, bibIds, vorschau, drucken, seitenZahl, seitenBauen, einpassen, cssLaden };
 })();
