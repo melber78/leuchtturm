@@ -47,7 +47,7 @@
 
     window.SOZIAL_MEDIEN = {
         "v-gefuehle-erkennen":  [F.gefuehle, F.srfGefuehle],
-        "v-streit-loesen":      [F.stoppLied, F.miteinander],
+        "v-streit-loesen":      [F.miteinander],
         "v-freundschaft":       [F.freundschaft],
         "v-regeln-miteinander": [F.freiheit],
         "v-wut-werkzeugkasten": [F.wut],
