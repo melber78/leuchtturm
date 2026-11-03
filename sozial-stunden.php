@@ -100,6 +100,10 @@ label.feld{ display:block; font-weight:800; font-size:13px; color:var(--grau); m
 .diese-woche{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; background:white; border-left:6px solid var(--gold); border-radius:16px; padding:16px 20px; box-shadow:var(--schatten); margin-bottom:22px; }
 .diese-woche .dw-text{ flex:1; font-weight:800; }
 .diese-woche .dw-text small{ display:block; color:var(--grau); font-weight:700; }
+.dw-zeile{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:10px; }
+.dw-thema{ flex:1 1 180px; font-size:17px; }
+.dw-klassen{ display:inline-flex; align-items:center; gap:4px; flex-wrap:wrap; }
+.dw-kl-name{ font-size:13px; font-weight:900; margin-right:10px; }
 .kat-titel{ font-size:15px; font-weight:900; color:var(--grau); text-transform:uppercase; letter-spacing:.04em; margin:22px 0 10px; }
 .karten{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
 .einheit-karte{ background:white; border-radius:18px; box-shadow:var(--schatten); padding:18px 20px; cursor:pointer; text-decoration:none; color:var(--text); display:flex; flex-direction:column; gap:8px; transition:.15s; border:2px solid transparent; }
@@ -178,10 +182,26 @@ table.plan tr.erledigt td .plan-wahl{ opacity:.65; }
 table.plan td.kw{ font-weight:900; white-space:nowrap; color:var(--meer); }
 table.plan td.datum{ white-space:nowrap; font-weight:700; }
 table.plan th.kl-th{ text-align:center; }
+@media (max-width:760px){
+    table.plan thead{ display:none; }
+    table.plan, table.plan tbody{ display:block; }
+    table.plan tr[data-woche]{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; border:2px solid var(--linie); border-radius:14px; padding:10px 12px; margin-bottom:10px; }
+    table.plan tr.kl-details{ display:block; margin:-6px 0 12px; }
+    table.plan tr.kl-details[hidden]{ display:none; }
+    table.plan td{ border:0; padding:2px 0; }
+    table.plan td[data-label]{ flex:1 1 100%; }
+    table.plan td[data-label]::before{ content:attr(data-label); display:block; font-size:12px; font-weight:900; color:var(--grau); }
+    table.plan td.kl-zelle[data-label]{ flex:0 0 auto; text-align:center; min-width:52px; }
+    table.plan tr.jetzt td{ background:none; }
+    table.plan tr.jetzt{ background:#fff7e8; }
+    table.plan td.kl-zelle::before{ font-size:13px; color:var(--text); }
+    table.plan td.kw{ font-size:17px; }
+}
 table.plan td.kl-zelle{ text-align:center; position:relative; white-space:nowrap; }
 .kl-status{ width:34px; height:34px; border-radius:10px; border:2px solid #d6dee3; background:#fff; font-size:17px; font-weight:900; color:#9aa6ab; cursor:pointer; }
 .kl-status.gehalten{ background:#2e8b57; border-color:#2e8b57; color:#fff; }
 .kl-status.ausgefallen{ background:#fdecea; border-color:#e74c3c; color:#c0392b; }
+.kl-status.entfaellt{ background:#eef1f3; border-color:#c3ccd2; color:#7c8a94; }
 .kl-status:disabled{ opacity:.35; cursor:default; }
 td.kl-zelle.unpassend .kl-status{ border-style:dashed; border-color:var(--gold); }
 .kl-punkt{ position:absolute; top:6px; right:calc(50% - 21px); width:8px; height:8px; border-radius:50%; background:var(--gold); }
@@ -197,13 +217,6 @@ tr.kl-details td{ background:#f6f9fb; }
 .kl-nach{ font-size:13.5px; line-height:1.45; } .kl-nach.leer{ color:var(--grau); font-weight:700; }
 table.plan select, table.plan input[type=text]{ padding:6px 8px; }
 table.plan input[type=checkbox]{ width:20px; height:20px; }
-@media (max-width:760px){
-    table.plan, table.plan tbody, table.plan tr, table.plan td{ display:block; width:100%; }
-    table.plan thead{ display:none; }
-    table.plan tr{ border-top:2px solid var(--linie); padding:8px 0; }
-    table.plan td{ border:0; padding:3px 4px; }
-    table.plan td.kw, table.plan td.datum{ display:inline-block; width:auto; }
-}
 .speicherstatus{ font-weight:800; font-size:13px; color:var(--grau); }
 .speicherstatus.ok{ color:var(--gruen); }
 .speicherstatus.fehler{ color:var(--rot); }
@@ -912,6 +925,34 @@ function planSpeichern(){
         }
     }, 700);
 }
+// Kasten „Diese Woche“: Thema je Stufe, Öffnen und Abhaken je Klasse
+function dieseWocheZeigen(dw){
+    const ziel = document.getElementById("dieseWoche");
+    if (!ziel) return;
+    const w = dw.eintrag, k = iso(dw.datum), klassen = planKlassen();
+    const stufen = [...new Set(klassen.map(x => x.stufe))];
+    const zeilen = (stufen.length ? stufen : ["12", "34"]).map(st => {
+        const e = finde(stufenThema(w, st));
+        const kl = klassen.filter(x => x.stufe === st);
+        return `<div class="dw-zeile"><span class="chip ${st === "34" ? "gold" : ""}">Kl. ${st === "34" ? "3/4" : "1/2"}</span>
+            <span class="dw-thema">${e ? esc(e.titel) : '<i style="color:var(--grau)">noch kein Thema</i>'}</span>
+            ${e ? `<a class="btn klein blau" href="#stunde/${encodeURIComponent(e.id)}">Öffnen</a>` : `<a class="btn klein" href="#jahresplan">Planen</a>`}
+            <span class="dw-klassen">${kl.map(x => { const st2 = klasseInWoche(w, x).status; return `<button class="kl-status ${st2 || "offen"}" data-dwkl="${esc(x.id)}" title="${esc(x.name)}: ${STATUS[st2].text} – tippen zum Ändern">${STATUS[st2].zeichen}</button><span class="dw-kl-name">${esc(x.name)}</span>`; }).join("")}</span></div>`;
+    }).join("");
+    ziel.innerHTML = `<div class="diese-woche">
+        <i class="fa-solid fa-calendar-day" style="font-size:26px;color:var(--gold)"></i>
+        <div class="dw-text">${dw.diese ? "Diese Woche" : "Als Nächstes"} <small style="display:inline">· KW ${kw(dw.datum)} · ab ${kurzDatum(dw.datum)}${w.notiz ? " · " + esc(w.notiz) : ""}</small>
+            ${zeilen}
+            ${klassen.length ? `<small style="margin-top:6px">Tippen: ○ offen → ✓ gehalten → ✗ ausgefallen (nachholen) → – entfällt</small>` : ""}</div></div>`;
+    ziel.querySelectorAll("[data-dwkl]").forEach(b => b.addEventListener("click", () => {
+        const p = plan(), woche = p.wochen[k] = p.wochen[k] || {};
+        if (!woche.klassen) { woche.klassen = {}; if (woche.erledigt) planKlassen().forEach(x => woche.klassen[x.id] = { status: "gehalten" }); }
+        const x = woche.klassen[b.dataset.dwkl] = woche.klassen[b.dataset.dwkl] || {};
+        x.status = STATUS_FOLGE[(STATUS_FOLGE.indexOf(x.status || "") + 1) % STATUS_FOLGE.length];
+        planSpeichern();
+        dieseWocheZeigen({ ...dw, eintrag: woche });
+    }));
+}
 // Welche Stunde ist diese (oder die nächste offene) Woche dran?
 function aktuelleWoche(){
     if (!DATEN.jahresplan) return null;
@@ -919,14 +960,14 @@ function aktuelleWoche(){
     for (const d of planWochen()) {
         if (d < heute) continue;
         const w = DATEN.jahresplan.wochen[iso(d)];
-        if (w && w.einheit && !w.frei && !w.erledigt) return { datum: d, eintrag: w, einheit: finde(w.einheit), diese: +d === +heute };
+        if (w && !w.frei && wochenThemen(w).length && (+d === +heute || !w.erledigt)) return { datum: d, eintrag: w, einheit: finde(wochenThemen(w)[0]), diese: +d === +heute };
     }
     return null;
 }
 function planVerwendung(e){
     if (!DATEN.jahresplan) return [];
     const ids = [e.id, e.ersetzt].filter(Boolean);
-    return planWochen().filter(d => { const w = DATEN.jahresplan.wochen[iso(d)]; return w && ids.includes(w.einheit); });
+    return planWochen().filter(d => { const w = DATEN.jahresplan.wochen[iso(d)]; return w && wochenThemen(w).some(x => ids.includes(x)); });
 }
 
 /* ============================================================
@@ -976,12 +1017,7 @@ function zeigeBibliothek(){
         </div>
         <div id="kartenListe"></div>`;
     const dw = window.BEREICH.key === "sozial" ? aktuelleWoche() : null;
-    if (dw && dw.einheit) {
-        document.getElementById("dieseWoche").innerHTML = `<div class="diese-woche">
-            <i class="fa-solid fa-calendar-day" style="font-size:26px;color:var(--gold)"></i>
-            <div class="dw-text">${dw.diese ? "Diese Woche" : "Als Nächstes"}: ${esc(dw.einheit.titel)}<small>KW ${kw(dw.datum)} · ab ${kurzDatum(dw.datum)}${dw.eintrag.notiz ? " · " + esc(dw.eintrag.notiz) : ""}</small></div>
-            <a class="btn blau" href="#stunde/${encodeURIComponent(dw.einheit.id)}">Öffnen</a></div>`;
-    }
+    if (dw && dw.einheit) dieseWocheZeigen(dw);
     const liste = () => {
         const q = filterText.toLowerCase();
         const alle = alleEinheiten().filter(e => (!filterKat || e.kategorie === filterKat) && (!filterOhne || e.ohneVorbereitung) &&
@@ -1080,8 +1116,9 @@ function zeigeStunde(id){
             <div class="knopfleiste" style="align-items:center">
                 <select id="planWoche" style="width:auto;flex:1 1 260px">${kommende.map(d => {
                     const w = DATEN.jahresplan?.wochen?.[iso(d)];
-                    const belegt = w?.frei ? " – frei/Ferien" : w?.einheit ? " – belegt: " + (finde(w.einheit)?.titel || "?") : "";
+                    const belegt = w?.frei ? " – frei/Ferien" : (w && wochenThemen(w).length) ? " – belegt: " + wochenThemen(w).map(x => finde(x)?.titel || "?").join(" / ") : "";
                     return `<option value="${iso(d)}">KW ${kw(d)} · ${kurzDatum(d)}${esc(belegt)}</option>`; }).join("")}</select>
+                ${window.BEREICH.key === "sozial" ? `<select id="planStufe" style="width:auto">${e.nur34 ? "" : '<option value="beide">für Kl. 1/2 und 3/4</option><option value="12">nur für Kl. 1/2</option>'}<option value="34">nur für Kl. 3/4</option></select>` : ""}
                 <button class="btn gold" id="einplanen"><i class="fa-solid fa-check"></i> Eintragen</button>
             </div>
         </div>
@@ -1176,8 +1213,12 @@ function zeigeStunde(id){
         if (!datum) return;
         const p = plan();
         const alt = p.wochen[datum];
-        if (alt && alt.einheit && !confirm("In dieser Woche ist schon „" + (finde(alt.einheit)?.titel || "eine Stunde") + "“ eingetragen. Ersetzen?")) return;
-        p.wochen[datum] = { ...(alt || {}), einheit: e.ersetzt || e.id, frei: false };
+        const wahl = (document.getElementById("planStufe") || {}).value || "beide";
+        const stufen = wahl === "beide" ? ["12", "34"] : [wahl];
+        const belegt = alt ? stufen.map(st => stufenThema(alt, st)).filter(Boolean) : [];
+        if (belegt.length && !confirm("In dieser Woche ist schon „" + belegt.map(x => finde(x)?.titel || "eine Stunde").join(" / ") + "“ eingetragen. Ersetzen?")) return;
+        const w = p.wochen[datum] = { ...(alt || {}), frei: false };
+        stufen.forEach(st => stufenThemaSetzen(w, st, e.ersetzt || e.id));
         planSpeichern();
         toast("Eingetragen für KW " + kw(tag(datum)));
         setTimeout(() => zeigeStunde(id), 50);
@@ -1464,8 +1505,8 @@ function zeigeEditor(id, entwurfBehalten = false){
 /* ---------- Jahresplan ---------- */
 /* ---------- Klassen im Jahresplan (z. B. GS1–GS4) ---------- */
 const KLASSEN_STANDARD = [{ id: "gs1", name: "GS1", stufe: "12" }, { id: "gs2", name: "GS2", stufe: "12" }, { id: "gs3", name: "GS3", stufe: "34" }, { id: "gs4", name: "GS4", stufe: "34" }];
-const STATUS = { "": { zeichen: "○", text: "offen" }, gehalten: { zeichen: "✓", text: "gehalten" }, ausgefallen: { zeichen: "✗", text: "ausgefallen" } };
-const STATUS_FOLGE = ["", "gehalten", "ausgefallen"];
+const STATUS = { "": { zeichen: "○", text: "offen" }, gehalten: { zeichen: "✓", text: "gehalten" }, ausgefallen: { zeichen: "✗", text: "ausgefallen (nachholen)" }, entfaellt: { zeichen: "–", text: "entfällt (nicht nachholen)" } };
+const STATUS_FOLGE = ["", "gehalten", "ausgefallen", "entfaellt"];
 function planKlassen(){
     const p = plan();
     if (window.BEREICH.key === "vertretung") return [];
@@ -1477,24 +1518,34 @@ function klasseInWoche(w, k){
     const x = (w.klassen && w.klassen[k.id]) || {};
     return { status: x.status || (w.erledigt && !w.klassen ? "gehalten" : ""), einheit: x.einheit || "", notiz: x.notiz || "" };
 }
-function einheitFuer(w, k){ const x = klasseInWoche(w, k); return x.einheit || w.einheit || ""; }
+// Thema einer Woche für eine Stufe ("12" / "34"); ältere Pläne haben nur ein gemeinsames Thema
+function stufenThema(w, st){ return (w && w.einheiten && Object.prototype.hasOwnProperty.call(w.einheiten, st)) ? (w.einheiten[st] || "") : ((w && w.einheit) || ""); }
+function wochenThemen(w){ return [...new Set([stufenThema(w, "12"), stufenThema(w, "34")].filter(Boolean))]; }
+function stufenThemaSetzen(w, st, id){
+    w.einheiten = w.einheiten || { "12": w.einheit || "", "34": w.einheit || "" };
+    w.einheiten[st] = id;
+    w.einheit = w.einheiten["34"] || w.einheiten["12"] || "";   // für ältere Stellen
+}
+function einheitFuer(w, k){ const x = klasseInWoche(w, k); return x.einheit || stufenThema(w, k.stufe) || ""; }
 // Auswertung je Klasse: gehalten · ausgefallen · nachzuholen (ausgefallen und später nicht gehalten)
 function klassenStand(){
     const p = plan(), wochen = planWochen();
     return planKlassen().map(k => {
-        const gehalten = [], ausgefallen = [];
+        const gehalten = [], ausgefallen = []; let entfallen = 0;
         wochen.forEach(d => {
             const w = p.wochen[iso(d)];
             if (!w || w.frei) return;
             const x = klasseInWoche(w, k), id = einheitFuer(w, k);
             if (x.status === "gehalten" && id) gehalten.push({ d, id });
             if (x.status === "ausgefallen" && id) ausgefallen.push({ d, id });
+            if (x.status === "entfaellt") entfallen++;
             // Klasse hat in dieser Woche etwas anderes gemacht (z. B. nachgeholt) → das geplante Thema fehlt ihr noch
-            if (x.status === "gehalten" && w.einheit && id !== w.einheit) ausgefallen.push({ d, id: w.einheit, verschoben: true });
+            const geplant = stufenThema(w, k.stufe);
+            if (x.status === "gehalten" && geplant && id !== geplant) ausgefallen.push({ d, id: geplant, verschoben: true });
         });
         const gehaltenIds = new Set(gehalten.map(g => finde(g.id)?.id || g.id));
         const nachholen = ausgefallen.filter(a => !gehaltenIds.has(finde(a.id)?.id || a.id));
-        return { k, gehalten, ausgefallen, nachholen };
+        return { k, gehalten, ausgefallen, nachholen, entfallen };
     });
 }
 function zeigeJahresplan(){
@@ -1509,9 +1560,10 @@ function zeigeJahresplan(){
         gruppen.map(g => `<optgroup label="${esc(g)}">${alle.filter(e => e.kategorie === g).map(e => {
             const wert = e.ersetzt || e.id;
             return `<option value="${esc(wert)}" ${sel === wert || sel === e.id ? "selected" : ""}>${esc(e.titel)}</option>`; }).join("")}</optgroup>`).join("");
-    const verplant = new Set(Object.values(p.wochen).map(w => w && w.einheit).filter(Boolean).map(id => finde(id)?.id));
+    const verplant = new Set(Object.values(p.wochen).flatMap(w => w ? wochenThemen(w) : []).map(id => finde(id)?.id));
     const offen = alle.filter(e => !verplant.has(e.id));
-    const anzahl = wochen.filter(d => p.wochen[iso(d)]?.einheit).length;
+    const anzahl = wochen.filter(d => p.wochen[iso(d)] && wochenThemen(p.wochen[iso(d)]).length).length;
+    const zweiStufen = klassen.some(k => k.stufe === "12") && klassen.some(k => k.stufe === "34");
     const stand = klassenStand();
     const stufeName = st => st === "34" ? "Kl. 3/4" : "Kl. 1/2";
 
@@ -1533,26 +1585,29 @@ function zeigeJahresplan(){
         </div>
         ${klassen.length ? `<div class="karte"><h2>Stand je Klasse</h2><div class="kl-stand">${stand.map(s => `<div class="kl-karte">
             <div class="kl-kopf"><b>${esc(s.k.name)}</b><span class="chip ${s.k.stufe === "34" ? "gold" : ""}">${stufeName(s.k.stufe)}</span></div>
-            <div class="kl-zahlen"><span class="ok">✓ ${s.gehalten.length} gehalten</span><span class="aus">✗ ${s.ausgefallen.filter(a => !a.verschoben).length} ausgefallen</span></div>
+            <div class="kl-zahlen"><span class="ok">✓ ${s.gehalten.length} gehalten</span><span class="aus">✗ ${s.ausgefallen.filter(a => !a.verschoben).length} ausgefallen</span>${s.entfallen ? `<span style="color:#7c8a94">– ${s.entfallen} entfallen</span>` : ""}</div>
             ${s.nachholen.length ? `<div class="kl-nach"><b>Nachholen:</b> ${s.nachholen.map(n => { const e = finde(n.id); return e ? `<a href="#stunde/${encodeURIComponent(e.id)}">${esc(e.titel)}</a> <small>(KW ${kw(n.d)})</small>` : ""; }).join(", ")}</div>` : `<div class="kl-nach leer">Nichts nachzuholen 👍</div>`}
             </div>`).join("")}</div></div>` : ""}
         ${offen.length ? `<div class="karte"><h2>Noch nicht verplant</h2><div class="chips" style="display:flex;gap:8px;flex-wrap:wrap">${offen.map(e => `<a class="chip" style="text-decoration:none;font-size:13px" href="#stunde/${encodeURIComponent(e.id)}">${esc(e.titel)}</a>`).join("")}</div></div>` : ""}
         <div class="karte" style="padding:12px 14px">
-            ${klassen.length ? `<p class="ed-hilfe" style="margin:0 0 8px">Klick auf das Kästchen einer Klasse: ○ offen → ✓ gehalten → ✗ ausgefallen. Mit <i class="fa-solid fa-sliders"></i> kannst du für eine Klasse ein anderes Thema (z. B. Nachholstunde) und eine Notiz eintragen.</p>` : ""}
+            ${klassen.length ? `<p class="ed-hilfe" style="margin:0 0 8px">Klick auf das Kästchen einer Klasse: ○ offen → ✓ gehalten → ✗ ausgefallen (kommt auf die Nachhol-Liste) → – entfällt (z. B. Ausflug, kein Termin – wird nicht nachgeholt). Mit <i class="fa-solid fa-sliders"></i> kannst du für eine Klasse ein anderes Thema (z. B. Nachholstunde) und eine Notiz eintragen.</p>` : ""}
             <div style="overflow-x:auto"><table class="plan">
-            <thead><tr><th>KW</th><th>Woche ab</th><th>Stunde</th>${klassen.map(k => `<th class="kl-th" title="${stufeName(k.stufe)}">${esc(k.name)}</th>`).join("")}<th>Notiz</th>${klassen.length ? "" : `<th title="erledigt"><i class="fa-solid fa-check"></i></th>`}<th></th></tr></thead>
+            <thead><tr><th>KW</th><th>Woche ab</th>${zweiStufen ? "<th>Thema Kl. 1/2</th><th>Thema Kl. 3/4</th>" : "<th>Stunde</th>"}${klassen.map(k => `<th class="kl-th" title="${stufeName(k.stufe)}">${esc(k.name)}</th>`).join("")}<th>Notiz</th>${klassen.length ? "" : `<th title="erledigt"><i class="fa-solid fa-check"></i></th>`}<th></th></tr></thead>
             <tbody>${wochen.map(d => {
                 const k = iso(d), w = p.wochen[k] || {};
-                const wert = w.frei ? "@frei" : (w.einheit || "");
-                const e = w.einheit && !w.frei ? finde(w.einheit) : null;
-                const fehlt = w.einheit && !w.frei && !e;
+                const wahlZelle = (st, label) => {
+                    const id = stufenThema(w, st), wert = w.frei ? "@frei" : id, ee = id && !w.frei ? finde(id) : null;
+                    return `<td data-label="${label}"><select class="plan-wahl" data-st="${st}">${optionen(wert)}${id && !w.frei && !ee ? `<option value="${esc(id)}" selected>(gelöschte Stunde)</option>` : ""}</select></td>`;
+                };
+                const e = !w.frei ? finde(wochenThemen(w)[0]) : null;
                 const zellen = klassen.map(kl => {
                     const x = klasseInWoche(w, kl);
-                    const anders = x.einheit && x.einheit !== w.einheit ? finde(x.einheit) : null;
-                    const unpassend = !anders && e && e.nur34 && kl.stufe === "12";
-                    return `<td class="kl-zelle${unpassend ? " unpassend" : ""}"><button class="kl-status ${x.status || "offen"}" data-kl="${esc(kl.id)}" ${w.frei ? "disabled" : ""} title="${esc(kl.name)}: ${STATUS[x.status].text}${unpassend ? " · Achtung: Stunde nur für Kl. 3/4 – über die Schieberegler ein anderes Thema wählen" : ""}${anders ? " · " + esc(anders.titel) : ""}${x.notiz ? " · " + esc(x.notiz) : ""}">${STATUS[x.status].zeichen}</button>${anders || x.notiz ? '<span class="kl-punkt" title="eigenes Thema / Notiz"></span>' : ""}</td>`;
+                    const thema = stufenThema(w, kl.stufe), te = thema ? finde(thema) : null;
+                    const anders = x.einheit && x.einheit !== thema ? finde(x.einheit) : null;
+                    const unpassend = !anders && te && te.nur34 && kl.stufe === "12";
+                    return `<td class="kl-zelle${unpassend ? " unpassend" : ""}" data-label="${esc(kl.name)}"><button class="kl-status ${x.status || "offen"}" data-kl="${esc(kl.id)}" ${w.frei ? "disabled" : ""} title="${esc(kl.name)}: ${STATUS[x.status].text}${unpassend ? " · Achtung: Stunde nur für Kl. 3/4 – über die Schieberegler ein anderes Thema wählen" : ""}${anders ? " · " + esc(anders.titel) : ""}${x.notiz ? " · " + esc(x.notiz) : ""}">${STATUS[x.status].zeichen}</button>${anders || x.notiz ? '<span class="kl-punkt" title="eigenes Thema / Notiz"></span>' : ""}</td>`;
                 }).join("");
-                const details = klassen.length && !w.frei ? `<tr class="kl-details" data-fuer="${k}" hidden><td colspan="${5 + klassen.length}"><div class="kl-detail-raster">${klassen.map(kl => {
+                const details = klassen.length && !w.frei ? `<tr class="kl-details" data-fuer="${k}" hidden><td colspan="${5 + klassen.length + (zweiStufen ? 1 : 0)}"><div class="kl-detail-raster">${klassen.map(kl => {
                     const x = klasseInWoche(w, kl);
                     return `<div class="kl-detail" data-kl="${esc(kl.id)}"><b>${esc(kl.name)}</b>
                         <select class="kl-d-status">${STATUS_FOLGE.map(st => `<option value="${st}" ${x.status === st ? "selected" : ""}>${STATUS[st].zeichen} ${STATUS[st].text}</option>`).join("")}</select>
@@ -1560,9 +1615,9 @@ function zeigeJahresplan(){
                         <input type="text" class="kl-d-notiz" value="${esc(x.notiz)}" placeholder="Notiz (z. B. Ausflug, Wandertag)"></div>`; }).join("")}</div></td></tr>` : "";
                 return `<tr data-woche="${k}" class="${+d === +heute ? "jetzt" : ""} ${w.frei ? "frei" : ""} ${w.erledigt ? "erledigt" : ""}">
                     <td class="kw">KW ${kw(d)}</td><td class="datum">${kurzDatum(d)}${+d === +heute ? ' <span class="chip gold">jetzt</span>' : ""}</td>
-                    <td><select class="plan-wahl">${optionen(wert)}${fehlt ? `<option value="${esc(w.einheit)}" selected>(gelöschte Stunde)</option>` : ""}</select></td>
+                    ${zweiStufen ? wahlZelle("12", "Thema Kl. 1/2") + wahlZelle("34", "Thema Kl. 3/4") : wahlZelle(klassen.length ? klassen[0].stufe : "34", "Stunde")}
                     ${zellen}
-                    <td><input type="text" class="plan-notiz" value="${esc(w.notiz || "")}" placeholder="Notiz"></td>
+                    <td data-label="Notiz"><input type="text" class="plan-notiz" value="${esc(w.notiz || "")}" placeholder="Notiz"></td>
                     ${klassen.length ? "" : `<td><input type="checkbox" class="plan-erledigt" ${w.erledigt ? "checked" : ""} ${w.frei ? "disabled" : ""} title="erledigt"></td>`}
                     <td style="white-space:nowrap">${klassen.length && !w.frei ? `<button class="btn klein kl-mehr" title="Je Klasse: anderes Thema, Notiz"><i class="fa-solid fa-sliders"></i></button> ` : ""}${e ? `<a class="btn klein" href="#stunde/${encodeURIComponent(e.id)}" title="öffnen"><i class="fa-solid fa-arrow-right"></i></a>` : ""}</td></tr>${details}`;
             }).join("")}</tbody></table></div></div>`;
@@ -1601,12 +1656,16 @@ function zeigeJahresplan(){
         const k = tr.dataset.woche;
         const eintrag = () => (p.wochen[k] = p.wochen[k] || {});
         const klEintrag = id => { const w = eintrag(); if (!w.klassen) { w.klassen = {}; if (w.erledigt) planKlassen().forEach(x => w.klassen[x.id] = { status: "gehalten" }); } return (w.klassen[id] = w.klassen[id] || {}); };
-        tr.querySelector(".plan-wahl").addEventListener("change", ev => {
+        tr.querySelectorAll(".plan-wahl").forEach(sel => sel.addEventListener("change", ev => {
             const v = ev.target.value, w = eintrag();
-            if (v === "@frei") { w.frei = true; w.einheit = ""; w.erledigt = false; }
-            else { w.frei = false; w.einheit = v; }
-            planSpeichern(); zeigeJahresplan();
-        });
+            if (v === "@frei") { w.frei = true; w.einheit = ""; w.einheiten = { "12": "", "34": "" }; w.erledigt = false; }
+            else {
+                if (w.frei) { w.frei = false; w.einheiten = { "12": "", "34": "" }; }
+                if (zweiStufen) stufenThemaSetzen(w, sel.dataset.st, v);
+                else { w.einheit = v; w.einheiten = { "12": v, "34": v }; }
+            }
+            planSpeichern(); zeigeJahresplanBehalten();
+        }));
         tr.querySelector(".plan-notiz").addEventListener("input", ev => { eintrag().notiz = ev.target.value; planSpeichern(); });
         const erl = tr.querySelector(".plan-erledigt");
         if (erl) erl.addEventListener("change", ev => { eintrag().erledigt = ev.target.checked; tr.classList.toggle("erledigt", ev.target.checked); planSpeichern(); });
