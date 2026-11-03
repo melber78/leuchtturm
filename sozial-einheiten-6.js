@@ -37,7 +37,7 @@ K({
     id: "k-respekt",
     titel: "Respekt – verdient oder erzwungen?",
     ziel34: "Unterscheiden, ob jemand respektiert oder gefürchtet wird – und wie man echten Respekt bekommt",
-    material: "Tafel: zwei Spalten „Angst“ und „Respekt“\nAntwortkarten (Ampelkarte)",
+    material: "Tafel: zwei Spalten „Angst“ und „Respekt“\nrote und grüne Karten",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Der Boss vom Schulhof", text:
 `Kai ist in der 4. Klasse und alle nennen ihn den Boss. Wenn er in der Pause kommt, machen die anderen Platz an der Tischtennisplatte. Wer nicht spurt, wird geschubst oder vor allen „Opfer“ genannt. Kai sagt: „Die haben Respekt vor mir.“
@@ -55,7 +55,7 @@ Eines Tages bricht Kai sich den Arm und fehlt zwei Wochen. An der Tischtennispla
         { titel: "Angst oder Respekt?", dauer: "7 Min",
           text: "Du liest die Situationen vor. Die Kinder halten die rote Karte hoch (= Angst/Druck) oder die grüne (= echter Respekt). Danach kurz begründen lassen.\n\n- Alle lachen über Ömers Witz, weil sie sonst Ärger mit ihm bekommen.\n- Lea hört zu, wenn ein Jüngerer etwas erzählt, und nimmt ihn ernst.\n- Tim bekommt immer das beste Fahrrad, weil er sonst droht.\n- Der Trainer ist streng, aber fair – und hilft, wenn es jemandem schlecht geht.\n- Jonas gibt nach einem Streit als Erster die Hand.\n- Mia sagt: „Wenn du mich verpetzt, bist du dran.“",
           antworten: ["🔴 Angst / Druck", "🟢 echter Respekt"],
-          folie: "Ist das **echter Respekt** 🟢 – oder **Angst und Druck** 🔴?\n\nHalte deine **Ampelkarte** hoch. Danach: Warum?" },
+          folie: "Ist das **echter Respekt** 🟢 – oder **Angst und Druck** 🔴?\n\nHalte die **rote oder grüne Karte** hoch. Danach: Warum?" },
         { titel: "Respekt-Sammlung", dauer: "5 Min",
           text: "An der Tafel zwei Spalten: **So macht man anderen Angst** und **So bekommt man Respekt**. Die Kinder rufen Ideen vom Platz aus zu (melden). Zum Schluss die Frage: Was davon hält länger?",
           folie: "Zwei Spalten:\n\n😨 **So macht man anderen Angst**\n🤝 **So bekommt man Respekt**\n\nWas davon hält länger?" }
@@ -181,7 +181,7 @@ K({
     id: "k-gruppendruck",
     titel: "Alle machen mit – du auch?",
     ziel34: "Gruppendruck erkennen und Wege finden, nicht mitzumachen, ohne das Gesicht zu verlieren",
-    material: "Antwortkarten (Ampelkarte)\nPlakat „So kann ich Nein sagen“ (Arbeitsmaterial)",
+    material: "rote und grüne Karten\nPlakat „So kann ich Nein sagen“ (Arbeitsmaterial)",
     materialIds: ["rot-gruen", "nein-saetze"],
     lerntext34: { titel: "Die Jacke", text:
 `Nach dem Sport. In der Umkleide hängt die neue Jacke von Paul. Paul ist neu in der Klasse und ziemlich still. Marvin grinst: „Los, wir schmeißen die Jacke in den Müll. Mal sehen, was er dann macht.“
@@ -324,7 +324,7 @@ K({
     id: "k-stark",
     titel: "Was ist eigentlich stark?",
     ziel34: "Körperliche Stärke von innerer Stärke unterscheiden und eigene Stärken entdecken",
-    material: "Tafel: Stärke-Skala von 1 bis 10\nAntwortkarten (Ampelkarte)",
+    material: "Tafel: Stärke-Skala von 1 bis 10\nrote und grüne Karten",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Zwei Arten von stark", text:
 `Mehmet ist der Stärkste in der Klasse. Er kann zwanzig Liegestütze und gewinnt jedes Armdrücken. Wenn ihn jemand schief anschaut, zeigt er ihm, wer der Chef ist.

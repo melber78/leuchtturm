@@ -30,7 +30,7 @@ K({
     id: "k-luegen",
     titel: "Lügen und Vertrauen",
     ziel34: "Verstehen, wie Lügen Vertrauen kaputt machen – und wie man Vertrauen zurückgewinnt",
-    material: "Tafel: Vertrauens-Konto (Einzahlung / Abhebung)\nAntwortkarten (Ampelkarte)",
+    material: "Tafel: Vertrauens-Konto (Einzahlung / Abhebung)\nrote und grüne Karten",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Die Ausrede", text:
 `Niklas hat seiner Mutter erzählt, dass er nach der Schule bei Ben Hausaufgaben macht. In Wirklichkeit ist er mit älteren Jungs am Bahnhof. Seine Mutter ruft bei Bens Mutter an. Die Lüge fliegt auf.
@@ -54,7 +54,7 @@ Niklas merkt: Eine Lüge ist schnell erzählt. Vertrauen zurückzuholen dauert W
         { titel: "Lüge oder nicht?", dauer: "6 Min",
           text: "Du liest Situationen vor, die Kinder zeigen rot (= Lüge, die schadet) oder grün (= ehrlich bzw. harmlos). Diskutiert die schwierigen Fälle.\n\n- „Ich hab die Hausaufgaben vergessen“ – obwohl man keine Lust hatte.\n- Oma fragt, ob dir der Pullover gefällt. Du sagst ja, obwohl er hässlich ist.\n- Du sagst, du warst es nicht, obwohl du das Fenster kaputt gemacht hast.\n- Du verrätst nicht, wo dein Freund sein Geburtstagsgeschenk versteckt hat.\n- Du erzählst, du hättest ein neues Handy – stimmt aber nicht.\n- Du sagst der Lehrerin nicht, wer die Wand beschmiert hat.",
           antworten: ["🔴 Lüge, die schadet", "🟢 ehrlich / harmlos"],
-          folie: "Ist das eine **Lüge, die schadet** 🔴 – oder **ehrlich bzw. harmlos** 🟢?\n\nHalte deine **Ampelkarte** hoch." }
+          folie: "Ist das eine **Lüge, die schadet** 🔴 – oder **ehrlich bzw. harmlos** 🟢?\n\nHalte die **rote oder grüne Karte** hoch." }
     ],
     ab34: { titel: "Mein Vertrauens-Konto", kontext: "Zum Fall: Niklas lügt seine Mutter und seine Lehrerin an. Als er später die Wahrheit sagt, glaubt ihm keiner mehr.", aufgaben: [
         { typ: "tabelle", text: "Was zahlt auf das Vertrauens-Konto ein – was hebt ab? Schreib in jede Spalte drei Beispiele.", spalten: ["Einzahlung (macht Vertrauen)", "Abhebung (macht Vertrauen kaputt)"], zeilen: [["", ""], ["", ""], ["", ""]] },
@@ -217,7 +217,7 @@ K({
     id: "k-freunde-echt",
     titel: "Echte und falsche Freunde",
     ziel34: "Merkmale echter Freundschaft erkennen und Freundschaften kritisch prüfen",
-    material: "Tafel: „Echter Freund“ / „Falscher Freund“\nAntwortkarten (Ampelkarte)",
+    material: "Tafel: „Echter Freund“ / „Falscher Freund“\nrote und grüne Karten",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Kumpel", text:
 `Kevin ist seit den Sommerferien mit Tarek befreundet. Tarek ist zwei Jahre älter und cool. Er nimmt Kevin mit auf den Bolzplatz, zu den Großen.
@@ -236,7 +236,7 @@ Kevins alter Freund Marc ist nicht so cool. Aber als Kevin krank war, hat Marc i
         { titel: "Echt oder falsch?", dauer: "6 Min",
           text: "Du liest Verhaltensweisen vor, die Kinder zeigen grün (= echter Freund) oder rot (= falscher Freund).\n\n- Hält zu dir, auch wenn andere über dich lachen.\n- Will nur mit dir abhängen, wenn du etwas Neues hast.\n- Sagt dir ehrlich, wenn du Mist baust.\n- Erzählt deine Geheimnisse weiter.\n- Bringt dich dazu, Dinge zu tun, die du nicht willst.\n- Freut sich mit dir, wenn du etwas geschafft hast.",
           antworten: ["🟢 echter Freund", "🔴 falscher Freund"],
-          folie: "**Echter Freund** 🟢 oder **falscher Freund** 🔴?\n\nHalte deine **Ampelkarte** hoch." },
+          folie: "**Echter Freund** 🟢 oder **falscher Freund** 🔴?\n\nHalte die **rote oder grüne Karte** hoch." },
         { titel: "Freundschafts-Test", dauer: "6 Min",
           text: "Gemeinsam fünf Fragen formulieren, mit denen man eine Freundschaft prüfen kann, z. B.: „Fühle ich mich wohl, wenn ich mit ihm/ihr zusammen bin?“ · „Kann ich Nein sagen, ohne Angst zu haben?“ · „Hört er/sie mir auch zu?“ Schreib sie an die Tafel.",
           folie: "Mit welchen **Fragen** kannst du prüfen, ob eine Freundschaft gut ist? ❓\n\nFindet fünf Fragen." }
@@ -387,7 +387,7 @@ Abends kann Sami nicht schlafen. Was, wenn der Lehrer nicht gekommen wäre?
           text: "Du liest Situationen vor. Rot = das würde ich für mich behalten, grün = da hole ich Hilfe. Danach die Regel an die Tafel: **Petzen will jemandem Ärger machen. Hilfe holen will jemanden schützen.**\n\n- Jemand hat abgeschrieben.\n- Ein Kind wird jeden Tag auf dem Heimweg abgezogen.\n- Jemand hat ein Messer dabei.\n- Jemand hat einen Kaugummi unter den Tisch geklebt.\n- Ein Freund erzählt, dass er zu Hause geschlagen wird.\n- Im Chat droht jemand, einem anderen „aufzulauern“.",
           quiz: "ampel",
           antworten: ["🔴 für mich behalten", "🟢 Hilfe holen"],
-          folie: "🔴 **Das behalte ich für mich.**\n🟢 **Da hole ich Hilfe.**\n\nHalte deine **Ampelkarte** hoch." },
+          folie: "🔴 **Das behalte ich für mich.**\n🟢 **Da hole ich Hilfe.**\n\nHalte die **rote oder grüne Karte** hoch." },
         { titel: "Wie sag ich's?", dauer: "5 Min",
           text: "Sammelt: Wem kann man so etwas sagen? (Lehrkraft, Schulsozialarbeit, Eltern, Nummer gegen Kummer 116 111) Und wie, damit es keiner merkt? (nach der Stunde, Zettel, Eltern bitten anzurufen …)",
           folie: "Wem kannst du so etwas sagen?\n\nUnd **wie**, damit es keiner merkt?" }

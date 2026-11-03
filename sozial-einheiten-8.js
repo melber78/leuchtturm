@@ -114,7 +114,7 @@ K({
     id: "k-sprachregel",
     titel: "Unsere Sprach-Regel: Familie ist tabu",
     ziel34: "Gemeinsam eine verbindliche Sprach-Regel aufstellen und festlegen, was passiert, wenn sie gebrochen wird",
-    material: "Plakat „Unsere Gruppenregeln“ (leer, mit Unterschriften – Arbeitsmaterial)\nPlakat „Familie ist tabu – meine Schutzsätze“\nAntwortkarten (Ampelkarte)",
+    material: "Plakat „Unsere Gruppenregeln“ (leer, mit Unterschriften – Arbeitsmaterial)\nPlakat „Familie ist tabu – meine Schutzsätze“\nrote und grüne Karten",
     materialIds: ["gruppenregeln-leer", "schutzsaetze-familie", "rot-gruen"],
     lerntext34: { titel: "Die 4b macht einen Deal", text:
 `In der 4b gab es fast jeden Tag Prügeleien. Fast immer fing es mit einem Spruch über die Familie an. Die Lehrerin schlug vor: „Macht ihr selbst eine Regel. Ich schreibe nur mit.“
@@ -133,7 +133,7 @@ Alle unterschrieben. Nach vier Wochen zählten sie: Statt fast jeden Tag gab es 
         { titel: "Regel aushandeln", dauer: "8 Min",
           text: "Jetzt macht ihr eure eigene Regel – du schreibst nur mit. Schritt für Schritt:\n\n- Was genau ist verboten? (Formulierung gemeinsam finden)\n- Was sagt man, wenn es doch passiert? (Stopp-Wort wie „Tabu!“)\n- Was passiert mit dem, der den Spruch gesagt hat?\n- Was passiert, wenn jemand zurückschlägt?\n\nAbstimmung mit roten und grünen Karten. Erst wenn alle grün zeigen (oder wenigstens keiner rot), kommt es aufs Plakat. Am Ende unterschreiben alle.",
           quiz: "keine",
-          folie: "Wir machen **unsere eigene Regel**. 📜\n\nZum Schluss: Halte deine **Ampelkarte** hoch. Erst wenn keiner Rot zeigt, kommt sie aufs Plakat." },
+          folie: "Wir machen **unsere eigene Regel**. 📜\n\nZum Schluss: Halte die **rote oder grüne Karte** hoch. Erst wenn keiner Rot zeigt, kommt sie aufs Plakat." },
         { titel: "Tabu-Training", dauer: "4 Min",
           text: "Kurzes Training vom Platz aus: Du sagst „Stell dir vor, jemand sagt einen Spruch über deine Familie.“ (Du sagst KEINEN Spruch!) Das Kind antwortet laut „Tabu!“, dreht sich weg und sagt, wohin es jetzt geht (Aufsicht, anderer Spielplatz …). Zwei, drei Kinder probieren es.",
           folie: "Stell dir vor, jemand sagt einen Spruch über deine Familie.\n\nDu sagst laut **„Tabu!“**, drehst dich weg und sagst, wohin du jetzt gehst." }

@@ -434,7 +434,7 @@ Am Ende schreibt Frau Novak an die Tafel: „Unsere Klasse ist wie ein Obstsalat
           text: "Du liest Sätze vor, die Kinder entscheiden mit Daumen: Tatsache (hoch) oder Vorurteil (runter) – und sprechen darüber, warum Vorurteile unfair sind.\n\n- „Jungen weinen nicht.“\n- „Menschen haben verschiedene Hautfarben.“\n- „Mädchen können nicht gut Fußball spielen.“\n- „In Deutschland werden viele Sprachen gesprochen.“",
           quiz: "ampel",
           antworten: ["🟢 Tatsache", "🔴 Vorurteil"],
-          folie: "Ist das eine **Tatsache** 🟢 oder ein **Vorurteil** 🔴?\n\nHalte deine Ampelkarte hoch." }
+          folie: "Ist das eine **Tatsache** 🟢 oder ein **Vorurteil** 🔴?\n\nHalte die rote oder grüne Karte hoch." }
     ],
     ab12: { titel: "Ich bin ich – du bist du", aufgaben: [
         { typ: "luecken", text: "Das bin ich:", nummern: false,
