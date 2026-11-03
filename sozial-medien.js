@@ -38,6 +38,9 @@
         inklusion:     yt("DXUfs3IXIYw", "Knietzsche und die Inklusion", "YouTube · offizieller Knietzsche-Kanal"),
         stress:        { titel: "Knietzsche und die Tricks gegen Stress", url: "https://www.bmbfsfj.bund.de/bmbfsfj/mediathek/knietzsche-und-die-tricks-gegen-stress-279844", quelle: "Mediathek des Bundesfamilienministeriums", hinweis: "" },
         logoMobbing:   yt("oBNmY6E0-jo", "Was Mobbing ist – logo! erklärt", "YouTube · ZDFtivi / logo!", "Eher für Kl. 3/4."),
+        respekt:       yt("Lah73VwTLvo", "Knietzsche und der Respekt", "YouTube · offizieller Knietzsche-Kanal (WDR)", "ca. 3 Min. Jeder Mensch ist gleich viel wert – wer niemanden respektiert, ist irgendwann allein."),
+        elliRespekt:   { titel: "Elli Online: Immer cool bleiben! Respekt im Internet", url: "https://www.planet-schule.de/schwerpunkt/elli-online/immer-cool-bleiben-respekt-im-internet-film-100.html", quelle: "Planet Schule (SWR)", hinweis: "Kl. 3–7. Ein falscher Verdacht wird online verbreitet – Shitstorm, dann Entschuldigung." },
+        elliCyber:     { titel: "Elli Online: Cybermobbing!", url: "https://www.planet-schule.de/schwerpunkt/elli-online/cybermobbing-film-100.html", quelle: "Planet Schule (SWR)", hinweis: "Kl. 3–7, online bis Dezember 2027. Beleidigungen im Netz – und wie man sie stoppt." },
         srfGefuehle:   { titel: "Meine Gefühle (6 kurze Folgen)", url: "https://www.srf.ch/sendungen/school/freude-wut-oder-angst-meine-gefuehle", quelle: "SRF school", hinweis: "Ab 5 Jahren. Schweizer Angebot – vorher testen, ob es in Deutschland abspielbar ist." }
     };
 
@@ -72,6 +75,34 @@
         "v-alle-verschieden":   [F.inklusion],
         "v-auslachen":          [F.mobbing, F.logoMobbing],
         "v-hilfsbereitschaft":  [F.solidaritaet],
-        "v-gerecht":            [F.gerechtigkeit, F.inklusion]
+        "v-gerecht":            [F.gerechtigkeit, F.inklusion],
+        // Klartext (Kl. 3/4)
+        "k-respekt":            [F.respekt, F.elliRespekt],
+        "k-sprueche":           [F.respekt, F.mobbing],
+        "k-eskalation":         [F.wut, F.miteinander],
+        "k-wut-frueh":          [F.wut, F.stress],
+        "k-gruppendruck":       [F.gewissen, F.selbstbewusst],
+        "k-handyvideo":         [F.elliCyber, F.elliRespekt],
+        "k-provokation":        [F.respekt, F.selbstbewusst],
+        "k-mist-gebaut":        [F.verantwortung, F.entschuldigung],
+        "k-stark":              [F.mut, F.selbstbewusst],
+        "k-koerpergrenzen":     [F.selbstbewusst],
+        "k-laestern":           [F.elliRespekt, F.mobbing],
+        "k-gaming":             [F.wut],
+        "k-luegen":             [F.vertrauen],
+        "k-erwachsene":         [F.gerechtigkeit],
+        "k-ausgrenzung":        [F.mobbing, F.inklusion],
+        "k-wut-eisberg":        [F.wut, F.gefuehle],
+        "k-rache":              [F.entschuldigung, F.gerechtigkeit],
+        "k-freunde-echt":       [F.freundschaft],
+        "k-konsequenzen":       [F.freiheit, F.gerechtigkeit],
+        "k-gefuehle-zeigen":    [F.gefuehle, F.traurigkeit],
+        "k-neid":               [F.glueck],
+        "k-verpetzen":          [F.gewissen, F.logoMobbing],
+        "k-schlichten":         [F.miteinander],
+        "k-ruf":                [F.ich],
+        "k-mutter":             [F.respekt],
+        "k-schimpfwoerter":     [F.respekt, F.elliCyber],
+        "k-sprachregel":        [F.respekt, F.freiheit]
     };
 })();
