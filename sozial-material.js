@@ -64,6 +64,13 @@ const CSS = `
 .m-eintrag .vorschau{ border-radius:5px; }
 .m-eintrag strong{ font-size:14.5px; line-height:1.25; }
 .m-eintrag small{ color:#7c8a85; font-weight:700; font-size:12px; line-height:1.35; }
+.mliste .mp-titel{ font-family:"Nunito",sans-serif; font-weight:900; font-size:30pt; line-height:1.1; color:#16324a; text-align:center; margin-bottom:5mm; }
+.mliste .mp-fuss{ font-family:"Nunito",sans-serif; font-weight:900; font-size:16pt; color:#3d7ea6; text-align:center; }
+.mliste .ml-tab{ width:100%; border-collapse:collapse; font-family:"Nunito",sans-serif; }
+.mliste .ml-tab td{ height:19mm; }
+.mliste .ml-tab th{ background:#eef4f8; border:.4mm solid #9aa9b2; padding:2.5mm; font-size:13pt; text-align:left; }
+.mliste .ml-tab td{ border:.4mm solid #9aa9b2; }
+.mliste .mp-fuss{ margin-top:4mm; }
 @media print{ #druck .mseite{ break-after:page; } #druck > .mseite:last-child{ break-after:auto; } }
 `;
 
@@ -150,6 +157,11 @@ const B = {
     "loesungskarten": { titel: "Lösungskarten (2 Sätze pro Seite)", gruppe: "Konflikte lösen", art: "karten", proSeite: 8, uebung: "Lösungs-Karten",
         items: [1, 2].flatMap(() => [{ emoji: "🔄", text: "Abwechseln" }, { emoji: "🍕", text: "Teilen" }, { emoji: "🤝", text: "Zusammen machen" }, { emoji: "🙋", text: "Hilfe holen" }]),
         hinweis: "Ausschneiden – jedes Kind bekommt einen Satz mit 4 Karten." },
+    "ruheplaetze-liste": { titel: "Liste: Unsere Ruheplätze", gruppe: "Konflikte lösen", art: "liste", zeilen: 10,
+        spalten: ["Name", "🪑 Mein Ruheplatz im Raum", "🌳 Auf dem Schulhof", "🙋 Mein Erwachsener"],
+        fuss: "Wer am Ruheplatz ist, wird in Ruhe gelassen." },
+    "ruheplatz-karten": { titel: "Kärtchen: Mein Ruheplatz (4 pro Seite)", gruppe: "Konflikte lösen", art: "karten", proSeite: 4,
+        items: Array.from({ length: 4 }, () => ({ emoji: "🪑", text: "Mein Ruheplatz:", linien: 2 })) },
     "erst-raus": { titel: "Plakat: Die Streit-Ampel", gruppe: "Konflikte lösen", art: "plakat",
         punkte: [{ emoji: "🟢", text: "1 · Kleiner Ärger: „Stopp“ sagen oder nicht beachten." }, { emoji: "🟡", text: "2 · Es kocht in mir: weggehen." }, { emoji: "🔴", text: "3 · Jemand tut weh oder droht: Erwachsenen holen." }, { emoji: "🗣️", text: "Später, wenn alle ruhig sind: reden." }],
         fuss: "Hauptsache: nicht zuhauen!" },
@@ -256,7 +268,7 @@ const B = {
 /* Welche Vorlagen gehören zu welcher fertigen Stunde */
 const ZUORDNUNG = {
     "v-gefuehle-erkennen": ["gefuehlskarten-gross", "gefuehlskarten-klein"],
-    "v-streit-loesen": ["erst-raus", "zahlenkarten"],
+    "v-streit-loesen": ["erst-raus", "zahlenkarten", "ruheplaetze-liste", "ruheplatz-karten"],
     "v-freundschaft": ["namenszettel", "kompliment-zettel"],
     "v-regeln-miteinander": ["gruppenregeln-leer", "regel-vorschlag"],
     "v-wut-werkzeugkasten": ["vulkan-bild", "wut-werkzeuge"],
@@ -284,7 +296,7 @@ const ZUORDNUNG = {
     "v-gemeinsam": ["team-regeln"],
     "v-gewinnen-verlieren": ["fairplay-saetze", "urkunde-fairplay"],
     "v-jeder-ist-wichtig": ["orchester-karten"],
-    "v-ruhig-werden": ["kasten-atmen", "ruhe-karten"],
+    "v-ruhig-werden": ["kasten-atmen", "ruhe-karten", "ruheplaetze-liste"],
     "v-alle-sinne": ["sinne-karten"],
     "v-dankbarkeit": ["danke-karten", "gluecksglas-zettel"],
     "v-alle-verschieden": ["sprachen-hallo"],
@@ -294,6 +306,8 @@ const ZUORDNUNG = {
 };
 // Wofür ist das Material? (wird beim Material angezeigt)
 const WOZU = {
+"ruheplaetze-liste": "Für „Unser Ruheplatz“: Trag mit den Kindern von Hand ein, wo jeder hingeht, wenn es kocht – und welchen Erwachsenen er holt. Dann im Klassenraum aufhängen. Die Namen stehen nur auf dem Papier, nicht im Programm.",
+"ruheplatz-karten": "Jedes Kind schreibt oder malt seinen Ruheplatz auf ein Kärtchen – für die Mappe oder das Mäppchen.",
 "erst-raus": "Hängt die ganze Stunde an der Tafel: Bei „Was jetzt?“ zeigen die Kinder 1, 2 oder 3 – das Plakat erklärt, was die Zahlen heißen. Danach dauerhaft im Raum lassen.",
 "gefuehlsbarometer": "Für das Ritual am Anfang: Die Gesichter hängen an der Tafel, jedes Kind steckt seine Klammer an sein Gefühl.",
 "gespraechsregeln": "Hängt dauerhaft im Raum. Wenn es laut wird: Kurz auf das Plakat zeigen, statt zu ermahnen.",
@@ -467,7 +481,18 @@ function urkundeSeite(m){
         <div class="mu-unten"><div>Datum</div><div>Unterschrift</div></div></div>`;
     return s;
 }
+// Liste zum Aufhängen: Tabelle mit leeren Zeilen – wird von Hand ausgefüllt (keine Namen im Programm)
+function listeSeite(m){
+    const s = seite("mliste");
+    const n = m.zeilen || 10, sp = m.spalten || [];
+    s.innerHTML = `<div class="mp-titel">${esc(m.titel.replace(/^Liste:\s*/, ""))}</div>
+        <table class="ml-tab"><tr>${sp.map((c, i) => `<th${i === 0 ? ' style="width:24%"' : ""}>${inline(c)}</th>`).join("")}</tr>
+        ${Array.from({ length: n }, () => "<tr>" + sp.map(() => "<td></td>").join("") + "</tr>").join("")}</table>
+        ${m.fuss ? `<div class="mp-fuss">${inline(m.fuss)}</div>` : ""}` + fussHtml(m, 1, 1);
+    return s;
+}
 function seitenBauen(m){
+    if (m.art === "liste") return [listeSeite(m)];
     if (m.art === "plakat") return [plakatSeite(m)];
     if (m.art === "urkunde") return [urkundeSeite(m)];
     return kartenSeiten(m);

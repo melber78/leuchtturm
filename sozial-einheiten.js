@@ -140,14 +140,20 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
           text: "Ein Kind kommt nach vorn, zieht verdeckt eine Gefühlskarte und spielt das Gefühl nur mit Gesicht und Körper vor. Die anderen raten vom Platz aus (melden). Kl. 3/4 nennen zusätzlich, *woran* sie es erkannt haben (Augenbrauen, Mund, Schultern).",
           folie: "Ein Kind zieht eine Gefühlskarte und zeigt das Gefühl – nur mit Gesicht und Körper, ohne Worte.\n\nDie anderen raten: **Welches Gefühl ist das?**",
           folie34: "Ein Kind zieht eine Gefühlskarte und zeigt das Gefühl – nur mit Gesicht und Körper, ohne Worte.\n\nDie anderen raten: **Welches Gefühl ist das? Woran hast du es erkannt?**",
-          kern: ["12"] },
+          kern: ["12"],
+          emoji: "🎭",
+          warum: "Gefühle sieht man im Gesicht. Wir raten Gefühle – ganz ohne Worte." },
         { titel: "Spiegelspiel", fuer: "12", dauer: "4 Min",
           text: "Die Tischnachbarn drehen sich auf ihren Stühlen zueinander. Eins macht ein Gefühlsgesicht, das andere spiegelt es genau. Sitzt ein Kind allein, kommt es als Dritter zu einem Paar. Danach mit dem Handspiegel das eigene Gesicht anschauen: „So sehe ich aus, wenn ich wütend bin.“",
-          folie: "Dreh dich zu deinem Nachbarn.\n\nEiner macht ein Gefühlsgesicht. Der andere ist der **Spiegel** und macht es genau nach. Dann wechseln." },
+          folie: "Dreh dich zu deinem Nachbarn.\n\nEiner macht ein Gefühlsgesicht. Der andere ist der **Spiegel** und macht es genau nach. Dann wechseln.",
+          emoji: "🪞",
+          warum: "Wir schauen genau hin: Wie sieht ein Gefühl im Gesicht aus?" },
         { titel: "Gefühlsdetektiv", fuer: "34", dauer: "7 Min",
           text: "Du liest kurze Situationen vor. Die Kinder zeigen auf das Gefühl am Barometer und erklären: „Ich glaube, sie fühlt sich …, weil …“\n\n- Mats hat sein Lieblingsbild zerrissen zurückbekommen.\n- Aylin darf zum ersten Mal bei der Freundin übernachten.\n- Ben muss morgen vor der Klasse ein Gedicht aufsagen.\n- Emma wurde beim Spiel nicht gewählt.\n- Leo hat ein Tor geschossen und alle jubeln.",
           folie: "Hör gut zu. Wie fühlt sich das Kind?\n\nZeig auf das Gefühl am Barometer und sag: **„Ich glaube, … fühlt sich …, weil …“**",
-          kern: ["34"] }
+          kern: ["34"],
+          emoji: "🔍",
+          warum: "Wir werden Detektive: Wie fühlt sich jemand – und woran merkt man das?" }
     ],
     ab12: {
       "titel": "Wie fühlt sich das an?",
@@ -249,6 +255,8 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
     uebungen: [
       {
         "titel": "Was jetzt?",
+        "emoji": "🚦",
+        "warum": "Nicht jeder Ärger ist gleich. Wir üben, was du bei kleinem Ärger, bei Wut und bei Gefahr machst.",
         "fuer": "alle",
         "dauer": "8 Min",
         "kern": [
@@ -285,6 +293,8 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
       },
       {
         "titel": "Mein Raus-Satz",
+        "emoji": "🗣️",
+        "warum": "Wenn es kocht, hilft ein kurzer Satz – und dann gehst du. Wir suchen deinen Satz.",
         "fuer": "alle",
         "dauer": "4 Min",
         "text": "Jedes Kind sucht sich einen kurzen Satz aus, mit dem es aus einem Streit aussteigt, und sagt ihn einmal laut vom Platz – ruhig, Blick nach vorn, dann Kopf zur Seite drehen (= weggehen). Die anderen klatschen.\n\n- „Stopp. Ich geh jetzt.“\n- „Ich hab keinen Bock auf Stress.“\n- „Ich hol jetzt einen Erwachsenen.“\n- „Wir reden später.“",
@@ -294,9 +304,11 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
       },
       {
         "titel": "Unser Ruheplatz",
+        "emoji": "🪑",
+        "warum": "Wenn es in dir kocht, brauchst du einen Platz zum Runterkommen. Wir suchen ihn zusammen.",
         "fuer": "alle",
         "dauer": "4 Min",
-        "text": "Gemeinsam legt ihr fest: Wohin kann man im Klassenraum und auf dem Schulhof gehen, wenn es kocht? (Leseecke, Fensterbank, Bank neben der Aufsicht …) Wer mag, geht einmal langsam vom Platz zum Ruheplatz im Raum und wieder zurück – so üben alle den Weg. Abmachung: Wer am Ruheplatz ist, wird in Ruhe gelassen.",
+        "text": "Gemeinsam legt ihr fest: Wohin kann man im Klassenraum und auf dem Schulhof gehen, wenn es kocht? (Leseecke, Fensterbank, Bank neben der Aufsicht …) Wer mag, geht einmal langsam vom Platz zum Ruheplatz im Raum und wieder zurück – so üben alle den Weg. Abmachung: Wer am Ruheplatz ist, wird in Ruhe gelassen.\n\n**Zum Aufhängen:** Trag die Ruheplätze gemeinsam von Hand in die Liste „Unsere Ruheplätze“ ein (Arbeitsmaterial) und häng sie im Klassenraum auf. Wer mag, bekommt zusätzlich ein Kärtchen „Mein Ruheplatz“ für die Mappe.",
         "folie": "Wohin kannst du gehen, wenn es in dir **kocht**? 🪑\n\nWir suchen einen **Ruheplatz** – hier im Raum und auf dem Schulhof.\n\nAbmachung: Wer dort ist, wird in Ruhe gelassen."
       }
     ],
@@ -435,14 +447,20 @@ Ida schweigt kurz. Dann sagt sie: „Ich war richtig traurig. Aber ich finde gut
           folie: "Ist das **freundlich**? Dann Daumen hoch 👍\n\nIst das **nicht freundlich**? Dann Daumen runter 👎",
           folie34: "Ist das **freundlich**? Daumen hoch 👍 – **nicht freundlich**? Daumen runter 👎\n\nSag auch, warum.",
           kern: ["12", "34"],
-          loesungen: ["1", "2", "1", "2", "1"] },
+          loesungen: ["1", "2", "1", "2", "1"],
+          emoji: "👍",
+          warum: "Was macht ein guter Freund? Wir prüfen: freundlich oder nicht?" },
         { titel: "Freundschaftsnetz", fuer: "34", dauer: "4 Min",
           text: "An der Tafel stehen die Vornamen aller Kinder. Ein Kind kommt nach vorn, nennt eine nette Sache, die ein anderes Kind schon einmal getan hat, und spannt einen Wollfaden (mit Magneten) zwischen den beiden Namen. So entsteht Faden für Faden ein Netz. Kl. 1/2 dürfen das Kind nennen, die Großen spannen den Faden.",
-          folie: "An der Tafel stehen eure Namen.\n\nSag, was ein anderes Kind schon einmal **Nettes** getan hat – und spann einen Faden zwischen euren Namen. So wächst unser **Freundschaftsnetz**." },
+          folie: "An der Tafel stehen eure Namen.\n\nSag, was ein anderes Kind schon einmal **Nettes** getan hat – und spann einen Faden zwischen euren Namen. So wächst unser **Freundschaftsnetz**.",
+          emoji: "🕸️",
+          warum: "Wir zeigen, wie viel Nettes wir schon füreinander getan haben." },
         { titel: "Kompliment-Post", fuer: "alle", dauer: "4 Min",
           text: "Jedes Kind zieht verdeckt einen Namenszettel. Kl. 1/2 malen für dieses Kind ein kleines Bild, Kl. 3/4 schreiben ein Kompliment („Ich finde toll, dass du …“). Du sammelst die Zettel ein und verteilst sie als „Postbote“ an die Plätze.",
           folie12: "Zieh einen Namenszettel. Verrate den Namen nicht!\n\nMal für dieses Kind ein kleines Bild. 📬 Danach kommt die Post.",
-          folie34: "Zieh einen Namenszettel. Verrate den Namen nicht!\n\nSchreib diesem Kind ein Kompliment: **„Ich finde toll, dass du …“** 📬 Danach kommt die Post." }
+          folie34: "Zieh einen Namenszettel. Verrate den Namen nicht!\n\nSchreib diesem Kind ein Kompliment: **„Ich finde toll, dass du …“** 📬 Danach kommt die Post.",
+          emoji: "📬",
+          warum: "Wir schicken uns heimlich etwas Nettes – das macht froh." }
     ],
     ab12: {
       "titel": "Was macht ein guter Freund?",
@@ -554,14 +572,18 @@ Nach einer Woche klappt das Inselleben richtig gut. Moritz sagt: „Komisch – 
     uebungen: [
         { titel: "Regel-Chaos-Spiel (Einstieg)", fuer: "alle", dauer: "5 Min",
           text: "Ankündigung: „Wir spielen ein Würfelspiel. Wer gewinnt? Das sage ich nicht.“ Der Würfel wandert von Platz zu Platz. Jedes Kind würfelt, du vergibst Punkte völlig willkürlich (eine 6 bringt mal 10 Punkte, mal 0; ein Kind darf zweimal würfeln, ein anderes gar nicht). Nach zwei Minuten stoppst du.\n\nFrage: „Wie hat sich das Spiel angefühlt? Was hat gefehlt?“ – Ziel: Die Kinder merken selbst, dass ohne Regeln Unfairness und Ärger entstehen.",
-          folie: "Wir spielen ein Würfelspiel. 🎲\n\nWer gewinnt? Das wird nicht verraten …" },
+          folie: "Wir spielen ein Würfelspiel. 🎲\n\nWer gewinnt? Das wird nicht verraten …",
+          emoji: "🎲",
+          warum: "Wir spielen ein Spiel – mal sehen, wie es ohne Regeln läuft …" },
         { titel: "Unser Regelplakat", fuer: "alle", dauer: "9 Min",
           text: "**Schritt 1 – Vorschläge:** Jedes Kind überlegt an seinem Platz eine Regel für unsere Sozialtraining-Stunde. Kl. 1/2 sagen sie dir oder malen ein Symbol, Kl. 3/4 schreiben sie auf einen Zettel. Wichtig: Regeln positiv formulieren („Wir hören zu“ statt „Nicht reinreden“).\n\n**Schritt 2 – Abstimmen:** Du liest die Vorschläge vor. Abstimmung per Handzeichen vom Platz. Die drei bis fünf Regeln mit den meisten Stimmen kommen aufs Plakat.\n\n**Schritt 3 – Begründen und Folgen aushandeln (Kl. 3/4):** Zu jeder Regel erklärt ein Kind, warum sie wichtig ist. Dann überlegt die Gruppe: Was passiert, wenn jemand die Regel bricht? Die Folge muss fair sein und zur Regel passen (z. B. „Wer reinredet, wartet eine Runde mit dem Redestein“).\n\n**Schritt 4 – Gestalten (Kl. 1/2):** Während die Großen begründen, malen die Kleinen an ihrem Platz Symbole zu jeder Regel (Ohr für Zuhören, Herz für Freundlichkeit). Die Bilder kommen neben die Regeln aufs Plakat.",
           text12: "**Schritt 1 – Vorschläge:** Jedes Kind überlegt an seinem Platz eine Regel für unsere Sozialtraining-Stunde und sagt sie dir oder malt ein Symbol. Wichtig: Regeln positiv formulieren („Wir hören zu“ statt „Nicht reinreden“).\n\n**Schritt 2 – Abstimmen:** Du liest die Vorschläge vor. Abstimmung per Handzeichen vom Platz. Die drei bis fünf Regeln mit den meisten Stimmen schreibst du aufs Plakat.\n\n**Schritt 3 – Gestalten:** Die Kinder malen an ihrem Platz Symbole zu jeder Regel (Ohr für Zuhören, Herz für Freundlichkeit). Die Bilder kommen neben die Regeln aufs Plakat.",
           text34: "**Schritt 1 – Vorschläge:** Jedes Kind überlegt an seinem Platz eine Regel für unsere Sozialtraining-Stunde und schreibt sie auf einen Zettel. Wichtig: Regeln positiv formulieren („Wir hören zu“ statt „Nicht reinreden“).\n\n**Schritt 2 – Abstimmen:** Du liest die Vorschläge vor. Abstimmung per Handzeichen vom Platz. Die drei bis fünf Regeln mit den meisten Stimmen kommen aufs Plakat.\n\n**Schritt 3 – Begründen und Folgen aushandeln:** Zu jeder Regel erklärt ein Kind, warum sie wichtig ist. Dann überlegt die Gruppe: Was passiert, wenn jemand die Regel bricht? Die Folge muss fair sein und zur Regel passen (z. B. „Wer reinredet, wartet eine Runde mit dem Redestein“).",
           folie12: "Welche Regel hilft, dass es uns hier gut geht?\n\nSag deine Regel oder mal ein Bild dazu. Danach stimmen wir ab. ✋",
           folie34: "Welche Regel hilft, dass es uns hier gut geht?\n\nSchreib deine Regel auf einen Zettel – so: **„Wir …“** (nicht: „Nicht …“). Danach stimmen wir ab. ✋",
-          kern: ["12", "34"] }
+          kern: ["12", "34"],
+          emoji: "📜",
+          warum: "Wir bestimmen selbst, welche Regeln bei uns gelten." }
     ],
     ab12: {
       "titel": "Regeln helfen uns",

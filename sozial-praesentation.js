@@ -278,12 +278,13 @@ function folienBauen(e, stufe){
     ueListe.forEach(u0 => {
         // Klassen sind getrennt: nur Übungen dieser Stufe, Text passend zur Stufe
         if (u0.fuer && u0.fuer !== "alle" && u0.fuer !== stufe) return;
-        const u = Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, folie: u0["folie" + stufe] || u0.folie || "", zusatz: !!(window.istZusatz && window.istZusatz(e, u0, stufe)) });
+        const u = Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, folie: u0["folie" + stufe] || u0.folie || "", warum: u0["warum" + stufe] || u0.warum || "", zusatz: !!(window.istZusatz && window.istZusatz(e, u0, stufe)) });
         // quiz: daumen/ampel/… = Abstimmung je Punkt · karten = je Punkt eine Folie ohne Abstimmung ·
         // liste = alle Punkte auf der Übungsfolie · keine = Punkte nur für die Lehrkraft
         const punkte = aufzaehlung(u.text).slice(0, 10).map(p => p.split(/\s+→\s+/)[0]);
         const art = u.quiz || quizArt(u.text);
         if (art === "liste" && punkte.length) u.liste = punkte;
+        f.push({ typ: "ankuendigung", u });   // „Als Nächstes …“ – kurze Einführung vor jeder Übung
         f.push({ typ: "uebung", u });
         if (punkte.length >= 2 && art === "karten") punkte.forEach((p, i) => f.push({ typ: "karte", u, aussage: p, nr: i + 1, von: punkte.length }));
         else if (punkte.length >= 2 && !["frage", "keine", "liste", "karten"].includes(art)) {
@@ -295,6 +296,7 @@ function folienBauen(e, stufe){
     f.push({ typ: "abschluss" });
     // „Überspringen“ bei Zusatz-Übungen: zur nächsten Folie, die nicht mehr zu dieser Übung gehört
     f.forEach((x, i) => { if (x.typ === "uebung" && x.u.zusatz) { let j = i + 1; while (j < f.length && (f[j].typ === "karte" || f[j].typ === "abstimmung") && f[j].u === x.u) j++; x.weiter = j; } });
+    f.forEach((x, i) => { if (x.typ === "ankuendigung" && f[i + 1] && f[i + 1].weiter) x.weiter = f[i + 1].weiter; });
     return f;
 }
 
@@ -445,6 +447,14 @@ function folieHtml(f, e){
         case "film":
             return `<h2>🎬 Film ab!</h2><div class="p-filme">${f.medien.map(m => `<a class="p-film" href="${esc(m.url)}" target="_blank" rel="noopener"><div class="play">▶</div><div><strong>${esc(m.titel || "Film")}</strong><span>${esc([m.quelle, m.dauer].filter(Boolean).join(" · "))}</span>${m.hinweis ? `<span style="display:block">${esc(m.hinweis)}</span>` : ""}</div></a>`).join("")}</div>
                 <div class="p-klein" style="margin-top:2vh">Öffnet in einem neuen Fenster – danach hierher zurückwechseln.</div>`;
+        case "ankuendigung": {
+            const reihe = zustand.folien.filter(x => x.typ === "uebung"), nr = reihe.findIndex(x => x.u === f.u) + 1;
+            return `<div class="p-klein">${f.u.zusatz ? "Zusatz – wenn noch Zeit ist" : reihe.length > 1 ? "Übung " + nr + " von " + reihe.length : "Unsere Übung"}</div>
+                <div style="font-size:clamp(40px,7vw,110px);line-height:1">${f.u.emoji || "👉"}</div>
+                <h2 style="margin-top:.2em"><span style="opacity:.6;font-size:.6em;display:block">Als Nächstes:</span>${esc(f.u.titel)}</h2>
+                <div class="p-text" style="font-size:clamp(20px,min(2.6vw,4.4vh),40px)">${f.u.warum ? inline(f.u.warum) : "Hört gut zu – gleich erkläre ich euch, wie es geht."}</div>
+                ${f.u.zusatz && f.weiter ? `<div class="p-reihe"><button class="p-knopf hell" data-springen="${f.weiter}">⏭ Überspringen</button></div>` : ""}`;
+        }
         case "uebung": {
             const min = minuten(f.u.dauer);
             const kurz = String(f.u.text || "").split(/\n\s*\n/)[0];
@@ -837,6 +847,11 @@ async function pptxExport(e, stufe = "12"){
                     s.addText([{ text: m.titel || "Film", options: { hyperlink: { url: m.url }, bold: true, fontSize: 22, color: NACHT, breakLine: true } }, { text: [m.quelle, m.dauer].filter(Boolean).join(" · "), options: { fontSize: 14, color: GRAU } }], { x: 2.1, y: y + .08, w: W - 3.2, h: .9, fontFace: TEXT, valign: "middle" });
                 });
                 s.addNotes(f.medien.map(m => (m.titel || "Film") + ": " + m.url + (m.hinweis ? " – " + m.hinweis : "")).join("\n") + "\nHinweis: Mediathek-Links können ablaufen – vorher prüfen.");
+                break;
+            case "ankuendigung":
+                s.addText("Als Nächstes:", { x: 0, y: 1.6, w: W, h: .6, align: "center", fontFace: FONT, fontSize: 24, color: GRAU });
+                s.addText(f.u.titel, { x: .5, y: 2.2, w: W - 1, h: 1.2, align: "center", fontFace: FONT, fontSize: 48, bold: true, color: NACHT });
+                s.addText(f.u.warum ? ohneMarkdown(f.u.warum) : "Hört gut zu – gleich erkläre ich euch, wie es geht.", { x: 1, y: 3.5, w: W - 2, h: 1.4, align: "center", fontFace: TEXT, fontSize: 24, color: MEER });
                 break;
             case "uebung": {
                 const fuer = { alle: "Alle", "12": "Kl. 1/2", "34": "Kl. 3/4" }[f.u.fuer] || "Alle";
