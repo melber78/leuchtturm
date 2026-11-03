@@ -223,6 +223,9 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .druck-anzahl{ display:inline-flex; align-items:center; gap:3px; font-weight:900; color:var(--grau); }
 .druck-anzahl input{ width:58px; font-size:17px; font-weight:800; text-align:center; padding:8px 4px; border:2px solid var(--linie); border-radius:10px; }
 .m-wozu{ font-size:15px; line-height:1.4; background:#fff7e6; border-left:4px solid var(--gold); border-radius:8px; padding:6px 10px; margin:4px 0 6px; }
+.plan-aufbau{ font-size:12px; font-weight:800; color:#a0651a; background:#fff4dc; border-radius:6px; padding:3px 6px; margin-top:4px; line-height:1.3; }
+.aufbau-box{ background:#fff7e6; border-left:5px solid var(--gold); border-radius:10px; padding:10px 14px; margin:0 0 14px; font-weight:700; line-height:1.5; }
+.aufbau-box a{ color:inherit; }
 .chip.kern{ background:#e3f3e6; color:#1e6b3c; font-weight:900; }
 .chip.zusatz{ background:#eef1f3; color:#6b7880; }
 .speicherstatus{ font-weight:800; font-size:13px; color:var(--grau); }
@@ -1140,7 +1143,7 @@ function zeigeBibliothek(){
             if (e.kategorie !== letzte) { if (letzte !== null) html += "</div>"; html += `<div class="kat-titel">${esc(e.kategorie || "Ohne Thema")}</div><div class="karten">`; letzte = e.kategorie; }
             const geplant = planVerwendung(e);
             html += `<a class="einheit-karte" href="#stunde/${encodeURIComponent(e.id)}">
-                <div class="chips">${artChip(e)}${e.nur34 ? '<span class="chip gold">nur Kl. 3/4</span>' : ""}${e.ohneVorbereitung ? '<span class="chip gruen"><i class="fa-solid fa-bolt"></i> ohne Vorbereitung</span>' : ""}${geplant.length ? `<span class="chip gold"><i class="fa-solid fa-calendar-check"></i> KW ${geplant.map(kw).join(", ")}</span>` : ""}</div>
+                <div class="chips">${artChip(e)}${e.nur34 ? '<span class="chip gold">nur Kl. 3/4</span>' : ""}${e.ohneVorbereitung ? '<span class="chip gruen"><i class="fa-solid fa-bolt"></i> ohne Vorbereitung</span>' : ""}${geplant.length ? `<span class="chip gold"><i class="fa-solid fa-calendar-check"></i> KW ${geplant.map(kw).join(", ")}</span>` : ""}${vorherIds(e).length ? `<span class="chip" title="Baut auf diesen Stunden auf">🔗 nach ${vorherIds(e).map(id => "„" + esc(finde(id).titel) + "“").join(", ")}</span>` : ""}</div>
                 <h3>${esc(e.titel)}</h3>
                 ${e.nur34 ? "" : `<p><strong>1/2:</strong> ${esc(e.ziel12)}</p>`}<p><strong>3/4:</strong> ${esc(e.ziel34)}</p></a>`;
         }
@@ -1194,6 +1197,17 @@ function zeigeStunde(id){
             <div class="knopfleiste">${bearbeitenKnopf}<button class="btn" id="kopieren"><i class="fa-solid fa-copy"></i> Als neue Stunde kopieren</button>${loeschKnopf}</div>
         </div>
 
+        ${(() => {
+            const vor = vorherIds(e), nach = danachIds(e);
+            if (!vor.length && !nach.length) return "";
+            const stand = DATEN.jahresplan ? klassenStand() : [];
+            const status = id => { const x = finde(id), ids = [id, ...alleEinheiten().filter(y => y.ersetzt === id).map(y => y.id)];
+                const geh = stand.filter(s => s.gehalten.some(g => ids.includes(g.id))).map(s => s.k.name);
+                const pl = planVerwendung(x);
+                return geh.length ? `✓ gehalten in ${esc(geh.join(", "))}` : pl.length ? `geplant KW ${pl.map(kw).join(", ")}` : "noch nicht geplant"; };
+            const link = id => `<a href="#stunde/${encodeURIComponent(id)}">„${esc(finde(id).titel)}“</a>`;
+            return `<div class="aufbau-box">${vor.length ? `🔗 <b>Baut auf:</b> ${vor.map(id => `${link(id)} <small>(${status(id)})</small>`).join(", ")} – am besten vorher.` : ""}${vor.length && nach.length ? "<br>" : ""}${nach.length ? `➡️ <b>Danach passt:</b> ${nach.map(link).join(", ")}` : ""}</div>`;
+        })()}
         ${window.sozialPraesentation ? `<div class="karte" style="background:linear-gradient(135deg,#16324a,#3d7ea6);color:white">
             <h2 style="color:white"><i class="fa-solid fa-display"></i> Einstieg für die Tafel</h2>
             <p style="margin:0 0 14px;font-weight:700;opacity:.85">Interaktive Präsentation im Vollbild: Gefühls-Abstimmung, Geschichte mit Bildern und Vorlesestimme, Fragen, Daumen-Abstimmungen, Übungen mit Timer, Glücksrad „Wer ist dran?“ und Applauswelle. Steuerung mit Tippen, Pfeiltasten oder Presenter.</p>
@@ -1648,6 +1662,45 @@ function klasseInWoche(w, k){
     return { status: x.status || (w.erledigt && !w.klassen ? "gehalten" : ""), einheit: x.einheit || "", notiz: x.notiz || "" };
 }
 // Thema einer Woche für eine Stufe ("12" / "34"); ältere Pläne haben nur ein gemeinsames Thema
+/* Themen, die aufeinander aufbauen: Stunde → Stunden, die vorher dran sein sollten */
+const AUFBAU = {
+    "v-koerpersprache": ["v-gefuehle-erkennen"],
+    "v-empathie": ["v-gefuehle-erkennen"],
+    "v-wut-werkzeugkasten": ["v-gefuehle-erkennen"],
+    "v-traurig-troesten": ["v-gefuehle-erkennen"],
+    "v-angst-okay": ["v-gefuehle-erkennen"],
+    "v-kompromisse": ["v-streit-loesen"],
+    "v-entschuldigen": ["v-streit-loesen"],
+    "v-um-hilfe-bitten": ["v-petzen-hilfe"],
+    "v-freundschaft": ["v-neue-freunde"],
+    "v-mitspielen-lassen": ["v-freundschaft"],
+    "v-stolz-auf-mich": ["v-meine-staerken"],
+    "v-fehler-lernhelfer": ["v-meine-staerken"],
+    "v-komplimente": ["v-meine-staerken"],
+    "v-pause-fair": ["v-regeln-miteinander"],
+    "k-schlichten": ["v-streit-loesen"],
+    "k-wut-eisberg": ["k-wut-frueh"],
+    "k-provokation": ["k-eskalation"],
+    "k-rache": ["k-eskalation"],
+    "k-mutter": ["k-sprueche"],
+    "k-schimpfwoerter": ["k-mutter"],
+    "k-sprachregel": ["k-mutter", "k-schimpfwoerter"],
+    "k-am-boden": ["k-eskalation"],
+    "k-koerpergrenzen": ["v-nein-sagen"],
+    "k-konsequenzen": ["k-mist-gebaut"],
+    "k-verpetzen": ["v-petzen-hilfe"]
+};
+function basisId(e){ return e ? (e.ersetzt || e.id) : ""; }
+function vorherIds(e){ return (AUFBAU[basisId(e)] || []).filter(id => finde(id)); }
+function danachIds(e){ const b = basisId(e); return Object.keys(AUFBAU).filter(k => AUFBAU[k].includes(b) && finde(k)); }
+// Fehlt eine Vorgänger-Stunde in den Wochen vor dieser Woche (für diese Stufe)?
+function fehltVorher(e, st, wocheIso){
+    const p = DATEN.jahresplan; if (!e || !p || !p.wochen) return [];
+    return vorherIds(e).filter(pid => {
+        const pe = finde(pid); if (pe && pe.nur34 && st === "12") return false;
+        return !Object.entries(p.wochen).some(([k, w]) => k < wocheIso && !w.frei && [stufenThema(w, st), ...Object.values(w.klassen || {}).map(x => x && x.einheit)].some(t => t && basisId(finde(t)) === pid));
+    });
+}
 function stufenThema(w, st){ return (w && w.einheiten && Object.prototype.hasOwnProperty.call(w.einheiten, st)) ? (w.einheiten[st] || "") : ((w && w.einheit) || ""); }
 function wochenThemen(w){ return [...new Set([stufenThema(w, "12"), stufenThema(w, "34")].filter(Boolean))]; }
 function stufenThemaSetzen(w, st, id){
@@ -1726,7 +1779,8 @@ function zeigeJahresplan(){
                 const k = iso(d), w = p.wochen[k] || {};
                 const wahlZelle = (st, label) => {
                     const id = stufenThema(w, st), wert = w.frei ? "@frei" : id, ee = id && !w.frei ? finde(id) : null;
-                    return `<td data-label="${label}"><select class="plan-wahl" data-st="${st}">${optionen(wert)}${id && !w.frei && !ee ? `<option value="${esc(id)}" selected>(gelöschte Stunde)</option>` : ""}</select></td>`;
+                    const fehlt = ee ? fehltVorher(ee, st, k) : [];
+                    return `<td data-label="${label}"><select class="plan-wahl" data-st="${st}">${optionen(wert)}${id && !w.frei && !ee ? `<option value="${esc(id)}" selected>(gelöschte Stunde)</option>` : ""}</select>${fehlt.length ? `<div class="plan-aufbau">🔗 Baut auf ${fehlt.map(f => `„${esc(finde(f).titel)}“`).join(" und ")} – am besten vorher einplanen</div>` : ""}</td>`;
                 };
                 const e = !w.frei ? finde(wochenThemen(w)[0]) : null;
                 const zellen = klassen.map(kl => {
