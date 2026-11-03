@@ -120,6 +120,11 @@ const CSS = `
 #praes .p-dran.lang{ font-size:clamp(16px,1.8vw,26px); padding:0 .7em; }
 #praes .p-dran.neu{ animation:pDran .5s cubic-bezier(.2,1.6,.4,1); }
 @keyframes pDran{ from{ transform:scale(.3); } to{ transform:scale(1); } }
+#praes .p-vorleser[hidden]{ display:none !important; }
+#praes .p-s1{ color:#1D5FA8; }
+#praes .p-s2{ color:#C0392B; }
+#praes .p-silbenknopf{ opacity:.55; }
+#praes .p-silbenknopf.an{ opacity:1; background:#fff4dc !important; box-shadow:inset 0 0 0 2px #f2a93b; }
 #praes .p-overlay{ position:absolute; inset:0; background:rgba(22,50,74,.55); display:flex; align-items:center; justify-content:center; z-index:10; animation:pFade .2s; }
 @keyframes pFade{ from{ opacity:0; } }
 #praes .p-dialog{ background:white; border-radius:30px; padding:3vh 3vw; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.3); max-width:92vw; max-height:calc(100% - 16px); overflow-y:auto; box-sizing:border-box; }
@@ -283,6 +288,7 @@ function praesentationStarten(e, startStufe){
             <div class="p-punkte"></div>
             <button data-p="rad" title="Wer ist dran?">🎡<span class="p-wort"> Wer ist dran?</span></button>
             <button data-p="timer" title="Timer">⏱<span class="p-wort"> Timer</span></button>
+            <button data-p="silben" class="p-silbenknopf" title="Silbenfarben an/aus – zum Selbstlesen an der Tafel"><span class="p-s1">Sil</span><span class="p-s2">ben</span></button>
             <button data-p="schale" title="Klangschale">🔔</button>
             <button data-p="vollbild" title="Vollbild (F)">⛶</button>
         </div>`;
@@ -290,6 +296,9 @@ function praesentationStarten(e, startStufe){
     let anzahl = 9;
     try { anzahl = Math.max(2, Math.min(30, parseInt(localStorage.getItem("sozial_anzahl"), 10) || 9)); } catch (err) {}
     zustand = { e, stufe: startStufe || "12", wurzel, buehne: wurzel.querySelector(".p-buehne"), i: 0, folien: [], stimmen: {}, anzahl, timer: null, gelesen: new Set(), vorleser: {} };
+    try { zustand.silben = localStorage.getItem("sozial_silben_" + zustand.stufe) === "1"; } catch (err) { zustand.silben = false; }
+    wurzel.querySelector(".p-silbenknopf").classList.toggle("an", zustand.silben);
+    if (zustand.silben) silbenLaden().then(() => { if (zustand) silbenAnwenden(zustand.buehne); });
     zustand.folien = folienBauen(e, zustand.stufe);
     wurzel.addEventListener("click", leistenKlick);
     document.addEventListener("keydown", tasten);
@@ -329,6 +338,12 @@ function leistenKlick(ev){
     else if (a === "zurueck") zeigen(zustand.i - 1, true);
     else if (a === "vollbild") vollbild();
     else if (a === "schale") klangschale();
+    else if (a === "silben") {
+        zustand.silben = !zustand.silben;
+        b.classList.toggle("an", zustand.silben);
+        try { localStorage.setItem("sozial_silben_" + zustand.stufe, zustand.silben ? "1" : "0"); } catch (err) {}
+        zeigen(zustand.i);
+    }
     else if (a === "rad") gluecksrad();
     else if (a === "timer") timerWaehlen();
     else if (a === "punkt") zeigen(+b.dataset.n, +b.dataset.n < zustand.i);
@@ -347,6 +362,7 @@ function zeigen(i, rueckwaerts){
     z.buehne.querySelectorAll(".p-folie").forEach(x => x.remove());
     z.buehne.appendChild(el);
     folieAktivieren(el, f);
+    if (z.silben) silbenLaden().then(() => { if (el.isConnected) silbenAnwenden(el); });
     z.wurzel.querySelector(".p-pos").textContent = (i + 1) + " / " + z.folien.length;
     z.wurzel.querySelector(".p-punkte").innerHTML = z.folien.map((_, k) => `<i data-p="punkt" data-n="${k}" class="${k === i ? "an" : ""}"></i>`).join("");
 }
@@ -506,6 +522,66 @@ function timerStarten(sekunden){
 function timerWaehlen(){
     const o = overlay(`<h2>⏱ Timer</h2><div class="p-reihe">${[1, 2, 3, 5, 8, 10].map(m => `<button class="p-knopf ${m === 5 ? "gold" : "hell"}" data-min="${m}">${m} Min</button>`).join("")}</div>`);
     o.addEventListener("click", ev => { const b = ev.target.closest("[data-min]"); if (b) { timerStarten(+b.dataset.min * 60); o.remove(); } });
+}
+
+/* ---------------- Silbenfarben (blau/rot) zum Selbstlesen ---------------- */
+const SILBEN_CDN = "https://cdn.jsdelivr.net/npm/hyphen@1.10.6/";
+let silbenTrenner = null, silbenVersprechen = null;
+function skriptLaden(url, test){
+    return new Promise((ok, fehler) => {
+        if (test()) return ok();
+        const sc = document.createElement("script"); sc.src = url; sc.onload = () => ok(); sc.onerror = fehler; document.head.appendChild(sc);
+    });
+}
+function silbenLaden(){
+    if (!silbenVersprechen) silbenVersprechen = skriptLaden(SILBEN_CDN + "hyphen.js", () => window.createHyphenator)
+        .then(() => skriptLaden(SILBEN_CDN + "patterns/de-1996.js", () => window.hyphenationPatternsDe1996))
+        .then(() => { silbenTrenner = window.createHyphenator(window.hyphenationPatternsDe1996, { hyphenChar: "|", minWordLength: 3 }); })
+        .catch(() => null);
+    return silbenVersprechen;
+}
+function silbenRegel(wort){
+    const VOKALE = "aeiouäöüyAEIOUÄÖÜY", EINHEITEN = ["sch", "ch", "ck", "ph", "qu"], teile = [];
+    for (let i = 0; i < wort.length;) {
+        const rest = wort.slice(i).toLowerCase(), einheit = EINHEITEN.find(x => rest.startsWith(x));
+        if (einheit) { teile.push({ s: wort.substr(i, einheit.length), v: false }); i += einheit.length; }
+        else { teile.push({ s: wort[i], v: VOKALE.includes(wort[i]) }); i++; }
+    }
+    const kerne = [];
+    for (let k = 0; k < teile.length; k++) { if (!teile[k].v) continue; let e = k; while (e + 1 < teile.length && teile[e + 1].v) e++; kerne.push([k, e]); k = e; }
+    if (kerne.length < 2) return [wort];
+    const schnitte = kerne.slice(0, -1).map((kk, n) => { const kons = kerne[n + 1][0] - kk[1] - 1; return kons <= 1 ? kk[1] + 1 : kerne[n + 1][0] - 1; });
+    const aus = []; let st = 0;
+    schnitte.forEach(x => { aus.push(teile.slice(st, x).map(t => t.s).join("")); st = x; });
+    aus.push(teile.slice(st).map(t => t.s).join(""));
+    return aus;
+}
+function silbenTrennen(wort){
+    let teile;
+    try { teile = silbenTrenner ? silbenTrenner(wort).split("|") : silbenRegel(wort); } catch (err) { teile = silbenRegel(wort); }
+    const aus = [];
+    teile.forEach(t => {
+        if (t.length > 2 && /^[aeiouäöü][bcdfghjklmnpqrstvwxzß][aeiouäöüy]/i.test(t) && !/^(un|er|um|ur|an|ob)/i.test(t)) aus.push(t[0], t.slice(1));
+        else aus.push(t);
+    });
+    return aus.filter(Boolean);
+}
+// färbt alle Wörter in Lesetext, Aussagen, Fragen und Übungstext – Knöpfe und Titel bleiben unverändert
+function silbenAnwenden(wurzel){
+    wurzel.querySelectorAll(".p-text, .p-aussage, .p-frage span:not(.nr)").forEach(bereich => {
+        if (bereich.dataset.silben) return;
+        bereich.dataset.silben = "1";
+        const knoten = [], gang = document.createTreeWalker(bereich, NodeFilter.SHOW_TEXT);
+        while (gang.nextNode()) if (!gang.currentNode.parentElement.closest("button, .p-sil")) knoten.push(gang.currentNode);
+        knoten.forEach(n => {
+            const t = n.nodeValue;
+            if (!/[A-Za-zÄÖÜäöüß]/.test(t)) return;
+            const frag = document.createElement("span");
+            frag.innerHTML = t.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]))
+                .replace(/[A-Za-zÄÖÜäöüß]+/g, w => `<span class="p-sil">${silbenTrennen(w).map((x, i) => `<span class="p-s${i % 2 + 1}">${x}</span>`).join("")}</span>`);
+            n.replaceWith(...frag.childNodes);
+        });
+    });
 }
 
 /* ---------------- Glücksrad „Wer ist dran?“ ---------------- */
