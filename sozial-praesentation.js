@@ -343,7 +343,7 @@ function stimmenHtml(schluessel, optionen){
     return `<div class="p-stimmen" data-schluessel="${esc(schluessel)}">${optionen.map(o => `<div class="p-stimme" data-wert="${esc(o.wert)}">
         <div class="p-saeule"><span class="p-zahl">${s[o.wert] || ""}</span><div class="p-fuell" style="height:0"></div></div>
         ${symbolHtml(o.art, o.zeichen)}<div class="p-name">${esc(o.name)}</div>
-        <button class="p-minus" data-minus="1">− 1</button></div>`).join("")}</div>`;
+        <button class="p-minus" data-minus="1" title="Aus Versehen getippt? Eine Stimme zurücknehmen." style="visibility:${s[o.wert] ? "visible" : "hidden"}">↩ zurück</button></div>`).join("")}</div>`;
 }
 const GEFUEHLE_OPT = ["froh", "traurig", "wütend", "ängstlich", "ruhig"].map(g => ({ wert: g, name: g, art: "gefuehl", zeichen: g }));
 function abstimmOptionen(art){
@@ -411,7 +411,7 @@ function folieAktivieren(el, f){
         const s = zustand.stimmen[schl] = zustand.stimmen[schl] || {};
         const zeichnen = () => {
             const max = Math.max(3, ...Object.values(s));
-            box.querySelectorAll(".p-stimme").forEach(st => { const n = s[st.dataset.wert] || 0; st.querySelector(".p-fuell").style.height = (n / max * 100) + "%"; st.querySelector(".p-zahl").textContent = n || ""; });
+            box.querySelectorAll(".p-stimme").forEach(st => { const n = s[st.dataset.wert] || 0; st.querySelector(".p-fuell").style.height = (n / max * 100) + "%"; st.querySelector(".p-zahl").textContent = n || ""; st.querySelector(".p-minus").style.visibility = n ? "visible" : "hidden"; });
         };
         box.addEventListener("click", ev => {
             const st = ev.target.closest(".p-stimme"); if (!st) return;
