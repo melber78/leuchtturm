@@ -24,6 +24,7 @@
         verantwortung: ps("knietzsche-und-die-verantwortung", "Knietzsche und die Verantwortung"),
         gerechtigkeit: ps("knietzsche-und-die-gerechtigkeit", "Knietzsche und die Gerechtigkeit"),
         solidaritaet:  ps("knietzsche-und-die-solidaritaet", "Knietzsche und die Solidarität"),
+        mausStreit:    { titel: "Die Sendung mit der Maus: Streiten", url: "https://www.wdrmaus.de/filme/sachgeschichten/streiten.php5", quelle: "WDR · Die Seite mit der Maus", hinweis: "Nur den 1. Teil zeigen: Kinder erzählen, was beim Streit passiert und wie man sich wieder verträgt. Den 2. Teil (Erwachsene) weglassen." },
         stoppLied:     Object.assign(yt("9meP8fF0Ebg", "Stopp heißt Stopp – Mitmachlied zum Grenzen-Setzen", "YouTube · Kindermusikwelt (Dän Dickopf)", "Bärenfiguren zeigen die Bewegungen vor – die Kinder machen im Sitzen mit (Stopp-Hand). Ideal für Kl. 1/2 zum Stopp-Schild."), { fuer: "Kl. 1/2" }),
         selbstbewusst: ps("knietzsche-und-das-selbstbewusstsein", "Knietzsche und das Selbstbewusstsein"),
         dankbarkeit:   ps("knietzsche-und-die-dankbarkeit", "Knietzsche und die Dankbarkeit"),
@@ -47,7 +48,7 @@
 
     window.SOZIAL_MEDIEN = {
         "v-gefuehle-erkennen":  [F.gefuehle, F.srfGefuehle],
-        "v-streit-loesen":      [F.miteinander],
+        "v-streit-loesen":      [F.mausStreit],
         "v-freundschaft":       [F.freundschaft],
         "v-regeln-miteinander": [F.freiheit],
         "v-wut-werkzeugkasten": [F.wut],
