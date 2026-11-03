@@ -37,7 +37,7 @@ K({
     id: "k-respekt",
     titel: "Respekt – verdient oder erzwungen?",
     ziel34: "Unterscheiden, ob jemand respektiert oder gefürchtet wird – und wie man echten Respekt bekommt",
-    material: "Tafel: zwei Spalten „Angst“ und „Respekt“\nrote und grüne Karten (pro Kind je eine)",
+    material: "Tafel: zwei Spalten „Angst“ und „Respekt“\nAntwortkarten (Ampelkarte)",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Der Boss vom Schulhof", text:
 `Kai ist in der 4. Klasse und alle nennen ihn den Boss. Wenn er in der Pause kommt, machen die anderen Platz an der Tischtennisplatte. Wer nicht spurt, wird geschubst oder vor allen „Opfer“ genannt. Kai sagt: „Die haben Respekt vor mir.“
@@ -53,9 +53,12 @@ Eines Tages bricht Kai sich den Arm und fehlt zwei Wochen. An der Tischtennispla
 4. Vor wem hast du echten Respekt – und warum? (freiwillig)` },
     uebungen: [
         { titel: "Angst oder Respekt?", dauer: "7 Min",
-          text: "Du liest die Situationen vor. Die Kinder halten die rote Karte hoch (= Angst/Druck) oder die grüne (= echter Respekt). Danach kurz begründen lassen.\n\n- Alle lachen über Ömers Witz, weil sie sonst Ärger mit ihm bekommen.\n- Lea hört zu, wenn ein Jüngerer etwas erzählt, und nimmt ihn ernst.\n- Tim bekommt immer das beste Fahrrad, weil er sonst droht.\n- Der Trainer ist streng, aber fair – und hilft, wenn es jemandem schlecht geht.\n- Jonas gibt nach einem Streit als Erster die Hand.\n- Mia sagt: „Wenn du mich verpetzt, bist du dran.“" },
+          text: "Du liest die Situationen vor. Die Kinder halten die rote Karte hoch (= Angst/Druck) oder die grüne (= echter Respekt). Danach kurz begründen lassen.\n\n- Alle lachen über Ömers Witz, weil sie sonst Ärger mit ihm bekommen.\n- Lea hört zu, wenn ein Jüngerer etwas erzählt, und nimmt ihn ernst.\n- Tim bekommt immer das beste Fahrrad, weil er sonst droht.\n- Der Trainer ist streng, aber fair – und hilft, wenn es jemandem schlecht geht.\n- Jonas gibt nach einem Streit als Erster die Hand.\n- Mia sagt: „Wenn du mich verpetzt, bist du dran.“",
+          antworten: ["🔴 Angst / Druck", "🟢 echter Respekt"],
+          folie: "Ist das **echter Respekt** 🟢 – oder **Angst und Druck** 🔴?\n\nHalte deine **Ampelkarte** hoch. Danach: Warum?" },
         { titel: "Respekt-Sammlung", dauer: "5 Min",
-          text: "An der Tafel zwei Spalten: **So macht man anderen Angst** und **So bekommt man Respekt**. Die Kinder rufen Ideen vom Platz aus zu (melden). Zum Schluss die Frage: Was davon hält länger?" }
+          text: "An der Tafel zwei Spalten: **So macht man anderen Angst** und **So bekommt man Respekt**. Die Kinder rufen Ideen vom Platz aus zu (melden). Zum Schluss die Frage: Was davon hält länger?",
+          folie: "Zwei Spalten:\n\n😨 **So macht man anderen Angst**\n🤝 **So bekommt man Respekt**\n\nWas davon hält länger?" }
     ],
     ab34: { titel: "Respekt oder Angst?", aufgaben: [
         { typ: "tabelle", text: "Sortiere die Begriffe aus dem Wortspeicher: Was macht Angst – was bringt echten Respekt?", spalten: ["Macht anderen Angst", "Bringt echten Respekt"], zeilen: [["", ""], ["", ""], ["", ""], ["", ""]],
@@ -86,9 +89,14 @@ Jamal wird still. Dann schubst er Deniz so heftig, dass der hinfällt. „Bist d
 5. Wie merkst du bei dir selbst: Jetzt ist meine Grenze erreicht?` },
     uebungen: [
         { titel: "Spaß – Grenze – zu weit", dauer: "7 Min",
-          text: "Du liest Sprüche und Situationen vor. Die Kinder zeigen mit den Fingern: 1 = Spaß, 2 = Grenze, 3 = zu weit. Wichtig: Es gibt unterschiedliche Meinungen – genau darum geht es. Frag nach: „Warum ist das für dich schon eine 3?“\n\n- „Du hast heute mal wieder verpennt, oder?“\n- Ein Witz über die Klamotten von jemandem.\n- Ein Spruch über die Familie von jemandem.\n- „Du kannst ja nicht mal richtig lesen.“\n- Ein Spitzname, den der andere nicht mag.\n- Lachen, wenn jemand beim Fußball hinfällt.\n- Ein Foto von jemandem in die Gruppe schicken und lästern." },
+          text: "Du liest Sprüche und Situationen vor. Die Kinder zeigen mit den Fingern: 1 = Spaß, 2 = Grenze, 3 = zu weit. Wichtig: Es gibt unterschiedliche Meinungen – genau darum geht es. Frag nach: „Warum ist das für dich schon eine 3?“\n\n- „Du hast heute mal wieder verpennt, oder?“\n- Ein Witz über die Klamotten von jemandem.\n- Ein Spruch über die Familie von jemandem.\n- „Du kannst ja nicht mal richtig lesen.“\n- Ein Spitzname, den der andere nicht mag.\n- Lachen, wenn jemand beim Fußball hinfällt.\n- Ein Foto von jemandem in die Gruppe schicken und lästern.",
+          quiz: "zahlen",
+          antworten: ["1️⃣ Spaß", "2️⃣ Grenze", "3️⃣ zu weit"],
+          folie: "Wie findest du diesen Spruch?\n\n**1** = Spaß · **2** = Grenze · **3** = zu weit\n\nHalte deine Zahlenkarte hoch. Es gibt unterschiedliche Meinungen – genau darum geht es." },
         { titel: "Grenze klar sagen", dauer: "5 Min",
-          text: "Sammelt Sätze, mit denen man eine Grenze setzt – kurz, klar, ohne Beleidigung. Schreib sie an die Tafel. Beispiele:\n\n- „Stopp. Das ist nicht mehr lustig.“\n- „Über meine Familie redest du nicht.“\n- „Lass es. Ich hab keinen Bock mehr.“\n\nZwei, drei Kinder sagen ihren Satz laut vom Platz aus – mit fester Stimme, Blick nach vorn." }
+          text: "Sammelt Sätze, mit denen man eine Grenze setzt – kurz, klar, ohne Beleidigung. Schreib sie an die Tafel. Beispiele:\n\n- „Stopp. Das ist nicht mehr lustig.“\n- „Über meine Familie redest du nicht.“\n- „Lass es. Ich hab keinen Bock mehr.“\n\nZwei, drei Kinder sagen ihren Satz laut vom Platz aus – mit fester Stimme, Blick nach vorn.",
+          quiz: "liste",
+          folie: "So setzt du eine **Grenze** – kurz, klar, ohne Beleidigung:\n\nSuch dir einen Satz aus und sag ihn mit fester Stimme." }
     ],
     ab34: { titel: "Wo ist meine Grenze?", kontext: "Zum Fall: Jamal und Deniz machen ein Spruch-Battle. Es wird immer härter – bis Deniz über Jamals Mutter redet und Jamal ihn schubst.", aufgaben: [
         { typ: "tabelle", text: "Schreib in jede Spalte ein Beispiel (einen Spruch oder eine Situation): Was ist noch Spaß, was ist an der Grenze, was geht zu weit?", spalten: ["Spaß", "Grenze", "Zu weit"], zeilen: [["", "", ""], ["", "", ""]] },
@@ -119,9 +127,12 @@ Leon holt aus. In dem Moment pfeift die Pausenaufsicht. Beide müssen zur Schull
 5. Was ist dir schon mal passiert – und wo hättest du aussteigen können? (freiwillig)` },
     uebungen: [
         { titel: "Treppe bauen", dauer: "6 Min",
-          text: "Die Kinder bringen die Stufen des Falls in die richtige Reihenfolge – du schreibst sie auf die Treppe an der Tafel. Je höher die Stufe, desto schwerer ist das Aussteigen.\n\n- Foul\n- Böser Blick\n- „Was guckst du so?“\n- Beleidigung\n- Rempeln und Schubsen\n- Ausholen zum Schlag" },
+          text: "Die Kinder bringen die Stufen des Falls in die richtige Reihenfolge – du schreibst sie auf die Treppe an der Tafel. Je höher die Stufe, desto schwerer ist das Aussteigen.\n\n- Foul\n- Böser Blick\n- „Was guckst du so?“\n- Beleidigung\n- Rempeln und Schubsen\n- Ausholen zum Schlag",
+          quiz: "keine",
+          folie: "Ein Streit wird Stufe für Stufe schlimmer. 🪜\n\nIn welcher Reihenfolge? Je höher die Stufe, desto schwerer ist das Aussteigen." },
         { titel: "Ausstiegs-Punkte", dauer: "6 Min",
-          text: "Jetzt markiert ihr gemeinsam mit grüner Kreide: Wo hätte man aussteigen können – und WIE genau? Für jede Stufe einen Satz oder eine Handlung sammeln (z. B. „Sorry, war keine Absicht“, weggehen, Schiri/Aufsicht holen, Hand hoch und „Stopp, ich hab keinen Bock auf Stress“). Frage zum Schluss: Auf welcher Stufe ist Aussteigen am leichtesten?" }
+          text: "Jetzt markiert ihr gemeinsam mit grüner Kreide: Wo hätte man aussteigen können – und WIE genau? Für jede Stufe einen Satz oder eine Handlung sammeln (z. B. „Sorry, war keine Absicht“, weggehen, Schiri/Aufsicht holen, Hand hoch und „Stopp, ich hab keinen Bock auf Stress“). Frage zum Schluss: Auf welcher Stufe ist Aussteigen am leichtesten?",
+          folie: "Wo hätte man **aussteigen** können – und **wie genau**? 🚪\n\nFür jede Stufe einen Satz oder eine Handlung." }
     ],
     ab34: { titel: "Meine Eskalationstreppe", aufgaben: [
         { typ: "luecken", text: "Denk an einen Streit, den du erlebt hast. Schreib die Stufen von unten nach oben auf.", nummern: true, saetze: ["Es fing an mit: ___", "Dann: ___", "Dann: ___", "Am Ende: ___"] },
@@ -151,9 +162,12 @@ Danach setzt er sich wieder hin. Er ist immer noch sauer – aber er hat niemand
 4. Wo spürst du Wut zuerst? (freiwillig)` },
     uebungen: [
         { titel: "Wut-Thermometer", dauer: "6 Min",
-          text: "Male an der Tafel ein Thermometer von 0 bis 10. Gemeinsam sammeln: Was passiert im Körper bei 2? Bei 5? Bei 8? (z. B. 2 = genervt, Kiefer fest · 5 = heißer Kopf, laute Stimme · 8 = Fäuste, Tunnelblick). Wichtig: **Bis etwa 5 kann man noch gut bremsen** – danach wird es sehr schwer." },
+          text: "Male an der Tafel ein Thermometer von 0 bis 10. Gemeinsam sammeln: Was passiert im Körper bei 2? Bei 5? Bei 8? (z. B. 2 = genervt, Kiefer fest · 5 = heißer Kopf, laute Stimme · 8 = Fäuste, Tunnelblick). Wichtig: **Bis etwa 5 kann man noch gut bremsen** – danach wird es sehr schwer.",
+          folie: "Wut-Thermometer 🌡️ von 0 bis 10.\n\nWas passiert in deinem Körper bei **2**? Bei **5**? Bei **8**?\n\nBis etwa 5 kann man noch gut bremsen." },
         { titel: "Notfall-Werkzeuge testen", dauer: "6 Min",
-          text: "Alle probieren am Platz drei Werkzeuge aus und bewerten sie danach mit Daumen:\n\n- Kasten-Atmen: 4 Sekunden ein, 4 halten, 4 aus, 4 halten.\n- Fäuste 5 Sekunden ganz fest drücken – dann loslassen.\n- Füße fest auf den Boden drücken und 5 Dinge im Raum zählen, die blau sind.\n\nAbsprache für die Gruppe: Wer eine Pause braucht, zeigt das vereinbarte Zeichen (z. B. Hand mit „T“ für Time-out)." }
+          text: "Alle probieren am Platz drei Werkzeuge aus und bewerten sie danach mit Daumen:\n\n- Kasten-Atmen: 4 Sekunden ein, 4 halten, 4 aus, 4 halten.\n- Fäuste 5 Sekunden ganz fest drücken – dann loslassen.\n- Füße fest auf den Boden drücken und 5 Dinge im Raum zählen, die blau sind.\n\nAbsprache für die Gruppe: Wer eine Pause braucht, zeigt das vereinbarte Zeichen (z. B. Hand mit „T“ für Time-out).",
+          antworten: ["👍 hilft mir", "👎 hilft mir nicht"],
+          folie: "Probier drei **Notfall-Werkzeuge** aus. 🧰\n\nDanach: Hilft dir das? 👍 oder 👎" }
     ],
     ab34: { titel: "Mein Wut-Notfallplan", aufgaben: [
         { typ: "tabelle", text: "So fühlt sich meine Wut an – schreib zu jeder Stufe, was du im Körper merkst:", spalten: ["Stufe", "Das merke ich in meinem Körper"], zeilen: [["leicht (1–3)", ""], ["mittel (4–6)", ""], ["stark (7–10)", ""]] },
@@ -167,7 +181,7 @@ K({
     id: "k-gruppendruck",
     titel: "Alle machen mit – du auch?",
     ziel34: "Gruppendruck erkennen und Wege finden, nicht mitzumachen, ohne das Gesicht zu verlieren",
-    material: "rote und grüne Karten\nPlakat „So kann ich Nein sagen“ (Arbeitsmaterial)",
+    material: "Antwortkarten (Ampelkarte)\nPlakat „So kann ich Nein sagen“ (Arbeitsmaterial)",
     materialIds: ["rot-gruen", "nein-saetze"],
     lerntext34: { titel: "Die Jacke", text:
 `Nach dem Sport. In der Umkleide hängt die neue Jacke von Paul. Paul ist neu in der Klasse und ziemlich still. Marvin grinst: „Los, wir schmeißen die Jacke in den Müll. Mal sehen, was er dann macht.“
@@ -184,9 +198,13 @@ Ali merkt, wie sein Herz klopft. Er will nicht der Außenseiter sein. Er will ab
 5. Wann hast du schon mal etwas mitgemacht, was du eigentlich nicht wolltest? (freiwillig)` },
     uebungen: [
         { titel: "Was würdest du tun?", dauer: "7 Min",
-          text: "Du liest Situationen vor. Die Kinder zeigen: grüne Karte = ich mache mit, rote Karte = ich mache nicht mit. Ehrlich sein ist erlaubt – niemand wird ausgelacht. Danach jeweils eine Frage: Was macht es schwer, Nein zu sagen?\n\n- Alle in der Gruppe schreiben etwas Gemeines über ein Kind in den Chat.\n- Die anderen wollen im Laden etwas einstecken, ohne zu bezahlen.\n- Alle machen sich über die Aussprache eines Kindes lustig.\n- Die Gruppe will nach der Schule ohne Bescheid zu sagen in den Park.\n- Alle lachen, als ein Kind gestolpert ist." },
+          text: "Du liest Situationen vor. Die Kinder zeigen: grüne Karte = ich mache mit, rote Karte = ich mache nicht mit. Ehrlich sein ist erlaubt – niemand wird ausgelacht. Danach jeweils eine Frage: Was macht es schwer, Nein zu sagen?\n\n- Alle in der Gruppe schreiben etwas Gemeines über ein Kind in den Chat.\n- Die anderen wollen im Laden etwas einstecken, ohne zu bezahlen.\n- Alle machen sich über die Aussprache eines Kindes lustig.\n- Die Gruppe will nach der Schule ohne Bescheid zu sagen in den Park.\n- Alle lachen, als ein Kind gestolpert ist.",
+          antworten: ["🟢 ich mache mit", "🔴 ich mache nicht mit"],
+          folie: "Alle machen mit. Und du?\n\n🟢 **Ich mache mit** · 🔴 **Ich mache nicht mit**\n\nEhrlich sein ist erlaubt – niemand wird ausgelacht." },
         { titel: "Ausstiegs-Sätze", dauer: "5 Min",
-          text: "Gemeinsam Sätze sammeln, mit denen man aussteigt, **ohne uncool zu wirken**. Schreib sie an die Tafel:\n\n- „Nee, da hab ich keinen Bock drauf.“\n- „Lass mal, das gibt nur Ärger.“\n- „Macht ihr. Ich bin raus.“\n- Ablenken: „Kommt, wir gehen lieber Fußball spielen.“\n\nDann sagt jedes Kind seinen Lieblingssatz einmal laut – lässig, aber klar." }
+          text: "Gemeinsam Sätze sammeln, mit denen man aussteigt, **ohne uncool zu wirken**. Schreib sie an die Tafel:\n\n- „Nee, da hab ich keinen Bock drauf.“\n- „Lass mal, das gibt nur Ärger.“\n- „Macht ihr. Ich bin raus.“\n- Ablenken: „Kommt, wir gehen lieber Fußball spielen.“\n\nDann sagt jedes Kind seinen Lieblingssatz einmal laut – lässig, aber klar.",
+          quiz: "liste",
+          folie: "So steigst du aus – **ohne uncool zu wirken**:\n\nSag deinen Lieblingssatz einmal laut – lässig, aber klar." }
     ],
     ab34: { titel: "Ich bin raus", kontext: "Zum Fall: Marvin will die Jacke vom neuen Mitschüler Paul in den Müll werfen. Drei Jungs machen mit. Ali findet das fies – aber alle schauen ihn an.", aufgaben: [
         { typ: "ankreuzen", text: "Woran erkennst du Gruppendruck?", optionen: ["„Trau dich doch!“", "„Alle machen das.“", "„Sonst bist du nicht mehr dabei.“", "„Willst du mitmachen? Du musst nicht.“", "Alle schauen dich an und warten."] },
@@ -217,9 +235,12 @@ Tom will nicht mehr in die Schule. Seine Mutter geht zur Polizei. Jetzt gibt es 
 5. Was macht ihr, wenn so etwas in eurem Chat landet?` },
     uebungen: [
         { titel: "Wer spielt welche Rolle?", dauer: "6 Min",
-          text: "An der Tafel stehen vier Rollen: **macht es – macht mit – schaut zu – hilft**. Ihr ordnet die Personen aus dem Fall zu (Jannik, die Kinder drumherum, Lara, die Chat-Leute, der, der weiterleitet). Dann die Frage: Welche Rolle gab es im Fall gar nicht? (→ hilft)" },
+          text: "An der Tafel stehen vier Rollen: **macht es – macht mit – schaut zu – hilft**. Ihr ordnet die Personen aus dem Fall zu (Jannik, die Kinder drumherum, Lara, die Chat-Leute, der, der weiterleitet). Dann die Frage: Welche Rolle gab es im Fall gar nicht? (→ hilft)",
+          folie: "Vier Rollen:\n\n**macht es · macht mit · schaut zu · hilft**\n\nWer aus der Geschichte hatte welche Rolle?" },
         { titel: "Was tun, wenn's im Chat landet?", dauer: "6 Min",
-          text: "Gemeinsam einen Plan in vier Schritten an die Tafel schreiben:\n\n- Nicht anschauen, nicht liken, nicht kommentieren.\n- Auf keinen Fall weiterleiten.\n- Einem Erwachsenen zeigen (Eltern, Lehrkraft) – das ist kein Petzen.\n- Dem betroffenen Kind schreiben: „Ich find das nicht okay. Kann ich helfen?“\n\nFrage zum Schluss: Was davon kostet am meisten Mut?" }
+          text: "Gemeinsam einen Plan in vier Schritten an die Tafel schreiben:\n\n- Nicht anschauen, nicht liken, nicht kommentieren.\n- Auf keinen Fall weiterleiten.\n- Einem Erwachsenen zeigen (Eltern, Lehrkraft) – das ist kein Petzen.\n- Dem betroffenen Kind schreiben: „Ich find das nicht okay. Kann ich helfen?“\n\nFrage zum Schluss: Was davon kostet am meisten Mut?",
+          quiz: "keine",
+          folie: "Ein fieses Video landet im Chat. 📱\n\nWas machst du? Wir schreiben einen Plan in vier Schritten." }
     ],
     ab34: { titel: "Filmen oder helfen?", kontext: "Zum Fall: Jannik hält Tom am Boden fest. Lara filmt. Abends ist das Video im Klassenchat und wird weitergeleitet.", aufgaben: [
         { typ: "zuordnen", text: "Verbinde die Person mit ihrer Rolle.", links: ["Jannik", "Lara", "Wer weiterleitet", "Wer nur zuschaut"], rechts: ["macht mit", "macht es", "schaut zu", "verbreitet es"] },
@@ -249,9 +270,13 @@ Am nächsten Tag kommt der Spruch wieder. Nico atmet durch, schaut Yusuf an und 
 5. Welcher Satz wäre DEIN Knopf? (Nur für dich – du musst ihn nicht sagen.)` },
     uebungen: [
         { titel: "Was will der Provokateur?", dauer: "5 Min",
-          text: "An der Tafel sammeln: Was will jemand, der provoziert? (Aufmerksamkeit, Lacher, dich in Ärger bringen, sich stark fühlen, Langeweile vertreiben …) Dann: Was bekommt er, wenn du ausrastest? Was bekommt er, wenn du cool bleibst?" },
+          text: "An der Tafel sammeln: Was will jemand, der provoziert? (Aufmerksamkeit, Lacher, dich in Ärger bringen, sich stark fühlen, Langeweile vertreiben …) Dann: Was bekommt er, wenn du ausrastest? Was bekommt er, wenn du cool bleibst?",
+          folie: "Was **will** jemand, der provoziert? 🎣\n\nWas bekommt er, wenn du ausrastest – und was, wenn du cool bleibst?" },
         { titel: "Cool-bleiben-Training", dauer: "8 Min",
-          text: "Du liest eine harmlose „Provokation“ vor (keine echten Beleidigungen!). Ein Kind antwortet vom Platz mit einer der Cool-Antworten – ruhige Stimme, gerader Blick, dann wegdrehen. Danach Applaus. Vorher die Antworten an die Tafel schreiben: „Langweilig.“ · „Okay.“ · „Wenn du meinst.“ · „Kann sein.“ · Schulterzucken und weitermachen.\n\n- „Deine Schuhe sind voll hässlich.“\n- „Du kannst nicht mal Fußball spielen.“\n- „Haha, du hast eine Fünf.“\n- „Du bist voll das Baby.“\n- „Traust dich eh nicht.“" }
+          text: "Du liest eine harmlose „Provokation“ vor (keine echten Beleidigungen!). Ein Kind antwortet vom Platz mit einer der Cool-Antworten – ruhige Stimme, gerader Blick, dann wegdrehen. Danach Applaus. Vorher die Antworten an die Tafel schreiben: „Langweilig.“ · „Okay.“ · „Wenn du meinst.“ · „Kann sein.“ · Schulterzucken und weitermachen.\n\n- „Deine Schuhe sind voll hässlich.“\n- „Du kannst nicht mal Fußball spielen.“\n- „Haha, du hast eine Fünf.“\n- „Du bist voll das Baby.“\n- „Traust dich eh nicht.“",
+          quiz: "karten",
+          frage: "Antworte cool: ruhige Stimme, gerader Blick – dann wegdrehen.",
+          folie: "Du bekommst einen blöden Spruch. Du antwortest **cool** 😎:\n\n„Langweilig.“ · „Okay.“ · „Wenn du meinst.“ · „Kann sein.“ · Schulterzucken\n\nRuhige Stimme, gerader Blick – dann wegdrehen." }
     ],
     ab34: { titel: "Meine Fernbedienung gehört mir", aufgaben: [
         { typ: "ankreuzen", text: "Was will jemand, der dich provoziert? Kreuze an, was oft stimmt.", optionen: ["Er will, dass du ausrastest.", "Er will, dass andere lachen.", "Er will dir helfen.", "Er will, dass DU Ärger bekommst.", "Er will sich stark fühlen."] },
@@ -281,9 +306,12 @@ Zwei Tage später geht Benni allein zur Lehrerin. „Ich hab das Mäppchen gewor
 5. Warum ist Verantwortung übernehmen eigentlich stark und nicht schwach?` },
     uebungen: [
         { titel: "Ausrede oder Verantwortung?", dauer: "6 Min",
-          text: "Du liest Sätze vor. Die Kinder zeigen Daumen runter (= Ausrede) oder Daumen hoch (= Verantwortung).\n\n- „Der hat angefangen.“\n- „Das war meine Schuld.“\n- „Das war doch nur Spaß.“\n- „Ich hab das gemacht, es tut mir leid.“\n- „Alle anderen machen das auch.“\n- „Ich war wütend, aber das war trotzdem nicht okay.“\n- „Der hat mich provoziert, da konnte ich nicht anders.“" },
+          text: "Du liest Sätze vor. Die Kinder zeigen Daumen runter (= Ausrede) oder Daumen hoch (= Verantwortung).\n\n- „Der hat angefangen.“\n- „Das war meine Schuld.“\n- „Das war doch nur Spaß.“\n- „Ich hab das gemacht, es tut mir leid.“\n- „Alle anderen machen das auch.“\n- „Ich war wütend, aber das war trotzdem nicht okay.“\n- „Der hat mich provoziert, da konnte ich nicht anders.“",
+          antworten: ["👍 Verantwortung", "👎 Ausrede"],
+          folie: "Ist das eine **Ausrede** 👎 – oder übernimmt jemand **Verantwortung** 👍?" },
         { titel: "Wiedergutmachen – aber wie?", dauer: "6 Min",
-          text: "Sammelt zu drei Fällen konkrete Wiedergutmachungen (nicht nur „Sorry“): Jemandem das Pausenbrot weggenommen · Jemanden vor allen ausgelacht · Jemandem die Jacke dreckig gemacht. Regel: Die Wiedergutmachung soll zur Tat passen und dem anderen wirklich etwas bringen." }
+          text: "Sammelt zu drei Fällen konkrete Wiedergutmachungen (nicht nur „Sorry“): Jemandem das Pausenbrot weggenommen · Jemanden vor allen ausgelacht · Jemandem die Jacke dreckig gemacht. Regel: Die Wiedergutmachung soll zur Tat passen und dem anderen wirklich etwas bringen.",
+          folie: "„Sorry“ reicht nicht immer. 🔧\n\nWie kann man es **wirklich** wieder gutmachen? Es soll zur Tat passen." }
     ],
     ab34: { titel: "Verantwortung statt Ausrede", kontext: "Zum Fall: Benni wirft aus Spaß ein Mäppchen, ein Tablet geht kaputt. Erst schieben Benni und Kevin die Schuld hin und her – später übernimmt Benni die Verantwortung.", aufgaben: [
         { typ: "tabelle", text: "Schreib zu jeder Ausrede einen Satz, der Verantwortung übernimmt.", spalten: ["Ausrede", "Verantwortung"], zeilen: [["„Der hat angefangen.“", ""], ["„War nur Spaß.“", ""], ["„Ich war's nicht!“", ""]] },
@@ -296,7 +324,7 @@ K({
     id: "k-stark",
     titel: "Was ist eigentlich stark?",
     ziel34: "Körperliche Stärke von innerer Stärke unterscheiden und eigene Stärken entdecken",
-    material: "Tafel: Stärke-Skala von 1 bis 10\nrote und grüne Karten",
+    material: "Tafel: Stärke-Skala von 1 bis 10\nAntwortkarten (Ampelkarte)",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Zwei Arten von stark", text:
 `Mehmet ist der Stärkste in der Klasse. Er kann zwanzig Liegestütze und gewinnt jedes Armdrücken. Wenn ihn jemand schief anschaut, zeigt er ihm, wer der Chef ist.
@@ -313,9 +341,13 @@ Dann kommt Jonas rein, der Torwart. Jonas ist klein und kann kaum zwei Liegestü
 5. Welche Art von Stärke hast du?` },
     uebungen: [
         { titel: "Wie stark ist das?", dauer: "7 Min",
-          text: "Du liest Situationen vor, die Kinder zeigen mit den Fingern eine Zahl von 1 bis 10: Wie stark ist das? Danach vergleichen und diskutieren – oft liegen die Meinungen weit auseinander.\n\n- Jemanden verprügeln, der dich beleidigt hat.\n- Weggehen, obwohl alle „Feigling“ rufen.\n- Zugeben, dass man etwas nicht kann.\n- Einen Jüngeren beschützen.\n- Sich entschuldigen, obwohl der andere auch Schuld hat.\n- Hilfe holen, wenn jemand geschlagen wird.\n- Bei einem Streit nicht mitmachen." },
+          text: "Du liest Situationen vor, die Kinder zeigen mit den Fingern eine Zahl von 1 bis 10: Wie stark ist das? Danach vergleichen und diskutieren – oft liegen die Meinungen weit auseinander.\n\n- Jemanden verprügeln, der dich beleidigt hat.\n- Weggehen, obwohl alle „Feigling“ rufen.\n- Zugeben, dass man etwas nicht kann.\n- Einen Jüngeren beschützen.\n- Sich entschuldigen, obwohl der andere auch Schuld hat.\n- Hilfe holen, wenn jemand geschlagen wird.\n- Bei einem Streit nicht mitmachen.",
+          quiz: "karten",
+          frage: "Wie stark ist das? Zeig mit den Fingern: 1 bis 10.",
+          folie: "Wie **stark** ist das? 💪\n\nZeig mit den Fingern eine Zahl von **1 bis 10**. Danach vergleichen wir." },
         { titel: "Stärken-Runde", dauer: "5 Min",
-          text: "Jedes Kind nennt eine innere Stärke von seinem linken Nachbarn (z. B. „Du gibst nicht auf“, „Du bist ehrlich“, „Du hilfst anderen“). Regel: nur echte, ernst gemeinte Stärken – Witze zählen nicht. Wer niemanden links hat, bekommt eine Stärke von dir." }
+          text: "Jedes Kind nennt eine innere Stärke von seinem linken Nachbarn (z. B. „Du gibst nicht auf“, „Du bist ehrlich“, „Du hilfst anderen“). Regel: nur echte, ernst gemeinte Stärken – Witze zählen nicht. Wer niemanden links hat, bekommt eine Stärke von dir.",
+          folie: "Sag deinem linken Nachbarn eine **innere Stärke**:\n\n„Du gibst nicht auf.“ · „Du bist ehrlich.“ · „Du hilfst anderen.“\n\nNur echte, ernst gemeinte Stärken." }
     ],
     ab34: { titel: "Meine Stärke", aufgaben: [
         { typ: "tabelle", text: "Sortiere die Begriffe aus dem Wortspeicher: Was ist Muskel-Stärke, was ist innere Stärke?", spalten: ["Muskel-Stärke", "Innere Stärke"], zeilen: [["", ""], ["", ""], ["", ""], ["", ""]],
@@ -347,9 +379,12 @@ Später redet die Lehrerin mit beiden. Robin sagt: „Ich hab nicht gemerkt, das
 5. Wo ist bei dir die Grenze, wenn dich jemand anfasst?` },
     uebungen: [
         { titel: "Abstand spüren", dauer: "6 Min",
-          text: "Du gehst langsam auf ein Kind zu, das an seinem Platz sitzt (vorher fragen, ob es mitmachen will). Das Kind hebt die Hand und sagt „Stopp“, wenn es ihm zu nah wird – du bleibst SOFORT stehen. Zwei, drei Kinder probieren es. Beobachtung: Jeder hat einen anderen Abstand – und alle sind okay." },
+          text: "Zwei Kinder, die freiwillig mitmachen, stehen sich vorn mit etwa vier Metern Abstand gegenüber. Kind A geht langsam Schritt für Schritt auf Kind B zu. Kind B hebt die Hand und sagt „Stopp“, sobald es ihm zu nah wird – Kind A bleibt SOFORT stehen. Markiere die Stelle mit Kreide oder Klebeband. Dann tauschen. Zwei, drei Paare probieren es, jedes Paar bekommt eine eigene Markierung. Beobachtung: Jeder hat einen anderen Abstand – und alle sind okay. Du leitest nur an.",
+          folie: "Zwei Kinder stehen sich gegenüber. A geht **langsam** auf B zu.\n\nB sagt **„Stopp“**, wenn es zu nah ist – A bleibt **sofort** stehen. ✋\n\nJeder hat einen anderen Abstand – und alle sind okay." },
         { titel: "Rauf-Regeln", dauer: "6 Min",
-          text: "Gemeinsam Regeln sammeln, damit Raufen fair bleibt – oder entscheiden, dass es bei euch gar nicht erlaubt ist. Beispiele an die Tafel:\n\n- Beide wollen es – vorher fragen.\n- „Stopp“ heißt SOFORT loslassen. Ohne Diskussion.\n- Nicht an Hals, Kopf, Bauch.\n- Wer nicht mehr mag, ist kein Weichei.\n- Wenn jemand weint oder schlecht Luft bekommt: sofort aufhören." }
+          text: "Gemeinsam Regeln sammeln, damit Raufen fair bleibt – oder entscheiden, dass es bei euch gar nicht erlaubt ist. Beispiele an die Tafel:\n\n- Beide wollen es – vorher fragen.\n- „Stopp“ heißt SOFORT loslassen. Ohne Diskussion.\n- Nicht an Hals, Kopf, Bauch.\n- Wer nicht mehr mag, ist kein Weichei.\n- Wenn jemand weint oder schlecht Luft bekommt: sofort aufhören.",
+          quiz: "keine",
+          folie: "Damit Raufen fair bleibt – welche **Regeln** braucht ihr?\n\nOder ist Raufen bei euch ganz verboten?" }
     ],
     ab34: { titel: "Meine Grenze – deine Grenze", aufgaben: [
         { typ: "ankreuzen", text: "Woran merkst du, dass es dem anderen zu viel ist?", optionen: ["Er sagt „Stopp“ oder „Hör auf“.", "Er lacht nicht mehr.", "Er versucht sich zu befreien.", "Er wird rot oder bekommt schlecht Luft.", "Er wird still."] },
@@ -379,9 +414,12 @@ Was keiner weiß: Jana hat Ärger zu Hause und fühlt sich seit Wochen mies. Wen
 5. Wie könnt ihr in eurer Gruppe Lästern stoppen?` },
     uebungen: [
         { titel: "Hinter dem Spruch steckt …", dauer: "6 Min",
-          text: "An der Tafel sammeln: Warum machen Menschen andere runter? (sich selbst besser fühlen, dazugehören, Langeweile, Neid, eigene Probleme, Angst selbst Opfer zu werden …) Dann: Ist das eine Entschuldigung? Nein – aber eine Erklärung, die hilft zu verstehen." },
+          text: "An der Tafel sammeln: Warum machen Menschen andere runter? (sich selbst besser fühlen, dazugehören, Langeweile, Neid, eigene Probleme, Angst selbst Opfer zu werden …) Dann: Ist das eine Entschuldigung? Nein – aber eine Erklärung, die hilft zu verstehen.",
+          folie: "Warum machen Menschen andere **runter**? 🤔\n\nIst das eine Entschuldigung?" },
         { titel: "Lästern stoppen", dauer: "6 Min",
-          text: "Sätze sammeln, die Lästern stoppen, ohne selbst fies zu werden. Dann reihum vom Platz aus laut sagen:\n\n- „Lass mal, die ist doch gar nicht da.“\n- „Ich find das nicht witzig.“\n- „Was hat sie dir getan?“\n- Thema wechseln: „Habt ihr gestern das Spiel gesehen?“\n- Privat schreiben wie Kim." }
+          text: "Sätze sammeln, die Lästern stoppen, ohne selbst fies zu werden. Dann reihum vom Platz aus laut sagen:\n\n- „Lass mal, die ist doch gar nicht da.“\n- „Ich find das nicht witzig.“\n- „Was hat sie dir getan?“\n- Thema wechseln: „Habt ihr gestern das Spiel gesehen?“\n- Privat schreiben wie Kim.",
+          quiz: "liste",
+          folie: "So stoppst du Lästern – ohne selbst fies zu werden.\n\nSag einen Satz laut vom Platz." }
     ],
     ab34: { titel: "Lästern stoppen", kontext: "Zum Fall: Jana lästert über Saras Schuhe – erst in der Pause, dann im Gruppenchat. Sara zieht die Schuhe nicht mehr an.", aufgaben: [
         { typ: "ankreuzen", text: "Warum lästern Menschen? Kreuze an, was du für wahr hältst.", optionen: ["Sie wollen dazugehören.", "Sie fühlen sich selbst schlecht.", "Sie sind neidisch.", "Es ist ihnen langweilig.", "Sie haben Angst, sonst selbst dran zu sein."] },
@@ -412,9 +450,12 @@ Sein großer Cousin erzählt ihm später: „Kenn ich. Ich hab jetzt eine Regel:
 5. Was hilft dir, wenn du beim Spielen sauer wirst?` },
     uebungen: [
         { titel: "Rage-Momente", dauer: "5 Min",
-          text: "Die Kinder erzählen (freiwillig): Wann werdet ihr beim Zocken richtig sauer? Du schreibst Stichworte an die Tafel (Lag, unfaire Gegner, Pöbeln im Chat, kurz vorm Ziel verlieren …). Dann: Was macht euer Körper dabei?" },
+          text: "Die Kinder erzählen (freiwillig): Wann werdet ihr beim Zocken richtig sauer? Du schreibst Stichworte an die Tafel (Lag, unfaire Gegner, Pöbeln im Chat, kurz vorm Ziel verlieren …). Dann: Was macht euer Körper dabei?",
+          folie: "Wann wirst du beim **Zocken** richtig sauer? 🎮😡\n\nUnd was macht dein Körper dabei?" },
         { titel: "Anti-Rage-Plan", dauer: "7 Min",
-          text: "Gemeinsam Strategien sammeln und abstimmen (Daumen), welche am besten klingen:\n\n- Nach zwei verlorenen Runden Pause machen.\n- Pöbler stummschalten oder melden.\n- Controller weglegen, bevor man ihn wirft.\n- Kurz aufstehen, Wasser trinken, ans Fenster.\n- Feste Spielzeit mit den Eltern abmachen – Wecker stellen.\n- Nicht mehr direkt vor dem Schlafen zocken." }
+          text: "Gemeinsam Strategien sammeln und abstimmen (Daumen), welche am besten klingen:\n\n- Nach zwei verlorenen Runden Pause machen.\n- Pöbler stummschalten oder melden.\n- Controller weglegen, bevor man ihn wirft.\n- Kurz aufstehen, Wasser trinken, ans Fenster.\n- Feste Spielzeit mit den Eltern abmachen – Wecker stellen.\n- Nicht mehr direkt vor dem Schlafen zocken.",
+          antworten: ["👍 gute Idee", "👎 eher nicht"],
+          folie: "Was hilft gegen **Rage**? 🎮\n\nIst das eine gute Idee? 👍 oder 👎" }
     ],
     ab34: { titel: "Mein Anti-Rage-Plan", kontext: "Zum Fall: Luca verliert beim Zocken, wird im Chat beleidigt, brüllt und macht den Controller kaputt. Am nächsten Tag ist er immer noch wütend.", aufgaben: [
         { typ: "luecken", text: "Ich als Spieler:", nummern: false, saetze: ["Ich spiele am liebsten: ___", "Ich werde sauer, wenn ___", "Das merke ich dann in meinem Körper: ___"] },

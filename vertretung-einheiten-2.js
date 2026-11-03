@@ -22,7 +22,11 @@ Im **Winter** bin ich ganz kahl. Schnee liegt auf meinen Ästen. Neben mir steht
 
 Und dann? Dann kommt wieder der Frühling!
 
-**Nach dem Vorlesen:** Welche Jahreszeit ist gerade? Woran erkennst du das?` },
+**Nach dem Vorlesen:**
+1. Wie sieht der Baum im Frühling aus?
+2. Was machen die Kinder im Sommer beim Baum?
+3. Was passiert im Herbst und im Winter?
+4. Welche Jahreszeit ist gerade – woran erkennst du das?` },
     lerntext34: { titel: "Vier Briefe", text:
 `Liebe Kinder, ich bin der **Frühling**. Bei mir werden die Tage länger, die Tulpen blühen, und die Vögel kommen zurück. Meine Monate: März, April, Mai.
 
@@ -38,7 +42,8 @@ Brrr, der **Winter** schreibt: Bei mir ist es kalt und früh dunkel, der Igel h�
 3. Welche Jahreszeit magst du am liebsten – und warum?` },
     uebungen: [
         { titel: "Jahreszeiten-Pantomime", fuer: "alle", dauer: "5 Min",
-          text: "Ein Kind kommt nach vorn und spielt eine Tätigkeit vor (Schlitten fahren, Drachen steigen lassen, schwimmen, Blumen pflanzen, Laterne tragen). Die anderen raten die Jahreszeit." },
+          text: "Ein Kind kommt nach vorn und spielt eine Tätigkeit vor (Schlitten fahren, Drachen steigen lassen, schwimmen, Blumen pflanzen, Laterne tragen). Die anderen raten die Jahreszeit.",
+          folie: "Ein Kind spielt etwas vor. 🎭\n\nRate: **Welche Jahreszeit ist das?** 🌷☀️🍂❄️" },
         { titel: "Jahreszeiten-Bingo", fuer: "alle", dauer: "8 Min",
           text: "An der Tafel stehen 12 Wörter (Schneemann, Eis, Drachen, Tulpe, Schlitten, Freibad, Kastanie, Ostern, Laterne, Sonnenbrille, Handschuhe, Regenschirm). Jedes Kind malt auf ein Blatt ein Feld mit 3 × 3 Kästchen und trägt 9 davon ein (Kl. 1/2 malen kleine Bilder). Du rufst die Wörter in zufälliger Reihenfolge – wer zuerst eine Reihe hat, ruft „Bingo!“" }
     ],
@@ -52,7 +57,8 @@ Brrr, der **Winter** schreibt: Bei mir ist es kalt und früh dunkel, der Igel h�
           zeilen: [["Frühling", "", ""], ["Sommer", "", ""], ["Herbst", "", ""], ["Winter", "", ""]] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Meine Lieblings-Jahreszeit ist ___, weil ___."] },
         { typ: "luecken", text: "Was machen diese Tiere im Winter?", nummern: false, saetze: ["Igel: ___", "Zugvögel: ___", "Eichhörnchen: ___"] }
-    ]}
+    ]},
+          folie: "Mal ein Feld mit **3 × 3** Kästchen. Trag 9 Wörter von der Tafel ein.\n\nWer zuerst eine Reihe hat, ruft **„Bingo!“** 🎉"
 }),
 
 SOZIAL_EINHEIT({
@@ -70,7 +76,11 @@ Er hat den Rüssel von einem **Elefanten** und den Körper von einem **Pinguin**
 
 Am liebsten isst er Fischstäbchen mit Erdbeeren. Und wenn er sich freut, tutet er laut: „Törööö!“
 
-**Nach dem Vorlesen:** Aus welchen zwei Tieren besteht der Elefanten-Pinguin? Welche zwei Tiere würdest du mischen?` },
+**Nach dem Vorlesen:**
+1. Aus welchen zwei Tieren besteht der Elefanten-Pinguin?
+2. Was kann er mit dem Rüssel machen?
+3. Was isst er am liebsten?
+4. Welche zwei Tiere würdest du mischen?` },
     lerntext34: { titel: "Forscherin Frieda entdeckt ein neues Tier", text:
 `Tief im Regenwald entdeckt Forscherin Frieda ein Tier, das noch niemand kennt. Sofort schreibt sie einen Steckbrief.
 
@@ -84,9 +94,11 @@ Frieda schickt den Steckbrief an das Naturkundemuseum. Dort sind alle begeistert
 3. Welchen Lebensraum hätte dein Fantasie-Tier?` },
     uebungen: [
         { titel: "Tier-Mix", fuer: "alle", dauer: "6 Min",
-          text: "Du nennst zwei Tiere (Hase + Fisch, Giraffe + Schnecke, Löwe + Biene). Die Kinder erfinden vom Platz aus einen Namen für die Mischung und sagen, was das Tier kann. Ein Kind darf es vorn vorspielen." },
+          text: "Du nennst zwei Tiere (Hase + Fisch, Giraffe + Schnecke, Löwe + Biene). Die Kinder erfinden vom Platz aus einen Namen für die Mischung und sagen, was das Tier kann. Ein Kind darf es vorn vorspielen.",
+          folie: "Zwei Tiere werden gemischt! 🐰➕🐟\n\nWie heißt das neue Tier? Was kann es?" },
         { titel: "Tier-Superkräfte", fuer: "34", dauer: "5 Min",
-          text: "Sammelt an der Tafel echte Tier-Superkräfte: Gepard rennt über 100 km/h, Eulen sehen nachts, Chamäleons wechseln die Farbe, Bienen tanzen, um den Weg zu zeigen. Welche Kraft bekommt euer Fantasie-Tier?" }
+          text: "Sammelt an der Tafel echte Tier-Superkräfte: Gepard rennt über 100 km/h, Eulen sehen nachts, Chamäleons wechseln die Farbe, Bienen tanzen, um den Weg zu zeigen. Welche Kraft bekommt euer Fantasie-Tier?",
+          folie: "Welche echten **Superkräfte** haben Tiere? 🦸\n\nWelche bekommt dein Fantasie-Tier?" }
     ],
     ab12: { titel: "Mein Fantasie-Tier", aufgaben: [
         { typ: "malen", text: "Male ein Tier aus zwei Tieren.", bild: "" },
@@ -115,7 +127,11 @@ Ich bin sehr groß. Mein Hals ist so lang, dass ich die Blätter ganz oben im Ba
 
 Ich kann nicht fliegen, obwohl ich ein Vogel bin. Dafür schwimme ich super schnell im eiskalten Wasser. Wer bin ich? – Ein **Pinguin**!
 
-**Nach dem Vorlesen:** Welches Tier-Rätsel kannst du dir ausdenken?` },
+**Nach dem Vorlesen:**
+1. Welches Tier hat Stacheln?
+2. Welches Tier hat einen langen Hals?
+3. Welcher Vogel kann nicht fliegen?
+4. Welches Tier-Rätsel kannst du dir ausdenken?` },
     lerntext34: { titel: "Das Spiel mit den 20 Fragen", text:
 `Im Ferienlager spielen die Kinder „Wer bin ich?“. Jonas bekommt eine Tierkarte an die Stirn geklebt – alle sehen das Tier, nur er nicht.
 
@@ -129,9 +145,12 @@ Jonas hat nur fünf Fragen gebraucht. Sein Trick: Erst große Gruppen ausschlie�
 3. Welche Fragen sind ungeschickt? (z. B. „Bin ich ein Hamster?“ ganz am Anfang)` },
     uebungen: [
         { titel: "Tier-Rätsel", fuer: "alle", dauer: "6 Min",
-          text: "Du liest Rätsel vor (Merkmale, Lebensraum, Nahrung). Die Kinder raten vom Platz. Wer richtig rät, bekommt die passende Tierkarte gezeigt. Kl. 3/4 dürfen danach eigene Rätsel stellen." },
+          text: "Du liest Rätsel vor (Merkmale, Lebensraum, Nahrung). Die Kinder raten vom Platz. Wer richtig rät, bekommt die passende Tierkarte gezeigt. Kl. 3/4 dürfen danach eigene Rätsel stellen.",
+          folie: "Hör gut zu: **Welches Tier ist das?** 🐾" },
         { titel: "Wer bin ich?", fuer: "alle", dauer: "8 Min",
-          text: "Ein Kind kommt nach vorn und zieht verdeckt eine Tierkarte. Kl. 1/2: Das Kind beschreibt das Tier, die anderen raten. Kl. 3/4: Du hältst die Karte hinter das Kind, die Klasse sieht sie – das Kind stellt Ja-/Nein-Fragen, bis es das Tier errät." }
+          text: "Ein Kind kommt nach vorn und zieht verdeckt eine Tierkarte. Kl. 1/2: Das Kind beschreibt das Tier, die anderen raten. Kl. 3/4: Ein zweites Kind hält die Karte hinter den Kopf des ersten, die Klasse sieht sie – das Kind stellt Ja-/Nein-Fragen, bis es das Tier errät.",
+          folie12: "Ein Kind zieht eine Tierkarte und **beschreibt** das Tier.\n\nDie anderen raten: **Wer bin ich?**",
+          folie34: "Ein Kind weiß nicht, welches Tier es ist – alle anderen sehen die Karte.\n\nEs fragt nur mit **Ja-/Nein-Fragen**: **Wer bin ich?**" }
     ],
     ab12: { titel: "Welches Tier ist das?", aufgaben: [
         { typ: "ankreuzen", text: "Hör gut zu: Ich habe einen sehr langen Hals.", nebeneinander: true, optionen: ["Giraffe", "Elefant", "Hase"] },
@@ -163,7 +182,11 @@ Vorne hat es zwei Lampen wie Augen. Und hinten eine Rutsche, damit man aussteige
 
 „Wohin fahren wir?“, fragt Oskars kleine Schwester. „Zum Spielplatz – über den Wolken!“
 
-**Nach dem Vorlesen:** Was konnte Oskars Auto alles? Was soll dein Fahrzeug können?` },
+**Nach dem Vorlesen:**
+1. Warum hat Oskars Auto große Räder?
+2. Wozu hat es Flügel und einen Propeller?
+3. Wohin wollen Oskar und seine Schwester fahren?
+4. Was soll dein Fahrzeug können?` },
     lerntext34: { titel: "Die Erfinder-Messe", text:
 `Bei der Erfinder-Messe in der Turnhalle stellen alle Kinder ihre Fahrzeug-Ideen vor. Ayse hat einen Schulbus mit Hausaufgaben-Tischen gezeichnet. Leon einen Roller, der mit Sonnenlicht fährt. Und Sophie ein U-Boot für Haustiere.
 
@@ -177,9 +200,11 @@ Leon gewinnt. Auf seinem Plan steht bei jedem Teil eine Erklärung: „Solarzell
 3. Welches Problem könnte dein Fahrzeug lösen?` },
     uebungen: [
         { titel: "Fahrzeug-Geräusche", fuer: "alle", dauer: "5 Min",
-          text: "Ein Kind macht ein Fahrzeug-Geräusch nach (Feuerwehr, Zug, Hubschrauber, Motorrad, Fahrradklingel). Die anderen raten vom Platz. Wer richtig rät, ist als Nächstes dran." },
+          text: "Ein Kind macht ein Fahrzeug-Geräusch nach (Feuerwehr, Zug, Hubschrauber, Motorrad, Fahrradklingel). Die anderen raten vom Platz. Wer richtig rät, ist als Nächstes dran.",
+          folie: "Ein Kind macht ein **Fahrzeug-Geräusch** nach. 🚒🚂🚁\n\nWer es errät, ist als Nächstes dran." },
         { titel: "Was braucht ein Fahrzeug?", fuer: "alle", dauer: "5 Min",
-          text: "Sammelt an der Tafel Fahrzeugteile: Räder, Lenkrad, Bremse, Motor, Licht, Sitz, Klingel, Hupe. Kl. 3/4 überlegen zu jedem Teil, wozu es da ist." }
+          text: "Sammelt an der Tafel Fahrzeugteile: Räder, Lenkrad, Bremse, Motor, Licht, Sitz, Klingel, Hupe. Kl. 3/4 überlegen zu jedem Teil, wozu es da ist.",
+          folie: "Was braucht ein **Fahrzeug**? 🚗\n\nRäder, Lenkrad … was noch?" }
     ],
     ab12: { titel: "Mein Fantasie-Fahrzeug", aufgaben: [
         { typ: "ankreuzen", text: "Was hat dein Fahrzeug? Kreuze an.", nebeneinander: true, optionen: ["Räder", "Flügel", "Propeller", "Segel", "Rutsche", "___"] },
@@ -211,7 +236,11 @@ Luna malt zwei große Augen. Dann ein Maul mit einem einzigen Zahn. Dann sechs B
 
 Kringel ist gar nicht gruselig. Kringel mag Pfannkuchen und kitzelt gern.
 
-**Nach dem Vorlesen:** Wie hat Luna ihr Monster gefunden? Heute probieren wir das selbst!` },
+**Nach dem Vorlesen:**
+1. Wie hat Luna gekritzelt?
+2. Wie hat Luna das Monster gefunden?
+3. Wie sieht Kringel aus?
+4. Was mag Kringel?` },
     lerntext34: { titel: "Das Monster-Museum", text:
 `In einer kleinen Stadt gibt es ein ungewöhnliches Museum: das Monster-Museum. Jedes Bild darin ist aus einem Kritzel entstanden.
 
@@ -225,11 +254,14 @@ Unter jedem Bild steht ein kleines Schild: Name, was das Monster mag und was es 
 3. Welche Geschichte könnte dein Monster erleben?` },
     uebungen: [
         { titel: "Monster an der Tafel", fuer: "alle", dauer: "5 Min",
-          text: "Du kritzelst mit geschlossenen Augen 5 Sekunden lang an die Tafel. Gemeinsam dreht ihr den Kopf: Wo versteckt sich ein Monster? Die Kinder rufen vom Platz, wo Augen, Maul und Beine hinkommen – du malst sie dazu." },
+          text: "Ein Kind kritzelt mit geschlossenen Augen 5 Sekunden lang an die Tafel. Gemeinsam dreht ihr den Kopf: Wo versteckt sich ein Monster? Die Kinder rufen vom Platz, wo Augen, Maul und Beine hinkommen – ein zweites Kind malt sie dazu.",
+          folie: "Ein Kind kritzelt mit **geschlossenen Augen** an die Tafel. 🖍️\n\nWo versteckt sich ein **Monster**? Wo kommen Augen, Maul und Beine hin?" },
         { titel: "Kritzeln und entdecken", fuer: "alle", dauer: "5 Min",
-          text: "Alle kritzeln mit dem schwarzen Stift und geschlossenen Augen, während du langsam bis 5 zählst. Dann drehen sie ihr Blatt, bis sie „ihr“ Monster entdecken – danach geht es ans Gestalten auf dem Arbeitsblatt." },
+          text: "Alle kritzeln mit dem schwarzen Stift und geschlossenen Augen, während du langsam bis 5 zählst. Dann drehen sie ihr Blatt, bis sie „ihr“ Monster entdecken – danach geht es ans Gestalten auf dem Arbeitsblatt.",
+          folie: "Augen zu – und **kritzeln**, bis 5 gezählt ist! 🖍️\n\nDann dreh dein Blatt, bis du **dein** Monster entdeckst." },
         { titel: "Monster-Show", fuer: "alle", dauer: "5 Min",
-          text: "Zum Abschluss halten die Kinder nacheinander am Platz ihr Bild hoch. Die anderen raten: „Was frisst dein Monster? Ist es lieb oder frech?“ Danach stellt das Kind es kurz vor." }
+          text: "Zum Abschluss halten die Kinder nacheinander am Platz ihr Bild hoch. Die anderen raten: „Was frisst dein Monster? Ist es lieb oder frech?“ Danach stellt das Kind es kurz vor.",
+          folie: "Zeig dein **Monster**! 👾\n\nDie anderen raten: Was frisst es? Ist es lieb oder frech?" }
     ],
     ab12: { titel: "Mein Kritzel-Monster", aufgaben: [
         { typ: "malen", text: "Kritzle mit geschlossenen Augen. Finde dein Monster und male es fertig.", bild: "" },
@@ -259,7 +291,11 @@ SOZIAL_EINHEIT({
 
 Papa lacht. „Das wird das beste Baumhaus der Welt.“
 
-**Nach dem Vorlesen:** Was haben sich Tim und Ida gewünscht? Was hätte dein Baumhaus?` },
+**Nach dem Vorlesen:**
+1. Was wünschen sich Tim und Ida?
+2. Wozu soll die Strickleiter da sein?
+3. Wofür ist der Korb am Seil?
+4. Was hätte dein Baumhaus?` },
     lerntext34: { titel: "Der Baumhaus-Club", text:
 `Vier Freunde haben ein Baumhaus gebaut. Doch schon am ersten Tag gibt es Streit: Wer darf mit hinein? Darf man oben essen? Wer räumt auf?
 
@@ -277,9 +313,11 @@ Seitdem ist das Baumhaus der schönste Ort der Straße.
 3. Was dürfte in deinem Baumhaus auf keinen Fall fehlen?` },
     uebungen: [
         { titel: "Baumhaus-Ideen sammeln", fuer: "alle", dauer: "6 Min",
-          text: "Sammelt an der Tafel, was ein Traum-Baumhaus haben könnte: Strickleiter, Rutsche, Hängematte, Fernrohr, Seilbahn, Briefkasten, Geheimtür … Kl. 1/2 dürfen Ideen auch vormachen." },
+          text: "Sammelt an der Tafel, was ein Traum-Baumhaus haben könnte: Strickleiter, Rutsche, Hängematte, Fernrohr, Seilbahn, Briefkasten, Geheimtür … Kl. 1/2 dürfen Ideen auch vormachen.",
+          folie: "Was hat ein **Traum-Baumhaus**? 🌳🏠\n\nStrickleiter, Rutsche … was noch?" },
         { titel: "Baumhaus-Passwort", fuer: "34", dauer: "4 Min",
-          text: "Die Tischnachbarn erfinden ein lustiges Passwort und eine geheime Klopf-Folge für ihr Baumhaus. Ein paar Paare stellen sie vor." }
+          text: "Die Tischnachbarn erfinden ein lustiges Passwort und eine geheime Klopf-Folge für ihr Baumhaus. Ein paar Paare stellen sie vor.",
+          folie: "Erfindet zu zweit ein **Passwort** 🔑 und eine geheime **Klopf-Folge** für euer Baumhaus." }
     ],
     ab12: { titel: "Mein Traum-Baumhaus", aufgaben: [
         { typ: "ankreuzen", text: "Was hat dein Baumhaus? Kreuze an.", nebeneinander: true, optionen: ["Leiter", "Rutsche", "Fenster", "Schaukel", "Fernrohr", "___"] },
@@ -309,7 +347,11 @@ Bild 3: Eine Ente schiebt den Ball mit dem Schnabel zurück ans Ufer. Der Hund w
 
 Drei Bilder – und schon ist es eine ganze Geschichte!
 
-**Nach dem Vorlesen:** Was passiert am Anfang, was in der Mitte, was am Ende? Welche Geschichte malst du?` },
+**Nach dem Vorlesen:**
+1. Was passiert auf Bild 1?
+2. Was passiert auf Bild 2?
+3. Wer hilft dem Hund auf Bild 3?
+4. Welche Geschichte würdest du in drei Bildern malen?` },
     lerntext34: { titel: "Wie ein Comic entsteht", text:
 `Comiczeichnerin Kim zeigt der Klasse ihre Tricks. „Ein guter Comic braucht drei Dinge“, sagt sie.
 
@@ -323,9 +365,12 @@ Sie zeichnet in zwei Minuten einen Mini-Comic: Eine Katze will einen Fisch fange
 3. Welche Geräusch-Wörter kennt ihr?` },
     uebungen: [
         { titel: "Geräusch-Wörter", fuer: "alle", dauer: "4 Min",
-          text: "Sammelt Comic-Geräusche an der Tafel und macht sie gemeinsam nach: BUMM, PLATSCH, KNACK, ZISCH, HATSCHI, RUMS, KLINGEL. Kl. 1/2 machen die Geräusche, Kl. 3/4 erfinden neue." },
+          text: "Sammelt Comic-Geräusche an der Tafel und macht sie gemeinsam nach: BUMM, PLATSCH, KNACK, ZISCH, HATSCHI, RUMS, KLINGEL. Kl. 1/2 machen die Geräusche, Kl. 3/4 erfinden neue.",
+          folie: "**BUMM! PLATSCH! KNACK! ZISCH! RUMS!** 💥\n\nMacht die Geräusche nach!",
+          folie34: "**BUMM! PLATSCH! KNACK! ZISCH! RUMS!** 💥\n\nWelche Comic-Geräusche könnt ihr erfinden?" },
         { titel: "Comic an der Tafel", fuer: "alle", dauer: "6 Min",
-          text: "Du malst drei leere Kästen an die Tafel. Die Klasse erfindet gemeinsam eine Mini-Geschichte, du (oder ein Kind) zeichnest Strichmännchen in die Kästen. Kl. 3/4 ergänzen Sprechblasen." }
+          text: "An der Tafel sind drei leere Kästen. Die Klasse erfindet gemeinsam eine Mini-Geschichte. Ein Kind zeichnet Strichmännchen in die Kästen, die anderen sagen, was hinein soll. Kl. 3/4 ergänzen Sprechblasen.",
+          folie: "Drei Kästen – eine Geschichte! 🖼️🖼️🖼️\n\n**Anfang · Mitte · Ende**\n\nWas passiert?" }
     ],
     ab12: { titel: "Meine Bilder-Geschichte", aufgaben: [
         { typ: "malen", text: "Bild 1: Am Anfang …", bild: "" },
@@ -358,7 +403,11 @@ Opa malt den Kreis gelb an. „Die Sonne!“, rufen beide gleichzeitig. Opa nick
 
 Jetzt ist Emma dran. Sie malt ein Viereck und ein Dreieck darauf …
 
-**Nach dem Vorlesen:** Was malt Emma wohl? Spielen wir das auch!` },
+**Nach dem Vorlesen:**
+1. Was hat Opa zuerst an die Tafel gemalt?
+2. Was haben Emma und Ben geraten?
+3. Was war es am Ende?
+4. Was malt Emma wohl?` },
     lerntext34: { titel: "Die Spieleshow", text:
 `Willkommen bei der großen Spieleshow „Mal es, sag es, zeig es!“ Drei Runden warten auf die Teams.
 
@@ -376,9 +425,11 @@ Das Team mit den meisten Punkten gewinnt – aber am wichtigsten ist: Alle lache
 3. Wie bleibt so ein Spiel fair?` },
     uebungen: [
         { titel: "Montagsmaler", fuer: "alle", dauer: "10 Min",
-          text: "Ein Kind kommt nach vorn, zieht verdeckt eine Begriffskarte (das Bild hilft, wenn es noch nicht liest) und malt den Begriff an die Tafel – ohne Buchstaben. Die anderen raten vom Platz. Wer es errät, darf als Nächstes malen. Kl. 3/4 spielen in zwei Teams mit Punkten." },
+          text: "Ein Kind kommt nach vorn, zieht verdeckt eine Begriffskarte (das Bild hilft, wenn es noch nicht liest) und malt den Begriff an die Tafel – ohne Buchstaben. Die anderen raten vom Platz. Wer es errät, darf als Nächstes malen. Kl. 3/4 spielen in zwei Teams mit Punkten.",
+          folie: "Ein Kind zieht eine Karte und **malt** den Begriff an die Tafel – ohne Buchstaben. ✏️\n\nWer es errät, malt als Nächstes." },
         { titel: "Begriffe erklären", fuer: "34", dauer: "5 Min",
-          text: "Ein Kind erklärt einen Begriff, ohne ihn zu sagen. Die anderen raten. Schwerer: Drei verbotene Wörter, die nicht vorkommen dürfen (bei „Schneemann“: Schnee, Winter, Möhre)." }
+          text: "Ein Kind erklärt einen Begriff, ohne ihn zu sagen. Die anderen raten. Schwerer: Drei verbotene Wörter, die nicht vorkommen dürfen (bei „Schneemann“: Schnee, Winter, Möhre).",
+          folie: "Erklär den Begriff – **ohne ihn zu sagen**! 🤐\n\nSchwerer: Drei Wörter sind verboten." }
     ],
     ab12: { titel: "Mal mal!", aufgaben: [
         { typ: "malen", text: "Male etwas. Dein Nachbar rät, was es ist.", bild: "" },
@@ -409,7 +460,11 @@ Er würfelt eine 3. „Drei Mal hüpfen wie ein Frosch!“ Alle hüpfen. Er wür
 
 Danach sind alle wach. „Jetzt können wir lernen“, sagt Herr Hopp.
 
-**Nach dem Vorlesen:** Wie fühlt sich dein Körper an, wenn du lange sitzt? Wecken wir ihn auf!` },
+**Nach dem Vorlesen:**
+1. Warum war die Klasse so müde?
+2. Was hat Herr Hopp mitgebracht?
+3. Was mussten die Kinder bei der 3 machen?
+4. Wie fühlt sich dein Körper an, wenn du lange sitzt?` },
     lerntext34: { titel: "Warum Bewegung schlau macht", text:
 `Wusstest du, dass dein Gehirn bei Bewegung besser arbeitet? Wenn du dich bewegst, schlägt dein Herz schneller. Es pumpt mehr Blut – und damit mehr Sauerstoff – auch in deinen Kopf.
 
@@ -425,9 +480,11 @@ Profi-Sportler machen das übrigens auch: Vor dem Spiel wärmen sie sich auf, da
         { titel: "Bewegungs-Würfel", fuer: "alle", dauer: "8 Min",
           text: "Ein Kind würfelt, ein anderes zieht eine Bewegungskarte. Die Augenzahl sagt, wie oft die Bewegung gemacht wird (z. B. 4 × klatschen und stampfen). Alle machen am Platz mit. Achtet auf genug Platz zum Nachbarn." },
         { titel: "Spiegel-Spiel", fuer: "alle", dauer: "4 Min",
-          text: "Die Tischnachbarn stehen sich gegenüber. Einer macht langsame Bewegungen vor, der andere spiegelt sie genau. Nach einer Minute wechseln." },
+          text: "Die Tischnachbarn stehen sich gegenüber. Einer macht langsame Bewegungen vor, der andere spiegelt sie genau. Nach einer Minute wechseln.",
+          folie: "Stellt euch gegenüber. Einer macht **langsame** Bewegungen vor, der andere ist der **Spiegel**. 🪞\n\nNach einer Minute wechseln." },
         { titel: "Eigene Bewegungspause", fuer: "34", dauer: "5 Min",
-          text: "In Tischpaaren erfinden die Kinder eine Bewegungspause aus drei Übungen. Ein Paar darf sie vorn anleiten." }
+          text: "In Tischpaaren erfinden die Kinder eine Bewegungspause aus drei Übungen. Ein Paar darf sie vorn anleiten.",
+          folie: "Erfindet zu zweit eine **Bewegungspause** aus drei Übungen. 🤸" }
     ],
     ab12: { titel: "Ich bewege mich gern", aufgaben: [
         { typ: "ankreuzen", text: "Was machst du gern? Kreuze an.", nebeneinander: true, optionen: ["hüpfen", "rennen", "tanzen", "klettern", "schwimmen", "Fahrrad fahren"] },
@@ -437,7 +494,8 @@ Profi-Sportler machen das übrigens auch: Vor dem Spiel wärmen sie sich auf, da
         { typ: "tabelle", text: "Erfinde eine Bewegungspause aus drei Übungen.", spalten: ["Übung", "Wie oft / wie lange?", "Worauf achten?"], zeilen: [["", "", ""], ["", "", ""], ["", "", ""]] },
         { typ: "malen", text: "Zeichne deine Lieblingsübung als Strichmännchen.", bild: "" },
         { typ: "luecken", text: "", nummern: false, saetze: ["Nach Bewegung fühle ich mich ___"] }
-    ]}
+    ]},
+          folie: "🎲 Die Zahl sagt, **wie oft**. Die Karte sagt, **was**.\n\nAlle machen am Platz mit!"
 }),
 
 SOZIAL_EINHEIT({
@@ -455,7 +513,11 @@ Auf seinem ersten Zettel steht: „Geh zu dem Ding, an das man mit Kreide schrei
 
 Im Bücherregal finden sie eine kleine Kiste. Darin: Sticker für alle!
 
-**Nach dem Vorlesen:** Wo waren die Hinweise versteckt? Heute suchen wir einen Schatz in unserem Klassenzimmer!` },
+**Nach dem Vorlesen:**
+1. Wo war der erste Hinweis?
+2. Wo klebte der dritte Zettel?
+3. Wo war der Schatz?
+4. Was war in der Kiste?` },
     lerntext34: { titel: "Die Rätsel-Rallye", text:
 `Für die Rätsel-Rallye hat die Lehrerin fünf Hinweise versteckt. Jeder Hinweis ist ein kleines Rätsel.
 
@@ -469,9 +531,11 @@ Die Kinder müssen zusammenarbeiten: Nur wer gut überlegt und zuhört, kommt we
 3. Welche Regeln braucht eine Schatzsuche im Klassenzimmer? (leise, nicht rennen, nichts kaputt machen)` },
     uebungen: [
         { titel: "Schatzsuche", fuer: "alle", dauer: "10 Min",
-          text: "Vor der Stunde (oder während die Kinder die Augen schließen) versteckst du 4–6 Hinweiskarten und den Schatz im Raum. Ein Kind liest den ersten Hinweis vor (Kl. 1/2: du liest vor). Immer ein anderes Kind darf den nächsten Hinweis holen – die anderen bleiben am Platz und helfen beim Raten. Am Ende teilt die Klasse den Schatz." },
+          text: "Vor der Stunde (oder während die Kinder die Augen schließen) versteckst du 4–6 Hinweiskarten und den Schatz im Raum. Ein Kind liest den ersten Hinweis vor (Kl. 1/2: du liest vor). Immer ein anderes Kind darf den nächsten Hinweis holen – die anderen bleiben am Platz und helfen beim Raten. Am Ende teilt die Klasse den Schatz.",
+          folie: "Im Raum ist ein **Schatz** versteckt! 🗝️\n\nLies den Hinweis – wo geht es weiter? Immer ein anderes Kind darf suchen." },
         { titel: "Warm – kalt", fuer: "12", dauer: "4 Min",
-          text: "Ein Kind sucht einen kleinen versteckten Gegenstand. Die Klasse hilft nur mit „warm“, „wärmer“, „heiß“ oder „kalt“." }
+          text: "Ein Kind sucht einen kleinen versteckten Gegenstand. Die Klasse hilft nur mit „warm“, „wärmer“, „heiß“ oder „kalt“.",
+          folie: "Ein Kind sucht. Die anderen helfen nur mit:\n\n🥶 **kalt** · 🙂 **warm** · 😊 **wärmer** · 🔥 **heiß!**" }
     ],
     ab12: { titel: "Meine Schatzkarte", aufgaben: [
         { typ: "malen", text: "Male eine Schatzkarte von unserem Klassenzimmer. Mach ein Kreuz, wo dein Schatz liegt.", bild: "" },
@@ -503,7 +567,11 @@ Auf dem Meeresboden liegt eine glänzende Muschel. Du nimmst sie in die Hand. Si
 
 Langsam schwimmst du wieder nach oben. Du bist zurück am Strand. Du atmest tief ein und aus. Bewege deine Finger und Zehen. Öffne langsam die Augen.
 
-**Nach der Reise:** Was hast du gesehen? Male es!` },
+**Nach dem Vorlesen:**
+1. Was hast du im Meer gesehen?
+2. Welches Tier hat dir zugewinkt?
+3. Wie hat sich die Muschel angefühlt?
+4. Male, was du auf der Reise gesehen hast.` },
     lerntext34: { titel: "Die Reise in den Wolkenpalast", text:
 `Setz dich bequem hin, die Füße auf dem Boden. Schließ die Augen, wenn du magst. Atme dreimal tief ein und langsam aus.
 
@@ -519,9 +587,11 @@ Langsam trägt dich die Wolke zurück auf die Wiese. Du spürst den Boden unter 
 3. Wann könnte dir so eine Reise im Kopf helfen?` },
     uebungen: [
         { titel: "Ankommen in der Stille", fuer: "alle", dauer: "3 Min",
-          text: "Licht etwas dämpfen, wenn möglich. Alle sitzen bequem, Hände auf dem Tisch. Gemeinsam dreimal tief atmen. Wer nicht die Augen schließen mag, schaut auf einen Punkt auf dem Tisch." },
+          text: "Licht etwas dämpfen, wenn möglich. Alle sitzen bequem, Hände auf dem Tisch. Gemeinsam dreimal tief atmen. Wer nicht die Augen schließen mag, schaut auf einen Punkt auf dem Tisch.",
+          folie: "Setz dich bequem hin. Hände auf den Tisch. 🌙\n\nWir atmen dreimal tief ein und aus." },
         { titel: "Fantasiereise vorlesen", fuer: "alle", dauer: "6 Min",
-          text: "Lies die passende Fantasiereise langsam und ruhig vor (Kl. 1/2: „Die Reise ins Meer“, Kl. 3/4: „Die Reise in den Wolkenpalast“). Mach an jedem Absatz eine kleine Pause. Danach malen die Kinder ihre Bilder – ohne zu sprechen." }
+          text: "Lies die passende Fantasiereise langsam und ruhig vor (Kl. 1/2: „Die Reise ins Meer“, Kl. 3/4: „Die Reise in den Wolkenpalast“). Mach an jedem Absatz eine kleine Pause. Danach malen die Kinder ihre Bilder – ohne zu sprechen.",
+          folie: "Hör gut zu und **stell dir alles vor**. 🌊\n\nDanach malst du dein Bild – ohne zu sprechen." }
     ],
     ab12: { titel: "Meine Reise ins Meer", aufgaben: [
         { typ: "malen", text: "Male, was du im Meer gesehen hast.", bild: "" },
@@ -549,7 +619,11 @@ SOZIAL_EINHEIT({
 
 „Wie hast du das gemacht?“, fragt der Fuchs. Die Maus lächelt: „Ich habe nicht gerannt. Ich habe genau hingeschaut.“
 
-**Nach dem Vorlesen:** Warum hat die Maus gewonnen? Heute sind wir alle Adleraugen!` },
+**Nach dem Vorlesen:**
+1. Was sollten die Tiere finden?
+2. Wie viele Beeren haben Fuchs und Eule gefunden?
+3. Wie viele hat die Maus gefunden?
+4. Warum hat die Maus gewonnen?` },
     lerntext34: { titel: "Das Geheimnis der Konzentration", text:
 `Profi-Torhüterin Lara wird oft gefragt: „Wie hältst du so viele Bälle?“ Ihre Antwort: „Konzentration ist wie ein Muskel. Man kann sie trainieren.“
 
@@ -563,9 +637,14 @@ Heute ist Olympiade: Wer schafft die Aufgaben ganz genau – nicht am schnellste
 3. Was hilft dir, wieder konzentriert zu sein?` },
     uebungen: [
         { titel: "Hör-Disziplin", fuer: "alle", dauer: "5 Min",
-          text: "Du sagst Wörter. Immer wenn ein Tier kommt, stehen alle kurz auf und setzen sich wieder: Tisch – Hund – Ball – Katze – Auto – Maus – Lampe – Igel … Kl. 3/4: Bei Tieren aufstehen, bei Obst klatschen." },
+          text: "Du liest Wörter vor. Immer wenn ein Tier kommt, stehen alle kurz auf und setzen sich wieder. Kl. 3/4: Bei Tieren aufstehen, bei Obst klatschen.\n\n- Tisch\n- Hund\n- Ball\n- Apfel\n- Katze\n- Auto\n- Banane\n- Maus\n- Lampe\n- Igel",
+          quiz: "keine",
+          folie12: "Hör gut zu! 👂\n\nKommt ein **Tier**? Dann steh kurz auf! 🐶",
+          folie34: "Hör gut zu! 👂\n\n🐶 **Tier** = aufstehen · 🍎 **Obst** = klatschen" },
         { titel: "Zahlen-Klatsch-Kette", fuer: "alle", dauer: "5 Min",
-          text: "Der Reihe nach wird gezählt. Kl. 1/2: Bei jeder 5 wird geklatscht statt gesprochen. Kl. 3/4: Bei Zahlen mit einer 7 oder in der 7er-Reihe wird geklatscht. Wer sich vertut, beginnt von vorn – ohne Ausscheiden." }
+          text: "Der Reihe nach wird gezählt. Kl. 1/2: Bei jeder 5 wird geklatscht statt gesprochen. Kl. 3/4: Bei Zahlen mit einer 7 oder in der 7er-Reihe wird geklatscht. Wer sich vertut, beginnt von vorn – ohne Ausscheiden.",
+          folie12: "Wir zählen der Reihe nach.\n\nBei jeder **5** wird **geklatscht**! 👏",
+          folie34: "Wir zählen der Reihe nach.\n\nBei Zahlen mit einer **7** oder aus der **7er-Reihe** wird **geklatscht**! 👏" }
     ],
     ab12: { titel: "Adleraugen", aufgaben: [
         { typ: "ankreuzen", text: "Welches Bild ist anders? Kreuze an.", nebeneinander: true, optionen: ["🐱", "🐱", "🐶", "🐱"] },

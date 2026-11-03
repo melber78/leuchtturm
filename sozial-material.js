@@ -124,9 +124,11 @@ const B = {
         items: ["froh", "traurig", "wütend", "ängstlich"].map(g => G(g)), hinweis: "Eine Karte pro Seite – zum Hochhalten und für die Tafel." },
     "gefuehlskarten-klein": { titel: "Gefühlskarten klein (8 Gefühle)", gruppe: "Gefühle", art: "karten", proSeite: 8,
         items: ["froh", "traurig", "wütend", "ängstlich", "ruhig", "überrascht", "stolz", "müde"].map(g => G(g)), hinweis: "Für Pantomime und Gefühlsdetektiv – verdeckt ziehen." },
-    "rot-gruen": { titel: "Rote und grüne Karten", gruppe: "Rituale", art: "karten", proSeite: 4,
-        items: [{ farbe: "#e74c3c", textfarbe: "#fff", emoji: "✋", text: "Rot" }, { farbe: "#2e8b57", textfarbe: "#fff", emoji: "👍", text: "Grün" }, { farbe: "#e74c3c", textfarbe: "#fff", emoji: "✋", text: "Rot" }, { farbe: "#2e8b57", textfarbe: "#fff", emoji: "👍", text: "Grün" }],
-        hinweis: "Farbig drucken (oder schwarz-weiß auf rotes/grünes Papier). Pro Seite zwei Kinder – für 9 Kinder 5 Seiten." },
+    "rot-gruen": { titel: "Antwortkarten-Set (1 Seite = 1 Kind)", gruppe: "Rituale", art: "karten", proSeite: 6,
+        items: [{ farbe: "#2e8b57", textfarbe: "#fff", emoji: "🟢", text: "Grün" }, { farbe: "#e74c3c", textfarbe: "#fff", emoji: "🔴", text: "Rot" },
+            { farbe: "#fde7c2", zahl: "1" }, { farbe: "#d8ebf7", zahl: "2" },
+            { farbe: "#e3f3e6", zahl: "3" }, { farbe: "#efe3f6", zahl: "4" }],
+        hinweis: "Einmal für alle Themen: farbig drucken, ausschneiden, Grün und Rot Rücken an Rücken kleben (= Ampelkarte), alles laminieren. Pro Kind eine Seite – in einen Umschlag, fertig. Was 1–4 jeweils bedeutet, steht auf der Folie." },
 
     /* --- Gefühle --- */
     "vulkan-bild": { titel: "Bild: Vulki, der Vulkan", gruppe: "Gefühle", art: "karten", proSeite: 1, items: [{ bild: "vulkan", text: "Vulki" }], hinweis: "Für die Tafel beim Lerntext Kl. 1/2." },
@@ -250,7 +252,7 @@ const B = {
 /* Welche Vorlagen gehören zu welcher fertigen Stunde */
 const ZUORDNUNG = {
     "v-gefuehle-erkennen": ["gefuehlskarten-gross", "gefuehlskarten-klein"],
-    "v-streit-loesen": ["stopp-schild", "loesungskarten", "ich-botschaft"],
+    "v-streit-loesen": ["stopp-schild", "rot-gruen", "ich-botschaft"],
     "v-freundschaft": ["namenszettel", "kompliment-zettel"],
     "v-regeln-miteinander": ["gruppenregeln-leer", "regel-vorschlag"],
     "v-wut-werkzeugkasten": ["vulkan-bild", "wut-werkzeuge"],
@@ -293,7 +295,8 @@ const RITUAL_MATERIAL = [
     { ritual: "Stundenablauf & Ruhezeichen", text: "Hängt die ganze Stunde sichtbar – die Kinder wissen immer, wo ihr seid.", ids: ["ablauf-karten", "ruhezeichen"] },
     { ritual: "Begrüßung", text: "Redestein oder Redekarte, Ablauf als Plakat.", ids: ["redekarte", "begruessung-plakat", "namenszettel"] },
     { ritual: "Gefühlsbarometer", text: "Gesichter oder Plakat an die Tafel, dazu eine Klammer pro Kind.", ids: ["gefuehlsbarometer", "barometer-plakat", "klammer-etiketten"] },
-    { ritual: "Gesprächsregeln", text: "Hängen dauerhaft im Raum.", ids: ["gespraechsregeln", "rot-gruen"] },
+    { ritual: "Gesprächsregeln", text: "Hängen dauerhaft im Raum.", ids: ["gespraechsregeln"] },
+    { ritual: "Antwortkarten", text: "Ein Set pro Kind für alle Themen: Ampelkarte grün/rot und Zahlen 1–4. Einmal laminieren, im Umschlag aufbewahren.", ids: ["rot-gruen"] },
     { ritual: "Abschluss", text: "Satzanfänge für Kl. 3/4, Gesichter für Kl. 1/2.", ids: ["abschluss-saetze", "abschluss-gesichter"] },
     { ritual: "Belohnung", text: "Murmelglas und Gutschein für das Gruppenspiel.", ids: ["murmelglas", "gutschein-spiel"] },
 ];
@@ -331,6 +334,7 @@ function symbolHtml(it){
     if (it.gesicht) return gesichtBunt(it.gesicht);
     if (it.bild) return ltBild(it.bild);
     if (it.emoji) return `<span>${it.emoji}</span>`;
+    if (it.zahl) return `<span style="font-family:Nunito,sans-serif;font-weight:900;color:#16324a">${esc(it.zahl)}</span>`;
     return "";
 }
 function kartenSeiten(m){
@@ -345,7 +349,7 @@ function kartenSeiten(m){
         s.innerHTML = `<div class="m-raster" style="grid-template-columns:repeat(${sp},1fr);grid-template-rows:repeat(${ze},1fr);--sym:${m.sym || gr.sym}mm;--txt:${gr.txt};--kopf:${gr.kopf}">` +
             teil.map(it => {
                 if (it.leer && !it.text && !it.emoji && !it.svg) return `<div class="mkarte leer"></div>`;
-                const nurText = !it.svg && !it.gesicht && !it.bild && !it.emoji && !it.linien;
+                const nurText = !it.svg && !it.gesicht && !it.bild && !it.emoji && !it.zahl && !it.linien;
                 const stil = it.farbe ? ` style="background:${it.farbe};color:${it.textfarbe || "#1b1b1b"}"` : "";
                 const sym = symbolHtml(it);
                 return `<div class="mkarte${nurText ? " nur-text" : ""}"${stil}>` +

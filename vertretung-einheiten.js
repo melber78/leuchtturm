@@ -55,7 +55,11 @@ Da sieht es eine kleine Kiste unter dem Baum. Der Schlüssel passt! Klick – di
 
 Das Einhorn lädt alle seine Freunde ein. Und alle essen zusammen Kuchen.
 
-**Nach dem Vorlesen:** Welche drei Dinge kamen in der Geschichte vor? (Einhorn, Schlüssel, Kuchen) Heute erfindest du selbst so eine Geschichte!` },
+**Nach dem Vorlesen:**
+1. Was hat das Einhorn gefunden?
+2. Wo hat es den Schlüssel überall ausprobiert?
+3. Was war in der Kiste?
+4. Welche drei Dinge kamen in der Geschichte vor?` },
     lerntext34: { titel: "Die Rakete im Garten", text:
 `Als Lina am Samstagmorgen aus dem Fenster schaut, traut sie ihren Augen nicht: Mitten im Garten steht eine silberne Rakete. Die Tür geht auf, und heraus watschelt – ein Pinguin mit einer goldenen Krone auf dem Kopf.
 
@@ -69,9 +73,12 @@ Lina holt ihren Globus. Zusammen suchen sie den Weg. Zum Dank darf Lina eine Run
 3. Was macht eine Geschichte spannend?` },
     uebungen: [
         { titel: "Geschichten-Kette", fuer: "alle", dauer: "8 Min",
-          text: "Du ziehst drei Bildkarten und hängst sie an die Tafel. Die Kinder erzählen gemeinsam eine Geschichte: Jedes Kind sagt vom Platz aus einen Satz, der Reihe nach. Alle drei Bilder müssen vorkommen. Kl. 1/2 dürfen kurze Sätze sagen, Kl. 3/4 achten auf einen guten Schluss." },
+          text: "Du ziehst drei Bildkarten und hängst sie an die Tafel. Die Kinder erzählen gemeinsam eine Geschichte: Jedes Kind sagt vom Platz aus einen Satz, der Reihe nach. Alle drei Bilder müssen vorkommen. Kl. 1/2 dürfen kurze Sätze sagen, Kl. 3/4 achten auf einen guten Schluss.",
+          folie: "An der Tafel hängen **drei Bilder**.\n\nWir erzählen zusammen eine Geschichte: Jeder sagt einen Satz. Alle drei Bilder müssen vorkommen!" },
         { titel: "Meine drei Bilder", fuer: "alle", dauer: "4 Min",
-          text: "Jedes Kind (oder jedes Tischpaar) zieht verdeckt drei neue Bildkarten. Damit geht es aufs Arbeitsblatt. Kl. 1/2 erzählen ihre Geschichte erst dem Nachbarn, dann malen sie." }
+          text: "Jedes Kind (oder jedes Tischpaar) zieht verdeckt drei neue Bildkarten. Damit geht es aufs Arbeitsblatt. Kl. 1/2 erzählen ihre Geschichte erst dem Nachbarn, dann malen sie.",
+          folie: "Zieh drei Bildkarten. 🃏\n\nDaraus wird **deine** Geschichte.",
+          folie12: "Zieh drei Bildkarten. 🃏\n\nErzähl deinem Nachbarn deine Geschichte – dann malst du sie." }
     ],
     ab12: { titel: "Meine Bilder-Geschichte", aufgaben: [
         { typ: "malen", text: "Am Anfang …", bild: "" },
@@ -106,7 +113,11 @@ Das Kind lachte: „Na klar! Ich reime **Katze** auf **Tatze** und **Hose** auf 
 
 Da war der König so froh, dass er das Kind zur Reim-Prinzessin machte.
 
-**Nach dem Vorlesen:** Welche Wörter haben sich gereimt? Wer findet einen Reim auf „Baum“?` },
+**Nach dem Vorlesen:**
+1. Wie hat der König immer gesprochen?
+2. Welche Wörter haben sich gereimt?
+3. Was hat das Kind gereimt?
+4. Wer findet einen Reim auf „Baum“?` },
     lerntext34: { titel: "Die Reim-Maschine", text:
 `Erfinderin Ella hat eine Maschine gebaut. Oben wirft man ein Wort hinein – unten kommen Reime heraus. Sie wirft „Stern“ hinein: Es rattert und pfeift, und heraus purzeln „gern“, „fern“ und „Kern“.
 
@@ -121,11 +132,15 @@ Am Abend schreibt Ella mit der Maschine ein Gedicht für ihre Oma:
 3. Gibt es einen Reim auf „Orange“? (Probiert es!)` },
     uebungen: [
         { titel: "Reim-Kette", fuer: "alle", dauer: "6 Min",
-          text: "Du sagst ein Wort (Haus, Bein, Ball, Hund, Stern). Die Kinder melden sich und sagen vom Platz aus einen Reim. Wer keinen weiß, darf „Weiter!“ sagen. Auch Quatsch-Wörter zählen, wenn sie sich reimen (Haus – Maus – Klaus – Schmaus – Flaus)." },
+          text: "Du sagst ein Wort (Haus, Bein, Ball, Hund, Stern). Die Kinder melden sich und sagen vom Platz aus einen Reim. Wer keinen weiß, darf „Weiter!“ sagen. Auch Quatsch-Wörter zählen, wenn sie sich reimen (Haus – Maus – Klaus – Schmaus – Flaus).",
+          folie: "Was **reimt** sich? 👑\n\nAuch Quatsch-Wörter zählen: Haus – Maus – Klaus – Schmaus!" },
         { titel: "Reimt sich das?", fuer: "12", dauer: "4 Min",
-          text: "Du sagst zwei Wörter. Reimen sie sich, zeigen die Kinder Daumen hoch, sonst runter:\n\n- Maus – Haus\n- Ball – Fisch\n- Hose – Rose\n- Sonne – Mond\n- Kerze – Herz" },
+          text: "Du sagst zwei Wörter. Reimen sie sich, zeigen die Kinder Daumen hoch, sonst runter:\n\n- Maus – Haus\n- Ball – Fisch\n- Hose – Rose\n- Sonne – Mond\n- Kerze – Herz",
+          antworten: ["👍 reimt sich", "👎 reimt sich nicht"],
+          folie: "Reimt sich das?\n\n👍 ja · 👎 nein" },
         { titel: "Reim-Gedicht der Klasse", fuer: "34", dauer: "5 Min",
-          text: "Gemeinsam dichtet ihr an der Tafel vier Zeilen über die Klasse oder das Wetter. Jede zweite Zeile muss sich reimen. Am Ende tragen alle das Gedicht vor." }
+          text: "Gemeinsam dichtet ihr an der Tafel vier Zeilen über die Klasse oder das Wetter. Jede zweite Zeile muss sich reimen. Am Ende tragen alle das Gedicht vor.",
+          folie: "Wir dichten zusammen **vier Zeilen**. ✍️\n\nJede zweite Zeile muss sich reimen." }
     ],
     ab12: { titel: "Was reimt sich?", aufgaben: [
         { typ: "zuordnen", text: "Was reimt sich? Verbinde.", links: ["Maus", "Igel", "Rose", "Krone"], rechts: ["Zitrone", "Haus", "Hose", "Spiegel"] },
@@ -158,7 +173,11 @@ Fips sucht überall. Unter dem Bett. Im Schrank. Im Garten. Da – im Briefkaste
 
 „Du bist auch wichtig!“, sagt Fips. Das M freut sich und springt zurück an seinen Platz: **M**aus, **M**ond, **M**ilch.
 
-**Nach dem Vorlesen:** Welche Wörter fangen mit M an? Wer hat ein M im Namen?` },
+**Nach dem Vorlesen:**
+1. Welcher Buchstabe war verschwunden?
+2. Wie hießen die Maus und der Mond ohne M?
+3. Wo hat Fips das M gefunden?
+4. Welche Wörter fangen mit M an?` },
     lerntext34: { titel: "Das Wort-Versteck", text:
 `Detektivin Mira hat eine Spezialbrille. Wenn sie ein langes Wort ansieht, leuchten darin versteckte Wörter auf.
 
@@ -171,14 +190,19 @@ Am Ende des Tages haben die beiden 50 versteckte Wörter gefunden. Rekord!
 **Fragen zum Gespräch:**
 1. Welche Wörter hat Mira in SCHNEEMANN gefunden?
 2. Aus welchen Wörtern besteht HAUSTÜR?
-3. Erfindet zusammen ein Quatsch-Wort aus drei Wörtern!` },
+3. Welches lange Wort kennst du, in dem andere Wörter stecken?
+4. Erfindet zusammen ein Quatsch-Wort aus drei Wörtern!` },
     uebungen: [
         { titel: "Ich sehe was mit …", fuer: "alle", dauer: "6 Min",
-          text: "„Ich sehe was, was du nicht siehst, und das fängt mit T an.“ Die Kinder raten vom Platz aus (Tafel, Tisch, Tür …). Wer richtig rät, darf das nächste Rätsel stellen. Kl. 1/2: Du sprichst den Anlaut deutlich („Tttt“)." },
+          text: "„Ich sehe was, was du nicht siehst, und das fängt mit T an.“ Die Kinder raten vom Platz aus (Tafel, Tisch, Tür …). Wer richtig rät, darf das nächste Rätsel stellen. Kl. 1/2: Du sprichst den Anlaut deutlich („Tttt“).",
+          folie: "**„Ich sehe was, was du nicht siehst, und das fängt mit … an.“** 🔍\n\nWer es errät, stellt das nächste Rätsel." },
         { titel: "Anlaut-Klatschen", fuer: "12", dauer: "4 Min",
-          text: "Du sagst Wörter. Fängt eins mit M an, klatschen alle: Maus, Hund, Mond, Milch, Auto, Mama, Ball, Melone, Mütze, Fisch." },
+          text: "Du liest die Wörter vor. Fängt eins mit M an, klatschen alle.\n\n- Maus\n- Hund\n- Mond\n- Milch\n- Auto\n- Mama\n- Ball\n- Melone\n- Mütze\n- Fisch",
+          quiz: "keine",
+          folie: "Hör gut zu! 👂\n\nFängt das Wort mit **M** an? Dann **klatsch**! 👏" },
         { titel: "Wörter im Wort", fuer: "34", dauer: "6 Min",
-          text: "An der Tafel steht ein langes Wort: SONNENBLUMENFELD. Die Kinder suchen in Tischpaaren alle Wörter, die darin stecken (Buchstaben nebeneinander): Sonne, Blume, Feld, Blumen … Welches Paar findet die meisten?" }
+          text: "An der Tafel steht ein langes Wort: SONNENBLUMENFELD. Die Kinder suchen in Tischpaaren alle Wörter, die darin stecken (Buchstaben nebeneinander): Sonne, Blume, Feld, Blumen … Welches Paar findet die meisten?",
+          folie: "**SONNENBLUMENFELD** 🌻\n\nWelche Wörter stecken darin? Sucht zu zweit – welches Paar findet die meisten?" }
     ],
     ab12: { titel: "Was fängt mit M an?", aufgaben: [
         { typ: "ankreuzen", text: "Kreuze alles an, was mit M anfängt.", nebeneinander: true,
@@ -212,7 +236,11 @@ Nur die **Z**iege ist traurig. „Ich bin immer die Letzte!“ Da ruft der Affe:
 
 Und so läuft die Ziege ganz vorne. Die Kinder klatschen und jubeln.
 
-**Nach dem Vorlesen:** Welches Tier fängt so an wie dein Name?` },
+**Nach dem Vorlesen:**
+1. Welches Tier lief ganz vorne?
+2. Welche Tiere kamen danach?
+3. Warum war die Ziege traurig?
+4. Welches Tier fängt so an wie dein Name?` },
     lerntext34: { titel: "Das ABC-Rennen", text:
 `„Stadt-Land-Fluss ist langweilig“, mault Jonas. „Ich kenne keine Flüsse.“ Seine große Schwester Merve hat eine Idee: „Dann machen wir unsere eigenen Spalten!“
 
@@ -228,11 +256,15 @@ Am Ende gewinnt Jonas mit 35 Punkten. „Das spielen wir jetzt jeden Tag!“
 3. Welche Buchstaben sind besonders schwer?` },
     uebungen: [
         { titel: "ABC-Tier-Kette", fuer: "alle", dauer: "6 Min",
-          text: "Der Reihe nach nennt jedes Kind vom Platz aus ein Tier zum nächsten Buchstaben: Affe – Bär – C? (Chamäleon) – Dino … Wer nicht weiterweiß, darf die Klasse um Hilfe bitten. Kl. 1/2 dürfen statt Tiernamen auch Dinge nennen." },
+          text: "Der Reihe nach nennt jedes Kind vom Platz aus ein Tier zum nächsten Buchstaben: Affe – Bär – C? (Chamäleon) – Dino … Wer nicht weiterweiß, darf die Klasse um Hilfe bitten. Kl. 1/2 dürfen statt Tiernamen auch Dinge nennen.",
+          folie: "Jeder sagt ein Tier zum **nächsten Buchstaben**:\n\nAffe – Bär – C …? 🐒🐻",
+          folie12: "Jeder sagt ein Tier – oder ein Ding – zum **nächsten Buchstaben**:\n\nAffe – Bär – C …? 🐒🐻" },
         { titel: "Tier-Pantomime nach Buchstaben", fuer: "12", dauer: "6 Min",
-          text: "Du nennst einen Buchstaben (E, F, H, K, S). Ein Kind kommt nach vorn und spielt ein Tier mit diesem Anfangsbuchstaben vor. Die anderen raten." },
+          text: "Du nennst einen Buchstaben (E, F, H, K, S). Ein Kind kommt nach vorn und spielt ein Tier mit diesem Anfangsbuchstaben vor. Die anderen raten.",
+          folie: "Ein Kind spielt ein Tier vor, das mit dem Buchstaben anfängt. 🐘\n\nDie anderen raten." },
         { titel: "Stadt-Land-Fluss für Kinder", fuer: "34", dauer: "8 Min",
-          text: "Die Kinder spielen auf dem Arbeitsblatt. Ein Kind sagt leise das ABC auf, ein anderes ruft „Stopp!“. Wer zuerst alle Spalten hat, ruft „Fertig!“ – dann zählt ihr: 10 Punkte für Wörter, die nur einer hat, 5 Punkte für gleiche Wörter." }
+          text: "Die Kinder spielen auf dem Arbeitsblatt. Ein Kind sagt leise das ABC auf, ein anderes ruft „Stopp!“. Wer zuerst alle Spalten hat, ruft „Fertig!“ – dann zählt ihr: 10 Punkte für Wörter, die nur einer hat, 5 Punkte für gleiche Wörter.",
+          folie: "Stadt – Land – Fluss! 🗺️\n\nEiner sagt leise das ABC, ein anderer ruft **„Stopp!“**. Wer alle Spalten hat, ruft **„Fertig!“**" }
     ],
     ab12: { titel: "Mein ABC-Tier", aufgaben: [
         { typ: "ankreuzen", text: "Welches Tier fängt mit E an? Kreuze an.", nebeneinander: true, optionen: ["Elefant", "Affe", "Ente", "Igel"] },
@@ -263,7 +295,11 @@ Ben kratzt sich am Kopf. Mia überlegt laut: „Sonne – vielleicht heißt das:
 
 Am nächsten Tag scheint die Sonne. Am Baum wartet Oma Erna mit einem großen Blech Kuchen. „Ihr habt meine Geheimschrift geknackt!“
 
-**Nach dem Vorlesen:** Was bedeuteten die drei Bilder? Welche Bilder würdest du für eine Geheimbotschaft malen?` },
+**Nach dem Vorlesen:**
+1. Was haben Mia und Ben im Baum gefunden?
+2. Welche drei Bilder waren auf dem Zettel?
+3. Was bedeuteten die Bilder?
+4. Welche Bilder würdest du für eine Geheimbotschaft malen?` },
     lerntext34: { titel: "Agenten-Code A1", text:
 `Geheimagentin Zora bekommt eine Nachricht: 8 – 1 – 12 – 12 – 15. Nur Zahlen! Doch Zora kennt den Agenten-Code: Jeder Buchstabe hat eine Zahl. A ist 1, B ist 2, C ist 3 – bis Z, das ist 26.
 
@@ -277,11 +313,14 @@ Zora schreibt zurück: 4 – 1 – 14 – 11 – 5. Rico braucht eine Weile – 
 3. Wie könnte man den Code noch schwerer machen?` },
     uebungen: [
         { titel: "Bilder-Botschaft", fuer: "12", dauer: "6 Min",
-          text: "Du malst drei einfache Bilder an die Tafel (z. B. Ball – Sonne – Haus: „Wir spielen draußen Ball und gehen dann nach Hause“). Die Kinder raten die Botschaft. Danach malt ein Kind eine Botschaft, die anderen raten." },
+          text: "Du malst drei einfache Bilder an die Tafel (z. B. Ball – Sonne – Haus: „Wir spielen draußen Ball und gehen dann nach Hause“). Die Kinder raten die Botschaft. Danach malt ein Kind eine Botschaft, die anderen raten.",
+          folie: "An der Tafel stehen **drei Bilder**. 🖼️\n\nWelche Botschaft steckt darin?" },
         { titel: "Code knacken", fuer: "34", dauer: "8 Min",
-          text: "An der Tafel steht eine Zahlen-Botschaft im Agenten-Code, z. B. 16 – 1 – 21 – 19 – 5 (PAUSE). Die Kinder entschlüsseln in Tischpaaren. Wer fertig ist, verschlüsselt eine eigene Nachricht für den Nachbarn." },
+          text: "An der Tafel steht eine Zahlen-Botschaft im Agenten-Code, z. B. 16 – 1 – 21 – 19 – 5 (PAUSE). Die Kinder entschlüsseln in Tischpaaren. Wer fertig ist, verschlüsselt eine eigene Nachricht für den Nachbarn.",
+          folie: "Knackt den **Agenten-Code** 🕵️:\n\nA = 1 · B = 2 · C = 3 …\n\nDann verschlüsselt eine eigene Nachricht." },
         { titel: "Klatsch-Code", fuer: "alle", dauer: "4 Min",
-          text: "Abgemacht: einmal klatschen = Ja, zweimal = Nein, auf den Tisch trommeln = Weiß ich nicht. Du stellst Fragen („Ist heute Montag?“, „Können Fische fliegen?“), die Klasse antwortet nur im Klatsch-Code." }
+          text: "Abgemacht: einmal klatschen = Ja, zweimal = Nein, auf den Tisch trommeln = Weiß ich nicht. Du stellst Fragen („Ist heute Montag?“, „Können Fische fliegen?“), die Klasse antwortet nur im Klatsch-Code.",
+          folie: "👏 einmal klatschen = **Ja**\n👏👏 zweimal = **Nein**\n🥁 trommeln = **Weiß ich nicht**\n\nAntworte nur im Klatsch-Code!" }
     ],
     ab12: { titel: "Meine Bilder-Botschaft", aufgaben: [
         { typ: "malen", text: "Male eine geheime Botschaft mit drei Bildern. Dein Nachbar rät, was sie bedeutet.", bild: "" },
@@ -315,7 +354,11 @@ Er zählt: 1, 2, 3, 4, 5 Goldmünzen. Dann 1, 2, 3 glitzernde Edelsteine. Und ga
 
 Da hüpft der Papagei in die Kiste und kommt mit noch einer Münze heraus. „Zehn!“, lacht Paul. „Du bist der beste Schatzsucher!“
 
-**Nach dem Vorlesen:** Wie viele Goldmünzen waren es am Anfang? Und am Ende? Zählt gemeinsam an den Fingern nach.` },
+**Nach dem Vorlesen:**
+1. Wie viele Goldmünzen waren in der Kiste?
+2. Wie viele Edelsteine waren es?
+3. Wie viele Schätze waren es zusammen?
+4. Was hat der Papagei noch gefunden?` },
     lerntext34: { titel: "Die Schatzkarte mit Zahlen", text:
 `Auf dem Dachboden findet Max eine alte Schatzkarte. Darauf steht: „Die Kiste öffnet nur, wer meine Zahl errät.“
 
@@ -332,9 +375,13 @@ Max überlegt. 21? 2 + 1 = 3, passt nicht. 22? Ist gerade. 23? 2 + 3 = 5 – und
 3. Wer erfindet ein eigenes Zahlen-Rätsel für die Klasse?` },
     uebungen: [
         { titel: "Zahlen-Klatschen", fuer: "alle", dauer: "5 Min",
-          text: "Ihr zählt der Reihe nach von Platz zu Platz. Kl. 1/2: Bei 5 und 10 klatscht das Kind, statt die Zahl zu sagen. Kl. 3/4: Bei jeder Zahl der 3er-Reihe wird geklatscht (3, 6, 9 …). Wer sich vertut, fängt wieder bei 1 an." },
+          text: "Ihr zählt der Reihe nach von Platz zu Platz. Kl. 1/2: Bei 5 und 10 klatscht das Kind, statt die Zahl zu sagen. Kl. 3/4: Bei jeder Zahl der 3er-Reihe wird geklatscht (3, 6, 9 …). Wer sich vertut, fängt wieder bei 1 an.",
+          folie12: "Wir zählen von Platz zu Platz.\n\nBei **5** und **10** wird **geklatscht** statt gesprochen! 👏",
+          folie34: "Wir zählen von Platz zu Platz.\n\nBei jeder Zahl der **3er-Reihe** (3, 6, 9 …) wird **geklatscht**! 👏" },
         { titel: "Ich denke mir eine Zahl", fuer: "alle", dauer: "7 Min",
-          text: "Du denkst dir eine Zahl (Kl. 1/2 bis 20, Kl. 3/4 bis 100). Die Kinder raten, du sagst nur „größer“ oder „kleiner“. Wie viele Versuche braucht die Klasse? Danach darf ein Kind sich eine Zahl ausdenken." }
+          text: "Du denkst dir eine Zahl (Kl. 1/2 bis 20, Kl. 3/4 bis 100). Die Kinder raten, du sagst nur „größer“ oder „kleiner“. Wie viele Versuche braucht die Klasse? Danach darf ein Kind sich eine Zahl ausdenken.",
+          folie12: "Ich denke mir eine Zahl bis **20**. 🤔\n\nRate! Ich sage nur **größer** oder **kleiner**.",
+          folie34: "Ich denke mir eine Zahl bis **100**. 🤔\n\nRate! Ich sage nur **größer** oder **kleiner**." }
     ],
     ab12: { titel: "Der Schatz von Pirat Paul", aufgaben: [
         { typ: "tabelle", text: "Zähle und schreibe die Zahl.", spalten: ["Schatz", "Wie viele?"],
@@ -365,7 +412,11 @@ Da springt Kater Moritz auf den Tisch. Er schnappt sich eine Perle und läuft da
 
 Lena holt eine blaue Perle aus der Dose. Die Kette ist wieder fertig. Und Moritz? Der spielt unter dem Sofa mit der geklauten Perle.
 
-**Nach dem Vorlesen:** Welche Farbe fehlte? Wie hat Lena das gewusst?` },
+**Nach dem Vorlesen:**
+1. Wie hat Oma die Perlen aufgefädelt?
+2. Was hat Kater Moritz gemacht?
+3. Welche Farbe fehlte?
+4. Wie hat Lena das gewusst?` },
     lerntext34: { titel: "Das Geheimnis der Zahlenreihe", text:
 `An der Tafel steht: 2 – 4 – 6 – 8 – ? Die halbe Klasse ruft: „10!“ Zu leicht.
 
@@ -379,9 +430,11 @@ Zum Schluss kommt die schwerste Reihe: 1 – 4 – 9 – 16 – ? Niemand weiß 
 3. Wo findet man Muster im Alltag? (Fliesen, Kleidung, Musik …)` },
     uebungen: [
         { titel: "Klatsch-Muster", fuer: "alle", dauer: "5 Min",
-          text: "Du machst ein Muster vor: klatschen – stampfen – klatschen – stampfen … Die Klasse macht es nach und setzt es fort. Dann schwerer: klatschen – klatschen – schnipsen. Ein Kind darf ein eigenes Muster erfinden." },
+          text: "An der Tafel steht ein Muster aus Zeichen: 👏 🦶 👏 🦶 … (klatschen – stampfen). Die Klasse macht es nach und setzt es fort. Dann ein schwereres Muster: 👏 👏 🫰 (klatschen – klatschen – schnipsen). Danach darf ein Kind ein eigenes Muster an die Tafel malen, die Klasse macht es nach. Du leitest nur an.",
+          folie: "Macht das Muster nach und setzt es fort:\n\n👏 🦶 👏 🦶 …\n\nSchwerer: 👏 👏 🫰 👏 👏 🫰 …" },
         { titel: "Menschen-Muster", fuer: "alle", dauer: "5 Min",
-          text: "Die Kinder bilden der Reihe nach ein Muster am Platz: stehen – sitzen – stehen – sitzen … oder Arme hoch – Arme zur Seite. Bei jedem Kind fragst du: „Was kommt jetzt?“" }
+          text: "Die Kinder bilden der Reihe nach ein Muster am Platz: stehen – sitzen – stehen – sitzen … oder Arme hoch – Arme zur Seite. Bei jedem Kind fragst du: „Was kommt jetzt?“",
+          folie: "Wir bilden ein **Muster** – Kind für Kind:\n\nstehen – sitzen – stehen – sitzen …\n\n**Was kommt jetzt?**" }
     ],
     ab12: { titel: "Wie geht es weiter?", aufgaben: [
         { typ: "ankreuzen", text: "🔴 🔵 🔴 🔵 🔴 … Was kommt dann?", nebeneinander: true, optionen: ["🔵", "🔴", "🟢"] },
@@ -414,7 +467,11 @@ Da hat das Quadrat eine Idee: „Lasst uns zusammen etwas bauen!“ Das Quadrat 
 
 Jetzt sehen alle: Zusammen sind sie ein wunderschönes Bild.
 
-**Nach dem Vorlesen:** Welche Formen findest du hier im Raum?` },
+**Nach dem Vorlesen:**
+1. Welche drei Formen wohnen im Formen-Land?
+2. Warum haben sie gestritten?
+3. Was haben sie zusammen gebaut?
+4. Welche Formen findest du hier im Raum?` },
     lerntext34: { titel: "Der Formen-Architekt", text:
 `Robo-Architekt Q7 hat eine besondere Regel: Er baut nur mit Formen. Für sein neuestes Haus braucht er: 1 großes Quadrat für die Wand, 1 Dreieck fürs Dach, 4 kleine Quadrate als Fenster, 1 Rechteck als Tür und 1 Kreis als Türklinke.
 
@@ -428,11 +485,14 @@ Als Nächstes plant Q7 eine Rakete. Doch dafür braucht er viel mehr Dreiecke �
 3. Welche Formen bräuchte man für eine Rakete?` },
     uebungen: [
         { titel: "Formen-Detektive", fuer: "alle", dauer: "6 Min",
-          text: "Die Kinder suchen vom Platz aus Formen im Raum: Uhr = Kreis, Tafel = Rechteck, Fenster = Quadrat? Wer eine Form entdeckt, meldet sich und zeigt darauf." },
+          text: "Die Kinder suchen vom Platz aus Formen im Raum: Uhr = Kreis, Tafel = Rechteck, Fenster = Quadrat? Wer eine Form entdeckt, meldet sich und zeigt darauf.",
+          folie: "Such **Formen** im Raum! 🔍\n\n⚪ Kreis · ⬛ Quadrat · 🔺 Dreieck · ▬ Rechteck" },
         { titel: "Luft-Formen", fuer: "12", dauer: "4 Min",
-          text: "Alle malen mit dem Finger Formen in die Luft: einen großen Kreis, ein spitzes Dreieck, ein Quadrat. Dann mit geschlossenen Augen. Zum Schluss malt der Tischnachbar eine Form auf den Rücken – welche war es?" },
+          text: "Alle malen mit dem Finger Formen in die Luft: einen großen Kreis, ein spitzes Dreieck, ein Quadrat. Dann mit geschlossenen Augen. Zum Schluss malt der Tischnachbar eine Form auf den Rücken – welche war es?",
+          folie: "Mal mit dem Finger in die Luft:\n\n⚪ einen großen Kreis · 🔺 ein spitzes Dreieck · ⬛ ein Quadrat\n\nDann mit geschlossenen Augen!" },
         { titel: "Formen-Diktat", fuer: "34", dauer: "5 Min",
-          text: "Du diktierst: „Male ein großes Quadrat. Setze ein Dreieck darauf. Male links oben einen Kreis.“ Die Kinder zeichnen. Danach vergleichen die Tischnachbarn: Sehen eure Bilder gleich aus?" }
+          text: "Du diktierst: „Male ein großes Quadrat. Setze ein Dreieck darauf. Male links oben einen Kreis.“ Die Kinder zeichnen. Danach vergleichen die Tischnachbarn: Sehen eure Bilder gleich aus?",
+          folie: "Hör gut zu und **zeichne**, was gesagt wird. ✏️\n\nDanach vergleicht ihr: Sehen eure Bilder gleich aus?" }
     ],
     ab12: { titel: "Mein Formen-Bild", aufgaben: [
         { typ: "ankreuzen", text: "Welche Form hat die Uhr?", nebeneinander: true, optionen: ["● Kreis", "▲ Dreieck", "■ Quadrat"] },
@@ -461,7 +521,13 @@ Sie malt an die Tafel: einen Apfel, eine Banane, eine Erdbeere. Jedes Kind darf 
 
 Beim Apfel sind es drei Striche. Bei der Banane zwei. Und bei der Erdbeere – fünf! „Dann kaufe ich viele Erdbeeren“, lacht Frau Sommer.
 
-**Nach dem Vorlesen:** Was mögen wir am liebsten? Machen wir auch eine Strichliste!` },
+**Nach dem Vorlesen:**
+1. Warum wollte Frau Sommer eine Umfrage machen?
+2. Welches Obst stand an der Tafel?
+3. Welches Obst hatte die meisten Striche?
+4. Was glaubst du: Welches Obst mögen wir am liebsten?
+
+**Tipp für dich:** Danach macht ihr eine eigene Strichliste an der Tafel.` },
     lerntext34: { titel: "Die große Klassen-Umfrage", text:
 `Die 4b möchte wissen: Wer hat welches Haustier? Paul macht an der Tafel eine Strichliste. Für jedes Kind ein Strich. Nach fünf Strichen macht er einen Querstrich – so lässt es sich schneller zählen.
 
@@ -475,9 +541,11 @@ Mia zeichnet daraus ein Säulendiagramm: Für jedes Kind ein Kästchen nach oben
 3. Was möchtet ihr über eure Klasse herausfinden?` },
     uebungen: [
         { titel: "Erst schätzen, dann zählen", fuer: "alle", dauer: "4 Min",
-          text: "Frage: „Wie viele Kinder in unserer Gruppe haben Geschwister?“ Erst schätzen alle (Kl. 3/4 schreiben die Schätzung auf). Dann melden sich alle mit Geschwistern, ihr zählt gemeinsam. Wer lag am nächsten dran?" },
+          text: "Frage: „Wie viele Kinder in unserer Gruppe haben Geschwister?“ Erst schätzen alle (Kl. 3/4 schreiben die Schätzung auf). Dann melden sich alle mit Geschwistern, ihr zählt gemeinsam. Wer lag am nächsten dran?",
+          folie: "**Wie viele** von uns haben Geschwister? 🤔\n\nErst schätzen – dann zählen. Wer lag am nächsten dran?" },
         { titel: "Hand hoch – Strichliste", fuer: "alle", dauer: "8 Min",
-          text: "Du stellst eine Frage mit Antworten zum Melden (Lieblingsobst, Lieblingsfarbe, Wie kommst du zur Schule?). Die Kinder melden sich, ein Kind macht an der Tafel die Strichliste. Kl. 3/4 überlegen sich danach eigene Umfragen für das Arbeitsblatt." }
+          text: "Du stellst eine Frage mit Antworten zum Melden (Lieblingsobst, Lieblingsfarbe, Wie kommst du zur Schule?). Die Kinder melden sich, ein Kind macht an der Tafel die Strichliste. Kl. 3/4 überlegen sich danach eigene Umfragen für das Arbeitsblatt.",
+          folie: "Melde dich bei deiner Antwort! ✋\n\nEin Kind macht an der Tafel die **Strichliste**." }
     ],
     ab12: { titel: "Unsere Strichliste", aufgaben: [
         { typ: "tabelle", text: "Lieblingsobst: Mache für jedes Kind einen Strich. Wie viele sind es?", spalten: ["Obst", "Striche", "Anzahl"],
@@ -513,7 +581,11 @@ Der **Bär** hat braune Krümel an der Nase und einen dicken, runden Bauch.
 
 Lilli lächelt. „Ich weiß, wer es war!“
 
-**Nach dem Vorlesen:** Wer hat den Kuchen genascht? Woran hat Lilli es erkannt?` },
+**Nach dem Vorlesen:**
+1. Was fehlte am Morgen?
+2. Was klebte am Mund vom Hasen?
+3. Was hat die Maus gemacht?
+4. Wer hat den Kuchen genascht – und woran hat Lilli es erkannt?` },
     lerntext34: { titel: "Der Fall des verschwundenen Balls", text:
 `Nach der Pause fehlt der Klassenball. Vier Kinder waren als Letzte draußen: Ali, Ben, Cara und Dana.
 
@@ -531,9 +603,11 @@ Emil geht zum Fußballplatz – und findet den Ball im Tor. Cara wird rot: „Ic
 3. Was braucht ein guter Detektiv?` },
     uebungen: [
         { titel: "Kim-Spiel: Was fehlt?", fuer: "alle", dauer: "6 Min",
-          text: "Auf deinem Tisch liegen 8 Gegenstände. Die Kinder schauen 30 Sekunden genau hin. Dann deckst du alles ab und nimmst heimlich einen Gegenstand weg. Welcher fehlt? Kl. 3/4: Du nimmst zwei weg oder vertauschst die Reihenfolge." },
+          text: "Auf deinem Tisch liegen 8 Gegenstände. Die Kinder schauen 30 Sekunden genau hin. Dann deckst du alles ab und nimmst heimlich einen Gegenstand weg. Welcher fehlt? Kl. 3/4: Du nimmst zwei weg oder vertauschst die Reihenfolge.",
+          folie: "Schau **30 Sekunden** ganz genau hin. 👀\n\nDann wird etwas weggenommen. **Was fehlt?**" },
         { titel: "Ja-Nein-Rätsel", fuer: "alle", dauer: "6 Min",
-          text: "Du denkst an einen Gegenstand im Raum. Die Kinder stellen Fragen, auf die du nur mit Ja oder Nein antwortest („Ist es rund?“ – „Kann man es essen?“). Wie viele Fragen braucht die Klasse?" }
+          text: "Du denkst an einen Gegenstand im Raum. Die Kinder stellen Fragen, auf die du nur mit Ja oder Nein antwortest („Ist es rund?“ – „Kann man es essen?“). Wie viele Fragen braucht die Klasse?",
+          folie: "Ich denke an etwas hier im Raum. 🤔\n\nFrag mich – ich antworte nur mit **Ja** oder **Nein**." }
     ],
     ab12: { titel: "Kleine Detektive", aufgaben: [
         { typ: "ankreuzen", text: "Wer hat den Kuchen genascht? Kreuze an.", nebeneinander: true, optionen: ["Hase", "Bär", "Maus"] },

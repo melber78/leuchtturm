@@ -56,9 +56,12 @@ Später sagt ihm sein Onkel: „Kevin kennt deine Mutter gar nicht. Der Spruch h
 5. Was würde deine Mutter (oder wer für dich wichtig ist) sich wünschen, wie du reagierst?` },
     uebungen: [
         { titel: "Warum trifft das so?", dauer: "6 Min",
-          text: "Male einen Eisberg an die Tafel. Oben steht: **Ein Spruch über die Mutter**. Darunter sammeln die Kinder, warum das so wehtut (sie ist der wichtigste Mensch · ich muss sie beschützen · das ist eine Frage der Ehre · vor allen bloßgestellt · ich kann mich nicht wehren, weil es Quatsch ist …).\n\nDann die entscheidende Frage: **Wer weiß genau, dass das bei euch der wunde Punkt ist?** (→ der Provokateur. Er sucht den Knopf, der am schnellsten wirkt.)" },
+          text: "Male einen Eisberg an die Tafel. Oben steht: **Ein Spruch über die Mutter**. Darunter sammeln die Kinder, warum das so wehtut (sie ist der wichtigste Mensch · ich muss sie beschützen · das ist eine Frage der Ehre · vor allen bloßgestellt · ich kann mich nicht wehren, weil es Quatsch ist …).\n\nDann die entscheidende Frage: **Wer weiß genau, dass das bei euch der wunde Punkt ist?** (→ der Provokateur. Er sucht den Knopf, der am schnellsten wirkt.)",
+          folie: "Ein Spruch über die **Mutter**. 🧊\n\nWarum tut das so weh?\n\nUnd: **Wer weiß genau, dass das dein wunder Punkt ist?**" },
         { titel: "Schutzsätze", dauer: "7 Min",
-          text: "Gemeinsam Sätze sammeln, die zeigen: Meine Familie kriegst du nicht. Kurz, ruhig, ohne zurückzubeleidigen. Dann sagt jedes Kind seinen Lieblingssatz einmal laut vom Platz – mit fester Stimme und geradem Blick.\n\n- „Meine Mutter kennst du gar nicht.“\n- „Lass meine Familie da raus.“\n- „Das sagt mehr über dich als über sie.“\n- „Ich hab's gehört. Ich geb dir nicht, was du willst.“\n- Nichts sagen, umdrehen, zur Aufsicht gehen." }
+          text: "Gemeinsam Sätze sammeln, die zeigen: Meine Familie kriegst du nicht. Kurz, ruhig, ohne zurückzubeleidigen. Dann sagt jedes Kind seinen Lieblingssatz einmal laut vom Platz – mit fester Stimme und geradem Blick.\n\n- „Meine Mutter kennst du gar nicht.“\n- „Lass meine Familie da raus.“\n- „Das sagt mehr über dich als über sie.“\n- „Ich hab's gehört. Ich geb dir nicht, was du willst.“\n- Nichts sagen, umdrehen, zur Aufsicht gehen.",
+          quiz: "liste",
+          folie: "**Meine Familie kriegst du nicht.** 🛡️\n\nKurz, ruhig, ohne zurückzubeleidigen. Sag deinen Lieblingssatz laut." }
     ],
     ab34: { titel: "Meine Familie kriegst du nicht", aufgaben: [
         { typ: "ankreuzen", text: "Warum trifft ein Spruch über die Mutter so hart? Kreuze an, was für dich stimmt.", optionen: ["Sie ist mir am wichtigsten.", "Ich will sie beschützen.", "Es ist vor allen peinlich.", "Es geht um Ehre.", "Ich weiß nicht, was ich sagen soll."] },
@@ -91,9 +94,12 @@ Mert sagt nichts mehr. Später im Chat schreibt er: „Hab nie drüber nachgedac
 5. Macht es einen Unterschied, ob man ein Schimpfwort „im Spaß“ sagt?` },
     uebungen: [
         { titel: "Wörter-Check (anonym)", dauer: "7 Min",
-          text: "Jedes Kind schreibt auf einen Zettel ein Schimpfwort, das es oft hört – ohne Namen. Du sammelst ein, liest NICHTS vor und machst bei jedem Zettel einen Strich in einem der fünf Felder an der Tafel: **Familie · Mädchen & Frauen · Behinderung · Herkunft · Aussehen**.\n\nDann schaut ihr gemeinsam auf die Striche: Welche Gruppe wird am meisten beleidigt? Wer davon sitzt vielleicht mit im Raum oder ist mit uns verwandt? Zettel danach sofort wegwerfen." },
+          text: "Jedes Kind schreibt auf einen Zettel ein Schimpfwort, das es oft hört – ohne Namen. Du sammelst ein, liest NICHTS vor und machst bei jedem Zettel einen Strich in einem der fünf Felder an der Tafel: **Familie · Mädchen & Frauen · Behinderung · Herkunft · Aussehen**.\n\nDann schaut ihr gemeinsam auf die Striche: Welche Gruppe wird am meisten beleidigt? Wer davon sitzt vielleicht mit im Raum oder ist mit uns verwandt? Zettel danach sofort wegwerfen.",
+          folie: "Schreib ein Schimpfwort auf, das du oft hörst – **ohne Namen**.\n\nNiemand liest es vor. Wir schauen nur: **Wen trifft es?**" },
         { titel: "Andere Wörter für Wut", dauer: "5 Min",
-          text: "Wut muss raus – aber es geht auch ohne jemanden zu beleidigen. Sammelt zwei Listen:\n\n- **Frust-Wörter**, die niemanden treffen: „Mann ey!“, „Das nervt!“, „Ich raste gleich aus!“, „Boah!“\n- **Fantasie-Schimpfwörter**, die eher zum Lachen bringen als zum Prügeln: „Du Gurkenkopf“, „Du Socken-Dieb“, „Du Wasserkocher“.\n\nAbstimmung: Welches Fantasie-Wort wird unser Gruppenwort?" }
+          text: "Wut muss raus – aber es geht auch ohne jemanden zu beleidigen. Sammelt zwei Listen:\n\n- **Frust-Wörter**, die niemanden treffen: „Mann ey!“, „Das nervt!“, „Ich raste gleich aus!“, „Boah!“\n- **Fantasie-Schimpfwörter**, die eher zum Lachen bringen als zum Prügeln: „Du Gurkenkopf“, „Du Socken-Dieb“, „Du Wasserkocher“.\n\nAbstimmung: Welches Fantasie-Wort wird unser Gruppenwort?",
+          quiz: "keine",
+          folie: "Wut muss raus – aber ohne jemanden zu beleidigen.\n\nWelche **Frust-Wörter** und **Fantasie-Schimpfwörter** fallen dir ein? 😄" }
     ],
     ab34: { titel: "Wen trifft das eigentlich?", aufgaben: [
         { typ: "zuordnen", text: "Schimpfwörter treffen oft ganze Gruppen. Verbinde.", links: ["Sprüche über die Mutter", "Wörter für Frauen", "„Spast“, „behindert“", "Sprüche über das Land"], rechts: ["Menschen mit Behinderung", "Familien", "Menschen anderer Herkunft", "Mädchen und Frauen"] },
@@ -108,7 +114,7 @@ K({
     id: "k-sprachregel",
     titel: "Unsere Sprach-Regel: Familie ist tabu",
     ziel34: "Gemeinsam eine verbindliche Sprach-Regel aufstellen und festlegen, was passiert, wenn sie gebrochen wird",
-    material: "Plakat „Unsere Gruppenregeln“ (leer, mit Unterschriften – Arbeitsmaterial)\nPlakat „Familie ist tabu – meine Schutzsätze“\nrote und grüne Karten",
+    material: "Plakat „Unsere Gruppenregeln“ (leer, mit Unterschriften – Arbeitsmaterial)\nPlakat „Familie ist tabu – meine Schutzsätze“\nAntwortkarten (Ampelkarte)",
     materialIds: ["gruppenregeln-leer", "schutzsaetze-familie", "rot-gruen"],
     lerntext34: { titel: "Die 4b macht einen Deal", text:
 `In der 4b gab es fast jeden Tag Prügeleien. Fast immer fing es mit einem Spruch über die Familie an. Die Lehrerin schlug vor: „Macht ihr selbst eine Regel. Ich schreibe nur mit.“
@@ -125,9 +131,12 @@ Alle unterschrieben. Nach vier Wochen zählten sie: Statt fast jeden Tag gab es 
 5. Würde so eine Regel bei uns funktionieren? Was müsste anders sein?` },
     uebungen: [
         { titel: "Regel aushandeln", dauer: "8 Min",
-          text: "Jetzt macht ihr eure eigene Regel – du schreibst nur mit. Schritt für Schritt:\n\n- Was genau ist verboten? (Formulierung gemeinsam finden)\n- Was sagt man, wenn es doch passiert? (Stopp-Wort wie „Tabu!“)\n- Was passiert mit dem, der den Spruch gesagt hat?\n- Was passiert, wenn jemand zurückschlägt?\n\nAbstimmung mit roten und grünen Karten. Erst wenn alle grün zeigen (oder wenigstens keiner rot), kommt es aufs Plakat. Am Ende unterschreiben alle." },
+          text: "Jetzt macht ihr eure eigene Regel – du schreibst nur mit. Schritt für Schritt:\n\n- Was genau ist verboten? (Formulierung gemeinsam finden)\n- Was sagt man, wenn es doch passiert? (Stopp-Wort wie „Tabu!“)\n- Was passiert mit dem, der den Spruch gesagt hat?\n- Was passiert, wenn jemand zurückschlägt?\n\nAbstimmung mit roten und grünen Karten. Erst wenn alle grün zeigen (oder wenigstens keiner rot), kommt es aufs Plakat. Am Ende unterschreiben alle.",
+          quiz: "keine",
+          folie: "Wir machen **unsere eigene Regel**. 📜\n\nZum Schluss: Halte deine **Ampelkarte** hoch. Erst wenn keiner Rot zeigt, kommt sie aufs Plakat." },
         { titel: "Tabu-Training", dauer: "4 Min",
-          text: "Kurzes Training vom Platz aus: Du sagst „Stell dir vor, jemand sagt einen Spruch über deine Familie.“ (Du sagst KEINEN Spruch!) Das Kind antwortet laut „Tabu!“, dreht sich weg und sagt, wohin es jetzt geht (Aufsicht, anderer Spielplatz …). Zwei, drei Kinder probieren es." }
+          text: "Kurzes Training vom Platz aus: Du sagst „Stell dir vor, jemand sagt einen Spruch über deine Familie.“ (Du sagst KEINEN Spruch!) Das Kind antwortet laut „Tabu!“, dreht sich weg und sagt, wohin es jetzt geht (Aufsicht, anderer Spielplatz …). Zwei, drei Kinder probieren es.",
+          folie: "Stell dir vor, jemand sagt einen Spruch über deine Familie.\n\nDu sagst laut **„Tabu!“**, drehst dich weg und sagst, wohin du jetzt gehst." }
     ],
     ab34: { titel: "Unser Deal", aufgaben: [
         { typ: "luecken", text: "Unsere Sprach-Regel:", nummern: false, saetze: ["Bei uns ist verboten: ___", "Unser Stopp-Wort: ___"] },
@@ -160,9 +169,12 @@ Marco sagt später: „Ich wollte ihn nicht so schlimm verletzen. Ich war einfac
 5. Wo ist für euch die Grenze, die man NIE überschreitet?` },
     uebungen: [
         { titel: "Was passiert im Kopf?", dauer: "6 Min",
-          text: "Du erklärst sachlich (Tafel): Das Gehirn schwimmt im Kopf wie ein Ei in einem Glas Wasser. Bei einem Schlag oder Tritt prallt es gegen den harten Schädel. Folgen können sein: Gehirnerschütterung, Blutung im Kopf, bleibende Schäden beim Lernen, Sprechen, Bewegen – im schlimmsten Fall Tod. **Wer am Boden liegt, kann sich nicht schützen.** Darum gilt überall auf der Welt, auch im Kampfsport: Kopf und am Boden sind tabu.\n\nFrage an die Kinder: Was war euch davon neu?" },
+          text: "Du erklärst sachlich (Tafel): Das Gehirn schwimmt im Kopf wie ein Ei in einem Glas Wasser. Bei einem Schlag oder Tritt prallt es gegen den harten Schädel. Folgen können sein: Gehirnerschütterung, Blutung im Kopf, bleibende Schäden beim Lernen, Sprechen, Bewegen – im schlimmsten Fall Tod. **Wer am Boden liegt, kann sich nicht schützen.** Darum gilt überall auf der Welt, auch im Kampfsport: Kopf und am Boden sind tabu.\n\nFrage an die Kinder: Was war euch davon neu?",
+          folie: "Das Gehirn schwimmt im Kopf wie ein **Ei im Wasserglas**. 🥚\n\nWas passiert bei einem Schlag oder Tritt?\n\n**Wer am Boden liegt, kann sich nicht schützen.**" },
         { titel: "Die absoluten Grenzen", dauer: "7 Min",
-          text: "Gemeinsam die Grenzen festlegen, die bei euch NIE überschritten werden, und aufs Plakat schreiben. Vorschlag:\n\n- Nie gegen den Kopf schlagen oder treten.\n- Wer am Boden liegt: sofort Schluss.\n- Keine Gegenstände, keine Waffen.\n- Nie zu mehreren auf einen.\n\nDann der Zuschauer-Plan: **Nicht filmen – laut „Stopp!“ rufen – sofort einen Erwachsenen holen – wenn jemand nicht mehr reagiert: 112.** Jedes Kind sagt einmal laut vom Platz, was es als Zuschauer tun würde." }
+          text: "Gemeinsam die Grenzen festlegen, die bei euch NIE überschritten werden, und aufs Plakat schreiben. Vorschlag:\n\n- Nie gegen den Kopf schlagen oder treten.\n- Wer am Boden liegt: sofort Schluss.\n- Keine Gegenstände, keine Waffen.\n- Nie zu mehreren auf einen.\n\nDann der Zuschauer-Plan: **Nicht filmen – laut „Stopp!“ rufen – sofort einen Erwachsenen holen – wenn jemand nicht mehr reagiert: 112.** Jedes Kind sagt einmal laut vom Platz, was es als Zuschauer tun würde.",
+          quiz: "keine",
+          folie: "Welche Grenzen gelten bei uns **immer**? 🛑\n\nUnd was tust du als Zuschauer?" }
     ],
     ab34: { titel: "Die absoluten Grenzen", kontext: "Zum Fall: Bei einer Prügelei liegt Jason am Boden. Marco tritt ihm gegen den Kopf. Jason muss eine Woche ins Krankenhaus.", aufgaben: [
         { typ: "ankreuzen", text: "Was kann ein Tritt gegen den Kopf auslösen?", optionen: ["Gehirnerschütterung", "Blutung im Kopf", "Probleme beim Lernen", "bleibende Schäden", "nur eine Beule"], nebeneinander: true },

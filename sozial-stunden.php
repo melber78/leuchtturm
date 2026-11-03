@@ -416,14 +416,14 @@ function klammerFiltern(t, st){
 function satzFiltern(satz, st){
     if (!/^\**Kl\.\s*(1\/2|3\/4)/.test(satz)) return satz;
     const teile = satz.split(/,\s*(?=Kl\.\s*(?:1\/2|3\/4))/);
-    const eigene = teile.filter(x => stufeVon(x) === st).map(x => x.replace(/^(\**)Kl\.\s*(1\/2|3\/4):?\s*/, "$1Die Kinder ").replace(/([^“”])[.!]$/, "$1"));
+    const eigene = teile.filter(x => stufeVon(x) === st).map(x => (/^\**Kl\.\s*(1\/2|3\/4):/.test(x) ? x.replace(/^(\**)Kl\.\s*(1\/2|3\/4):\s*/, "$1") : x.replace(/^(\**)Kl\.\s*(1\/2|3\/4)\s*/, "$1Die Kinder ")).replace(/([^“”])[.!]$/, "$1"));
     if (!eigene.length) return "";
     const t = eigene.join(", ");
     return /[.!?…“”)]$/.test(t) ? t : t + ".";
 }
 function stufenText(u, st){
     if (!u) return "";
-    if (!st || (u.fuer && u.fuer !== "alle")) return u.text || "";
+    if (!st) return u.text || "";
     if (u["text" + st]) return u["text" + st];
     const anders = st === "12" ? "34" : "12";
     return String(u.text || "").split(/\n\s*\n/).map(abs => {

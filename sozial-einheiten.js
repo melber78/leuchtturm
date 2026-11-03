@@ -45,7 +45,7 @@ Ein Plakat mit fünf Feldern (froh – traurig – wütend – ängstlich – ru
 2. Wir hören zu und lachen niemanden aus.
 3. Ich darf „Ich passe“ sagen.
 4. Was hier gesagt wird, bleibt hier.
-*Material: Plakat „Gesprächsregeln“, rote und grüne Karten*
+*Material: Plakat „Gesprächsregeln“, Antwortkarten (Ampelkarte)*
 
 ### Abschluss (5 Min)
 Jedes Kind nennt einen Satz: „Heute habe ich gelernt …“ (Kl. 1/2 halten stattdessen eine Gesichter-Karte hoch: super – geht so – schwierig). Danach die **Applauswelle**: Du zeigst nacheinander auf jeden Platz, das Kind klatscht einmal – so läuft eine Welle durch den Raum, zum Schluss klatschen alle gemeinsam.
@@ -111,7 +111,12 @@ Da sieht er Tom. Tom hat den Ball! „Das ist meiner!“, ruft Paul. Sein Gesich
 
 Tom sagt: „Ich habe ihn im Gebüsch gefunden. Hier, bitte.“ Paul atmet tief durch. Jetzt lacht er wieder. „Danke, Tom! Wollen wir zusammen spielen?“
 
-**Nach dem Vorlesen:** Die Kinder halten bei jedem Gefühlswort die passende Gefühlskarte hoch. Frage: „Woran hast du gemerkt, wie Paul sich fühlt?“`
+**Nach dem Vorlesen:**
+1. Wie hat sich Paul am Anfang gefühlt?
+2. Warum war Paul traurig?
+3. Woran hast du gemerkt, dass Paul wütend war?
+4. Was hat Tom gemacht – und wie ging es Paul danach?
+5. Halte bei jedem Gefühl die passende Gefühlskarte hoch.`
     },
     lerntext34: {
         titel: "Lena und der erste Tag",
@@ -132,11 +137,15 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
     },
     uebungen: [
         { titel: "Gefühle-Pantomime", fuer: "alle", dauer: "5 Min",
-          text: "Ein Kind kommt nach vorn, zieht verdeckt eine Gefühlskarte und spielt das Gefühl nur mit Gesicht und Körper vor. Die anderen raten vom Platz aus (melden). Kl. 3/4 nennen zusätzlich, *woran* sie es erkannt haben (Augenbrauen, Mund, Schultern)." },
+          text: "Ein Kind kommt nach vorn, zieht verdeckt eine Gefühlskarte und spielt das Gefühl nur mit Gesicht und Körper vor. Die anderen raten vom Platz aus (melden). Kl. 3/4 nennen zusätzlich, *woran* sie es erkannt haben (Augenbrauen, Mund, Schultern).",
+          folie: "Ein Kind zieht eine Gefühlskarte und zeigt das Gefühl – nur mit Gesicht und Körper, ohne Worte.\n\nDie anderen raten: **Welches Gefühl ist das?**",
+          folie34: "Ein Kind zieht eine Gefühlskarte und zeigt das Gefühl – nur mit Gesicht und Körper, ohne Worte.\n\nDie anderen raten: **Welches Gefühl ist das? Woran hast du es erkannt?**" },
         { titel: "Spiegelspiel", fuer: "12", dauer: "4 Min",
-          text: "Die Tischnachbarn drehen sich auf ihren Stühlen zueinander. Eins macht ein Gefühlsgesicht, das andere spiegelt es genau. Sitzt ein Kind allein, spiegelt es dich. Danach mit dem Handspiegel das eigene Gesicht anschauen: „So sehe ich aus, wenn ich wütend bin.“" },
+          text: "Die Tischnachbarn drehen sich auf ihren Stühlen zueinander. Eins macht ein Gefühlsgesicht, das andere spiegelt es genau. Sitzt ein Kind allein, kommt es als Dritter zu einem Paar. Danach mit dem Handspiegel das eigene Gesicht anschauen: „So sehe ich aus, wenn ich wütend bin.“",
+          folie: "Dreh dich zu deinem Nachbarn.\n\nEiner macht ein Gefühlsgesicht. Der andere ist der **Spiegel** und macht es genau nach. Dann wechseln." },
         { titel: "Gefühlsdetektiv", fuer: "34", dauer: "7 Min",
-          text: "Du liest kurze Situationen vor. Die Kinder zeigen auf das Gefühl am Barometer und erklären: „Ich glaube, sie fühlt sich …, weil …“\n\n- Mats hat sein Lieblingsbild zerrissen zurückbekommen.\n- Aylin darf zum ersten Mal bei der Freundin übernachten.\n- Ben muss morgen vor der Klasse ein Gedicht aufsagen.\n- Emma wurde beim Spiel nicht gewählt.\n- Leo hat ein Tor geschossen und alle jubeln." }
+          text: "Du liest kurze Situationen vor. Die Kinder zeigen auf das Gefühl am Barometer und erklären: „Ich glaube, sie fühlt sich …, weil …“\n\n- Mats hat sein Lieblingsbild zerrissen zurückbekommen.\n- Aylin darf zum ersten Mal bei der Freundin übernachten.\n- Ben muss morgen vor der Klasse ein Gedicht aufsagen.\n- Emma wurde beim Spiel nicht gewählt.\n- Leo hat ein Tor geschossen und alle jubeln.",
+          folie: "Hör gut zu. Wie fühlt sich das Kind?\n\nZeig auf das Gefühl am Barometer und sag: **„Ich glaube, … fühlt sich …, weil …“**" }
     ],
     ab12: {
         titel: "Wie fühlt sich das an?",
@@ -173,7 +182,7 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
     dauer: 40,
     ziel12: "Stopp-Regel anwenden, Hilfe holen",
     ziel34: "Ich-Botschaften formulieren, faire Lösungen für einen Streit finden",
-    material: "Stopp-Schild (rote Pappe am Stab)\nLösungskarten: je Kind ein Satz mit 4 Karten (Arbeitsmaterial)",
+    material: "Stopp-Schild (rote Pappe am Stab)\nAntwortkarten (Zahlen 1–4)",
     verlauf: [
         { zeit: "0–5",   phase: "Ankommen",     k12: "Begrüßung, Gefühlsbarometer", k34: "Begrüßung, Gefühlsbarometer" },
         { zeit: "5–13",  phase: "Lerntext",     k12: "„Die Schaukel“ hören, Stopp-Schild einführen", k34: "„Streit um den Fußball“ hören, Du- und Ich-Botschaft vergleichen" },
@@ -194,7 +203,12 @@ Max bleibt stehen. Er schaut Ella an. Dann geht Ella zur Lehrerin und holt Hilfe
 
 Zusammen überlegen sie: Erst schaukelt Ella bis 50. Dann schaukelt Max bis 50. Max sagt: „Tut mir leid, dass ich dich geschubst habe.“
 
-**Nach dem Vorlesen:** Was hat Ella gemacht, statt zu hauen? Alle üben gemeinsam: Hand hoch – „Stopp! Das will ich nicht!“`
+**Nach dem Vorlesen:**
+1. Was ist auf dem Schulhof passiert?
+2. Wie hat sich Ella gefühlt, als Max sie geschubst hat?
+3. Was hat Ella gemacht, statt zu hauen?
+4. Wie haben die beiden das Schaukel-Problem gelöst?
+5. Alle zusammen: Hand hoch – „Stopp! Das will ich nicht!“`
     },
     lerntext34: {
         titel: "Streit um den Fußball",
@@ -222,15 +236,22 @@ Hanna fragt: „Was könnte eine Lösung sein, mit der ihr beide zufrieden seid?
           text: "**So geht's:** Du liest eine Situation vor. Ist sie **nicht okay**, stehen alle Kinder an ihrem Platz auf, strecken die Stopp-Hand nach vorn und sagen gemeinsam mit fester Stimme: **„Stopp! Das will ich nicht!“** Ist sie **okay**, bleiben alle sitzen. Du leitest nur an – du spielst nicht mit.\n\n- Jemand nimmt dir einfach den Stift weg.\n- Jemand fragt: „Darf ich mitspielen?“\n- Jemand schubst dich in der Schlange.\n- Jemand leiht dir seinen Radiergummi.\n- Jemand lacht dich aus.\n- Jemand kitzelt dich, obwohl du nicht willst.\n- Jemand sagt: „Toll gemacht!“\n- Jemand zieht dich am Pulli.\n\n**Stopp-Stimme üben:** Zum Schluss sagen alle den Satz dreimal – erst ganz leise und piepsig, dann laut geschrien, dann fest und klar mit Blick nach vorn. Frage: „Welche Stimme wirkt am besten?“ (die dritte)",
           text12: "**So geht's:** Du liest eine Situation vor. Ist sie **nicht okay**, stehen alle Kinder an ihrem Platz auf, strecken die Stopp-Hand nach vorn und sagen gemeinsam mit fester Stimme: **„Stopp! Das will ich nicht!“** Ist sie **okay**, bleiben alle sitzen. Du leitest nur an – du spielst nicht mit.\n\n- Jemand nimmt dir einfach den Stift weg.\n- Jemand fragt: „Darf ich mitspielen?“\n- Jemand schubst dich in der Schlange.\n- Jemand leiht dir seinen Radiergummi.\n- Jemand lacht dich aus.\n- Jemand kitzelt dich, obwohl du nicht willst.\n- Jemand sagt: „Toll gemacht!“\n- Jemand zieht dich am Pulli.\n\n**Stopp-Stimme üben:** Zum Schluss sagen alle den Satz dreimal – erst ganz leise und piepsig, dann laut geschrien, dann fest und klar mit Blick nach vorn. Frage: „Welche Stimme wirkt am besten?“ (die dritte)",
           text34: "**So geht's:** Du liest eine Situation vor. Ist sie **nicht okay**, stehen alle Kinder an ihrem Platz auf, strecken die Stopp-Hand nach vorn und sagen gemeinsam mit fester Stimme: **„Stopp! Das will ich nicht!“** Ist sie **okay**, bleiben alle sitzen. Du leitest nur an – du spielst nicht mit.\n\n- Jemand liest heimlich in deinem Heft.\n- Jemand fragt: „Kann ich mir deinen Stift leihen?“\n- Jemand macht ein Foto von dir und lacht.\n- Jemand sagt: „Gutes Tor!“\n- Jemand stellt dir ein Bein.\n- Jemand beleidigt deine Familie.\n- Jemand fragt: „Wollen wir zusammen arbeiten?“\n- Jemand drängt dich in die Ecke.\n\n**Eigene Worte:** Danach dreht ihr das Glücksrad („Wer ist dran?“). Das Kind sagt vom Platz aus Stopp mit eigenen Worten, z. B. „Hör auf. Ich will das nicht.“ – fest, ruhig, mit Blick nach vorn. Kein Schreien, kein Schimpfwort.",
-          folie: "Ich lese dir etwas vor.\n\n👍 **Okay?** Dann bleibst du sitzen.\n\n✋ **Nicht okay?** Steh auf, streck die Stopp-Hand nach vorn und sag laut und klar: **„Stopp! Das will ich nicht!“**" },
+          folie: "Ich lese dir etwas vor.\n\n👍 **Okay?** Dann bleibst du sitzen.\n\n✋ **Nicht okay?** Steh auf, streck die Stopp-Hand nach vorn und sag laut und klar: **„Stopp! Das will ich nicht!“**",
+          quiz: "stopp",
+          antworten: ["👍 okay", "✋ Stopp!"] },
         { titel: "Lösungs-Karten", fuer: "alle", dauer: "8 Min",
-          text: "**Vorbereitung:** Lösungskarten (Arbeitsmaterial) ausdrucken und ausschneiden. Jedes Kind bekommt einen Satz mit 4 Karten – 🔄 Abwechseln · 🍕 Teilen · 🤝 Zusammen machen · 🙋 Hilfe holen – und legt sie vor sich auf den Tisch. Du musst nichts vorspielen – du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Die Kinder halten auf dein Zeichen („1, 2, 3 – hoch!“) die Karte hoch, die passt. Dann zwei Fragen an einzelne Kinder (vom Platz aus):\n1. „Warum passt deine Karte?“\n2. „Was könnte einer der beiden als Ich-Botschaft sagen?“ (Kl. 3/4)\n\n- Zwei wollen gleichzeitig an die Tischtennisplatte.\n- Beim Fußball streiten zwei, ob es ein Tor war.\n- Beide wollen Kapitän sein.\n- In der Gruppenarbeit will einer alles bestimmen.\n- Jemand schickt ein Foto von dir ohne zu fragen weiter.\n- In der Schlange wird geschubst, es wird gerangelt.\n\n**Wichtig:** Bei Gewalt oder Bloßstellen (Foto) ist die richtige Karte immer 🙋 Hilfe holen – da lösen Kinder es nicht allein.\n\n**Zum Schluss:** Ein Kind fasst zusammen: Welche Lösung kam heute am häufigsten?",
-          text12: "**Vorbereitung:** Lösungskarten (Arbeitsmaterial) ausdrucken und ausschneiden. Jedes Kind bekommt einen Satz mit 4 Karten – 🔄 Abwechseln · 🍕 Teilen · 🤝 Zusammen machen · 🙋 Hilfe holen – und legt sie vor sich auf den Tisch. Du musst nichts vorspielen – du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Die Kinder überlegen kurz und halten auf dein Zeichen („1, 2, 3 – hoch!“) die Karte hoch, die passt. Dann fragst du ein oder zwei Kinder: „Warum passt deine Karte?“ Oft passen mehrere Karten – das ist richtig so.\n\n- Zwei Kinder wollen gleichzeitig schaukeln.\n- Es gibt nur noch einen roten Stift.\n- Einer will Fangen spielen, der andere Verstecken.\n- Beide wollen das letzte Stück Kuchen.\n- Ein Kind haut ein anderes.\n- Ein Kind wirft immer wieder den Turm um.\n\n**Wichtig:** Wenn jemand haut oder wehtut, ist die richtige Karte immer 🙋 Hilfe holen.\n\n**Zum Schluss** sprechen alle zusammen: „Bei Streit gibt es viele Lösungen. Wenn jemand wehtut, hole ich Hilfe.“",
-          text34: "**Vorbereitung:** Lösungskarten (Arbeitsmaterial) ausdrucken und ausschneiden. Jedes Kind bekommt einen Satz mit 4 Karten – 🔄 Abwechseln · 🍕 Teilen · 🤝 Zusammen machen · 🙋 Hilfe holen – und legt sie vor sich auf den Tisch. Du musst nichts vorspielen – du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Die Kinder halten auf dein Zeichen („1, 2, 3 – hoch!“) die Karte hoch, die passt. Dann zwei Fragen an einzelne Kinder (vom Platz aus):\n1. „Warum passt deine Karte?“\n2. „Was könnte einer der beiden als Ich-Botschaft sagen?“ („Ich bin sauer, weil … Ich wünsche mir, dass …“)\n\n- Zwei wollen gleichzeitig an die Tischtennisplatte.\n- Beim Fußball streiten zwei, ob es ein Tor war.\n- Beide wollen Kapitän sein.\n- In der Gruppenarbeit will einer alles bestimmen.\n- Jemand schickt ein Foto von dir ohne zu fragen weiter.\n- In der Schlange wird geschubst, es wird gerangelt.\n\n**Wichtig:** Bei Gewalt oder Bloßstellen (Foto) ist die richtige Karte immer 🙋 Hilfe holen – da lösen Kinder es nicht allein.\n\n**Zum Schluss:** Ein Kind fasst zusammen: Welche Lösung kam heute am häufigsten?",
-          folie: "Leg deine 4 Lösungs-Karten vor dich:\n🔄 Abwechseln · 🍕 Teilen · 🤝 Zusammen machen · 🙋 Hilfe holen\n\nGleich kommt ein Streit. Auf **„1, 2, 3 – hoch!“** zeigst du die Karte, die passt.",
-          folie34: "Leg deine 4 Lösungs-Karten vor dich:\n🔄 Abwechseln · 🍕 Teilen · 🤝 Zusammen machen · 🙋 Hilfe holen\n\nGleich kommt ein Streit. Auf **„1, 2, 3 – hoch!“** zeigst du die Karte, die passt.\n\nDanach: Warum passt deine Karte? Was könnte einer der beiden mit einer Ich-Botschaft sagen?" },
+          text: "**Material:** das Antwortkarten-Set (Zahlenkarten 1–4) – nichts Extra. Die Bedeutung steht auf der Folie bzw. an der Tafel: **1 = Abwechseln · 2 = Teilen · 3 = Zusammen machen · 4 = Hilfe holen.** Du musst nichts vorspielen – du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Die Kinder halten auf dein Zeichen („1, 2, 3 – hoch!“) die Zahlenkarte hoch, die passt. Dann fragst du ein oder zwei Kinder: „Warum passt deine Karte?“ Oft passen mehrere Karten – das ist richtig so.\n\n- Zwei Kinder wollen gleichzeitig schaukeln.\n- Es gibt nur noch einen roten Stift.\n- Einer will Fangen spielen, der andere Verstecken.\n- Beide wollen das letzte Stück Kuchen.\n- Ein Kind haut ein anderes.\n- Ein Kind wirft immer wieder den Turm um.\n\n**Wichtig:** Wenn jemand haut oder wehtut, ist die richtige Karte immer 4 – Hilfe holen.",
+          text12: "**Material:** das Antwortkarten-Set (Zahlenkarten 1–4) – nichts Extra. Die Bedeutung steht auf der Folie bzw. an der Tafel: **1 = Abwechseln · 2 = Teilen · 3 = Zusammen machen · 4 = Hilfe holen.** Du musst nichts vorspielen – du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Die Kinder überlegen kurz und halten auf dein Zeichen („1, 2, 3 – hoch!“) die Zahlenkarte hoch, die passt. Dann fragst du ein oder zwei Kinder: „Warum passt deine Karte?“ Oft passen mehrere Karten – das ist richtig so.\n\n- Zwei Kinder wollen gleichzeitig schaukeln.\n- Es gibt nur noch einen roten Stift.\n- Einer will Fangen spielen, der andere Verstecken.\n- Beide wollen das letzte Stück Kuchen.\n- Ein Kind haut ein anderes.\n- Ein Kind wirft immer wieder den Turm um.\n\n**Wichtig:** Wenn jemand haut oder wehtut, ist die richtige Karte immer 4 – Hilfe holen.\n\n**Zum Schluss** sprechen alle zusammen: „Bei Streit gibt es viele Lösungen. Wenn jemand wehtut, hole ich Hilfe.“",
+          text34: "**Material:** das Antwortkarten-Set (Zahlenkarten 1–4) – nichts Extra. Die Bedeutung steht auf der Folie bzw. an der Tafel: **1 = Abwechseln · 2 = Teilen · 3 = Zusammen machen · 4 = Hilfe holen.** Du musst nichts vorspielen – du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Die Kinder halten auf dein Zeichen („1, 2, 3 – hoch!“) die Zahlenkarte hoch, die passt. Dann zwei Fragen an einzelne Kinder (vom Platz aus):\n1. „Warum passt deine Karte?“\n2. „Was könnte einer der beiden als Ich-Botschaft sagen?“ („Ich bin sauer, weil … Ich wünsche mir, dass …“)\n\n- Zwei wollen gleichzeitig an die Tischtennisplatte.\n- Beim Fußball streiten zwei, ob es ein Tor war.\n- Beide wollen Kapitän sein.\n- In der Gruppenarbeit will einer alles bestimmen.\n- Jemand schickt ein Foto von dir ohne zu fragen weiter.\n- In der Schlange wird geschubst, es wird gerangelt.\n\n**Wichtig:** Bei Gewalt oder Bloßstellen (Foto) ist die richtige Karte immer 4 – Hilfe holen.\n\n**Zum Schluss:** Ein Kind fasst zusammen: Welche Lösung kam heute am häufigsten?",
+          folie: "Leg deine **Zahlenkarten 1–4** vor dich:\n\n**1** 🔄 Abwechseln · **2** 🍕 Teilen · **3** 🤝 Zusammen machen · **4** 🙋 Hilfe holen\n\nGleich kommt ein Streit. Auf **„1, 2, 3 – hoch!“** zeigst du die Karte, die passt.",
+          folie34: "Leg deine **Zahlenkarten 1–4** vor dich:\n\n**1** 🔄 Abwechseln · **2** 🍕 Teilen · **3** 🤝 Zusammen machen · **4** 🙋 Hilfe holen\n\nAuf **„1, 2, 3 – hoch!“** zeigst du die Karte, die passt. Danach: Warum? Und was könnte einer mit einer Ich-Botschaft sagen?",
+          quiz: "loesung",
+          antworten: ["1️⃣ Abwechseln", "2️⃣ Teilen", "3️⃣ Zusammen machen", "4️⃣ Hilfe holen"] },
         { titel: "Ich-Botschaften-Werkstatt", fuer: "34", dauer: "4 Min",
-          text: "Lies Du-Botschaften vor, die Kinder verwandeln sie mündlich:\n\n- „Du nervst!“\n- „Du lässt mich nie mitspielen!“\n- „Du hast meinen Stift kaputt gemacht, du Idiot!“" }
+          text: "Lies Du-Botschaften vor, die Kinder verwandeln sie mündlich:\n\n- „Du nervst!“\n- „Du lässt mich nie mitspielen!“\n- „Du hast meinen Stift kaputt gemacht, du Idiot!“",
+          quiz: "karten",
+          frage: "Mach daraus eine Ich-Botschaft: „Ich fühle mich …, weil … Ich wünsche mir, dass …“",
+          folie: "Gleich siehst du einen **Du-Satz**. Der macht Streit.\n\nMach daraus eine **Ich-Botschaft**:\n„Ich fühle mich …, weil … Ich wünsche mir, dass …“" }
     ],
     ab12: {
         titel: "Stopp – so geht's!",
@@ -291,7 +312,13 @@ Das Eichhörnchen teilt die Nüsse mit dem Igel. „Danke, dass du mir geholfen 
 
 Der Igel strahlt. Jetzt hat er einen Freund – auch mit Stacheln.
 
-**Nach dem Vorlesen:** Was hat der Igel Gutes getan? Was hat das Eichhörnchen Gutes getan? Sammle die Antworten an der Tafel: helfen, teilen, danke sagen, mitspielen lassen.`
+**Nach dem Vorlesen:**
+1. Warum war der Igel am Anfang allein?
+2. Wie hat sich der Igel gefühlt, als der Hase gelacht hat?
+3. Was hat der Igel für das Eichhörnchen getan?
+4. Woran merkst du, dass jemand ein guter Freund ist?
+
+**Tipp für dich:** Sammle an der Tafel: helfen, teilen, danke sagen, mitspielen lassen.`
     },
     lerntext34: {
         titel: "Das geplatzte Versprechen",
@@ -314,11 +341,17 @@ Ida schweigt kurz. Dann sagt sie: „Ich war richtig traurig. Aber ich finde gut
     },
     uebungen: [
         { titel: "Daumen-Spiel „Freundlich oder nicht?“", fuer: "alle", dauer: "4 Min",
-          text: "Du liest Situationen vor, die Kinder zeigen vom Platz aus Daumen hoch oder runter. Kl. 3/4 begründen einzelne Entscheidungen.\n\n- Lisa leiht Tom ihren Radiergummi.\n- Jan erzählt ein Geheimnis von Ali weiter.\n- Sara fragt das neue Kind, ob es mitspielt.\n- Ben lacht, als Mia hinfällt.\n- Emil tröstet Lea, weil sie traurig ist." },
+          text: "Du liest Situationen vor, die Kinder zeigen vom Platz aus Daumen hoch oder runter. Kl. 3/4 begründen einzelne Entscheidungen.\n\n- Lisa leiht Tom ihren Radiergummi.\n- Jan erzählt ein Geheimnis von Ali weiter.\n- Sara fragt das neue Kind, ob es mitspielt.\n- Ben lacht, als Mia hinfällt.\n- Emil tröstet Lea, weil sie traurig ist.",
+          antworten: ["👍 freundlich", "👎 nicht freundlich"],
+          folie: "Ist das **freundlich**? Dann Daumen hoch 👍\n\nIst das **nicht freundlich**? Dann Daumen runter 👎",
+          folie34: "Ist das **freundlich**? Daumen hoch 👍 – **nicht freundlich**? Daumen runter 👎\n\nSag auch, warum." },
         { titel: "Freundschaftsnetz", fuer: "34", dauer: "4 Min",
-          text: "An der Tafel stehen die Vornamen aller Kinder. Ein Kind kommt nach vorn, nennt eine nette Sache, die ein anderes Kind schon einmal getan hat, und spannt einen Wollfaden (mit Magneten) zwischen den beiden Namen. So entsteht Faden für Faden ein Netz. Kl. 1/2 dürfen das Kind nennen, die Großen spannen den Faden." },
+          text: "An der Tafel stehen die Vornamen aller Kinder. Ein Kind kommt nach vorn, nennt eine nette Sache, die ein anderes Kind schon einmal getan hat, und spannt einen Wollfaden (mit Magneten) zwischen den beiden Namen. So entsteht Faden für Faden ein Netz. Kl. 1/2 dürfen das Kind nennen, die Großen spannen den Faden.",
+          folie: "An der Tafel stehen eure Namen.\n\nSag, was ein anderes Kind schon einmal **Nettes** getan hat – und spann einen Faden zwischen euren Namen. So wächst unser **Freundschaftsnetz**." },
         { titel: "Kompliment-Post", fuer: "alle", dauer: "4 Min",
-          text: "Jedes Kind zieht verdeckt einen Namenszettel. Kl. 1/2 malen für dieses Kind ein kleines Bild, Kl. 3/4 schreiben ein Kompliment („Ich finde toll, dass du …“). Du sammelst die Zettel ein und verteilst sie als „Postbote“ an die Plätze." }
+          text: "Jedes Kind zieht verdeckt einen Namenszettel. Kl. 1/2 malen für dieses Kind ein kleines Bild, Kl. 3/4 schreiben ein Kompliment („Ich finde toll, dass du …“). Du sammelst die Zettel ein und verteilst sie als „Postbote“ an die Plätze.",
+          folie12: "Zieh einen Namenszettel. Verrate den Namen nicht!\n\nMal für dieses Kind ein kleines Bild. 📬 Danach kommt die Post.",
+          folie34: "Zieh einen Namenszettel. Verrate den Namen nicht!\n\nSchreib diesem Kind ein Kompliment: **„Ich finde toll, dass du …“** 📬 Danach kommt die Post." }
     ],
     ab12: {
         titel: "Was macht ein guter Freund?",
@@ -380,7 +413,13 @@ Alle machen mit. Jetzt warten die Autos, wenn die Kinder gehen. Niemand muss meh
 
 Die Leute sagen: „Regeln sind gut. Sie passen auf uns auf.“
 
-**Nach dem Vorlesen:** Welche Regeln kennst du? Zu Hause, in der Schule, auf der Straße? Sammle an der Tafel.`
+**Nach dem Vorlesen:**
+1. Warum hatten in Wirrwarr alle Angst?
+2. Was hat Lotta auf das Schild gemalt?
+3. Was war anders, als sich alle an die Regel gehalten haben?
+4. Welche Regeln kennst du in der Schule – und warum gibt es sie?
+
+**Tipp für dich:** Sammle Regeln an der Tafel: zu Hause, in der Schule, auf der Straße.`
     },
     lerntext34: {
         titel: "Die Insel ohne Regeln",
@@ -401,11 +440,14 @@ Nach einer Woche klappt das Inselleben richtig gut. Moritz sagt: „Komisch – 
     },
     uebungen: [
         { titel: "Regel-Chaos-Spiel (Einstieg)", fuer: "alle", dauer: "5 Min",
-          text: "Ankündigung: „Wir spielen ein Würfelspiel. Wer gewinnt? Das sage ich nicht.“ Der Würfel wandert von Platz zu Platz. Jedes Kind würfelt, du vergibst Punkte völlig willkürlich (eine 6 bringt mal 10 Punkte, mal 0; ein Kind darf zweimal würfeln, ein anderes gar nicht). Nach zwei Minuten stoppst du.\n\nFrage: „Wie hat sich das Spiel angefühlt? Was hat gefehlt?“ – Ziel: Die Kinder merken selbst, dass ohne Regeln Unfairness und Ärger entstehen." },
+          text: "Ankündigung: „Wir spielen ein Würfelspiel. Wer gewinnt? Das sage ich nicht.“ Der Würfel wandert von Platz zu Platz. Jedes Kind würfelt, du vergibst Punkte völlig willkürlich (eine 6 bringt mal 10 Punkte, mal 0; ein Kind darf zweimal würfeln, ein anderes gar nicht). Nach zwei Minuten stoppst du.\n\nFrage: „Wie hat sich das Spiel angefühlt? Was hat gefehlt?“ – Ziel: Die Kinder merken selbst, dass ohne Regeln Unfairness und Ärger entstehen.",
+          folie: "Wir spielen ein Würfelspiel. 🎲\n\nWer gewinnt? Das wird nicht verraten …" },
         { titel: "Unser Regelplakat", fuer: "alle", dauer: "9 Min",
           text: "**Schritt 1 – Vorschläge:** Jedes Kind überlegt an seinem Platz eine Regel für unsere Sozialtraining-Stunde. Kl. 1/2 sagen sie dir oder malen ein Symbol, Kl. 3/4 schreiben sie auf einen Zettel. Wichtig: Regeln positiv formulieren („Wir hören zu“ statt „Nicht reinreden“).\n\n**Schritt 2 – Abstimmen:** Du liest die Vorschläge vor. Abstimmung per Handzeichen vom Platz. Die drei bis fünf Regeln mit den meisten Stimmen kommen aufs Plakat.\n\n**Schritt 3 – Begründen und Folgen aushandeln (Kl. 3/4):** Zu jeder Regel erklärt ein Kind, warum sie wichtig ist. Dann überlegt die Gruppe: Was passiert, wenn jemand die Regel bricht? Die Folge muss fair sein und zur Regel passen (z. B. „Wer reinredet, wartet eine Runde mit dem Redestein“).\n\n**Schritt 4 – Gestalten (Kl. 1/2):** Während die Großen begründen, malen die Kleinen an ihrem Platz Symbole zu jeder Regel (Ohr für Zuhören, Herz für Freundlichkeit). Die Bilder kommen neben die Regeln aufs Plakat.",
           text12: "**Schritt 1 – Vorschläge:** Jedes Kind überlegt an seinem Platz eine Regel für unsere Sozialtraining-Stunde und sagt sie dir oder malt ein Symbol. Wichtig: Regeln positiv formulieren („Wir hören zu“ statt „Nicht reinreden“).\n\n**Schritt 2 – Abstimmen:** Du liest die Vorschläge vor. Abstimmung per Handzeichen vom Platz. Die drei bis fünf Regeln mit den meisten Stimmen schreibst du aufs Plakat.\n\n**Schritt 3 – Gestalten:** Die Kinder malen an ihrem Platz Symbole zu jeder Regel (Ohr für Zuhören, Herz für Freundlichkeit). Die Bilder kommen neben die Regeln aufs Plakat.",
-          text34: "**Schritt 1 – Vorschläge:** Jedes Kind überlegt an seinem Platz eine Regel für unsere Sozialtraining-Stunde und schreibt sie auf einen Zettel. Wichtig: Regeln positiv formulieren („Wir hören zu“ statt „Nicht reinreden“).\n\n**Schritt 2 – Abstimmen:** Du liest die Vorschläge vor. Abstimmung per Handzeichen vom Platz. Die drei bis fünf Regeln mit den meisten Stimmen kommen aufs Plakat.\n\n**Schritt 3 – Begründen und Folgen aushandeln:** Zu jeder Regel erklärt ein Kind, warum sie wichtig ist. Dann überlegt die Gruppe: Was passiert, wenn jemand die Regel bricht? Die Folge muss fair sein und zur Regel passen (z. B. „Wer reinredet, wartet eine Runde mit dem Redestein“)." }
+          text34: "**Schritt 1 – Vorschläge:** Jedes Kind überlegt an seinem Platz eine Regel für unsere Sozialtraining-Stunde und schreibt sie auf einen Zettel. Wichtig: Regeln positiv formulieren („Wir hören zu“ statt „Nicht reinreden“).\n\n**Schritt 2 – Abstimmen:** Du liest die Vorschläge vor. Abstimmung per Handzeichen vom Platz. Die drei bis fünf Regeln mit den meisten Stimmen kommen aufs Plakat.\n\n**Schritt 3 – Begründen und Folgen aushandeln:** Zu jeder Regel erklärt ein Kind, warum sie wichtig ist. Dann überlegt die Gruppe: Was passiert, wenn jemand die Regel bricht? Die Folge muss fair sein und zur Regel passen (z. B. „Wer reinredet, wartet eine Runde mit dem Redestein“).",
+          folie12: "Welche Regel hilft, dass es uns hier gut geht?\n\nSag deine Regel oder mal ein Bild dazu. Danach stimmen wir ab. ✋",
+          folie34: "Welche Regel hilft, dass es uns hier gut geht?\n\nSchreib deine Regel auf einen Zettel – so: **„Wir …“** (nicht: „Nicht …“). Danach stimmen wir ab. ✋" }
     ],
     ab12: {
         titel: "Regeln im Alltag",

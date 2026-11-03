@@ -21,7 +21,11 @@ Die Eule sagt: „Vulki, wenn es in dir brodelt, mach es so: Atme tief ein und l
 
 Am nächsten Tag ärgert sich Vulki wieder. Es brodelt. Aber diesmal atmet er tief ein … und aus. Er zählt bis zehn. Das Feuer bleibt drin. Vulki ist stolz.
 
-**Nach dem Vorlesen:** Wo spürst du Wut in deinem Körper? Zeigt es am Platz: Bauch? Kopf? Fäuste?` },
+**Nach dem Vorlesen:**
+1. Was passiert mit Vulki, wenn er sich ärgert?
+2. Warum war Vulki nach dem BUMM allein?
+3. Welchen Tipp hat die Eule Vulki gegeben?
+4. Wo spürst du Wut in deinem Körper? Zeig es am Platz.` },
     lerntext34: { titel: "Jonas und die Wutwelle", text:
 `Beim Fußball in der Pause schießt Jonas am leeren Tor vorbei. Kevin lacht laut: „Wie kann man den denn nicht reinmachen?“
 
@@ -40,11 +44,15 @@ Jonas merkt: Die Wut war trotzdem da. Aber diesmal hat er entschieden, was passi
 4. Ist Wut ein schlechtes Gefühl? Was meinst du?` },
     uebungen: [
         { titel: "Ballon-Atmen", fuer: "alle", dauer: "3 Min",
-          text: "Alle sitzen aufrecht am Platz, eine Hand liegt auf dem Bauch. Einatmen durch die Nase – der Bauch wird ein dicker Ballon. Langsam durch den Mund ausatmen – die Luft geht aus dem Ballon. Fünfmal. Frage danach: „Wie fühlt sich dein Körper jetzt an?“" },
+          text: "Alle sitzen aufrecht am Platz, eine Hand liegt auf dem Bauch. Einatmen durch die Nase – der Bauch wird ein dicker Ballon. Langsam durch den Mund ausatmen – die Luft geht aus dem Ballon. Fünfmal. Frage danach: „Wie fühlt sich dein Körper jetzt an?“",
+          folie: "Setz dich gerade hin. Leg eine Hand auf den Bauch. 🎈\n\nDurch die Nase einatmen – der Bauch wird ein dicker Ballon.\nLangsam durch den Mund ausatmen – die Luft geht raus.\n\n**5-mal.**" },
         { titel: "Wut-Thermometer", fuer: "alle", dauer: "4 Min",
-          text: "Du liest Situationen vor. Die Kinder zeigen am Platz mit dem Arm, wie wütend sie das machen würde: Hand auf dem Tisch = gar nicht, Arm ganz hoch = kochend heiß.\n\n- Jemand schubst mich in der Schlange.\n- Mein Bruder isst meinen Nachtisch.\n- Ich verliere beim Spiel.\n- Jemand lacht über mein Bild.\n\nWichtig: Jeder darf anders wütend sein – das ist normal." },
+          text: "Du liest Situationen vor. Die Kinder zeigen am Platz mit dem Arm, wie wütend sie das machen würde: Hand auf dem Tisch = gar nicht, Arm ganz hoch = kochend heiß.\n\n- Jemand schubst mich in der Schlange.\n- Mein Bruder isst meinen Nachtisch.\n- Ich verliere beim Spiel.\n- Jemand lacht über mein Bild.\n\nWichtig: Jeder darf anders wütend sein – das ist normal.",
+          antworten: ["✋ gar nicht wütend", "💪 etwas wütend", "🙌 kochend heiß"],
+          folie: "Wie **wütend** würde dich das machen?\n\nHand auf dem Tisch = gar nicht · Arm halb hoch = etwas · Arm ganz hoch = kochend heiß! 🌡️\n\nJeder darf anders wütend sein." },
         { titel: "Werkzeugkasten sortieren", fuer: "34", dauer: "5 Min",
-          text: "Die Tischnachbarn bekommen die Werkzeug-Kärtchen und legen zwei Häufchen: „Hilft mir und schadet keinem“ und „Macht es schlimmer“. Danach stellt jedes Paar ein Werkzeug vor, das es selbst ausprobieren will. Kl. 1/2 zeigen in derselben Zeit am Platz ihren Lieblings-Trick vor (z. B. Fäuste ganz fest drücken und wieder loslassen)." }
+          text: "Die Tischnachbarn bekommen die Werkzeug-Kärtchen und legen zwei Häufchen: „Hilft mir und schadet keinem“ und „Macht es schlimmer“. Danach stellt jedes Paar ein Werkzeug vor, das es selbst ausprobieren will. Kl. 1/2 zeigen in derselben Zeit am Platz ihren Lieblings-Trick vor (z. B. Fäuste ganz fest drücken und wieder loslassen).",
+          folie: "Ihr bekommt Werkzeug-Kärtchen. Legt zwei Häufchen:\n\n✅ **Hilft mir und schadet keinem**\n❌ **Macht es schlimmer**\n\nWelches Werkzeug willst du ausprobieren?" }
     ],
     ab12: { titel: "Wenn ich wütend bin", aufgaben: [
         { typ: "gesichter", text: "Male die Gesichter fertig: wütend und wieder ruhig.", gefuehle: ["wütend", "ruhig"], leer: true },
@@ -78,7 +86,13 @@ Ben sieht das. Er lacht nicht. Er setzt sich neben Emma. Er gibt ihr ein Taschen
 
 Emma schnieft. Ben bleibt einfach bei ihr sitzen. Nach einer Weile sagt Emma: „Danke, dass du da bist.“ Und sie lächelt ein kleines bisschen.
 
-**Nach dem Vorlesen:** Was hat Ben gemacht, damit es Emma besser geht? Sammle an der Tafel: da sein, Taschentuch geben, nicht lachen, freundlich reden.` },
+**Nach dem Vorlesen:**
+1. Warum war Emma traurig?
+2. Was hat Ben gemacht, als er Emma weinen sah?
+3. Warum hat Ben nicht gelacht?
+4. Was hilft dir, wenn du traurig bist?
+
+**Tipp für dich:** Sammle an der Tafel: da sein, Taschentuch geben, nicht lachen, freundlich reden.` },
     lerntext34: { titel: "Der leere Käfig", text:
 `Als Finn am Montag in die Klasse kommt, ist er ganz still. Er setzt sich an seinen Platz und schaut aus dem Fenster. In der Pause bleibt er sitzen.
 
@@ -97,13 +111,19 @@ Am Ende sagt Finn: „Danke, Aylin. Das hat gutgetan.“
 4. Was hilft dir, wenn du traurig bist?` },
     uebungen: [
         { titel: "Trostworte sammeln", fuer: "alle", dauer: "4 Min",
-          text: "Sammle an der Tafel Sätze und Taten, die trösten. Die Kinder melden sich vom Platz. Kl. 1/2 dürfen auch Taten vorspielen (Hand auf die Schulter legen, Taschentuch reichen). Am Ende: „Welcher Trost passt zu dir am besten?“" },
+          text: "Sammle an der Tafel Sätze und Taten, die trösten. Die Kinder melden sich vom Platz. Kl. 1/2 dürfen auch Taten vorspielen (Hand auf die Schulter legen, Taschentuch reichen). Am Ende: „Welcher Trost passt zu dir am besten?“",
+          folie: "Was hilft, wenn jemand **traurig** ist?\n\nSag einen Satz oder etwas, das man tun kann.",
+          folie12: "Was hilft, wenn jemand **traurig** ist?\n\nSag einen Satz – oder zeig, was man tun kann." },
         { titel: "Hilft das wirklich?", fuer: "34", dauer: "4 Min",
-          text: "Du liest Reaktionen vor, die Kinder zeigen Daumen hoch oder runter und begründen kurz:\n\n- „Hör auf zu heulen!“\n- „Ich bin für dich da.“\n- „Ist doch nicht so schlimm.“\n- „Willst du darüber reden?“\n- Einfach still daneben sitzen." },
+          text: "Du liest Reaktionen vor, die Kinder zeigen Daumen hoch oder runter und begründen kurz:\n\n- „Hör auf zu heulen!“\n- „Ich bin für dich da.“\n- „Ist doch nicht so schlimm.“\n- „Willst du darüber reden?“\n- Einfach still daneben sitzen.",
+          antworten: ["👍 hilft", "👎 hilft nicht"],
+          folie: "Jemand ist traurig. Hilft dieser Satz?\n\n👍 hilft · 👎 hilft nicht – und warum?" },
         { titel: "Trost-Post für den Teddy", fuer: "alle", dauer: "4 Min",
           text: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind macht ihm an seinem Platz eine Trostkarte: Kl. 1/2 malen, Kl. 3/4 schreiben zwei Sätze. Die Karten werden vorn neben den Teddy gelegt.",
           text12: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind malt ihm an seinem Platz eine Trostkarte. Die Karten werden vorn neben den Teddy gelegt.",
-          text34: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind schreibt ihm an seinem Platz eine Trostkarte mit zwei Sätzen. Die Karten werden vorn neben den Teddy gelegt." }
+          text34: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind schreibt ihm an seinem Platz eine Trostkarte mit zwei Sätzen. Die Karten werden vorn neben den Teddy gelegt.",
+          folie12: "Der Teddy ist traurig. Er hat seinen besten Freund verloren. 🧸\n\nMal ihm eine **Trostkarte**.",
+          folie34: "Der Teddy ist traurig. Er hat seinen besten Freund verloren. 🧸\n\nSchreib ihm eine **Trostkarte** mit zwei Sätzen." }
     ],
     ab12: { titel: "Ich kann trösten", kontext: "Zur Geschichte: Emmas Luftballon fliegt weg und sie weint. Ben setzt sich zu ihr und tröstet sie.", aufgaben: [
         { typ: "gesichter", text: "So fühlt sich Emma vorher – und nachher.", gefuehle: ["traurig", "froh"], leer: false },
@@ -138,7 +158,13 @@ Mama macht ein kleines Licht an. Bruno nimmt seinen Kuschelhasen in den Arm. Er 
 
 „Morgen“, sagt Bruno, „bin ich vielleicht schon ein bisschen mutiger.“
 
-**Nach dem Vorlesen:** Was hat Bruno gegen die Angst geholfen? (Mama holen, Licht, Kuscheltier, atmen)` },
+**Nach dem Vorlesen:**
+1. Wovor hatte Bruno Angst?
+2. Woran hast du gemerkt, dass Bruno Angst hatte?
+3. Was hat Bruno gegen die Angst geholfen?
+4. Was hilft dir, wenn du Angst hast?
+
+**Tipp für dich:** Mögliche Antworten: Mama holen, Licht, Kuscheltier, atmen.` },
     lerntext34: { titel: "Mila im Kletterwald", text:
 `Die Klasse 4b macht einen Ausflug in den Kletterwald. Alle sind aufgeregt. Mila steht vor der ersten Leiter und schaut nach oben. Die Plattform ist sehr hoch. Ihre Knie werden weich, ihr Mund ist trocken.
 
@@ -157,11 +183,17 @@ Auf der Heimfahrt sagt Mila: „Mutig sein heißt nicht, keine Angst zu haben. M
 4. Was meint Mila mit ihrem letzten Satz?` },
     uebungen: [
         { titel: "Angst-Barometer", fuer: "alle", dauer: "4 Min",
-          text: "Du liest Situationen vor, die Kinder zeigen am Platz mit 0 bis 5 Fingern, wie viel Angst sie hätten:\n\n- Ein großer Hund bellt mich an.\n- Ich soll vor der Klasse etwas vorlesen.\n- Ich bin nachts allein wach.\n- Ich gehe zum Zahnarzt.\n\nWichtig: Jede Zahl ist richtig. Menschen haben vor verschiedenen Dingen Angst." },
+          text: "Du liest Situationen vor, die Kinder zeigen am Platz mit 0 bis 5 Fingern, wie viel Angst sie hätten:\n\n- Ein großer Hund bellt mich an.\n- Ich soll vor der Klasse etwas vorlesen.\n- Ich bin nachts allein wach.\n- Ich gehe zum Zahnarzt.\n\nWichtig: Jede Zahl ist richtig. Menschen haben vor verschiedenen Dingen Angst.",
+          antworten: ["✊ keine Angst", "✌️ ein bisschen", "🖐️ viel Angst"],
+          folie: "Wie viel **Angst** hättest du?\n\nZeig es mit deinen Fingern: **0** = gar keine · **5** = ganz viel.\n\nJede Zahl ist richtig!" },
         { titel: "Mutmacher-Satz", fuer: "alle", dauer: "4 Min",
-          text: "Sammelt Mutmacher-Sätze an der Tafel („Ich schaff das!“, „Eins nach dem anderen“, „Ich darf es versuchen“). Jedes Kind sucht sich einen aus, steht am Platz auf und sagt ihn mit starker Stimme. Die anderen antworten: „Ja, das schaffst du!“" },
+          text: "Sammelt Mutmacher-Sätze an der Tafel („Ich schaff das!“, „Eins nach dem anderen“, „Ich darf es versuchen“). Jedes Kind sucht sich einen aus, steht am Platz auf und sagt ihn mit starker Stimme. Die anderen antworten: „Ja, das schaffst du!“",
+          folie: "Welcher Satz macht dir **Mut**?\n\nSuch dir einen aus, steh auf und sag ihn mit starker Stimme. 💪",
+          quiz: "liste" },
         { titel: "Schützt mich die Angst?", fuer: "34", dauer: "4 Min",
-          text: "Situationen vorlesen. Die Kinder entscheiden mit Daumen: Daumen hoch = „Die Angst schützt mich, ich höre auf sie“, Daumen zur Seite = „Die Angst ist zu laut, ich probiere es in kleinen Schritten“.\n\n- Ein Fremder bietet mir Süßigkeiten an.\n- Ich soll ein neues Kind ansprechen.\n- Das Eis auf dem Teich ist dünn.\n- Ich soll bei der Theateraufführung mitspielen." }
+          text: "Situationen vorlesen. Die Kinder entscheiden mit Daumen: Daumen hoch = „Die Angst schützt mich, ich höre auf sie“, Daumen zur Seite = „Die Angst ist zu laut, ich probiere es in kleinen Schritten“.\n\n- Ein Fremder bietet mir Süßigkeiten an.\n- Ich soll ein neues Kind ansprechen.\n- Das Eis auf dem Teich ist dünn.\n- Ich soll bei der Theateraufführung mitspielen.",
+          antworten: ["👍 Angst schützt mich", "👉 kleine Schritte probieren"],
+          folie: "**Daumen hoch 👍** = Die Angst passt auf mich auf. Ich höre auf sie.\n\n**Daumen zur Seite 👉** = Die Angst ist zu laut. Ich probiere es in kleinen Schritten." }
     ],
     ab12: { titel: "Was macht mir Mut?", aufgaben: [
         { typ: "gesichter", text: "Male die Gesichter fertig: ängstlich – und wieder ruhig.", gefuehle: ["ängstlich", "ruhig"], leer: true },
@@ -196,7 +228,11 @@ Ella bleibt stehen. Sie schaut Lio an. Sie denkt: „Lio ist traurig. So würde 
 
 „Oh nein, das wollte ich nicht“, sagt Ella. „Soll ich dir helfen? Wir bauen ihn zusammen wieder auf – noch höher!“ Lio wischt sich die Augen. „Okay“, sagt er. Zusammen bauen sie den höchsten Turm der Klasse.
 
-**Nach dem Vorlesen:** Woran hat Ella gemerkt, dass Lio traurig ist? Was hat sie dann gemacht?` },
+**Nach dem Vorlesen:**
+1. Warum war Lio stolz?
+2. Was ist mit dem Turm passiert?
+3. Woran hat Ella gemerkt, dass Lio traurig ist?
+4. Was hat Ella dann gemacht?` },
     lerntext34: { titel: "Zwei Seiten einer Geschichte", text:
 `**Laras Seite:** Lara winkt Tim morgens am Schultor zu. Tim schaut sie nicht an und geht einfach weiter. In der Pause fragt sie, ob er mitspielt – er schüttelt nur den Kopf. Lara ist sauer. „Der ist total eingebildet“, sagt sie zu ihrer Freundin.
 
@@ -211,11 +247,18 @@ Am Nachmittag erzählt die Lehrerin der Klasse, dass Tims Opa krank ist. Lara wi
 4. Was bedeutet „sich in jemanden hineinversetzen“?` },
     uebungen: [
         { titel: "Gesichter lesen", fuer: "alle", dauer: "4 Min",
-          text: "Ein Kind kommt nach vorn und zeigt verdeckt ein Gefühl (froh, traurig, wütend, ängstlich, überrascht). Die anderen raten vom Platz und überlegen: „Was könnte dieses Kind jetzt brauchen?“ (trösten, Ruhe, sich mitfreuen, Hilfe)." },
+          text: "Ein Kind kommt nach vorn und zeigt verdeckt ein Gefühl (froh, traurig, wütend, ängstlich, überrascht). Die anderen raten vom Platz und überlegen: „Was könnte dieses Kind jetzt brauchen?“ (trösten, Ruhe, sich mitfreuen, Hilfe).",
+          folie: "Ein Kind zeigt ein Gefühl – ohne Worte.\n\nRate: **Wie fühlt es sich? Was könnte es jetzt brauchen?**" },
         { titel: "Was braucht er jetzt?", fuer: "12", dauer: "4 Min",
-          text: "Du beschreibst kurz ein Kind (z. B. „Paul ist hingefallen und weint“, „Mia hat ein Tor geschossen“, „Ben ist wütend, weil sein Bild zerrissen ist“). Die Kinder zeigen am Platz: Hand aufs Herz = trösten, Daumen hoch = mitfreuen, Hand flach = in Ruhe lassen, Hand ausstrecken = helfen." },
+          text: "Du liest kurz vor, wie es einem Kind geht. Die Kinder zeigen am Platz: Hand aufs Herz = trösten, Daumen hoch = mitfreuen, Hand flach = in Ruhe lassen, Hand ausstrecken = helfen.\n\n- Paul ist hingefallen und weint.\n- Mia hat ein Tor geschossen.\n- Ben ist wütend, weil sein Bild zerrissen ist.\n- Lea kommt mit ihrer Matheaufgabe nicht weiter.\n- Tom sitzt allein und will gerade niemanden sehen.",
+          quiz: "karten",
+          frage: "❤️ trösten · 👍 mitfreuen · ✋ in Ruhe lassen · 🤲 helfen",
+          folie: "Was braucht das Kind jetzt? Zeig es:\n\n❤️ Hand aufs Herz = **trösten**\n👍 Daumen hoch = **mitfreuen**\n✋ Hand flach = **in Ruhe lassen**\n🤲 Hand ausstrecken = **helfen**" },
         { titel: "Die Perspektiv-Brille", fuer: "34", dauer: "5 Min",
-          text: "Du liest eine Situation vor. Ein Kind setzt die Perspektiv-Brille auf und erzählt in der Ich-Form, was die andere Person fühlt und denkt. Danach gibt es die Brille weiter.\n\n- Ein neues Kind sitzt in der Pause allein auf der Bank.\n- Die Lehrerin schimpft, obwohl sie sonst nett ist.\n- Dein Freund hat beim Spiel verloren und knallt die Tür zu." }
+          text: "Du liest eine Situation vor. Ein Kind setzt die Perspektiv-Brille auf und erzählt in der Ich-Form, was die andere Person fühlt und denkt. Danach gibt es die Brille weiter.\n\n- Ein neues Kind sitzt in der Pause allein auf der Bank.\n- Die Lehrerin schimpft, obwohl sie sonst nett ist.\n- Dein Freund hat beim Spiel verloren und knallt die Tür zu.",
+          quiz: "karten",
+          frage: "Setz die Brille auf: Was fühlt und denkt die andere Person?",
+          folie: "Wer die **Perspektiv-Brille** 👓 aufsetzt, schlüpft in eine andere Person.\n\nErzähl in der Ich-Form: **„Ich fühle mich … Ich denke …“**" }
     ],
     ab12: { titel: "Wie geht es dir?", kontext: "Zur Geschichte: Ella stößt aus Versehen Lios Turm um. Lio ist traurig – Ella hilft ihm, den Turm wieder aufzubauen.", aufgaben: [
         { typ: "zuordnen", text: "Wie fühlt sich das Kind? Verbinde.",
@@ -252,7 +295,11 @@ Diesmal läuft Paul zur Lehrerin. „Frau Krause, schnell! Ben ist runtergefalle
 
 **Merksatz:** Ist jemand in Gefahr oder tut jemandem etwas weh? Dann hole ich Hilfe!
 
-**Nach dem Vorlesen:** Was war bei Mia anders als bei Paul?` },
+**Nach dem Vorlesen:**
+1. Warum ist Mia zur Lehrerin gelaufen?
+2. Warum ist Paul zur Lehrerin gelaufen?
+3. Wer von beiden hat Hilfe geholt – und warum?
+4. Wann holst du sofort einen Erwachsenen?` },
     lerntext34: { titel: "Ist Lukas eine Petze?", text:
 `Jeden Tag nach der Schule passiert es: Zwei Jungen aus der fünften Klasse nehmen Jannes die Mütze weg. Sie werfen sie hin und her, Jannes rennt hinterher, und alle lachen. Jannes sagt nie etwas. Aber Lukas sieht, dass Jannes morgens schon Bauchweh hat.
 
@@ -271,11 +318,17 @@ Später fragt Lukas: „War ich jetzt eine Petze?“ Die Lehrerin schüttelt den
 4. Fällt dir ein Beispiel ein, wo man selbst eine Lösung finden kann, ohne Erwachsene?` },
     uebungen: [
         { titel: "Die drei Hilfe-Fragen", fuer: "alle", dauer: "3 Min",
-          text: "Stehen an der Tafel: **1. Ist jemand in Gefahr? 2. Wird jemandem wehgetan? 3. Kann ich es allein lösen?** Alle sprechen sie gemeinsam. Kl. 1/2 merken sich die Kurzform: „Gefahr oder Weh – dann Hilfe!“" },
+          text: "Stehen an der Tafel: **1. Ist jemand in Gefahr? 2. Wird jemandem wehgetan? 3. Kann ich es allein lösen?** Alle sprechen sie gemeinsam. Kl. 1/2 merken sich die Kurzform: „Gefahr oder Weh – dann Hilfe!“",
+          folie: "**1.** Ist jemand in Gefahr?\n**2.** Wird jemandem wehgetan?\n**3.** Kann ich es allein lösen?\n\nAlle sprechen zusammen.",
+          folie12: "**1.** Ist jemand in Gefahr?\n**2.** Wird jemandem wehgetan?\n**3.** Kann ich es allein lösen?\n\nMerk dir: **„Gefahr oder Weh – dann Hilfe!“**" },
         { titel: "Rote Karte – grüne Karte", fuer: "alle", dauer: "6 Min",
-          text: "Du liest Situationen vor. Rot = sofort Hilfe holen, Grün = selbst lösen oder geht mich nichts an. Kl. 3/4 begründen.\n\n- Ein Kind steht auf der Fensterbank.\n- Jemand hat seine Hausaufgaben vergessen.\n- Zwei Kinder prügeln sich.\n- Mein Nachbar malt außerhalb der Linien.\n- Ein Kind wird jeden Tag ausgelacht und weint.\n- Jemand drängelt sich vor." },
+          text: "Du liest Situationen vor. Rot = sofort Hilfe holen, Grün = selbst lösen oder geht mich nichts an. Kl. 3/4 begründen.\n\n- Ein Kind steht auf der Fensterbank.\n- Jemand hat seine Hausaufgaben vergessen.\n- Zwei Kinder prügeln sich.\n- Mein Nachbar malt außerhalb der Linien.\n- Ein Kind wird jeden Tag ausgelacht und weint.\n- Jemand drängelt sich vor.",
+          quiz: "ampel",
+          antworten: ["🔴 sofort Hilfe holen", "🟢 selbst lösen / geht mich nichts an"],
+          folie: "🔴 **Rot** = sofort Hilfe holen\n🟢 **Grün** = selbst lösen oder geht mich nichts an\n\nHalt die passende Karte hoch." },
         { titel: "Hilfe holen üben", fuer: "12", dauer: "3 Min",
-          text: "Einzelne Kinder kommen nach vorn zu dir und üben den Satz: „Frau/Herr …, ich brauche Hilfe! … ist … passiert.“ Laut, deutlich und mit Blickkontakt." }
+          text: "Einzelne Kinder stehen an ihrem Platz auf und sagen den Hilfe-Satz laut zur Klasse: „Frau/Herr …, ich brauche Hilfe! … ist … passiert.“ Laut, deutlich, Blick nach vorn. Die anderen zeigen Daumen hoch, wenn man es gut verstehen konnte.",
+          folie: "Steh auf und sag laut und deutlich:\n\n**„Frau/Herr …, ich brauche Hilfe! … ist … passiert.“**\n\nDie anderen: 👍 wenn man es gut verstanden hat." }
     ],
     ab12: { titel: "Hilfe holen", aufgaben: [
         { typ: "tabelle", text: "Hilfe holen oder nicht? Male das Kästchen rot (Hilfe holen) oder grün (nicht nötig).", spalten: ["Was passiert?", "rot / grün"],
@@ -310,7 +363,13 @@ Sam merkt das. Er kommt zurück. Er schaut Lea an und sagt: „Es tut mir wirkli
 
 Lea nickt. Zusammen malen sie einen neuen Regenbogen – mit noch mehr Farben.
 
-**Nach dem Vorlesen:** Was war bei der zweiten Entschuldigung anders? (anschauen, sagen was passiert ist, wieder gutmachen)` },
+**Nach dem Vorlesen:**
+1. Was ist mit Leas Bild passiert?
+2. Warum hat sich die erste Entschuldigung nicht echt angefühlt?
+3. Was hat Sam beim zweiten Mal anders gemacht?
+4. Wie geht eine echte Entschuldigung?
+
+**Tipp für dich:** Mögliche Antworten: anschauen, sagen was passiert ist, wieder gutmachen.` },
     lerntext34: { titel: "Das verratene Geheimnis", text:
 `Merve hat Nora ein Geheimnis erzählt: Sie ist in Jonas verliebt. Zwei Tage später weiß es die halbe Klasse. Nora hatte es nur ihrer Freundin Paula erzählt – „aber nicht weitersagen!“. Paula hat es natürlich weitererzählt.
 
@@ -329,13 +388,18 @@ Eine Woche später setzt Merve sich in der Pause wieder neben Nora.
 4. Was kann man tun, wenn man etwas nicht wieder gutmachen kann?` },
     uebungen: [
         { titel: "Echt oder unecht?", fuer: "alle", dauer: "4 Min",
-          text: "Du sagst Entschuldigungen auf verschiedene Arten: genervt mit Augenrollen, ohne Blickkontakt, ehrlich mit Blick und ruhiger Stimme, mit einem „aber du hast …“ hinten dran. Die Kinder zeigen am Platz Daumen hoch (echt) oder runter (unecht) und sagen, woran sie es merken." },
+          text: "Du liest vor, wie sich jemand entschuldigt. Die Kinder zeigen Daumen hoch (echt) oder runter (unecht) und sagen, woran sie es merken.\n\n- Tim rollt mit den Augen und murmelt: „Jaja, sorry.“\n- Ben schaut Lea an und sagt ruhig: „Es tut mir leid, dass ich dein Bild zerknittert habe.“\n- Mia schaut auf den Boden und flüstert: „Tschuldigung.“\n- Ali sagt: „Sorry – aber du hast angefangen!“\n- Emma sagt: „Entschuldigung. Ich helfe dir, die Stifte aufzuheben.“",
+          antworten: ["👍 echt", "👎 unecht"],
+          folie: "Ist diese Entschuldigung **echt**? 👍\nOder **unecht**? 👎\n\nWoran merkst du das?" },
         { titel: "Die Entschuldigungs-Treppe", fuer: "alle", dauer: "6 Min",
           text: "An der Tafel: **1. Ich sage, was ich getan habe. 2. Ich sage, dass es falsch war. 3. Ich verstehe, wie du dich fühlst. 4. Ich mache es wieder gut.** Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung. Kl. 1/2 nutzen die Stufen 1 und 4, Kl. 3/4 alle vier. Zwei Paare zeigen sie vorn.",
           text12: "An der Tafel: **1. Ich sage, was ich getan habe. 4. Ich mache es wieder gut.** (Die Stufen 2 und 3 lässt du weg.) Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung: „Ich habe … – Ich mache es wieder gut, indem …“. Zwei Paare zeigen sie vorn.",
-          text34: "An der Tafel: **1. Ich sage, was ich getan habe. 2. Ich sage, dass es falsch war. 3. Ich verstehe, wie du dich fühlst. 4. Ich mache es wieder gut.** Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung mit allen vier Stufen. Zwei Paare zeigen sie vorn." },
+          text34: "An der Tafel: **1. Ich sage, was ich getan habe. 2. Ich sage, dass es falsch war. 3. Ich verstehe, wie du dich fühlst. 4. Ich mache es wieder gut.** Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung mit allen vier Stufen. Zwei Paare zeigen sie vorn.",
+          folie12: "So geht eine echte Entschuldigung:\n\n**1.** Ich sage, was ich getan habe.\n**2.** Ich mache es wieder gut.\n\nÜbt mit eurer Situationskarte.",
+          folie34: "So geht eine echte Entschuldigung:\n\n**1.** Ich sage, was ich getan habe.\n**2.** Ich sage, dass es falsch war.\n**3.** Ich verstehe, wie du dich fühlst.\n**4.** Ich mache es wieder gut.\n\nÜbt mit eurer Situationskarte." },
         { titel: "Wiedergutmach-Ideen", fuer: "34", dauer: "2 Min",
-          text: "Sammelt an der Tafel, wie man etwas wieder gutmachen kann: helfen, ersetzen, etwas Nettes tun, den anderen verteidigen, eine Karte schreiben." }
+          text: "Sammelt an der Tafel, wie man etwas wieder gutmachen kann: helfen, ersetzen, etwas Nettes tun, den anderen verteidigen, eine Karte schreiben.",
+          folie: "Ein „Sorry“ ist gut – aber wie kann man es **wieder gutmachen**? 🔧\n\nSammelt Ideen." }
     ],
     ab12: { titel: "Es tut mir leid", kontext: "Zur Geschichte: Sam kippt aus Versehen Malwasser über Leas Bild. Erst murmelt er nur „’Tschuldigung“ – dann entschuldigt er sich richtig.", aufgaben: [
         { typ: "ankreuzen", text: "Eine gute Entschuldigung … Kreuze an.", nebeneinander: false,
@@ -369,7 +433,11 @@ Am nächsten Tag treffen sich zwei andere Ziegen auf der Brücke. Die eine sagt:
 
 So kommen beide trocken auf die andere Seite.
 
-**Nach dem Vorlesen:** Was haben die zweiten Ziegen anders gemacht? Sind beide zufrieden?` },
+**Nach dem Vorlesen:**
+1. Was ist mit den ersten zwei Ziegen passiert?
+2. Warum sind sie ins Wasser gefallen?
+3. Was haben die zweiten Ziegen anders gemacht?
+4. Sind beide Ziegen zufrieden? Warum?` },
     lerntext34: { titel: "Zoo oder Schwimmbad?", text:
 `Die Klasse 3a darf über den Wandertag abstimmen. Die eine Hälfte will in den Zoo, die andere Hälfte ins Schwimmbad. Es steht 11 zu 11. Niemand will nachgeben.
 
@@ -388,11 +456,16 @@ Am Ende stimmen alle 22 Kinder dafür. Niemand hat alles bekommen, was er wollte
 4. Wann ist ein Kompromiss vielleicht nicht möglich?` },
     uebungen: [
         { titel: "Die Brücke", fuer: "alle", dauer: "4 Min",
-          text: "Klebe vorn eine Linie als „Brücke“ auf den Boden. Zwei Kinder kommen von beiden Seiten und treffen sich in der Mitte. Ihre Aufgabe: aneinander vorbeikommen, ohne von der Linie zu treten – und ohne zu schubsen. Die anderen geben vom Platz aus Tipps. Mehrere Paare probieren es." },
+          text: "Klebe vorn eine Linie als „Brücke“ auf den Boden. Zwei Kinder kommen von beiden Seiten und treffen sich in der Mitte. Ihre Aufgabe: aneinander vorbeikommen, ohne von der Linie zu treten – und ohne zu schubsen. Die anderen geben vom Platz aus Tipps. Mehrere Paare probieren es.",
+          folie: "Auf dem Boden ist eine **Brücke** 🌉. Zwei Kinder kommen von beiden Seiten.\n\nAufgabe: aneinander vorbeikommen – ohne von der Linie zu treten und ohne zu schubsen.\n\nDie anderen geben Tipps." },
         { titel: "Kompromiss-Werkstatt", fuer: "alle", dauer: "6 Min",
-          text: "Die Tischnachbarn bekommen eine Konfliktkarte und suchen eine Lösung, bei der beide etwas bekommen. Kl. 1/2 dürfen dabei mit dir zusammenarbeiten.\n\n- Beide wollen am Fenster sitzen.\n- Der eine will Fußball spielen, der andere Fangen.\n- Es gibt nur noch ein Stück Kuchen.\n- Beide wollen die rote Schaufel.\n\nJedes Paar stellt seine Lösung vom Platz aus vor." },
+          text: "Die Tischnachbarn bekommen eine Konfliktkarte und suchen eine Lösung, bei der beide etwas bekommen. Kl. 1/2 dürfen dabei mit dir zusammenarbeiten.\n\n- Beide wollen am Fenster sitzen.\n- Der eine will Fußball spielen, der andere Fangen.\n- Es gibt nur noch ein Stück Kuchen.\n- Beide wollen die rote Schaufel.\n\nJedes Paar stellt seine Lösung vom Platz aus vor.",
+          quiz: "karten",
+          frage: "Findet eine Lösung, bei der **beide** etwas bekommen.",
+          folie: "Ihr bekommt einen Streit. Findet eine Lösung, bei der **beide** etwas bekommen. 🤝\n\nDanach stellt ihr eure Lösung vor." },
         { titel: "Fair-Check", fuer: "34", dauer: "2 Min",
-          text: "Die anderen prüfen jede vorgestellte Lösung mit dem Daumen: Bekommen beide etwas? Fühlt sich keiner übergangen? Dann Daumen hoch." }
+          text: "Die anderen prüfen jede vorgestellte Lösung mit dem Daumen: Bekommen beide etwas? Fühlt sich keiner übergangen? Dann Daumen hoch.",
+          folie: "Ist die Lösung fair?\n\n✔️ Bekommen beide etwas?\n✔️ Fühlt sich keiner übergangen?\n\nDann Daumen hoch 👍" }
     ],
     ab12: { titel: "Beide bekommen etwas", kontext: "Zur Geschichte: Zwei Ziegen treffen sich auf einer schmalen Brücke. Die einen streiten und fallen ins Wasser. Die anderen finden eine Lösung: Eine legt sich hin, die andere steigt drüber.", aufgaben: [
         { typ: "ankreuzen", text: "Lea und Ben wollen beide das rote Auto. Was ist fair? Kreuze an.", nebeneinander: false,
@@ -430,7 +503,11 @@ Paul hört sofort auf. „Oh, Entschuldigung“, sagt er. „Ich dachte, das ist
 
 „Jetzt nicht mehr“, sagt Lotte. „Lass uns lieber etwas anderes spielen.“
 
-**Nach dem Vorlesen:** Woran hat Lotte gemerkt, dass sie Nein sagen will? Wie hat sie Nein gesagt?` },
+**Nach dem Vorlesen:**
+1. Wann war das Kitzeln für Lotte nicht mehr lustig?
+2. Woran hat Lotte gemerkt, dass sie Nein sagen will?
+3. Wie hat Lotte Nein gesagt?
+4. Was hat Paul danach gemacht?` },
     lerntext34: { titel: "Die Mutprobe", text:
 `Nach der Schule hängt Elias mit ein paar Älteren am Spielplatz herum. Er ist stolz, dass sie ihn mitnehmen. Da sagt Kai: „Wir machen jetzt einen Klingelstreich bei der alten Frau Berger. Elias, du klingelst!“
 
@@ -451,11 +528,15 @@ Elias merkt: Nein sagen war schwer. Aber hinterher fühlt er sich stark.
 4. Wie kann man Nein sagen und trotzdem freundlich bleiben?` },
     uebungen: [
         { titel: "Die Nein-Stimme", fuer: "alle", dauer: "4 Min",
-          text: "Alle stehen an ihrem Platz. Zuerst sagen alle ein ganz leises, unsicheres „nein …“ und schauen dabei auf den Boden. Dann das starke Nein: gerade stehen, Hand ausstrecken, Blick nach vorn, laute Stimme: „Nein! Das will ich nicht!“ Frage: „Welches Nein glaubt man eher?“" },
+          text: "Alle stehen an ihrem Platz. Zuerst sagen alle ein ganz leises, unsicheres „nein …“ und schauen dabei auf den Boden. Dann das starke Nein: gerade stehen, Hand ausstrecken, Blick nach vorn, laute Stimme: „Nein! Das will ich nicht!“ Frage: „Welches Nein glaubt man eher?“",
+          folie: "Steh auf.\n\n**1.** Leise und unsicher: „nein …“ – Blick auf den Boden.\n**2.** Stark: gerade stehen, Hand nach vorn, Blick nach vorn: **„Nein! Das will ich nicht!“**\n\nWelches Nein glaubt man eher?" },
         { titel: "Ja-Gefühl oder Nein-Gefühl?", fuer: "alle", dauer: "4 Min",
-          text: "Du liest Situationen vor, die Kinder zeigen Daumen hoch (Ja-Gefühl im Bauch) oder runter (Nein-Gefühl):\n\n- Oma gibt mir einen Kuss, obwohl ich das nicht mag.\n- Mein Freund fragt, ob ich mitspiele.\n- Jemand will mein Handy-Passwort.\n- Ein Kind soll für die Gruppe Süßigkeiten klauen.\n\nWichtig: Auch bei Oma darf man freundlich Nein sagen – zum Beispiel lieber die Hand geben." },
+          text: "Du liest Situationen vor, die Kinder zeigen Daumen hoch (Ja-Gefühl im Bauch) oder runter (Nein-Gefühl):\n\n- Oma gibt mir einen Kuss, obwohl ich das nicht mag.\n- Mein Freund fragt, ob ich mitspiele.\n- Jemand will mein Handy-Passwort.\n- Ein Kind soll für die Gruppe Süßigkeiten klauen.\n\nWichtig: Auch bei Oma darf man freundlich Nein sagen – zum Beispiel lieber die Hand geben.",
+          antworten: ["👍 Ja-Gefühl", "👎 Nein-Gefühl"],
+          folie: "Was sagt dein Bauch?\n\n👍 **Ja-Gefühl** · 👎 **Nein-Gefühl**" },
         { titel: "Nein-Sätze sammeln", fuer: "34", dauer: "4 Min",
-          text: "Sammelt an der Tafel verschiedene Arten, Nein zu sagen: „Nein, das will ich nicht.“ – „Ohne mich.“ – „Da mache ich nicht mit.“ – „Ich hab keine Lust darauf, lass uns lieber …“ Jedes Kind wählt seinen Lieblingssatz und sagt ihn laut vom Platz." }
+          text: "Sammelt an der Tafel verschiedene Arten, Nein zu sagen: „Nein, das will ich nicht.“ – „Ohne mich.“ – „Da mache ich nicht mit.“ – „Ich hab keine Lust darauf, lass uns lieber …“ Jedes Kind wählt seinen Lieblingssatz und sagt ihn laut vom Platz.",
+          folie: "Es gibt viele Arten, **Nein** zu sagen.\n\nWelcher Satz passt zu dir? Sag ihn laut." }
     ],
     ab12: { titel: "Ich darf Nein sagen", aufgaben: [
         { typ: "ankreuzen", text: "Wann ist ein Nein wichtig? Kreuze an.", nebeneinander: false,

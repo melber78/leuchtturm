@@ -21,7 +21,11 @@ Die Großmutter ruft das Enkelkind. Das Enkelkind ruft den Hund. Der Hund ruft d
 
 Da kommt eine kleine Maus. „Ich helfe mit!“ Die anderen lachen: „Du bist doch viel zu klein!“ Aber die Maus zieht an der Katze, die Katze am Hund, der Hund am Enkelkind, das Enkelkind an der Großmutter, die Großmutter am Großvater – **und hopp!** – die Rübe ist draußen!
 
-**Nach dem Vorlesen:** Wer hat die Rübe herausgezogen? War die Maus wichtig?` },
+**Nach dem Vorlesen:**
+1. Warum ging die Rübe nicht heraus?
+2. Wen haben sie alles zu Hilfe gerufen?
+3. Warum haben die anderen über die Maus gelacht?
+4. Wer hat die Rübe herausgezogen?` },
     lerntext34: { titel: "Das Floß", text:
 `Beim Projekttag sollen zwei Gruppen aus Flaschen, Stöcken und Schnur ein Floß bauen, das ein Kuscheltier über den Teich trägt.
 
@@ -38,11 +42,14 @@ Das Floß von Gruppe B trägt den Teddy sicher über den Teich. Gruppe A ist ent
 4. Was hat Lars am Ende Gutes getan?` },
     uebungen: [
         { titel: "Ein Bild – ein Stift", fuer: "alle", dauer: "6 Min",
-          text: "Die Tischnachbarn halten gemeinsam EINEN Stift und malen zusammen ein Haus mit Baum und Sonne – ohne zu sprechen! Danach sprechen sie: Wie hat es sich angefühlt? Wer hat geführt? Was hätte geholfen? In der zweiten Runde dürfen sie sich vorher absprechen. Was ist anders?" },
+          text: "Die Tischnachbarn halten gemeinsam EINEN Stift und malen zusammen ein Haus mit Baum und Sonne – ohne zu sprechen! Danach sprechen sie: Wie hat es sich angefühlt? Wer hat geführt? Was hätte geholfen? In der zweiten Runde dürfen sie sich vorher absprechen. Was ist anders?",
+          folie: "Haltet zu zweit **einen** Stift ✏️ und malt zusammen: Haus, Baum, Sonne.\n\n**Ohne zu sprechen!** Danach: Wie war das?" },
         { titel: "Zählen bis zehn", fuer: "alle", dauer: "4 Min",
-          text: "Alle sitzen am Platz und schließen die Augen. Die Gruppe soll gemeinsam bis 10 zählen – jedes Kind sagt irgendwann eine Zahl. Sprechen zwei gleichzeitig, beginnt ihr wieder bei 1. Es gibt keine Reihenfolge und keine Zeichen. Das klappt nur, wenn alle gut aufeinander hören." },
+          text: "Alle sitzen am Platz und schließen die Augen. Die Gruppe soll gemeinsam bis 10 zählen – jedes Kind sagt irgendwann eine Zahl. Sprechen zwei gleichzeitig, beginnt ihr wieder bei 1. Es gibt keine Reihenfolge und keine Zeichen. Das klappt nur, wenn alle gut aufeinander hören.",
+          folie: "Augen zu. Wir zählen zusammen bis **10**.\n\nJeder sagt irgendwann eine Zahl. Sprechen zwei gleichzeitig, fangen wir wieder bei 1 an. 🤫" },
         { titel: "Team-Regeln", fuer: "34", dauer: "2 Min",
-          text: "Die Kinder sammeln vom Platz aus drei Regeln für gute Teamarbeit (z. B. erst planen, alle Ideen anhören, Aufgaben verteilen)." }
+          text: "Die Kinder sammeln vom Platz aus drei Regeln für gute Teamarbeit (z. B. erst planen, alle Ideen anhören, Aufgaben verteilen).",
+          folie: "Was braucht ein gutes **Team**? 🤝\n\nFindet drei Regeln." }
     ],
     ab12: { titel: "Zusammen sind wir stark", kontext: "Zur Geschichte: Großvater, Großmutter, Enkelkind, Hund und Katze ziehen an der Riesenrübe – erst mit der kleinen Maus schaffen sie es.", aufgaben: [
         { typ: "ankreuzen", text: "Was hilft im Team? Kreuze an.", nebeneinander: false,
@@ -75,7 +82,11 @@ Am nächsten Tag spielen sie wieder. Mia verliert wieder. Diesmal atmet sie tief
 
 In der dritten Runde gewinnt Mia. Jan sagt: „Glückwunsch!“ Und Mia sagt: „Du warst auch gut.“
 
-**Nach dem Vorlesen:** Was hat Mia beim zweiten Mal anders gemacht? Wie fühlt sich Verlieren an?` },
+**Nach dem Vorlesen:**
+1. Was hat Mia gemacht, als sie verloren hat?
+2. Wie haben sich Jan und Opa dabei gefühlt?
+3. Was hat Mia beim zweiten Mal anders gemacht?
+4. Wie fühlt sich Verlieren für dich an?` },
     lerntext34: { titel: "Das Finale", text:
 `Beim Schulturnier steht die 4b im Finale gegen die 4a. Es ist knapp. Kurz vor Schluss schießt die 4a das 3:2. Abpfiff.
 
@@ -94,11 +105,15 @@ Am Ende bekommt nicht die Siegermannschaft den Fair-Play-Pokal, sondern Lotta un
 4. Was hilft dir, wenn du nach dem Verlieren wütend oder traurig bist?` },
     uebungen: [
         { titel: "Schnick-Schnack-Schnuck-Turnier", fuer: "alle", dauer: "6 Min",
-          text: "Die Tischnachbarn spielen Schere-Stein-Papier, drei Runden. Danach gilt: Der Gewinner sagt „Gut gespielt!“, der Verlierer sagt „Glückwunsch!“, und beide geben sich die Hand. Dann spielt jeder mit dem Kind am Nachbartisch. Achte darauf: Wer jubelt fair? Wer bleibt freundlich?" },
+          text: "Die Tischnachbarn spielen Schere-Stein-Papier, drei Runden. Danach gilt: Der Gewinner sagt „Gut gespielt!“, der Verlierer sagt „Glückwunsch!“, und beide geben sich die Hand. Dann spielt jeder mit dem Kind am Nachbartisch. Achte darauf: Wer jubelt fair? Wer bleibt freundlich?",
+          folie: "Spielt zu zweit **Schere – Stein – Papier** ✂️🪨📄, drei Runden.\n\nDanach: Gewinner sagt **„Gut gespielt!“**, Verlierer sagt **„Glückwunsch!“** – und Hand geben." },
         { titel: "Fair-Play-Sätze", fuer: "alle", dauer: "3 Min",
-          text: "Sammelt an der Tafel Sätze für gute Gewinner („Du warst auch gut.“ – „Das war knapp.“) und gute Verlierer („Glückwunsch!“ – „Nächstes Mal krieg ich dich!“ mit einem Lächeln)." },
+          text: "Sammelt an der Tafel Sätze für gute Gewinner („Du warst auch gut.“ – „Das war knapp.“) und gute Verlierer („Glückwunsch!“ – „Nächstes Mal krieg ich dich!“ mit einem Lächeln).",
+          folie: "Was sagt ein **guter Gewinner**? 🏆\nWas sagt ein **guter Verlierer**? 🤝" },
         { titel: "Guter Gewinner?", fuer: "34", dauer: "3 Min",
-          text: "Du nennst Verhalten, die Kinder zeigen Daumen hoch oder runter:\n\n- vor den Verlierern herumtanzen\n- dem anderen Team die Hand geben\n- dem Schiedsrichter die Schuld geben\n- dem Verlierer etwas Nettes sagen\n- nach dem Verlieren nie wieder mitspielen" }
+          text: "Du nennst Verhalten, die Kinder zeigen Daumen hoch oder runter:\n\n- vor den Verlierern herumtanzen\n- dem anderen Team die Hand geben\n- dem Schiedsrichter die Schuld geben\n- dem Verlierer etwas Nettes sagen\n- nach dem Verlieren nie wieder mitspielen",
+          antworten: ["👍 fair", "👎 nicht fair"],
+          folie: "Macht das ein **guter Gewinner**?\n\n👍 ja · 👎 nein" }
     ],
     ab12: { titel: "Gut gespielt!", aufgaben: [
         { typ: "gesichter", text: "So fühle ich mich, wenn ich gewinne – und wenn ich verliere. Male.", gefuehle: ["froh", "traurig"], leer: true },
@@ -134,7 +149,11 @@ Die Maus trommelt. Der Elefant tutet im Takt, der Vogel pfeift im Takt, der Fros
 
 Alle klatschen. „Ohne die Maus hätte es nicht geklappt“, sagt der Elefant.
 
-**Nach dem Vorlesen:** Warum hat das Konzert erst nicht geklappt? Welche Aufgabe hatte die Maus?` },
+**Nach dem Vorlesen:**
+1. Warum klang das Konzert am Anfang furchtbar?
+2. Warum war die Maus traurig?
+3. Welche Aufgabe hat die Maus bekommen?
+4. Warum war die Maus am Ende so wichtig?` },
     lerntext34: { titel: "Die Schülerzeitung", text:
 `Die Klasse 4c soll eine Schülerzeitung machen. Finn ist nicht begeistert. „Ich kann doch nicht gut schreiben“, sagt er. „Ich mache so viele Fehler.“
 
@@ -151,9 +170,11 @@ Am Ende ist ihre Zeitung die beliebteste der ganzen Schule. Die Rektorin sagt: �
 4. Was kannst du in eine Gruppe einbringen?` },
     uebungen: [
         { titel: "Klang-Orchester", fuer: "alle", dauer: "6 Min",
-          text: "Jedes Kind bekommt am Platz einen Körperklang: klatschen, schnipsen, auf den Tisch trommeln, summen, mit den Füßen stampfen, Hände reiben. Du dirigierst: Wen du anzeigst, der spielt. Zum Schluss macht ihr gemeinsam ein Gewitter: Hände reiben (Wind) – schnipsen (Tropfen) – auf die Oberschenkel klopfen (Regen) – stampfen (Donner) – und rückwärts wieder bis zur Stille." },
+          text: "Jedes Kind bekommt am Platz einen Körperklang: klatschen, schnipsen, auf den Tisch trommeln, summen, mit den Füßen stampfen, Hände reiben. Du dirigierst: Wen du anzeigst, der spielt. Zum Schluss macht ihr gemeinsam ein Gewitter: Hände reiben (Wind) – schnipsen (Tropfen) – auf die Oberschenkel klopfen (Regen) – stampfen (Donner) – und rückwärts wieder bis zur Stille.",
+          folie: "Jeder bekommt einen Klang: 👏 klatschen · 🫰 schnipsen · 🥁 trommeln · 🎵 summen · 🦶 stampfen\n\nAuf das Zeichen spielst du. Zum Schluss machen wir zusammen ein **Gewitter**! ⛈️" },
         { titel: "Wer kann was?", fuer: "34", dauer: "4 Min",
-          text: "Stellt euch vor, die Gruppe plant ein Fest. Die Kinder sagen vom Platz aus, welche Aufgabe sie übernehmen würden und warum (einladen, Musik, Spiele, Essen, Deko, Aufräumen). Kl. 1/2 zeigen am Platz, was sie gut können." }
+          text: "Stellt euch vor, die Gruppe plant ein Fest. Die Kinder sagen vom Platz aus, welche Aufgabe sie übernehmen würden und warum (einladen, Musik, Spiele, Essen, Deko, Aufräumen). Kl. 1/2 zeigen am Platz, was sie gut können.",
+          folie: "Wir planen ein **Fest** 🎉.\n\nWelche Aufgabe würdest du übernehmen – und warum?" }
     ],
     ab12: { titel: "Jeder ist wichtig", kontext: "Zur Geschichte: Im Tier-Orchester spielt jeder, wann er will. Erst als die kleine Maus den Takt trommelt, klingt es schön.", aufgaben: [
         { typ: "zuordnen", text: "Wer macht welchen Ton? Verbinde.",
@@ -189,7 +210,11 @@ Dann kommt sie wieder heraus. Die Affen kreischen immer noch. Aber Tilda ist jet
 
 Das ist der Schildkröten-Trick. Den kannst du auch – auch ohne Panzer!
 
-**Nach dem Vorlesen:** Wann ist es dir manchmal zu viel? Wann könntest du den Schildkröten-Trick benutzen?` },
+**Nach dem Vorlesen:**
+1. Wann wird Tilda zappelig?
+2. Was macht Tilda in ihrem Panzer?
+3. Wie fühlt sich Tilda danach?
+4. Wann könntest du den Schildkröten-Trick benutzen?` },
     lerntext34: { titel: "Zu viel auf einmal", text:
 `Nora hat einen Tag, an dem alles zusammenkommt. In der ersten Stunde schreiben sie einen Test. In der Pause streitet sie sich mit ihrer besten Freundin. Nach der Schule hat sie Klavierunterricht, und sie hat nicht geübt. Am Nachmittag fühlt sie sich wie ein Topf, der gleich überkocht. Ihr Herz rast, sie kann sich auf nichts konzentrieren, und sie ist kurz davor zu weinen.
 
@@ -206,13 +231,17 @@ Vor dem nächsten Test macht Nora das Kasten-Atmen ganz heimlich unter dem Tisch
 4. Was machst du, wenn dir alles zu viel wird?` },
     uebungen: [
         { titel: "Stille-Minute", fuer: "alle", dauer: "2 Min",
-          text: "Du schlägst die Klangschale an. Alle sitzen ganz still, bis der Ton verklungen ist. Wer mag, schließt die Augen." },
+          text: "Du schlägst die Klangschale an. Alle sitzen ganz still, bis der Ton verklungen ist. Wer mag, schließt die Augen.",
+          folie: "🔔 Hör zu, bis der Ton ganz weg ist.\n\nSitz ganz still. Wenn du magst, schließ die Augen." },
         { titel: "Schildkröten-Trick", fuer: "alle", dauer: "3 Min",
-          text: "Alle sitzen am Platz, verschränken die Arme auf dem Tisch und legen den Kopf darauf – der „Panzer“. Drinnen atmen alle dreimal langsam ein und aus. Dann kommt die Schildkröte langsam wieder heraus. Zweimal wiederholen." },
+          text: "Alle sitzen am Platz, verschränken die Arme auf dem Tisch und legen den Kopf darauf – der „Panzer“. Drinnen atmen alle dreimal langsam ein und aus. Dann kommt die Schildkröte langsam wieder heraus. Zweimal wiederholen.",
+          folie: "Arme auf den Tisch, Kopf darauf – das ist dein **Panzer** 🐢.\n\nDrinnen atmest du dreimal langsam ein und aus. Dann kommst du langsam wieder heraus." },
         { titel: "Feder-Atmen", fuer: "12", dauer: "3 Min",
-          text: "Jedes Kind legt einen Wattebausch auf den Tisch und pustet ihn ganz langsam von einer Tischkante zur anderen – mit nur einem langen Atemzug. Wer schafft es am langsamsten?" },
+          text: "Jedes Kind legt einen Wattebausch auf den Tisch und pustet ihn ganz langsam von einer Tischkante zur anderen – mit nur einem langen Atemzug. Wer schafft es am langsamsten?",
+          folie: "Puste den Wattebausch ganz **langsam** über den Tisch – mit nur einem langen Atemzug. 🌬️" },
         { titel: "Kasten-Atmen", fuer: "34", dauer: "4 Min",
-          text: "Alle malen mit dem Finger ein Quadrat in die Luft: Seite 1 = 4 Sekunden einatmen, Seite 2 = 4 Sekunden halten, Seite 3 = 4 Sekunden ausatmen, Seite 4 = 4 Sekunden halten. Du zählst leise mit. Viermal wiederholen." }
+          text: "Alle malen mit dem Finger ein Quadrat in die Luft: Seite 1 = 4 Sekunden einatmen, Seite 2 = 4 Sekunden halten, Seite 3 = 4 Sekunden ausatmen, Seite 4 = 4 Sekunden halten. Du zählst leise mit. Viermal wiederholen.",
+          folie: "Mal mit dem Finger ein Quadrat in die Luft ⬜:\n\n4 Sekunden **einatmen** · 4 **halten** · 4 **ausatmen** · 4 **halten**\n\nViermal." }
     ],
     ab12: { titel: "So werde ich ruhig", aufgaben: [
         { typ: "ankreuzen", text: "Das macht mich ruhig. Kreuze an.", nebeneinander: true,
@@ -248,7 +277,11 @@ SOZIAL_EINHEIT({
 
 Zu Hause trinken sie Kakao. „Und was **schmeckst** du?“, fragt Opa. „Süß und warm!“, lacht Lukas. „Opa, das war der schönste Spaziergang überhaupt.“
 
-**Nach dem Vorlesen:** Welche fünf Sinne hat Lukas benutzt? Zeigt am Platz: Augen, Ohren, Nase, Hände, Mund.` },
+**Nach dem Vorlesen:**
+1. Was hat Lukas gesehen?
+2. Was hat Lukas gehört und gerochen?
+3. Was hat Lukas gefühlt und geschmeckt?
+4. Zeig am Platz, mit welchem Körperteil du siehst, hörst, riechst, fühlst und schmeckst.` },
     lerntext34: { titel: "Die Rosinen-Übung", text:
 `„Heute essen wir eine Rosine“, sagt Frau Haas. Kerem verdreht die Augen. „Eine Rosine? Das dauert eine Sekunde.“
 
@@ -269,9 +302,12 @@ Dann legen alle die Rosine auf die Zunge, ohne zu kauen. Kerem spürt, wie sein 
         { titel: "Fühl-Säckchen", fuer: "alle", dauer: "5 Min",
           text: "Das Säckchen wandert von Platz zu Platz. Jedes Kind greift hinein, ohne zu schauen, und beschreibt einen Gegenstand: Kl. 1/2 mit einem Wort (weich, hart, rund), Kl. 3/4 mit drei Eigenschaften. Die anderen raten, was es ist. Erst am Ende wird ausgepackt.",
           text12: "Das Säckchen wandert von Platz zu Platz. Jedes Kind greift hinein, ohne zu schauen, und beschreibt einen Gegenstand mit einem Wort (weich, hart, rund). Die anderen raten, was es ist. Erst am Ende wird ausgepackt.",
-          text34: "Das Säckchen wandert von Platz zu Platz. Jedes Kind greift hinein, ohne zu schauen, und beschreibt einen Gegenstand mit drei Eigenschaften. Die anderen raten, was es ist. Erst am Ende wird ausgepackt." },
+          text34: "Das Säckchen wandert von Platz zu Platz. Jedes Kind greift hinein, ohne zu schauen, und beschreibt einen Gegenstand mit drei Eigenschaften. Die anderen raten, was es ist. Erst am Ende wird ausgepackt.",
+          folie12: "Greif in das Säckchen – **nicht schauen!** 👋\n\nSag ein Wort: Wie fühlt es sich an? Die anderen raten.",
+          folie34: "Greif in das Säckchen – **nicht schauen!** 👋\n\nBeschreib den Gegenstand mit **drei** Eigenschaften. Die anderen raten." },
         { titel: "Achtsam essen", fuer: "alle", dauer: "6 Min",
-          text: "Jedes Kind bekommt eine Rosine oder ein Apfelstück. Du leitest langsam an: anschauen – fühlen – ans Ohr halten – riechen – auf die Zunge legen, ohne zu kauen – ganz langsam kauen – schlucken. Danach erzählen die Kinder vom Platz aus, was sie bemerkt haben." }
+          text: "Jedes Kind bekommt eine Rosine oder ein Apfelstück. Du leitest langsam an: anschauen – fühlen – ans Ohr halten – riechen – auf die Zunge legen, ohne zu kauen – ganz langsam kauen – schlucken. Danach erzählen die Kinder vom Platz aus, was sie bemerkt haben.",
+          folie: "Du bekommst etwas zum Essen. Ganz langsam:\n\n👀 anschauen · ✋ fühlen · 👂 ans Ohr halten · 👃 riechen · 👅 auf die Zunge · langsam kauen" }
     ],
     ab12: { titel: "Meine fünf Sinne", aufgaben: [
         { typ: "ankreuzen", nur: "1", text: "Was riecht gut? Kreuze an.", nebeneinander: true,
@@ -307,7 +343,11 @@ Am Donnerstag ist Benni traurig. Es regnet, und er darf nicht raus. Da nimmt er 
 
 Am Sonntag ist das Glas schon halb voll. Benni sagt: „Danke für diese schöne Woche.“
 
-**Nach dem Vorlesen:** Was war heute oder diese Woche schön für dich? Was würdest du in dein Glücksglas legen?` },
+**Nach dem Vorlesen:**
+1. Wofür hat Benni sein Glücksglas?
+2. Welche schönen Sachen hat Benni hineingelegt?
+3. Was hat Benni gemacht, als er traurig war?
+4. Was würdest du heute in dein Glücksglas legen?` },
     lerntext34: { titel: "Der schlechteste Tag – oder?", text:
 `Selin ist sich sicher: Heute ist der schlechteste Tag der Welt. Morgens regnet es, ihr Schirm ist kaputt. In der Schule merkt sie, dass sie ihr Pausenbrot vergessen hat. Beim Sport fällt sie hin und schürft sich das Knie auf.
 
@@ -326,9 +366,12 @@ Seitdem schreibt Selin jeden Abend drei gute Dinge in ein kleines Heft. Und am n
 4. Wem könntest du heute Danke sagen?` },
     uebungen: [
         { titel: "Glücksmoment-Runde", fuer: "alle", dauer: "5 Min",
-          text: "Jedes Kind nennt vom Platz aus einen schönen Moment von heute oder dieser Woche. Du schreibst jeden auf einen Zettel und legst ihn ins Glücksglas der Gruppe. Das Glas bleibt da und wird in den nächsten Wochen beim Ankommen weiter gefüllt." },
+          text: "Jedes Kind nennt vom Platz aus einen schönen Moment von heute oder dieser Woche. Du schreibst jeden auf einen Zettel und legst ihn ins Glücksglas der Gruppe. Das Glas bleibt da und wird in den nächsten Wochen beim Ankommen weiter gefüllt.",
+          folie: "Was war **heute** oder **diese Woche** schön für dich? ✨\n\nDein Moment kommt ins Glücksglas." },
         { titel: "Danke-Karte", fuer: "alle", dauer: "6 Min",
-          text: "Jedes Kind gestaltet eine Danke-Karte für einen Menschen an der Schule, an den man selten denkt: Hausmeister, Sekretärin, Küchenteam, Reinigungskraft, Busfahrer. Kl. 1/2 malen, Kl. 3/4 schreiben zwei Sätze. Die Karten werden gemeinsam überbracht." }
+          text: "Jedes Kind gestaltet eine Danke-Karte für einen Menschen an der Schule, an den man selten denkt: Hausmeister, Sekretärin, Küchenteam, Reinigungskraft, Busfahrer. Kl. 1/2 malen, Kl. 3/4 schreiben zwei Sätze. Die Karten werden gemeinsam überbracht.",
+          folie12: "Für wen an unserer Schule möchtest du eine **Danke-Karte** malen? 💌",
+          folie34: "Für wen an unserer Schule möchtest du eine **Danke-Karte** schreiben? 💌\n\nZwei Sätze reichen." }
     ],
     ab12: { titel: "Danke!", aufgaben: [
         { typ: "malen", text: "Male die Danke-Sonne an. Male in die Mitte, wofür du dankbar bist.", bild: "sonne" },
@@ -361,7 +404,11 @@ Dann nimmt Lisa alle Stifte. Sie malt einen blauen Himmel, eine grüne Wiese, ei
 
 Die Stifte schauen sich an. „Zusammen sind wir am schönsten“, sagt der Blaue. Und alle nicken.
 
-**Nach dem Vorlesen:** Warum war das erste Bild komisch? Was ist an uns Menschen verschieden – und was ist gleich?` },
+**Nach dem Vorlesen:**
+1. Warum haben die Buntstifte gestritten?
+2. Warum sah das erste Bild komisch aus?
+3. Was war beim zweiten Bild anders?
+4. Was ist an uns Menschen verschieden – und was ist gleich?` },
     lerntext34: { titel: "Unsere Klasse – ein Obstsalat", text:
 `Frau Novak hat eine Idee: „Jeder bringt morgen etwas mit, das zeigt, was ihn ausmacht.“
 
@@ -378,11 +425,16 @@ Am Ende schreibt Frau Novak an die Tafel: „Unsere Klasse ist wie ein Obstsalat
 4. Was macht dich besonders?` },
     uebungen: [
         { titel: "Gleich und verschieden", fuer: "alle", dauer: "6 Min",
-          text: "Die Tischnachbarn suchen zwei Dinge, die sie gemeinsam haben, und zwei Dinge, die verschieden sind (Lieblingsessen, Geschwister, Hobbys, Sprachen …). Kl. 1/2 dürfen auch Äußeres nennen (Haarfarbe, Größe). Jedes Paar stellt eine Gemeinsamkeit und einen Unterschied vor." },
+          text: "Die Tischnachbarn suchen zwei Dinge, die sie gemeinsam haben, und zwei Dinge, die verschieden sind (Lieblingsessen, Geschwister, Hobbys, Sprachen …). Kl. 1/2 dürfen auch Äußeres nennen (Haarfarbe, Größe). Jedes Paar stellt eine Gemeinsamkeit und einen Unterschied vor.",
+          folie: "Findet zu zweit:\n\n**2 Dinge, die gleich sind** und **2 Dinge, die verschieden sind**." },
         { titel: "Sprachen-Runde", fuer: "alle", dauer: "4 Min",
-          text: "Wie sagt man „Hallo“ und „Danke“ in anderen Sprachen? Kinder, die mehrere Sprachen sprechen, sind die Experten und bringen es den anderen bei. Alle sprechen es gemeinsam nach. (Wenn niemand eine weitere Sprache spricht: Englisch, Spanisch, Türkisch, Arabisch vorbereiten.)" },
+          text: "Wie sagt man „Hallo“ und „Danke“ in anderen Sprachen? Kinder, die mehrere Sprachen sprechen, sind die Experten und bringen es den anderen bei. Alle sprechen es gemeinsam nach. (Wenn niemand eine weitere Sprache spricht: Englisch, Spanisch, Türkisch, Arabisch vorbereiten.)",
+          folie: "Wie sagt man **„Hallo“** und **„Danke“** in anderen Sprachen? 🌍\n\nWer kann es uns beibringen?" },
         { titel: "Vorurteil oder Tatsache?", fuer: "34", dauer: "3 Min",
-          text: "Du liest Sätze vor, die Kinder entscheiden mit Daumen: Tatsache (hoch) oder Vorurteil (runter) – und sprechen darüber, warum Vorurteile unfair sind.\n\n- „Jungen weinen nicht.“\n- „Menschen haben verschiedene Hautfarben.“\n- „Mädchen können nicht gut Fußball spielen.“\n- „In Deutschland werden viele Sprachen gesprochen.“" }
+          text: "Du liest Sätze vor, die Kinder entscheiden mit Daumen: Tatsache (hoch) oder Vorurteil (runter) – und sprechen darüber, warum Vorurteile unfair sind.\n\n- „Jungen weinen nicht.“\n- „Menschen haben verschiedene Hautfarben.“\n- „Mädchen können nicht gut Fußball spielen.“\n- „In Deutschland werden viele Sprachen gesprochen.“",
+          quiz: "ampel",
+          antworten: ["🟢 Tatsache", "🔴 Vorurteil"],
+          folie: "Ist das eine **Tatsache** 🟢 oder ein **Vorurteil** 🔴?\n\nHalte deine Ampelkarte hoch." }
     ],
     ab12: { titel: "Ich bin ich – du bist du", aufgaben: [
         { typ: "luecken", text: "Das bin ich:", nummern: false,
@@ -418,7 +470,11 @@ Tom hört auf zu lachen. Er sieht, dass Lina weint. „Oh … ich wollte nur Spa
 
 Lina setzt ihre Brille wieder auf.
 
-**Nach dem Vorlesen:** Wie hat sich Lina gefühlt? Was hat Emma gemacht? Was ist der Unterschied zwischen mitlachen und auslachen?` },
+**Nach dem Vorlesen:**
+1. Was hat Tom zu Lina gesagt?
+2. Wie hat sich Lina gefühlt?
+3. Was hat Emma gemacht?
+4. Was ist der Unterschied zwischen mitlachen und auslachen?` },
     lerntext34: { titel: "Nur Spaß?", text:
 `Seit Wochen nennen ein paar Kinder Jonas „Flohmarkt“, weil er oft Kleidung von seinem großen Bruder trägt. Am Anfang war es nur ab und zu. Inzwischen passiert es jeden Tag. In der Pause wird er nachgemacht, sein Ranzen wird versteckt, und wenn er etwas sagt, verdrehen alle die Augen.
 
@@ -437,9 +493,13 @@ Es dauert noch ein paar Wochen. Aber dann hört es auf. Jonas sagt später: „D
 4. Was meint Jonas mit seinem letzten Satz?` },
     uebungen: [
         { titel: "Mitlachen oder auslachen?", fuer: "alle", dauer: "4 Min",
-          text: "Du liest Situationen vor, die Kinder zeigen Daumen hoch (Mitlachen – alle haben Spaß) oder runter (Auslachen – einer leidet):\n\n- Alle lachen über einen lustigen Witz.\n- Alle lachen, weil Paul sich verschrieben hat.\n- Lea macht eine Grimasse, und alle lachen mit ihr.\n- Alle lachen über Bens alte Schuhe.\n\nFrage: Woran merkt man den Unterschied? (Lacht das Kind selbst mit?)" },
+          text: "Du liest Situationen vor, die Kinder zeigen Daumen hoch (Mitlachen – alle haben Spaß) oder runter (Auslachen – einer leidet):\n\n- Alle lachen über einen lustigen Witz.\n- Alle lachen, weil Paul sich verschrieben hat.\n- Lea macht eine Grimasse, und alle lachen mit ihr.\n- Alle lachen über Bens alte Schuhe.\n\nFrage: Woran merkt man den Unterschied? (Lacht das Kind selbst mit?)",
+          antworten: ["👍 mitlachen", "👎 auslachen"],
+          folie: "Haben **alle** Spaß 👍 – oder **leidet einer** 👎?" },
         { titel: "Was tun als Zuschauer?", fuer: "alle", dauer: "6 Min",
-          text: "Sammelt an der Tafel, was Zuschauer tun können: nicht mitlachen – sich zum Kind stellen – „Hör auf!“ sagen – Hilfe holen – das Kind später trösten. Kl. 1/2 üben am Platz den Satz: „Hör auf, das ist gemein!“ (laut, deutlich, gerade sitzen). Kl. 3/4 überlegen, was man tun kann, wenn man sich allein nicht traut (sich mit anderen zusammentun)." }
+          text: "Sammelt an der Tafel, was Zuschauer tun können: nicht mitlachen – sich zum Kind stellen – „Hör auf!“ sagen – Hilfe holen – das Kind später trösten. Kl. 1/2 üben am Platz den Satz: „Hör auf, das ist gemein!“ (laut, deutlich, gerade sitzen). Kl. 3/4 überlegen, was man tun kann, wenn man sich allein nicht traut (sich mit anderen zusammentun).",
+          folie: "Jemand wird ausgelacht. Was kannst **du** tun? 👀",
+          folie12: "Jemand wird ausgelacht. Was kannst **du** tun? 👀\n\nÜbt den Satz: **„Hör auf, das ist gemein!“**" }
     ],
     ab12: { titel: "Lachen – aber richtig", aufgaben: [
         { typ: "gesichter", text: "Mitlachen macht froh. Auslachen macht traurig.", gefuehle: ["froh", "traurig"], leer: false },
@@ -473,7 +533,11 @@ Paul und Mia sehen das. „Komm, wir helfen!“, sagt Mia. Sie sammeln alle Äpf
 
 Auf dem Weg nach Hause sagt Paul: „Helfen fühlt sich gut an, oder?“ Mia nickt. „Total!“
 
-**Nach dem Vorlesen:** Woran haben Paul und Mia gemerkt, dass die Frau Hilfe braucht? Wo kannst du helfen?` },
+**Nach dem Vorlesen:**
+1. Was ist der alten Frau passiert?
+2. Warum konnte sie die Äpfel nicht allein aufheben?
+3. Wie haben Paul und Mia geholfen?
+4. Wo kannst du jemandem helfen?` },
     lerntext34: { titel: "Die Hilfe-Detektive", text:
 `Die Klasse 3b macht eine Woche lang ein Experiment: Jeder wird „Hilfe-Detektiv“ und hilft jeden Tag mindestens einmal – ohne etwas dafür zu wollen.
 
@@ -492,11 +556,16 @@ Am Freitag erzählen alle von ihren Erlebnissen. Die meisten sagen dasselbe: Hel
 4. Wo könntest du diese Woche ein Hilfe-Detektiv sein?` },
     uebungen: [
         { titel: "Wo wird Hilfe gebraucht?", fuer: "alle", dauer: "5 Min",
-          text: "Du beschreibst Situationen (ein Kind hat seine Stifte fallen lassen – die Lehrerin trägt einen schweren Karton – ein Kind weint – jemand findet den Weg nicht – ein Kind will allein das Puzzle lösen). Die Kinder sagen vom Platz aus: Braucht hier jemand Hilfe? Wie kann ich helfen? Muss ich vorher fragen?" },
+          text: "Du liest Situationen vor. Die Kinder sagen vom Platz aus: Braucht hier jemand Hilfe? Wie kann ich helfen? Muss ich vorher fragen?\n\n- Ein Kind hat seine Stifte fallen lassen.\n- Die Lehrerin trägt einen schweren Karton.\n- Ein Kind weint.\n- Jemand findet den Weg nicht.\n- Ein Kind will das Puzzle ganz allein lösen.",
+          quiz: "karten",
+          frage: "Braucht hier jemand Hilfe? Wie kannst du helfen – und musst du vorher fragen?",
+          folie: "Braucht hier jemand **Hilfe**? 🤲\n\nWie kannst du helfen? Musst du vorher fragen?" },
         { titel: "Geheime Helfer", fuer: "alle", dauer: "4 Min",
-          text: "Jedes Kind zieht verdeckt einen Namen und behält ihn für sich. Bis zur nächsten Stunde soll es diesem Kind heimlich etwas Gutes tun (helfen, etwas Nettes sagen, etwas leihen). In der nächsten Stunde beim Ankommen wird geraten: Wer war mein geheimer Helfer?" },
+          text: "Jedes Kind zieht verdeckt einen Namen und behält ihn für sich. Bis zur nächsten Stunde soll es diesem Kind heimlich etwas Gutes tun (helfen, etwas Nettes sagen, etwas leihen). In der nächsten Stunde beim Ankommen wird geraten: Wer war mein geheimer Helfer?",
+          folie: "Zieh einen Namen – **psst, geheim!** 🤫\n\nTu diesem Kind bis zur nächsten Stunde heimlich etwas Gutes." },
         { titel: "Erst fragen", fuer: "34", dauer: "3 Min",
-          text: "Die Tischnachbarn üben: Einer tut so, als käme er bei etwas nicht weiter. Der andere fragt: „Soll ich dir helfen?“ – und akzeptiert auch ein „Nein danke, ich will es allein schaffen.“" }
+          text: "Die Tischnachbarn üben: Einer tut so, als käme er bei etwas nicht weiter. Der andere fragt: „Soll ich dir helfen?“ – und akzeptiert auch ein „Nein danke, ich will es allein schaffen.“",
+          folie: "Übt zu zweit: Einer kommt nicht weiter. Der andere fragt: **„Soll ich dir helfen?“**\n\nAuch „Nein danke“ ist okay." }
     ],
     ab12: { titel: "Ich helfe gern", aufgaben: [
         { typ: "ankreuzen", text: "Wo kann ich helfen? Kreuze an.", nebeneinander: true,
@@ -530,7 +599,13 @@ Tim überlegt. „Ich brauche gar keine Kiste. Ben, nimm meine!“ Jetzt steht B
 
 Jetzt können alle drei zuschauen! Das ist **gerecht**: Jeder bekommt, was er braucht.
 
-**Nach dem Vorlesen:** Male das Bild an der Tafel nach: Erst bekommt jeder eine Kiste. Dann bekommt jeder, was er braucht. Was ist der Unterschied?` },
+**Nach dem Vorlesen:**
+1. Warum konnten Ella und Ben nicht über den Zaun schauen?
+2. Was hat der Hausmeister gebracht?
+3. Warum konnte Ben trotzdem noch nichts sehen?
+4. Was hat Tim gemacht – und war das gerecht?
+
+**Tipp für dich:** Male das Bild an der Tafel nach: Erst bekommt jeder eine Kiste (gleich). Dann bekommt jeder, was er braucht (gerecht).` },
     lerntext34: { titel: "Warum bekommt Mia mehr Zeit?", text:
 `In der Klassenarbeit bekommt Mia zehn Minuten mehr Zeit als alle anderen. Und sie darf sich die Aufgaben vorlesen lassen. Nach der Stunde beschwert sich Leon: „Das ist unfair! Warum bekommt sie mehr Zeit? Wir müssten alle gleich behandelt werden!“
 
@@ -547,11 +622,16 @@ Leon denkt nach. „Dann ist es wie bei Jakob mit der Brille. Der bekommt ja auc
 4. Fallen dir weitere Beispiele ein? (Brille, Rollstuhlrampe, Übersetzung …)` },
     uebungen: [
         { titel: "Das Pflaster-Spiel", fuer: "alle", dauer: "5 Min",
-          text: "Frag: „Wer hat sich schon mal am Ellbogen wehgetan?“ Ein Kind erzählt. Dann klebst du allen Kindern ein (Papier-)Pflaster auf den Ellbogen – „damit alle gleich behandelt werden“. Die Kinder merken schnell, dass das komisch ist. Gespräch: Wer braucht wirklich ein Pflaster? Was ist gerecht?" },
+          text: "Frag: „Wer hat sich schon mal am Ellbogen wehgetan?“ Ein Kind erzählt. Dann klebst du allen Kindern ein (Papier-)Pflaster auf den Ellbogen – „damit alle gleich behandelt werden“. Die Kinder merken schnell, dass das komisch ist. Gespräch: Wer braucht wirklich ein Pflaster? Was ist gerecht?",
+          folie: "Wer hat sich schon mal wehgetan? 🩹" },
         { titel: "Die Kisten am Zaun", fuer: "12", dauer: "4 Min",
-          text: "An der Tafel sind drei Kinder unterschiedlicher Größe hinter einem Zaun gemalt. Die Kinder kommen nacheinander nach vorn und malen Kisten so dazu, dass alle über den Zaun schauen können." },
+          text: "An der Tafel sind drei Kinder unterschiedlicher Größe hinter einem Zaun gemalt. Die Kinder kommen nacheinander nach vorn und malen Kisten so dazu, dass alle über den Zaun schauen können.",
+          folie: "Drei Kinder wollen über den Zaun schauen.\n\nMal Kisten dazu – so, dass **alle** etwas sehen können. 📦" },
         { titel: "Gleich oder gerecht?", fuer: "34", dauer: "4 Min",
-          text: "Die Kinder überlegen vom Platz aus zu jeder Situation, was gerecht wäre:\n\n- Ein Kind im Rollstuhl will mit auf den Ausflug.\n- Ein Kind spricht erst seit einem Jahr Deutsch.\n- Ein Kind kann die Tafel nicht gut sehen.\n- Ein Kind hat zu Hause keinen ruhigen Platz für Hausaufgaben." }
+          text: "Die Kinder überlegen vom Platz aus zu jeder Situation, was gerecht wäre:\n\n- Ein Kind im Rollstuhl will mit auf den Ausflug.\n- Ein Kind spricht erst seit einem Jahr Deutsch.\n- Ein Kind kann die Tafel nicht gut sehen.\n- Ein Kind hat zu Hause keinen ruhigen Platz für Hausaufgaben.",
+          quiz: "karten",
+          frage: "Was wäre hier gerecht?",
+          folie: "**Gleich** heißt: Jeder bekommt dasselbe.\n**Gerecht** heißt: Jeder bekommt, was er braucht.\n\nWas wäre hier gerecht?" }
     ],
     ab12: { titel: "Jeder bekommt, was er braucht", aufgaben: [
         { typ: "ankreuzen", text: "Was ist gerecht? Kreuze an.", nebeneinander: false,

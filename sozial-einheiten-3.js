@@ -21,7 +21,11 @@ Da kommt die Schildkröte. „Komm, spiel mit mir!“, sagt sie. Der Hase hüpft
 
 Später fliegt der Ball der Tiere in einen Busch. Niemand kommt heran. Aber der Hase ist klein und schnell – er holt den Ball heraus! Da sagt der Bär: „Danke, Hase. Willst du jetzt mitspielen? Und die Schildkröte auch?“ Jetzt spielen alle zusammen.
 
-**Nach dem Vorlesen:** Wie hat sich der Hase gefühlt, als er nicht mitspielen durfte? Was hat die Schildkröte gemacht?` },
+**Nach dem Vorlesen:**
+1. Warum durfte der Hase nicht mitspielen?
+2. Wie hat sich der Hase gefühlt?
+3. Was hat die Schildkröte gemacht?
+4. Wie hat der Hase den anderen Tieren geholfen?` },
     lerntext34: { titel: "Der Club der Sterne", text:
 `In der Klasse 4a gibt es einen neuen Club: den „Club der Sterne“. Wer mitmachen will, braucht einen bestimmten Glitzer-Sticker. In der Pause sitzen die Club-Mädchen zusammen und tuscheln. Wer keinen Sticker hat, darf nicht dazu.
 
@@ -38,11 +42,14 @@ Die Mädchen beschließen eine neue Club-Regel: **Jede, die mitmachen will, darf
 4. Ist es in Ordnung, einen besten Freund oder eine beste Freundin zu haben? Wo ist der Unterschied zum Ausgrenzen?` },
     uebungen: [
         { titel: "Wie fühlt sich das an?", fuer: "alle", dauer: "4 Min",
-          text: "Alle schließen am Platz die Augen. Du erzählst langsam: „Stell dir vor, es ist Pause. Alle spielen. Du fragst: Darf ich mitspielen? – und alle sagen Nein. Du stehst allein da …“ Danach öffnen alle die Augen. Jedes Kind sagt ein Wort, wie es sich angefühlt hat. Schließe mit dem Gegenteil: „Jetzt sagt jemand: Komm, wir brauchen dich noch!“" },
+          text: "Alle schließen am Platz die Augen. Du erzählst langsam: „Stell dir vor, es ist Pause. Alle spielen. Du fragst: Darf ich mitspielen? – und alle sagen Nein. Du stehst allein da …“ Danach öffnen alle die Augen. Jedes Kind sagt ein Wort, wie es sich angefühlt hat. Schließe mit dem Gegenteil: „Jetzt sagt jemand: Komm, wir brauchen dich noch!“",
+          folie: "Mach die Augen zu und hör gut zu. 👂\n\nDanach sagst du **ein Wort**: Wie hat es sich angefühlt?" },
         { titel: "Einladungs-Sätze", fuer: "alle", dauer: "4 Min",
-          text: "Sammelt an der Tafel freundliche Einladungen: „Willst du mitspielen?“ – „Komm, wir brauchen noch jemanden!“ – „Du kannst in unser Team.“ Die Tischnachbarn üben sie: Einer sitzt „allein“, der andere lädt ihn ein. Dann wechseln." },
+          text: "Sammelt an der Tafel freundliche Einladungen: „Willst du mitspielen?“ – „Komm, wir brauchen noch jemanden!“ – „Du kannst in unser Team.“ Die Tischnachbarn üben sie: Einer sitzt „allein“, der andere lädt ihn ein. Dann wechseln.",
+          folie: "Wie lädt man jemanden zum Mitspielen ein?\n\nÜbt mit eurem Nachbarn: Einer sitzt allein, der andere lädt ihn ein. Dann wechseln." },
         { titel: "Pausen-Ideen für alle", fuer: "34", dauer: "4 Min",
-          text: "Die Kinder sammeln vom Platz aus Spiele, bei denen beliebig viele mitmachen können (Fangen, Seilspringen mit langem Seil, Ochs am Berg …) und eine Regel für die Klasse: „Wer fragt, darf mitmachen.“" }
+          text: "Die Kinder sammeln vom Platz aus Spiele, bei denen beliebig viele mitmachen können (Fangen, Seilspringen mit langem Seil, Ochs am Berg …) und eine Regel für die Klasse: „Wer fragt, darf mitmachen.“",
+          folie: "Welche Spiele gehen mit **ganz vielen** Kindern?\n\nUnd unsere Regel: **„Wer fragt, darf mitmachen.“**" }
     ],
     ab12: { titel: "Komm, spiel mit!", kontext: "Zur Geschichte: Der kleine Hase darf beim Ballspiel nicht mitmachen und sitzt allein unter einem Baum. Am Ende spielen alle zusammen.", aufgaben: [
         { typ: "gesichter", text: "Male: So fühlt sich der Hase allein – und so beim Mitspielen.", gefuehle: ["traurig", "froh"], leer: true },
@@ -77,7 +84,11 @@ Mats überlegt. „Das sind meine neuen Stifte“, denkt er. „Und wenn sie kap
 
 Zusammen malen sie die schönsten Blumen. In der Pause teilt Nele ihren Apfel mit Mats.
 
-**Nach dem Vorlesen:** Warum hat Mats zuerst gezögert? Wie hat sich Nele gefühlt – und wie Mats?` },
+**Nach dem Vorlesen:**
+1. Warum hatte Nele keinen Stift?
+2. Warum hat Mats zuerst gezögert?
+3. Wie hat sich Nele gefühlt, als Mats geteilt hat?
+4. Was hat Nele in der Pause gemacht?` },
     lerntext34: { titel: "Sieben Muffins für acht", text:
 `Beim Klassenfest hat Aras Muffins gebacken. Es sind sieben Stück – aber in seiner Gruppe sind acht Kinder. „Ich habe sie gebacken, also bekomme ich zwei!“, sagt Aras. „Dann bekommen zwei andere gar keinen“, protestiert Jule.
 
@@ -92,11 +103,15 @@ Am Nachmittag will Ben Miras Notizbuch anschauen. „Wir teilen doch alles!“, 
 4. Ist „gerecht“ immer „gleich viel für jeden“?` },
     uebungen: [
         { titel: "Pizza teilen", fuer: "alle", dauer: "5 Min",
-          text: "Jedes Kind bekommt einen Papierkreis als „Pizza“. Frage: „Du willst die Pizza mit deinem Tischnachbarn teilen – wie faltest du?“ Dann: „Jetzt kommen noch zwei Freunde!“ Kl. 1/2 falten halbe und viertel Pizzen. Kl. 3/4 überlegen zusätzlich: „Was, wenn drei Kinder kommen?“" },
+          text: "Jedes Kind bekommt einen Papierkreis als „Pizza“. Frage: „Du willst die Pizza mit deinem Tischnachbarn teilen – wie faltest du?“ Dann: „Jetzt kommen noch zwei Freunde!“ Kl. 1/2 falten halbe und viertel Pizzen. Kl. 3/4 überlegen zusätzlich: „Was, wenn drei Kinder kommen?“",
+          folie: "Du hast einen Papierkreis – deine **Pizza** 🍕.\n\nTeil sie mit deinem Nachbarn: Wie faltest du?\nUnd jetzt kommen noch zwei Freunde dazu!" },
         { titel: "Teilen – ja oder nein?", fuer: "alle", dauer: "4 Min",
-          text: "Du nennst Dinge, die Kinder zeigen Daumen hoch (kann man teilen), runter (lieber nicht) oder zur Seite (kommt drauf an):\n\n- Buntstifte\n- Zahnbürste\n- das Geheimnis meiner Freundin\n- mein Pausenbrot, wenn jemand nichts hat\n- mein Lieblingskuscheltier\n- ein Spiel in der Pause\n\nWichtig: Ich darf auch Nein sagen, wenn mir etwas sehr wichtig oder privat ist." },
+          text: "Du nennst Dinge, die Kinder zeigen Daumen hoch (kann man teilen), runter (lieber nicht) oder zur Seite (kommt drauf an):\n\n- Buntstifte\n- Zahnbürste\n- das Geheimnis meiner Freundin\n- mein Pausenbrot, wenn jemand nichts hat\n- mein Lieblingskuscheltier\n- ein Spiel in der Pause\n\nWichtig: Ich darf auch Nein sagen, wenn mir etwas sehr wichtig oder privat ist.",
+          antworten: ["👍 kann man teilen", "👉 kommt drauf an", "👎 lieber nicht"],
+          folie: "Kann man das **teilen**?\n\n👍 ja · 👉 kommt drauf an · 👎 lieber nicht\n\nDu darfst auch Nein sagen, wenn dir etwas sehr wichtig ist." },
         { titel: "Was ist gerecht?", fuer: "34", dauer: "3 Min",
-          text: "Die Kinder überlegen vom Platz aus: Wie teilt man sieben Muffins gerecht auf acht Kinder auf? Sammelt mindestens drei Ideen und bewertet sie mit Daumen." }
+          text: "Die Kinder überlegen vom Platz aus: Wie teilt man sieben Muffins gerecht auf acht Kinder auf? Sammelt mindestens drei Ideen und bewertet sie mit Daumen.",
+          folie: "**7 Muffins** 🧁 – aber **8 Kinder**.\n\nWie kann man gerecht teilen? Sammelt mindestens drei Ideen." }
     ],
     ab12: { titel: "Teilen macht froh", aufgaben: [
         { typ: "ankreuzen", text: "Was kann man gut teilen? Kreuze an.", nebeneinander: true,
@@ -130,7 +145,11 @@ In der Pause steht Noa allein. Kim sieht ihn. Kim ist ein bisschen aufgeregt. Ab
 
 Jetzt reden sie die ganze Pause über ihre Katzen. Am Ende sagt Noa: „Morgen erzähle ich dir, was Mimi heute wieder angestellt hat.“
 
-**Nach dem Vorlesen:** Was hat Kim gesagt, um Noa kennenzulernen? Was hatten die beiden gemeinsam?` },
+**Nach dem Vorlesen:**
+1. Wie ging es Noa am ersten Tag?
+2. Was hat Kim gesagt, um Noa kennenzulernen?
+3. Was hatten Kim und Noa gemeinsam?
+4. Wie kannst du ein neues Kind ansprechen?` },
     lerntext34: { titel: "Jakob zieht um", text:
 `Jakob ist mit seiner Familie in eine neue Stadt gezogen. Alle seine Freunde wohnen jetzt weit weg. In der neuen Klasse fühlt er sich wie unsichtbar.
 
@@ -149,11 +168,17 @@ Nach zwei Wochen besucht Jakob Ole zu Hause. Und beim Fußball ist er inzwischen
 4. Wie kannst du einem neuen Kind in deiner Klasse helfen?` },
     uebungen: [
         { titel: "Hallo-Runde", fuer: "alle", dauer: "4 Min",
-          text: "Die Kinder drehen sich zu ihrem Tischnachbarn: „Hallo, ich bin … Ich mag …“ Der andere antwortet und stellt eine Frage. Danach drehen sie sich zum Nachbarn auf der anderen Seite oder zum Tisch dahinter. Kl. 3/4 schauen auf Blickkontakt und Lächeln." },
+          text: "Die Kinder drehen sich zu ihrem Tischnachbarn: „Hallo, ich bin … Ich mag …“ Der andere antwortet und stellt eine Frage. Danach drehen sie sich zum Nachbarn auf der anderen Seite oder zum Tisch dahinter. Kl. 3/4 schauen auf Blickkontakt und Lächeln.",
+          folie: "Dreh dich zu deinem Nachbarn:\n\n**„Hallo, ich bin … Ich mag …“**\n\nDer andere antwortet und stellt dir eine Frage.",
+          folie34: "Dreh dich zu deinem Nachbarn:\n\n**„Hallo, ich bin … Ich mag …“**\n\nDer andere antwortet und stellt dir eine Frage. Achtet auf Blickkontakt und Lächeln. 🙂" },
         { titel: "Steh auf, wenn …", fuer: "alle", dauer: "5 Min",
-          text: "Du sagst: „Steh auf, wenn du …“ (gern Pizza isst – ein Haustier hast – Fußball magst – Geschwister hast – gern malst – schon einmal umgezogen bist). Alle, die aufstehen, schauen sich kurz um: „Mit wem habe ich das gemeinsam?“ Dann setzen sich alle wieder. Zum Schluss dürfen Kinder eigene „Steh auf, wenn …“-Sätze vorschlagen." },
+          text: "Du liest die Sätze vor. Alle, die aufstehen, schauen sich kurz um: „Mit wem habe ich das gemeinsam?“ Dann setzen sich alle wieder. Zum Schluss dürfen Kinder eigene „Steh auf, wenn …“-Sätze vorschlagen.\n\n- Steh auf, wenn du gern Pizza isst.\n- Steh auf, wenn du ein Haustier hast.\n- Steh auf, wenn du Fußball magst.\n- Steh auf, wenn du Geschwister hast.\n- Steh auf, wenn du gern malst.\n- Steh auf, wenn du schon einmal umgezogen bist.",
+          quiz: "karten",
+          frage: "Steh auf, wenn das für dich stimmt – mit wem hast du das gemeinsam?",
+          folie: "Steh auf, wenn das für dich stimmt! 🙋\n\nSchau dich um: **Mit wem hast du das gemeinsam?**" },
         { titel: "Gesprächsstarter", fuer: "34", dauer: "3 Min",
-          text: "Sammelt an der Tafel gute erste Fragen: „Was spielst du gern?“ – „Hast du ein Haustier?“ – „Was ist dein Lieblingsessen?“ – „Wo wohnst du?“ Welche Fragen sind gut, welche eher unangenehm (z. B. „Warum bist du so klein?“)?" }
+          text: "Sammelt an der Tafel gute erste Fragen: „Was spielst du gern?“ – „Hast du ein Haustier?“ – „Was ist dein Lieblingsessen?“ – „Wo wohnst du?“ Welche Fragen sind gut, welche eher unangenehm (z. B. „Warum bist du so klein?“)?",
+          folie: "Was kann man fragen, wenn man jemanden **kennenlernen** will?\n\nWelche Fragen sind gut – welche eher unangenehm?" }
     ],
     ab12: { titel: "Hallo, ich bin …", aufgaben: [
         { typ: "luecken", text: "Stell dich vor.", nummern: false, saetze: ["Ich heiße ___.", "Ich mag ___."] },
@@ -186,7 +211,13 @@ Grummel setzt sich auf einen Stein und schmollt. Da kommt die kleine Maus. „Gr
 
 Grummel probiert es. Er geht zum Igel. „Hallo, Igel. Bekomme ich bitte ein Brot?“ Der Igel lächelt und gibt ihm das größte Brot. „Danke!“, sagt Grummel. Und – Zauberei – er lächelt auch.
 
-**Nach dem Vorlesen:** Welche Zauberwörter kennt ihr noch? (Entschuldigung, gern geschehen, tschüss …)` },
+**Nach dem Vorlesen:**
+1. Warum hat niemand Grummel etwas gegeben?
+2. Welche Zauberwörter hat die Maus Grummel beigebracht?
+3. Was ist passiert, als Grummel höflich gefragt hat?
+4. Welche Zauberwörter kennst du noch?
+
+**Tipp für dich:** Weitere Zauberwörter: Entschuldigung, gern geschehen, tschüss …` },
     lerntext34: { titel: "Das Land ohne Höflichkeit", text:
 `Lilly wacht eines Morgens auf und alles ist anders. Ihr Bruder reißt ihr die Cornflakes aus der Hand: „Meins!“ Der Busfahrer schaut sie nicht an und brummt: „Weiter hinten!“ In der Bäckerei wirft ihr die Verkäuferin das Brötchen hin, ohne ein Wort zu sagen.
 
@@ -203,11 +234,16 @@ Dann klingelt ihr Wecker – es war nur ein Traum! Beim Frühstück sagt ihr Bru
 4. Ist Höflichkeit überall auf der Welt gleich?` },
     uebungen: [
         { titel: "Zauberwort-Detektive", fuer: "alle", dauer: "4 Min",
-          text: "Du bittest die Kinder um Dinge – mal höflich, mal unhöflich („Gib mir den Stift!“ – „Gibst du mir bitte deinen Stift?“). Die Kinder zeigen Daumen hoch oder runter. Bei unhöflichen Sätzen verbessert ein Kind dich." },
+          text: "Du liest Sätze vor – mal höflich, mal unhöflich. Die Kinder zeigen Daumen hoch (höflich) oder runter (unhöflich). Bei unhöflichen Sätzen macht ein Kind daraus einen höflichen Satz.\n\n- „Gib mir den Stift!“\n- „Gibst du mir bitte deinen Stift?“\n- „Hä? Was?“\n- „Danke, dass du mir geholfen hast.“\n- „Weg da!“\n- „Darf ich bitte vorbei?“",
+          antworten: ["👍 höflich", "👎 unhöflich"],
+          folie: "Ist das **höflich** 👍 oder **unhöflich** 👎?\n\nWenn es unhöflich ist: Wie sagt man es besser?" },
         { titel: "Höflich-Kette", fuer: "alle", dauer: "5 Min",
-          text: "Ein Radiergummi wandert von Platz zu Platz. Wer ihn weitergibt, sagt: „Bitte schön.“ Wer ihn bekommt: „Danke schön.“ Kl. 3/4 ergänzen einen netten Satz („Danke, du hast heute schön gemalt.“). Geht er einmal ganz herum, klatschen alle." },
+          text: "Ein Radiergummi wandert von Platz zu Platz. Wer ihn weitergibt, sagt: „Bitte schön.“ Wer ihn bekommt: „Danke schön.“ Kl. 3/4 ergänzen einen netten Satz („Danke, du hast heute schön gemalt.“). Geht er einmal ganz herum, klatschen alle.",
+          folie: "Der Radiergummi wandert von Platz zu Platz.\n\nWer ihn gibt: **„Bitte schön.“**\nWer ihn bekommt: **„Danke schön.“**",
+          folie34: "Der Radiergummi wandert von Platz zu Platz.\n\nWer ihn gibt: **„Bitte schön.“** Wer ihn bekommt: **„Danke schön.“**\n\nUnd dazu ein netter Satz!" },
         { titel: "Höflich unterwegs", fuer: "34", dauer: "3 Min",
-          text: "Welche höflichen Wörter und Gesten passen? Im Bus, wenn eine ältere Person einsteigt – beim Arzt – am Telefon mit Oma – wenn ich jemanden nicht verstanden habe („Wie bitte?“ statt „Hä?“). Die Kinder sammeln vom Platz aus." }
+          text: "Welche höflichen Wörter und Gesten passen? Im Bus, wenn eine ältere Person einsteigt – beim Arzt – am Telefon mit Oma – wenn ich jemanden nicht verstanden habe („Wie bitte?“ statt „Hä?“). Die Kinder sammeln vom Platz aus.",
+          folie: "Welche höflichen Wörter passen hier?\n\n🚌 im Bus · 🩺 beim Arzt · 📞 am Telefon mit Oma · 🤔 wenn ich jemanden nicht verstanden habe" }
     ],
     ab12: { titel: "Meine Zauberwörter", aufgaben: [
         { typ: "zuordnen", nur: "2", text: "Was sagst du? Verbinde.",
@@ -244,7 +280,11 @@ Tim könnte einfach nichts sagen. Aber er geht zur Lehrerin. „Ich habe vergess
 
 Tim gießt Fridolin. Er stellt ihn in die Sonne. Und er malt sich einen Erinnerungs-Zettel. Nach ein paar Tagen steht Fridolin wieder gerade. Tim ist stolz.
 
-**Nach dem Vorlesen:** Was war Tims Aufgabe? Was hat er richtig gemacht, als er es vergessen hatte?` },
+**Nach dem Vorlesen:**
+1. Was war Tims Aufgabe?
+2. Was ist mit Fridolin passiert?
+3. Was hat Tim gemacht, als er es gemerkt hat?
+4. Welche Aufgabe hast du zu Hause oder in der Schule?` },
     lerntext34: { titel: "Die kaputte Scheibe", text:
 `Selma, Paul und Deniz spielen nach der Schule Fußball auf der Wiese hinter den Häusern. Deniz schießt mit voller Wucht – der Ball fliegt am Tor vorbei und **klirr!** – mitten in das Kellerfenster von Herrn Schulze.
 
@@ -261,9 +301,13 @@ Am Abend klingeln Selma und Deniz bei Herrn Schulze. Deniz erklärt mit roten Oh
 4. Wofür bist du schon verantwortlich – zu Hause und in der Schule?` },
     uebungen: [
         { titel: "Unsere Dienste", fuer: "alle", dauer: "7 Min",
-          text: "Gemeinsam überlegt ihr Dienste für das Sozialtraining: Redestein-Wächter, Barometer-Helfer, Tafel-Dienst, Austeil-Dienst, Fenster und Licht, Zeitwächter (zeigt die letzten 5 Minuten an). Jedes Kind wählt einen Dienst und steckt seine Klammer ans Plakat. Kl. 3/4 schreiben die Dienste aufs Plakat, Kl. 1/2 malen ein Symbol dazu. Die Dienste wechseln jeden Monat." },
+          text: "Gemeinsam überlegt ihr Dienste für das Sozialtraining: Redestein-Wächter, Barometer-Helfer, Tafel-Dienst, Austeil-Dienst, Fenster und Licht, Zeitwächter (zeigt die letzten 5 Minuten an). Jedes Kind wählt einen Dienst und steckt seine Klammer ans Plakat. Kl. 3/4 schreiben die Dienste aufs Plakat, Kl. 1/2 malen ein Symbol dazu. Die Dienste wechseln jeden Monat.",
+          folie: "Welche **Dienste** brauchen wir im Sozialtraining?\n\nSuch dir einen Dienst aus und steck deine Klammer ans Plakat." },
         { titel: "Wer ist verantwortlich?", fuer: "alle", dauer: "4 Min",
-          text: "Du liest Situationen vor. Die Kinder legen die Hand auf die Brust („Das bin ich“) oder zeigen nach außen („Das ist jemand anderes“).\n\n- Mein Ranzen ist nicht gepackt.\n- Das Wetter ist schlecht.\n- Mein Hamster hat kein Futter.\n- Ich habe ein geliehenes Buch verloren.\n- Der Bus kommt zu spät." }
+          text: "Du liest Situationen vor. Die Kinder legen die Hand auf die Brust („Das bin ich“) oder zeigen nach außen („Das ist jemand anderes“).\n\n- Mein Ranzen ist nicht gepackt.\n- Das Wetter ist schlecht.\n- Mein Hamster hat kein Futter.\n- Ich habe ein geliehenes Buch verloren.\n- Der Bus kommt zu spät.",
+          quiz: "ampel",
+          antworten: ["🙋 Das bin ich", "👉 jemand anderes"],
+          folie: "Wer ist dafür verantwortlich?\n\n🙋 Hand auf die Brust = **Das bin ich.**\n👉 nach außen zeigen = **jemand anderes.**" }
     ],
     ab12: { titel: "Ich kümmere mich", aufgaben: [
         { typ: "ankreuzen", text: "Wofür bist du zu Hause verantwortlich? Kreuze an.", nebeneinander: true,
@@ -298,7 +342,11 @@ Jetzt stellen sich alle an. Jonas ist zuerst dran, dann Mila, dann Leo. Wer oben
 
 Leo sagt: „So macht es viel mehr Spaß!“
 
-**Nach dem Vorlesen:** Warum hat am Anfang niemand Spaß gehabt? Was hat die Schlange-Regel verändert?` },
+**Nach dem Vorlesen:**
+1. Was ist am Klettergerüst passiert?
+2. Warum hatte am Anfang niemand Spaß?
+3. Was hat die Pausenaufsicht vorgeschlagen?
+4. Was war mit der Schlange-Regel besser?` },
     lerntext34: { titel: "Der Fußballplatz", text:
 `An der Grundschule Lindenhof gibt es einen kleinen Fußballplatz. Jeden Tag ist er von den Viertklässlern besetzt. Wenn die Dritt- oder Zweitklässler fragen, heißt es: „Ihr seid zu schlecht“ oder „Wir waren zuerst da.“
 
@@ -315,9 +363,14 @@ Die Viertklässler murren erst. Aber am Donnerstag merken sie: In gemischten Tea
 4. Gibt es bei euch auch Streit in der Pause? Worum?` },
     uebungen: [
         { titel: "Pausen-Ampel", fuer: "alle", dauer: "5 Min",
-          text: "Du nennst Pausen-Situationen, die Kinder zeigen Grün (fair) oder Rot (unfair). Kl. 3/4 sagen, was man stattdessen tun kann.\n\n- Ich stelle mich hinten an.\n- Ich nehme den anderen den Ball weg.\n- Ich lasse ein Kind mitspielen.\n- Ich bestimme immer, was gespielt wird.\n- Ich hole Hilfe, wenn jemand weint.\n- Ich halte mich an die Spielregeln." },
+          text: "Du nennst Pausen-Situationen, die Kinder zeigen Grün (fair) oder Rot (unfair). Kl. 3/4 sagen, was man stattdessen tun kann.\n\n- Ich stelle mich hinten an.\n- Ich nehme den anderen den Ball weg.\n- Ich lasse ein Kind mitspielen.\n- Ich bestimme immer, was gespielt wird.\n- Ich hole Hilfe, wenn jemand weint.\n- Ich halte mich an die Spielregeln.",
+          antworten: ["🟢 fair", "🔴 unfair"],
+          folie: "Ist das in der Pause **fair** 🟢 oder **unfair** 🔴?",
+          folie34: "Ist das in der Pause **fair** 🟢 oder **unfair** 🔴?\n\nWenn es unfair ist: Was kann man stattdessen tun?" },
         { titel: "Unser Pausen-Plan", fuer: "alle", dauer: "7 Min",
-          text: "Die Kinder erzählen vom Platz aus, wo es in ihrer Pause Streit gibt (Klettergerüst, Ball, Schaukel …). Kl. 3/4 schlagen zu jedem Problem eine faire Regel vor, Kl. 1/2 malen dazu ein Symbol. Die besten Ideen kommen aufs Plakat – vielleicht sogar als Vorschlag für die ganze Schule." }
+          text: "Die Kinder erzählen vom Platz aus, wo es in ihrer Pause Streit gibt (Klettergerüst, Ball, Schaukel …). Kl. 3/4 schlagen zu jedem Problem eine faire Regel vor, Kl. 1/2 malen dazu ein Symbol. Die besten Ideen kommen aufs Plakat – vielleicht sogar als Vorschlag für die ganze Schule.",
+          folie12: "Wo gibt es in der Pause **Streit**? 🛝⚽\n\nErzähl – und mal ein Bild für unser Plakat.",
+          folie34: "Wo gibt es in der Pause **Streit**? 🛝⚽\n\nErzähl – und schlag eine **faire Regel** vor." }
     ],
     ab12: { titel: "Fair in der Pause", aufgaben: [
         { typ: "ankreuzen", text: "Was ist fair? Kreuze an.", nebeneinander: false,

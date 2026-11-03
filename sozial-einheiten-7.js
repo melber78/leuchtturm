@@ -30,7 +30,7 @@ K({
     id: "k-luegen",
     titel: "Lügen und Vertrauen",
     ziel34: "Verstehen, wie Lügen Vertrauen kaputt machen – und wie man Vertrauen zurückgewinnt",
-    material: "Tafel: Vertrauens-Konto (Einzahlung / Abhebung)\nrote und grüne Karten",
+    material: "Tafel: Vertrauens-Konto (Einzahlung / Abhebung)\nAntwortkarten (Ampelkarte)",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Die Ausrede", text:
 `Niklas hat seiner Mutter erzählt, dass er nach der Schule bei Ben Hausaufgaben macht. In Wirklichkeit ist er mit älteren Jungs am Bahnhof. Seine Mutter ruft bei Bens Mutter an. Die Lüge fliegt auf.
@@ -49,9 +49,12 @@ Niklas merkt: Eine Lüge ist schnell erzählt. Vertrauen zurückzuholen dauert W
 5. Was müsste Niklas tun, damit man ihm wieder glaubt?` },
     uebungen: [
         { titel: "Das Vertrauens-Konto", dauer: "6 Min",
-          text: "Male an die Tafel ein Konto. Jede ehrliche Handlung ist eine **Einzahlung**, jede Lüge eine **Abhebung** – und Abhebungen sind viel größer als Einzahlungen. Gemeinsam sammeln: Was zahlt ein? (Wort halten, Fehler zugeben, pünktlich sein …) Was hebt ab? (lügen, Versprechen brechen, hinter dem Rücken reden …)" },
+          text: "Male an die Tafel ein Konto. Jede ehrliche Handlung ist eine **Einzahlung**, jede Lüge eine **Abhebung** – und Abhebungen sind viel größer als Einzahlungen. Gemeinsam sammeln: Was zahlt ein? (Wort halten, Fehler zugeben, pünktlich sein …) Was hebt ab? (lügen, Versprechen brechen, hinter dem Rücken reden …)",
+          folie: "Vertrauen ist wie ein **Konto** 🏦.\n\n➕ Was zahlt ein? · ➖ Was hebt ab?" },
         { titel: "Lüge oder nicht?", dauer: "6 Min",
-          text: "Du liest Situationen vor, die Kinder zeigen rot (= Lüge, die schadet) oder grün (= ehrlich bzw. harmlos). Diskutiert die schwierigen Fälle.\n\n- „Ich hab die Hausaufgaben vergessen“ – obwohl man keine Lust hatte.\n- Oma fragt, ob dir der Pullover gefällt. Du sagst ja, obwohl er hässlich ist.\n- Du sagst, du warst es nicht, obwohl du das Fenster kaputt gemacht hast.\n- Du verrätst nicht, wo dein Freund sein Geburtstagsgeschenk versteckt hat.\n- Du erzählst, du hättest ein neues Handy – stimmt aber nicht.\n- Du sagst der Lehrerin nicht, wer die Wand beschmiert hat." }
+          text: "Du liest Situationen vor, die Kinder zeigen rot (= Lüge, die schadet) oder grün (= ehrlich bzw. harmlos). Diskutiert die schwierigen Fälle.\n\n- „Ich hab die Hausaufgaben vergessen“ – obwohl man keine Lust hatte.\n- Oma fragt, ob dir der Pullover gefällt. Du sagst ja, obwohl er hässlich ist.\n- Du sagst, du warst es nicht, obwohl du das Fenster kaputt gemacht hast.\n- Du verrätst nicht, wo dein Freund sein Geburtstagsgeschenk versteckt hat.\n- Du erzählst, du hättest ein neues Handy – stimmt aber nicht.\n- Du sagst der Lehrerin nicht, wer die Wand beschmiert hat.",
+          antworten: ["🔴 Lüge, die schadet", "🟢 ehrlich / harmlos"],
+          folie: "Ist das eine **Lüge, die schadet** 🔴 – oder **ehrlich bzw. harmlos** 🟢?\n\nHalte deine **Ampelkarte** hoch." }
     ],
     ab34: { titel: "Mein Vertrauens-Konto", kontext: "Zum Fall: Niklas lügt seine Mutter und seine Lehrerin an. Als er später die Wahrheit sagt, glaubt ihm keiner mehr.", aufgaben: [
         { typ: "tabelle", text: "Was zahlt auf das Vertrauens-Konto ein – was hebt ab? Schreib in jede Spalte drei Beispiele.", spalten: ["Einzahlung (macht Vertrauen)", "Abhebung (macht Vertrauen kaputt)"], zeilen: [["", ""], ["", ""], ["", ""]] },
@@ -82,9 +85,14 @@ Am nächsten Tag erzählt Selin alles ihrer Schulsozialarbeiterin. Die sagt: „
 5. Wann hast du dich von einem Erwachsenen ungerecht behandelt gefühlt? (freiwillig)` },
     uebungen: [
         { titel: "Erst runter, dann reden", dauer: "6 Min",
-          text: "Gemeinsam einen Plan in drei Schritten an die Tafel schreiben:\n\n- **Runterkommen:** tief atmen, Mund zu, nicht widersprechen – ja, auch wenn es unfair ist.\n- **Später reden:** „Kann ich Ihnen nachher erklären, was passiert ist?“\n- **Hilfe holen:** Klassenlehrkraft, Schulsozialarbeit oder Eltern einschalten.\n\nFrage: Warum ist Schritt 1 der schwerste?" },
+          text: "Gemeinsam einen Plan in drei Schritten an die Tafel schreiben:\n\n- **Runterkommen:** tief atmen, Mund zu, nicht widersprechen – ja, auch wenn es unfair ist.\n- **Später reden:** „Kann ich Ihnen nachher erklären, was passiert ist?“\n- **Hilfe holen:** Klassenlehrkraft, Schulsozialarbeit oder Eltern einschalten.\n\nFrage: Warum ist Schritt 1 der schwerste?",
+          quiz: "keine",
+          folie: "Ärger mit einem Erwachsenen. 😤\n\nWas hilft wirklich? Wir schreiben einen Plan in drei Schritten." },
         { titel: "Sätze, die gehört werden", dauer: "6 Min",
-          text: "Die Kinder formulieren Schimpf-Sätze in Sätze um, die ein Erwachsener ernst nimmt. Du liest den wütenden Satz vor, die Kinder machen Vorschläge.\n\n- „Sie haben ja gar keine Ahnung!“\n- „Immer bin ich schuld!“\n- „Das ist voll unfair, ich mach das nicht!“\n- „Der hat angefangen, nicht ich!“\n- „Lassen Sie mich in Ruhe!“" }
+          text: "Die Kinder formulieren Schimpf-Sätze in Sätze um, die ein Erwachsener ernst nimmt. Du liest den wütenden Satz vor, die Kinder machen Vorschläge.\n\n- „Sie haben ja gar keine Ahnung!“\n- „Immer bin ich schuld!“\n- „Das ist voll unfair, ich mach das nicht!“\n- „Der hat angefangen, nicht ich!“\n- „Lassen Sie mich in Ruhe!“",
+          quiz: "karten",
+          frage: "Wie sagst du das so, dass ein Erwachsener zuhört?",
+          folie: "Mit Schimpfen hört dir kein Erwachsener zu.\n\nWie kannst du den Satz so sagen, dass er **ernst genommen** wird?" }
     ],
     ab34: { titel: "Wenn's unfair ist", aufgaben: [
         { typ: "tabelle", text: "Schreib den Satz so um, dass ein Erwachsener zuhört.", spalten: ["Wütender Satz", "Satz, der gehört wird"], zeilen: [["„Sie haben ja keine Ahnung!“", ""], ["„Immer bin ich schuld!“", ""], ["„Der hat angefangen!“", ""]] },
@@ -114,9 +122,12 @@ Eine Woche später hat Merve Streit mit Lena. Plötzlich ist sie raus aus der Ch
 5. Was könnte EINE Person in der Klasse für Anna tun?` },
     uebungen: [
         { titel: "Stille Ausgrenzung", dauer: "6 Min",
-          text: "Sammelt an der Tafel alle Arten, wie man jemanden ausschließen kann, ohne ein böses Wort zu sagen (wegdrehen, nicht antworten, Augen verdrehen, Stuhl wegrücken, aus dem Chat werfen, „Hier ist besetzt“, zuletzt wählen …). Dann daneben: Wie holt man jemanden rein?" },
+          text: "Sammelt an der Tafel alle Arten, wie man jemanden ausschließen kann, ohne ein böses Wort zu sagen (wegdrehen, nicht antworten, Augen verdrehen, Stuhl wegrücken, aus dem Chat werfen, „Hier ist besetzt“, zuletzt wählen …). Dann daneben: Wie holt man jemanden rein?",
+          folie: "Wie kann man jemanden **ausschließen** – ohne ein böses Wort?\n\nUnd wie holt man jemanden **rein**?" },
         { titel: "Reinholen üben", dauer: "6 Min",
-          text: "Jedes Kind sucht sich eine Möglichkeit aus, wie es jemanden reinholen kann, und sagt den Satz einmal laut vom Platz:\n\n- „Komm, setz dich zu uns.“\n- „Willst du mitspielen? Wir brauchen noch einen.“\n- „Du kannst mit in unsere Gruppe.“\n- Beim Wählen jemanden früh nehmen, der sonst als Letzter drankommt.\n\nAbmachung für die Woche: Jeder holt einmal jemanden rein." }
+          text: "Jedes Kind sucht sich eine Möglichkeit aus, wie es jemanden reinholen kann, und sagt den Satz einmal laut vom Platz:\n\n- „Komm, setz dich zu uns.“\n- „Willst du mitspielen? Wir brauchen noch einen.“\n- „Du kannst mit in unsere Gruppe.“\n- Beim Wählen jemanden früh nehmen, der sonst als Letzter drankommt.\n\nAbmachung für die Woche: Jeder holt einmal jemanden rein.",
+          quiz: "liste",
+          folie: "Wie holst du jemanden **rein**? 🤝\n\nSuch dir einen Satz aus und sag ihn laut." }
     ],
     ab34: { titel: "Draußen – und wieder drinnen", kontext: "Zum Fall: Anna ist neu und möchte zur Clique dazu. „Hier ist kein Platz mehr“, sagt Lena – und Anna bleibt allein.", aufgaben: [
         { typ: "tabelle", text: "Sortiere die Begriffe aus dem Wortspeicher: Was schließt aus – was holt rein?", spalten: ["Schließt aus", "Holt rein"], zeilen: [["", ""], ["", ""], ["", ""], ["", ""]],
@@ -151,9 +162,13 @@ Der Sozialarbeiter nickt. „Wut ist oft ein Bodyguard für Gefühle, die wehtun
 5. Was hätte Dennis in der Situation geholfen?` },
     uebungen: [
         { titel: "Der Eisberg an der Tafel", dauer: "6 Min",
-          text: "Oben in die Spitze schreibst du WUT. Gemeinsam sammeln die Kinder, was unter Wasser liegen kann: Angst, Scham, Traurigkeit, Enttäuschung, Eifersucht, sich ungerecht behandelt fühlen, Hunger, Müdigkeit, Stress zu Hause … Die Gefühlskarten können helfen." },
+          text: "Oben in die Spitze schreibst du WUT. Gemeinsam sammeln die Kinder, was unter Wasser liegen kann: Angst, Scham, Traurigkeit, Enttäuschung, Eifersucht, sich ungerecht behandelt fühlen, Hunger, Müdigkeit, Stress zu Hause … Die Gefühlskarten können helfen.",
+          folie: "Oben siehst du die **Wut**. 🧊\n\nWas kann **unter Wasser** liegen?" },
         { titel: "Unter die Oberfläche schauen", dauer: "6 Min",
-          text: "Du liest Situationen vor. Die Kinder überlegen: Was könnte unter der Wut stecken?\n\n- Ein Junge rastet aus, weil er beim Fußball nicht gewählt wurde.\n- Ein Mädchen schreit ihre Freundin an, weil die mit einer anderen spielt.\n- Ein Kind zerreißt sein Arbeitsblatt, weil es die Aufgabe nicht versteht.\n- Ein Junge haut zu, als jemand etwas über seine Familie sagt.\n- Ein Kind ist schon morgens gereizt und motzt alle an." }
+          text: "Du liest Situationen vor. Die Kinder überlegen: Was könnte unter der Wut stecken?\n\n- Ein Junge rastet aus, weil er beim Fußball nicht gewählt wurde.\n- Ein Mädchen schreit ihre Freundin an, weil die mit einer anderen spielt.\n- Ein Kind zerreißt sein Arbeitsblatt, weil es die Aufgabe nicht versteht.\n- Ein Junge haut zu, als jemand etwas über seine Familie sagt.\n- Ein Kind ist schon morgens gereizt und motzt alle an.",
+          quiz: "karten",
+          frage: "Was könnte unter der Wut stecken?",
+          folie: "Jemand ist wütend.\n\nWas könnte **unter der Wut** stecken? 🧊" }
     ],
     ab34: { titel: "Mein Wut-Eisberg", aufgaben: [
         { typ: "malen", text: "Zeichne einen Eisberg. Oben steht WUT. Schreib unter die Wasserlinie, welche Gefühle bei dir darunter liegen können.", bild: "" },
@@ -182,9 +197,13 @@ Die Schulleiterin malt einen Kreis an die Tafel. „Jeder von euch hat gedacht, 
 5. Ist Aussteigen dasselbe wie Verlieren?` },
     uebungen: [
         { titel: "Der Rache-Kreis", dauer: "6 Min",
-          text: "Male den Kreis an die Tafel und tragt die Tage aus dem Fall ein. Dann markiert ihr mit einer anderen Farbe Ausstiegs-Punkte: Was hätte Ole oder Can an diesem Tag stattdessen tun können? (reden, Erwachsene einschalten, ignorieren, Sorry sagen, Abstand nehmen …)" },
+          text: "Male den Kreis an die Tafel und tragt die Tage aus dem Fall ein. Dann markiert ihr mit einer anderen Farbe Ausstiegs-Punkte: Was hätte Ole oder Can an diesem Tag stattdessen tun können? (reden, Erwachsene einschalten, ignorieren, Sorry sagen, Abstand nehmen …)",
+          folie: "Rache dreht sich im **Kreis** 🔄.\n\nWo hätten Ole oder Can aussteigen können?" },
         { titel: "Rache oder Lösung?", dauer: "6 Min",
-          text: "Du liest Situationen vor. Die Kinder sagen zuerst ehrlich, was sie gern tun würden (Rache) – und dann, was das Problem wirklich löst.\n\n- Jemand hat dein Fahrrad zerkratzt.\n- Jemand hat dich im Chat lächerlich gemacht.\n- Jemand hat dir beim Fußball absichtlich ein Bein gestellt.\n- Jemand hat dein Geheimnis weitererzählt.\n- Jemand hat deinen kleinen Bruder geschubst." }
+          text: "Du liest Situationen vor. Die Kinder sagen zuerst ehrlich, was sie gern tun würden (Rache) – und dann, was das Problem wirklich löst.\n\n- Jemand hat dein Fahrrad zerkratzt.\n- Jemand hat dich im Chat lächerlich gemacht.\n- Jemand hat dir beim Fußball absichtlich ein Bein gestellt.\n- Jemand hat dein Geheimnis weitererzählt.\n- Jemand hat deinen kleinen Bruder geschubst.",
+          quiz: "karten",
+          frage: "Was würdest du gern tun – und was löst das Problem wirklich?",
+          folie: "Sei ehrlich: Was würdest du **gern** tun?\n\nUnd was **löst** das Problem wirklich?" }
     ],
     ab34: { titel: "Den Kreis stoppen", kontext: "Zum Fall: Montag versteckt Ole Cans Mütze. Dienstag kippt Can Wasser über Oles Heft. Mittwoch zeigt Ole ein peinliches Foto von Can herum. Donnerstag schlägt Can Ole.", aufgaben: [
         { typ: "luecken", text: "Ole und Can – trag die Tage ein:", nummern: false, saetze: ["Montag: ___", "Dienstag: ___", "Mittwoch: ___", "Donnerstag: ___"] },
@@ -198,7 +217,7 @@ K({
     id: "k-freunde-echt",
     titel: "Echte und falsche Freunde",
     ziel34: "Merkmale echter Freundschaft erkennen und Freundschaften kritisch prüfen",
-    material: "Tafel: „Echter Freund“ / „Falscher Freund“\nrote und grüne Karten",
+    material: "Tafel: „Echter Freund“ / „Falscher Freund“\nAntwortkarten (Ampelkarte)",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Kumpel", text:
 `Kevin ist seit den Sommerferien mit Tarek befreundet. Tarek ist zwei Jahre älter und cool. Er nimmt Kevin mit auf den Bolzplatz, zu den Großen.
@@ -215,9 +234,12 @@ Kevins alter Freund Marc ist nicht so cool. Aber als Kevin krank war, hat Marc i
 5. Was ist dir bei einem Freund am wichtigsten?` },
     uebungen: [
         { titel: "Echt oder falsch?", dauer: "6 Min",
-          text: "Du liest Verhaltensweisen vor, die Kinder zeigen grün (= echter Freund) oder rot (= falscher Freund).\n\n- Hält zu dir, auch wenn andere über dich lachen.\n- Will nur mit dir abhängen, wenn du etwas Neues hast.\n- Sagt dir ehrlich, wenn du Mist baust.\n- Erzählt deine Geheimnisse weiter.\n- Bringt dich dazu, Dinge zu tun, die du nicht willst.\n- Freut sich mit dir, wenn du etwas geschafft hast." },
+          text: "Du liest Verhaltensweisen vor, die Kinder zeigen grün (= echter Freund) oder rot (= falscher Freund).\n\n- Hält zu dir, auch wenn andere über dich lachen.\n- Will nur mit dir abhängen, wenn du etwas Neues hast.\n- Sagt dir ehrlich, wenn du Mist baust.\n- Erzählt deine Geheimnisse weiter.\n- Bringt dich dazu, Dinge zu tun, die du nicht willst.\n- Freut sich mit dir, wenn du etwas geschafft hast.",
+          antworten: ["🟢 echter Freund", "🔴 falscher Freund"],
+          folie: "**Echter Freund** 🟢 oder **falscher Freund** 🔴?\n\nHalte deine **Ampelkarte** hoch." },
         { titel: "Freundschafts-Test", dauer: "6 Min",
-          text: "Gemeinsam fünf Fragen formulieren, mit denen man eine Freundschaft prüfen kann, z. B.: „Fühle ich mich wohl, wenn ich mit ihm/ihr zusammen bin?“ · „Kann ich Nein sagen, ohne Angst zu haben?“ · „Hört er/sie mir auch zu?“ Schreib sie an die Tafel." }
+          text: "Gemeinsam fünf Fragen formulieren, mit denen man eine Freundschaft prüfen kann, z. B.: „Fühle ich mich wohl, wenn ich mit ihm/ihr zusammen bin?“ · „Kann ich Nein sagen, ohne Angst zu haben?“ · „Hört er/sie mir auch zu?“ Schreib sie an die Tafel.",
+          folie: "Mit welchen **Fragen** kannst du prüfen, ob eine Freundschaft gut ist? ❓\n\nFindet fünf Fragen." }
     ],
     ab34: { titel: "Mein Freundschafts-Test", aufgaben: [
         { typ: "tabelle", text: "Was macht einen echten Freund aus – was einen falschen? Schreib in jede Spalte drei Beispiele.", spalten: ["Echter Freund", "Falscher Freund"], zeilen: [["", ""], ["", ""], ["", ""]] },
@@ -247,9 +269,13 @@ Am Nachmittag setzt sich die Klasse zusammen. „Wir brauchen ein paar Regeln“
 5. Wann ist eine Strafe fair, wann unfair?` },
     uebungen: [
         { titel: "Regel-Check", dauer: "7 Min",
-          text: "Ihr nehmt drei echte Regeln eurer Schule oder Klasse. Für jede an der Tafel: Warum gibt es sie? Was würde ohne sie passieren? Wem nützt sie? Danach Daumen: Sinnvoll oder nicht?" },
+          text: "Ihr nehmt drei echte Regeln eurer Schule oder Klasse. Für jede an der Tafel: Warum gibt es sie? Was würde ohne sie passieren? Wem nützt sie? Danach Daumen: Sinnvoll oder nicht?",
+          folie: "Nehmt drei echte Regeln eurer Schule.\n\nWarum gibt es sie? Was würde ohne sie passieren? Wem nützt sie?" },
         { titel: "Faire Konsequenz?", dauer: "5 Min",
-          text: "Du liest Regelverstöße und Konsequenzen vor. Die Kinder zeigen mit Daumen: fair, geht so, unfair – und begründen.\n\n- Jemand macht das Klo dreckig – muss es sauber machen.\n- Jemand schwänzt – darf eine Woche nicht in die Pause.\n- Jemand schlägt – bekommt einen Elternanruf.\n- Jemand zerkratzt einen Tisch – muss ihn abschleifen helfen.\n- Die ganze Klasse wird bestraft, weil einer gestört hat." }
+          text: "Du liest Regelverstöße und Konsequenzen vor. Die Kinder zeigen mit Daumen: fair, geht so, unfair – und begründen.\n\n- Jemand macht das Klo dreckig – muss es sauber machen.\n- Jemand schwänzt – darf eine Woche nicht in die Pause.\n- Jemand schlägt – bekommt einen Elternanruf.\n- Jemand zerkratzt einen Tisch – muss ihn abschleifen helfen.\n- Die ganze Klasse wird bestraft, weil einer gestört hat.",
+          quiz: "zahlen",
+          antworten: ["1️⃣ fair", "2️⃣ geht so", "3️⃣ unfair"],
+          folie: "Ist diese Konsequenz fair?\n\n**1** = fair · **2** = geht so · **3** = unfair\n\nHalte deine Zahlenkarte hoch und sag, warum." }
     ],
     ab34: { titel: "Regeln mit Sinn", aufgaben: [
         { typ: "tabelle", text: "Wähle drei Regeln aus deiner Schule.", spalten: ["Regel", "Warum gibt es sie?", "Was passiert ohne?"], zeilen: [["", "", ""], ["", "", ""], ["", "", ""]] },
@@ -282,9 +308,12 @@ Die Lehrerin sagt: „Weißt du, wer weint? Fußballprofis nach einem verlorenen
 5. Bei wem kannst du deine Maske abnehmen? (nur für dich)` },
     uebungen: [
         { titel: "Die Maske", dauer: "6 Min",
-          text: "Male eine Maske an die Tafel. Außen: Was zeigen Menschen nach außen? (cool, lustig, egal, aggressiv, stark …) Innen: Was kann dahinter stecken? (Angst, Trauer, Unsicherheit, Einsamkeit …) Die Kinder rufen vom Platz zu." },
+          text: "Male eine Maske an die Tafel. Außen: Was zeigen Menschen nach außen? (cool, lustig, egal, aggressiv, stark …) Innen: Was kann dahinter stecken? (Angst, Trauer, Unsicherheit, Einsamkeit …) Die Kinder rufen vom Platz zu.",
+          folie: "Außen zeigen Menschen eine **Maske** 🎭. Was zeigen sie?\n\nUnd was kann **dahinter** stecken?" },
         { titel: "Stark oder schwach?", dauer: "6 Min",
-          text: "Du liest vor, die Kinder entscheiden mit Daumen: Braucht das Mut (hoch) oder ist es schwach (runter)? Diskutiert.\n\n- Vor anderen zugeben, dass man Angst hat.\n- Weinen, wenn etwas Schlimmes passiert.\n- Sagen: „Das hat mich verletzt.“\n- Einem Freund sagen, dass man ihn mag.\n- Um Hilfe bitten." }
+          text: "Du liest vor, die Kinder entscheiden mit Daumen: Braucht das Mut (hoch) oder ist es schwach (runter)? Diskutiert.\n\n- Vor anderen zugeben, dass man Angst hat.\n- Weinen, wenn etwas Schlimmes passiert.\n- Sagen: „Das hat mich verletzt.“\n- Einem Freund sagen, dass man ihn mag.\n- Um Hilfe bitten.",
+          antworten: ["👍 braucht Mut", "👎 ist schwach"],
+          folie: "**Braucht das Mut** 👍 – oder ist es **schwach** 👎?" }
     ],
     ab34: { titel: "Meine Maske", kontext: "Zum Fall: Mo spielt immer den Coolen. Als sein Hund stirbt, weint er heimlich auf dem Klo und hat Angst, ein „Weichei“ zu sein.", aufgaben: [
         { typ: "tabelle", text: "Was zeigst du nach außen – und was fühlst du manchmal innen? Schreib drei Beispiele.", spalten: ["Außen (was andere sehen)", "Innen (was ich fühle)"], zeilen: [["", ""], ["", ""], ["", ""]] },
@@ -316,9 +345,13 @@ Robin ist still. Er hatte nur das Handy gesehen.
 5. Was hilft gegen den „Stich im Bauch“?` },
     uebungen: [
         { titel: "Was ich sehe – was ich nicht sehe", dauer: "6 Min",
-          text: "Zwei Spalten an der Tafel. Links: Was sehen andere von uns? (Klamotten, Handy, Noten, Follower …) Rechts: Was sehen sie nicht? (Sorgen, Streit zu Hause, Angst, Einsamkeit …) Frage: Worauf beruht Neid meistens?" },
+          text: "Zwei Spalten an der Tafel. Links: Was sehen andere von uns? (Klamotten, Handy, Noten, Follower …) Rechts: Was sehen sie nicht? (Sorgen, Streit zu Hause, Angst, Einsamkeit …) Frage: Worauf beruht Neid meistens?",
+          folie: "👀 **Was sehen andere von uns?**\n🙈 **Was sehen sie nicht?**\n\nWorauf beruht Neid meistens?" },
         { titel: "Neid in Energie umwandeln", dauer: "6 Min",
-          text: "Neid zeigt oft, was einem wichtig ist. Gemeinsam umformulieren:\n\n- „Der ist so gut im Fußball, ich hasse ihn.“ → „Ich will auch besser werden – ich frag ihn mal nach Tipps.“\n- „Die hat immer die besten Noten, Streberin.“\n- „Der hat schon wieder neue Schuhe.“\n- „Die hat so viele Freunde.“\n- „Der darf viel länger zocken als ich.“" }
+          text: "Neid zeigt oft, was einem wichtig ist. Gemeinsam umformulieren:\n\n- „Der ist so gut im Fußball, ich hasse ihn.“ → „Ich will auch besser werden – ich frag ihn mal nach Tipps.“\n- „Die hat immer die besten Noten, Streberin.“\n- „Der hat schon wieder neue Schuhe.“\n- „Die hat so viele Freunde.“\n- „Der darf viel länger zocken als ich.“",
+          quiz: "karten",
+          frage: "Mach daraus einen Satz, der dir hilft.",
+          folie: "Neid zeigt oft, was dir **wichtig** ist.\n\nMach aus dem Neid-Satz einen Satz, der dir **hilft**. ⚡" }
     ],
     ab34: { titel: "Der Stich im Bauch", aufgaben: [
         { typ: "luecken", text: "Ehrlich zu mir:", nummern: false, saetze: ["Ich werde neidisch, wenn andere ___", "Das merke ich so: ___", "Was ich bei anderen oft nicht sehe: ___"] },
@@ -351,9 +384,13 @@ Abends kann Sami nicht schlafen. Was, wenn der Lehrer nicht gekommen wäre?
 5. Wem hätte Sami sich anvertrauen können?` },
     uebungen: [
         { titel: "Petzen oder Hilfe holen?", dauer: "7 Min",
-          text: "Du liest Situationen vor. Rot = das würde ich für mich behalten, grün = da hole ich Hilfe. Danach die Regel an die Tafel: **Petzen will jemandem Ärger machen. Hilfe holen will jemanden schützen.**\n\n- Jemand hat abgeschrieben.\n- Ein Kind wird jeden Tag auf dem Heimweg abgezogen.\n- Jemand hat ein Messer dabei.\n- Jemand hat einen Kaugummi unter den Tisch geklebt.\n- Ein Freund erzählt, dass er zu Hause geschlagen wird.\n- Im Chat droht jemand, einem anderen „aufzulauern“." },
+          text: "Du liest Situationen vor. Rot = das würde ich für mich behalten, grün = da hole ich Hilfe. Danach die Regel an die Tafel: **Petzen will jemandem Ärger machen. Hilfe holen will jemanden schützen.**\n\n- Jemand hat abgeschrieben.\n- Ein Kind wird jeden Tag auf dem Heimweg abgezogen.\n- Jemand hat ein Messer dabei.\n- Jemand hat einen Kaugummi unter den Tisch geklebt.\n- Ein Freund erzählt, dass er zu Hause geschlagen wird.\n- Im Chat droht jemand, einem anderen „aufzulauern“.",
+          quiz: "ampel",
+          antworten: ["🔴 für mich behalten", "🟢 Hilfe holen"],
+          folie: "🔴 **Das behalte ich für mich.**\n🟢 **Da hole ich Hilfe.**\n\nHalte deine **Ampelkarte** hoch." },
         { titel: "Wie sag ich's?", dauer: "5 Min",
-          text: "Sammelt: Wem kann man so etwas sagen? (Lehrkraft, Schulsozialarbeit, Eltern, Nummer gegen Kummer 116 111) Und wie, damit es keiner merkt? (nach der Stunde, Zettel, Eltern bitten anzurufen …)" }
+          text: "Sammelt: Wem kann man so etwas sagen? (Lehrkraft, Schulsozialarbeit, Eltern, Nummer gegen Kummer 116 111) Und wie, damit es keiner merkt? (nach der Stunde, Zettel, Eltern bitten anzurufen …)",
+          folie: "Wem kannst du so etwas sagen?\n\nUnd **wie**, damit es keiner merkt?" }
     ],
     ab34: { titel: "Schützen statt schweigen", kontext: "Zum Fall: Yannick zeigt seinem Freund Sami ein Taschenmesser im Rucksack. Sami sagt niemandem etwas, weil er nicht petzen will.", aufgaben: [
         { typ: "tabelle", text: "Petzen oder Hilfe holen? Schreib in jede Spalte zwei Beispiele.", spalten: ["Petzen (will Ärger machen)", "Hilfe holen (will schützen)"], zeilen: [["", ""], ["", ""]] },
@@ -385,9 +422,14 @@ Dann fragt Amira: „Was wünscht ihr euch vom anderen?“ Am Ende einigen sich 
 5. Was bräuchtest du, um ein guter Schlichter zu sein?` },
     uebungen: [
         { titel: "Die 4 Schritte", dauer: "5 Min",
-          text: "Die vier Schritte an die Tafel schreiben:\n\n- Regeln klären (ausreden lassen, keine Beleidigungen).\n- Jeder erzählt seine Sicht.\n- Schlichter fasst zusammen: Was fühlen beide?\n- Gemeinsam eine Lösung finden, mit der beide leben können." },
+          text: "Die vier Schritte an die Tafel schreiben:\n\n- Regeln klären (ausreden lassen, keine Beleidigungen).\n- Jeder erzählt seine Sicht.\n- Schlichter fasst zusammen: Was fühlen beide?\n- Gemeinsam eine Lösung finden, mit der beide leben können.",
+          quiz: "keine",
+          folie: "Wie schlichtet man einen **Streit**? ⚖️\n\nDie vier Schritte." },
         { titel: "Schlichtung üben", dauer: "8 Min",
-          text: "Drei Kinder üben vom Platz aus: zwei Streitende, ein Schlichter (du hilfst). Ausgedachter, harmloser Streit, z. B.:\n\n- Wer darf an den PC?\n- Einer hat den Stift des anderen ausgeliehen und kaputt gemacht.\n- Beide wollen am Fenster sitzen.\n\nDie anderen achten darauf: Wurde jeder ausreden gelassen? Blieb der Schlichter neutral?" }
+          text: "Drei Kinder üben vom Platz aus: zwei Streitende, ein Schlichter (du hilfst). Ausgedachter, harmloser Streit, z. B.:\n\n- Wer darf an den PC?\n- Einer hat den Stift des anderen ausgeliehen und kaputt gemacht.\n- Beide wollen am Fenster sitzen.\n\nDie anderen achten darauf: Wurde jeder ausreden gelassen? Blieb der Schlichter neutral?",
+          quiz: "karten",
+          frage: "Zwei streiten, einer schlichtet. Wurde jeder ausreden gelassen? Blieb der Schlichter neutral?",
+          folie: "Drei Kinder: **zwei streiten**, **einer schlichtet**.\n\nDie anderen achten: Wurde jeder ausreden gelassen? Blieb der Schlichter neutral?" }
     ],
     ab34: { titel: "So schlichte ich einen Streit", aufgaben: [
         { typ: "luecken", text: "Schreib die 4 Schritte der Schlichtung in der richtigen Reihenfolge auf:", nummern: true, saetze: ["___", "___", "___", "___"] },
@@ -417,9 +459,11 @@ Marlon denkt an seine alte Schule. Dort hätte das niemand gesagt. Er fragt sich
 5. Welchen Ruf möchtest du haben? (freiwillig)` },
     uebungen: [
         { titel: "Rollen in der Gruppe", dauer: "6 Min",
-          text: "Sammelt Rollen, die Kinder in Klassen bekommen (der Clown, der Stressmacher, die Streberin, der Stille, die Anführerin …). Frage: Sucht man sich die Rolle aus – oder rutscht man rein? Kann man sie wieder loswerden?" },
+          text: "Sammelt Rollen, die Kinder in Klassen bekommen (der Clown, der Stressmacher, die Streberin, der Stille, die Anführerin …). Frage: Sucht man sich die Rolle aus – oder rutscht man rein? Kann man sie wieder loswerden?",
+          folie: "Welche **Rollen** gibt es in einer Klasse? 🎭\n\nSucht man sie sich aus – oder rutscht man rein?" },
         { titel: "Zweite Chance geben", dauer: "6 Min",
-          text: "Gemeinsam überlegen: Was kann die GRUPPE tun, damit jemand seinen Ruf ändern kann? (nicht sofort beschuldigen, Gutes bemerken und sagen, Vergangenes ruhen lassen …) Abmachung: Diese Woche sagt jeder einem anderen etwas Gutes, das ihm aufgefallen ist." }
+          text: "Gemeinsam überlegen: Was kann die GRUPPE tun, damit jemand seinen Ruf ändern kann? (nicht sofort beschuldigen, Gutes bemerken und sagen, Vergangenes ruhen lassen …) Abmachung: Diese Woche sagt jeder einem anderen etwas Gutes, das ihm aufgefallen ist.",
+          folie: "Was kann die **Gruppe** tun, damit jemand seinen Ruf ändern kann?\n\nDiese Woche: Sag jemandem etwas Gutes, das dir aufgefallen ist." }
     ],
     ab34: { titel: "Wer ich sein will", aufgaben: [
         { typ: "tabelle", text: "Sei ehrlich zu dir und schreib je drei Wörter oder Sätze:", spalten: ["So sehen mich andere vielleicht", "So will ich gesehen werden"], zeilen: [["", ""], ["", ""], ["", ""]] },

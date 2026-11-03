@@ -74,6 +74,8 @@ const CSS = `
 #praes .p-frage.an{ opacity:1; transform:scale(1.02); box-shadow:0 8px 26px rgba(242,169,59,.35); }
 #praes .p-frage.aufgabe{ background:#fff7e6; }
 #praes .p-frage.aufgabe:not(.an):not(.war){ visibility:hidden; }
+#praes .p-liste{ display:flex; flex-wrap:wrap; gap:.5em .7em; justify-content:center; margin-top:2vh; max-width:min(1300px,94vw); }
+#praes .p-liste div{ background:white; border-radius:16px; padding:.35em .8em; box-shadow:0 4px 14px rgba(22,50,74,.1); font-family:"Andika","Nunito",sans-serif; font-size:clamp(17px,min(2.2vw,3.6vh),34px); }
 #praes .p-frage .nr{ font-family:"Nunito",sans-serif; font-weight:900; color:#f2a93b; }
 
 /* Film */
@@ -223,6 +225,7 @@ function geschichteZerlegen(text){
 function fragenAus(nach){
     const fragen = [];
     for (const t of nach) {
+        if (/^\*\*(Tipp|Hinweis|Für dich)/i.test(t)) continue;   // nur für die Lehrkraft
         const zeilen = t.split("\n");
         const liste = zeilen.filter(z => /^\s*(\d+[.)]|[-•])\s+/.test(z)).map(z => z.replace(/^\s*(\d+[.)]|[-•])\s+/, ""));
         if (liste.length) fragen.push(...liste);
@@ -231,7 +234,7 @@ function fragenAus(nach){
     // Nur die Frage zeigen – was danach kommt (z. B. „Alle üben gemeinsam: …“ = die Lösung) wird ein eigener Schritt,
     // der erst nach der Frage aufgedeckt wird. Zeilen ohne Frage (Tafelbild, Merksatz) ebenso.
     const aus = [];
-    fragen.map(ohneMarkdown).filter(Boolean).forEach(t => {
+    fragen.map(ohneMarkdown).map(t => t.replace(/\?\s*\([^)]*\)/g, "?")).filter(Boolean).forEach(t => {
         const m = /^([\s\S]*\?[“”"«»]?)\s+([^?]+)$/.exec(t);
         if (m && m[2].trim()) { aus.push({ text: m[1].trim(), art: "frage" }, { text: m[2].trim(), art: "aufgabe" }); }
         else aus.push({ text: t, art: /\?/.test(t) ? "frage" : "aufgabe" });
@@ -271,10 +274,14 @@ function folienBauen(e, stufe){
         // Klassen sind getrennt: nur Übungen dieser Stufe, Text passend zur Stufe
         if (u0.fuer && u0.fuer !== "alle" && u0.fuer !== stufe) return;
         const u = Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, folie: u0["folie" + stufe] || u0.folie || "" });
+        // quiz: daumen/ampel/… = Abstimmung je Punkt · karten = je Punkt eine Folie ohne Abstimmung ·
+        // liste = alle Punkte auf der Übungsfolie · keine = Punkte nur für die Lehrkraft
+        const punkte = aufzaehlung(u.text).slice(0, 10).map(p => p.split(/\s+→\s+/)[0]);
+        const art = u.quiz || quizArt(u.text);
+        if (art === "liste" && punkte.length) u.liste = punkte;
         f.push({ typ: "uebung", u });
-        const punkte = aufzaehlung(u.text).slice(0, 8);
-        const art = quizArt(u.text);
-        if (punkte.length >= 2 && art !== "frage") punkte.forEach((p, i) => f.push({ typ: "abstimmung", u, art, aussage: p, nr: i + 1, von: punkte.length }));
+        if (punkte.length >= 2 && art === "karten") punkte.forEach((p, i) => f.push({ typ: "karte", u, aussage: p, nr: i + 1, von: punkte.length }));
+        else if (punkte.length >= 2 && !["frage", "keine", "liste", "karten"].includes(art)) punkte.forEach((p, i) => f.push({ typ: "abstimmung", u, art, aussage: p, nr: i + 1, von: punkte.length }));
     });
     f.push({ typ: "arbeitsblatt" });
     f.push({ typ: "abschluss" });
@@ -363,6 +370,7 @@ function zeigen(i, rueckwaerts){
     const z = zustand;
     if (i < 0 || i >= z.folien.length) return;
     if (window.speechSynthesis) speechSynthesis.cancel();
+    if (i !== z.i) { const dran = z.wurzel.querySelector(".p-dran"); if (dran) dran.remove(); }   // Glücksrad-Nummer gilt nur für diese Folie
     z.i = i;
     const f = z.folien[i];
     const el = document.createElement("div");
@@ -390,7 +398,8 @@ function stimmenHtml(schluessel, optionen){
         <button class="p-minus" data-minus="1" title="Aus Versehen getippt? Eine Stimme zurücknehmen." style="visibility:${s[o.wert] ? "visible" : "hidden"}">↩ zurück</button></div>`).join("")}</div>`;
 }
 const GEFUEHLE_OPT = ["fröhlich", "traurig", "wütend", "ängstlich", "cool"].map(g => ({ wert: g, name: g, art: "gefuehl", zeichen: g }));
-function abstimmOptionen(art){
+function abstimmOptionen(art, u){
+    if (u && Array.isArray(u.antworten) && u.antworten.length) return u.antworten.map((a, k) => { const m = /^(\S+)\s+(.*)$/.exec(a) || [a, "", a]; return { wert: "a" + k, name: m[2], art: "emoji", zeichen: m[1] }; });
     if (art === "daumen") return [{ wert: "hoch", name: "Daumen hoch", art: "emoji", zeichen: "👍" }, { wert: "seite", name: "weiß nicht", art: "emoji", zeichen: "🤔" }, { wert: "runter", name: "Daumen runter", art: "emoji", zeichen: "👎" }];
     if (art === "loesung") return [{ wert: "abwechseln", name: "Abwechseln", art: "emoji", zeichen: "🔄" }, { wert: "teilen", name: "Teilen", art: "emoji", zeichen: "🍕" }, { wert: "zusammen", name: "Zusammen machen", art: "emoji", zeichen: "🤝" }, { wert: "hilfe", name: "Hilfe holen", art: "emoji", zeichen: "🙋" }];
     if (art === "stopp") return [{ wert: "ok", name: "okay", art: "emoji", zeichen: "👍" }, { wert: "stopp", name: "Stopp!", art: "emoji", zeichen: "✋" }];
@@ -430,11 +439,14 @@ function folieHtml(f, e){
             const min = minuten(f.u.dauer);
             const kurz = String(f.u.text || "").split(/\n\s*\n/)[0];
             return `<div>${fuerChip(f.u)}${f.u.dauer ? `<span class="p-chip">${esc(f.u.dauer)}</span>` : ""}</div><h2>${esc(f.u.titel)}</h2>
-                <div class="p-text" style="font-size:${String(f.u.text || "").length > 450 ? "clamp(14px,min(1.45vw,2.3vh),26px)" : String(f.u.text || "").length > 280 ? "clamp(17px,min(2.1vw,3.6vh),34px)" : "clamp(20px,min(2.6vw,4.6vh),40px)"}">${md(f.u.folie ? f.u.folie : aufzaehlung(f.u.text).length ? kurz.split("\n").filter(z => !/^\s*[-•]/.test(z)).join("\n") : f.u.text)}</div>
+                <div class="p-text" style="font-size:${String(f.u.text || "").length > 450 ? "clamp(14px,min(1.45vw,2.3vh),26px)" : String(f.u.text || "").length > 280 ? "clamp(17px,min(2.1vw,3.6vh),34px)" : "clamp(20px,min(2.6vw,4.6vh),40px)"}">${md(f.u.folie ? f.u.folie : aufzaehlung(f.u.text).length ? kurz.split("\n").filter(z => !/^\s*[-•]/.test(z)).join("\n") : f.u.text)}</div>${f.u.liste ? `<div class="p-liste">${f.u.liste.map(x => `<div>${inline(x)}</div>`).join("")}</div>` : ""}
                 <div class="p-reihe">${min ? `<button class="p-knopf gold" data-start="${min}">⏱ ${min} Minuten starten</button>` : ""}<button class="p-knopf hell" data-p="rad">🎡 Wer fängt an?</button></div>`;
         }
         case "abstimmung":
-            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage">${inline(f.aussage)}</div>${stimmenHtml("q" + zustand.i + f.aussage, abstimmOptionen(f.art))}`;
+            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage"${f.aussage.length > 70 ? ' style="font-size:clamp(20px,min(3vw,5vh),48px)"' : ""}>${inline(f.aussage)}</div>${stimmenHtml("q" + zustand.i + f.aussage, abstimmOptionen(f.art, f.u))}`;
+        case "karte":
+            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage">${inline(f.aussage)}</div>${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${inline(f.u.frage)}</div>` : ""}
+                <div class="p-reihe" style="margin-top:2vh"><button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div>`;
         case "arbeitsblatt":
             return `<div class="p-bilder">${ltBild("stift")}${ltBild("heft")}</div><h2>Bearbeite jetzt leise dein Arbeitsblatt.</h2>
                 <div class="p-text" style="font-size:clamp(20px,2.6vw,40px)">🤫 Wenn du fertig bist, drehst du dein Blatt um und wartest leise.</div>
@@ -814,7 +826,7 @@ async function pptxExport(e, stufe = "12"){
                 const fuer = { alle: "Alle", "12": "Kl. 1/2", "34": "Kl. 3/4" }[f.u.fuer] || "Alle";
                 s.addText(fuer + (f.u.dauer ? " · " + f.u.dauer : ""), { x: 0, y: .5, w: W, h: .5, align: "center", fontFace: FONT, fontSize: 18, color: MEER, bold: true });
                 s.addText(f.u.titel, { x: .5, y: 1.05, w: W - 1, h: 1.1, align: "center", fontFace: FONT, fontSize: 46, bold: true, color: NACHT });
-                const kurz = f.u.folie ? ohneMarkdown(f.u.folie) : String(f.u.text || "").split(/\n\s*\n/)[0].split("\n").filter(z => !/^\s*[-•]/.test(z)).join(" ");
+                const kurz = f.u.folie ? ohneMarkdown(f.u.folie) + (f.u.liste ? "\n\n" + f.u.liste.map(x => "• " + ohneMarkdown(x)).join("\n") : "") : String(f.u.text || "").split(/\n\s*\n/)[0].split("\n").filter(z => !/^\s*[-•]/.test(z)).join(" ");
                 s.addText(laufText(kurz), { x: 1, y: 2.4, w: W - 2, h: 3.6, align: "center", valign: "middle", fontFace: TEXT, fontSize: 24, color: "1F2D36" });
                 s.addNotes(ohneMarkdown(f.u.text));
                 fuss(s);
@@ -824,7 +836,14 @@ async function pptxExport(e, stufe = "12"){
                 s.addText(f.u.titel + " · " + f.nr + " / " + f.von, { x: 0, y: .4, w: W, h: .45, align: "center", fontFace: FONT, fontSize: 16, color: GRAU });
                 s.addShape(p.ShapeType.roundRect, { x: 1.2, y: 1.05, w: W - 2.4, h: 2, fill: { color: "FFFFFF" }, line: { color: "DFE5E2" }, rectRadius: .25 });
                 s.addText(laufText(f.aussage), { x: 1.4, y: 1.1, w: W - 2.8, h: 1.9, align: "center", valign: "middle", fontFace: TEXT, fontSize: 34, bold: true, color: NACHT });
-                await stimmZeile(s, abstimmOptionen(f.art), 3.5);
+                await stimmZeile(s, abstimmOptionen(f.art, f.u), 3.5);
+                s.addNotes(ohneMarkdown(f.u.text));
+                break;
+            case "karte":
+                s.addText(f.u.titel + " · " + f.nr + " / " + f.von, { x: 0, y: .4, w: W, h: .45, align: "center", fontFace: FONT, fontSize: 16, color: GRAU });
+                s.addShape(p.ShapeType.roundRect, { x: 1.2, y: 1.4, w: W - 2.4, h: 2.4, fill: { color: "FFFFFF" }, line: { color: "DFE5E2" }, rectRadius: .25 });
+                s.addText(laufText(f.aussage), { x: 1.4, y: 1.45, w: W - 2.8, h: 2.3, align: "center", valign: "middle", fontFace: TEXT, fontSize: 34, bold: true, color: NACHT });
+                if (f.u.frage) s.addText(laufText(f.u.frage), { x: 1, y: 4.1, w: W - 2, h: 1, align: "center", fontFace: TEXT, fontSize: 22, color: MEER });
                 s.addNotes(ohneMarkdown(f.u.text));
                 break;
             case "arbeitsblatt":
