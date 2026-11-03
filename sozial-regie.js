@@ -70,7 +70,7 @@ function phasenTyp(name){
     if (/übung|spiel/.test(n)) return "uebung";
     return "frei";
 }
-const TYP_NAMEN = { schreiben: "schreiben", ankreuzen: "ankreuzen", zuordnen: "verbinden", tabelle: "Tabelle ausfüllen", luecken: "Lücken füllen", gesichter: "Gesichter malen", malen: "malen" };
+const TYP_NAMEN = { schreiben: "schreiben", ankreuzen: "ankreuzen", zuordnen: "verbinden", tabelle: "Tabelle ausfüllen", luecken: "Lücken füllen", gesichter: "Gesichter malen", malen: "malen", daumen: "einkreisen", gefuehle: "Gesicht einkreisen" };
 function abAufgaben(ab, stufe){
     return ((ab && ab.aufgaben) || []).filter(a => {
         const nur = a.nur || ((a.typ === "luecken" || a.typ === "schreiben") ? "2" : "");
@@ -81,7 +81,8 @@ function abAufgaben(ab, stufe){
 /* ---------- Phasen ---------- */
 function vorher(e, st, vertretung){
     const punkte = [];
-    const ab = st === "12" ? "die Arbeitsblätter <b>Kl. 1</b> (ohne Lesen/Schreiben) bzw. <b>Kl. 2</b> – je nach Kind" : "das Arbeitsblatt <b>Kl. 3/4</b>";
+    const gem = !(window.BEREICH && window.BEREICH.key === "vertretung");
+    const ab = st === "12" ? (gem ? "das Arbeitsblatt <b>Kl. 1/2</b> (ein Blatt für alle, ohne Lesen und Schreiben)" : "die Arbeitsblätter <b>Kl. 1</b> (ohne Lesen/Schreiben) bzw. <b>Kl. 2</b> – je nach Kind") : "das Arbeitsblatt <b>Kl. 3/4</b>";
     punkte.push(`Drucke ${ab} – für jedes Kind eins und eins als Reserve.`);
     String(e.material || "").split("\n").map(z => z.trim()).filter(Boolean).forEach(m => punkte.push(inline(m)));
     const mats = window.sozialMaterial ? window.sozialMaterial.fuer(e) : [];
@@ -158,7 +159,11 @@ function arbeitsblatt(e, st){
     const schritte = [
         li("Schieb den Zeiger auf „Arbeitsblatt“ und teile die Blätter aus.", sag(`Jetzt arbeitet jeder an seinem Platz: „${ab.titel}“. Wenn du Hilfe brauchst, heb die Hand – ich komme zu dir.`)),
     ];
-    if (st === "12") {
+    if (st === "12" && !(window.BEREICH && window.BEREICH.key === "vertretung")) {
+        schritte.push(li("<b>Ein Blatt für alle (Kl. 1 und 2):</b> Lies jede Aufgabe vor – und bei Zeilen zum Einkreisen jede Zeile einzeln. Zeig dabei auf das Farbsymbol am Rand. Erst wenn alle eingekreist haben, liest du die nächste Zeile.",
+            sag("Wir sind beim roten Kreis. Da steht: … Ist das gut? Kreise den Daumen ein."), `<ol class="regie-ab">${(ab.aufgaben || []).map(a => `<li>${a.text ? `${inline(a.text)} <i>(${TYP_NAMEN[a.typ] || a.typ})</i>` : esc(TYP_NAMEN[a.typ] || a.typ)}</li>`).join("")}</ol>`));
+        schritte.push(li("Wer schneller fertig ist, malt die Bilder weiter aus. Kinder der Kl. 2 dürfen zu ihrem Bild ein Wort dazuschreiben."));
+    } else if (st === "12") {
         const k1 = abAufgaben(ab, "1");
         schritte.push(li("<b>Kinder der Kl. 1 (Blatt ohne Lesen):</b> Lies jede Aufgabe gemeinsam vor und zeig auf das Farbsymbol am Rand.",
             sag("Wir sind beim roten Kreis. Da steht: …"), `<ol class="regie-ab">${k1.map(a => `<li>${a.text ? `${inline(a.text)} <i>(${TYP_NAMEN[a.typ] || a.typ})</i>` : esc(TYP_NAMEN[a.typ] || a.typ)}</li>`).join("")}</ol>`));

@@ -277,6 +277,14 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .schreiblinie{ height:calc(2.1em * var(--z)); border-bottom:.35mm solid #555; }
 .blatt.stufe12 .schreiblinie{ height:calc(2.4em * var(--z)); }
 .kreuz-liste{ display:flex; flex-direction:column; gap:calc(.45em * var(--z)); }
+.dz-liste{ display:flex; flex-direction:column; gap:calc(.5em * var(--z)); }
+.dz-zeile{ display:flex; align-items:center; gap:.5em; border-bottom:.25mm dotted #c3ccd2; padding-bottom:calc(.35em * var(--z)); }
+.dz-zeile .bild svg{ width:1.8em; height:1.8em; }
+.dz-text{ flex:1; line-height:1.25; }
+.dz-wahl{ display:flex; gap:.7em; flex:0 0 auto; }
+.dz-emoji{ font-size:1.55em; line-height:1; width:1.55em; height:1.55em; display:inline-flex; align-items:center; justify-content:center; border:.35mm solid #9aa9b2; border-radius:50%; padding:.12em; }
+.dz-punkt{ width:1.5em; height:1.5em; border-radius:50%; display:inline-block; border:.35mm solid #333; }
+.dz-gesicht svg{ width:2.1em; height:2.1em; display:block; }
 .kreuz-liste.reihe{ flex-direction:row; flex-wrap:wrap; gap:.4em 1.4em; }
 .kreuz{ display:flex; align-items:flex-end; gap:.45em; }
 .kreuz .box{ width:1em; height:1em; margin:0; align-self:center; }
@@ -446,7 +454,9 @@ const TYPEN = {
     zuordnen:  "Verbinden",
     tabelle:   "Tabelle",
     gesichter: "Gesichter / Gefühle",
-    malen:     "Malfeld"
+    malen:     "Malfeld",
+    daumen:    "Einkreisen: 👍/👎 oder grün/rot",
+    gefuehle:  "Einkreisen: Gesichter je Zeile"
 };
 const BILDER = { "": "– kein Bild –", stopp: "Stopp-Schild", herz: "Herz", stern: "Stern", ampel: "Ampel", sprechblase: "Sprechblase", sonne: "Sonne", ohr: "Ohr", blume: "Blume", wolke: "Wolke", pokal: "Pokal" };
 
@@ -677,15 +687,24 @@ function aufgabenSymbol(typ){
         ankreuzen: `<rect x="3" y="3" width="18" height="18" rx="2.5" ${s}/><path d="M7.5 7.5 L16.5 16.5 M16.5 7.5 L7.5 16.5" ${s}/>`,
         zuordnen: `<circle cx="5" cy="12" r="2.6" fill="currentColor"/><circle cx="19" cy="12" r="2.6" fill="currentColor"/><path d="M7.5 12 H16.5" ${s}/>`,
         tabelle: `<rect x="3" y="4" width="18" height="16" rx="2" ${s}/><path d="M3 10 H21 M3 15 H21 M11 4 V20" ${s}/>`,
+        daumen: `<ellipse cx="12" cy="12" rx="10" ry="7.5" ${s}/><path d="M9 12.5 L11.2 14.7 L15.5 9.5" ${s}/>`,
+        gefuehle: `<ellipse cx="12" cy="12" rx="10" ry="8.5" ${s}/><circle cx="9.5" cy="10.5" r="1" fill="currentColor"/><circle cx="14.5" cy="10.5" r="1" fill="currentColor"/><path d="M9 14 Q12 16.5 15 14" ${s}/>`,
         gesichter: `<circle cx="12" cy="12" r="9" ${s}/><circle cx="9" cy="10" r="1.1" fill="currentColor"/><circle cx="15" cy="10" r="1.1" fill="currentColor"/><path d="M8.5 14.5 Q12 17.5 15.5 14.5" ${s}/>`
     };
     return `<svg class="af-symbol" viewBox="0 0 24 24">${z[typ] || z.schreiben}</svg>`;
 }
 
+// Sozialtraining: EIN Arbeitsblatt für alle Kinder aus Kl. 1 und 2 (Vertretung: weiter Kl. 1 und Kl. 2 getrennt)
+function gemeinsam12(){ return !(window.BEREICH && window.BEREICH.key === "vertretung"); }
+function ab12Stufen(){ return gemeinsam12() ? ["12"] : ["1", "2"]; }
+const DAUMEN_ZEICHEN = {
+    daumen: ['<span class="dz-emoji">👍</span>', '<span class="dz-emoji">👎</span>'],
+    ampel: ['<span class="dz-punkt" style="background:#2e8b57"></span>', '<span class="dz-punkt" style="background:#e74c3c"></span>']
+};
 function aufgabeHtml(a, stufe = "34"){
     const typ = a.typ || "schreiben";
-    const klein = stufe === "1" || stufe === "2";    // Bilder für Klasse 1/2
-    const k1 = stufe === "1";                         // Farbsymbole für Klasse 1
+    const klein = stufe === "1" || stufe === "2" || stufe === "12";    // Bilder für Klasse 1/2
+    const k1 = stufe === "1" || stufe === "12";                         // Farbsymbole (Vorlesen: „Beim roten Kreis …“)
     const eintrag = (text, i) => {
         const b = bildUndText(text, klein);
         return { vorn: (k1 ? symbol(i) : ""), bild: b.svg, text: b.text };
@@ -736,16 +755,27 @@ function aufgabeHtml(a, stufe = "34"){
                 `<div class="gesicht">${gesichtSvg(gefuehlArt(g), !!a.leer)}<div>${inline(g)}</div></div>`).join("") + "</div>";
         case "malen":
             return `<div class="malfeld${a.bild ? " mit-bild" : ""}">${ausmalbild(a.bild)}</div>`;
+        case "daumen": {   // je Zeile: Symbol · (Bild) · Satz · zwei Zeichen zum Einkreisen
+            const z = DAUMEN_ZEICHEN[a.art] || DAUMEN_ZEICHEN.daumen;
+            return '<div class="dz-liste">' + (a.zeilen || []).map((t, i) => { const x = eintrag(t, i);
+                return `<div class="dz-zeile">${x.vorn}${x.bild}<span class="dz-text">${inline(x.text)}</span><span class="dz-wahl">${z[0]}${z[1]}</span></div>`; }).join("") + "</div>";
+        }
+        case "gefuehle": { // je Zeile: Symbol · Satz · kleine Gesichter zum Einkreisen
+            const g = (a.gefuehle && a.gefuehle.length ? a.gefuehle : ["froh", "traurig", "wütend", "ängstlich"]);
+            return '<div class="dz-liste">' + (a.zeilen || []).map((t, i) => { const x = eintrag(t, i);
+                return `<div class="dz-zeile">${x.vorn}${x.bild}<span class="dz-text">${inline(x.text)}</span><span class="dz-wahl">${g.map(n => `<span class="dz-gesicht">${gesichtSvg(gefuehlArt(n), false)}</span>`).join("")}</span></div>`; }).join("") + "</div>";
+        }
     }
     return "";
 }
 // stufe: "1" (Vorlese-Fassung Kl. 1), "2" (Kl. 2) oder "34" – Kl. 1 und 2 nutzen beide das 1/2-Blatt
 function blattBauen(e, stufe){
-    if (stufe === "12") stufe = "2";
+    if (stufe === "12" && !gemeinsam12()) stufe = "2";
+    if ((stufe === "1" || stufe === "2") && gemeinsam12()) stufe = "12";
     const ab = (stufe === "34" ? e.ab34 : e.ab12) || { titel: "", aufgaben: [] };
     const blatt = document.createElement("div");
-    blatt.className = "blatt " + (stufe === "34" ? "stufe34" : "stufe12 kl" + stufe);
-    const aufgaben = (ab.aufgaben || []).filter(a => stufe === "34" || !aufgabeFuer(a) || aufgabeFuer(a) === stufe);
+    blatt.className = "blatt " + (stufe === "34" ? "stufe34" : "stufe12 kl" + (stufe === "12" ? "1" : stufe));
+    const aufgaben = (ab.aufgaben || []).filter(a => stufe === "34" || stufe === "12" || !aufgabeFuer(a) || aufgabeFuer(a) === stufe);
     let nr = 0, teile = [];
     for (const a0 of aufgaben) {
         // Sätze zum Ergänzen ohne eigene Anweisung bekommen eine klare Überschrift
@@ -769,8 +799,8 @@ function blattBauen(e, stufe){
     inhaltHtml += '<div class="luft"></div>';
     blatt.innerHTML =
         `<div class="blatt-kopf"><div class="blatt-titel">${inline(ab.titel || e.titel || "Arbeitsblatt")}</div>` +
-        `<div class="blatt-meta"><i class="fa-solid fa-tower-observation"></i> ${esc(window.BEREICH.name)}<br>Klasse ${stufe === "34" ? "3/4" : stufe}</div></div>` +
-        `<div class="blatt-name"><span>Name:</span><span class="ln"></span>${stufe === "1" ? "" : '<span>Datum:</span><span class="ln kurz"></span>'}</div>` +
+        `<div class="blatt-meta"><i class="fa-solid fa-tower-observation"></i> ${esc(window.BEREICH.name)}<br>Klasse ${stufe === "34" ? "3/4" : stufe === "12" ? "1/2" : stufe}</div></div>` +
+        `<div class="blatt-name"><span>Name:</span><span class="ln"></span>${stufe === "1" || stufe === "12" ? "" : '<span>Datum:</span><span class="ln kurz"></span>'}</div>` +
         (ab.kontext ? `<div class="blatt-kontext">📖 ${inline(ab.kontext)}</div>` : "") +
         `<div class="blatt-inhalt">${inhaltHtml}</div>`;
     return blatt;
@@ -894,14 +924,14 @@ function lehrerHtml(e, st){
         <div class="ld-kopf"><div class="ld-meta">${esc(window.BEREICH.name)} · ${esc(e.kategorie)} · ${esc(e.dauer || 40)} Minuten · ${kl ? "Klasse " + kl : "Klasse 1/2 und 3/4"}</div><h1>${esc(e.titel)}</h1></div>
         ${kl ? `<table><tr><th>Ziel</th></tr><tr><td>${inline(st === "12" ? e.ziel12 : e.ziel34)}</td></tr></table>` : `<table><tr><th style="width:50%">Ziel Kl. 1/2</th><th>Ziel Kl. 3/4</th></tr><tr><td>${inline(e.ziel12)}</td><td>${inline(e.ziel34)}</td></tr></table>`}
         <h2>Material</h2>${materialListe(e.material)}
-        ${zeig12 ? `<p style="font-size:9pt;color:#55636a"><strong>Arbeitsblatt Kl. 1:</strong> Aufgaben und Antworten vorlesen – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Schreibaufgaben gibt es nur auf dem Blatt für Kl. 2.</p>` : ""}
+        ${zeig12 ? (gemeinsam12() ? `<p style="font-size:9pt;color:#55636a"><strong>Arbeitsblatt Kl. 1/2 (ein Blatt für alle):</strong> Jede Aufgabe und jede Zeile vorlesen – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Die Kinder malen, kreuzen Bilder an oder kreisen 👍/👎 bzw. ein Gesicht ein.</p>` : `<p style="font-size:9pt;color:#55636a"><strong>Arbeitsblatt Kl. 1:</strong> Aufgaben und Antworten vorlesen – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Schreibaufgaben gibt es nur auf dem Blatt für Kl. 2.</p>`) : ""}
         <h2>Stundenverlauf</h2>${verlaufTabelle(e, "", st)}
         ${zeig12 && e.lerntext12?.text ? `<h2>Lerntext${kl ? "" : " Kl. 1/2"}: ${esc(e.lerntext12.titel)}</h2><div class="md">${md(e.lerntext12.text)}</div>` : ""}
         ${zeig34 && e.lerntext34?.text ? `<h2>Lerntext${kl ? "" : " Kl. 3/4"}: ${esc(e.lerntext34.titel)}</h2><div class="md">${md(e.lerntext34.text)}</div>` : ""}
         ${uebungenFuer(e, st).length ? "<h2>Übungen</h2>" + uebungenFuer(e, st).map(u => `<div class="ld-uebung"><h3>${esc(u.titel)} <span class="ld-badge">${kl ? "" : "· " + (FUER[u.fuer] || "Alle")}${u.dauer ? " · " + esc(u.dauer) : ""}</span></h3><div class="md">${md(stufenText(u, st))}</div></div>`).join("") : ""}
     </div>`;
 }
-function anzahlGemerkt(k){ try { const v = parseInt(localStorage.getItem("sozial_anz_" + k), 10); if (v > 0) return v; if (k.startsWith("lese")) return parseInt(localStorage.getItem("sozial_anzahl"), 10) || 1; } catch (err) {} return 1; }
+function anzahlGemerkt(k){ const std = (k === "ab12" || k === "ab34" || k.startsWith("lese")) ? 9 : 1; try { const v = parseInt(localStorage.getItem("sozial_anz_" + k), 10); if (v > 0) return v; } catch (err) {} return std; }
 function anzahlFeld(k){ return `<label class="druck-anzahl" title="Anzahl Exemplare"><input type="number" data-anzahl="${k}" min="1" max="40" value="${anzahlGemerkt(k)}" inputmode="numeric"><span>×</span></label>`; }
 function druckAnzahl(k){
     const f = document.querySelector(`[data-anzahl="${k}"]`);
@@ -930,8 +960,12 @@ async function drucken(e, was){
         if (/^(lehrer|alles)/.test(was)) ziel.insertAdjacentHTML("beforeend", lehrerHtml(e, st));
         const alles = /^alles/.test(was);
         const blaetter = [];
-        if (was === "ab1" || (alles && st !== "34" && !e.nur34)) blaetter.push([blattBauen(e, "1"), druckAnzahl("ab1")]);
-        if (was === "ab2" || was === "ab12" || (alles && st !== "34" && !e.nur34)) blaetter.push([blattBauen(e, "2"), druckAnzahl("ab2")]);
+        if (gemeinsam12()) {
+            if (was === "ab12" || was === "ab1" || was === "ab2" || (alles && st !== "34" && !e.nur34)) blaetter.push([blattBauen(e, "12"), druckAnzahl("ab12")]);
+        } else {
+            if (was === "ab1" || (alles && st !== "34" && !e.nur34)) blaetter.push([blattBauen(e, "1"), druckAnzahl("ab1")]);
+            if (was === "ab2" || was === "ab12" || (alles && st !== "34" && !e.nur34)) blaetter.push([blattBauen(e, "2"), druckAnzahl("ab2")]);
+        }
         if (was === "ab34" || (alles && st !== "12")) blaetter.push([blattBauen(e, "34"), druckAnzahl("ab34")]);
         blaetter.forEach(([b]) => ziel.appendChild(b));
         await schriften();
@@ -940,7 +974,7 @@ async function drucken(e, was){
         blaetter.forEach(([b, n]) => { let nach = b; for (let k = 1; k < n; k++) { const c = b.cloneNode(true); nach.after(c); nach = c; } });
     }
     const titel = document.title;
-    document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", lehrer12: " – Vorbereitung Kl. 1-2", lehrer34: " – Vorbereitung Kl. 3-4", alles12: " – Kl. 1-2", alles34: " – Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 2", ab34: " – AB Kl. 3-4" }[was] || "");
+    document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", lehrer12: " – Vorbereitung Kl. 1-2", lehrer34: " – Vorbereitung Kl. 3-4", alles12: " – Kl. 1-2", alles34: " – Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: gemeinsam12() ? " – AB Kl. 1-2" : " – AB Kl. 2", ab34: " – AB Kl. 3-4" }[was] || "");
     window.addEventListener("afterprint", () => { ziel.innerHTML = ""; document.title = titel; }, { once: true });
     setTimeout(() => window.print(), 60);
 }
@@ -1157,8 +1191,8 @@ function zeigeStunde(id){
                 <button class="btn blau" data-druck="regie34"><i class="fa-solid fa-list-ol"></i> Ablauf Schritt für Schritt Kl. 3/4</button>` : ""}
             </div>
             <div class="druck-raster">
-                <div class="druck-posten nur12">${anzahlFeld("ab1")}<button class="btn blau" data-druck="ab1"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 1</button></div>
-                <div class="druck-posten nur12">${anzahlFeld("ab2")}<button class="btn blau" data-druck="ab2"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 2</button></div>
+                ${gemeinsam12() ? `<div class="druck-posten nur12">${anzahlFeld("ab12")}<button class="btn blau" data-druck="ab12"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 1/2</button></div>` : `<div class="druck-posten nur12">${anzahlFeld("ab1")}<button class="btn blau" data-druck="ab1"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 1</button></div>
+                <div class="druck-posten nur12">${anzahlFeld("ab2")}<button class="btn blau" data-druck="ab2"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 2</button></div>`}
                 <div class="druck-posten">${anzahlFeld("ab34")}<button class="btn blau" data-druck="ab34"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 3/4</button></div>
                 <div class="druck-posten nur12">${anzahlFeld("lese12")}<button class="btn" data-druck="lese12"><i class="fa-solid fa-book-open"></i> Lesetext Kl. 1/2</button></div>
                 <div class="druck-posten">${anzahlFeld("lese34")}<button class="btn" data-druck="lese34"><i class="fa-solid fa-book-open"></i> Lesetext Kl. 3/4</button></div>
@@ -1203,16 +1237,18 @@ function zeigeStunde(id){
 
         ${e.nur34 ? `<div class="karte"><h2>Arbeitsblatt</h2>
             <div class="vorschau-paar"><div><div class="stufe-label s34">Klasse 3/4</div><div class="vorschau" id="v34"></div><div class="vorschau-status"></div></div></div></div>` : `<div class="karte"><h2>Arbeitsblätter</h2>
-            <p class="ed-hilfe" style="margin:0 0 12px">Klasse 1 ist eine Vorlese-Fassung: Lies die Aufgaben und Antworten vor – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Schreibaufgaben gibt es nur in Klasse 2.</p>
+            ${gemeinsam12() ? `<p class="ed-hilfe" style="margin:0 0 12px">Ein Blatt für alle Kinder aus Kl. 1 und 2 – ohne Lesen und Schreiben: Lies jede Aufgabe und jede Zeile vor („Beim roten Kreis steht …“). Die Kinder malen, kreuzen Bilder an oder kreisen 👍/👎 bzw. ein Gesicht ein.</p>
+            <div class="vorschau-paar">
+            <div><div class="stufe-label">Klasse 1/2</div><div class="vorschau" id="v12"></div><div class="vorschau-status"></div></div>` : `<p class="ed-hilfe" style="margin:0 0 12px">Klasse 1 ist eine Vorlese-Fassung: Lies die Aufgaben und Antworten vor – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Schreibaufgaben gibt es nur in Klasse 2.</p>
             <div class="vorschau-paar drei">
             <div><div class="stufe-label">Klasse 1</div><div class="vorschau" id="v1"></div><div class="vorschau-status"></div></div>
-            <div><div class="stufe-label">Klasse 2</div><div class="vorschau" id="v2"></div><div class="vorschau-status"></div></div>
+            <div><div class="stufe-label">Klasse 2</div><div class="vorschau" id="v2"></div><div class="vorschau-status"></div></div>`}
             <div><div class="stufe-label s34">Klasse 3/4</div><div class="vorschau" id="v34"></div><div class="vorschau-status"></div></div>
         </div></div>`}`;
 
     if (!e.nur34) {
-        vorschauZeigen(document.getElementById("v1"), e, "1");
-        vorschauZeigen(document.getElementById("v2"), e, "2");
+        if (gemeinsam12()) vorschauZeigen(document.getElementById("v12"), e, "12");
+        else { vorschauZeigen(document.getElementById("v1"), e, "1"); vorschauZeigen(document.getElementById("v2"), e, "2"); }
     }
     vorschauZeigen(document.getElementById("v34"), e, "34");
     if (e.nur34) {
@@ -1324,6 +1360,13 @@ function aufgabeEditor(stufe, i, a, anzahl){
             spezial = `<label class="feld">Gefühle (eines pro Zeile)</label><textarea rows="3" data-pfad="${p}.gefuehle" data-art="liste">${esc((a.gefuehle || []).join("\n"))}</textarea>
                 <div class="ed-hilfe">Erkannt werden z. B. froh, traurig, wütend, ängstlich, ruhig, überrascht, stolz.</div>
                 <label class="ed-check"><input type="checkbox" data-pfad="${p}.leer" data-art="check" ${a.leer ? "checked" : ""}> leere Kreise – die Kinder malen das Gesicht selbst</label>`; break;
+        case "daumen":
+            spezial = `<label class="feld">Zeilen zum Vorlesen (eine pro Zeile)</label><textarea rows="4" data-pfad="${p}.zeilen" data-art="liste">${esc((a.zeilen || []).join("\n"))}</textarea>
+                <label class="feld">Zum Einkreisen</label><select data-pfad="${p}.art" style="width:auto"><option value="daumen" ${a.art !== "ampel" ? "selected" : ""}>👍 / 👎</option><option value="ampel" ${a.art === "ampel" ? "selected" : ""}>grün / rot</option></select>
+                <div class="ed-hilfe">Ohne Lesen: Du liest jede Zeile vor, die Kinder kreisen ein Zeichen ein.</div>`; break;
+        case "gefuehle":
+            spezial = `<label class="feld">Zeilen zum Vorlesen (eine pro Zeile)</label><textarea rows="4" data-pfad="${p}.zeilen" data-art="liste">${esc((a.zeilen || []).join("\n"))}</textarea>
+                <label class="feld">Gesichter (eines pro Zeile)</label><textarea rows="3" data-pfad="${p}.gefuehle" data-art="liste">${esc((a.gefuehle || ["froh", "traurig", "wütend", "ängstlich"]).join("\n"))}</textarea>`; break;
         case "malen":
             spezial = `<label class="feld">Bild zum Ausmalen</label><select data-pfad="${p}.bild">${Object.entries(BILDER).map(([k, v]) => `<option value="${k}" ${a.bild === k ? "selected" : ""}>${v}</option>`).join("")}</select>
                 <div class="ed-hilfe">Das Malfeld wächst automatisch und füllt den freien Platz der Seite.</div>`; break;
@@ -1336,7 +1379,7 @@ function aufgabeEditor(stufe, i, a, anzahl){
             <button class="btn klein" type="button" data-schieben="${stufe}|${i}|1" ${i === anzahl - 1 ? "disabled" : ""} title="nach unten"><i class="fa-solid fa-arrow-down"></i></button>
             <button class="btn klein rot" type="button" data-weg="${stufe}|${i}" title="entfernen"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        ${stufe === "12" ? `<label class="feld">Für</label><select data-pfad="${p}.nur" data-art="fuer" style="width:auto">
+        ${stufe === "12" && !gemeinsam12() ? `<label class="feld">Für</label><select data-pfad="${p}.nur" data-art="fuer" style="width:auto">
             ${[["", "Klasse 1 und 2"], ["1", "nur Klasse 1"], ["2", "nur Klasse 2 (z. B. Schreibaufgaben)"]].map(([k, v]) => `<option value="${k}" ${aufgabeFuer(a) === k ? "selected" : ""}>${v}</option>`).join("")}</select>` : ""}
         ${feld("Aufgabe (leer lassen = gehört zur vorherigen Aufgabe)", p + ".text", a.text)}
         ${spezial}
@@ -1347,7 +1390,8 @@ function standardAufgabe(typ){
         schreiben: { typ, text: "", zeilen: 3 }, luecken: { typ, text: "", saetze: ["___"], nummern: true },
         ankreuzen: { typ, text: "", optionen: [], nebeneinander: false }, zuordnen: { typ, text: "", links: [], rechts: [] },
         tabelle: { typ, text: "", spalten: ["", ""], zeilen: [["", ""]] }, gesichter: { typ, text: "", gefuehle: ["froh", "traurig", "wütend", "ängstlich"], leer: true },
-        malen: { typ, text: "", bild: "" }
+        malen: { typ, text: "", bild: "" },
+        daumen: { typ, text: "", zeilen: [], art: "daumen" }, gefuehle: { typ, text: "", zeilen: [], gefuehle: ["froh", "traurig", "wütend", "ängstlich"] }
     })[typ];
 }
 
@@ -1422,7 +1466,7 @@ function zeigeEditor(id, entwurfBehalten = false){
                     <div class="knopfleiste"><select id="neuTyp${s}" style="width:auto">${Object.entries(TYPEN).map(([k, v]) => `<option value="${k}">${v}</option>`).join("")}</select>
                     <button class="btn klein" type="button" data-plus="${s}"><i class="fa-solid fa-plus"></i> Aufgabe</button></div>
                 </div>
-                <div class="ed-ab-vorschau">${s === "12" ? '<div class="ed-umschalter"><button class="btn klein aktiv" type="button" data-vstufe="1">Vorschau Kl. 1</button><button class="btn klein" type="button" data-vstufe="2">Vorschau Kl. 2</button></div>' : ""}<div class="vorschau" id="edV${s}"></div><div class="vorschau-status"></div></div>
+                <div class="ed-ab-vorschau">${s === "12" && !gemeinsam12() ? '<div class="ed-umschalter"><button class="btn klein aktiv" type="button" data-vstufe="1">Vorschau Kl. 1</button><button class="btn klein" type="button" data-vstufe="2">Vorschau Kl. 2</button></div>' : ""}<div class="vorschau" id="edV${s}"></div><div class="vorschau-status"></div></div>
             </div></div>`).join("")}
 
         <div class="speicherleiste">
@@ -1460,7 +1504,7 @@ function zeigeEditor(id, entwurfBehalten = false){
         document.getElementById("edAufgaben" + s).innerHTML = liste.length ? liste.map((a, i) => aufgabeEditor(s, i, a, liste.length)).join("") : '<div class="leer">Noch keine Aufgaben.</div>';
     };
     const vorschauTimer = {};
-    let vorschauStufe = "1";
+    let vorschauStufe = gemeinsam12() ? "12" : "1";
     const vorschau = (s, sofort) => {
         clearTimeout(vorschauTimer[s]);
         vorschauTimer[s] = setTimeout(() => vorschauZeigen(document.getElementById("edV" + s), e, s === "12" ? vorschauStufe : s), sofort ? 0 : 250);

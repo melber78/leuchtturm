@@ -54,12 +54,38 @@ Jonas merkt: Die Wut war trotzdem da. Aber diesmal hat er entschieden, was passi
           text: "Die Tischnachbarn bekommen die Werkzeug-Kärtchen und legen zwei Häufchen: „Hilft mir und schadet keinem“ und „Macht es schlimmer“. Danach stellt jedes Paar ein Werkzeug vor, das es selbst ausprobieren will. Kl. 1/2 zeigen in derselben Zeit am Platz ihren Lieblings-Trick vor (z. B. Fäuste ganz fest drücken und wieder loslassen).",
           folie: "Ihr bekommt Werkzeug-Kärtchen. Legt zwei Häufchen:\n\n✅ **Hilft mir und schadet keinem**\n❌ **Macht es schlimmer**\n\nWelches Werkzeug willst du ausprobieren?" }
     ],
-    ab12: { titel: "Wenn ich wütend bin", aufgaben: [
-        { typ: "gesichter", text: "Male die Gesichter fertig: wütend und wieder ruhig.", gefuehle: ["wütend", "ruhig"], leer: true },
-        { typ: "ankreuzen", text: "Was hilft, wenn ich wütend bin? Kreuze an.", nebeneinander: false,
-          optionen: ["tief atmen", "bis 10 zählen", "jemanden hauen", "kurz weggehen", "es jemandem erzählen", "laut schreien und treten"] },
-        { typ: "malen", text: "Male deinen besten Wut-Trick.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Wenn ich wütend bin",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "gesichter",
+          "text": "Male die Gesichter fertig: wütend – und wieder ruhig.",
+          "gefuehle": [
+            "wütend",
+            "ruhig"
+          ],
+          "leer": true
+        },
+        {
+          "typ": "daumen",
+          "text": "Was hilft, wenn du wütend bist? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "tief atmen",
+            "bis 10 zählen",
+            "jemanden hauen",
+            "kurz weggehen",
+            "laut schreien und treten"
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male deinen besten Wut-Trick.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Mein Wut-Werkzeugkasten", aufgaben: [
         { typ: "luecken", text: "Meine Wut-Warnsignale: Woran merkst du, dass du wütend wirst?", nummern: false,
           saetze: ["In meinem Körper: ___", "In meinem Gesicht: ___", "In meinem Kopf denke ich: ___"] },
@@ -125,12 +151,38 @@ Am Ende sagt Finn: „Danke, Aylin. Das hat gutgetan.“
           folie12: "Der Teddy ist traurig. Er hat seinen besten Freund verloren. 🧸\n\nMal ihm eine **Trostkarte**.",
           folie34: "Der Teddy ist traurig. Er hat seinen besten Freund verloren. 🧸\n\nSchreib ihm eine **Trostkarte** mit zwei Sätzen." }
     ],
-    ab12: { titel: "Ich kann trösten", kontext: "Zur Geschichte: Emmas Luftballon fliegt weg und sie weint. Ben setzt sich zu ihr und tröstet sie.", aufgaben: [
-        { typ: "gesichter", text: "So fühlt sich Emma vorher – und nachher.", gefuehle: ["traurig", "froh"], leer: false },
-        { typ: "ankreuzen", text: "Was hilft, wenn jemand traurig ist? Kreuze an.", nebeneinander: false,
-          optionen: ["mich neben ihn setzen", "ihn auslachen", "ein Taschentuch geben", "einfach weglaufen", "fragen: „Was ist los?“"] },
-        { typ: "malen", text: "Male, wie du jemanden tröstest.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Ich kann trösten",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "gesichter",
+          "text": "So fühlt sich Emma vorher – und nachher. Male die Gesichter an.",
+          "gefuehle": [
+            "traurig",
+            "froh"
+          ],
+          "leer": false
+        },
+        {
+          "typ": "daumen",
+          "text": "Jemand ist traurig. Hilft das? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Ich setze mich daneben.",
+            "Ich lache.",
+            "Ich gebe ein Taschentuch.",
+            "Ich laufe weg.",
+            "Ich frage: „Was ist los?“"
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male, wie du jemanden tröstest.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Trösten – aber wie?", kontext: "Zur Geschichte: Finns Kaninchen Hoppel ist gestorben. Leon sagt: „Ist doch nur ein Kaninchen.“ Aylin setzt sich zu Finn und hört ihm zu.", aufgaben: [
         { typ: "tabelle", text: "Hilft der Satz einem traurigen Kind? Schreibe ja oder nein und warum.", spalten: ["Satz", "Hilft das? Warum?"],
           zeilen: [["„Ist doch nicht so schlimm!“", ""], ["„Ich bin für dich da.“", ""], ["„Hör auf zu weinen!“", ""], ["„Willst du erzählen, was passiert ist?“", ""]] },
@@ -195,12 +247,37 @@ Auf der Heimfahrt sagt Mila: „Mutig sein heißt nicht, keine Angst zu haben. M
           antworten: ["👍 Angst schützt mich", "👉 kleine Schritte probieren"],
           folie: "**Daumen hoch 👍** = Die Angst passt auf mich auf. Ich höre auf sie.\n\n**Daumen zur Seite 👉** = Die Angst ist zu laut. Ich probiere es in kleinen Schritten." }
     ],
-    ab12: { titel: "Was macht mir Mut?", aufgaben: [
-        { typ: "gesichter", text: "Male die Gesichter fertig: ängstlich – und wieder ruhig.", gefuehle: ["ängstlich", "ruhig"], leer: true },
-        { typ: "ankreuzen", text: "Was hilft mir gegen Angst? Kreuze an.", nebeneinander: true,
-          optionen: ["[bild:teddy] Kuscheltier", "[bild:lampe] Licht", "jemandem erzählen", "tief atmen", "Mama oder Papa", "___"] },
-        { typ: "malen", text: "Male: Davor hatte ich Angst – und dann war ich mutig.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Was macht mir Mut?",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "gesichter",
+          "text": "Male die Gesichter fertig: ängstlich – und wieder ruhig.",
+          "gefuehle": [
+            "ängstlich",
+            "ruhig"
+          ],
+          "leer": true
+        },
+        {
+          "typ": "ankreuzen",
+          "text": "Was hilft dir gegen Angst? Kreuze an.",
+          "optionen": [
+            "[bild:teddy] Kuscheltier",
+            "[bild:lampe] Licht",
+            "[bild:haus] Mama oder Papa",
+            "[bild:herz] tief atmen"
+          ],
+          "nebeneinander": true
+        },
+        {
+          "typ": "malen",
+          "text": "Male: Davor hatte ich Angst – und dann war ich mutig.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Mutig mit meiner Angst", aufgaben: [
         { typ: "tabelle", text: "Schützt mich die Angst (S) oder ist sie zu laut (L)? Kreuze die richtige Spalte an.", spalten: ["Situation", "S", "L"],
           zeilen: [["Ein fremder Hund knurrt mich an.", "", ""], ["Ich soll vor der Klasse sprechen.", "", ""], ["Die Herdplatte ist rot.", "", ""], ["Ich spreche ein neues Kind an.", "", ""], ["Ich will bei Rot über die Straße.", "", ""]] },
@@ -260,14 +337,38 @@ Am Nachmittag erzählt die Lehrerin der Klasse, dass Tims Opa krank ist. Lara wi
           frage: "Setz die Brille auf: Was fühlt und denkt die andere Person?",
           folie: "Wer die **Perspektiv-Brille** 👓 aufsetzt, schlüpft in eine andere Person.\n\nErzähl in der Ich-Form: **„Ich fühle mich … Ich denke …“**" }
     ],
-    ab12: { titel: "Wie geht es dir?", kontext: "Zur Geschichte: Ella stößt aus Versehen Lios Turm um. Lio ist traurig – Ella hilft ihm, den Turm wieder aufzubauen.", aufgaben: [
-        { typ: "zuordnen", text: "Wie fühlt sich das Kind? Verbinde.",
-          links: ["Paul ist hingefallen.", "Mia hat Geburtstag.", "Ben wird ausgelacht.", "Ein Hund bellt Lea an."],
-          rechts: ["ängstlich", "traurig", "wütend", "froh"] },
-        { typ: "ankreuzen", text: "Lio ist traurig. Was kannst du tun? Kreuze an.", nebeneinander: false,
-          optionen: ["Ich frage: „Was ist los?“", "Ich lache.", "Ich helfe ihm.", "Ich setze mich zu ihm."] },
-        { typ: "malen", text: "Male, wie Ella und Lio zusammen den Turm bauen.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Wie geht es dir?",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "gefuehle",
+          "text": "Wie fühlt sich das Kind? Kreise ein Gesicht ein.",
+          "zeilen": [
+            "Paul ist hingefallen.",
+            "Mia hat Geburtstag.",
+            "Ben wird ausgelacht.",
+            "Ein Hund bellt Lea an."
+          ]
+        },
+        {
+          "typ": "daumen",
+          "text": "Lio ist traurig. Was machst du? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Ich frage: „Was ist los?“",
+            "Ich lache.",
+            "Ich helfe ihm.",
+            "Ich setze mich zu ihm."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male, wie Ella und Lio zusammen den Turm bauen.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Mit anderen Augen sehen", aufgaben: [
         { typ: "luecken", text: "Versetze dich in die Person: Was fühlt und denkt sie?", nummern: true,
           saetze: ["Paula wird beim Fußball als Letzte gewählt.\nSie fühlt sich ___, weil ___.\nSie denkt: „___“",
@@ -330,12 +431,34 @@ Später fragt Lukas: „War ich jetzt eine Petze?“ Die Lehrerin schüttelt den
           text: "Einzelne Kinder stehen an ihrem Platz auf und sagen den Hilfe-Satz laut zur Klasse: „Frau/Herr …, ich brauche Hilfe! … ist … passiert.“ Laut, deutlich, Blick nach vorn. Die anderen zeigen Daumen hoch, wenn man es gut verstehen konnte.",
           folie: "Steh auf und sag laut und deutlich:\n\n**„Frau/Herr …, ich brauche Hilfe! … ist … passiert.“**\n\nDie anderen: 👍 wenn man es gut verstanden hat." }
     ],
-    ab12: { titel: "Hilfe holen", aufgaben: [
-        { typ: "tabelle", text: "Hilfe holen oder nicht? Male das Kästchen rot (Hilfe holen) oder grün (nicht nötig).", spalten: ["Was passiert?", "rot / grün"],
-          zeilen: [["Ein Kind blutet.", "☐"], ["Mein Stift ist runtergefallen.", "☐"], ["Ein Kind wird gehauen.", "☐"], ["Tom hat einen roten Stift.", "☐"]] },
-        { typ: "luecken", text: "Merke: Gefahr oder Weh – dann hole ich Hilfe!", nummern: false, saetze: ["In der Schule hole ich Hilfe bei: ___"] },
-        { typ: "malen", text: "Male die Ampel an: Rot heißt „Stopp – Hilfe holen!“", bild: "ampel" }
-    ]},
+    ab12: {
+      "titel": "Hilfe holen",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Muss ich Hilfe holen? Kreise ein: grün = ja, rot = nein.",
+          "zeilen": [
+            "Ein Kind blutet.",
+            "Mein Stift ist runtergefallen.",
+            "Ein Kind wird gehauen.",
+            "Tom hat einen roten Stift.",
+            "Ein Kind steht auf dem Fensterbrett."
+          ],
+          "art": "ampel"
+        },
+        {
+          "typ": "malen",
+          "text": "Male die Ampel an: Rot heißt „Stopp – Hilfe holen!“",
+          "bild": "ampel"
+        },
+        {
+          "typ": "malen",
+          "text": "Male: Bei wem holst du in der Schule Hilfe?",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Petzen oder Hilfe holen?", aufgaben: [
         { typ: "tabelle", text: "Petzen (P) oder Hilfe holen (H)? Kreuze die richtige Spalte an.", spalten: ["Situation", "P", "H"],
           zeilen: [["Ich erzähle, dass Ali beim Diktat abgeschrieben hat.", "", ""], ["Ich sage, dass ein Kind auf der Toilette eingesperrt ist.", "", ""], ["Ich melde, dass Lena ihr Pausenbrot nicht isst.", "", ""], ["Ich erzähle, dass ein Kind seit Wochen bedroht wird.", "", ""], ["Ich sage, dass Paul gerannt ist.", "", ""]] },
@@ -401,12 +524,37 @@ Eine Woche später setzt Merve sich in der Pause wieder neben Nora.
           text: "Sammelt an der Tafel, wie man etwas wieder gutmachen kann: helfen, ersetzen, etwas Nettes tun, den anderen verteidigen, eine Karte schreiben.",
           folie: "Ein „Sorry“ ist gut – aber wie kann man es **wieder gutmachen**? 🔧\n\nSammelt Ideen." }
     ],
-    ab12: { titel: "Es tut mir leid", kontext: "Zur Geschichte: Sam kippt aus Versehen Malwasser über Leas Bild. Erst murmelt er nur „’Tschuldigung“ – dann entschuldigt er sich richtig.", aufgaben: [
-        { typ: "ankreuzen", text: "Eine gute Entschuldigung … Kreuze an.", nebeneinander: false,
-          optionen: ["schaut den anderen an.", "ist ehrlich gemeint.", "wird genervt gesagt.", "sagt, was passiert ist.", "macht etwas wieder gut."] },
-        { typ: "luecken", text: "Sam entschuldigt sich bei Lea. Was sagt er?", nummern: false, saetze: ["„Es tut mir leid, dass ___.“"] },
-        { typ: "malen", text: "Male, wie Sam es wieder gutmacht.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Es tut mir leid",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Ist das eine gute Entschuldigung? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Ich schaue den anderen an.",
+            "Ich sage es genervt.",
+            "Ich sage, was passiert ist.",
+            "Ich mache es wieder gut."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "gesichter",
+          "text": "So fühlt sich Lea vorher – und nachher. Male die Gesichter an.",
+          "gefuehle": [
+            "traurig",
+            "froh"
+          ],
+          "leer": false
+        },
+        {
+          "typ": "malen",
+          "text": "Male, wie Sam es wieder gutmacht.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Die Entschuldigungs-Treppe", aufgaben: [
         { typ: "luecken", text: "Du hast aus Versehen die Federmappe deines Tischnachbarn kaputt gemacht. Schreibe deine Entschuldigung in vier Stufen.", nummern: true,
           saetze: ["Was ich getan habe: ___", "Dass es falsch war: ___", "Wie du dich fühlst: ___", "Wie ich es wieder gutmache: ___"] },
@@ -467,14 +615,28 @@ Am Ende stimmen alle 22 Kinder dafür. Niemand hat alles bekommen, was er wollte
           text: "Die anderen prüfen jede vorgestellte Lösung mit dem Daumen: Bekommen beide etwas? Fühlt sich keiner übergangen? Dann Daumen hoch.",
           folie: "Ist die Lösung fair?\n\n✔️ Bekommen beide etwas?\n✔️ Fühlt sich keiner übergangen?\n\nDann Daumen hoch 👍" }
     ],
-    ab12: { titel: "Beide bekommen etwas", kontext: "Zur Geschichte: Zwei Ziegen treffen sich auf einer schmalen Brücke. Die einen streiten und fallen ins Wasser. Die anderen finden eine Lösung: Eine legt sich hin, die andere steigt drüber.", aufgaben: [
-        { typ: "ankreuzen", text: "Lea und Ben wollen beide das rote Auto. Was ist fair? Kreuze an.", nebeneinander: false,
-          optionen: ["Lea nimmt es einfach weg.", "Sie spielen abwechselnd.", "Ben schreit, bis er es bekommt.", "Sie spielen zusammen damit."] },
-        { typ: "zuordnen", nur: "2", text: "Welche Lösung passt? Verbinde.",
-          links: ["Beide wollen schaukeln.", "Es gibt nur einen Keks.", "Beide wollen das Buch lesen."],
-          rechts: ["Wir teilen ihn.", "Wir lesen zusammen.", "Jeder schaukelt bis 20."] },
-        { typ: "malen", text: "Male die zwei Ziegen, die gut über die Brücke kommen.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Beide bekommen etwas",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Lea und Ben wollen beide das rote Auto. Ist das fair? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Lea nimmt es einfach weg.",
+            "Sie spielen abwechselnd.",
+            "Ben schreit, bis er es bekommt.",
+            "Sie spielen zusammen damit."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male die zwei Ziegen, die gut über die Brücke kommen.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Kompromisse finden", aufgaben: [
         { typ: "tabelle", text: "Finde für jeden Streit einen Kompromiss.", spalten: ["Streit", "Kompromiss"],
           zeilen: [["Leo will Fußball spielen, Kim lieber Fangen.", ""], ["Beide Geschwister wollen den Fernseher.", ""], ["Zwei Kinder wollen das Klassenamt „Tafeldienst“.", ""]] },
@@ -538,12 +700,33 @@ Elias merkt: Nein sagen war schwer. Aber hinterher fühlt er sich stark.
           text: "Sammelt an der Tafel verschiedene Arten, Nein zu sagen: „Nein, das will ich nicht.“ – „Ohne mich.“ – „Da mache ich nicht mit.“ – „Ich hab keine Lust darauf, lass uns lieber …“ Jedes Kind wählt seinen Lieblingssatz und sagt ihn laut vom Platz.",
           folie: "Es gibt viele Arten, **Nein** zu sagen.\n\nWelcher Satz passt zu dir? Sag ihn laut." }
     ],
-    ab12: { titel: "Ich darf Nein sagen", aufgaben: [
-        { typ: "ankreuzen", text: "Wann ist ein Nein wichtig? Kreuze an.", nebeneinander: false,
-          optionen: ["Jemand kitzelt mich, und ich mag das nicht mehr.", "Ein Fremder will, dass ich mitkomme.", "Jemand will mir etwas wegnehmen.", "Meine Freundin sagt: „Hallo!“"] },
-        { typ: "malen", text: "Schreibe NEIN in die Sprechblase (von der Tafel abschreiben) und male sie bunt an.", bild: "sprechblase" },
-        { typ: "ankreuzen", text: "So sage ich Nein:", nebeneinander: true, optionen: ["laut", "leise", "mit Blick", "mit Hand"] }
-    ]},
+    ab12: {
+      "titel": "Ich darf Nein sagen",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Darfst du hier Nein sagen? Kreise ein: grün = ja, rot = nein.",
+          "zeilen": [
+            "Jemand kitzelt mich, und ich mag das nicht mehr.",
+            "Ein Fremder will, dass ich mitkomme.",
+            "Jemand will mir etwas wegnehmen.",
+            "Meine Freundin sagt: „Hallo!“"
+          ],
+          "art": "ampel"
+        },
+        {
+          "typ": "malen",
+          "text": "Male die Sprechblase bunt an. Sag dabei laut: „NEIN!“",
+          "bild": "sprechblase"
+        },
+        {
+          "typ": "malen",
+          "text": "Male dich, wie du stark Nein sagst.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Nein sagen – auch wenn's schwer ist", aufgaben: [
         { typ: "luecken", text: "Woran merkst du, dass du Nein sagen möchtest?", nummern: false,
           saetze: ["In meinem Bauch: ___", "In meinen Gedanken: ___"] },

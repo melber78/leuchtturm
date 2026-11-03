@@ -850,7 +850,7 @@ async function pptxExport(e, stufe = "12"){
                 await bilderSetzen(s, ["stift", "heft"], .8, 1.4);
                 s.addText("Bearbeite jetzt leise dein Arbeitsblatt.", { x: .5, y: 2.4, w: W - 1, h: 1.2, align: "center", fontFace: FONT, fontSize: 44, bold: true, color: NACHT });
                 s.addText("Wenn du fertig bist, drehst du dein Blatt um und wartest leise.", { x: 1, y: 3.8, w: W - 2, h: 1, align: "center", fontFace: TEXT, fontSize: 24, color: MEER });
-                s.addNotes(e.nur34 ? "Arbeitsphase ca. 10 Minuten." : "Arbeitsphase ca. 10 Minuten. Klasse 1 bekommt die Vorlese-Fassung: Aufgaben und Antworten vorlesen, die Farbsymbole zeigen die Zeile.");
+                s.addNotes(e.nur34 ? "Arbeitsphase ca. 10 Minuten." : "Arbeitsphase ca. 10 Minuten. Kl. 1/2: jede Aufgabe und jede Zeile vorlesen, die Farbsymbole zeigen die Zeile.");
                 break;
             case "abschluss":
                 s.background = { color: NACHT };

@@ -51,12 +51,37 @@ Die Mädchen beschließen eine neue Club-Regel: **Jede, die mitmachen will, darf
           text: "Die Kinder sammeln vom Platz aus Spiele, bei denen beliebig viele mitmachen können (Fangen, Seilspringen mit langem Seil, Ochs am Berg …) und eine Regel für die Klasse: „Wer fragt, darf mitmachen.“",
           folie: "Welche Spiele gehen mit **ganz vielen** Kindern?\n\nUnd unsere Regel: **„Wer fragt, darf mitmachen.“**" }
     ],
-    ab12: { titel: "Komm, spiel mit!", kontext: "Zur Geschichte: Der kleine Hase darf beim Ballspiel nicht mitmachen und sitzt allein unter einem Baum. Am Ende spielen alle zusammen.", aufgaben: [
-        { typ: "gesichter", text: "Male: So fühlt sich der Hase allein – und so beim Mitspielen.", gefuehle: ["traurig", "froh"], leer: true },
-        { typ: "ankreuzen", text: "Ein Kind steht allein. Was machst du? Kreuze an.", nebeneinander: false,
-          optionen: ["Ich frage: „Willst du mitspielen?“", "Ich lache es aus.", "Ich gehe einfach weiter.", "Ich erkläre ihm unser Spiel."] },
-        { typ: "malen", text: "Male ein Spiel, bei dem alle mitmachen können.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Komm, spiel mit!",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "gesichter",
+          "text": "Male: So fühlt sich der Hase allein – und so beim Mitspielen.",
+          "gefuehle": [
+            "traurig",
+            "froh"
+          ],
+          "leer": true
+        },
+        {
+          "typ": "daumen",
+          "text": "Ein Kind steht allein. Was machst du? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Ich frage: „Willst du mitspielen?“",
+            "Ich lache es aus.",
+            "Ich gehe einfach weiter.",
+            "Ich erkläre ihm unser Spiel."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male ein Spiel, bei dem alle mitmachen können.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Niemand bleibt draußen", kontext: "Zur Geschichte: Maya darf nicht in den „Club der Sterne“ und steht jede Pause allein am Rand. Lisa setzt sich für sie ein.", aufgaben: [
         { typ: "luecken", text: "Versetze dich in Maya.", nummern: false,
           saetze: ["Maya fühlt sich ___", "Sie denkt: „___“"] },
@@ -113,12 +138,37 @@ Am Nachmittag will Ben Miras Notizbuch anschauen. „Wir teilen doch alles!“, 
           text: "Die Kinder überlegen vom Platz aus: Wie teilt man sieben Muffins gerecht auf acht Kinder auf? Sammelt mindestens drei Ideen und bewertet sie mit Daumen.",
           folie: "**7 Muffins** 🧁 – aber **8 Kinder**.\n\nWie kann man gerecht teilen? Sammelt mindestens drei Ideen." }
     ],
-    ab12: { titel: "Teilen macht froh", aufgaben: [
-        { typ: "ankreuzen", text: "Was kann man gut teilen? Kreuze an.", nebeneinander: true,
-          optionen: ["[bild:wachsmal] Buntstifte", "[bild:zahnbuerste] Zahnbürste", "[bild:teddy] Spielzeug", "[bild:keks] Kekse", "[bild:fussball] Ball", "Taschentuch"] },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Ich habe schon einmal geteilt mit: ___"] },
-        { typ: "malen", text: "Male, was du gern mit anderen teilst.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Teilen macht froh",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "ankreuzen",
+          "text": "Was kann man gut teilen? Kreuze an.",
+          "optionen": [
+            "[bild:wachsmal] Buntstifte",
+            "[bild:zahnbuerste] Zahnbürste",
+            "[bild:teddy] Spielzeug",
+            "[bild:keks] Kekse",
+            "[bild:fussball] Ball"
+          ],
+          "nebeneinander": true
+        },
+        {
+          "typ": "gesichter",
+          "text": "So fühlt sich Nele, als Mats teilt. Male das Gesicht an.",
+          "gefuehle": [
+            "froh"
+          ],
+          "leer": false
+        },
+        {
+          "typ": "malen",
+          "text": "Male, was du gern mit anderen teilst.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Gerecht teilen", aufgaben: [
         { typ: "luecken", text: "Sieben Muffins für acht Kinder: Schreibe zwei gerechte Lösungen.", nummern: true, saetze: ["___", "___"] },
         { typ: "tabelle", text: "Muss ich das teilen? Schreibe ja, nein oder kommt drauf an – und warum.", spalten: ["Was?", "Teilen? Warum?"],
@@ -180,12 +230,33 @@ Nach zwei Wochen besucht Jakob Ole zu Hause. Und beim Fußball ist er inzwischen
           text: "Sammelt an der Tafel gute erste Fragen: „Was spielst du gern?“ – „Hast du ein Haustier?“ – „Was ist dein Lieblingsessen?“ – „Wo wohnst du?“ Welche Fragen sind gut, welche eher unangenehm (z. B. „Warum bist du so klein?“)?",
           folie: "Was kann man fragen, wenn man jemanden **kennenlernen** will?\n\nWelche Fragen sind gut – welche eher unangenehm?" }
     ],
-    ab12: { titel: "Hallo, ich bin …", aufgaben: [
-        { typ: "luecken", text: "Stell dich vor.", nummern: false, saetze: ["Ich heiße ___.", "Ich mag ___."] },
-        { typ: "ankreuzen", text: "So finde ich neue Freunde. Kreuze an.", nebeneinander: false,
-          optionen: ["lächeln", "„Hallo“ sagen", "fragen: „Spielst du mit?“", "schubsen", "etwas über mich erzählen"] },
-        { typ: "malen", text: "Male dich und ein Kind, das du kennenlernen möchtest.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Hallo, ich bin …",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "malen",
+          "text": "Male dich. Was magst du gern? Male es dazu.",
+          "bild": ""
+        },
+        {
+          "typ": "daumen",
+          "text": "So findest du neue Freunde. Ist das gut? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "lächeln",
+            "„Hallo“ sagen",
+            "fragen: „Spielst du mit?“",
+            "schubsen"
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male dich und ein Kind, das du kennenlernen möchtest.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Wir haben etwas gemeinsam", aufgaben: [
         { typ: "tabelle", text: "Frage deinen Tischnachbarn. Kreuze an, was ihr gemeinsam habt.", spalten: ["Meine Frage", "Seine/ihre Antwort", "gleich?"],
           zeilen: [["Lieblingsessen?", "", "☐"], ["Lieblingstier?", "", "☐"], ["Hobby?", "", "☐"], ["___", "", "☐"]] },
@@ -245,14 +316,34 @@ Dann klingelt ihr Wecker – es war nur ein Traum! Beim Frühstück sagt ihr Bru
           text: "Welche höflichen Wörter und Gesten passen? Im Bus, wenn eine ältere Person einsteigt – beim Arzt – am Telefon mit Oma – wenn ich jemanden nicht verstanden habe („Wie bitte?“ statt „Hä?“). Die Kinder sammeln vom Platz aus.",
           folie: "Welche höflichen Wörter passen hier?\n\n🚌 im Bus · 🩺 beim Arzt · 📞 am Telefon mit Oma · 🤔 wenn ich jemanden nicht verstanden habe" }
     ],
-    ab12: { titel: "Meine Zauberwörter", aufgaben: [
-        { typ: "zuordnen", nur: "2", text: "Was sagst du? Verbinde.",
-          links: ["Ich möchte etwas haben.", "Ich bekomme etwas.", "Ich komme in die Klasse.", "Ich habe jemanden angerempelt."],
-          rechts: ["Hallo!", "Entschuldigung!", "Bitte!", "Danke!"] },
-        { typ: "ankreuzen", nur: "1", text: "Du bekommst ein Geschenk. Was sagst du? Kreuze an.", nebeneinander: false, optionen: ["[bild:geschenk] Danke!", "Weg da!", "Gib her!"] },
-        { typ: "malen", text: "Male den Stern an. Sag deinem Nachbarn dein Lieblings-Zauberwort.", bild: "stern" },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Mein Lieblings-Zauberwort: ___"] }
-    ]},
+    ab12: {
+      "titel": "Meine Zauberwörter",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Ist das höflich? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "„Bitte!“",
+            "„Gib her!“",
+            "„Danke!“",
+            "„Weg da!“",
+            "„Hallo!“"
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male den Stern an. Sag deinem Nachbarn dein Lieblings-Zauberwort.",
+          "bild": "stern"
+        },
+        {
+          "typ": "malen",
+          "text": "Male: Wem sagst du heute „Danke“?",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Höflich sein wirkt", aufgaben: [
         { typ: "tabelle", text: "Mach es höflich: Schreibe den Satz freundlich auf.", spalten: ["Unhöflich", "Höflich"],
           zeilen: [["„Gib mir das Salz!“", ""], ["„Hä? Was?“", ""], ["„Weg da!“", ""], ["„Ich will jetzt dran!“", ""]] },
@@ -309,12 +400,33 @@ Am Abend klingeln Selma und Deniz bei Herrn Schulze. Deniz erklärt mit roten Oh
           antworten: ["🙋 Das bin ich", "👉 jemand anderes"],
           folie: "Wer ist dafür verantwortlich?\n\n🙋 Hand auf die Brust = **Das bin ich.**\n👉 nach außen zeigen = **jemand anderes.**" }
     ],
-    ab12: { titel: "Ich kümmere mich", aufgaben: [
-        { typ: "ankreuzen", text: "Wofür bist du zu Hause verantwortlich? Kreuze an.", nebeneinander: true,
-          optionen: ["[bild:besen] Zimmer aufräumen", "[bild:loeffel] Tisch decken", "[bild:hamster] Haustier füttern", "[bild:rucksack] Ranzen packen", "___"] },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Mein Dienst im Sozialtraining: ___"] },
-        { typ: "malen", text: "Male, wie du deinen Dienst erledigst.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Ich kümmere mich",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "ankreuzen",
+          "text": "Was machst du zu Hause? Kreuze an.",
+          "optionen": [
+            "[bild:besen] aufräumen",
+            "[bild:loeffel] Tisch decken",
+            "[bild:hamster] Tier füttern",
+            "[bild:rucksack] Ranzen packen"
+          ],
+          "nebeneinander": true
+        },
+        {
+          "typ": "malen",
+          "text": "Male Fridolin, die Klassenpflanze.",
+          "bild": ""
+        },
+        {
+          "typ": "malen",
+          "text": "Male, wie du deinen Dienst machst.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Ich stehe dazu", kontext: "Zur Geschichte: Beim Fußball schießt Deniz ein Kellerfenster kaputt, alle rennen weg. Selma überredet Deniz, es Herrn Schulze zu sagen – und geht mit.", aufgaben: [
         { typ: "luecken", text: "Was hat Selma getan? Was hätte sie noch tun können?", nummern: false,
           saetze: ["Selma hat ___", "Sie hätte auch ___"] },
@@ -372,11 +484,29 @@ Die Viertklässler murren erst. Aber am Donnerstag merken sie: In gemischten Tea
           folie12: "Wo gibt es in der Pause **Streit**? 🛝⚽\n\nErzähl – und mal ein Bild für unser Plakat.",
           folie34: "Wo gibt es in der Pause **Streit**? 🛝⚽\n\nErzähl – und schlag eine **faire Regel** vor." }
     ],
-    ab12: { titel: "Fair in der Pause", aufgaben: [
-        { typ: "ankreuzen", text: "Was ist fair? Kreuze an.", nebeneinander: false,
-          optionen: ["Ich stelle mich an.", "Ich drängle mich vor.", "Ich lasse andere mitspielen.", "Ich nehme den Ball weg.", "Ich warte, bis ich dran bin."] },
-        { typ: "malen", text: "Male dein Lieblingsspiel in der Pause.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Fair in der Pause",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Ist das fair? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Ich stelle mich an.",
+            "Ich drängle mich vor.",
+            "Ich lasse andere mitspielen.",
+            "Ich nehme den Ball weg.",
+            "Ich warte, bis ich dran bin."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male dein Lieblingsspiel in der Pause.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Faire Pause für alle", aufgaben: [
         { typ: "luecken", text: "Worüber gibt es in eurer Pause Streit?", nummern: true, saetze: ["___", "___"] },
         { typ: "tabelle", text: "Erfinde eine faire Regel.", spalten: ["Problem", "Faire Regel"],

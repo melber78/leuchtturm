@@ -148,15 +148,36 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
           folie: "Hör gut zu. Wie fühlt sich das Kind?\n\nZeig auf das Gefühl am Barometer und sag: **„Ich glaube, … fühlt sich …, weil …“**" }
     ],
     ab12: {
-        titel: "Wie fühlt sich das an?",
-        aufgaben: [
-            { typ: "gesichter", text: "Male die Gesichter fertig.", gefuehle: ["froh", "traurig", "wütend", "ängstlich"], leer: true },
-            { typ: "zuordnen", text: "Wie fühlt sich das Kind? Verbinde.",
-              links: ["Das Kind bekommt ein Geschenk.", "Das Eis fällt auf den Boden.", "Jemand nimmt das Spielzeug weg.", "Es donnert ganz laut."],
-              rechts: ["traurig", "froh", "ängstlich", "wütend"] },
-            { typ: "ankreuzen", text: "Heute fühle ich mich:", optionen: ["froh", "traurig", "wütend", "ängstlich", "ruhig"], nebeneinander: true },
-            { typ: "malen", text: "Male dich: So sehe ich aus, wenn ich froh bin.", bild: "" }
-        ]
+      "titel": "Wie fühlt sich das an?",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "gesichter",
+          "text": "Male die Gesichter fertig.",
+          "gefuehle": [
+            "froh",
+            "traurig",
+            "wütend",
+            "ängstlich"
+          ],
+          "leer": true
+        },
+        {
+          "typ": "gefuehle",
+          "text": "Wie fühlt sich das Kind? Kreise ein Gesicht ein.",
+          "zeilen": [
+            "Das Kind bekommt ein Geschenk.",
+            "Das Eis fällt auf den Boden.",
+            "Jemand nimmt das Spielzeug weg.",
+            "Es donnert ganz laut."
+          ]
+        },
+        {
+          "typ": "malen",
+          "text": "Male dich: So sehe ich aus, wenn ich froh bin.",
+          "bild": ""
+        }
+      ]
     },
     ab34: {
         titel: "Gefühle verstehen",
@@ -254,17 +275,31 @@ Hanna fragt: „Was könnte eine Lösung sein, mit der ihr beide zufrieden seid?
           folie: "Gleich siehst du einen **Du-Satz**. Der macht Streit.\n\nMach daraus eine **Ich-Botschaft**:\n„Ich fühle mich …, weil … Ich wünsche mir, dass …“" }
     ],
     ab12: {
-        titel: "Stopp – so geht's!",
-        aufgaben: [
-            { typ: "malen", text: "Male das Stopp-Schild rot an.", bild: "stopp" },
-            { typ: "ankreuzen", text: "Jemand nimmt mir mein Spielzeug weg. Was ist gut? Kreuze an.", nebeneinander: false,
-              optionen: ["Ich haue zurück.", "Ich sage laut: „Stopp! Das will ich nicht!“", "Ich schreie ein böses Wort.", "Ich hole Hilfe bei einem Erwachsenen."] },
-            { typ: "luecken", text: "Wer kann mir helfen? Schreibe oder male.", nummern: false,
-              saetze: ["In der Schule hilft mir: ___", "Zu Hause hilft mir: ___"] },
-            { typ: "zuordnen", nur: "2", text: "Was passiert dann? Verbinde.",
-              links: ["Ich sage Stopp.", "Ich hole Hilfe.", "Wir finden eine Lösung."],
-              rechts: ["Wir vertragen uns.", "Der andere hört auf.", "Ein Erwachsener kommt."] }
-        ]
+      "titel": "Stopp – so geht's!",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "malen",
+          "text": "Male das Stopp-Schild rot an.",
+          "bild": "stopp"
+        },
+        {
+          "typ": "daumen",
+          "text": "Jemand nimmt dir das Spielzeug weg. Ist das gut? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Ich haue zurück.",
+            "Ich sage laut: „Stopp!“",
+            "Ich schreie ein böses Wort.",
+            "Ich hole Hilfe."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male: Wer hilft dir in der Schule?",
+          "bild": ""
+        }
+      ]
     },
     ab34: {
         titel: "Mit Worten statt mit Fäusten",
@@ -354,16 +389,38 @@ Ida schweigt kurz. Dann sagt sie: „Ich war richtig traurig. Aber ich finde gut
           folie34: "Zieh einen Namenszettel. Verrate den Namen nicht!\n\nSchreib diesem Kind ein Kompliment: **„Ich finde toll, dass du …“** 📬 Danach kommt die Post." }
     ],
     ab12: {
-        titel: "Was macht ein guter Freund?",
-        aufgaben: [
-            { typ: "ankreuzen", text: "Ein guter Freund … Kreuze an.", nebeneinander: false,
-              optionen: ["hilft mir.", "lacht mich aus.", "teilt mit mir.", "tröstet mich.", "nimmt mir etwas weg.", "spielt mit mir."] },
-            { typ: "malen", text: "Male deinen Freund oder deine Freundin.", bild: "" },
-            { typ: "luecken", text: "", nummern: false, saetze: ["Mein Freund / meine Freundin heißt: ___"] },
-            { typ: "ankreuzen", text: "Was macht ihr gern zusammen?", nebeneinander: true,
-              optionen: ["[bild:wuerfel] spielen", "[bild:pinsel] malen", "[gesicht:froh] lachen", "[bild:fussball] Fußball", "[bild:buch] lesen", "___"] },
-            { typ: "luecken", text: "Ich bin ein guter Freund, weil ich …", nummern: false, saetze: ["___"] }
-        ]
+      "titel": "Was macht ein guter Freund?",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Macht das ein guter Freund? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Er hilft mir.",
+            "Er lacht mich aus.",
+            "Er teilt mit mir.",
+            "Er nimmt mir etwas weg.",
+            "Er spielt mit mir."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "ankreuzen",
+          "text": "Was macht ihr gern zusammen? Kreuze an.",
+          "optionen": [
+            "[bild:wuerfel] spielen",
+            "[bild:pinsel] malen",
+            "[bild:fussball] Fußball",
+            "[bild:buch] lesen"
+          ],
+          "nebeneinander": true
+        },
+        {
+          "typ": "malen",
+          "text": "Male dich und deinen Freund oder deine Freundin.",
+          "bild": ""
+        }
+      ]
     },
     ab34: {
         titel: "Unser Freundschafts-Rezept",
@@ -450,17 +507,31 @@ Nach einer Woche klappt das Inselleben richtig gut. Moritz sagt: „Komisch – 
           folie34: "Welche Regel hilft, dass es uns hier gut geht?\n\nSchreib deine Regel auf einen Zettel – so: **„Wir …“** (nicht: „Nicht …“). Danach stimmen wir ab. ✋" }
     ],
     ab12: {
-        titel: "Regeln im Alltag",
-        aufgaben: [
-            { typ: "zuordnen", text: "Wo gilt welche Regel? Verbinde.",
-              links: ["Bei Rot bleibe ich stehen.", "Ich melde mich, wenn ich etwas sagen will.", "Ich räume mein Zimmer auf."],
-              rechts: ["[bild:haus] zu Hause", "[bild:auto] Straße", "[bild:rucksack] Schule"] },
-            { typ: "tabelle", text: "Richtig oder falsch? Male den Daumen hoch oder runter.",
-              spalten: ["Was passiert?", "Daumen"],
-              zeilen: [["Ich warte, bis ich dran bin.", ""], ["Ich drängle mich vor.", ""], ["Ich sage bitte und danke.", ""], ["Ich werfe Müll auf den Boden.", ""]] },
-            { typ: "malen", text: "Meine wichtigste Regel: Male sie.", bild: "" },
-            { typ: "luecken", text: "", nummern: false, saetze: ["Meine Regel: ___"] }
-        ]
+      "titel": "Regeln helfen uns",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Ist das gut? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Ich warte, bis ich dran bin.",
+            "Ich drängle mich vor.",
+            "Ich sage bitte und danke.",
+            "Ich werfe Müll auf den Boden."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male die Ampel an: oben rot, unten grün.",
+          "bild": "ampel"
+        },
+        {
+          "typ": "malen",
+          "text": "Male deine wichtigste Regel.",
+          "bild": ""
+        }
+      ]
     },
     ab34: {
         titel: "Regeln prüfen und erfinden",

@@ -52,12 +52,30 @@ Oskar klebt die Zettel zu Hause über seinen Schreibtisch.
           text: "Ein Kind bleibt an seinem Platz sitzen und schließt die Augen (wenn es mag). Die anderen „duschen“ es mit Stärken: „Du kannst …“ – „Ich finde toll, dass du …“ Du schreibst die Stärken auf eine Karte, die das Kind behalten darf. Pro Stunde schafft ihr etwa 3–4 Kinder. Regel: Nur ehrliche, nette Sätze – keine Witze.",
           folie: "Ein Kind bekommt eine **Stärken-Dusche** 🚿.\n\nDie anderen sagen: **„Du kannst …“** oder **„Ich finde toll, dass du …“**\n\nNur ehrliche, nette Sätze!" }
     ],
-    ab12: { titel: "Das kann ich gut", aufgaben: [
-        { typ: "ankreuzen", text: "Ich kann gut … Kreuze an.", nebeneinander: true,
-          optionen: ["[bild:pinsel] malen", "[bild:turnschuh] rennen", "helfen", "[gesicht:froh] lachen", "zuhören", "[bild:hammer] bauen", "[bild:gitarre] singen", "___"] },
-        { typ: "malen", text: "Male etwas, das du richtig gut kannst.", bild: "" },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Ich bin stolz, dass ich ___ kann."] }
-    ]},
+    ab12: {
+      "titel": "Das kann ich gut",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "ankreuzen",
+          "text": "Ich kann gut … Kreuze an.",
+          "optionen": [
+            "[bild:pinsel] malen",
+            "[bild:turnschuh] rennen",
+            "[bild:hammer] bauen",
+            "[bild:gitarre] singen",
+            "[bild:fussball] Fußball",
+            "[bild:buch] zuhören"
+          ],
+          "nebeneinander": true
+        },
+        {
+          "typ": "malen",
+          "text": "Male etwas, das du richtig gut kannst.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Meine Stärken-Schatzkiste", aufgaben: [
         { typ: "luecken", text: "Drei Stärken von mir – und woran man sie erkennt:", nummern: true,
           saetze: ["___, weil ___", "___, weil ___", "___, weil ___"] },
@@ -116,11 +134,29 @@ Später sagt die Lehrerin: „Kevin wollte bewundert werden und hat sich in Gefa
         { titel: "Mutig oder leichtsinnig?", fuer: "34", dauer: "4 Min",
           text: "Situationen vorlesen, die Kinder zeigen Daumen hoch (mutig) oder runter (leichtsinnig) und begründen:\n\n- über eine stark befahrene Straße rennen, um als Erster da zu sein\n- vor der Klasse sagen, dass man etwas nicht verstanden hat\n- auf einen hohen Baum klettern, weil alle zuschauen\n- einem ausgelachten Kind beistehen\n- zugeben, dass man die Vase umgestoßen hat" }
     ],
-    ab12: { titel: "Ich bin mutig", aufgaben: [
-        { typ: "ankreuzen", text: "Was ist mutig? Kreuze an.", nebeneinander: false,
-          optionen: ["Ich sage „Stopp!“", "Ich probiere etwas Neues.", "Ich klettere aufs Dach.", "Ich helfe einem Kind.", "Ich sage die Wahrheit."] },
-        { typ: "malen", text: "Male, wann du schon einmal mutig warst.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Ich bin mutig",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Ist das mutig? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Ich sage „Stopp!“",
+            "Ich probiere etwas Neues.",
+            "Ich klettere aufs Dach.",
+            "Ich helfe einem Kind.",
+            "Ich sage die Wahrheit."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male, wann du schon einmal mutig warst.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Mutig oder leichtsinnig?", aufgaben: [
         { typ: "tabelle", text: "Mutig (M) oder leichtsinnig (L)? Kreuze die richtige Spalte an.", spalten: ["Situation", "M", "L"],
           zeilen: [["Ich gebe zu, dass ich gelogen habe.", "", ""], ["Ich springe vom Dreier, obwohl ich nicht schwimmen kann.", "", ""], ["Ich frage nach, wenn ich etwas nicht verstehe.", "", ""], ["Ich fahre ohne Helm, damit die anderen mich cool finden.", "", ""], ["Ich sage Erwachsenen Bescheid, wenn jemand gemobbt wird.", "", ""]] },
@@ -181,12 +217,34 @@ Emil übt jeden Tag fünf Minuten „ie“-Wörter. Das nächste Diktat ist eine
           text: "Sammelt Strategien: kurze Pause machen – um Hilfe bitten – in kleinen Schritten üben – sich an frühere Erfolge erinnern – Fehler genau anschauen.",
           folie: "Etwas klappt nicht. Was hilft dir, **weiterzumachen**?\n\nSammelt Ideen." }
     ],
-    ab12: { titel: "Ich übe noch", aufgaben: [
-        { typ: "ankreuzen", text: "Wenn etwas nicht klappt, … Kreuze an, was hilft.", nebeneinander: false,
-          optionen: ["… gebe ich sofort auf.", "… übe ich weiter.", "… frage ich um Hilfe.", "… mache ich eine kleine Pause.", "… werfe ich alles hin."] },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Das kann ich noch nicht: ___"] },
-        { typ: "malen", text: "Male etwas, das du früher nicht konntest – und jetzt kannst!", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Ich übe noch",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Etwas klappt nicht. Hilft das? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Ich gebe sofort auf.",
+            "Ich übe weiter.",
+            "Ich frage um Hilfe.",
+            "Ich mache eine kleine Pause.",
+            "Ich werfe alles hin."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male Pia auf ihrem Fahrrad.",
+          "bild": ""
+        },
+        {
+          "typ": "malen",
+          "text": "Male etwas, das du früher nicht konntest – und jetzt kannst!",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Aus Fehlern lernen", aufgaben: [
         { typ: "tabelle", text: "Verwandle die Sackgassen-Sätze in Weg-Sätze.", spalten: ["Statt …", "sage ich …"],
           zeilen: [["„Ich bin zu dumm dafür.“", ""], ["„Ich gebe auf.“", ""], ["„Das schaffe ich nie.“", ""], ["„Fehler sind peinlich.“", ""]] },
@@ -244,11 +302,25 @@ Am Nachmittag erzählt Leonie ihrer Freundin Fatma, dass keiner mehr mit ihr red
           antworten: ["👍 stolz", "👎 angeben"],
           folie: "Ist das **stolz** 👍 oder **angeben** 👎?" }
     ],
-    ab12: { titel: "Darauf bin ich stolz", aufgaben: [
-        { typ: "gesichter", text: "So sehe ich aus, wenn ich stolz bin. Male dein Gesicht.", gefuehle: ["stolz"], leer: true },
-        { typ: "malen", text: "Male den Pokal an. Wofür bekommst du ihn?", bild: "pokal" },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Mein Pokal ist für: ___"] }
-    ]},
+    ab12: {
+      "titel": "Darauf bin ich stolz",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "gesichter",
+          "text": "So sehe ich aus, wenn ich stolz bin. Male dein Gesicht.",
+          "gefuehle": [
+            "stolz"
+          ],
+          "leer": true
+        },
+        {
+          "typ": "malen",
+          "text": "Male den Pokal an. Male daneben, wofür du ihn bekommst.",
+          "bild": "pokal"
+        }
+      ]
+    },
     ab34: { titel: "Mein Stolz-Tagebuch", aufgaben: [
         { typ: "luecken", text: "Darauf bin ich stolz:", nummern: true, saetze: ["___", "___", "___"] },
         { typ: "tabelle", text: "Stolz sein (S) oder angeben (A)? Kreuze die richtige Spalte an.", spalten: ["Satz", "S", "A"],
@@ -311,11 +383,29 @@ Am Nachmittag entschuldigt sich Lea. „Ich war heute Morgen total in Gedanken. 
           text: "Die Tischnachbarn: A erzählt eine Minute von seinem Wochenende, B hört nur zu. Dann wiederholt B drei Dinge, die er sich gemerkt hat, und stellt eine Nachfrage. Dann Wechsel.",
           folie: "**A** erzählt eine Minute von seinem Wochenende. **B** hört nur zu.\n\nDann sagt B drei Dinge, die er sich gemerkt hat, und stellt eine Frage. Dann wechseln." }
     ],
-    ab12: { titel: "Ich höre gut zu", aufgaben: [
-        { typ: "ankreuzen", text: "So höre ich gut zu. Kreuze an.", nebeneinander: false,
-          optionen: ["Ich schaue den anderen an.", "Ich rede dazwischen.", "Ich bin leise.", "Ich spiele mit meinem Stift.", "Ich nicke."] },
-        { typ: "malen", text: "Male das Ohr an. Was hörst du gern?", bild: "ohr" }
-    ]},
+    ab12: {
+      "titel": "Ich höre gut zu",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Hörst du so gut zu? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Ich schaue den anderen an.",
+            "Ich rede dazwischen.",
+            "Ich bin leise.",
+            "Ich spiele mit meinem Stift.",
+            "Ich nicke."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male das Ohr an. Male dazu, was du gern hörst.",
+          "bild": "ohr"
+        }
+      ]
+    },
     ab34: { titel: "Aktiv zuhören", aufgaben: [
         { typ: "tabelle", text: "Hört das Kind gut zu? Kreuze ja oder nein an.", spalten: ["Verhalten", "ja", "nein"],
           zeilen: [["Es schaut beim Zuhören auf sein Handy.", "", ""], ["Es fragt nach: „Wie meinst du das?“", "", ""], ["Es unterbricht und erzählt von sich.", "", ""], ["Es wiederholt: „Du meinst also …“", "", ""], ["Es nickt und schaut den anderen an.", "", ""]] },
@@ -377,11 +467,29 @@ Am nächsten Tag probiert Sophie es selbst aus. „Can, deine Idee mit dem Regen
           text: "Die Kinder legen die Hand aufs Herz und sagen leise zu sich selbst: „Ich bin gut, so wie ich bin.“ Wer mag, sagt laut ein Kompliment an sich selbst („Ich kann toll …“).",
           folie: "Leg die Hand aufs Herz. ❤️\n\nSag leise zu dir: **„Ich bin gut, so wie ich bin.“**" }
     ],
-    ab12: { titel: "Etwas Nettes sagen", aufgaben: [
-        { typ: "ankreuzen", text: "Was ist ein Kompliment? Kreuze an.", nebeneinander: false,
-          optionen: ["„Du malst schön.“", "„Du bist doof.“", "„Du kannst toll rennen.“", "„Danke für deine Hilfe!“", "„Geh weg!“"] },
-        { typ: "malen", text: "Male das Herz an. Male hinein, was du an einem Kind aus der Gruppe toll findest.", bild: "herz" }
-    ]},
+    ab12: {
+      "titel": "Etwas Nettes sagen",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Ist das ein Kompliment? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "„Du malst schön.“",
+            "„Du bist doof.“",
+            "„Du kannst toll rennen.“",
+            "„Danke für deine Hilfe!“",
+            "„Geh weg!“"
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male das Herz an. Male hinein, was du an einem Kind aus der Gruppe toll findest.",
+          "bild": "herz"
+        }
+      ]
+    },
     ab34: { titel: "Komplimente, die ankommen", aufgaben: [
         { typ: "tabelle", text: "Mach das Kompliment genauer.", spalten: ["Allgemein", "Genauer"],
           zeilen: [["„Du bist nett.“", ""], ["„Du bist gut in Sport.“", ""], ["„Dein Bild ist schön.“", ""]] },
@@ -437,12 +545,27 @@ In der Pause fragt Lukas seine Freundin Hanna, ob alles okay ist. „Mir geht's 
           text: "Ein Kind sagt den Satz „Ich weiß die Antwort“ – einmal geduckt mit Blick auf den Boden, einmal gerade mit Blickkontakt, einmal mit verschränkten Armen und Augenrollen. Die anderen beschreiben, wie jede Version wirkt.",
           folie: "Ein Kind sagt dreimal: **„Ich weiß die Antwort.“**\n\nJedes Mal mit anderer Körperhaltung. Wie wirkt es?" }
     ],
-    ab12: { titel: "Was sagt der Körper?", aufgaben: [
-        { typ: "zuordnen", text: "Wie fühlt sich das Kind? Verbinde.",
-          links: ["Die Schultern hängen.", "Das Kind hüpft.", "Die Fäuste sind geballt.", "Das Kind zittert."],
-          rechts: ["froh", "ängstlich", "traurig", "wütend"] },
-        { typ: "malen", text: "Male dich: So stehe ich, wenn ich stolz bin.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Was sagt der Körper?",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "gefuehle",
+          "text": "Wie fühlt sich das Kind? Kreise ein Gesicht ein.",
+          "zeilen": [
+            "Die Schultern hängen.",
+            "Das Kind hüpft.",
+            "Die Fäuste sind ganz fest.",
+            "Das Kind zittert."
+          ]
+        },
+        {
+          "typ": "malen",
+          "text": "Male dich: So stehe ich, wenn ich stolz bin.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Mein Körper spricht mit", aufgaben: [
         { typ: "tabelle", text: "Was könnte die Körpersprache bedeuten?", spalten: ["Körpersprache", "Bedeutung"],
           zeilen: [["Arme verschränkt, Blick zur Seite", ""], ["Blick auf den Boden, leise Stimme", ""], ["Lächeln, offene Arme", ""], ["Gähnen, auf die Uhr schauen", ""]] },
@@ -499,11 +622,33 @@ Eine Woche später rechnet Tom die Aufgaben allein. Und als Elif bei Englisch ni
           text: "Die Tischnachbarn bekommen eine Situation (z. B. Hausaufgabe nicht verstanden, Fahrradkette ab, jemand ärgert mich ständig) und üben eine genaue Bitte: Was brauche ich? Was habe ich schon versucht?",
           folie: "Ihr bekommt eine Situation. Übt eine **genaue Bitte**:\n\n**Was brauche ich? Was habe ich schon versucht?**" }
     ],
-    ab12: { titel: "Kannst du mir helfen?", aufgaben: [
-        { typ: "ankreuzen", text: "Um Hilfe bitten ist … Kreuze an.", nebeneinander: true, optionen: ["mutig", "peinlich", "schlau", "gut"] },
-        { typ: "luecken", text: "So bitte ich um Hilfe:", nummern: false, saetze: ["„Kannst du mir bitte ___?“"] },
-        { typ: "malen", text: "Male dich und einen Menschen, der dir hilft.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Kannst du mir helfen?",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Um Hilfe bitten ist … Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "mutig",
+            "peinlich",
+            "schlau",
+            "gut"
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male: Wobei brauchst du manchmal Hilfe?",
+          "bild": ""
+        },
+        {
+          "typ": "malen",
+          "text": "Male dich und einen Menschen, der dir hilft.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Hilfe holen ist Stärke", aufgaben: [
         { typ: "tabelle", text: "Meine Helfer-Landkarte: Wer kann dir helfen?", spalten: ["Wobei?", "Wer kann helfen?"],
           zeilen: [["Bei den Hausaufgaben", ""], ["Bei Streit mit Freunden", ""], ["Wenn ich traurig bin", ""], ["Wenn ich mich verletzt habe", ""]] },

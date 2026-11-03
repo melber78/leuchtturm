@@ -51,11 +51,29 @@ Das Floß von Gruppe B trägt den Teddy sicher über den Teich. Gruppe A ist ent
           text: "Die Kinder sammeln vom Platz aus drei Regeln für gute Teamarbeit (z. B. erst planen, alle Ideen anhören, Aufgaben verteilen).",
           folie: "Was braucht ein gutes **Team**? 🤝\n\nFindet drei Regeln." }
     ],
-    ab12: { titel: "Zusammen sind wir stark", kontext: "Zur Geschichte: Großvater, Großmutter, Enkelkind, Hund und Katze ziehen an der Riesenrübe – erst mit der kleinen Maus schaffen sie es.", aufgaben: [
-        { typ: "ankreuzen", text: "Was hilft im Team? Kreuze an.", nebeneinander: false,
-          optionen: ["zusammen helfen", "schubsen", "abwechseln", "zuhören", "allein bestimmen"] },
-        { typ: "malen", text: "Male, wie alle zusammen an der Riesenrübe ziehen.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Zusammen sind wir stark",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "daumen",
+          "text": "Hilft das im Team? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "zusammen helfen",
+            "schubsen",
+            "abwechseln",
+            "zuhören",
+            "allein bestimmen"
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male, wie alle zusammen an der Riesenrübe ziehen.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Teamarbeit planen", kontext: "Zur Geschichte: Zwei Gruppen bauen ein Floß. In Gruppe A fängt jeder einfach an, keiner spricht sich ab. Gruppe B verteilt zuerst die Aufgaben und hört sich gegenseitig zu.", aufgaben: [
         { typ: "tabelle", text: "Plane mit deinem Tischnachbarn ein Plakat über unsere Schule. Wer macht was?", spalten: ["Aufgabe", "Wer?"],
           zeilen: [["Überschrift schreiben", ""], ["Bilder malen", ""], ["Texte schreiben", ""], ["Alles aufkleben", ""], ["___", ""]] },
@@ -115,12 +133,37 @@ Am Ende bekommt nicht die Siegermannschaft den Fair-Play-Pokal, sondern Lotta un
           antworten: ["👍 fair", "👎 nicht fair"],
           folie: "Macht das ein **guter Gewinner**?\n\n👍 ja · 👎 nein" }
     ],
-    ab12: { titel: "Gut gespielt!", aufgaben: [
-        { typ: "gesichter", text: "So fühle ich mich, wenn ich gewinne – und wenn ich verliere. Male.", gefuehle: ["froh", "traurig"], leer: true },
-        { typ: "ankreuzen", text: "Ein guter Verlierer … Kreuze an.", nebeneinander: false,
-          optionen: ["… wirft die Karten weg.", "… sagt: „Gut gespielt!“", "… schreit und weint.", "… spielt beim nächsten Mal wieder mit."] },
-        { typ: "malen", text: "Male den Fair-Play-Pokal an.", bild: "pokal" }
-    ]},
+    ab12: {
+      "titel": "Gut gespielt!",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "gesichter",
+          "text": "So fühle ich mich, wenn ich gewinne – und wenn ich verliere. Male.",
+          "gefuehle": [
+            "froh",
+            "traurig"
+          ],
+          "leer": true
+        },
+        {
+          "typ": "daumen",
+          "text": "Ist das ein guter Verlierer? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Er wirft die Karten weg.",
+            "Er sagt: „Gut gespielt!“",
+            "Er schreit und weint.",
+            "Er spielt beim nächsten Mal wieder mit."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male den Fair-Play-Pokal an.",
+          "bild": "pokal"
+        }
+      ]
+    },
     ab34: { titel: "Fair Play", aufgaben: [
         { typ: "tabelle", text: "Ist das fair? Schreibe ja oder nein.", spalten: ["Verhalten", "fair?"],
           zeilen: [["„Ihr seid Verlierer!“ singen", ""], ["Dem anderen Team gratulieren", ""], ["Dem Schiedsrichter die Schuld geben", ""], ["Sagen: „Das war knapp, ihr wart auch gut.“", ""], ["Nach dem Spiel wütend weglaufen", ""]] },
@@ -176,13 +219,28 @@ Am Ende ist ihre Zeitung die beliebteste der ganzen Schule. Die Rektorin sagt: �
           text: "Stellt euch vor, die Gruppe plant ein Fest. Die Kinder sagen vom Platz aus, welche Aufgabe sie übernehmen würden und warum (einladen, Musik, Spiele, Essen, Deko, Aufräumen). Kl. 1/2 zeigen am Platz, was sie gut können.",
           folie: "Wir planen ein **Fest** 🎉.\n\nWelche Aufgabe würdest du übernehmen – und warum?" }
     ],
-    ab12: { titel: "Jeder ist wichtig", kontext: "Zur Geschichte: Im Tier-Orchester spielt jeder, wann er will. Erst als die kleine Maus den Takt trommelt, klingt es schön.", aufgaben: [
-        { typ: "zuordnen", text: "Wer macht welchen Ton? Verbinde.",
-          links: ["Elefant", "Vogel", "Frosch", "Maus"],
-          rechts: ["quaken", "[bild:trommel] trommeln", "[bild:trompete] tröten", "[bild:floete] pfeifen"] },
-        { typ: "malen", text: "Male dich im Tier-Orchester. Welches Instrument spielst du?", bild: "" },
-        { typ: "luecken", text: "", nummern: false, saetze: ["In unserer Gruppe bin ich wichtig, weil ich ___"] }
-    ]},
+    ab12: {
+      "titel": "Jeder ist wichtig",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "ankreuzen",
+          "text": "Welches Instrument möchtest du spielen? Kreuze an.",
+          "optionen": [
+            "[bild:trommel] Trommel",
+            "[bild:trompete] Trompete",
+            "[bild:floete] Flöte",
+            "[bild:gitarre] Gitarre"
+          ],
+          "nebeneinander": true
+        },
+        {
+          "typ": "malen",
+          "text": "Male dich im Tier-Orchester.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Unser Team-Puzzle", kontext: "Zur Geschichte: Finn glaubt, er sei für die Schülerzeitung unwichtig, weil er nicht gern schreibt. Dann wird er der Fotograf der Gruppe.", aufgaben: [
         { typ: "tabelle", text: "Eure Gruppe macht eine Schülerzeitung. Wer kann was gut? Schreibe Namen aus der Gruppe.", spalten: ["Aufgabe", "Wer kann das gut?"],
           zeilen: [["Schreiben", ""], ["Fotografieren", ""], ["Zeichnen", ""], ["Organisieren", ""], ["Ideen haben", ""]] },
@@ -243,11 +301,29 @@ Vor dem nächsten Test macht Nora das Kasten-Atmen ganz heimlich unter dem Tisch
           text: "Alle malen mit dem Finger ein Quadrat in die Luft: Seite 1 = 4 Sekunden einatmen, Seite 2 = 4 Sekunden halten, Seite 3 = 4 Sekunden ausatmen, Seite 4 = 4 Sekunden halten. Du zählst leise mit. Viermal wiederholen.",
           folie: "Mal mit dem Finger ein Quadrat in die Luft ⬜:\n\n4 Sekunden **einatmen** · 4 **halten** · 4 **ausatmen** · 4 **halten**\n\nViermal." }
     ],
-    ab12: { titel: "So werde ich ruhig", aufgaben: [
-        { typ: "ankreuzen", text: "Das macht mich ruhig. Kreuze an.", nebeneinander: true,
-          optionen: ["[bild:teddy] kuscheln", "[bild:gitarre] Musik", "[bild:pinsel] malen", "atmen", "[bild:baum] draußen sein", "___"] },
-        { typ: "malen", text: "Male die Ruhe-Wolke an. Male hinein, was dich ruhig macht.", bild: "wolke" }
-    ]},
+    ab12: {
+      "titel": "So werde ich ruhig",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "ankreuzen",
+          "text": "Das macht mich ruhig. Kreuze an.",
+          "optionen": [
+            "[bild:teddy] kuscheln",
+            "[bild:gitarre] Musik",
+            "[bild:pinsel] malen",
+            "[bild:baum] draußen sein",
+            "[bild:buch] Buch anschauen"
+          ],
+          "nebeneinander": true
+        },
+        {
+          "typ": "malen",
+          "text": "Male die Ruhe-Wolke an. Male hinein, was dich ruhig macht.",
+          "bild": "wolke"
+        }
+      ]
+    },
     ab34: { titel: "Meine Ruhe-Werkzeuge", kontext: "Diese Übungen habt ihr ausprobiert: Stille-Minute (still sein, bis der Ton weg ist) · Schildkröten-Trick (Kopf auf die Arme, langsam atmen) · Kasten-Atmen (4 ein – 4 halten – 4 aus – 4 halten) · 5-4-3-2-1 (Dinge sehen, spüren, hören …).", aufgaben: [
         { typ: "luecken", text: "Ich merke, dass ich Ruhe brauche, wenn …", nummern: false, saetze: ["___"] },
         { typ: "tabelle", text: "Wie gut hat die Übung dir geholfen? Gib 1 bis 5 Sterne.", spalten: ["Übung", "Sterne (1–5)"],
@@ -309,14 +385,29 @@ Dann legen alle die Rosine auf die Zunge, ohne zu kauen. Kerem spürt, wie sein 
           text: "Jedes Kind bekommt eine Rosine oder ein Apfelstück. Du leitest langsam an: anschauen – fühlen – ans Ohr halten – riechen – auf die Zunge legen, ohne zu kauen – ganz langsam kauen – schlucken. Danach erzählen die Kinder vom Platz aus, was sie bemerkt haben.",
           folie: "Du bekommst etwas zum Essen. Ganz langsam:\n\n👀 anschauen · ✋ fühlen · 👂 ans Ohr halten · 👃 riechen · 👅 auf die Zunge · langsam kauen" }
     ],
-    ab12: { titel: "Meine fünf Sinne", aufgaben: [
-        { typ: "ankreuzen", nur: "1", text: "Was riecht gut? Kreuze an.", nebeneinander: true,
-          optionen: ["[bild:rose] Blume", "[bild:pizza] Pizza", "[bild:seife] Seife", "[bild:zitrone] Zitrone", "[bild:kuchen] Kuchen"] },
-        { typ: "zuordnen", nur: "2", text: "Womit mache ich das? Verbinde.",
-          links: ["Augen", "Ohren", "Nase", "Mund", "Hände"],
-          rechts: ["riechen", "fühlen", "sehen", "schmecken", "hören"] },
-        { typ: "malen", text: "Male etwas, das du heute Schönes gesehen, gehört oder gerochen hast.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Meine fünf Sinne",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "ankreuzen",
+          "text": "Was riecht gut? Kreuze an.",
+          "optionen": [
+            "[bild:rose] Blume",
+            "[bild:pizza] Pizza",
+            "[bild:seife] Seife",
+            "[bild:zitrone] Zitrone",
+            "[bild:kuchen] Kuchen"
+          ],
+          "nebeneinander": true
+        },
+        {
+          "typ": "malen",
+          "text": "Male etwas, das du heute Schönes gesehen, gehört oder gerochen hast.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Achtsam wahrnehmen", kontext: "In der Stunde hast du eine Rosine (oder ein Apfelstück) ganz langsam erkundet: anschauen, fühlen, ans Ohr halten, riechen, schmecken.", aufgaben: [
         { typ: "tabelle", text: "Beschreibe deine Rosine (oder dein Apfelstück) mit allen Sinnen.", spalten: ["Sinn", "Was ich wahrgenommen habe"],
           zeilen: [["Sehen", ""], ["Fühlen", ""], ["Hören", ""], ["Riechen", ""], ["Schmecken", ""]] },
@@ -373,10 +464,22 @@ Seitdem schreibt Selin jeden Abend drei gute Dinge in ein kleines Heft. Und am n
           folie12: "Für wen an unserer Schule möchtest du eine **Danke-Karte** malen? 💌",
           folie34: "Für wen an unserer Schule möchtest du eine **Danke-Karte** schreiben? 💌\n\nZwei Sätze reichen." }
     ],
-    ab12: { titel: "Danke!", aufgaben: [
-        { typ: "malen", text: "Male die Danke-Sonne an. Male in die Mitte, wofür du dankbar bist.", bild: "sonne" },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Ich sage Danke zu ___, weil ___"] }
-    ]},
+    ab12: {
+      "titel": "Danke!",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "malen",
+          "text": "Male die Danke-Sonne an. Male in die Mitte, wofür du dankbar bist.",
+          "bild": "sonne"
+        },
+        {
+          "typ": "malen",
+          "text": "Male: Wem möchtest du Danke sagen?",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Drei gute Dinge", aufgaben: [
         { typ: "luecken", text: "Drei gute Dinge von heute – und warum sie gut waren:", nummern: true,
           saetze: ["___, weil ___", "___, weil ___", "___, weil ___"] },
@@ -436,11 +539,22 @@ Am Ende schreibt Frau Novak an die Tafel: „Unsere Klasse ist wie ein Obstsalat
           antworten: ["🟢 Tatsache", "🔴 Vorurteil"],
           folie: "Ist das eine **Tatsache** 🟢 oder ein **Vorurteil** 🔴?\n\nHalte die rote oder grüne Karte hoch." }
     ],
-    ab12: { titel: "Ich bin ich – du bist du", aufgaben: [
-        { typ: "luecken", text: "Das bin ich:", nummern: false,
-          saetze: ["Meine Haare sind ___.", "Meine Lieblingsfarbe ist ___.", "Ich spreche ___."] },
-        { typ: "malen", text: "Male dich und deinen Tischnachbarn. Was ist gleich, was ist anders?", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Ich bin ich – du bist du",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "malen",
+          "text": "Male dich.",
+          "bild": ""
+        },
+        {
+          "typ": "malen",
+          "text": "Male deinen Tischnachbarn. Was ist gleich, was ist anders?",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Vielfalt in unserer Gruppe", aufgaben: [
         { typ: "luecken", text: "Mein Tischnachbar und ich:", nummern: false,
           saetze: ["Das haben wir gemeinsam: ___", "Das ist bei uns verschieden: ___"] },
@@ -501,12 +615,37 @@ Es dauert noch ein paar Wochen. Aber dann hört es auf. Jonas sagt später: „D
           folie: "Jemand wird ausgelacht. Was kannst **du** tun? 👀",
           folie12: "Jemand wird ausgelacht. Was kannst **du** tun? 👀\n\nÜbt den Satz: **„Hör auf, das ist gemein!“**" }
     ],
-    ab12: { titel: "Lachen – aber richtig", aufgaben: [
-        { typ: "gesichter", text: "Mitlachen macht froh. Auslachen macht traurig.", gefuehle: ["froh", "traurig"], leer: false },
-        { typ: "ankreuzen", text: "Ein Kind wird ausgelacht. Was kannst du tun? Kreuze an.", nebeneinander: false,
-          optionen: ["mitlachen", "„Hör auf, das ist gemein!“ sagen", "Hilfe holen", "mich zu dem Kind stellen"] },
-        { typ: "malen", text: "Male, wie du dem Kind hilfst.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Lachen – aber richtig",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "gesichter",
+          "text": "Mitlachen macht froh. Auslachen macht traurig. Male die Gesichter an.",
+          "gefuehle": [
+            "froh",
+            "traurig"
+          ],
+          "leer": false
+        },
+        {
+          "typ": "daumen",
+          "text": "Ein Kind wird ausgelacht. Was machst du? Kreise ein: 👍 oder 👎.",
+          "zeilen": [
+            "Ich lache mit.",
+            "Ich sage: „Hör auf, das ist gemein!“",
+            "Ich hole Hilfe.",
+            "Ich stelle mich zu dem Kind."
+          ],
+          "art": "daumen"
+        },
+        {
+          "typ": "malen",
+          "text": "Male, wie du dem Kind hilfst.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Hinschauen statt mitlachen", aufgaben: [
         { typ: "tabelle", text: "Spaß (S) oder Hänseln (H)? Kreuze die richtige Spalte an.", spalten: ["Situation", "S", "H"],
           zeilen: [["Alle lachen über einen Witz, den Tim erzählt.", "", ""], ["Jeden Tag wird Mara wegen ihrer Zähne nachgemacht.", "", ""], ["Ole lacht selbst am meisten über sein Missgeschick.", "", ""], ["Im Klassenchat werden Fotos von Ali verspottet.", "", ""]] },
@@ -567,12 +706,28 @@ Am Freitag erzählen alle von ihren Erlebnissen. Die meisten sagen dasselbe: Hel
           text: "Die Tischnachbarn üben: Einer tut so, als käme er bei etwas nicht weiter. Der andere fragt: „Soll ich dir helfen?“ – und akzeptiert auch ein „Nein danke, ich will es allein schaffen.“",
           folie: "Übt zu zweit: Einer kommt nicht weiter. Der andere fragt: **„Soll ich dir helfen?“**\n\nAuch „Nein danke“ ist okay." }
     ],
-    ab12: { titel: "Ich helfe gern", aufgaben: [
-        { typ: "ankreuzen", text: "Wo kann ich helfen? Kreuze an.", nebeneinander: true,
-          optionen: ["[bild:loeffel] Tisch decken", "[bild:stift] Stifte aufheben", "trösten", "[bild:tuer] Tür aufhalten", "___"] },
-        { typ: "malen", text: "Male, wie du jemandem hilfst.", bild: "" },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Diese Woche helfe ich ___"] }
-    ]},
+    ab12: {
+      "titel": "Ich helfe gern",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "ankreuzen",
+          "text": "Wo kannst du helfen? Kreuze an.",
+          "optionen": [
+            "[bild:loeffel] Tisch decken",
+            "[bild:stift] Stifte aufheben",
+            "[bild:tuer] Tür aufhalten",
+            "[bild:besen] aufräumen"
+          ],
+          "nebeneinander": true
+        },
+        {
+          "typ": "malen",
+          "text": "Male, wie du jemandem hilfst.",
+          "bild": ""
+        }
+      ]
+    },
     ab34: { titel: "Helfen – aber richtig", aufgaben: [
         { typ: "tabelle", text: "Wie kannst du helfen?", spalten: ["Situation", "So helfe ich"],
           zeilen: [["Ein Kind findet den Weg zur Turnhalle nicht.", ""], ["Einer Frau fällt die Einkaufstasche runter.", ""], ["Dein Freund versteht eine Aufgabe nicht.", ""]] },
@@ -633,11 +788,27 @@ Leon denkt nach. „Dann ist es wie bei Jakob mit der Brille. Der bekommt ja auc
           frage: "Was wäre hier gerecht?",
           folie: "**Gleich** heißt: Jeder bekommt dasselbe.\n**Gerecht** heißt: Jeder bekommt, was er braucht.\n\nWas wäre hier gerecht?" }
     ],
-    ab12: { titel: "Jeder bekommt, was er braucht", aufgaben: [
-        { typ: "ankreuzen", text: "Was ist gerecht? Kreuze an.", nebeneinander: false,
-          optionen: ["Alle bekommen genau gleich viel Hilfe.", "Wer mehr Hilfe braucht, bekommt mehr Hilfe."] },
-        { typ: "malen", text: "Male drei Kinder am Zaun: groß, mittel und klein. Male so viele Kisten dazu, dass alle zuschauen können.", bild: "" }
-    ]},
+    ab12: {
+      "titel": "Jeder bekommt, was er braucht",
+      "gemeinsam": true,
+      "aufgaben": [
+        {
+          "typ": "malen",
+          "text": "Male drei Kinder am Zaun: groß, mittel und klein. Male so viele Kisten dazu, dass alle zuschauen können.",
+          "bild": ""
+        },
+        {
+          "typ": "gesichter",
+          "text": "Jetzt können alle zuschauen. Male die Gesichter an.",
+          "gefuehle": [
+            "froh",
+            "froh",
+            "froh"
+          ],
+          "leer": false
+        }
+      ]
+    },
     ab34: { titel: "Gleich oder gerecht?", kontext: "Zur Geschichte: Mia bekommt im Test mehr Zeit. Frau Schröder erklärt es mit dem Pflaster-Beispiel: Wer sich verletzt hat, bekommt ein Pflaster – nicht einfach alle.", aufgaben: [
         { typ: "luecken", text: "Erkläre das Pflaster-Beispiel mit eigenen Worten.", nummern: false, saetze: ["___", "___"] },
         { typ: "tabelle", text: "Was braucht das Kind, damit es gerecht ist?", spalten: ["Kind", "Was braucht es?"],
