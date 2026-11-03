@@ -264,6 +264,23 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
           "🟡 2 · Weggehen",
           "🔴 3 · Erwachsenen holen"
         ],
+        "loesungen12": [
+          "1",
+          "1",
+          "2",
+          "2,3",
+          "3",
+          "3"
+        ],
+        "loesungen34": [
+          "1",
+          "1",
+          "2",
+          "2",
+          "2,3",
+          "3",
+          "3"
+        ],
         "folie": "Die **Streit-Ampel** – leg deine **Zahlenkarten 1–3** vor dich:\n\n🟢 **1** Kleiner Ärger → „Stopp“ sagen oder nicht beachten\n🟡 **2** Es kocht in mir → weggehen\n🔴 **3** Jemand tut weh oder droht → Erwachsenen holen\n\nWas machst du? Auf **„1, 2, 3 – hoch!“** zeigst du deine Karte."
       },
       {
@@ -305,9 +322,13 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
           "bild": ""
         },
         {
-          "typ": "malen",
-          "text": "Male den Erwachsenen, den du holst.",
-          "bild": ""
+          "typ": "gesichter",
+          "text": "So sehe ich aus, wenn es in mir kocht – und wenn ich wieder ruhig bin. Male die Gesichter.",
+          "gefuehle": [
+            "wütend",
+            "ruhig"
+          ],
+          "leer": true
         }
       ]
     },

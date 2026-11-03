@@ -65,6 +65,9 @@ const CSS = `
 #praes .p-symbol svg{ width:84%; height:84%; }
 #praes .p-stimme:active .p-symbol, #praes .p-symbol.pop{ transform:scale(1.15); }
 #praes .p-stimme .p-name{ font-weight:900; font-size:clamp(15px,1.7vw,26px); }
+#praes .p-stimme.richtig .p-symbol{ box-shadow:0 0 0 6px #2e8b57, 0 6px 20px rgba(46,139,87,.4); transform:scale(1.12); }
+#praes .p-stimme.richtig .p-name::after{ content:" ✓"; color:#2e8b57; }
+#praes .p-stimme.falsch{ opacity:.3; }
 #praes .p-minus{ border:0; background:none; color:#a0aaa6; font-size:clamp(14px,1.4vw,20px); font-weight:900; cursor:pointer; padding:.2em .6em; }
 #praes .p-aussage{ font-family:"Andika","Nunito",sans-serif; font-size:clamp(26px,4.2vw,66px); font-weight:700; line-height:1.25; max-width:24em; background:white; border-radius:28px; padding:.6em 1em; box-shadow:0 8px 30px rgba(22,50,74,.12); }
 
@@ -283,7 +286,10 @@ function folienBauen(e, stufe){
         if (art === "liste" && punkte.length) u.liste = punkte;
         f.push({ typ: "uebung", u });
         if (punkte.length >= 2 && art === "karten") punkte.forEach((p, i) => f.push({ typ: "karte", u, aussage: p, nr: i + 1, von: punkte.length }));
-        else if (punkte.length >= 2 && !["frage", "keine", "liste", "karten"].includes(art)) punkte.forEach((p, i) => f.push({ typ: "abstimmung", u, art, aussage: p, nr: i + 1, von: punkte.length }));
+        else if (punkte.length >= 2 && !["frage", "keine", "liste", "karten"].includes(art)) {
+            const loes = u0["loesungen" + stufe] || u0.loesungen || [];   // je Situation: richtige Antwort(en), z. B. "1" oder "2,3"
+            punkte.forEach((p, i) => f.push({ typ: "abstimmung", u, art, aussage: p, nr: i + 1, von: punkte.length, loesung: loes[i] ? String(loes[i]).split(/[,\s]+/).map(Number).filter(Boolean) : [] }));
+        }
     });
     f.push({ typ: "arbeitsblatt" });
     f.push({ typ: "abschluss" });
@@ -447,7 +453,7 @@ function folieHtml(f, e){
                 <div class="p-reihe">${min ? `<button class="p-knopf gold" data-start="${min}">⏱ ${min} Minuten starten</button>` : ""}<button class="p-knopf hell" data-p="rad">🎡 Wer fängt an?</button>${f.u.zusatz ? `<button class="p-knopf hell" data-springen="${f.weiter}">⏭ Überspringen</button>` : ""}</div>`;
         }
         case "abstimmung":
-            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage"${f.aussage.length > 70 ? ' style="font-size:clamp(20px,min(3vw,5vh),48px)"' : ""}>${inline(f.aussage)}</div>${stimmenHtml("q" + zustand.i + f.aussage, abstimmOptionen(f.art, f.u))}`;
+            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage"${f.aussage.length > 70 ? ' style="font-size:clamp(20px,min(3vw,5vh),48px)"' : ""}>${inline(f.aussage)}</div>${stimmenHtml("q" + zustand.i + f.aussage, abstimmOptionen(f.art, f.u))}${f.loesung && f.loesung.length ? '<div class="p-reihe" style="margin-top:1.5vh"><button class="p-knopf hell" data-aufloesen="1">✅ Auflösen</button></div>' : ""}`;
         case "karte":
             return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage">${inline(f.aussage)}</div>${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${inline(f.u.frage)}</div>` : ""}
                 <div class="p-reihe" style="margin-top:2vh"><button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div>`;
@@ -487,6 +493,11 @@ function folieAktivieren(el, f){
     el.querySelectorAll("[data-frage]").forEach(q => q.addEventListener("click", () => el.querySelectorAll(".p-frage").forEach((x, k) => { x.classList.toggle("an", x === q); if (k <= +q.dataset.frage) x.classList.add("war"); })));
     el.querySelectorAll("[data-start]").forEach(b => b.addEventListener("click", () => timerStarten(+b.dataset.start * 60)));
     el.querySelectorAll("[data-schale]").forEach(b => b.addEventListener("click", () => klangschale()));
+    el.querySelectorAll("[data-aufloesen]").forEach(b => b.addEventListener("click", () => {
+        const richtig = f.loesung || [];
+        el.querySelectorAll(".p-stimme").forEach((st, k) => st.classList.add(richtig.includes(k + 1) ? "richtig" : "falsch"));
+        b.remove(); fanfare();
+    }));
     el.querySelectorAll("[data-springen]").forEach(b => b.addEventListener("click", () => zeigen(+b.dataset.springen)));
     el.querySelectorAll("[data-vorlesen]").forEach(b => b.addEventListener("click", () => vorlesen(f.text, b)));
     el.querySelectorAll("[data-vorleser]").forEach(b => b.addEventListener("click", () => {
@@ -842,7 +853,7 @@ async function pptxExport(e, stufe = "12"){
                 s.addShape(p.ShapeType.roundRect, { x: 1.2, y: 1.05, w: W - 2.4, h: 2, fill: { color: "FFFFFF" }, line: { color: "DFE5E2" }, rectRadius: .25 });
                 s.addText(laufText(f.aussage), { x: 1.4, y: 1.1, w: W - 2.8, h: 1.9, align: "center", valign: "middle", fontFace: TEXT, fontSize: 34, bold: true, color: NACHT });
                 await stimmZeile(s, abstimmOptionen(f.art, f.u), 3.5);
-                s.addNotes(ohneMarkdown(f.u.text));
+                s.addNotes((f.loesung && f.loesung.length ? "Lösung: " + f.loesung.map(n => (abstimmOptionen(f.art, f.u)[n - 1] || {}).name).join(" oder ") + "\n\n" : "") + ohneMarkdown(f.u.text));
                 break;
             case "karte":
                 s.addText(f.u.titel + " · " + f.nr + " / " + f.von, { x: 0, y: .4, w: W, h: .45, align: "center", fontFace: FONT, fontSize: 16, color: GRAU });
