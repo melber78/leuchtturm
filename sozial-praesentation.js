@@ -116,6 +116,10 @@ const CSS = `
 #praes .p-timer .ring{ width:.8em; height:.8em; }
 
 /* Overlays (Glücksrad, Timer wählen) */
+#praes .p-dran{ position:absolute; top:12px; right:12px; z-index:9; min-width:clamp(48px,5.5vw,80px); height:clamp(48px,5.5vw,80px); border-radius:999px; border:4px solid white; box-shadow:0 6px 18px rgba(22,50,74,.25); color:white; font:900 clamp(24px,3vw,44px)/1 "Nunito",sans-serif; display:flex; align-items:center; justify-content:center; padding:0 .3em; cursor:pointer; }
+#praes .p-dran.lang{ font-size:clamp(16px,1.8vw,26px); padding:0 .7em; }
+#praes .p-dran.neu{ animation:pDran .5s cubic-bezier(.2,1.6,.4,1); }
+@keyframes pDran{ from{ transform:scale(.3); } to{ transform:scale(1); } }
 #praes .p-overlay{ position:absolute; inset:0; background:rgba(22,50,74,.55); display:flex; align-items:center; justify-content:center; z-index:10; animation:pFade .2s; }
 @keyframes pFade{ from{ opacity:0; } }
 #praes .p-dialog{ background:white; border-radius:30px; padding:3vh 3vw; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.3); max-width:92vw; max-height:calc(100% - 16px); overflow-y:auto; box-sizing:border-box; }
@@ -505,6 +509,22 @@ function timerWaehlen(){
 }
 
 /* ---------------- Glücksrad „Wer ist dran?“ ---------------- */
+function dranZeigen(name, farbe){
+    const w = zustand && zustand.wurzel;
+    if (!w) return;
+    let b = w.querySelector(".p-dran");
+    if (!b) {
+        b = document.createElement("button");
+        b.className = "p-dran"; b.title = "Wer dran ist – antippen zum Ausblenden";
+        b.addEventListener("click", () => b.remove());
+        w.appendChild(b);
+    }
+    const nr = String(name).startsWith("Platz ") ? String(name).slice(6) : String(name);
+    b.textContent = nr;
+    b.classList.toggle("lang", nr.length > 2);
+    b.style.background = farbe || "#f2a93b";
+    b.classList.remove("neu"); void b.offsetWidth; b.classList.add("neu");
+}
 function overlay(html){
     const o = document.createElement("div");
     o.className = "p-overlay";
@@ -590,8 +610,11 @@ function gluecksrad(opt = {}){
                 z.gelesen.add(name);
                 o.querySelector(".p-ergebnis").textContent = name + (opt.lesen ? " liest vor!" : "!");
                 fanfare();
-                if (opt.fertig) { opt.fertig(name); setTimeout(() => { if (o.isConnected) o.remove(); }, 1600); }
-                else zeichnen();
+                if (opt.fertig) opt.fertig(name);
+                zeichnen();
+                // kurz groß zeigen, dann schließen – die Nummer bleibt klein oben rechts in der Ecke
+                dranZeigen(name, farben[feld % farben.length]);
+                setTimeout(() => { if (o.isConnected) o.remove(); }, 2300);
             }
         })(t0);
     });
