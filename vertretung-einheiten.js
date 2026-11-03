@@ -74,7 +74,8 @@ Lina holt ihren Globus. Zusammen suchen sie den Weg. Zum Dank darf Lina eine Run
     uebungen: [
         { titel: "Geschichten-Kette", fuer: "alle", dauer: "8 Min",
           text: "Du ziehst drei Bildkarten und hängst sie an die Tafel. Die Kinder erzählen gemeinsam eine Geschichte: Jedes Kind sagt vom Platz aus einen Satz, der Reihe nach. Alle drei Bilder müssen vorkommen. Kl. 1/2 dürfen kurze Sätze sagen, Kl. 3/4 achten auf einen guten Schluss.",
-          folie: "An der Tafel hängen **drei Bilder**.\n\nWir erzählen zusammen eine Geschichte: Jeder sagt einen Satz. Alle drei Bilder müssen vorkommen!" },
+          folie: "An der Tafel hängen **drei Bilder**.\n\nWir erzählen zusammen eine Geschichte: Jeder sagt einen Satz. Alle drei Bilder müssen vorkommen!",
+          kern: ["12", "34"] },
         { titel: "Meine drei Bilder", fuer: "alle", dauer: "4 Min",
           text: "Jedes Kind (oder jedes Tischpaar) zieht verdeckt drei neue Bildkarten. Damit geht es aufs Arbeitsblatt. Kl. 1/2 erzählen ihre Geschichte erst dem Nachbarn, dann malen sie.",
           folie: "Zieh drei Bildkarten. 🃏\n\nDaraus wird **deine** Geschichte.",
@@ -133,7 +134,8 @@ Am Abend schreibt Ella mit der Maschine ein Gedicht für ihre Oma:
     uebungen: [
         { titel: "Reim-Kette", fuer: "alle", dauer: "6 Min",
           text: "Du sagst ein Wort (Haus, Bein, Ball, Hund, Stern). Die Kinder melden sich und sagen vom Platz aus einen Reim. Wer keinen weiß, darf „Weiter!“ sagen. Auch Quatsch-Wörter zählen, wenn sie sich reimen (Haus – Maus – Klaus – Schmaus – Flaus).",
-          folie: "Was **reimt** sich? 👑\n\nAuch Quatsch-Wörter zählen: Haus – Maus – Klaus – Schmaus!" },
+          folie: "Was **reimt** sich? 👑\n\nAuch Quatsch-Wörter zählen: Haus – Maus – Klaus – Schmaus!",
+          kern: ["12", "34"] },
         { titel: "Reimt sich das?", fuer: "12", dauer: "4 Min",
           text: "Du sagst zwei Wörter. Reimen sie sich, zeigen die Kinder Daumen hoch, sonst runter:\n\n- Maus – Haus\n- Ball – Fisch\n- Hose – Rose\n- Sonne – Mond\n- Kerze – Herz",
           antworten: ["👍 reimt sich", "👎 reimt sich nicht"],
@@ -199,10 +201,12 @@ Am Ende des Tages haben die beiden 50 versteckte Wörter gefunden. Rekord!
         { titel: "Anlaut-Klatschen", fuer: "12", dauer: "4 Min",
           text: "Du liest die Wörter vor. Fängt eins mit M an, klatschen alle.\n\n- Maus\n- Hund\n- Mond\n- Milch\n- Auto\n- Mama\n- Ball\n- Melone\n- Mütze\n- Fisch",
           quiz: "keine",
-          folie: "Hör gut zu! 👂\n\nFängt das Wort mit **M** an? Dann **klatsch**! 👏" },
+          folie: "Hör gut zu! 👂\n\nFängt das Wort mit **M** an? Dann **klatsch**! 👏",
+          kern: ["12"] },
         { titel: "Wörter im Wort", fuer: "34", dauer: "6 Min",
           text: "An der Tafel steht ein langes Wort: SONNENBLUMENFELD. Die Kinder suchen in Tischpaaren alle Wörter, die darin stecken (Buchstaben nebeneinander): Sonne, Blume, Feld, Blumen … Welches Paar findet die meisten?",
-          folie: "**SONNENBLUMENFELD** 🌻\n\nWelche Wörter stecken darin? Sucht zu zweit – welches Paar findet die meisten?" }
+          folie: "**SONNENBLUMENFELD** 🌻\n\nWelche Wörter stecken darin? Sucht zu zweit – welches Paar findet die meisten?",
+          kern: ["34"] }
     ],
     ab12: { titel: "Was fängt mit M an?", aufgaben: [
         { typ: "ankreuzen", text: "Kreuze alles an, was mit M anfängt.", nebeneinander: true,
@@ -258,13 +262,15 @@ Am Ende gewinnt Jonas mit 35 Punkten. „Das spielen wir jetzt jeden Tag!“
         { titel: "ABC-Tier-Kette", fuer: "alle", dauer: "6 Min",
           text: "Der Reihe nach nennt jedes Kind vom Platz aus ein Tier zum nächsten Buchstaben: Affe – Bär – C? (Chamäleon) – Dino … Wer nicht weiterweiß, darf die Klasse um Hilfe bitten. Kl. 1/2 dürfen statt Tiernamen auch Dinge nennen.",
           folie: "Jeder sagt ein Tier zum **nächsten Buchstaben**:\n\nAffe – Bär – C …? 🐒🐻",
-          folie12: "Jeder sagt ein Tier – oder ein Ding – zum **nächsten Buchstaben**:\n\nAffe – Bär – C …? 🐒🐻" },
+          folie12: "Jeder sagt ein Tier – oder ein Ding – zum **nächsten Buchstaben**:\n\nAffe – Bär – C …? 🐒🐻",
+          kern: ["12"] },
         { titel: "Tier-Pantomime nach Buchstaben", fuer: "12", dauer: "6 Min",
           text: "Du nennst einen Buchstaben (E, F, H, K, S). Ein Kind kommt nach vorn und spielt ein Tier mit diesem Anfangsbuchstaben vor. Die anderen raten.",
           folie: "Ein Kind spielt ein Tier vor, das mit dem Buchstaben anfängt. 🐘\n\nDie anderen raten." },
         { titel: "Stadt-Land-Fluss für Kinder", fuer: "34", dauer: "8 Min",
           text: "Die Kinder spielen auf dem Arbeitsblatt. Ein Kind sagt leise das ABC auf, ein anderes ruft „Stopp!“. Wer zuerst alle Spalten hat, ruft „Fertig!“ – dann zählt ihr: 10 Punkte für Wörter, die nur einer hat, 5 Punkte für gleiche Wörter.",
-          folie: "Stadt – Land – Fluss! 🗺️\n\nEiner sagt leise das ABC, ein anderer ruft **„Stopp!“**. Wer alle Spalten hat, ruft **„Fertig!“**" }
+          folie: "Stadt – Land – Fluss! 🗺️\n\nEiner sagt leise das ABC, ein anderer ruft **„Stopp!“**. Wer alle Spalten hat, ruft **„Fertig!“**",
+          kern: ["34"] }
     ],
     ab12: { titel: "Mein ABC-Tier", aufgaben: [
         { typ: "ankreuzen", text: "Welches Tier fängt mit E an? Kreuze an.", nebeneinander: true, optionen: ["Elefant", "Affe", "Ente", "Igel"] },
@@ -314,10 +320,12 @@ Zora schreibt zurück: 4 – 1 – 14 – 11 – 5. Rico braucht eine Weile – 
     uebungen: [
         { titel: "Bilder-Botschaft", fuer: "12", dauer: "6 Min",
           text: "Du malst drei einfache Bilder an die Tafel (z. B. Ball – Sonne – Haus: „Wir spielen draußen Ball und gehen dann nach Hause“). Die Kinder raten die Botschaft. Danach malt ein Kind eine Botschaft, die anderen raten.",
-          folie: "An der Tafel stehen **drei Bilder**. 🖼️\n\nWelche Botschaft steckt darin?" },
+          folie: "An der Tafel stehen **drei Bilder**. 🖼️\n\nWelche Botschaft steckt darin?",
+          kern: ["12"] },
         { titel: "Code knacken", fuer: "34", dauer: "8 Min",
           text: "An der Tafel steht eine Zahlen-Botschaft im Agenten-Code, z. B. 16 – 1 – 21 – 19 – 5 (PAUSE). Die Kinder entschlüsseln in Tischpaaren. Wer fertig ist, verschlüsselt eine eigene Nachricht für den Nachbarn.",
-          folie: "Knackt den **Agenten-Code** 🕵️:\n\nA = 1 · B = 2 · C = 3 …\n\nDann verschlüsselt eine eigene Nachricht." },
+          folie: "Knackt den **Agenten-Code** 🕵️:\n\nA = 1 · B = 2 · C = 3 …\n\nDann verschlüsselt eine eigene Nachricht.",
+          kern: ["34"] },
         { titel: "Klatsch-Code", fuer: "alle", dauer: "4 Min",
           text: "Abgemacht: einmal klatschen = Ja, zweimal = Nein, auf den Tisch trommeln = Weiß ich nicht. Du stellst Fragen („Ist heute Montag?“, „Können Fische fliegen?“), die Klasse antwortet nur im Klatsch-Code.",
           folie: "👏 einmal klatschen = **Ja**\n👏👏 zweimal = **Nein**\n🥁 trommeln = **Weiß ich nicht**\n\nAntworte nur im Klatsch-Code!" }
@@ -377,11 +385,13 @@ Max überlegt. 21? 2 + 1 = 3, passt nicht. 22? Ist gerade. 23? 2 + 3 = 5 – und
         { titel: "Zahlen-Klatschen", fuer: "alle", dauer: "5 Min",
           text: "Ihr zählt der Reihe nach von Platz zu Platz. Kl. 1/2: Bei 5 und 10 klatscht das Kind, statt die Zahl zu sagen. Kl. 3/4: Bei jeder Zahl der 3er-Reihe wird geklatscht (3, 6, 9 …). Wer sich vertut, fängt wieder bei 1 an.",
           folie12: "Wir zählen von Platz zu Platz.\n\nBei **5** und **10** wird **geklatscht** statt gesprochen! 👏",
-          folie34: "Wir zählen von Platz zu Platz.\n\nBei jeder Zahl der **3er-Reihe** (3, 6, 9 …) wird **geklatscht**! 👏" },
+          folie34: "Wir zählen von Platz zu Platz.\n\nBei jeder Zahl der **3er-Reihe** (3, 6, 9 …) wird **geklatscht**! 👏",
+          kern: ["12"] },
         { titel: "Ich denke mir eine Zahl", fuer: "alle", dauer: "7 Min",
           text: "Du denkst dir eine Zahl (Kl. 1/2 bis 20, Kl. 3/4 bis 100). Die Kinder raten, du sagst nur „größer“ oder „kleiner“. Wie viele Versuche braucht die Klasse? Danach darf ein Kind sich eine Zahl ausdenken.",
           folie12: "Ich denke mir eine Zahl bis **20**. 🤔\n\nRate! Ich sage nur **größer** oder **kleiner**.",
-          folie34: "Ich denke mir eine Zahl bis **100**. 🤔\n\nRate! Ich sage nur **größer** oder **kleiner**." }
+          folie34: "Ich denke mir eine Zahl bis **100**. 🤔\n\nRate! Ich sage nur **größer** oder **kleiner**.",
+          kern: ["34"] }
     ],
     ab12: { titel: "Der Schatz von Pirat Paul", aufgaben: [
         { typ: "tabelle", text: "Zähle und schreibe die Zahl.", spalten: ["Schatz", "Wie viele?"],
@@ -431,7 +441,8 @@ Zum Schluss kommt die schwerste Reihe: 1 – 4 – 9 – 16 – ? Niemand weiß 
     uebungen: [
         { titel: "Klatsch-Muster", fuer: "alle", dauer: "5 Min",
           text: "An der Tafel steht ein Muster aus Zeichen: 👏 🦶 👏 🦶 … (klatschen – stampfen). Die Klasse macht es nach und setzt es fort. Dann ein schwereres Muster: 👏 👏 🫰 (klatschen – klatschen – schnipsen). Danach darf ein Kind ein eigenes Muster an die Tafel malen, die Klasse macht es nach. Du leitest nur an.",
-          folie: "Macht das Muster nach und setzt es fort:\n\n👏 🦶 👏 🦶 …\n\nSchwerer: 👏 👏 🫰 👏 👏 🫰 …" },
+          folie: "Macht das Muster nach und setzt es fort:\n\n👏 🦶 👏 🦶 …\n\nSchwerer: 👏 👏 🫰 👏 👏 🫰 …",
+          kern: ["12", "34"] },
         { titel: "Menschen-Muster", fuer: "alle", dauer: "5 Min",
           text: "Die Kinder bilden der Reihe nach ein Muster am Platz: stehen – sitzen – stehen – sitzen … oder Arme hoch – Arme zur Seite. Bei jedem Kind fragst du: „Was kommt jetzt?“",
           folie: "Wir bilden ein **Muster** – Kind für Kind:\n\nstehen – sitzen – stehen – sitzen …\n\n**Was kommt jetzt?**" }
@@ -486,13 +497,15 @@ Als Nächstes plant Q7 eine Rakete. Doch dafür braucht er viel mehr Dreiecke �
     uebungen: [
         { titel: "Formen-Detektive", fuer: "alle", dauer: "6 Min",
           text: "Die Kinder suchen vom Platz aus Formen im Raum: Uhr = Kreis, Tafel = Rechteck, Fenster = Quadrat? Wer eine Form entdeckt, meldet sich und zeigt darauf.",
-          folie: "Such **Formen** im Raum! 🔍\n\n⚪ Kreis · ⬛ Quadrat · 🔺 Dreieck · ▬ Rechteck" },
+          folie: "Such **Formen** im Raum! 🔍\n\n⚪ Kreis · ⬛ Quadrat · 🔺 Dreieck · ▬ Rechteck",
+          kern: ["12"] },
         { titel: "Luft-Formen", fuer: "12", dauer: "4 Min",
           text: "Alle malen mit dem Finger Formen in die Luft: einen großen Kreis, ein spitzes Dreieck, ein Quadrat. Dann mit geschlossenen Augen. Zum Schluss malt der Tischnachbar eine Form auf den Rücken – welche war es?",
           folie: "Mal mit dem Finger in die Luft:\n\n⚪ einen großen Kreis · 🔺 ein spitzes Dreieck · ⬛ ein Quadrat\n\nDann mit geschlossenen Augen!" },
         { titel: "Formen-Diktat", fuer: "34", dauer: "5 Min",
           text: "Du diktierst: „Male ein großes Quadrat. Setze ein Dreieck darauf. Male links oben einen Kreis.“ Die Kinder zeichnen. Danach vergleichen die Tischnachbarn: Sehen eure Bilder gleich aus?",
-          folie: "Hör gut zu und **zeichne**, was gesagt wird. ✏️\n\nDanach vergleicht ihr: Sehen eure Bilder gleich aus?" }
+          folie: "Hör gut zu und **zeichne**, was gesagt wird. ✏️\n\nDanach vergleicht ihr: Sehen eure Bilder gleich aus?",
+          kern: ["34"] }
     ],
     ab12: { titel: "Mein Formen-Bild", aufgaben: [
         { typ: "ankreuzen", text: "Welche Form hat die Uhr?", nebeneinander: true, optionen: ["● Kreis", "▲ Dreieck", "■ Quadrat"] },
@@ -545,7 +558,8 @@ Mia zeichnet daraus ein Säulendiagramm: Für jedes Kind ein Kästchen nach oben
           folie: "**Wie viele** von uns haben Geschwister? 🤔\n\nErst schätzen – dann zählen. Wer lag am nächsten dran?" },
         { titel: "Hand hoch – Strichliste", fuer: "alle", dauer: "8 Min",
           text: "Du stellst eine Frage mit Antworten zum Melden (Lieblingsobst, Lieblingsfarbe, Wie kommst du zur Schule?). Die Kinder melden sich, ein Kind macht an der Tafel die Strichliste. Kl. 3/4 überlegen sich danach eigene Umfragen für das Arbeitsblatt.",
-          folie: "Melde dich bei deiner Antwort! ✋\n\nEin Kind macht an der Tafel die **Strichliste**." }
+          folie: "Melde dich bei deiner Antwort! ✋\n\nEin Kind macht an der Tafel die **Strichliste**.",
+          kern: ["12", "34"] }
     ],
     ab12: { titel: "Unsere Strichliste", aufgaben: [
         { typ: "tabelle", text: "Lieblingsobst: Mache für jedes Kind einen Strich. Wie viele sind es?", spalten: ["Obst", "Striche", "Anzahl"],
@@ -604,7 +618,8 @@ Emil geht zum Fußballplatz – und findet den Ball im Tor. Cara wird rot: „Ic
     uebungen: [
         { titel: "Kim-Spiel: Was fehlt?", fuer: "alle", dauer: "6 Min",
           text: "Auf deinem Tisch liegen 8 Gegenstände. Die Kinder schauen 30 Sekunden genau hin. Dann deckst du alles ab und nimmst heimlich einen Gegenstand weg. Welcher fehlt? Kl. 3/4: Du nimmst zwei weg oder vertauschst die Reihenfolge.",
-          folie: "Schau **30 Sekunden** ganz genau hin. 👀\n\nDann wird etwas weggenommen. **Was fehlt?**" },
+          folie: "Schau **30 Sekunden** ganz genau hin. 👀\n\nDann wird etwas weggenommen. **Was fehlt?**",
+          kern: ["12", "34"] },
         { titel: "Ja-Nein-Rätsel", fuer: "alle", dauer: "6 Min",
           text: "Du denkst an einen Gegenstand im Raum. Die Kinder stellen Fragen, auf die du nur mit Ja oder Nein antwortest („Ist es rund?“ – „Kann man es essen?“). Wie viele Fragen braucht die Klasse?",
           folie: "Ich denke an etwas hier im Raum. 🤔\n\nFrag mich – ich antworte nur mit **Ja** oder **Nein**." }
