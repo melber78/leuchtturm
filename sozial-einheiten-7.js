@@ -405,8 +405,8 @@ K({
     id: "k-schlichten",
     titel: "Streit schlichten",
     ziel34: "Die Schritte einer Streitschlichtung kennen und als neutrale Person helfen können",
-    material: "Plakat „Friedensweg“ (Arbeitsmaterial)\nTafel: 4 Schritte",
-    materialIds: ["friedensweg"],
+    material: "Tafel: die 4 Schritte der Schlichtung",
+    materialIds: [],
     lerntext34: { titel: "Die Schlichterin", text:
 `In der 4c gibt es zwei Streitschlichter: Amira und Paul. Heute kommen Jonas und Elias zu ihnen. Sie haben sich in der Pause um den Ball gestritten, Elias hat Jonas getreten.
 

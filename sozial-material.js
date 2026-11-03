@@ -289,6 +289,80 @@ const ZUORDNUNG = {
     "v-hilfsbereitschaft": ["helfer-auftrag", "namenszettel"],
     "v-gerecht": ["pflaster"]
 };
+// Wofür ist das Material? (wird beim Material angezeigt)
+const WOZU = {
+"gefuehlsbarometer": "Für das Ritual am Anfang: Die Gesichter hängen an der Tafel, jedes Kind steckt seine Klammer an sein Gefühl.",
+"gespraechsregeln": "Hängt dauerhaft im Raum. Wenn es laut wird: Kurz auf das Plakat zeigen, statt zu ermahnen.",
+"namenszettel": "Für Übungen, bei denen Namen gezogen werden (z. B. Kompliment-Post). Einmal ausfüllen lassen und aufbewahren.",
+"ablauf-karten": "Hängen die ganze Stunde an der Tafel. Was erledigt ist, drehst du um – die Kinder sehen, wo ihr gerade seid.",
+"ruhezeichen": "Hältst du hoch, wenn es ruhig werden soll – statt laut zu rufen. Vorher einmal mit der Gruppe vereinbaren.",
+"redekarte": "Wer die Karte hat, spricht – die anderen hören zu. Wandert im Gesprächskreis weiter.",
+"begruessung-plakat": "Hängt beim Ankommen an der Tafel. Die Kinder wählen, wie sie begrüßt werden möchten.",
+"klammer-etiketten": "Auf Wäscheklammern kleben – jedes Kind hat seine Klammer fürs Gefühlsbarometer.",
+"barometer-plakat": "Alternative zu den Gesichtern: ein Plakat für das Gefühlsbarometer, die Kinder stecken ihre Klammer daneben.",
+"abschluss-saetze": "Für die Abschlussrunde Kl. 3/4: Ein Satzstreifen an die Tafel, jedes Kind ergänzt ihn.",
+"abschluss-gesichter": "Für die Abschlussrunde Kl. 1/2: Jedes Kind zeigt, wie die Stunde für es war.",
+"murmelglas": "Belohnungssystem: Für gutes Miteinander kommt eine Murmel (oder ein Kreuz) ins Glas. Volles Glas = Gruppenspiel.",
+"gutschein-spiel": "Die Belohnung, wenn das Murmelglas voll ist.",
+"gefuehlskarten-gross": "Hältst du beim Vorlesen hoch, wenn ein Gefühl vorkommt – oder hängst sie an die Tafel.",
+"gefuehlskarten-klein": "Verdeckt ziehen für Pantomime und Gefühls-Raten.",
+"rot-gruen": "Pro Kind eine rote und eine grüne Karte – für alle Abstimmungen, bei denen die Folie Rot und Grün zeigt.",
+"zahlenkarten": "Pro Kind ein Satz 1–4 – für alle Abstimmungen, bei denen die Folie Zahlen zeigt (z. B. 1 = Abwechseln, 2 = Teilen …).",
+"vulkan-bild": "Zeigst du beim Vorlesen der Geschichte von Vulki – oder hängst es an die Tafel.",
+"wut-werkzeuge": "Für die Übung „Werkzeugkasten sortieren“: Jedes Tischpaar bekommt einen Satz und sortiert.",
+"trost-karten": "Für die Trost-Post: Die Kinder malen oder schreiben darauf.",
+"mutmacher": "Jedes Kind sucht sich eine Karte aus und nimmt sie mit – als Mutmacher für die Hosentasche.",
+"perspektiv-brille": "Ausschneiden und basteln – wer die Brille aufsetzt, spricht als die andere Person.",
+"stopp-schild": "Hältst du hoch, wenn in der Geschichte „Stopp!“ gesagt wird, und beim Stopp-Chor als Zeichen: Jetzt aufstehen und Stopp-Hand zeigen.",
+"friedensweg": "Wird in der aktuellen Fassung nicht mehr gebraucht – nur falls du den Friedensweg trotzdem machen möchtest.",
+"loesungskarten": "Wird nicht mehr gebraucht – die Lösungen zeigen die Kinder jetzt mit den Zahlenkarten 1–4.",
+"ich-botschaft": "Hängt an der Tafel, solange ihr Ich-Botschaften übt. Die Kinder schauen darauf, wenn sie einen Satz bilden.",
+"hilfe-fragen": "Hängt an der Tafel bei „Petzen oder Hilfe holen?“ – die Kinder prüfen damit jede Situation.",
+"entschuldigungs-treppe": "Hängt an der Tafel, während die Tischpaare die Entschuldigung üben.",
+"entschuldigung-situationen": "Für die Entschuldigungs-Treppe: Jedes Tischpaar zieht eine Karte und übt damit.",
+"konfliktkarten": "Für die Kompromiss-Werkstatt: Jedes Tischpaar zieht eine Karte und sucht eine Lösung.",
+"nein-karten": "Die Kinder halten die Karte hoch, während sie laut „Nein!“ sagen.",
+"nein-saetze": "Hängt an der Tafel – die Kinder suchen sich daraus ihren Nein-Satz aus.",
+"kompliment-zettel": "Für die Kompliment-Post: Jedes Kind malt oder schreibt sein Kompliment darauf.",
+"einladungssaetze": "Hängt an der Tafel, während die Tischpaare das Einladen üben.",
+"pizza": "Für „Pizza teilen“: Jedes Kind bekommt einen Kreis zum Falten.",
+"teilen-bildkarten": "Optional – die Dinge stehen auch einzeln auf den Folien.",
+"steh-auf-karten": "Optional – die Sätze stehen auch einzeln auf den Folien.",
+"gespraechsstarter": "Hängt an der Tafel – Ideen für gute Fragen beim Kennenlernen.",
+"gruppenregeln-leer": "Für das Regelplakat: Hier tragt ihr eure abgestimmten Regeln ein.",
+"regel-vorschlag": "Jedes Kind schreibt oder malt seinen Regel-Vorschlag darauf.",
+"zauberwoerter": "Hängen an der Tafel als Erinnerung an die Zauberwörter.",
+"dienste": "Für „Unsere Dienste“: Jedes Kind wählt eine Karte, die Karten hängen am Plakat.",
+"pausen-plakat": "Für den Pausen-Plan: Hier kommen die Ideen der Kinder drauf.",
+"staerken-karten": "Für die Stärken-Dusche: Du schreibst die Stärken darauf, das Kind darf die Karte behalten.",
+"mut-gesichter": "Hängt an der Tafel – zeigt die verschiedenen Arten von Mut.",
+"noch-plakat": "Hängt an der Tafel – Erinnerung an das Wort „noch“.",
+"urkunde-stolz": "Zum Verschenken am Ende der Stunde.",
+"zuhoer-regeln": "Hängt an der Tafel – so sieht ein Zuhör-Körper aus.",
+"statuen-karten": "Verdeckt ziehen für „Statuen raten“.",
+"hilfe-saetze": "Hängt an der Tafel – die Kinder suchen sich ihren Hilfe-Satz aus.",
+"team-regeln": "Hängt an der Tafel bei der Teamarbeit.",
+"fairplay-saetze": "Hängt an der Tafel – Sätze für gute Gewinner und Verlierer.",
+"urkunde-fairplay": "Zum Verschenken an ein Kind, das besonders fair war.",
+"orchester-karten": "Für das Klang-Orchester: Jedes Kind zieht seinen Klang.",
+"kasten-atmen": "Hängt an der Tafel – die Kinder fahren das Quadrat beim Atmen mit dem Finger nach.",
+"ruhe-karten": "Zum Mitnehmen: kleine Erinnerung an die Ruhe-Tricks.",
+"sinne-karten": "Hängen an der Tafel – die fünf Sinne zum Zeigen.",
+"danke-karten": "Für die Danke-Karte: Die Kinder malen oder schreiben darauf.",
+"gluecksglas-zettel": "Für die Glücksmomente: Jeder Moment kommt auf einen Zettel ins Glas.",
+"sprachen-hallo": "Hängen an der Tafel – „Hallo“ in vielen Sprachen.",
+"zuschauer-plakat": "Hängt an der Tafel – was Zuschauer tun können.",
+"helfer-auftrag": "Für die Geheimen Helfer: Jedes Kind zieht einen Auftrag.",
+"geschichten-bildkarten": "Für die Geschichten-Kette und „Meine drei Bilder“: verdeckt ziehen.",
+"montagsmaler-begriffe": "Für Montagsmaler: verdeckt ziehen und malen.",
+"bewegungs-karten": "Für den Bewegungs-Würfel: Ein Kind zieht, die Augenzahl sagt, wie oft.",
+"tier-karten": "Für „Wer bin ich?“: verdeckt ziehen.",
+"schatz-hinweise": "Für die Schatzsuche: vor der Stunde im Raum verstecken.",
+"schutzsaetze-familie": "Hängt an der Tafel – die Kinder suchen sich daraus ihren Schutzsatz aus.",
+"grenzen-gewalt": "Hängt dauerhaft im Raum – die Grenzen, die immer gelten.",
+"pflaster": "Für das Pflaster-Spiel: Du klebst jedem Kind eins auf."
+};
+Object.keys(WOZU).forEach(k => { if (B[k]) B[k].wozu = WOZU[k]; });
 const ALLGEMEIN = ["ablauf-karten", "ruhezeichen", "redekarte", "begruessung-plakat", "namenszettel", "gefuehlsbarometer", "barometer-plakat", "klammer-etiketten",
     "gespraechsregeln", "rot-gruen", "zahlenkarten", "abschluss-saetze", "abschluss-gesichter", "murmelglas", "gutschein-spiel"];
 /* Material je Ritual (Reihenfolge wie in der Stunde) */
@@ -318,7 +392,8 @@ function materialFuer(e){
     });
     // Situationskarten automatisch aus Übungen mit Aufzählung (außer es gibt dafür schon passende Karten)
     const abgedeckt = new Set(liste.map(m => m.uebung).filter(Boolean));
-    if (!(e.materialien && e.materialien.ohneAuto)) (e.uebungen || []).forEach((u, i) => {
+    // Situationen stehen jetzt einzeln auf den Folien – automatische Situationskarten nur noch auf ausdrücklichen Wunsch
+    if (e.materialien && e.materialien.autoKarten) (e.uebungen || []).forEach((u, i) => {
         const punkte = aufzaehlung(u.text);
         if (punkte.length >= 3 && !abgedeckt.has(u.titel)) liste.push({ id: "auto-" + i, titel: "Situationskarten: " + u.titel, art: "karten", proSeite: 8, kopf: u.titel, items: punkte.map(t => ({ text: t })), auto: true, hinweis: "Aus der Übung erzeugt – zum Vorlesen oder verdeckt Ziehen." });
     });

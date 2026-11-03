@@ -222,6 +222,7 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .druck-posten .btn{ flex:1; justify-content:flex-start; }
 .druck-anzahl{ display:inline-flex; align-items:center; gap:3px; font-weight:900; color:var(--grau); }
 .druck-anzahl input{ width:58px; font-size:17px; font-weight:800; text-align:center; padding:8px 4px; border:2px solid var(--linie); border-radius:10px; }
+.m-wozu{ font-size:15px; line-height:1.4; background:#fff7e6; border-left:4px solid var(--gold); border-radius:8px; padding:6px 10px; margin:4px 0 6px; }
 .speicherstatus{ font-weight:800; font-size:13px; color:var(--grau); }
 .speicherstatus.ok{ color:var(--gruen); }
 .speicherstatus.fehler{ color:var(--rot); }
@@ -1237,7 +1238,7 @@ function zeigeStunde(id){
         const mats = window.sozialMaterial.fuer(e);
         const ml = document.getElementById("materialListe");
         ml.innerHTML = mats.length ? mats.map((m, k) => `<div class="m-eintrag"><div class="vorschau" data-mvorschau="${k}"></div>
-            <strong>${esc(m.titel)}</strong><small>${window.sozialMaterial.seitenZahl(m)} Seite${window.sozialMaterial.seitenZahl(m) > 1 ? "n" : ""}${m.hinweis ? " · " + esc(m.hinweis) : ""}</small>
+            <strong>${esc(m.titel)}</strong>${m.wozu ? `<div class="m-wozu"><b>Wofür?</b> ${esc(m.wozu)}</div>` : ""}<small>${window.sozialMaterial.seitenZahl(m)} Seite${window.sozialMaterial.seitenZahl(m) > 1 ? "n" : ""}${m.hinweis ? " · " + esc(m.hinweis) : ""}</small>
             <button class="btn klein blau" data-mdruck="${k}"><i class="fa-solid fa-print"></i> Drucken</button></div>`).join("") : '<div class="leer">Für diese Stunde ist kein Material hinterlegt. Über „Bearbeiten“ kannst du welches aus der Bibliothek auswählen.</div>';
         ml.querySelectorAll("[data-mvorschau]").forEach(r => window.sozialMaterial.vorschau(r, mats[+r.dataset.mvorschau]));
         ml.querySelectorAll("[data-mdruck]").forEach(b => b.addEventListener("click", () => window.sozialMaterial.drucken([mats[+b.dataset.mdruck]], e.titel + " – " + mats[+b.dataset.mdruck].titel)));
@@ -1756,7 +1757,7 @@ function zeigeJahresplanBehalten(){ const y = window.scrollY; zeigeJahresplan();
 function materialEintraege(ids, ziel){
     const SM = window.sozialMaterial; SM.cssLaden();
     const mats = ids.map(id => Object.assign({ id }, SM.bibliothek[id]));
-    ziel.innerHTML = mats.map((m, k) => `<div class="m-eintrag"><div class="vorschau" data-k="${k}"></div><strong>${esc(m.titel)}</strong><small>${SM.seitenZahl(m)} Seite${SM.seitenZahl(m) > 1 ? "n" : ""}${m.hinweis ? " · " + esc(m.hinweis) : ""}</small><button class="btn klein blau" data-d="${k}"><i class="fa-solid fa-print"></i> Drucken</button></div>`).join("");
+    ziel.innerHTML = mats.map((m, k) => `<div class="m-eintrag"><div class="vorschau" data-k="${k}"></div><strong>${esc(m.titel)}</strong>${m.wozu ? `<div class="m-wozu"><b>Wofür?</b> ${esc(m.wozu)}</div>` : ""}<small>${SM.seitenZahl(m)} Seite${SM.seitenZahl(m) > 1 ? "n" : ""}${m.hinweis ? " · " + esc(m.hinweis) : ""}</small><button class="btn klein blau" data-d="${k}"><i class="fa-solid fa-print"></i> Drucken</button></div>`).join("");
     ziel.querySelectorAll("[data-k]").forEach(r => SM.vorschau(r, mats[+r.dataset.k]));
     ziel.querySelectorAll("[data-d]").forEach(btn => btn.addEventListener("click", () => SM.drucken([mats[+btn.dataset.d]], mats[+btn.dataset.d].titel)));
 }
