@@ -217,6 +217,11 @@ tr.kl-details td{ background:#f6f9fb; }
 .kl-nach{ font-size:13.5px; line-height:1.45; } .kl-nach.leer{ color:var(--grau); font-weight:700; }
 table.plan select, table.plan input[type=text]{ padding:6px 8px; }
 table.plan input[type=checkbox]{ width:20px; height:20px; }
+.druck-raster{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:8px; margin-top:10px; }
+.druck-posten{ display:flex; align-items:center; gap:8px; }
+.druck-posten .btn{ flex:1; justify-content:flex-start; }
+.druck-anzahl{ display:inline-flex; align-items:center; gap:3px; font-weight:900; color:var(--grau); }
+.druck-anzahl input{ width:58px; font-size:17px; font-weight:800; text-align:center; padding:8px 4px; border:2px solid var(--linie); border-radius:10px; }
 .speicherstatus{ font-weight:800; font-size:13px; color:var(--grau); }
 .speicherstatus.ok{ color:var(--gruen); }
 .speicherstatus.fehler{ color:var(--rot); }
@@ -851,13 +856,20 @@ function lehrerHtml(e){
         ${(e.uebungen || []).length ? "<h2>Übungen</h2>" + e.uebungen.map(u => `<div class="ld-uebung"><h3>${esc(u.titel)} <span class="ld-badge">· ${FUER[u.fuer] || "Alle"}${u.dauer ? " · " + esc(u.dauer) : ""}</span></h3><div class="md">${md(u.text)}</div></div>`).join("") : ""}
     </div>`;
 }
+function anzahlGemerkt(k){ try { const v = parseInt(localStorage.getItem("sozial_anz_" + k), 10); if (v > 0) return v; if (k.startsWith("lese")) return parseInt(localStorage.getItem("sozial_anzahl"), 10) || 1; } catch (err) {} return 1; }
+function anzahlFeld(k){ return `<label class="druck-anzahl" title="Anzahl Exemplare"><input type="number" data-anzahl="${k}" min="1" max="40" value="${anzahlGemerkt(k)}" inputmode="numeric"><span>×</span></label>`; }
+function druckAnzahl(k){
+    const f = document.querySelector(`[data-anzahl="${k}"]`);
+    const n = Math.max(1, Math.min(40, parseInt(f ? f.value : anzahlGemerkt(k), 10) || 1));
+    try { localStorage.setItem("sozial_anz_" + k, n); } catch (err) {}
+    return n;
+}
 async function drucken(e, was){
     const ziel = document.getElementById("druck");
     ziel.innerHTML = "";
     if (was === "lese12" || was === "lese34") {
         const st = was.slice(4);
-        const anzahl = Math.max(1, Math.min(30, parseInt((document.getElementById("leseAnzahl") || {}).value, 10) || 1));
-        try { localStorage.setItem("sozial_anzahl", anzahl); } catch (err) {}
+        const anzahl = druckAnzahl(was);
         const erstes = lesetextBlatt(e, st);
         ziel.appendChild(erstes);
         await schriften();
@@ -871,13 +883,14 @@ async function drucken(e, was){
     } else {
         if (was === "lehrer" || was === "alles") ziel.insertAdjacentHTML("beforeend", lehrerHtml(e));
         const blaetter = [];
-        if (was === "ab1" || (was === "alles" && !e.nur34)) blaetter.push(blattBauen(e, "1"));
-        if (was === "ab2" || was === "ab12" || (was === "alles" && !e.nur34)) blaetter.push(blattBauen(e, "2"));
-        if (was === "ab34" || was === "alles") blaetter.push(blattBauen(e, "34"));
-        blaetter.forEach(b => ziel.appendChild(b));
+        if (was === "ab1" || (was === "alles" && !e.nur34)) blaetter.push([blattBauen(e, "1"), druckAnzahl("ab1")]);
+        if (was === "ab2" || was === "ab12" || (was === "alles" && !e.nur34)) blaetter.push([blattBauen(e, "2"), druckAnzahl("ab2")]);
+        if (was === "ab34" || was === "alles") blaetter.push([blattBauen(e, "34"), druckAnzahl("ab34")]);
+        blaetter.forEach(([b]) => ziel.appendChild(b));
         await schriften();
-        const voll = blaetter.filter(b => !einpassen(b));
+        const voll = blaetter.filter(([b]) => !einpassen(b));
         if (voll.length && !confirm("Ein Arbeitsblatt ist zu voll für eine Seite und wird unten abgeschnitten. Trotzdem drucken?")) { ziel.innerHTML = ""; return; }
+        blaetter.forEach(([b, n]) => { let nach = b; for (let k = 1; k < n; k++) { const c = b.cloneNode(true); nach.after(c); nach = c; } });
     }
     const titel = document.title;
     document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 2", ab34: " – AB Kl. 3-4" }[was] || "");
@@ -1094,18 +1107,16 @@ function zeigeStunde(id){
                 <button class="btn blau" data-druck="lehrer"><i class="fa-solid fa-chalkboard-user"></i> Stundenvorbereitung</button>
                 ${window.sozialRegie ? `<button class="btn blau" data-druck="regie12"><i class="fa-solid fa-list-ol"></i> Ablauf Schritt für Schritt Kl. 1/2</button>
                 <button class="btn blau" data-druck="regie34"><i class="fa-solid fa-list-ol"></i> Ablauf Schritt für Schritt Kl. 3/4</button>` : ""}
-                <button class="btn blau" data-druck="ab1"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 1</button>
-                <button class="btn blau" data-druck="ab2"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 2</button>
-                <button class="btn blau" data-druck="ab34"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 3/4</button>
-                <button class="btn gold" data-druck="alles"><i class="fa-solid fa-layer-group"></i> Alles zusammen</button>
             </div>
-            <div class="knopfleiste" style="margin-top:10px;align-items:center">
-                <strong style="font-size:14px">Lesetext für die Kinder:</strong>
-                <button class="btn" data-druck="lese12"><i class="fa-solid fa-book-open"></i> Kl. 1/2</button>
-                <button class="btn" data-druck="lese34"><i class="fa-solid fa-book-open"></i> Kl. 3/4</button>
-                <label style="display:inline-flex;gap:6px;align-items:center;font-weight:800;font-size:14px">Exemplare <input type="number" id="leseAnzahl" min="1" max="30" value="${(() => { try { return parseInt(localStorage.getItem("sozial_anzahl"), 10) || 9; } catch (err) { return 9; } })()}" style="width:70px"></label>
+            <div class="druck-raster">
+                <div class="druck-posten nur12">${anzahlFeld("ab1")}<button class="btn blau" data-druck="ab1"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 1</button></div>
+                <div class="druck-posten nur12">${anzahlFeld("ab2")}<button class="btn blau" data-druck="ab2"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 2</button></div>
+                <div class="druck-posten">${anzahlFeld("ab34")}<button class="btn blau" data-druck="ab34"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 3/4</button></div>
+                <div class="druck-posten nur12">${anzahlFeld("lese12")}<button class="btn" data-druck="lese12"><i class="fa-solid fa-book-open"></i> Lesetext Kl. 1/2</button></div>
+                <div class="druck-posten">${anzahlFeld("lese34")}<button class="btn" data-druck="lese34"><i class="fa-solid fa-book-open"></i> Lesetext Kl. 3/4</button></div>
             </div>
-            <p class="ed-hilfe" style="margin-top:10px">Der Lesetext kommt ohne deine Hinweise auf eine A4-Seite – die Abschnitt-Nummern passen zu den Folien („Wer liest vor?“). Tipp: Im Druckfenster „Als PDF sichern“ wählen, um die Stunde als PDF abzulegen.</p>
+            <div class="knopfleiste" style="margin-top:10px"><button class="btn gold" data-druck="alles"><i class="fa-solid fa-layer-group"></i> Alles zusammen</button><span class="ed-hilfe" style="margin:0;align-self:center">Stundenvorbereitung + alle Arbeitsblätter in der eingestellten Anzahl</span></div>
+            <p class="ed-hilfe" style="margin-top:10px">Die Zahl vor jedem Knopf ist die Anzahl der Exemplare – sie wird gemerkt. Der Lesetext kommt ohne deine Hinweise auf eine A4-Seite – die Abschnitt-Nummern passen zu den Folien („Wer liest vor?“). Tipp: Im Druckfenster „Als PDF sichern“ wählen, um die Stunde als PDF abzulegen.</p>
         </div>
 
         ${window.sozialMaterial ? `<div class="karte"><div class="detail-kopf" style="margin:0 0 12px"><div class="titel"><h2 style="margin:0"><i class="fa-solid fa-scissors"></i> Arbeitsmaterial</h2>
