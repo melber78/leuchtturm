@@ -205,7 +205,7 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
     dauer: 40,
     ziel12: "Im Streit aussteigen: weggehen und Hilfe holen statt hauen",
     ziel34: "Merken, wann es kocht, rechtzeitig aussteigen und den Streit später mit Hilfe klären",
-    material: "Zahlenkarten 1–3 (Antwort-Set)\nPlakat „Erst raus, dann reden“ (Arbeitsmaterial)",
+    material: "Zahlenkarten 1–3 (Antwort-Set)\nPlakat „Streit-Ampel“ (Arbeitsmaterial)",
     verlauf: [
       {
         "zeit": "0–5",
@@ -216,14 +216,14 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
       {
         "zeit": "5–15",
         "phase": "Geschichte",
-        "k12": "„Die Schaukel“ hören, die 4 Schritte an der Tafel",
-        "k34": "„Kein Tor!“ hören, Tafelbild Merken – Raus – Holen – Später reden"
+        "k12": "„Die Schaukel“ hören, Streit-Ampel an der Tafel",
+        "k34": "„Kein Tor!“ hören, Streit-Ampel an der Tafel"
       },
       {
         "zeit": "15–23",
         "phase": "Übung",
-        "k12": "Was jetzt? (Zahlenkarten)",
-        "k34": "Was jetzt? (Zahlenkarten)"
+        "k12": "Was jetzt? – Streit-Ampel (Zahlenkarten)",
+        "k34": "Was jetzt? – Streit-Ampel (Zahlenkarten)"
       },
       {
         "zeit": "23–33",
@@ -240,11 +240,11 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
     ],
     lerntext12: {
       "titel": "Die Schaukel",
-      "text": "Auf dem Schulhof gibt es nur eine Schaukel. Ella will schaukeln. Max will auch schaukeln.\n\nMax schubst Ella weg. Ella fällt hin. Ihr Bauch wird heiß. Ihre Hände werden zu Fäusten. Ella ist **wütend**. Sie will Max hauen.\n\nDa merkt Ella: „Es kocht in mir!“ Sie macht ihre Fäuste auf. Sie sagt nur: **„Stopp!“** – und dann **geht sie weg**. Weit weg von Max.\n\nElla läuft zur Lehrerin. „Max hat mich geschubst. Ich bin so wütend!“ Die Lehrerin sagt: „Gut, dass du weggegangen bist. Komm, wir atmen erst einmal.“\n\nNach der Pause sitzen Ella, Max und die Lehrerin zusammen. Jetzt sind alle ruhig. Max sagt: „Tut mir leid, dass ich dich geschubst habe.“ Morgen schaukelt Ella zuerst.\n\n**Nach dem Vorlesen:**\n1. Warum war Ella so wütend?\n2. Woran hat Ella gemerkt, dass es in ihr kocht?\n3. Was hat Ella gemacht, statt Max zu hauen?\n4. Wann haben Ella und Max den Streit geklärt – und wer hat geholfen?\n\n**Tipp für dich:** Schreib die vier Schritte an die Tafel: Merken – Raus – Holen – Später reden."
+      "text": "Auf dem Schulhof gibt es nur eine Schaukel. Ella will schaukeln. Max will auch schaukeln.\n\nMax schubst Ella weg. Ella fällt hin. Ihr Bauch wird heiß. Ihre Hände werden zu Fäusten. Ella ist **wütend**. Sie will Max hauen.\n\nDa merkt Ella: „Es kocht in mir!“ Sie macht ihre Fäuste auf. Sie sagt nur: **„Stopp!“** – und dann **geht sie weg**. Weit weg von Max.\n\nElla läuft zur Lehrerin. „Max hat mich geschubst. Ich bin so wütend!“ Die Lehrerin sagt: „Gut, dass du weggegangen bist. Komm, wir atmen erst einmal.“\n\nNach der Pause sitzen Ella, Max und die Lehrerin zusammen. Jetzt sind alle ruhig. Max sagt: „Tut mir leid, dass ich dich geschubst habe.“ Morgen schaukelt Ella zuerst.\n\n**Nach dem Vorlesen:**\n1. Warum war Ella so wütend?\n2. Woran hat Ella gemerkt, dass es in ihr kocht?\n3. Was hat Ella gemacht, statt Max zu hauen?\n4. Wann haben Ella und Max den Streit geklärt – und wer hat geholfen?\n\n**Tipp für dich:** Häng die Streit-Ampel an die Tafel (Arbeitsmaterial) und zeig beim Vorlesen darauf."
     },
     lerntext34: {
       "titel": "Kein Tor!",
-      "text": "In der großen Pause spielen Kenan und Sophie Fußball. Kenan schießt aufs Tor. Sophie ruft: „Kein Tor! Der war daneben!“ Kenan: „Spinnst du? Der war drin!“\n\nSophie schubst ihn. Ein paar Kinder rufen: „Lass dir das nicht gefallen, Kenan!“ Kenan spürt, wie sein Kopf heiß wird. Sein Kiefer ist fest, seine Fäuste auch. Er ist kurz vorm Explodieren.\n\nKenan weiß: Wenn er jetzt bleibt, gibt es eine Prügelei. Und dann ist er wieder der Schuldige. Er sagt nur: „Ich hab keinen Bock auf Stress.“ Dann dreht er sich um und geht zur Bank. Die anderen lachen. Es kostet ihn viel Kraft, nicht zurückzugehen.\n\nAn der Bank atmet Kenan tief durch. Er zählt die Autos auf dem Parkplatz. Langsam wird sein Kopf kühler. Dann geht er zur Pausenaufsicht: „Mit Sophie gab es Stress. Ich bin weggegangen.“\n\nNach der Pause setzen sich Kenan, Sophie und die Schulsozialarbeiterin zusammen. Jetzt können beide in Ruhe sagen, was sie geärgert hat. Sie verabreden: Beim nächsten Streit um ein Tor entscheidet die Aufsicht.\n\n**Fragen zum Gespräch:**\n1. Woran hat Kenan gemerkt, dass er kurz vorm Explodieren ist?\n2. Warum war es so schwer für ihn, wegzugehen?\n3. Was hat ihm an der Bank geholfen, ruhig zu werden?\n4. Warum klappt das Klären erst nach der Pause – und nicht mitten im Streit?\n\n**Tafelbild:** Merken – Raus – Holen – Später reden"
+      "text": "In der großen Pause spielen Kenan und Sophie Fußball. Kenan schießt aufs Tor. Sophie ruft: „Kein Tor! Der war daneben!“ Kenan: „Spinnst du? Der war drin!“\n\nSophie schubst ihn. Ein paar Kinder rufen: „Lass dir das nicht gefallen, Kenan!“ Kenan spürt, wie sein Kopf heiß wird. Sein Kiefer ist fest, seine Fäuste auch. Er ist kurz vorm Explodieren.\n\nKenan weiß: Wenn er jetzt bleibt, gibt es eine Prügelei. Und dann ist er wieder der Schuldige. Er sagt nur: „Ich hab keinen Bock auf Stress.“ Dann dreht er sich um und geht zur Bank. Die anderen lachen. Es kostet ihn viel Kraft, nicht zurückzugehen.\n\nAn der Bank atmet Kenan tief durch. Er zählt die Autos auf dem Parkplatz. Langsam wird sein Kopf kühler. Dann geht er zur Pausenaufsicht: „Mit Sophie gab es Stress. Ich bin weggegangen.“\n\nNach der Pause setzen sich Kenan, Sophie und die Schulsozialarbeiterin zusammen. Jetzt können beide in Ruhe sagen, was sie geärgert hat. Sie verabreden: Beim nächsten Streit um ein Tor entscheidet die Aufsicht.\n\n**Fragen zum Gespräch:**\n1. Woran hat Kenan gemerkt, dass er kurz vorm Explodieren ist?\n2. Warum war es so schwer für ihn, wegzugehen?\n3. Was hat ihm an der Bank geholfen, ruhig zu werden?\n4. Warum klappt das Klären erst nach der Pause – und nicht mitten im Streit?\n\n**Tafelbild:** Streit-Ampel – 🟢 kleiner Ärger: „Stopp“ / nicht beachten · 🟡 es kocht: weggehen · 🔴 jemand tut weh oder droht: Erwachsenen holen · danach: später reden"
     },
     uebungen: [
       {
@@ -255,16 +255,16 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
           "12",
           "34"
         ],
-        "text": "**Material:** Zahlenkarten 1–3 (aus dem Antwort-Set). An der Tafel bzw. auf der Folie: **1 = Weggehen · 2 = Hilfe holen · 3 = Später reden.** Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte: Was machst du **jetzt**? Danach fragst du: „Was ist daran schwer?“ Ehrliche Antworten sind erlaubt („Weggehen ist peinlich“) – genau darüber lohnt es sich zu reden.\n\n- Beim Fußball sagt einer, dein Tor zählt nicht. Alle schauen zu.\n- Jemand sagt einen Spruch über deine Mutter.\n- Einer rempelt dich im Flur an und grinst.\n- Im Klassenchat lachen alle über ein Foto von dir.\n- Jemand stellt sich dir in den Weg und sagt: „Was willst du?“\n\n**Wichtig:** Bei Gewalt, Drohung oder Bloßstellen ist immer auch 2 richtig: Hilfe holen.",
-        "text12": "**Material:** Zahlenkarten 1–3 (aus dem Antwort-Set). An der Tafel bzw. auf der Folie: **1 = Weggehen · 2 = Hilfe holen · 3 = Später reden.** Du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte: Was machst du jetzt? Oft passen mehrere – frag ein, zwei Kinder: „Warum?“\n\n- Jemand schubst dich in der Schlange.\n- Jemand nimmt dir den Ball weg.\n- Jemand sagt: „Du bist doof!“\n- Ein Kind haut dich.\n- Jemand macht deinen Turm kaputt.\n\n**Wichtig:** Wenn jemand haut oder wehtut, ist immer auch 2 richtig: Hilfe holen.",
-        "text34": "**Material:** Zahlenkarten 1–3 (aus dem Antwort-Set). An der Tafel bzw. auf der Folie: **1 = Weggehen · 2 = Hilfe holen · 3 = Später reden.** Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte: Was machst du **jetzt**? Danach fragst du: „Was ist daran schwer?“ Ehrliche Antworten sind erlaubt („Weggehen ist peinlich“) – genau darüber lohnt es sich zu reden.\n\n- Beim Fußball sagt einer, dein Tor zählt nicht. Alle schauen zu.\n- Jemand sagt einen Spruch über deine Mutter.\n- Einer rempelt dich im Flur an und grinst.\n- Im Klassenchat lachen alle über ein Foto von dir.\n- Jemand stellt sich dir in den Weg und sagt: „Was willst du?“\n\n**Wichtig:** Bei Gewalt, Drohung oder Bloßstellen ist immer auch 2 richtig: Hilfe holen.",
+        "text": "**Material:** Zahlenkarten 1–3 (Antwort-Set). An der Tafel bzw. auf der Folie steht die Streit-Ampel: **1 = „Stopp“ sagen oder nicht beachten** (kleiner Ärger) · **2 = Weggehen** (es kocht in mir) · **3 = Erwachsenen holen** (jemand tut weh oder droht). Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte. Danach: „Warum?“ und „Was ist daran schwer?“ Ehrliche Antworten sind erlaubt („Weggehen ist peinlich“) – genau darüber lohnt es sich zu reden. Wenn zwei Karten passen, ist das okay – Hauptsache: nicht zuschlagen.\n\n- Einer sagt im Vorbeigehen „Opfer“.\n- Jemand macht sich über deine Schuhe lustig.\n- Du merkst: Kopf heiß, Fäuste fest – gleich knallt's.\n- Jemand sagt einen Spruch über deine Mutter, alle lachen, du kochst.\n- Einer schubst dich immer wieder, damit du zuschlägst.\n- Jemand droht: „Nach der Schule bist du dran.“\n- Ein Video von dir wird im Klassenchat herumgeschickt.",
+        "text12": "**Material:** Zahlenkarten 1–3 (Antwort-Set). An der Tafel bzw. auf der Folie steht die Streit-Ampel: **1 = „Stopp“ sagen oder nicht beachten** (kleiner Ärger) · **2 = Weggehen** (es kocht in mir) · **3 = Erwachsenen holen** (jemand tut weh oder droht). Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte. Dann fragst du ein Kind: „Warum?“ Wenn zwei Karten passen, ist das okay – Hauptsache: nicht zuhauen.\n\n- Jemand sagt: „Du bist doof!“\n- Jemand drängelt sich in der Schlange vor.\n- Du bist so wütend, dass du hauen willst.\n- Jemand ärgert dich weiter, obwohl du „Stopp“ gesagt hast.\n- Ein Kind haut dich.\n- Ein Kind tritt ein anderes Kind, das am Boden liegt.",
+        "text34": "**Material:** Zahlenkarten 1–3 (Antwort-Set). An der Tafel bzw. auf der Folie steht die Streit-Ampel: **1 = „Stopp“ sagen oder nicht beachten** (kleiner Ärger) · **2 = Weggehen** (es kocht in mir) · **3 = Erwachsenen holen** (jemand tut weh oder droht). Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte. Danach: „Warum?“ und „Was ist daran schwer?“ Ehrliche Antworten sind erlaubt („Weggehen ist peinlich“) – genau darüber lohnt es sich zu reden. Wenn zwei Karten passen, ist das okay – Hauptsache: nicht zuschlagen.\n\n- Einer sagt im Vorbeigehen „Opfer“.\n- Jemand macht sich über deine Schuhe lustig.\n- Du merkst: Kopf heiß, Fäuste fest – gleich knallt's.\n- Jemand sagt einen Spruch über deine Mutter, alle lachen, du kochst.\n- Einer schubst dich immer wieder, damit du zuschlägst.\n- Jemand droht: „Nach der Schule bist du dran.“\n- Ein Video von dir wird im Klassenchat herumgeschickt.",
         "quiz": "zahlen",
         "antworten": [
-          "1️⃣ Weggehen",
-          "2️⃣ Hilfe holen",
-          "3️⃣ Später reden"
+          "🟢 1 · „Stopp“ / nicht beachten",
+          "🟡 2 · Weggehen",
+          "🔴 3 · Erwachsenen holen"
         ],
-        "folie": "Leg deine **Zahlenkarten 1–3** vor dich:\n\n**1** 🚶 Weggehen · **2** 🙋 Hilfe holen · **3** 🗣️ Später reden\n\nGleich kommt ein Streit. Was machst du **jetzt**? Auf **„1, 2, 3 – hoch!“** zeigst du deine Karte."
+        "folie": "Die **Streit-Ampel** – leg deine **Zahlenkarten 1–3** vor dich:\n\n🟢 **1** Kleiner Ärger → „Stopp“ sagen oder nicht beachten\n🟡 **2** Es kocht in mir → weggehen\n🔴 **3** Jemand tut weh oder droht → Erwachsenen holen\n\nWas machst du? Auf **„1, 2, 3 – hoch!“** zeigst du deine Karte."
       },
       {
         "titel": "Mein Raus-Satz",
