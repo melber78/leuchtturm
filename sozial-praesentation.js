@@ -210,6 +210,7 @@ function fragenAus(nach){
 function aufzaehlung(text){ return String(text || "").split("\n").filter(z => /^\s*[-•]\s+/.test(z)).map(z => z.replace(/^\s*[-•]\s+/, "").trim()); }
 function quizArt(text){
     const t = String(text).toLowerCase();
+    if (/lösungskarte/.test(t)) return "frage";
     if (/daumen/.test(t)) return "daumen";
     if (/rote|grüne|rot \(|grün \(|karte/.test(t)) return "ampel";
     if (/gefühl|fühlt|barometer|wie wütend|angst/.test(t)) return "gefuehle";

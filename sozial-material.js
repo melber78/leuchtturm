@@ -144,6 +144,9 @@ const B = {
     "friedensweg": { titel: "Friedensweg: 4 Bodenkarten", gruppe: "Konflikte lösen", art: "karten", proSeite: 1,
         items: [{ svg: STOPP_ROT, text: "1 · Stopp!" }, { emoji: "🗣️", text: "2 · Ich sage, wie ich mich fühle." }, { emoji: "👂", text: "3 · Du sagst, wie du dich fühlst." }, { emoji: "🤝", text: "4 · Wir finden eine Lösung." }],
         hinweis: "Hintereinander auf den Boden legen – die Kinder gehen Schritt für Schritt." },
+    "loesungskarten": { titel: "Lösungskarten (2 Sätze pro Seite)", gruppe: "Konflikte lösen", art: "karten", proSeite: 8, uebung: "Lösungs-Karten",
+        items: [1, 2].flatMap(() => [{ emoji: "🔄", text: "Abwechseln" }, { emoji: "🍕", text: "Teilen" }, { emoji: "🤝", text: "Zusammen machen" }, { emoji: "🙋", text: "Hilfe holen" }]),
+        hinweis: "Ausschneiden – jedes Kind bekommt einen Satz mit 4 Karten." },
     "ich-botschaft": { titel: "Plakat: Ich-Botschaft", gruppe: "Konflikte lösen", art: "plakat",
         punkte: [{ emoji: "💭", text: "Ich fühle mich …" }, { emoji: "❓", text: "… weil …" }, { emoji: "🌟", text: "Ich wünsche mir, dass …" }], fuss: "Statt „Du bist so gemein!“ – sag, wie es dir geht." },
     "hilfe-fragen": { titel: "Plakat: Die drei Hilfe-Fragen", gruppe: "Konflikte lösen", art: "plakat", nummern: true,
@@ -247,7 +250,7 @@ const B = {
 /* Welche Vorlagen gehören zu welcher fertigen Stunde */
 const ZUORDNUNG = {
     "v-gefuehle-erkennen": ["gefuehlskarten-gross", "gefuehlskarten-klein"],
-    "v-streit-loesen": ["stopp-schild", "friedensweg", "ich-botschaft"],
+    "v-streit-loesen": ["stopp-schild", "loesungskarten", "ich-botschaft"],
     "v-freundschaft": ["namenszettel", "kompliment-zettel"],
     "v-regeln-miteinander": ["gruppenregeln-leer", "regel-vorschlag"],
     "v-wut-werkzeugkasten": ["vulkan-bild", "wut-werkzeuge"],
