@@ -216,6 +216,9 @@ tr.kl-details td{ background:#f6f9fb; }
 .kl-zahlen .ok{ color:#2e8b57; } .kl-zahlen .aus{ color:#c0392b; }
 .kl-nach{ font-size:13.5px; line-height:1.45; } .kl-nach.leer{ color:var(--grau); font-weight:700; }
 table.plan select, table.plan input[type=text]{ padding:6px 8px; }
+table.plan .plan-wahl-zeile{ display:flex; gap:6px; align-items:center; }
+table.plan .plan-wahl-zeile select{ flex:1; min-width:0; }
+table.plan .plan-oeffnen{ flex:0 0 auto; }
 table.plan input[type=checkbox]{ width:20px; height:20px; }
 .druck-raster{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:8px; margin-top:10px; }
 .druck-posten{ display:flex; align-items:center; gap:8px; }
@@ -1782,9 +1785,8 @@ function zeigeJahresplan(){
                 const wahlZelle = (st, label) => {
                     const id = stufenThema(w, st), wert = w.frei ? "@frei" : id, ee = id && !w.frei ? finde(id) : null;
                     const fehlt = ee ? fehltVorher(ee, st, k) : [];
-                    return `<td data-label="${label}"><select class="plan-wahl" data-st="${st}">${optionen(wert)}${id && !w.frei && !ee ? `<option value="${esc(id)}" selected>(gelöschte Stunde)</option>` : ""}</select>${fehlt.length ? `<div class="plan-aufbau">🔗 Baut auf ${fehlt.map(f => `„${esc(finde(f).titel)}“`).join(" und ")} – am besten vorher einplanen</div>` : ""}</td>`;
+                    return `<td data-label="${label}"><div class="plan-wahl-zeile"><select class="plan-wahl" data-st="${st}">${optionen(wert)}${id && !w.frei && !ee ? `<option value="${esc(id)}" selected>(gelöschte Stunde)</option>` : ""}</select>${ee ? `<a class="btn klein plan-oeffnen" href="#stunde/${encodeURIComponent(ee.id)}" title="${esc(ee.titel)} öffnen"><i class="fa-solid fa-arrow-right"></i></a>` : ""}</div>${fehlt.length ? `<div class="plan-aufbau">🔗 Baut auf ${fehlt.map(f => `„${esc(finde(f).titel)}“`).join(" und ")} – am besten vorher einplanen</div>` : ""}</td>`;
                 };
-                const e = !w.frei ? finde(wochenThemen(w)[0]) : null;
                 const zellen = klassen.map(kl => {
                     const x = klasseInWoche(w, kl);
                     const thema = stufenThema(w, kl.stufe), te = thema ? finde(thema) : null;
@@ -1804,7 +1806,7 @@ function zeigeJahresplan(){
                     ${zellen}
                     <td data-label="Notiz"><input type="text" class="plan-notiz" value="${esc(w.notiz || "")}" placeholder="Notiz"></td>
                     ${klassen.length ? "" : `<td><input type="checkbox" class="plan-erledigt" ${w.erledigt ? "checked" : ""} ${w.frei ? "disabled" : ""} title="erledigt"></td>`}
-                    <td style="white-space:nowrap">${klassen.length && !w.frei ? `<button class="btn klein kl-mehr" title="Je Klasse: anderes Thema, Notiz"><i class="fa-solid fa-sliders"></i></button> ` : ""}${e ? `<a class="btn klein" href="#stunde/${encodeURIComponent(e.id)}" title="öffnen"><i class="fa-solid fa-arrow-right"></i></a>` : ""}</td></tr>${details}`;
+                    <td style="white-space:nowrap">${klassen.length && !w.frei ? `<button class="btn klein kl-mehr" title="Je Klasse: anderes Thema, Notiz"><i class="fa-solid fa-sliders"></i></button> ` : ""}</td></tr>${details}`;
             }).join("")}</tbody></table></div></div>`;
 
     const datumAendern = () => {
