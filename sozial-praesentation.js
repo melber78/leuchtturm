@@ -95,6 +95,14 @@ const CSS = `
 #praes .p-punkte{ display:flex; gap:4px; flex:1; justify-content:center; flex-wrap:wrap; }
 #praes .p-punkte i{ width:9px; height:9px; border-radius:50%; background:#dfe5e2; display:block; cursor:pointer; }
 #praes .p-punkte i.an{ background:#f2a93b; transform:scale(1.4); }
+@media (max-width:700px){
+    #praes .p-punkte{ display:none; }
+    #praes .p-leiste .p-wort{ display:none; }
+    #praes .p-leiste .p-pos{ flex:1; }
+    #praes .p-leiste{ gap:6px; padding:6px 8px; }
+    #praes .p-leiste button{ padding:9px 10px; font-size:15px; min-width:40px; }
+    #praes .p-leiste .p-pos{ min-width:52px; }
+}
 
 /* Timer */
 #praes .p-timer{ position:absolute; top:2vh; right:2vw; background:#16324a; color:white; border-radius:22px; padding:.3em .7em; font-weight:900; font-size:clamp(28px,4vw,64px); font-variant-numeric:tabular-nums; display:flex; align-items:center; gap:.4em; z-index:5; box-shadow:0 8px 24px rgba(22,50,74,.3); }
@@ -264,8 +272,8 @@ function praesentationStarten(e, startStufe){
             <span class="p-pos"></span>
             <button data-p="weiter" title="Weiter (→ oder Leertaste)">▶</button>
             <div class="p-punkte"></div>
-            <button data-p="rad" title="Wer ist dran?">🎡 Wer ist dran?</button>
-            <button data-p="timer" title="Timer">⏱ Timer</button>
+            <button data-p="rad" title="Wer ist dran?">🎡<span class="p-wort"> Wer ist dran?</span></button>
+            <button data-p="timer" title="Timer">⏱<span class="p-wort"> Timer</span></button>
             <button data-p="schale" title="Klangschale">🔔</button>
             <button data-p="vollbild" title="Vollbild (F)">⛶</button>
         </div>`;
