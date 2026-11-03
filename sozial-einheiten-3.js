@@ -172,11 +172,11 @@ Am Nachmittag will Ben Miras Notizbuch anschauen. „Wir teilen doch alles!“, 
         },
         {
           "typ": "gesichter",
-          "text": "So fühlt sich Nele, als Mats teilt. Male das Gesicht an.",
+          "text": "Wie fühlt sich Nele, als Mats teilt? Male ihr Gesicht.",
           "gefuehle": [
-            "froh"
+            "Nele"
           ],
-          "leer": false
+          "leer": true
         },
         {
           "typ": "malen",

@@ -174,12 +174,12 @@ Am Ende sagt Finn: „Danke, Aylin. Das hat gutgetan.“
       "aufgaben": [
         {
           "typ": "gesichter",
-          "text": "So fühlt sich Emma vorher – und nachher. Male die Gesichter an.",
+          "text": "Wie fühlt sich Emma vorher – und wie nachher? Male die Gesichter.",
           "gefuehle": [
-            "traurig",
-            "froh"
+            "vorher",
+            "nachher"
           ],
-          "leer": false
+          "leer": true
         },
         {
           "typ": "daumen",
@@ -591,12 +591,12 @@ Eine Woche später setzt Merve sich in der Pause wieder neben Nora.
         },
         {
           "typ": "gesichter",
-          "text": "So fühlt sich Lea vorher – und nachher. Male die Gesichter an.",
+          "text": "Wie fühlt sich Lea vorher – und wie nachher? Male die Gesichter.",
           "gefuehle": [
-            "traurig",
-            "froh"
+            "vorher",
+            "nachher"
           ],
-          "leer": false
+          "leer": true
         },
         {
           "typ": "malen",

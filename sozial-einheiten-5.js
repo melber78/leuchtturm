@@ -679,12 +679,12 @@ Es dauert noch ein paar Wochen. Aber dann hört es auf. Jonas sagt später: „D
       "aufgaben": [
         {
           "typ": "gesichter",
-          "text": "Mitlachen macht froh. Auslachen macht traurig. Male die Gesichter an.",
+          "text": "Wie fühlt sich das an? Male die Gesichter.",
           "gefuehle": [
-            "froh",
-            "traurig"
+            "Mitlachen",
+            "Ausgelacht werden"
           ],
-          "leer": false
+          "leer": true
         },
         {
           "typ": "daumen",
@@ -873,13 +873,13 @@ Leon denkt nach. „Dann ist es wie bei Jakob mit der Brille. Der bekommt ja auc
         },
         {
           "typ": "gesichter",
-          "text": "Jetzt können alle zuschauen. Male die Gesichter an.",
+          "text": "Jetzt können alle zuschauen. Wie fühlen sich die drei Kinder? Male die Gesichter.",
           "gefuehle": [
-            "froh",
-            "froh",
-            "froh"
+            "groß",
+            "mittel",
+            "klein"
           ],
-          "leer": false
+          "leer": true
         }
       ]
     },
