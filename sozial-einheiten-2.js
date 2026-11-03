@@ -622,20 +622,22 @@ SOZIAL_EINHEIT({
     ziel12: "Erkennen, dass bei einem Streit beide etwas bekommen können",
     ziel34: "Kompromisse aushandeln und prüfen, ob sie für beide fair sind",
     material: "Klebeband (Brücke auf dem Boden, ca. 2 m lang)\nZahlenkarten 1–4 (Antwort-Set)\nPlakat „So finden wir einen Kompromiss“",
-    lerntext12: { titel: "Die zwei Ziegen", text:
-`Über einen Bach führt eine schmale Brücke. Von links kommt eine weiße Ziege. Von rechts kommt eine schwarze Ziege. In der Mitte treffen sie sich.
+    lerntext12: { titel: "Die rote Schaukel", text:
+`Große Pause. Auf dem Schulhof gibt es eine rote Schaukel. Mia rennt hin. Tom rennt auch hin.
 
-„Geh weg, ich war zuerst da!“, meckert die weiße Ziege. „Nein, du gehst weg!“, meckert die schwarze. Sie stoßen mit den Hörnern. Sie schieben und drücken – und **platsch!** – fallen beide ins Wasser.
+„Ich war zuerst da!“, ruft Mia. „Nein, ich!“, ruft Tom. Beide ziehen an der Kette. Sie zerren und schreien. Die Schaukel wackelt hin und her.
 
-Am nächsten Tag treffen sich zwei andere Ziegen auf der Brücke. Die eine sagt: „Wir passen nicht beide vorbei. Ich lege mich hin, und du steigst über mich drüber.“ Die andere sagt: „Gute Idee. Danke!“
+Da kommt die Aufsicht. „So geht das nicht. Heute schaukelt keiner.“ Mia ist sauer. Tom auch. Die ganze Pause sitzen sie auf der Bank.
 
-So kommen beide trocken auf die andere Seite.
+Am nächsten Tag stehen beide wieder an der Schaukel. Tom sagt: „Wollen wir uns abwechseln? Ich zähle bis 20, dann bist du dran.“ Mia sagt: „Okay. Du darfst anfangen.“
+
+Tom schaukelt. Mia zählt laut: „… 18, 19, 20!“ Dann tauschen sie. So geht es die ganze Pause. Beide schaukeln – und keiner muss auf der Bank sitzen.
 
 **Nach dem Vorlesen:**
-1. Was ist mit den ersten zwei Ziegen passiert?
-2. Warum sind sie ins Wasser gefallen?
-3. Was haben die zweiten Ziegen anders gemacht?
-4. Sind beide Ziegen zufrieden? Warum?` },
+1. Was ist am ersten Tag passiert?
+2. Warum durfte keiner schaukeln?
+3. Was haben Mia und Tom am zweiten Tag anders gemacht?
+4. Sind beide zufrieden? Warum?` },
     lerntext34: { titel: "Zoo oder Schwimmbad?", text:
 `Die Klasse 3a darf über den Wandertag abstimmen. Die eine Hälfte will in den Zoo, die andere Hälfte ins Schwimmbad. Es steht 11 zu 11. Niemand will nachgeben.
 
@@ -685,7 +687,7 @@ Am Ende stimmen alle 22 Kinder dafür. Niemand hat alles bekommen, was er wollte
         },
         {
           "typ": "malen",
-          "text": "Male die zwei Ziegen, die gut über die Brücke kommen.",
+          "text": "Male Mia und Tom an der Schaukel: Einer schaukelt, einer zählt.",
           "bild": ""
         }
       ]
