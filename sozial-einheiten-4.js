@@ -47,10 +47,12 @@ Oskar klebt die Zettel zu Hause über seinen Schreibtisch.
           text: "Du liest vor. Alle, die sich angesprochen fühlen, stehen auf. Kl. 3/4 nennen ein Beispiel dazu.\n\n- Steh auf, wenn du gut zuhören kannst.\n- Steh auf, wenn du gut malen kannst.\n- Steh auf, wenn du andere zum Lachen bringst.\n- Steh auf, wenn du schnell rennen kannst.\n- Steh auf, wenn du gut basteln kannst.\n- Steh auf, wenn du jemanden trösten kannst.\n- Steh auf, wenn du gut bauen kannst.",
           quiz: "karten",
           frage: "Steh auf, wenn das für dich stimmt!",
-          folie: "Steh auf, wenn das für dich stimmt! 🙋\n\nDu darfst stolz sein." },
+          folie: "Steh auf, wenn das für dich stimmt! 🙋\n\nDu darfst stolz sein.",
+          kern: ["12"] },
         { titel: "Stärken-Dusche", fuer: "alle", dauer: "8 Min",
           text: "Ein Kind bleibt an seinem Platz sitzen und schließt die Augen (wenn es mag). Die anderen „duschen“ es mit Stärken: „Du kannst …“ – „Ich finde toll, dass du …“ Du schreibst die Stärken auf eine Karte, die das Kind behalten darf. Pro Stunde schafft ihr etwa 3–4 Kinder. Regel: Nur ehrliche, nette Sätze – keine Witze.",
-          folie: "Ein Kind bekommt eine **Stärken-Dusche** 🚿.\n\nDie anderen sagen: **„Du kannst …“** oder **„Ich finde toll, dass du …“**\n\nNur ehrliche, nette Sätze!" }
+          folie: "Ein Kind bekommt eine **Stärken-Dusche** 🚿.\n\nDie anderen sagen: **„Du kannst …“** oder **„Ich finde toll, dass du …“**\n\nNur ehrliche, nette Sätze!",
+          kern: ["34"] }
     ],
     ab12: {
       "titel": "Das kann ich gut",
@@ -127,12 +129,14 @@ Später sagt die Lehrerin: „Kevin wollte bewundert werden und hat sich in Gefa
     uebungen: [
         { titel: "Mut hat viele Gesichter", fuer: "alle", dauer: "5 Min",
           text: "Sammelt an der Tafel Arten von Mut: etwas Neues probieren – einen Fehler zugeben – Nein sagen – jemandem helfen – vor anderen sprechen – um Entschuldigung bitten. Die Kinder erzählen vom Platz aus von einem eigenen mutigen Moment (freiwillig).",
-          folie: "Was ist **mutig**? 🦁\n\nWann warst du schon einmal mutig? (Du musst nicht erzählen.)" },
+          folie: "Was ist **mutig**? 🦁\n\nWann warst du schon einmal mutig? (Du musst nicht erzählen.)",
+          kern: ["12"] },
         { titel: "Mut-Pose", fuer: "12", dauer: "3 Min",
           text: "Alle stehen am Platz auf und machen die Superhelden-Pose: Beine fest, Hände in die Hüften, Kopf hoch. Ein paar Sekunden halten und gemeinsam sagen: „Ich bin mutig!“ Frage: „Wie fühlt sich dein Körper jetzt an?“",
           folie: "Steh auf und mach die **Superhelden-Pose** 🦸:\n\nBeine fest · Hände in die Hüften · Kopf hoch\n\nAlle zusammen: **„Ich bin mutig!“**" },
         { titel: "Mutig oder leichtsinnig?", fuer: "34", dauer: "4 Min",
-          text: "Situationen vorlesen, die Kinder zeigen Daumen hoch (mutig) oder runter (leichtsinnig) und begründen:\n\n- über eine stark befahrene Straße rennen, um als Erster da zu sein\n- vor der Klasse sagen, dass man etwas nicht verstanden hat\n- auf einen hohen Baum klettern, weil alle zuschauen\n- einem ausgelachten Kind beistehen\n- zugeben, dass man die Vase umgestoßen hat" }
+          text: "Situationen vorlesen, die Kinder zeigen Daumen hoch (mutig) oder runter (leichtsinnig) und begründen:\n\n- über eine stark befahrene Straße rennen, um als Erster da zu sein\n- vor der Klasse sagen, dass man etwas nicht verstanden hat\n- auf einen hohen Baum klettern, weil alle zuschauen\n- einem ausgelachten Kind beistehen\n- zugeben, dass man die Vase umgestoßen hat",
+          kern: ["34"] }
     ],
     ab12: {
       "titel": "Ich bin mutig",
@@ -209,10 +213,12 @@ Emil übt jeden Tag fünf Minuten „ie“-Wörter. Das nächste Diktat ist eine
           text: "Du liest die Sätze vor. Die Kinder rufen gemeinsam: „… NOCH nicht!“ Danach dürfen Kinder eigene Sätze sagen, die anderen ergänzen das „noch“.\n\n- „Ich kann nicht Fahrrad fahren …“\n- „Ich kann nicht schwimmen …“\n- „Ich kann nicht schreiben …“\n- „Ich kann keinen Salto …“",
           quiz: "karten",
           frage: "Alle rufen: „… NOCH nicht!“",
-          folie: "Hör gut zu! Wenn jemand sagt **„Ich kann nicht …“**, rufen alle:\n\n**„… NOCH nicht!“** 💪" },
+          folie: "Hör gut zu! Wenn jemand sagt **„Ich kann nicht …“**, rufen alle:\n\n**„… NOCH nicht!“** 💪",
+          kern: ["12"] },
         { titel: "Fehler-Feier", fuer: "alle", dauer: "5 Min",
           text: "Wer mag, erzählt vom Platz aus von einem Fehler, der ihm passiert ist – und was er daraus gelernt hat. Nach jeder Geschichte rufen alle: „Juhu – gelernt!“ und klatschen. Du fängst selbst an und erzählst einen eigenen Fehler. Kl. 1/2 dürfen auch nur den Fehler erzählen, die anderen helfen beim „Was lernen wir?“.",
-          folie: "Erzähl von einem **Fehler** – und was du daraus gelernt hast.\n\nDanach rufen alle: **„Juhu – gelernt!“** 🎉" },
+          folie: "Erzähl von einem **Fehler** – und was du daraus gelernt hast.\n\nDanach rufen alle: **„Juhu – gelernt!“** 🎉",
+          kern: ["34"] },
         { titel: "Was hilft beim Weitermachen?", fuer: "34", dauer: "3 Min",
           text: "Sammelt Strategien: kurze Pause machen – um Hilfe bitten – in kleinen Schritten üben – sich an frühere Erfolge erinnern – Fehler genau anschauen.",
           folie: "Etwas klappt nicht. Was hilft dir, **weiterzumachen**?\n\nSammelt Ideen." }
@@ -293,14 +299,16 @@ Am Nachmittag erzählt Leonie ihrer Freundin Fatma, dass keiner mehr mit ihr red
         { titel: "Stolz-Runde", fuer: "alle", dauer: "5 Min",
           text: "Jedes Kind steht kurz an seinem Platz auf und sagt: „Ich bin stolz auf mich, weil …“ Die anderen klatschen. Kl. 1/2 dürfen auch Kleines nennen („… ich allein die Schuhe binden kann“), Kl. 3/4 sagen, wie sie es geschafft haben.",
           folie: "Steh auf und sag:\n\n**„Ich bin stolz auf mich, weil …“**\n\nDie anderen klatschen. 👏",
-          folie34: "Steh auf und sag:\n\n**„Ich bin stolz auf mich, weil …“** – und wie du es geschafft hast.\n\nDie anderen klatschen. 👏" },
+          folie34: "Steh auf und sag:\n\n**„Ich bin stolz auf mich, weil …“** – und wie du es geschafft hast.\n\nDie anderen klatschen. 👏",
+          kern: ["12"] },
         { titel: "Lob annehmen", fuer: "alle", dauer: "4 Min",
           text: "Du sagst einzelnen Kindern ein ehrliches Lob. Die Kinder üben, es anzunehmen: Anschauen, lächeln, „Danke!“ sagen – ohne „Ach, das war nix“. Danach dürfen die Tischnachbarn sich gegenseitig loben.",
           folie: "Wenn dich jemand lobt:\n\n👀 anschauen · 🙂 lächeln · **„Danke!“**\n\nNicht: „Ach, das war doch nix.“" },
         { titel: "Stolz oder angeben?", fuer: "34", dauer: "3 Min",
           text: "Du sagst Sätze, die Kinder entscheiden mit Daumen hoch (stolz) oder runter (angeben):\n\n- „Ich habe geübt und jetzt kann ich es.“\n- „Ihr seid alle schlechter als ich.“\n- „Mein Bild ist schön geworden, finde ich.“\n- „Ich hab das teuerste Handy der Klasse.“",
           antworten: ["👍 stolz", "👎 angeben"],
-          folie: "Ist das **stolz** 👍 oder **angeben** 👎?" }
+          folie: "Ist das **stolz** 👍 oder **angeben** 👎?",
+          kern: ["34"] }
     ],
     ab12: {
       "titel": "Darauf bin ich stolz",
@@ -378,10 +386,12 @@ Am Nachmittag entschuldigt sich Lea. „Ich war heute Morgen total in Gedanken. 
           folie: "Flüster den Satz deinem Nachbarn ins Ohr. 🤫\n\nDas letzte Kind sagt laut, was angekommen ist." },
         { titel: "Zuhör-Körper", fuer: "12", dauer: "4 Min",
           text: "Gemeinsam zeigt ihr am Platz: Augen schauen den anderen an – Ohren hören – Mund ist still – Hände und Füße sind ruhig. Danach erzählst du eine kurze Geschichte, und die Kinder halten den Zuhör-Körper. Wer hat gut zugehört? Stell drei Fragen zur Geschichte.",
-          folie: "So hörst du richtig zu:\n\n👀 Augen schauen · 👂 Ohren hören · 🤐 Mund ist still · ✋ Hände und Füße sind ruhig" },
+          folie: "So hörst du richtig zu:\n\n👀 Augen schauen · 👂 Ohren hören · 🤐 Mund ist still · ✋ Hände und Füße sind ruhig",
+          kern: ["12"] },
         { titel: "Zuhör-Paare", fuer: "34", dauer: "5 Min",
           text: "Die Tischnachbarn: A erzählt eine Minute von seinem Wochenende, B hört nur zu. Dann wiederholt B drei Dinge, die er sich gemerkt hat, und stellt eine Nachfrage. Dann Wechsel.",
-          folie: "**A** erzählt eine Minute von seinem Wochenende. **B** hört nur zu.\n\nDann sagt B drei Dinge, die er sich gemerkt hat, und stellt eine Frage. Dann wechseln." }
+          folie: "**A** erzählt eine Minute von seinem Wochenende. **B** hört nur zu.\n\nDann sagt B drei Dinge, die er sich gemerkt hat, und stellt eine Frage. Dann wechseln.",
+          kern: ["34"] }
     ],
     ab12: {
       "titel": "Ich höre gut zu",
@@ -457,7 +467,8 @@ Am nächsten Tag probiert Sophie es selbst aus. „Can, deine Idee mit dem Regen
         { titel: "Kompliment-Kette", fuer: "alle", dauer: "6 Min",
           text: "Jedes Kind sagt dem Kind auf dem nächsten Platz (der Reihe nach) ein Kompliment. Das Kind, das es bekommt, schaut den anderen an und sagt „Danke!“. Kl. 1/2 dürfen auch einfache Komplimente sagen („Du malst schön“), Kl. 3/4 machen es genauer („Mir gefällt, wie du …“).",
           folie: "Sag dem Kind neben dir ein **Kompliment**.\n\nWer es bekommt, schaut den anderen an und sagt **„Danke!“**",
-          folie34: "Sag dem Kind neben dir ein **genaues Kompliment**: „Mir gefällt, wie du …“\n\nWer es bekommt, schaut den anderen an und sagt **„Danke!“**" },
+          folie34: "Sag dem Kind neben dir ein **genaues Kompliment**: „Mir gefällt, wie du …“\n\nWer es bekommt, schaut den anderen an und sagt **„Danke!“**",
+          kern: ["12", "34"] },
         { titel: "Komplimente genauer machen", fuer: "34", dauer: "4 Min",
           text: "Du sagst allgemeine Komplimente, die Kinder machen sie genauer:\n\n- „Du bist nett.“ → „Ich finde nett, dass du …“\n- „Du bist gut in Sport.“ → „Wie du gestern den Ball …“\n- „Schönes Bild.“ → „Die Farben vom Himmel …“",
           quiz: "karten",
@@ -537,13 +548,15 @@ In der Pause fragt Lukas seine Freundin Hanna, ob alles okay ist. „Mir geht's 
     uebungen: [
         { titel: "Statuen raten", fuer: "alle", dauer: "5 Min",
           text: "Ein Kind steht an seinem Platz auf und erstarrt zu einer „Statue“, die ein Gefühl zeigt (müde, stolz, ängstlich, gelangweilt, froh, wütend) – nur mit dem Körper, ohne Worte. Die anderen raten. Wer richtig rät, ist als Nächstes dran.",
-          folie: "Ein Kind wird zur **Statue** 🗿 und zeigt ein Gefühl – nur mit dem Körper.\n\nRate: Welches Gefühl ist das?" },
+          folie: "Ein Kind wird zur **Statue** 🗿 und zeigt ein Gefühl – nur mit dem Körper.\n\nRate: Welches Gefühl ist das?",
+          kern: ["12"] },
         { titel: "Gefühle zeigen", fuer: "12", dauer: "3 Min",
           text: "Du nennst ein Gefühl, alle zeigen es am Platz nur mit dem Körper. Dann vergleicht ihr: Was machen die Schultern? Der Kopf? Die Hände?",
           folie: "Zeig das Gefühl nur mit deinem Körper.\n\nWas machen deine Schultern? Dein Kopf? Deine Hände?" },
         { titel: "Gleicher Satz – andere Wirkung", fuer: "34", dauer: "4 Min",
           text: "Ein Kind sagt den Satz „Ich weiß die Antwort“ – einmal geduckt mit Blick auf den Boden, einmal gerade mit Blickkontakt, einmal mit verschränkten Armen und Augenrollen. Die anderen beschreiben, wie jede Version wirkt.",
-          folie: "Ein Kind sagt dreimal: **„Ich weiß die Antwort.“**\n\nJedes Mal mit anderer Körperhaltung. Wie wirkt es?" }
+          folie: "Ein Kind sagt dreimal: **„Ich weiß die Antwort.“**\n\nJedes Mal mit anderer Körperhaltung. Wie wirkt es?",
+          kern: ["34"] }
     ],
     ab12: {
       "titel": "Was sagt der Körper?",
@@ -614,13 +627,15 @@ Eine Woche später rechnet Tom die Aufgaben allein. Und als Elif bei Englisch ni
     uebungen: [
         { titel: "Hilfe-Sätze", fuer: "alle", dauer: "4 Min",
           text: "Sammelt an der Tafel Sätze, mit denen man um Hilfe bittet: „Kannst du mir bitte helfen?“ – „Ich verstehe … nicht.“ – „Ich komme hier nicht weiter.“ Kl. 3/4 ergänzen: „Ich habe schon … versucht.“ Alle sprechen ihren Lieblingssatz laut.",
-          folie: "Wie bittet man um **Hilfe**? 🙋\n\nSuch dir deinen Lieblingssatz aus und sag ihn laut." },
+          folie: "Wie bittet man um **Hilfe**? 🙋\n\nSuch dir deinen Lieblingssatz aus und sag ihn laut.",
+          kern: ["12"] },
         { titel: "Helfer-Landkarte", fuer: "alle", dauer: "5 Min",
           text: "Male an die Tafel eine Landkarte mit „Inseln“: Schule, Zuhause, Pause, Freunde. Die Kinder rufen vom Platz aus, wer auf jeder Insel helfen kann (Lehrerin, Hausmeister, Schulsozialarbeit, Eltern, Oma, große Geschwister, Freunde, Pausenaufsicht). Kl. 1/2 dürfen Symbole dazu malen.",
           folie: "Auf der Tafel sind Inseln: 🏫 Schule · 🏠 Zuhause · ⚽ Pause · 👫 Freunde\n\n**Wer kann dir auf jeder Insel helfen?**" },
         { titel: "Bitten üben", fuer: "34", dauer: "3 Min",
           text: "Die Tischnachbarn bekommen eine Situation (z. B. Hausaufgabe nicht verstanden, Fahrradkette ab, jemand ärgert mich ständig) und üben eine genaue Bitte: Was brauche ich? Was habe ich schon versucht?",
-          folie: "Ihr bekommt eine Situation. Übt eine **genaue Bitte**:\n\n**Was brauche ich? Was habe ich schon versucht?**" }
+          folie: "Ihr bekommt eine Situation. Übt eine **genaue Bitte**:\n\n**Was brauche ich? Was habe ich schon versucht?**",
+          kern: ["34"] }
     ],
     ab12: {
       "titel": "Kannst du mir helfen?",

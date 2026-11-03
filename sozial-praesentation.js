@@ -74,6 +74,7 @@ const CSS = `
 #praes .p-frage.an{ opacity:1; transform:scale(1.02); box-shadow:0 8px 26px rgba(242,169,59,.35); }
 #praes .p-frage.aufgabe{ background:#fff7e6; }
 #praes .p-frage.aufgabe:not(.an):not(.war){ visibility:hidden; }
+#praes .p-chip.zusatz{ background:#eef1f3; color:#6b7880; }
 #praes .p-liste{ display:flex; flex-wrap:wrap; gap:.5em .7em; justify-content:center; margin-top:2vh; max-width:min(1300px,94vw); }
 #praes .p-liste div{ background:white; border-radius:16px; padding:.35em .8em; box-shadow:0 4px 14px rgba(22,50,74,.1); font-family:"Andika","Nunito",sans-serif; font-size:clamp(17px,min(2.2vw,3.6vh),34px); }
 #praes .p-frage .nr{ font-family:"Nunito",sans-serif; font-weight:900; color:#f2a93b; }
@@ -270,10 +271,11 @@ function folienBauen(e, stufe){
     if (fragen.length) f.push({ typ: "fragen", titel: lt.titel, fragen });
     const medien = medienFuer(e);
     if (medien.length) f.push({ typ: "film", medien });
-    (e.uebungen || []).forEach(u0 => {
+    const ueListe = window.uebungenFuer ? window.uebungenFuer(e, stufe) : (e.uebungen || []);   // Kern zuerst, dann Zusatz
+    ueListe.forEach(u0 => {
         // Klassen sind getrennt: nur Übungen dieser Stufe, Text passend zur Stufe
         if (u0.fuer && u0.fuer !== "alle" && u0.fuer !== stufe) return;
-        const u = Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, folie: u0["folie" + stufe] || u0.folie || "" });
+        const u = Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, folie: u0["folie" + stufe] || u0.folie || "", zusatz: !!(window.istZusatz && window.istZusatz(e, u0, stufe)) });
         // quiz: daumen/ampel/… = Abstimmung je Punkt · karten = je Punkt eine Folie ohne Abstimmung ·
         // liste = alle Punkte auf der Übungsfolie · keine = Punkte nur für die Lehrkraft
         const punkte = aufzaehlung(u.text).slice(0, 10).map(p => p.split(/\s+→\s+/)[0]);
@@ -285,6 +287,8 @@ function folienBauen(e, stufe){
     });
     f.push({ typ: "arbeitsblatt" });
     f.push({ typ: "abschluss" });
+    // „Überspringen“ bei Zusatz-Übungen: zur nächsten Folie, die nicht mehr zu dieser Übung gehört
+    f.forEach((x, i) => { if (x.typ === "uebung" && x.u.zusatz) { let j = i + 1; while (j < f.length && (f[j].typ === "karte" || f[j].typ === "abstimmung") && f[j].u === x.u) j++; x.weiter = j; } });
     return f;
 }
 
@@ -438,9 +442,9 @@ function folieHtml(f, e){
         case "uebung": {
             const min = minuten(f.u.dauer);
             const kurz = String(f.u.text || "").split(/\n\s*\n/)[0];
-            return `<div>${fuerChip(f.u)}${f.u.dauer ? `<span class="p-chip">${esc(f.u.dauer)}</span>` : ""}</div><h2>${esc(f.u.titel)}</h2>
+            return `<div>${f.u.zusatz ? '<span class="p-chip zusatz">Zusatz – wenn noch Zeit ist</span>' : fuerChip(f.u)}${f.u.dauer ? `<span class="p-chip">${esc(f.u.dauer)}</span>` : ""}</div><h2>${esc(f.u.titel)}</h2>
                 <div class="p-text" style="font-size:${String(f.u.text || "").length > 450 ? "clamp(14px,min(1.45vw,2.3vh),26px)" : String(f.u.text || "").length > 280 ? "clamp(17px,min(2.1vw,3.6vh),34px)" : "clamp(20px,min(2.6vw,4.6vh),40px)"}">${md(f.u.folie ? f.u.folie : aufzaehlung(f.u.text).length ? kurz.split("\n").filter(z => !/^\s*[-•]/.test(z)).join("\n") : f.u.text)}</div>${f.u.liste ? `<div class="p-liste">${f.u.liste.map(x => `<div>${inline(x)}</div>`).join("")}</div>` : ""}
-                <div class="p-reihe">${min ? `<button class="p-knopf gold" data-start="${min}">⏱ ${min} Minuten starten</button>` : ""}<button class="p-knopf hell" data-p="rad">🎡 Wer fängt an?</button></div>`;
+                <div class="p-reihe">${min ? `<button class="p-knopf gold" data-start="${min}">⏱ ${min} Minuten starten</button>` : ""}<button class="p-knopf hell" data-p="rad">🎡 Wer fängt an?</button>${f.u.zusatz ? `<button class="p-knopf hell" data-springen="${f.weiter}">⏭ Überspringen</button>` : ""}</div>`;
         }
         case "abstimmung":
             return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage"${f.aussage.length > 70 ? ' style="font-size:clamp(20px,min(3vw,5vh),48px)"' : ""}>${inline(f.aussage)}</div>${stimmenHtml("q" + zustand.i + f.aussage, abstimmOptionen(f.art, f.u))}`;
@@ -483,6 +487,7 @@ function folieAktivieren(el, f){
     el.querySelectorAll("[data-frage]").forEach(q => q.addEventListener("click", () => el.querySelectorAll(".p-frage").forEach((x, k) => { x.classList.toggle("an", x === q); if (k <= +q.dataset.frage) x.classList.add("war"); })));
     el.querySelectorAll("[data-start]").forEach(b => b.addEventListener("click", () => timerStarten(+b.dataset.start * 60)));
     el.querySelectorAll("[data-schale]").forEach(b => b.addEventListener("click", () => klangschale()));
+    el.querySelectorAll("[data-springen]").forEach(b => b.addEventListener("click", () => zeigen(+b.dataset.springen)));
     el.querySelectorAll("[data-vorlesen]").forEach(b => b.addEventListener("click", () => vorlesen(f.text, b)));
     el.querySelectorAll("[data-vorleser]").forEach(b => b.addEventListener("click", () => {
         const nr = zustand.i;

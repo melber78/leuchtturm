@@ -139,13 +139,15 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
         { titel: "Gefühle-Pantomime", fuer: "alle", dauer: "5 Min",
           text: "Ein Kind kommt nach vorn, zieht verdeckt eine Gefühlskarte und spielt das Gefühl nur mit Gesicht und Körper vor. Die anderen raten vom Platz aus (melden). Kl. 3/4 nennen zusätzlich, *woran* sie es erkannt haben (Augenbrauen, Mund, Schultern).",
           folie: "Ein Kind zieht eine Gefühlskarte und zeigt das Gefühl – nur mit Gesicht und Körper, ohne Worte.\n\nDie anderen raten: **Welches Gefühl ist das?**",
-          folie34: "Ein Kind zieht eine Gefühlskarte und zeigt das Gefühl – nur mit Gesicht und Körper, ohne Worte.\n\nDie anderen raten: **Welches Gefühl ist das? Woran hast du es erkannt?**" },
+          folie34: "Ein Kind zieht eine Gefühlskarte und zeigt das Gefühl – nur mit Gesicht und Körper, ohne Worte.\n\nDie anderen raten: **Welches Gefühl ist das? Woran hast du es erkannt?**",
+          kern: ["12"] },
         { titel: "Spiegelspiel", fuer: "12", dauer: "4 Min",
           text: "Die Tischnachbarn drehen sich auf ihren Stühlen zueinander. Eins macht ein Gefühlsgesicht, das andere spiegelt es genau. Sitzt ein Kind allein, kommt es als Dritter zu einem Paar. Danach mit dem Handspiegel das eigene Gesicht anschauen: „So sehe ich aus, wenn ich wütend bin.“",
           folie: "Dreh dich zu deinem Nachbarn.\n\nEiner macht ein Gefühlsgesicht. Der andere ist der **Spiegel** und macht es genau nach. Dann wechseln." },
         { titel: "Gefühlsdetektiv", fuer: "34", dauer: "7 Min",
           text: "Du liest kurze Situationen vor. Die Kinder zeigen auf das Gefühl am Barometer und erklären: „Ich glaube, sie fühlt sich …, weil …“\n\n- Mats hat sein Lieblingsbild zerrissen zurückbekommen.\n- Aylin darf zum ersten Mal bei der Freundin übernachten.\n- Ben muss morgen vor der Klasse ein Gedicht aufsagen.\n- Emma wurde beim Spiel nicht gewählt.\n- Leo hat ein Tor geschossen und alle jubeln.",
-          folie: "Hör gut zu. Wie fühlt sich das Kind?\n\nZeig auf das Gefühl am Barometer und sag: **„Ich glaube, … fühlt sich …, weil …“**" }
+          folie: "Hör gut zu. Wie fühlt sich das Kind?\n\nZeig auf das Gefühl am Barometer und sag: **„Ich glaube, … fühlt sich …, weil …“**",
+          kern: ["34"] }
     ],
     ab12: {
       "titel": "Wie fühlt sich das an?",
@@ -259,7 +261,8 @@ Hanna fragt: „Was könnte eine Lösung sein, mit der ihr beide zufrieden seid?
           text34: "**So geht's:** Du liest eine Situation vor. Ist sie **nicht okay**, stehen alle Kinder an ihrem Platz auf, strecken die Stopp-Hand nach vorn und sagen gemeinsam mit fester Stimme: **„Stopp! Das will ich nicht!“** Ist sie **okay**, bleiben alle sitzen. Du leitest nur an – du spielst nicht mit.\n\n- Jemand liest heimlich in deinem Heft.\n- Jemand fragt: „Kann ich mir deinen Stift leihen?“\n- Jemand macht ein Foto von dir und lacht.\n- Jemand sagt: „Gutes Tor!“\n- Jemand stellt dir ein Bein.\n- Jemand beleidigt deine Familie.\n- Jemand fragt: „Wollen wir zusammen arbeiten?“\n- Jemand drängt dich in die Ecke.\n\n**Eigene Worte:** Danach dreht ihr das Glücksrad („Wer ist dran?“). Das Kind sagt vom Platz aus Stopp mit eigenen Worten, z. B. „Hör auf. Ich will das nicht.“ – fest, ruhig, mit Blick nach vorn. Kein Schreien, kein Schimpfwort.",
           folie: "Ich lese dir etwas vor.\n\n👍 **Okay?** Dann bleibst du sitzen.\n\n✋ **Nicht okay?** Steh auf, streck die Stopp-Hand nach vorn und sag laut und klar: **„Stopp! Das will ich nicht!“**",
           quiz: "stopp",
-          antworten: ["👍 okay", "✋ Stopp!"] },
+          antworten: ["👍 okay", "✋ Stopp!"],
+          kern: ["12"] },
         { titel: "Lösungs-Karten", fuer: "alle", dauer: "8 Min",
           text: "**Material:** die Zahlenkarten 1–4 (gibt es einmal für alle Themen). Die Bedeutung steht auf der Folie bzw. an der Tafel: **1 = Abwechseln · 2 = Teilen · 3 = Zusammen machen · 4 = Hilfe holen.** Du musst nichts vorspielen – du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Die Kinder halten auf dein Zeichen („1, 2, 3 – hoch!“) die Zahlenkarte hoch, die passt. Dann fragst du ein oder zwei Kinder: „Warum passt deine Karte?“ Oft passen mehrere Karten – das ist richtig so.\n\n- Zwei Kinder wollen gleichzeitig schaukeln.\n- Es gibt nur noch einen roten Stift.\n- Einer will Fangen spielen, der andere Verstecken.\n- Beide wollen das letzte Stück Kuchen.\n- Ein Kind haut ein anderes.\n- Ein Kind wirft immer wieder den Turm um.\n\n**Wichtig:** Wenn jemand haut oder wehtut, ist die richtige Karte immer 4 – Hilfe holen.",
           text12: "**Material:** die Zahlenkarten 1–4 (gibt es einmal für alle Themen). Die Bedeutung steht auf der Folie bzw. an der Tafel: **1 = Abwechseln · 2 = Teilen · 3 = Zusammen machen · 4 = Hilfe holen.** Du musst nichts vorspielen – du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Die Kinder überlegen kurz und halten auf dein Zeichen („1, 2, 3 – hoch!“) die Zahlenkarte hoch, die passt. Dann fragst du ein oder zwei Kinder: „Warum passt deine Karte?“ Oft passen mehrere Karten – das ist richtig so.\n\n- Zwei Kinder wollen gleichzeitig schaukeln.\n- Es gibt nur noch einen roten Stift.\n- Einer will Fangen spielen, der andere Verstecken.\n- Beide wollen das letzte Stück Kuchen.\n- Ein Kind haut ein anderes.\n- Ein Kind wirft immer wieder den Turm um.\n\n**Wichtig:** Wenn jemand haut oder wehtut, ist die richtige Karte immer 4 – Hilfe holen.\n\n**Zum Schluss** sprechen alle zusammen: „Bei Streit gibt es viele Lösungen. Wenn jemand wehtut, hole ich Hilfe.“",
@@ -267,7 +270,8 @@ Hanna fragt: „Was könnte eine Lösung sein, mit der ihr beide zufrieden seid?
           folie: "Leg deine **Zahlenkarten 1–4** vor dich:\n\n**1** 🔄 Abwechseln · **2** 🍕 Teilen · **3** 🤝 Zusammen machen · **4** 🙋 Hilfe holen\n\nGleich kommt ein Streit. Auf **„1, 2, 3 – hoch!“** zeigst du die Karte, die passt.",
           folie34: "Leg deine **Zahlenkarten 1–4** vor dich:\n\n**1** 🔄 Abwechseln · **2** 🍕 Teilen · **3** 🤝 Zusammen machen · **4** 🙋 Hilfe holen\n\nAuf **„1, 2, 3 – hoch!“** zeigst du die Karte, die passt. Danach: Warum? Und was könnte einer mit einer Ich-Botschaft sagen?",
           quiz: "loesung",
-          antworten: ["1️⃣ Abwechseln", "2️⃣ Teilen", "3️⃣ Zusammen machen", "4️⃣ Hilfe holen"] },
+          antworten: ["1️⃣ Abwechseln", "2️⃣ Teilen", "3️⃣ Zusammen machen", "4️⃣ Hilfe holen"],
+          kern: ["34"] },
         { titel: "Ich-Botschaften-Werkstatt", fuer: "34", dauer: "4 Min",
           text: "Lies Du-Botschaften vor, die Kinder verwandeln sie mündlich:\n\n- „Du nervst!“\n- „Du lässt mich nie mitspielen!“\n- „Du hast meinen Stift kaputt gemacht, du Idiot!“",
           quiz: "karten",
@@ -379,7 +383,8 @@ Ida schweigt kurz. Dann sagt sie: „Ich war richtig traurig. Aber ich finde gut
           text: "Du liest Situationen vor, die Kinder zeigen vom Platz aus Daumen hoch oder runter. Kl. 3/4 begründen einzelne Entscheidungen.\n\n- Lisa leiht Tom ihren Radiergummi.\n- Jan erzählt ein Geheimnis von Ali weiter.\n- Sara fragt das neue Kind, ob es mitspielt.\n- Ben lacht, als Mia hinfällt.\n- Emil tröstet Lea, weil sie traurig ist.",
           antworten: ["👍 freundlich", "👎 nicht freundlich"],
           folie: "Ist das **freundlich**? Dann Daumen hoch 👍\n\nIst das **nicht freundlich**? Dann Daumen runter 👎",
-          folie34: "Ist das **freundlich**? Daumen hoch 👍 – **nicht freundlich**? Daumen runter 👎\n\nSag auch, warum." },
+          folie34: "Ist das **freundlich**? Daumen hoch 👍 – **nicht freundlich**? Daumen runter 👎\n\nSag auch, warum.",
+          kern: ["12", "34"] },
         { titel: "Freundschaftsnetz", fuer: "34", dauer: "4 Min",
           text: "An der Tafel stehen die Vornamen aller Kinder. Ein Kind kommt nach vorn, nennt eine nette Sache, die ein anderes Kind schon einmal getan hat, und spannt einen Wollfaden (mit Magneten) zwischen den beiden Namen. So entsteht Faden für Faden ein Netz. Kl. 1/2 dürfen das Kind nennen, die Großen spannen den Faden.",
           folie: "An der Tafel stehen eure Namen.\n\nSag, was ein anderes Kind schon einmal **Nettes** getan hat – und spann einen Faden zwischen euren Namen. So wächst unser **Freundschaftsnetz**." },
@@ -504,7 +509,8 @@ Nach einer Woche klappt das Inselleben richtig gut. Moritz sagt: „Komisch – 
           text12: "**Schritt 1 – Vorschläge:** Jedes Kind überlegt an seinem Platz eine Regel für unsere Sozialtraining-Stunde und sagt sie dir oder malt ein Symbol. Wichtig: Regeln positiv formulieren („Wir hören zu“ statt „Nicht reinreden“).\n\n**Schritt 2 – Abstimmen:** Du liest die Vorschläge vor. Abstimmung per Handzeichen vom Platz. Die drei bis fünf Regeln mit den meisten Stimmen schreibst du aufs Plakat.\n\n**Schritt 3 – Gestalten:** Die Kinder malen an ihrem Platz Symbole zu jeder Regel (Ohr für Zuhören, Herz für Freundlichkeit). Die Bilder kommen neben die Regeln aufs Plakat.",
           text34: "**Schritt 1 – Vorschläge:** Jedes Kind überlegt an seinem Platz eine Regel für unsere Sozialtraining-Stunde und schreibt sie auf einen Zettel. Wichtig: Regeln positiv formulieren („Wir hören zu“ statt „Nicht reinreden“).\n\n**Schritt 2 – Abstimmen:** Du liest die Vorschläge vor. Abstimmung per Handzeichen vom Platz. Die drei bis fünf Regeln mit den meisten Stimmen kommen aufs Plakat.\n\n**Schritt 3 – Begründen und Folgen aushandeln:** Zu jeder Regel erklärt ein Kind, warum sie wichtig ist. Dann überlegt die Gruppe: Was passiert, wenn jemand die Regel bricht? Die Folge muss fair sein und zur Regel passen (z. B. „Wer reinredet, wartet eine Runde mit dem Redestein“).",
           folie12: "Welche Regel hilft, dass es uns hier gut geht?\n\nSag deine Regel oder mal ein Bild dazu. Danach stimmen wir ab. ✋",
-          folie34: "Welche Regel hilft, dass es uns hier gut geht?\n\nSchreib deine Regel auf einen Zettel – so: **„Wir …“** (nicht: „Nicht …“). Danach stimmen wir ab. ✋" }
+          folie34: "Welche Regel hilft, dass es uns hier gut geht?\n\nSchreib deine Regel auf einen Zettel – so: **„Wir …“** (nicht: „Nicht …“). Danach stimmen wir ab. ✋",
+          kern: ["12", "34"] }
     ],
     ab12: {
       "titel": "Regeln helfen uns",

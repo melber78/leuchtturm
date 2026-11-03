@@ -54,7 +54,8 @@ Niklas merkt: Eine Lüge ist schnell erzählt. Vertrauen zurückzuholen dauert W
         { titel: "Lüge oder nicht?", dauer: "6 Min",
           text: "Du liest Situationen vor, die Kinder zeigen rot (= Lüge, die schadet) oder grün (= ehrlich bzw. harmlos). Diskutiert die schwierigen Fälle.\n\n- „Ich hab die Hausaufgaben vergessen“ – obwohl man keine Lust hatte.\n- Oma fragt, ob dir der Pullover gefällt. Du sagst ja, obwohl er hässlich ist.\n- Du sagst, du warst es nicht, obwohl du das Fenster kaputt gemacht hast.\n- Du verrätst nicht, wo dein Freund sein Geburtstagsgeschenk versteckt hat.\n- Du erzählst, du hättest ein neues Handy – stimmt aber nicht.\n- Du sagst der Lehrerin nicht, wer die Wand beschmiert hat.",
           antworten: ["🔴 Lüge, die schadet", "🟢 ehrlich / harmlos"],
-          folie: "Ist das eine **Lüge, die schadet** 🔴 – oder **ehrlich bzw. harmlos** 🟢?\n\nHalte die **rote oder grüne Karte** hoch." }
+          folie: "Ist das eine **Lüge, die schadet** 🔴 – oder **ehrlich bzw. harmlos** 🟢?\n\nHalte die **rote oder grüne Karte** hoch.",
+          kern: ["34"] }
     ],
     ab34: { titel: "Mein Vertrauens-Konto", kontext: "Zum Fall: Niklas lügt seine Mutter und seine Lehrerin an. Als er später die Wahrheit sagt, glaubt ihm keiner mehr.", aufgaben: [
         { typ: "tabelle", text: "Was zahlt auf das Vertrauens-Konto ein – was hebt ab? Schreib in jede Spalte drei Beispiele.", spalten: ["Einzahlung (macht Vertrauen)", "Abhebung (macht Vertrauen kaputt)"], zeilen: [["", ""], ["", ""], ["", ""]] },
@@ -92,7 +93,8 @@ Am nächsten Tag erzählt Selin alles ihrer Schulsozialarbeiterin. Die sagt: „
           text: "Die Kinder formulieren Schimpf-Sätze in Sätze um, die ein Erwachsener ernst nimmt. Du liest den wütenden Satz vor, die Kinder machen Vorschläge.\n\n- „Sie haben ja gar keine Ahnung!“\n- „Immer bin ich schuld!“\n- „Das ist voll unfair, ich mach das nicht!“\n- „Der hat angefangen, nicht ich!“\n- „Lassen Sie mich in Ruhe!“",
           quiz: "karten",
           frage: "Wie sagst du das so, dass ein Erwachsener zuhört?",
-          folie: "Mit Schimpfen hört dir kein Erwachsener zu.\n\nWie kannst du den Satz so sagen, dass er **ernst genommen** wird?" }
+          folie: "Mit Schimpfen hört dir kein Erwachsener zu.\n\nWie kannst du den Satz so sagen, dass er **ernst genommen** wird?",
+          kern: ["34"] }
     ],
     ab34: { titel: "Wenn's unfair ist", aufgaben: [
         { typ: "tabelle", text: "Schreib den Satz so um, dass ein Erwachsener zuhört.", spalten: ["Wütender Satz", "Satz, der gehört wird"], zeilen: [["„Sie haben ja keine Ahnung!“", ""], ["„Immer bin ich schuld!“", ""], ["„Der hat angefangen!“", ""]] },
@@ -127,7 +129,8 @@ Eine Woche später hat Merve Streit mit Lena. Plötzlich ist sie raus aus der Ch
         { titel: "Reinholen üben", dauer: "6 Min",
           text: "Jedes Kind sucht sich eine Möglichkeit aus, wie es jemanden reinholen kann, und sagt den Satz einmal laut vom Platz:\n\n- „Komm, setz dich zu uns.“\n- „Willst du mitspielen? Wir brauchen noch einen.“\n- „Du kannst mit in unsere Gruppe.“\n- Beim Wählen jemanden früh nehmen, der sonst als Letzter drankommt.\n\nAbmachung für die Woche: Jeder holt einmal jemanden rein.",
           quiz: "liste",
-          folie: "Wie holst du jemanden **rein**? 🤝\n\nSuch dir einen Satz aus und sag ihn laut." }
+          folie: "Wie holst du jemanden **rein**? 🤝\n\nSuch dir einen Satz aus und sag ihn laut.",
+          kern: ["34"] }
     ],
     ab34: { titel: "Draußen – und wieder drinnen", kontext: "Zum Fall: Anna ist neu und möchte zur Clique dazu. „Hier ist kein Platz mehr“, sagt Lena – und Anna bleibt allein.", aufgaben: [
         { typ: "tabelle", text: "Sortiere die Begriffe aus dem Wortspeicher: Was schließt aus – was holt rein?", spalten: ["Schließt aus", "Holt rein"], zeilen: [["", ""], ["", ""], ["", ""], ["", ""]],
@@ -168,7 +171,8 @@ Der Sozialarbeiter nickt. „Wut ist oft ein Bodyguard für Gefühle, die wehtun
           text: "Du liest Situationen vor. Die Kinder überlegen: Was könnte unter der Wut stecken?\n\n- Ein Junge rastet aus, weil er beim Fußball nicht gewählt wurde.\n- Ein Mädchen schreit ihre Freundin an, weil die mit einer anderen spielt.\n- Ein Kind zerreißt sein Arbeitsblatt, weil es die Aufgabe nicht versteht.\n- Ein Junge haut zu, als jemand etwas über seine Familie sagt.\n- Ein Kind ist schon morgens gereizt und motzt alle an.",
           quiz: "karten",
           frage: "Was könnte unter der Wut stecken?",
-          folie: "Jemand ist wütend.\n\nWas könnte **unter der Wut** stecken? 🧊" }
+          folie: "Jemand ist wütend.\n\nWas könnte **unter der Wut** stecken? 🧊",
+          kern: ["34"] }
     ],
     ab34: { titel: "Mein Wut-Eisberg", aufgaben: [
         { typ: "malen", text: "Zeichne einen Eisberg. Oben steht WUT. Schreib unter die Wasserlinie, welche Gefühle bei dir darunter liegen können.", bild: "" },
@@ -203,7 +207,8 @@ Die Schulleiterin malt einen Kreis an die Tafel. „Jeder von euch hat gedacht, 
           text: "Du liest Situationen vor. Die Kinder sagen zuerst ehrlich, was sie gern tun würden (Rache) – und dann, was das Problem wirklich löst.\n\n- Jemand hat dein Fahrrad zerkratzt.\n- Jemand hat dich im Chat lächerlich gemacht.\n- Jemand hat dir beim Fußball absichtlich ein Bein gestellt.\n- Jemand hat dein Geheimnis weitererzählt.\n- Jemand hat deinen kleinen Bruder geschubst.",
           quiz: "karten",
           frage: "Was würdest du gern tun – und was löst das Problem wirklich?",
-          folie: "Sei ehrlich: Was würdest du **gern** tun?\n\nUnd was **löst** das Problem wirklich?" }
+          folie: "Sei ehrlich: Was würdest du **gern** tun?\n\nUnd was **löst** das Problem wirklich?",
+          kern: ["34"] }
     ],
     ab34: { titel: "Den Kreis stoppen", kontext: "Zum Fall: Montag versteckt Ole Cans Mütze. Dienstag kippt Can Wasser über Oles Heft. Mittwoch zeigt Ole ein peinliches Foto von Can herum. Donnerstag schlägt Can Ole.", aufgaben: [
         { typ: "luecken", text: "Ole und Can – trag die Tage ein:", nummern: false, saetze: ["Montag: ___", "Dienstag: ___", "Mittwoch: ___", "Donnerstag: ___"] },
@@ -236,7 +241,8 @@ Kevins alter Freund Marc ist nicht so cool. Aber als Kevin krank war, hat Marc i
         { titel: "Echt oder falsch?", dauer: "6 Min",
           text: "Du liest Verhaltensweisen vor, die Kinder zeigen grün (= echter Freund) oder rot (= falscher Freund).\n\n- Hält zu dir, auch wenn andere über dich lachen.\n- Will nur mit dir abhängen, wenn du etwas Neues hast.\n- Sagt dir ehrlich, wenn du Mist baust.\n- Erzählt deine Geheimnisse weiter.\n- Bringt dich dazu, Dinge zu tun, die du nicht willst.\n- Freut sich mit dir, wenn du etwas geschafft hast.",
           antworten: ["🟢 echter Freund", "🔴 falscher Freund"],
-          folie: "**Echter Freund** 🟢 oder **falscher Freund** 🔴?\n\nHalte die **rote oder grüne Karte** hoch." },
+          folie: "**Echter Freund** 🟢 oder **falscher Freund** 🔴?\n\nHalte die **rote oder grüne Karte** hoch.",
+          kern: ["34"] },
         { titel: "Freundschafts-Test", dauer: "6 Min",
           text: "Gemeinsam fünf Fragen formulieren, mit denen man eine Freundschaft prüfen kann, z. B.: „Fühle ich mich wohl, wenn ich mit ihm/ihr zusammen bin?“ · „Kann ich Nein sagen, ohne Angst zu haben?“ · „Hört er/sie mir auch zu?“ Schreib sie an die Tafel.",
           folie: "Mit welchen **Fragen** kannst du prüfen, ob eine Freundschaft gut ist? ❓\n\nFindet fünf Fragen." }
@@ -275,7 +281,8 @@ Am Nachmittag setzt sich die Klasse zusammen. „Wir brauchen ein paar Regeln“
           text: "Du liest Regelverstöße und Konsequenzen vor. Die Kinder zeigen mit Daumen: fair, geht so, unfair – und begründen.\n\n- Jemand macht das Klo dreckig – muss es sauber machen.\n- Jemand schwänzt – darf eine Woche nicht in die Pause.\n- Jemand schlägt – bekommt einen Elternanruf.\n- Jemand zerkratzt einen Tisch – muss ihn abschleifen helfen.\n- Die ganze Klasse wird bestraft, weil einer gestört hat.",
           quiz: "zahlen",
           antworten: ["1️⃣ fair", "2️⃣ geht so", "3️⃣ unfair"],
-          folie: "Ist diese Konsequenz fair?\n\n**1** = fair · **2** = geht so · **3** = unfair\n\nHalte deine Zahlenkarte hoch und sag, warum." }
+          folie: "Ist diese Konsequenz fair?\n\n**1** = fair · **2** = geht so · **3** = unfair\n\nHalte deine Zahlenkarte hoch und sag, warum.",
+          kern: ["34"] }
     ],
     ab34: { titel: "Regeln mit Sinn", aufgaben: [
         { typ: "tabelle", text: "Wähle drei Regeln aus deiner Schule.", spalten: ["Regel", "Warum gibt es sie?", "Was passiert ohne?"], zeilen: [["", "", ""], ["", "", ""], ["", "", ""]] },
@@ -313,7 +320,8 @@ Die Lehrerin sagt: „Weißt du, wer weint? Fußballprofis nach einem verlorenen
         { titel: "Stark oder schwach?", dauer: "6 Min",
           text: "Du liest vor, die Kinder entscheiden mit Daumen: Braucht das Mut (hoch) oder ist es schwach (runter)? Diskutiert.\n\n- Vor anderen zugeben, dass man Angst hat.\n- Weinen, wenn etwas Schlimmes passiert.\n- Sagen: „Das hat mich verletzt.“\n- Einem Freund sagen, dass man ihn mag.\n- Um Hilfe bitten.",
           antworten: ["👍 braucht Mut", "👎 ist schwach"],
-          folie: "**Braucht das Mut** 👍 – oder ist es **schwach** 👎?" }
+          folie: "**Braucht das Mut** 👍 – oder ist es **schwach** 👎?",
+          kern: ["34"] }
     ],
     ab34: { titel: "Meine Maske", kontext: "Zum Fall: Mo spielt immer den Coolen. Als sein Hund stirbt, weint er heimlich auf dem Klo und hat Angst, ein „Weichei“ zu sein.", aufgaben: [
         { typ: "tabelle", text: "Was zeigst du nach außen – und was fühlst du manchmal innen? Schreib drei Beispiele.", spalten: ["Außen (was andere sehen)", "Innen (was ich fühle)"], zeilen: [["", ""], ["", ""], ["", ""]] },
@@ -351,7 +359,8 @@ Robin ist still. Er hatte nur das Handy gesehen.
           text: "Neid zeigt oft, was einem wichtig ist. Gemeinsam umformulieren:\n\n- „Der ist so gut im Fußball, ich hasse ihn.“ → „Ich will auch besser werden – ich frag ihn mal nach Tipps.“\n- „Die hat immer die besten Noten, Streberin.“\n- „Der hat schon wieder neue Schuhe.“\n- „Die hat so viele Freunde.“\n- „Der darf viel länger zocken als ich.“",
           quiz: "karten",
           frage: "Mach daraus einen Satz, der dir hilft.",
-          folie: "Neid zeigt oft, was dir **wichtig** ist.\n\nMach aus dem Neid-Satz einen Satz, der dir **hilft**. ⚡" }
+          folie: "Neid zeigt oft, was dir **wichtig** ist.\n\nMach aus dem Neid-Satz einen Satz, der dir **hilft**. ⚡",
+          kern: ["34"] }
     ],
     ab34: { titel: "Der Stich im Bauch", aufgaben: [
         { typ: "luecken", text: "Ehrlich zu mir:", nummern: false, saetze: ["Ich werde neidisch, wenn andere ___", "Das merke ich so: ___", "Was ich bei anderen oft nicht sehe: ___"] },
@@ -387,7 +396,8 @@ Abends kann Sami nicht schlafen. Was, wenn der Lehrer nicht gekommen wäre?
           text: "Du liest Situationen vor. Rot = das würde ich für mich behalten, grün = da hole ich Hilfe. Danach die Regel an die Tafel: **Petzen will jemandem Ärger machen. Hilfe holen will jemanden schützen.**\n\n- Jemand hat abgeschrieben.\n- Ein Kind wird jeden Tag auf dem Heimweg abgezogen.\n- Jemand hat ein Messer dabei.\n- Jemand hat einen Kaugummi unter den Tisch geklebt.\n- Ein Freund erzählt, dass er zu Hause geschlagen wird.\n- Im Chat droht jemand, einem anderen „aufzulauern“.",
           quiz: "ampel",
           antworten: ["🔴 für mich behalten", "🟢 Hilfe holen"],
-          folie: "🔴 **Das behalte ich für mich.**\n🟢 **Da hole ich Hilfe.**\n\nHalte die **rote oder grüne Karte** hoch." },
+          folie: "🔴 **Das behalte ich für mich.**\n🟢 **Da hole ich Hilfe.**\n\nHalte die **rote oder grüne Karte** hoch.",
+          kern: ["34"] },
         { titel: "Wie sag ich's?", dauer: "5 Min",
           text: "Sammelt: Wem kann man so etwas sagen? (Lehrkraft, Schulsozialarbeit, Eltern, Nummer gegen Kummer 116 111) Und wie, damit es keiner merkt? (nach der Stunde, Zettel, Eltern bitten anzurufen …)",
           folie: "Wem kannst du so etwas sagen?\n\nUnd **wie**, damit es keiner merkt?" }
@@ -429,7 +439,8 @@ Dann fragt Amira: „Was wünscht ihr euch vom anderen?“ Am Ende einigen sich 
           text: "Drei Kinder üben vom Platz aus: zwei Streitende, ein Schlichter (du hilfst). Ausgedachter, harmloser Streit, z. B.:\n\n- Wer darf an den PC?\n- Einer hat den Stift des anderen ausgeliehen und kaputt gemacht.\n- Beide wollen am Fenster sitzen.\n\nDie anderen achten darauf: Wurde jeder ausreden gelassen? Blieb der Schlichter neutral?",
           quiz: "karten",
           frage: "Zwei streiten, einer schlichtet. Wurde jeder ausreden gelassen? Blieb der Schlichter neutral?",
-          folie: "Drei Kinder: **zwei streiten**, **einer schlichtet**.\n\nDie anderen achten: Wurde jeder ausreden gelassen? Blieb der Schlichter neutral?" }
+          folie: "Drei Kinder: **zwei streiten**, **einer schlichtet**.\n\nDie anderen achten: Wurde jeder ausreden gelassen? Blieb der Schlichter neutral?",
+          kern: ["34"] }
     ],
     ab34: { titel: "So schlichte ich einen Streit", aufgaben: [
         { typ: "luecken", text: "Schreib die 4 Schritte der Schlichtung in der richtigen Reihenfolge auf:", nummern: true, saetze: ["___", "___", "___", "___"] },
@@ -463,7 +474,8 @@ Marlon denkt an seine alte Schule. Dort hätte das niemand gesagt. Er fragt sich
           folie: "Welche **Rollen** gibt es in einer Klasse? 🎭\n\nSucht man sie sich aus – oder rutscht man rein?" },
         { titel: "Zweite Chance geben", dauer: "6 Min",
           text: "Gemeinsam überlegen: Was kann die GRUPPE tun, damit jemand seinen Ruf ändern kann? (nicht sofort beschuldigen, Gutes bemerken und sagen, Vergangenes ruhen lassen …) Abmachung: Diese Woche sagt jeder einem anderen etwas Gutes, das ihm aufgefallen ist.",
-          folie: "Was kann die **Gruppe** tun, damit jemand seinen Ruf ändern kann?\n\nDiese Woche: Sag jemandem etwas Gutes, das dir aufgefallen ist." }
+          folie: "Was kann die **Gruppe** tun, damit jemand seinen Ruf ändern kann?\n\nDiese Woche: Sag jemandem etwas Gutes, das dir aufgefallen ist.",
+          kern: ["34"] }
     ],
     ab34: { titel: "Wer ich sein will", aufgaben: [
         { typ: "tabelle", text: "Sei ehrlich zu dir und schreib je drei Wörter oder Sätze:", spalten: ["So sehen mich andere vielleicht", "So will ich gesehen werden"], zeilen: [["", ""], ["", ""], ["", ""]] },

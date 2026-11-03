@@ -136,13 +136,14 @@ function lerntext(e, st){
 }
 
 function uebung(e, st, vertretung){
-    const liste = (e.uebungen || []).filter(u => u.fuer === "alle" || u.fuer === st);
+    const liste = (window.uebungenFuer ? window.uebungenFuer(e, st) : (e.uebungen || [])).filter(u => !u.fuer || u.fuer === "alle" || u.fuer === st);
     if (!liste.length) return null;
+    const zus = u => !!(window.istZusatz && window.istZusatz(e, u, st));
     const mats = window.sozialMaterial ? window.sozialMaterial.fuer(e) : [];
-    const schritte = [li("Schieb den Zeiger auf „Spiel & Übung“. Erkläre jede Übung in zwei, drei Sätzen und <b>mach sie einmal selbst vor</b> – dann wissen alle, wie es geht.")];
+    const schritte = [li("Schieb den Zeiger auf „Spiel & Übung“. Die Folie zeigt den Kindern, was zu tun ist – lies sie vor und erkläre in ein, zwei Sätzen. <b>Du musst nichts vormachen.</b>")];
     liste.forEach((u, i) => {
         const karten = mats.filter(m => m.uebung === u.titel || (m.auto && m.kopf === u.titel)).map(m => "„" + esc(m.titel) + "“");
-        schritte.push(li(`<b>${esc(u.titel)}</b>${u.dauer ? ` (${esc(u.dauer)})` : ""}`,
+        schritte.push(li(`${zus(u) ? '<span style="background:#eef1f3;color:#6b7880;border-radius:6px;padding:1px 6px;font-weight:800">Zusatz – nur wenn noch Zeit ist</span> ' : ""}<b>${esc(u.titel)}</b>${u.dauer ? ` (${esc(u.dauer)})` : ""}`,
             `<div class="regie-text"><div class="md">${md(window.stufenText ? window.stufenText(u, st) : u.text)}</div></div>`,
             karten.length ? `Material: ${karten.join(", ")} (unter Arbeitsmaterial).` : ""));
     });

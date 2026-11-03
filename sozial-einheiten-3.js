@@ -46,7 +46,8 @@ Die Mädchen beschließen eine neue Club-Regel: **Jede, die mitmachen will, darf
           folie: "Mach die Augen zu und hör gut zu. 👂\n\nDanach sagst du **ein Wort**: Wie hat es sich angefühlt?" },
         { titel: "Einladungs-Sätze", fuer: "alle", dauer: "4 Min",
           text: "Sammelt an der Tafel freundliche Einladungen: „Willst du mitspielen?“ – „Komm, wir brauchen noch jemanden!“ – „Du kannst in unser Team.“ Die Tischnachbarn üben sie: Einer sitzt „allein“, der andere lädt ihn ein. Dann wechseln.",
-          folie: "Wie lädt man jemanden zum Mitspielen ein?\n\nÜbt mit eurem Nachbarn: Einer sitzt allein, der andere lädt ihn ein. Dann wechseln." },
+          folie: "Wie lädt man jemanden zum Mitspielen ein?\n\nÜbt mit eurem Nachbarn: Einer sitzt allein, der andere lädt ihn ein. Dann wechseln.",
+          kern: ["12", "34"] },
         { titel: "Pausen-Ideen für alle", fuer: "34", dauer: "4 Min",
           text: "Die Kinder sammeln vom Platz aus Spiele, bei denen beliebig viele mitmachen können (Fangen, Seilspringen mit langem Seil, Ochs am Berg …) und eine Regel für die Klasse: „Wer fragt, darf mitmachen.“",
           folie: "Welche Spiele gehen mit **ganz vielen** Kindern?\n\nUnd unsere Regel: **„Wer fragt, darf mitmachen.“**" }
@@ -129,11 +130,13 @@ Am Nachmittag will Ben Miras Notizbuch anschauen. „Wir teilen doch alles!“, 
     uebungen: [
         { titel: "Pizza teilen", fuer: "alle", dauer: "5 Min",
           text: "Jedes Kind bekommt einen Papierkreis als „Pizza“. Frage: „Du willst die Pizza mit deinem Tischnachbarn teilen – wie faltest du?“ Dann: „Jetzt kommen noch zwei Freunde!“ Kl. 1/2 falten halbe und viertel Pizzen. Kl. 3/4 überlegen zusätzlich: „Was, wenn drei Kinder kommen?“",
-          folie: "Du hast einen Papierkreis – deine **Pizza** 🍕.\n\nTeil sie mit deinem Nachbarn: Wie faltest du?\nUnd jetzt kommen noch zwei Freunde dazu!" },
+          folie: "Du hast einen Papierkreis – deine **Pizza** 🍕.\n\nTeil sie mit deinem Nachbarn: Wie faltest du?\nUnd jetzt kommen noch zwei Freunde dazu!",
+          kern: ["12"] },
         { titel: "Teilen – ja oder nein?", fuer: "alle", dauer: "4 Min",
           text: "Du nennst Dinge, die Kinder zeigen Daumen hoch (kann man teilen), runter (lieber nicht) oder zur Seite (kommt drauf an):\n\n- Buntstifte\n- Zahnbürste\n- das Geheimnis meiner Freundin\n- mein Pausenbrot, wenn jemand nichts hat\n- mein Lieblingskuscheltier\n- ein Spiel in der Pause\n\nWichtig: Ich darf auch Nein sagen, wenn mir etwas sehr wichtig oder privat ist.",
           antworten: ["👍 kann man teilen", "👉 kommt drauf an", "👎 lieber nicht"],
-          folie: "Kann man das **teilen**?\n\n👍 ja · 👉 kommt drauf an · 👎 lieber nicht\n\nDu darfst auch Nein sagen, wenn dir etwas sehr wichtig ist." },
+          folie: "Kann man das **teilen**?\n\n👍 ja · 👉 kommt drauf an · 👎 lieber nicht\n\nDu darfst auch Nein sagen, wenn dir etwas sehr wichtig ist.",
+          kern: ["34"] },
         { titel: "Was ist gerecht?", fuer: "34", dauer: "3 Min",
           text: "Die Kinder überlegen vom Platz aus: Wie teilt man sieben Muffins gerecht auf acht Kinder auf? Sammelt mindestens drei Ideen und bewertet sie mit Daumen.",
           folie: "**7 Muffins** 🧁 – aber **8 Kinder**.\n\nWie kann man gerecht teilen? Sammelt mindestens drei Ideen." }
@@ -220,7 +223,8 @@ Nach zwei Wochen besucht Jakob Ole zu Hause. Und beim Fußball ist er inzwischen
         { titel: "Hallo-Runde", fuer: "alle", dauer: "4 Min",
           text: "Die Kinder drehen sich zu ihrem Tischnachbarn: „Hallo, ich bin … Ich mag …“ Der andere antwortet und stellt eine Frage. Danach drehen sie sich zum Nachbarn auf der anderen Seite oder zum Tisch dahinter. Kl. 3/4 schauen auf Blickkontakt und Lächeln.",
           folie: "Dreh dich zu deinem Nachbarn:\n\n**„Hallo, ich bin … Ich mag …“**\n\nDer andere antwortet und stellt dir eine Frage.",
-          folie34: "Dreh dich zu deinem Nachbarn:\n\n**„Hallo, ich bin … Ich mag …“**\n\nDer andere antwortet und stellt dir eine Frage. Achtet auf Blickkontakt und Lächeln. 🙂" },
+          folie34: "Dreh dich zu deinem Nachbarn:\n\n**„Hallo, ich bin … Ich mag …“**\n\nDer andere antwortet und stellt dir eine Frage. Achtet auf Blickkontakt und Lächeln. 🙂",
+          kern: ["12", "34"] },
         { titel: "Steh auf, wenn …", fuer: "alle", dauer: "5 Min",
           text: "Du liest die Sätze vor. Alle, die aufstehen, schauen sich kurz um: „Mit wem habe ich das gemeinsam?“ Dann setzen sich alle wieder. Zum Schluss dürfen Kinder eigene „Steh auf, wenn …“-Sätze vorschlagen.\n\n- Steh auf, wenn du gern Pizza isst.\n- Steh auf, wenn du ein Haustier hast.\n- Steh auf, wenn du Fußball magst.\n- Steh auf, wenn du Geschwister hast.\n- Steh auf, wenn du gern malst.\n- Steh auf, wenn du schon einmal umgezogen bist.",
           quiz: "karten",
@@ -307,7 +311,8 @@ Dann klingelt ihr Wecker – es war nur ein Traum! Beim Frühstück sagt ihr Bru
         { titel: "Zauberwort-Detektive", fuer: "alle", dauer: "4 Min",
           text: "Du liest Sätze vor – mal höflich, mal unhöflich. Die Kinder zeigen Daumen hoch (höflich) oder runter (unhöflich). Bei unhöflichen Sätzen macht ein Kind daraus einen höflichen Satz.\n\n- „Gib mir den Stift!“\n- „Gibst du mir bitte deinen Stift?“\n- „Hä? Was?“\n- „Danke, dass du mir geholfen hast.“\n- „Weg da!“\n- „Darf ich bitte vorbei?“",
           antworten: ["👍 höflich", "👎 unhöflich"],
-          folie: "Ist das **höflich** 👍 oder **unhöflich** 👎?\n\nWenn es unhöflich ist: Wie sagt man es besser?" },
+          folie: "Ist das **höflich** 👍 oder **unhöflich** 👎?\n\nWenn es unhöflich ist: Wie sagt man es besser?",
+          kern: ["12", "34"] },
         { titel: "Höflich-Kette", fuer: "alle", dauer: "5 Min",
           text: "Ein Radiergummi wandert von Platz zu Platz. Wer ihn weitergibt, sagt: „Bitte schön.“ Wer ihn bekommt: „Danke schön.“ Kl. 3/4 ergänzen einen netten Satz („Danke, du hast heute schön gemalt.“). Geht er einmal ganz herum, klatschen alle.",
           folie: "Der Radiergummi wandert von Platz zu Platz.\n\nWer ihn gibt: **„Bitte schön.“**\nWer ihn bekommt: **„Danke schön.“**",
@@ -393,12 +398,14 @@ Am Abend klingeln Selma und Deniz bei Herrn Schulze. Deniz erklärt mit roten Oh
     uebungen: [
         { titel: "Unsere Dienste", fuer: "alle", dauer: "7 Min",
           text: "Gemeinsam überlegt ihr Dienste für das Sozialtraining: Redestein-Wächter, Barometer-Helfer, Tafel-Dienst, Austeil-Dienst, Fenster und Licht, Zeitwächter (zeigt die letzten 5 Minuten an). Jedes Kind wählt einen Dienst und steckt seine Klammer ans Plakat. Kl. 3/4 schreiben die Dienste aufs Plakat, Kl. 1/2 malen ein Symbol dazu. Die Dienste wechseln jeden Monat.",
-          folie: "Welche **Dienste** brauchen wir im Sozialtraining?\n\nSuch dir einen Dienst aus und steck deine Klammer ans Plakat." },
+          folie: "Welche **Dienste** brauchen wir im Sozialtraining?\n\nSuch dir einen Dienst aus und steck deine Klammer ans Plakat.",
+          kern: ["12"] },
         { titel: "Wer ist verantwortlich?", fuer: "alle", dauer: "4 Min",
           text: "Du liest Situationen vor. Die Kinder legen die Hand auf die Brust („Das bin ich“) oder zeigen nach außen („Das ist jemand anderes“).\n\n- Mein Ranzen ist nicht gepackt.\n- Das Wetter ist schlecht.\n- Mein Hamster hat kein Futter.\n- Ich habe ein geliehenes Buch verloren.\n- Der Bus kommt zu spät.",
           quiz: "ampel",
           antworten: ["🙋 Das bin ich", "👉 jemand anderes"],
-          folie: "Wer ist dafür verantwortlich?\n\n🙋 Hand auf die Brust = **Das bin ich.**\n👉 nach außen zeigen = **jemand anderes.**" }
+          folie: "Wer ist dafür verantwortlich?\n\n🙋 Hand auf die Brust = **Das bin ich.**\n👉 nach außen zeigen = **jemand anderes.**",
+          kern: ["34"] }
     ],
     ab12: {
       "titel": "Ich kümmere mich",
@@ -478,11 +485,13 @@ Die Viertklässler murren erst. Aber am Donnerstag merken sie: In gemischten Tea
           text: "Du nennst Pausen-Situationen, die Kinder zeigen Grün (fair) oder Rot (unfair). Kl. 3/4 sagen, was man stattdessen tun kann.\n\n- Ich stelle mich hinten an.\n- Ich nehme den anderen den Ball weg.\n- Ich lasse ein Kind mitspielen.\n- Ich bestimme immer, was gespielt wird.\n- Ich hole Hilfe, wenn jemand weint.\n- Ich halte mich an die Spielregeln.",
           antworten: ["🟢 fair", "🔴 unfair"],
           folie: "Ist das in der Pause **fair** 🟢 oder **unfair** 🔴?",
-          folie34: "Ist das in der Pause **fair** 🟢 oder **unfair** 🔴?\n\nWenn es unfair ist: Was kann man stattdessen tun?" },
+          folie34: "Ist das in der Pause **fair** 🟢 oder **unfair** 🔴?\n\nWenn es unfair ist: Was kann man stattdessen tun?",
+          kern: ["12"] },
         { titel: "Unser Pausen-Plan", fuer: "alle", dauer: "7 Min",
           text: "Die Kinder erzählen vom Platz aus, wo es in ihrer Pause Streit gibt (Klettergerüst, Ball, Schaukel …). Kl. 3/4 schlagen zu jedem Problem eine faire Regel vor, Kl. 1/2 malen dazu ein Symbol. Die besten Ideen kommen aufs Plakat – vielleicht sogar als Vorschlag für die ganze Schule.",
           folie12: "Wo gibt es in der Pause **Streit**? 🛝⚽\n\nErzähl – und mal ein Bild für unser Plakat.",
-          folie34: "Wo gibt es in der Pause **Streit**? 🛝⚽\n\nErzähl – und schlag eine **faire Regel** vor." }
+          folie34: "Wo gibt es in der Pause **Streit**? 🛝⚽\n\nErzähl – und schlag eine **faire Regel** vor.",
+          kern: ["34"] }
     ],
     ab12: {
       "titel": "Fair in der Pause",

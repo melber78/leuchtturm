@@ -45,14 +45,16 @@ Jonas merkt: Die Wut war trotzdem da. Aber diesmal hat er entschieden, was passi
     uebungen: [
         { titel: "Ballon-Atmen", fuer: "alle", dauer: "3 Min",
           text: "Alle sitzen aufrecht am Platz, eine Hand liegt auf dem Bauch. Einatmen durch die Nase – der Bauch wird ein dicker Ballon. Langsam durch den Mund ausatmen – die Luft geht aus dem Ballon. Fünfmal. Frage danach: „Wie fühlt sich dein Körper jetzt an?“",
-          folie: "Setz dich gerade hin. Leg eine Hand auf den Bauch. 🎈\n\nDurch die Nase einatmen – der Bauch wird ein dicker Ballon.\nLangsam durch den Mund ausatmen – die Luft geht raus.\n\n**5-mal.**" },
+          folie: "Setz dich gerade hin. Leg eine Hand auf den Bauch. 🎈\n\nDurch die Nase einatmen – der Bauch wird ein dicker Ballon.\nLangsam durch den Mund ausatmen – die Luft geht raus.\n\n**5-mal.**",
+          kern: ["12"] },
         { titel: "Wut-Thermometer", fuer: "alle", dauer: "4 Min",
           text: "Du liest Situationen vor. Die Kinder zeigen am Platz mit dem Arm, wie wütend sie das machen würde: Hand auf dem Tisch = gar nicht, Arm ganz hoch = kochend heiß.\n\n- Jemand schubst mich in der Schlange.\n- Mein Bruder isst meinen Nachtisch.\n- Ich verliere beim Spiel.\n- Jemand lacht über mein Bild.\n\nWichtig: Jeder darf anders wütend sein – das ist normal.",
           antworten: ["✋ gar nicht wütend", "💪 etwas wütend", "🙌 kochend heiß"],
           folie: "Wie **wütend** würde dich das machen?\n\nHand auf dem Tisch = gar nicht · Arm halb hoch = etwas · Arm ganz hoch = kochend heiß! 🌡️\n\nJeder darf anders wütend sein." },
         { titel: "Werkzeugkasten sortieren", fuer: "34", dauer: "5 Min",
           text: "Die Tischnachbarn bekommen die Werkzeug-Kärtchen und legen zwei Häufchen: „Hilft mir und schadet keinem“ und „Macht es schlimmer“. Danach stellt jedes Paar ein Werkzeug vor, das es selbst ausprobieren will. Kl. 1/2 zeigen in derselben Zeit am Platz ihren Lieblings-Trick vor (z. B. Fäuste ganz fest drücken und wieder loslassen).",
-          folie: "Ihr bekommt Werkzeug-Kärtchen. Legt zwei Häufchen:\n\n✅ **Hilft mir und schadet keinem**\n❌ **Macht es schlimmer**\n\nWelches Werkzeug willst du ausprobieren?" }
+          folie: "Ihr bekommt Werkzeug-Kärtchen. Legt zwei Häufchen:\n\n✅ **Hilft mir und schadet keinem**\n❌ **Macht es schlimmer**\n\nWelches Werkzeug willst du ausprobieren?",
+          kern: ["34"] }
     ],
     ab12: {
       "titel": "Wenn ich wütend bin",
@@ -143,13 +145,15 @@ Am Ende sagt Finn: „Danke, Aylin. Das hat gutgetan.“
         { titel: "Hilft das wirklich?", fuer: "34", dauer: "4 Min",
           text: "Du liest Reaktionen vor, die Kinder zeigen Daumen hoch oder runter und begründen kurz:\n\n- „Hör auf zu heulen!“\n- „Ich bin für dich da.“\n- „Ist doch nicht so schlimm.“\n- „Willst du darüber reden?“\n- Einfach still daneben sitzen.",
           antworten: ["👍 hilft", "👎 hilft nicht"],
-          folie: "Jemand ist traurig. Hilft dieser Satz?\n\n👍 hilft · 👎 hilft nicht – und warum?" },
+          folie: "Jemand ist traurig. Hilft dieser Satz?\n\n👍 hilft · 👎 hilft nicht – und warum?",
+          kern: ["34"] },
         { titel: "Trost-Post für den Teddy", fuer: "alle", dauer: "4 Min",
           text: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind macht ihm an seinem Platz eine Trostkarte: Kl. 1/2 malen, Kl. 3/4 schreiben zwei Sätze. Die Karten werden vorn neben den Teddy gelegt.",
           text12: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind malt ihm an seinem Platz eine Trostkarte. Die Karten werden vorn neben den Teddy gelegt.",
           text34: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind schreibt ihm an seinem Platz eine Trostkarte mit zwei Sätzen. Die Karten werden vorn neben den Teddy gelegt.",
           folie12: "Der Teddy ist traurig. Er hat seinen besten Freund verloren. 🧸\n\nMal ihm eine **Trostkarte**.",
-          folie34: "Der Teddy ist traurig. Er hat seinen besten Freund verloren. 🧸\n\nSchreib ihm eine **Trostkarte** mit zwei Sätzen." }
+          folie34: "Der Teddy ist traurig. Er hat seinen besten Freund verloren. 🧸\n\nSchreib ihm eine **Trostkarte** mit zwei Sätzen.",
+          kern: ["12"] }
     ],
     ab12: {
       "titel": "Ich kann trösten",
@@ -241,11 +245,13 @@ Auf der Heimfahrt sagt Mila: „Mutig sein heißt nicht, keine Angst zu haben. M
         { titel: "Mutmacher-Satz", fuer: "alle", dauer: "4 Min",
           text: "Sammelt Mutmacher-Sätze an der Tafel („Ich schaff das!“, „Eins nach dem anderen“, „Ich darf es versuchen“). Jedes Kind sucht sich einen aus, steht am Platz auf und sagt ihn mit starker Stimme. Die anderen antworten: „Ja, das schaffst du!“",
           folie: "Welcher Satz macht dir **Mut**?\n\nSuch dir einen aus, steh auf und sag ihn mit starker Stimme. 💪",
-          quiz: "liste" },
+          quiz: "liste",
+          kern: ["12"] },
         { titel: "Schützt mich die Angst?", fuer: "34", dauer: "4 Min",
           text: "Situationen vorlesen. Die Kinder entscheiden mit Daumen: Daumen hoch = „Die Angst schützt mich, ich höre auf sie“, Daumen zur Seite = „Die Angst ist zu laut, ich probiere es in kleinen Schritten“.\n\n- Ein Fremder bietet mir Süßigkeiten an.\n- Ich soll ein neues Kind ansprechen.\n- Das Eis auf dem Teich ist dünn.\n- Ich soll bei der Theateraufführung mitspielen.",
           antworten: ["👍 Angst schützt mich", "👉 kleine Schritte probieren"],
-          folie: "**Daumen hoch 👍** = Die Angst passt auf mich auf. Ich höre auf sie.\n\n**Daumen zur Seite 👉** = Die Angst ist zu laut. Ich probiere es in kleinen Schritten." }
+          folie: "**Daumen hoch 👍** = Die Angst passt auf mich auf. Ich höre auf sie.\n\n**Daumen zur Seite 👉** = Die Angst ist zu laut. Ich probiere es in kleinen Schritten.",
+          kern: ["34"] }
     ],
     ab12: {
       "titel": "Was macht mir Mut?",
@@ -330,12 +336,14 @@ Am Nachmittag erzählt die Lehrerin der Klasse, dass Tims Opa krank ist. Lara wi
           text: "Du liest kurz vor, wie es einem Kind geht. Die Kinder zeigen am Platz: Hand aufs Herz = trösten, Daumen hoch = mitfreuen, Hand flach = in Ruhe lassen, Hand ausstrecken = helfen.\n\n- Paul ist hingefallen und weint.\n- Mia hat ein Tor geschossen.\n- Ben ist wütend, weil sein Bild zerrissen ist.\n- Lea kommt mit ihrer Matheaufgabe nicht weiter.\n- Tom sitzt allein und will gerade niemanden sehen.",
           quiz: "karten",
           frage: "❤️ trösten · 👍 mitfreuen · ✋ in Ruhe lassen · 🤲 helfen",
-          folie: "Was braucht das Kind jetzt? Zeig es:\n\n❤️ Hand aufs Herz = **trösten**\n👍 Daumen hoch = **mitfreuen**\n✋ Hand flach = **in Ruhe lassen**\n🤲 Hand ausstrecken = **helfen**" },
+          folie: "Was braucht das Kind jetzt? Zeig es:\n\n❤️ Hand aufs Herz = **trösten**\n👍 Daumen hoch = **mitfreuen**\n✋ Hand flach = **in Ruhe lassen**\n🤲 Hand ausstrecken = **helfen**",
+          kern: ["12"] },
         { titel: "Die Perspektiv-Brille", fuer: "34", dauer: "5 Min",
           text: "Du liest eine Situation vor. Ein Kind setzt die Perspektiv-Brille auf und erzählt in der Ich-Form, was die andere Person fühlt und denkt. Danach gibt es die Brille weiter.\n\n- Ein neues Kind sitzt in der Pause allein auf der Bank.\n- Die Lehrerin schimpft, obwohl sie sonst nett ist.\n- Dein Freund hat beim Spiel verloren und knallt die Tür zu.",
           quiz: "karten",
           frage: "Setz die Brille auf: Was fühlt und denkt die andere Person?",
-          folie: "Wer die **Perspektiv-Brille** 👓 aufsetzt, schlüpft in eine andere Person.\n\nErzähl in der Ich-Form: **„Ich fühle mich … Ich denke …“**" }
+          folie: "Wer die **Perspektiv-Brille** 👓 aufsetzt, schlüpft in eine andere Person.\n\nErzähl in der Ich-Form: **„Ich fühle mich … Ich denke …“**",
+          kern: ["34"] }
     ],
     ab12: {
       "titel": "Wie geht es dir?",
@@ -426,7 +434,8 @@ Später fragt Lukas: „War ich jetzt eine Petze?“ Die Lehrerin schüttelt den
           text: "Du liest Situationen vor. Rot = sofort Hilfe holen, Grün = selbst lösen oder geht mich nichts an. Kl. 3/4 begründen.\n\n- Ein Kind steht auf der Fensterbank.\n- Jemand hat seine Hausaufgaben vergessen.\n- Zwei Kinder prügeln sich.\n- Mein Nachbar malt außerhalb der Linien.\n- Ein Kind wird jeden Tag ausgelacht und weint.\n- Jemand drängelt sich vor.",
           quiz: "ampel",
           antworten: ["🔴 sofort Hilfe holen", "🟢 selbst lösen / geht mich nichts an"],
-          folie: "🔴 **Rot** = sofort Hilfe holen\n🟢 **Grün** = selbst lösen oder geht mich nichts an\n\nHalt die passende Karte hoch." },
+          folie: "🔴 **Rot** = sofort Hilfe holen\n🟢 **Grün** = selbst lösen oder geht mich nichts an\n\nHalt die passende Karte hoch.",
+          kern: ["12", "34"] },
         { titel: "Hilfe holen üben", fuer: "12", dauer: "3 Min",
           text: "Einzelne Kinder stehen an ihrem Platz auf und sagen den Hilfe-Satz laut zur Klasse: „Frau/Herr …, ich brauche Hilfe! … ist … passiert.“ Laut, deutlich, Blick nach vorn. Die anderen zeigen Daumen hoch, wenn man es gut verstehen konnte.",
           folie: "Steh auf und sag laut und deutlich:\n\n**„Frau/Herr …, ich brauche Hilfe! … ist … passiert.“**\n\nDie anderen: 👍 wenn man es gut verstanden hat." }
@@ -519,7 +528,8 @@ Eine Woche später setzt Merve sich in der Pause wieder neben Nora.
           text12: "An der Tafel: **1. Ich sage, was ich getan habe. 4. Ich mache es wieder gut.** (Die Stufen 2 und 3 lässt du weg.) Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung: „Ich habe … – Ich mache es wieder gut, indem …“. Zwei Paare zeigen sie vorn.",
           text34: "An der Tafel: **1. Ich sage, was ich getan habe. 2. Ich sage, dass es falsch war. 3. Ich verstehe, wie du dich fühlst. 4. Ich mache es wieder gut.** Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung mit allen vier Stufen. Zwei Paare zeigen sie vorn.",
           folie12: "So geht eine echte Entschuldigung:\n\n**1.** Ich sage, was ich getan habe.\n**2.** Ich mache es wieder gut.\n\nÜbt mit eurer Situationskarte.",
-          folie34: "So geht eine echte Entschuldigung:\n\n**1.** Ich sage, was ich getan habe.\n**2.** Ich sage, dass es falsch war.\n**3.** Ich verstehe, wie du dich fühlst.\n**4.** Ich mache es wieder gut.\n\nÜbt mit eurer Situationskarte." },
+          folie34: "So geht eine echte Entschuldigung:\n\n**1.** Ich sage, was ich getan habe.\n**2.** Ich sage, dass es falsch war.\n**3.** Ich verstehe, wie du dich fühlst.\n**4.** Ich mache es wieder gut.\n\nÜbt mit eurer Situationskarte.",
+          kern: ["12", "34"] },
         { titel: "Wiedergutmach-Ideen", fuer: "34", dauer: "2 Min",
           text: "Sammelt an der Tafel, wie man etwas wieder gutmachen kann: helfen, ersetzen, etwas Nettes tun, den anderen verteidigen, eine Karte schreiben.",
           folie: "Ein „Sorry“ ist gut – aber wie kann man es **wieder gutmachen**? 🔧\n\nSammelt Ideen." }
@@ -610,7 +620,8 @@ Am Ende stimmen alle 22 Kinder dafür. Niemand hat alles bekommen, was er wollte
           text: "Die Tischnachbarn bekommen eine Konfliktkarte und suchen eine Lösung, bei der beide etwas bekommen. Kl. 1/2 dürfen dabei mit dir zusammenarbeiten.\n\n- Beide wollen am Fenster sitzen.\n- Der eine will Fußball spielen, der andere Fangen.\n- Es gibt nur noch ein Stück Kuchen.\n- Beide wollen die rote Schaufel.\n\nJedes Paar stellt seine Lösung vom Platz aus vor.",
           quiz: "karten",
           frage: "Findet eine Lösung, bei der **beide** etwas bekommen.",
-          folie: "Ihr bekommt einen Streit. Findet eine Lösung, bei der **beide** etwas bekommen. 🤝\n\nDanach stellt ihr eure Lösung vor." },
+          folie: "Ihr bekommt einen Streit. Findet eine Lösung, bei der **beide** etwas bekommen. 🤝\n\nDanach stellt ihr eure Lösung vor.",
+          kern: ["12", "34"] },
         { titel: "Fair-Check", fuer: "34", dauer: "2 Min",
           text: "Die anderen prüfen jede vorgestellte Lösung mit dem Daumen: Bekommen beide etwas? Fühlt sich keiner übergangen? Dann Daumen hoch.",
           folie: "Ist die Lösung fair?\n\n✔️ Bekommen beide etwas?\n✔️ Fühlt sich keiner übergangen?\n\nDann Daumen hoch 👍" }
@@ -691,11 +702,13 @@ Elias merkt: Nein sagen war schwer. Aber hinterher fühlt er sich stark.
     uebungen: [
         { titel: "Die Nein-Stimme", fuer: "alle", dauer: "4 Min",
           text: "Alle stehen an ihrem Platz. Zuerst sagen alle ein ganz leises, unsicheres „nein …“ und schauen dabei auf den Boden. Dann das starke Nein: gerade stehen, Hand ausstrecken, Blick nach vorn, laute Stimme: „Nein! Das will ich nicht!“ Frage: „Welches Nein glaubt man eher?“",
-          folie: "Steh auf.\n\n**1.** Leise und unsicher: „nein …“ – Blick auf den Boden.\n**2.** Stark: gerade stehen, Hand nach vorn, Blick nach vorn: **„Nein! Das will ich nicht!“**\n\nWelches Nein glaubt man eher?" },
+          folie: "Steh auf.\n\n**1.** Leise und unsicher: „nein …“ – Blick auf den Boden.\n**2.** Stark: gerade stehen, Hand nach vorn, Blick nach vorn: **„Nein! Das will ich nicht!“**\n\nWelches Nein glaubt man eher?",
+          kern: ["12"] },
         { titel: "Ja-Gefühl oder Nein-Gefühl?", fuer: "alle", dauer: "4 Min",
           text: "Du liest Situationen vor, die Kinder zeigen Daumen hoch (Ja-Gefühl im Bauch) oder runter (Nein-Gefühl):\n\n- Oma gibt mir einen Kuss, obwohl ich das nicht mag.\n- Mein Freund fragt, ob ich mitspiele.\n- Jemand will mein Handy-Passwort.\n- Ein Kind soll für die Gruppe Süßigkeiten klauen.\n\nWichtig: Auch bei Oma darf man freundlich Nein sagen – zum Beispiel lieber die Hand geben.",
           antworten: ["👍 Ja-Gefühl", "👎 Nein-Gefühl"],
-          folie: "Was sagt dein Bauch?\n\n👍 **Ja-Gefühl** · 👎 **Nein-Gefühl**" },
+          folie: "Was sagt dein Bauch?\n\n👍 **Ja-Gefühl** · 👎 **Nein-Gefühl**",
+          kern: ["34"] },
         { titel: "Nein-Sätze sammeln", fuer: "34", dauer: "4 Min",
           text: "Sammelt an der Tafel verschiedene Arten, Nein zu sagen: „Nein, das will ich nicht.“ – „Ohne mich.“ – „Da mache ich nicht mit.“ – „Ich hab keine Lust darauf, lass uns lieber …“ Jedes Kind wählt seinen Lieblingssatz und sagt ihn laut vom Platz.",
           folie: "Es gibt viele Arten, **Nein** zu sagen.\n\nWelcher Satz passt zu dir? Sag ihn laut." }

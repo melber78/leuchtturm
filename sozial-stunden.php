@@ -223,6 +223,8 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .druck-anzahl{ display:inline-flex; align-items:center; gap:3px; font-weight:900; color:var(--grau); }
 .druck-anzahl input{ width:58px; font-size:17px; font-weight:800; text-align:center; padding:8px 4px; border:2px solid var(--linie); border-radius:10px; }
 .m-wozu{ font-size:15px; line-height:1.4; background:#fff7e6; border-left:4px solid var(--gold); border-radius:8px; padding:6px 10px; margin:4px 0 6px; }
+.chip.kern{ background:#e3f3e6; color:#1e6b3c; font-weight:900; }
+.chip.zusatz{ background:#eef1f3; color:#6b7880; }
 .speicherstatus{ font-weight:800; font-size:13px; color:var(--grau); }
 .speicherstatus.ok{ color:var(--gruen); }
 .speicherstatus.fehler{ color:var(--rot); }
@@ -915,7 +917,20 @@ function verlaufTabelle(e, klasse, st){
     return `<table class="${klasse}"><tr><th>Min</th><th>Phase</th><th>Kl. 1/2</th><th>Kl. 3/4</th></tr>` +
         (e.verlauf || []).map(v => `<tr><td>${esc(v.zeit)}</td><td>${esc(v.phase)}</td><td>${inline(v.k12)}</td><td>${inline(v.k34)}</td></tr>`).join("") + "</table>";
 }
-function uebungenFuer(e, st){ return (e.uebungen || []).filter(u => !st || !u.fuer || u.fuer === "alle" || u.fuer === st); }
+// Kern-Übung (kern: ["12","34"]) kommt immer dran, alle anderen sind „Zusatz – wenn noch Zeit ist“.
+// Stunden ohne Kern-Angabe (z. B. eigene) bleiben unverändert.
+function hatKern(e, st){ return (e.uebungen || []).some(u => Array.isArray(u.kern) && (!st || u.kern.includes(st))); }
+function istZusatz(e, u, st){
+    if (!st) return !!(hatKern(e) && !(Array.isArray(u.kern) && u.kern.length));
+    return hatKern(e, st) && !(Array.isArray(u.kern) && u.kern.includes(st));
+}
+window.istZusatz = istZusatz;
+// Übungen einer Stufe: Kern zuerst, dann Zusatz
+function uebungenFuer(e, st){
+    const liste = (e.uebungen || []).filter(u => !st || !u.fuer || u.fuer === "alle" || u.fuer === st);
+    return st ? [...liste.filter(u => !istZusatz(e, u, st)), ...liste.filter(u => istZusatz(e, u, st))] : liste;
+}
+window.uebungenFuer = uebungenFuer;
 function lehrerHtml(e, st){
     if (e.nur34 && !st) st = "34";
     const kl = st === "12" ? "1/2" : st === "34" ? "3/4" : "";
@@ -928,7 +943,12 @@ function lehrerHtml(e, st){
         <h2>Stundenverlauf</h2>${verlaufTabelle(e, "", st)}
         ${zeig12 && e.lerntext12?.text ? `<h2>Lerntext${kl ? "" : " Kl. 1/2"}: ${esc(e.lerntext12.titel)}</h2><div class="md">${md(e.lerntext12.text)}</div>` : ""}
         ${zeig34 && e.lerntext34?.text ? `<h2>Lerntext${kl ? "" : " Kl. 3/4"}: ${esc(e.lerntext34.titel)}</h2><div class="md">${md(e.lerntext34.text)}</div>` : ""}
-        ${uebungenFuer(e, st).length ? "<h2>Übungen</h2>" + uebungenFuer(e, st).map(u => `<div class="ld-uebung"><h3>${esc(u.titel)} <span class="ld-badge">${kl ? "" : "· " + (FUER[u.fuer] || "Alle")}${u.dauer ? " · " + esc(u.dauer) : ""}</span></h3><div class="md">${md(stufenText(u, st))}</div></div>`).join("") : ""}
+        ${(() => {
+            const ueb = u => `<div class="ld-uebung"><h3>${esc(u.titel)} <span class="ld-badge">${kl ? "" : "· " + (FUER[u.fuer] || "Alle")}${u.dauer ? " · " + esc(u.dauer) : ""}${!st && istZusatz(e, u) ? " · Zusatz" : ""}</span></h3><div class="md">${md(stufenText(u, st))}</div></div>`;
+            const alle = uebungenFuer(e, st), kern = st ? alle.filter(u => !istZusatz(e, u, st)) : alle, zus = st ? alle.filter(u => istZusatz(e, u, st)) : [];
+            return (kern.length ? "<h2>Übung</h2>" + kern.map(ueb).join("") : "") +
+                (zus.length ? `<h2>Wenn noch Zeit ist (Zusatz)</h2><p style="font-size:9pt;color:#55636a">Nur wenn die Stunde gut läuft – die Stunde ist auch ohne diese Übungen vollständig.</p>` + zus.map(ueb).join("") : "");
+        })()}
     </div>`;
 }
 function anzahlGemerkt(k){ const std = (k === "ab12" || k === "ab34" || k.startsWith("lese")) ? 9 : 1; try { const v = parseInt(localStorage.getItem("sozial_anz_" + k), 10); if (v > 0) return v; } catch (err) {} return std; }
@@ -1156,8 +1176,14 @@ function zeigeStunde(id){
         : `<a class="btn nacht" href="#bearbeiten/${encodeURIComponent(e.id)}"><i class="fa-solid fa-pen"></i> Bearbeiten</a>`;
     const loeschKnopf = e._art === "eigen" ? `<button class="btn rot" id="loeschen"><i class="fa-solid fa-trash"></i> Löschen</button>`
         : e._art === "angepasst" ? `<button class="btn rot" id="loeschen"><i class="fa-solid fa-rotate-left"></i> Original wiederherstellen</button>` : "";
+    const kernChip = u => { if (!hatKern(e)) return ""; const k = Array.isArray(u.kern) ? u.kern : [];
+        const gilt = ["12", "34"].filter(st => !e.nur34 || st === "34").filter(st => !u.fuer || u.fuer === "alle" || u.fuer === st);
+        const kernFuer = gilt.filter(st => k.includes(st)), zusFuer = gilt.filter(st => !k.includes(st));
+        const n = x => x === "12" ? "Kl. 1/2" : "Kl. 3/4";
+        return (kernFuer.length ? `<span class="chip kern">★ Kern${gilt.length > 1 && kernFuer.length < gilt.length ? " " + kernFuer.map(n).join(", ") : ""}</span>` : "") +
+            (zusFuer.length ? `<span class="chip zusatz">Zusatz${gilt.length > 1 && zusFuer.length < gilt.length ? " " + zusFuer.map(n).join(", ") : ""} – wenn Zeit ist</span>` : ""); };
     const uebungen = (e.uebungen || []).map(u => `<div class="uebung"><div class="uebung-kopf"><strong>${esc(u.titel)}</strong>
-        <span class="chip ${u.fuer === "34" ? "gold" : u.fuer === "12" ? "" : "gruen"}">${FUER[u.fuer] || "Alle"}</span>${u.dauer ? `<span class="chip">${esc(u.dauer)}</span>` : ""}</div><div class="md">${md(u.text)}</div></div>`).join("");
+        <span class="chip ${u.fuer === "34" ? "gold" : u.fuer === "12" ? "" : "gruen"}">${FUER[u.fuer] || "Alle"}</span>${u.dauer ? `<span class="chip">${esc(u.dauer)}</span>` : ""}${kernChip(u)}</div><div class="md">${md(u.text)}</div></div>`).join("");
 
     inhalt.innerHTML = `
         <div class="detail-kopf">
