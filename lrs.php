@@ -105,7 +105,8 @@ textarea{ min-height:64px; resize:vertical; font-weight:400; }
 .zeile{ display:grid; gap:12px; }
 .zeile.zwei{ grid-template-columns:1fr 1fr; }
 .zeile.drei{ grid-template-columns:1fr 1fr 1fr; }
-@media (max-width:700px){ .zeile.zwei, .zeile.drei{ grid-template-columns:1fr; } }
+.zeile.std-anz-zeile{ grid-template-columns:1fr 1fr 120px; }
+@media (max-width:700px){ .zeile.zwei, .zeile.drei{ grid-template-columns:1fr; } .zeile.std-anz-zeile{ grid-template-columns:1fr 110px; } .zeile.std-anz-zeile > div:nth-child(2){ grid-column:1; } .zeile.std-anz-zeile > div:nth-child(3){ grid-column:2; grid-row:1; } .std-leer{ display:none; } }
 
 .btn{
     border:none; border-radius:999px; padding:11px 24px; margin-top:16px;
@@ -1379,24 +1380,31 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
     <div class="karte">
         <h2 class="titel">Stunde zusammenstellen</h2>
         <p class="beschreibung">Eine komplette Fördereinheit nach dem AFS-Aufbau: Aufmerksamkeit zum Einstieg · Funktionstraining · Symptomtraining · Abschluss – dazu dein Ablaufplan mit Feldern für den Lernverlauf.</p>
-        <div class="zeile drei">
+        <div class="zeile zwei">
             <div><label>Kind (Kürzel, optional)</label><select id="std-kind"></select></div>
             <div><label>Dauer der Stunde</label><div style="display:flex; gap:8px;"><select id="std-dauer" onchange="std_dauerWechsel()" style="flex:1;"><option value="20">20 Minuten</option><option value="25">25 Minuten</option><option value="30">30 Minuten</option><option value="35">35 Minuten</option><option value="40" selected>40 Minuten</option><option value="45">45 Minuten</option><option value="50">50 Minuten</option><option value="60">60 Minuten</option><option value="75">75 Minuten</option><option value="90">90 Minuten</option><option value="eigen">andere Dauer …</option></select><input type="number" id="std-dauer-eigen" min="10" max="180" step="5" value="40" style="display:none; width:90px;" onchange="std_dauerWechsel()" title="Minuten"></div></div>
-            <div><label>Aufmerksamkeit (Einstieg)</label><select id="std-aufm"></select></div>
         </div>
         <div class="zeile zwei" style="margin-top:12px;">
             <div><label>Klassenstufe</label><select id="std-klasse"><option value="1">Klasse 1</option><option value="2">Klasse 2</option><option value="3">Klasse 3</option><option value="4">Klasse 4</option><option value="5">Klasse 5</option><option value="6">Klasse 6</option><option value="7">Klasse 7</option><option value="8">Klasse 8</option></select></div>
             <div><label>Schwierigkeit</label><select id="std-schwierigkeit"><option value="leicht">leicht</option><option value="mittel">mittel</option><option value="schwer">schwer</option></select></div>
         </div>
-        <div class="zeile zwei" style="margin-top:12px;">
+        <div class="zeile std-anz-zeile" style="margin-top:12px;">
+            <div><label>Aufmerksamkeit (Einstieg)</label><select id="std-aufm"></select></div>
+            <div class="std-leer"></div>
+            <div><label>Anzahl</label><select id="std-aufm-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option></select></div>
+        </div>
+        <div class="zeile std-anz-zeile" style="margin-top:12px;">
             <div><label>Funktionstraining</label><select id="std-funktion"></select></div>
             <div><label>Blatt</label><select id="std-funktion-blatt"></select></div>
+            <div><label>Anzahl</label><select id="std-funktion-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
         </div>
-        <div class="zeile zwei" style="margin-top:12px;">
+        <div class="zeile std-anz-zeile" style="margin-top:12px;">
             <div><label>Symptomtraining</label><select id="std-symptom"></select></div>
             <div><label>Blatt</label><select id="std-symptom-blatt"></select></div>
+            <div><label>Anzahl</label><select id="std-symptom-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
         </div>
         <p class="beschreibung" id="std-hinweis" style="margin:6px 0 0;"></p>
+        <p class="beschreibung" style="margin:4px 0 0;">„Anzahl“: Das gewählte Blatt kommt zuerst, weitere Blätter derselben Reihe werden passend ergänzt – die Zeiten im Ablaufplan verteilen sich automatisch neu.</p>
         <label style="margin-top:12px;">Dazu</label>
         <div class="fp-wahl">
             <label><input type="checkbox" id="std-plan" checked> Ablaufplan (für dich)</label>
@@ -6993,6 +7001,12 @@ function std_auswahlAufbauen(){
         `<option value="kartei">Eigene Fehlerwörter aus der Förderkartei</option>` +
         `<option value="ws">Worterarbeitung (Lernwörter aus dem Reiter Symptomtraining)</option>` +
         `<option value="">– ohne Symptomblatt –</option>`;
+    ["std-aufm-anzahl", "std-funktion-anzahl", "std-symptom-anzahl"].forEach(id => {
+        const el = document.getElementById(id);
+        try { const v = localStorage.getItem("lt_" + id); if (v) el.value = v; } catch (e){}
+        el.addEventListener("change", () => { try { localStorage.setItem("lt_" + id, el.value); } catch (e){} });
+    });
+    aufm.addEventListener("change", () => { const a = document.getElementById("std-aufm-anzahl"); a.disabled = !aufm.value; });
     document.getElementById("std-funktion").addEventListener("change", std_blattListen);
     document.getElementById("std-symptom").addEventListener("change", std_blattListen);
     document.getElementById("std-kind").addEventListener("change", () => {
@@ -7015,6 +7029,10 @@ function std_blattListen(){
     else if (sy === "diktat") liste = STD_DIKTAT.map(d => ({ nr: d.key, name: d.name }));
     sb.innerHTML = liste.length ? liste.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("") : `<option value="">–</option>`;
     if (sy.startsWith("rs:")) sb.value = "2";
+    const sa = document.getElementById("std-symptom-anzahl");
+    sa.disabled = !sy || sy === "diktat"; if (sa.disabled) sa.value = "1";
+    sa.title = sy === "diktat" ? "Beim Diktat gehören die Blätter fest zusammen" : "";
+    const fa = document.getElementById("std-funktion-anzahl"); fa.disabled = !f; if (!f) fa.value = "1";
     const hinweis = document.getElementById("std-hinweis");
     if (sy === "kartei") hinweis.textContent = lt_wert("std-kind") ? `Fehlerwörter von ${lt_wert("std-kind")}: ${kt_woerter(lt_wert("std-kind")).length} offen.` : "Bitte oben ein Kürzel wählen – die Wörter kommen aus seiner Förderkartei.";
     else if (sy === "lesen") hinweis.textContent = "Ein Lesetext passend zu Klassenstufe und Schwierigkeit wird zufällig gewählt (Kl. 1–4 mit farbigen Silben).";
@@ -7058,8 +7076,9 @@ function std_dauerLaden(){
 const STD_GEWICHT = { Ankommen: 3, Aufmerksamkeit: 7, Funktionstraining: 14, Symptomtraining: 15, Abschluss: 5 };
 const STD_MINDEST = { Ankommen: 2, Aufmerksamkeit: 3, Funktionstraining: 5, Symptomtraining: 5, Abschluss: 2 };
 function std_zeitenVerteilen(phasen, gesamt){
-    const summe = phasen.reduce((a, p) => a + STD_GEWICHT[p.phase], 0);
-    const roh = phasen.map(p => Math.max(STD_MINDEST[p.phase], gesamt * STD_GEWICHT[p.phase] / summe));
+    const gew = p => STD_GEWICHT[p.phase] * (1 + 0.6 * ((p.n || 1) - 1));
+    const summe = phasen.reduce((a, p) => a + gew(p), 0);
+    const roh = phasen.map(p => Math.max(STD_MINDEST[p.phase], gesamt * gew(p) / summe));
     let min = roh.map(Math.floor);
     let rest = gesamt - min.reduce((a, b) => a + b, 0);
     // Rundungsrest an die größten Nachkommastellen, Überhang von den größten Phasen abziehen
@@ -7100,6 +7119,16 @@ function std_diktat(){
     const text = dk_kuerzen(zufallsElement(passend.length ? passend : DK_TEXTE.filter(t => t.k === k)), "mittel");
     return { text, klasse: k, reif: k >= 5 };
 }
+function std_anzahl(id){ const n = parseInt(lt_wert(id), 10); return n > 0 ? n : 1; }
+// gewähltes Blatt zuerst, dann weitere verschiedene Blätter derselben Reihe (zufällig)
+function std_mehrere(liste, erstes, n){
+    const rest = liste.filter(x => x !== erstes).sort(() => Math.random() - .5);
+    const aus = erstes ? [erstes] : [];
+    while (aus.length < n && rest.length) aus.push(rest.shift());
+    while (aus.length < n && liste.length) aus.push(zufallsElement(liste));
+    return aus;
+}
+function std_namen(liste){ return liste.map(b => `„${ws_esc(b.name)}“`).join(", "); }
 function std_dynamisch(){
     const dauer = std_dauer();
     const code = lt_wert("std-kind");
@@ -7110,38 +7139,39 @@ function std_dynamisch(){
 
     const aufm = lt_wert("std-aufm");
     if (aufm){
-        let sk, nr;
-        if (aufm === "zufall"){ sk = fp_serieVon("aufmerksamkeit"); nr = zufallsElement(fs_katalog(sk).filter(b => au_passt(b) && (b.nr !== "3" || sk !== "aufmerksamkeit5"))).nr; }
-        else [sk, nr] = aufm.split(":");
-        const b = fs_katalog(sk).find(x => x.nr === nr);
-        blaetter.push(fp_blattEintrag(sk, b, 0));
-        phasen.push({ phase: "Aufmerksamkeit", zeit: zeiten[1], inhalt: `Blatt „${ws_esc(b.name)}“ – Einstieg, Konzentration aufbauen.` });
-        geuebt.push(b.name);
+        let sk, nr, b = null;
+        if (aufm === "zufall") sk = fp_serieVon("aufmerksamkeit");
+        else { [sk, nr] = aufm.split(":"); b = fs_katalog(sk).find(x => x.nr === nr); }
+        const pool = fs_katalog(sk).filter(x => au_passt(x) && (x.nr !== "3" || sk !== "aufmerksamkeit5"));
+        const liste = std_mehrere(pool.length ? pool : fs_katalog(sk), b, std_anzahl("std-aufm-anzahl"));
+        liste.forEach(x => { blaetter.push(fp_blattEintrag(sk, x, 0)); geuebt.push(x.name); });
+        phasen.push({ phase: "Aufmerksamkeit", zeit: zeiten[1], inhalt: `${liste.length > 1 ? "Blätter" : "Blatt"} ${std_namen(liste)} – Einstieg, Konzentration aufbauen.`, n: liste.length });
     }
     const f = lt_wert("std-funktion");
     if (f){
         const fb = lt_wert("std-funktion-blatt");
-        const b = fb === "zufall" ? zufallsElement(FS_SERIEN[f].blaetter) : FS_SERIEN[f].blaetter.find(x => x.nr === fb);
-        blaetter.push(fp_blattEintrag(f, b, 0));
-        phasen.push({ phase: "Funktionstraining", zeit: zeiten[2], inhalt: `${ws_esc(FS_SERIEN[f].label)}: „${ws_esc(b.name)}“. Ziel: ${ws_esc(FP_ZIELE[f] || "")}.` });
-        geuebt.push(b.name);
+        const b = fb === "zufall" ? null : FS_SERIEN[f].blaetter.find(x => x.nr === fb);
+        const liste = std_mehrere(FS_SERIEN[f].blaetter, b, std_anzahl("std-funktion-anzahl"));
+        liste.forEach(x => { blaetter.push(fp_blattEintrag(f, x, 0)); geuebt.push(x.name); });
+        phasen.push({ phase: "Funktionstraining", zeit: zeiten[2], inhalt: `${ws_esc(FS_SERIEN[f].label)}: ${std_namen(liste)}. Ziel: ${ws_esc(FP_ZIELE[f] || "")}.`, n: liste.length });
     }
     const sy = lt_wert("std-symptom"), sb = lt_wert("std-symptom-blatt");
     if (sy.startsWith("rs:")){
         const key = sy.slice(3);
         const b = FS_SERIEN.rechtschreibung.blaetter.find(x => x.nr === sb) || FS_SERIEN.rechtschreibung.blaetter[0];
-        blaetter.push(fp_rsEintrag(key, b.bau, b.name, 0, code));
+        const liste = std_mehrere(FS_SERIEN.rechtschreibung.blaetter, b, std_anzahl("std-symptom-anzahl"));
+        liste.forEach(x => { blaetter.push(fp_rsEintrag(key, x.bau, x.name, 0, code)); geuebt.push(`${RS_NAMEN[key] ? RS_NAMEN[key].kurz : key}: ${x.name}`); });
         merksatz = RS_SCHWERPUNKTE[key].merksatz;
-        phasen.push({ phase: "Symptomtraining", zeit: zeiten[3], inhalt: `${ws_esc(RS_SCHWERPUNKTE[key].name)}: „${ws_esc(b.name)}“. Strategie: ${RS_SCHWERPUNKTE[key].pruefen.replace(/[.?!]$/, "")}.` });
-        geuebt.push(`${RS_NAMEN[key] ? RS_NAMEN[key].kurz : key}: ${b.name}`);
+        phasen.push({ phase: "Symptomtraining", zeit: zeiten[3], inhalt: `${ws_esc(RS_SCHWERPUNKTE[key].name)}: ${std_namen(liste)}. Strategie: ${RS_SCHWERPUNKTE[key].pruefen.replace(/[.?!]$/, "")}.`, n: liste.length });
     } else if (sy === "lesen"){
         const lt = std_lesetext();
         const a = LT_AUFGABEN.find(x => x.key === sb) || LT_AUFGABEN[0];
+        const aufgaben = std_mehrere(LT_AUFGABEN, a, std_anzahl("std-symptom-anzahl"));
         const extra = { label: "Lesetraining", afs: "Symptomtraining: Lesen & Textverständnis", reif: lt.reif };
         blaetter.push({ nr: "0", kurz: "Lesetext", name: `Lesetext „${lt.text.t}“`, bau: () => std_lesetextSeite(lt), extra });
-        blaetter.push({ nr: "0", kurz: a.kurz, name: a.name, bau: c => LT_BAU[a.key]({ ...c, lt }), extra });
-        phasen.push({ phase: "Symptomtraining", zeit: zeiten[3], inhalt: `Lesetraining: „${ws_esc(lt.text.t)}“ (${lt_woerter(lt.text.x).length} Wörter, ${LT_STUFEN[lt.text.s]}) – erst vorlesen lassen, dann „${ws_esc(a.name)}“.` });
-        geuebt.push(`Lesen: ${lt.text.t}`, a.name);
+        aufgaben.forEach(x => blaetter.push({ nr: "0", kurz: x.kurz, name: x.name, bau: c => LT_BAU[x.key]({ ...c, lt }), extra }));
+        phasen.push({ phase: "Symptomtraining", zeit: zeiten[3], inhalt: `Lesetraining: „${ws_esc(lt.text.t)}“ (${lt_woerter(lt.text.x).length} Wörter, ${LT_STUFEN[lt.text.s]}) – erst vorlesen lassen, dann ${std_namen(aufgaben)}.`, n: aufgaben.length });
+        geuebt.push(`Lesen: ${lt.text.t}`, ...aufgaben.map(x => x.name));
     } else if (sy === "diktat"){
         const d = STD_DIKTAT.find(x => x.key === sb) || STD_DIKTAT[0];
         const dk = std_diktat();
@@ -7156,15 +7186,15 @@ function std_dynamisch(){
     } else if (sy === "kartei"){
         const b = KT_BLAETTER.find(x => x.nr === sb) || KT_BLAETTER[0];
         const kt = kt_kontextFuer(code, "offen");
-        blaetter.push({ nr: "0", kurz: `Kartei: ${b.kurz}`, name: b.name, bau: c => b.bau({ ...c, kt }), extra: { label: "Meine Fehlerwörter", afs: "Symptomtraining: Fehlerwörter-Kartei", reif: lt_klasse() >= 5 } });
-        phasen.push({ phase: "Symptomtraining", zeit: zeiten[3], inhalt: `Eigene Fehlerwörter: „${ws_esc(b.name)}“ (${kt.eigene.length} Wörter aus der Lernbox).` });
-        geuebt.push(`Meine Fehlerwörter: ${b.name}`);
+        const liste = std_mehrere(KT_BLAETTER, b, std_anzahl("std-symptom-anzahl"));
+        liste.forEach(x => { blaetter.push({ nr: "0", kurz: `Kartei: ${x.kurz}`, name: x.name, bau: c => x.bau({ ...c, kt }), extra: { label: "Meine Fehlerwörter", afs: "Symptomtraining: Fehlerwörter-Kartei", reif: lt_klasse() >= 5 } }); geuebt.push(`Meine Fehlerwörter: ${x.name}`); });
+        phasen.push({ phase: "Symptomtraining", zeit: zeiten[3], inhalt: `Eigene Fehlerwörter: ${std_namen(liste)} (${kt.eigene.length} Wörter aus der Lernbox).`, n: liste.length });
     } else if (sy === "ws"){
         const b = WS_BLAETTER.find(x => x.nr === sb) || WS_BLAETTER[0];
         const woerter = ws_woerterLesen();
-        blaetter.push({ nr: "0", kurz: `Worterarbeitung: ${b.kurz}`, name: b.name, bau: () => ({ seite: b.fn(woerter) }) });
-        phasen.push({ phase: "Symptomtraining", zeit: zeiten[3], inhalt: `Worterarbeitung „${ws_esc(b.name)}“ mit ${woerter.map(w => ws_esc(w.silben.join("-"))).join(", ")}.` });
-        geuebt.push(`Worterarbeitung: ${b.name}`);
+        const liste = std_mehrere(WS_BLAETTER, b, std_anzahl("std-symptom-anzahl"));
+        liste.forEach(x => { blaetter.push({ nr: "0", kurz: `Worterarbeitung: ${x.kurz}`, name: x.name, bau: () => ({ seite: x.fn(woerter) }) }); geuebt.push(`Worterarbeitung: ${x.name}`); });
+        phasen.push({ phase: "Symptomtraining", zeit: zeiten[3], inhalt: `Worterarbeitung ${std_namen(liste)} mit ${woerter.map(w => ws_esc(w.silben.join("-"))).join(", ")}.`, n: liste.length });
     }
     phasen.push({ phase: "Abschluss", zeit: zeiten[4], inhalt: "Stunden-Rückblick, Stempel im Lernpass, kurzes Spiel (z. B. Reimwörter-Ping-Pong)" + (lt_an("std-eltern") ? ", Elternblatt mitgeben." : ".") });
 
