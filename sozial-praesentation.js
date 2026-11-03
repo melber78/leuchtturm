@@ -72,6 +72,8 @@ const CSS = `
 #praes .p-fragen{ text-align:left; width:min(100%,1150px); }
 #praes .p-frage{ font-family:"Andika","Nunito",sans-serif; font-size:clamp(18px,min(2.4vw,4vh),38px); padding:.4em .8em; margin:.3em 0; border-radius:18px; background:white; box-shadow:0 4px 14px rgba(22,50,74,.08); opacity:.35; transition:.3s; cursor:pointer; display:flex; gap:.6em; }
 #praes .p-frage.an{ opacity:1; transform:scale(1.02); box-shadow:0 8px 26px rgba(242,169,59,.35); }
+#praes .p-frage.aufgabe{ background:#fff7e6; }
+#praes .p-frage.aufgabe:not(.an):not(.war){ visibility:hidden; }
 #praes .p-frage .nr{ font-family:"Nunito",sans-serif; font-weight:900; color:#f2a93b; }
 
 /* Film */
@@ -226,7 +228,15 @@ function fragenAus(nach){
         if (liste.length) fragen.push(...liste);
         else fragen.push(t.replace(/^\*\*[^*]+\*\*\s*/, ""));
     }
-    return fragen.map(ohneMarkdown).filter(Boolean);
+    // Nur die Frage zeigen – was danach kommt (z. B. „Alle üben gemeinsam: …“ = die Lösung) wird ein eigener Schritt,
+    // der erst nach der Frage aufgedeckt wird. Zeilen ohne Frage (Tafelbild, Merksatz) ebenso.
+    const aus = [];
+    fragen.map(ohneMarkdown).filter(Boolean).forEach(t => {
+        const m = /^([\s\S]*\?[“”"«»]?)\s+([^?]+)$/.exec(t);
+        if (m && m[2].trim()) { aus.push({ text: m[1].trim(), art: "frage" }, { text: m[2].trim(), art: "aufgabe" }); }
+        else aus.push({ text: t, art: /\?/.test(t) ? "frage" : "aufgabe" });
+    });
+    return aus;
 }
 function aufzaehlung(text){ return String(text || "").split("\n").filter(z => /^\s*[-•]\s+/.test(z)).map(z => z.replace(/^\s*[-•]\s+/, "").trim()); }
 function quizArt(text){
@@ -325,7 +335,7 @@ function tasten(ev){
 function naechste(){
     // Bei den Fragen erst Frage für Frage aufdecken
     const fr = zustand.buehne.querySelector(".p-fragen");
-    if (fr) { const alle = [...fr.querySelectorAll(".p-frage")], an = alle.findIndex(x => x.classList.contains("an")); if (an < alle.length - 1) { alle.forEach((x, k) => x.classList.toggle("an", k === an + 1)); return; } }
+    if (fr) { const alle = [...fr.querySelectorAll(".p-frage")], an = alle.findIndex(x => x.classList.contains("an")); if (an < alle.length - 1) { alle.forEach((x, k) => { x.classList.toggle("an", k === an + 1); if (k <= an + 1) x.classList.add("war"); }); return; } }
     zeigen(zustand.i + 1);
 }
 function vollbild(){ const w = zustand.wurzel; if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); else if (w.requestFullscreen) w.requestFullscreen().catch(() => {}); }
@@ -411,7 +421,7 @@ function folieHtml(f, e){
                 <div class="p-reihe"><button class="p-knopf gold" data-vorleser="1">🎡 Wer liest vor?</button><span class="p-vorleser"${leser ? "" : " hidden"}>📖 Es liest: <b>${esc(leser || "")}</b></span><button class="p-knopf hell" data-vorlesen="1">🔊 Vorlesen lassen</button></div>`;
         }
         case "fragen":
-            return `<h2>Lass uns darüber sprechen</h2><div class="p-fragen">${f.fragen.map((q, k) => `<div class="p-frage ${k === 0 ? "an" : ""}" data-frage="${k}"><span class="nr">${k + 1}</span><span>${esc(q)}</span></div>`).join("")}</div>
+            return `<h2>Lass uns darüber sprechen</h2><div class="p-fragen">${(() => { let n = 0; return f.fragen.map((q, k) => `<div class="p-frage ${q.art === "aufgabe" ? "aufgabe " : ""}${k === 0 ? "an" : ""}" data-frage="${k}"><span class="nr">${q.art === "aufgabe" ? "👉" : ++n}</span><span>${esc(q.text)}</span></div>`).join(""); })()}</div>
                 <div class="p-reihe"><button class="p-knopf gold" data-p="rad">🎡 Wer antwortet?</button></div>`;
         case "film":
             return `<h2>🎬 Film ab!</h2><div class="p-filme">${f.medien.map(m => `<a class="p-film" href="${esc(m.url)}" target="_blank" rel="noopener"><div class="play">▶</div><div><strong>${esc(m.titel || "Film")}</strong><span>${esc([m.quelle, m.dauer].filter(Boolean).join(" · "))}</span>${m.hinweis ? `<span style="display:block">${esc(m.hinweis)}</span>` : ""}</div></a>`).join("")}</div>
@@ -458,7 +468,7 @@ function folieAktivieren(el, f){
     el.querySelectorAll("[data-stufe]").forEach(b => b.addEventListener("click", () => {
         zustand.stufe = b.dataset.stufe; zustand.folien = folienBauen(zustand.e, zustand.stufe); zeigen(0);
     }));
-    el.querySelectorAll("[data-frage]").forEach(q => q.addEventListener("click", () => el.querySelectorAll(".p-frage").forEach(x => x.classList.toggle("an", x === q))));
+    el.querySelectorAll("[data-frage]").forEach(q => q.addEventListener("click", () => el.querySelectorAll(".p-frage").forEach((x, k) => { x.classList.toggle("an", x === q); if (k <= +q.dataset.frage) x.classList.add("war"); })));
     el.querySelectorAll("[data-start]").forEach(b => b.addEventListener("click", () => timerStarten(+b.dataset.start * 60)));
     el.querySelectorAll("[data-schale]").forEach(b => b.addEventListener("click", () => klangschale()));
     el.querySelectorAll("[data-vorlesen]").forEach(b => b.addEventListener("click", () => vorlesen(f.text, b)));
@@ -786,7 +796,7 @@ async function pptxExport(e, stufe = "12"){
             }
             case "fragen":
                 s.addText("Lass uns darüber sprechen", { x: .6, y: .45, w: W - 1.2, h: .9, fontFace: FONT, fontSize: 38, bold: true, color: NACHT });
-                s.addText(f.fragen.map(q => ({ text: q, options: { bullet: { type: "number" }, paraSpaceAfter: 14 } })), { x: .9, y: 1.5, w: W - 1.8, h: H - 2.3, valign: "top", fontFace: TEXT, fontSize: 26, color: "1F2D36" });
+                s.addText(f.fragen.map(q => ({ text: (q.art === "aufgabe" ? "→ " : "") + q.text, options: { bullet: q.art === "aufgabe" ? false : { type: "number" }, paraSpaceAfter: 14 } })), { x: .9, y: 1.5, w: W - 1.8, h: H - 2.3, valign: "top", fontFace: TEXT, fontSize: 26, color: "1F2D36" });
                 s.addNotes("Fragen zur Geschichte „" + f.titel + "“. Mit dem Glücksrad (im Leuchtturm) bestimmen, wer antwortet.");
                 fuss(s);
                 break;
