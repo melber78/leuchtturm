@@ -24,6 +24,7 @@
         verantwortung: ps("knietzsche-und-die-verantwortung", "Knietzsche und die Verantwortung"),
         gerechtigkeit: ps("knietzsche-und-die-gerechtigkeit", "Knietzsche und die Gerechtigkeit"),
         solidaritaet:  ps("knietzsche-und-die-solidaritaet", "Knietzsche und die Solidarität"),
+        stoppLied:     Object.assign(yt("9meP8fF0Ebg", "Stopp heißt Stopp – Mitmachlied zum Grenzen-Setzen", "YouTube · Kindermusikwelt (Dän Dickopf)", "Bärenfiguren zeigen die Bewegungen vor – die Kinder machen im Sitzen mit (Stopp-Hand). Ideal für Kl. 1/2 zum Stopp-Schild."), { fuer: "Kl. 1/2" }),
         selbstbewusst: ps("knietzsche-und-das-selbstbewusstsein", "Knietzsche und das Selbstbewusstsein"),
         dankbarkeit:   ps("knietzsche-und-die-dankbarkeit", "Knietzsche und die Dankbarkeit"),
         vertrauen:     ps("knietzsche-und-das-vertrauen", "Knietzsche und das Vertrauen"),
@@ -46,7 +47,7 @@
 
     window.SOZIAL_MEDIEN = {
         "v-gefuehle-erkennen":  [F.gefuehle, F.srfGefuehle],
-        "v-streit-loesen":      [F.miteinander],
+        "v-streit-loesen":      [F.stoppLied, F.miteinander],
         "v-freundschaft":       [F.freundschaft],
         "v-regeln-miteinander": [F.freiheit],
         "v-wut-werkzeugkasten": [F.wut],
@@ -56,7 +57,7 @@
         "v-petzen-hilfe":       [F.gewissen],
         "v-entschuldigen":      [F.entschuldigung],
         "v-kompromisse":        [F.miteinander],
-        "v-nein-sagen":         [F.selbstbewusst],
+        "v-nein-sagen":         [F.stoppLied, F.selbstbewusst],
         "v-mitspielen-lassen":  [F.spielen],
         "v-teilen":             [F.glueck],
         "v-neue-freunde":       [F.freundschaft],
