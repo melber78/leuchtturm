@@ -133,7 +133,8 @@ Am Ende bekommt nicht die Siegermannschaft den Fair-Play-Pokal, sondern Lotta un
         { titel: "Guter Gewinner?", fuer: "34", dauer: "3 Min",
           text: "Du nennst Verhalten, die Kinder zeigen Daumen hoch oder runter:\n\n- vor den Verlierern herumtanzen\n- dem anderen Team die Hand geben\n- dem Schiedsrichter die Schuld geben\n- dem Verlierer etwas Nettes sagen\n- nach dem Verlieren nie wieder mitspielen",
           antworten: ["👍 fair", "👎 nicht fair"],
-          folie: "Macht das ein **guter Gewinner**?\n\n👍 ja · 👎 nein" }
+          folie: "Macht das ein **guter Gewinner**?\n\n👍 ja · 👎 nein",
+          loesungen: ["2", "1", "2", "1", "2"] }
     ],
     ab12: {
       "titel": "Gut gespielt!",
@@ -548,7 +549,8 @@ Am Ende schreibt Frau Novak an die Tafel: „Unsere Klasse ist wie ein Obstsalat
           quiz: "ampel",
           antworten: ["🟢 Tatsache", "🔴 Vorurteil"],
           folie: "Ist das eine **Tatsache** 🟢 oder ein **Vorurteil** 🔴?\n\nHalte die rote oder grüne Karte hoch.",
-          kern: ["34"] }
+          kern: ["34"],
+          loesungen: ["2", "1", "2", "1"] }
     ],
     ab12: {
       "titel": "Ich bin ich – du bist du",
@@ -621,7 +623,8 @@ Es dauert noch ein paar Wochen. Aber dann hört es auf. Jonas sagt später: „D
           text: "Du liest Situationen vor, die Kinder zeigen Daumen hoch (Mitlachen – alle haben Spaß) oder runter (Auslachen – einer leidet):\n\n- Alle lachen über einen lustigen Witz.\n- Alle lachen, weil Paul sich verschrieben hat.\n- Lea macht eine Grimasse, und alle lachen mit ihr.\n- Alle lachen über Bens alte Schuhe.\n\nFrage: Woran merkt man den Unterschied? (Lacht das Kind selbst mit?)",
           antworten: ["👍 mitlachen", "👎 auslachen"],
           folie: "Haben **alle** Spaß 👍 – oder **leidet einer** 👎?",
-          kern: ["12"] },
+          kern: ["12"],
+          loesungen: ["1", "2", "1", "2"] },
         { titel: "Was tun als Zuschauer?", fuer: "alle", dauer: "6 Min",
           text: "Sammelt an der Tafel, was Zuschauer tun können: nicht mitlachen – sich zum Kind stellen – „Hör auf!“ sagen – Hilfe holen – das Kind später trösten. Kl. 1/2 üben am Platz den Satz: „Hör auf, das ist gemein!“ (laut, deutlich, gerade sitzen). Kl. 3/4 überlegen, was man tun kann, wenn man sich allein nicht traut (sich mit anderen zusammentun).",
           folie: "Jemand wird ausgelacht. Was kannst **du** tun? 👀",

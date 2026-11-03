@@ -242,7 +242,8 @@ Kevins alter Freund Marc ist nicht so cool. Aber als Kevin krank war, hat Marc i
           text: "Du liest Verhaltensweisen vor, die Kinder zeigen grün (= echter Freund) oder rot (= falscher Freund).\n\n- Hält zu dir, auch wenn andere über dich lachen.\n- Will nur mit dir abhängen, wenn du etwas Neues hast.\n- Sagt dir ehrlich, wenn du Mist baust.\n- Erzählt deine Geheimnisse weiter.\n- Bringt dich dazu, Dinge zu tun, die du nicht willst.\n- Freut sich mit dir, wenn du etwas geschafft hast.",
           antworten: ["🟢 echter Freund", "🔴 falscher Freund"],
           folie: "**Echter Freund** 🟢 oder **falscher Freund** 🔴?\n\nHalte die **rote oder grüne Karte** hoch.",
-          kern: ["34"] },
+          kern: ["34"],
+          loesungen: ["1", "2", "1", "2", "2", "1"] },
         { titel: "Freundschafts-Test", dauer: "6 Min",
           text: "Gemeinsam fünf Fragen formulieren, mit denen man eine Freundschaft prüfen kann, z. B.: „Fühle ich mich wohl, wenn ich mit ihm/ihr zusammen bin?“ · „Kann ich Nein sagen, ohne Angst zu haben?“ · „Hört er/sie mir auch zu?“ Schreib sie an die Tafel.",
           folie: "Mit welchen **Fragen** kannst du prüfen, ob eine Freundschaft gut ist? ❓\n\nFindet fünf Fragen." }
@@ -321,7 +322,8 @@ Die Lehrerin sagt: „Weißt du, wer weint? Fußballprofis nach einem verlorenen
           text: "Du liest vor, die Kinder entscheiden mit Daumen: Braucht das Mut (hoch) oder ist es schwach (runter)? Diskutiert.\n\n- Vor anderen zugeben, dass man Angst hat.\n- Weinen, wenn etwas Schlimmes passiert.\n- Sagen: „Das hat mich verletzt.“\n- Einem Freund sagen, dass man ihn mag.\n- Um Hilfe bitten.",
           antworten: ["👍 braucht Mut", "👎 ist schwach"],
           folie: "**Braucht das Mut** 👍 – oder ist es **schwach** 👎?",
-          kern: ["34"] }
+          kern: ["34"],
+          loesungen: ["1", "1", "1", "1", "1"] }
     ],
     ab34: { titel: "Meine Maske", kontext: "Zum Fall: Mo spielt immer den Coolen. Als sein Hund stirbt, weint er heimlich auf dem Klo und hat Angst, ein „Weichei“ zu sein.", aufgaben: [
         { typ: "tabelle", text: "Was zeigst du nach außen – und was fühlst du manchmal innen? Schreib drei Beispiele.", spalten: ["Außen (was andere sehen)", "Innen (was ich fühle)"], zeilen: [["", ""], ["", ""], ["", ""]] },
@@ -397,7 +399,8 @@ Abends kann Sami nicht schlafen. Was, wenn der Lehrer nicht gekommen wäre?
           quiz: "ampel",
           antworten: ["🔴 für mich behalten", "🟢 Hilfe holen"],
           folie: "🔴 **Das behalte ich für mich.**\n🟢 **Da hole ich Hilfe.**\n\nHalte die **rote oder grüne Karte** hoch.",
-          kern: ["34"] },
+          kern: ["34"],
+          loesungen: ["1", "2", "2", "1", "2", "2"] },
         { titel: "Wie sag ich's?", dauer: "5 Min",
           text: "Sammelt: Wem kann man so etwas sagen? (Lehrkraft, Schulsozialarbeit, Eltern, Nummer gegen Kummer 116 111) Und wie, damit es keiner merkt? (nach der Stunde, Zettel, Eltern bitten anzurufen …)",
           folie: "Wem kannst du so etwas sagen?\n\nUnd **wie**, damit es keiner merkt?" }
@@ -435,6 +438,15 @@ K({
         "antworten": [
           "🟢 hilft",
           "🔴 macht es schlimmer"
+        ],
+        "loesungen": [
+          "2",
+          "1",
+          "2",
+          "1",
+          "2",
+          "1",
+          "1"
         ],
         "text": "Du liest Sätze und Verhaltensweisen vor, wie sie in einem Klärungsgespräch vorkommen. Die Kinder halten die grüne Karte hoch (hilft beim Klären) oder die rote (macht es schlimmer). Danach kurz fragen: Warum?\n\n- „Der hat angefangen!“\n- „Ich war sauer, weil du den Ball nicht abgegeben hast.“\n- Augen verdrehen, während der andere erzählt.\n- Den anderen ausreden lassen.\n- „Du lügst doch!“\n- „Es tut mir leid, dass ich dich getreten habe.“\n- „Ich wünsche mir, dass du mich nicht mehr schubst.“",
         "folie": "So ein Gespräch gibt es, **wenn alle wieder ruhig sind** – mit einem Erwachsenen.\n\nHilft das beim Klären 🟢 – oder macht es den Streit schlimmer 🔴?\n\nHalte die **rote oder grüne Karte** hoch."

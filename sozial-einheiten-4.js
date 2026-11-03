@@ -125,7 +125,8 @@ Später sagt die Lehrerin: „Kevin wollte bewundert werden und hat sich in Gefa
 3. Warum haben die anderen weggeschaut?
 4. Wann warst du schon einmal mutig?`,
           antworten: ["👍 mutig", "👎 leichtsinnig"],
-          folie: "Ist das **mutig** 👍 oder **leichtsinnig** 👎?\n\nSag, warum." },
+          folie: "Ist das **mutig** 👍 oder **leichtsinnig** 👎?\n\nSag, warum.",
+          loesungen: ["3", "1", "3", "1", "1"] },
     uebungen: [
         { titel: "Mut hat viele Gesichter", fuer: "alle", dauer: "5 Min",
           text: "Sammelt an der Tafel Arten von Mut: etwas Neues probieren – einen Fehler zugeben – Nein sagen – jemandem helfen – vor anderen sprechen – um Entschuldigung bitten. Die Kinder erzählen vom Platz aus von einem eigenen mutigen Moment (freiwillig).",
@@ -308,7 +309,8 @@ Am Nachmittag erzählt Leonie ihrer Freundin Fatma, dass keiner mehr mit ihr red
           text: "Du sagst Sätze, die Kinder entscheiden mit Daumen hoch (stolz) oder runter (angeben):\n\n- „Ich habe geübt und jetzt kann ich es.“\n- „Ihr seid alle schlechter als ich.“\n- „Mein Bild ist schön geworden, finde ich.“\n- „Ich hab das teuerste Handy der Klasse.“",
           antworten: ["👍 stolz", "👎 angeben"],
           folie: "Ist das **stolz** 👍 oder **angeben** 👎?",
-          kern: ["34"] }
+          kern: ["34"],
+          loesungen: ["1", "2", "1", "2"] }
     ],
     ab12: {
       "titel": "Darauf bin ich stolz",

@@ -146,7 +146,8 @@ Am Ende sagt Finn: „Danke, Aylin. Das hat gutgetan.“
           text: "Du liest Reaktionen vor, die Kinder zeigen Daumen hoch oder runter und begründen kurz:\n\n- „Hör auf zu heulen!“\n- „Ich bin für dich da.“\n- „Ist doch nicht so schlimm.“\n- „Willst du darüber reden?“\n- Einfach still daneben sitzen.",
           antworten: ["👍 hilft", "👎 hilft nicht"],
           folie: "Jemand ist traurig. Hilft dieser Satz?\n\n👍 hilft · 👎 hilft nicht – und warum?",
-          kern: ["34"] },
+          kern: ["34"],
+          loesungen: ["2", "1", "2", "1", "1"] },
         { titel: "Trost-Post für den Teddy", fuer: "alle", dauer: "4 Min",
           text: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind macht ihm an seinem Platz eine Trostkarte: Kl. 1/2 malen, Kl. 3/4 schreiben zwei Sätze. Die Karten werden vorn neben den Teddy gelegt.",
           text12: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind malt ihm an seinem Platz eine Trostkarte. Die Karten werden vorn neben den Teddy gelegt.",
@@ -251,7 +252,8 @@ Auf der Heimfahrt sagt Mila: „Mutig sein heißt nicht, keine Angst zu haben. M
           text: "Situationen vorlesen. Die Kinder entscheiden mit Daumen: Daumen hoch = „Die Angst schützt mich, ich höre auf sie“, Daumen zur Seite = „Die Angst ist zu laut, ich probiere es in kleinen Schritten“.\n\n- Ein Fremder bietet mir Süßigkeiten an.\n- Ich soll ein neues Kind ansprechen.\n- Das Eis auf dem Teich ist dünn.\n- Ich soll bei der Theateraufführung mitspielen.",
           antworten: ["👍 Angst schützt mich", "👉 kleine Schritte probieren"],
           folie: "**Daumen hoch 👍** = Die Angst passt auf mich auf. Ich höre auf sie.\n\n**Daumen zur Seite 👉** = Die Angst ist zu laut. Ich probiere es in kleinen Schritten.",
-          kern: ["34"] }
+          kern: ["34"],
+          loesungen: ["1", "2", "1", "2"] }
     ],
     ab12: {
       "titel": "Was macht mir Mut?",
@@ -435,7 +437,8 @@ Später fragt Lukas: „War ich jetzt eine Petze?“ Die Lehrerin schüttelt den
           quiz: "ampel",
           antworten: ["🔴 sofort Hilfe holen", "🟢 selbst lösen / geht mich nichts an"],
           folie: "🔴 **Rot** = sofort Hilfe holen\n🟢 **Grün** = selbst lösen oder geht mich nichts an\n\nHalt die passende Karte hoch.",
-          kern: ["12", "34"] },
+          kern: ["12", "34"],
+          loesungen: ["1", "2", "1", "2", "1", "2"] },
         { titel: "Hilfe holen üben", fuer: "12", dauer: "3 Min",
           text: "Einzelne Kinder stehen an ihrem Platz auf und sagen den Hilfe-Satz laut zur Klasse: „Frau/Herr …, ich brauche Hilfe! … ist … passiert.“ Laut, deutlich, Blick nach vorn. Die anderen zeigen Daumen hoch, wenn man es gut verstehen konnte.",
           folie: "Steh auf und sag laut und deutlich:\n\n**„Frau/Herr …, ich brauche Hilfe! … ist … passiert.“**\n\nDie anderen: 👍 wenn man es gut verstanden hat." }
@@ -522,7 +525,8 @@ Eine Woche später setzt Merve sich in der Pause wieder neben Nora.
         { titel: "Echt oder unecht?", fuer: "alle", dauer: "4 Min",
           text: "Du liest vor, wie sich jemand entschuldigt. Die Kinder zeigen Daumen hoch (echt) oder runter (unecht) und sagen, woran sie es merken.\n\n- Tim rollt mit den Augen und murmelt: „Jaja, sorry.“\n- Ben schaut Lea an und sagt ruhig: „Es tut mir leid, dass ich dein Bild zerknittert habe.“\n- Mia schaut auf den Boden und flüstert: „Tschuldigung.“\n- Ali sagt: „Sorry – aber du hast angefangen!“\n- Emma sagt: „Entschuldigung. Ich helfe dir, die Stifte aufzuheben.“",
           antworten: ["👍 echt", "👎 unecht"],
-          folie: "Ist diese Entschuldigung **echt**? 👍\nOder **unecht**? 👎\n\nWoran merkst du das?" },
+          folie: "Ist diese Entschuldigung **echt**? 👍\nOder **unecht**? 👎\n\nWoran merkst du das?",
+          loesungen: ["2", "1", "2", "2", "1"] },
         { titel: "Die Entschuldigungs-Treppe", fuer: "alle", dauer: "6 Min",
           text: "An der Tafel: **1. Ich sage, was ich getan habe. 2. Ich sage, dass es falsch war. 3. Ich verstehe, wie du dich fühlst. 4. Ich mache es wieder gut.** Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung. Kl. 1/2 nutzen die Stufen 1 und 4, Kl. 3/4 alle vier. Zwei Paare zeigen sie vorn.",
           text12: "An der Tafel: **1. Ich sage, was ich getan habe. 4. Ich mache es wieder gut.** (Die Stufen 2 und 3 lässt du weg.) Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung: „Ich habe … – Ich mache es wieder gut, indem …“. Zwei Paare zeigen sie vorn.",
@@ -708,7 +712,8 @@ Elias merkt: Nein sagen war schwer. Aber hinterher fühlt er sich stark.
           text: "Du liest Situationen vor, die Kinder zeigen Daumen hoch (Ja-Gefühl im Bauch) oder runter (Nein-Gefühl):\n\n- Oma gibt mir einen Kuss, obwohl ich das nicht mag.\n- Mein Freund fragt, ob ich mitspiele.\n- Jemand will mein Handy-Passwort.\n- Ein Kind soll für die Gruppe Süßigkeiten klauen.\n\nWichtig: Auch bei Oma darf man freundlich Nein sagen – zum Beispiel lieber die Hand geben.",
           antworten: ["👍 Ja-Gefühl", "👎 Nein-Gefühl"],
           folie: "Was sagt dein Bauch?\n\n👍 **Ja-Gefühl** · 👎 **Nein-Gefühl**",
-          kern: ["34"] },
+          kern: ["34"],
+          loesungen: ["2", "1", "2", "2"] },
         { titel: "Nein-Sätze sammeln", fuer: "34", dauer: "4 Min",
           text: "Sammelt an der Tafel verschiedene Arten, Nein zu sagen: „Nein, das will ich nicht.“ – „Ohne mich.“ – „Da mache ich nicht mit.“ – „Ich hab keine Lust darauf, lass uns lieber …“ Jedes Kind wählt seinen Lieblingssatz und sagt ihn laut vom Platz.",
           folie: "Es gibt viele Arten, **Nein** zu sagen.\n\nWelcher Satz passt zu dir? Sag ihn laut." }

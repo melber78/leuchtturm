@@ -56,7 +56,8 @@ Eines Tages bricht Kai sich den Arm und fehlt zwei Wochen. An der Tischtennispla
           text: "Du liest die Situationen vor. Die Kinder halten die rote Karte hoch (= Angst/Druck) oder die grüne (= echter Respekt). Danach kurz begründen lassen.\n\n- Alle lachen über Ömers Witz, weil sie sonst Ärger mit ihm bekommen.\n- Lea hört zu, wenn ein Jüngerer etwas erzählt, und nimmt ihn ernst.\n- Tim bekommt immer das beste Fahrrad, weil er sonst droht.\n- Der Trainer ist streng, aber fair – und hilft, wenn es jemandem schlecht geht.\n- Jonas gibt nach einem Streit als Erster die Hand.\n- Mia sagt: „Wenn du mich verpetzt, bist du dran.“",
           antworten: ["🔴 Angst / Druck", "🟢 echter Respekt"],
           folie: "Ist das **echter Respekt** 🟢 – oder **Angst und Druck** 🔴?\n\nHalte die **rote oder grüne Karte** hoch. Danach: Warum?",
-          kern: ["34"] },
+          kern: ["34"],
+          loesungen: ["1", "2", "1", "2", "2", "1"] },
         { titel: "Respekt-Sammlung", dauer: "5 Min",
           text: "An der Tafel zwei Spalten: **So macht man anderen Angst** und **So bekommt man Respekt**. Die Kinder rufen Ideen vom Platz aus zu (melden). Zum Schluss die Frage: Was davon hält länger?",
           folie: "Zwei Spalten:\n\n😨 **So macht man anderen Angst**\n🤝 **So bekommt man Respekt**\n\nWas davon hält länger?" }
@@ -316,7 +317,8 @@ Zwei Tage später geht Benni allein zur Lehrerin. „Ich hab das Mäppchen gewor
           text: "Du liest Sätze vor. Die Kinder zeigen Daumen runter (= Ausrede) oder Daumen hoch (= Verantwortung).\n\n- „Der hat angefangen.“\n- „Das war meine Schuld.“\n- „Das war doch nur Spaß.“\n- „Ich hab das gemacht, es tut mir leid.“\n- „Alle anderen machen das auch.“\n- „Ich war wütend, aber das war trotzdem nicht okay.“\n- „Der hat mich provoziert, da konnte ich nicht anders.“",
           antworten: ["👍 Verantwortung", "👎 Ausrede"],
           folie: "Ist das eine **Ausrede** 👎 – oder übernimmt jemand **Verantwortung** 👍?",
-          kern: ["34"] },
+          kern: ["34"],
+          loesungen: ["2", "1", "2", "1", "2", "1", "2"] },
         { titel: "Wiedergutmachen – aber wie?", dauer: "6 Min",
           text: "Sammelt zu drei Fällen konkrete Wiedergutmachungen (nicht nur „Sorry“): Jemandem das Pausenbrot weggenommen · Jemanden vor allen ausgelacht · Jemandem die Jacke dreckig gemacht. Regel: Die Wiedergutmachung soll zur Tat passen und dem anderen wirklich etwas bringen.",
           folie: "„Sorry“ reicht nicht immer. 🔧\n\nWie kann man es **wirklich** wieder gutmachen? Es soll zur Tat passen." }

@@ -139,7 +139,8 @@ Am Abend schreibt Ella mit der Maschine ein Gedicht für ihre Oma:
         { titel: "Reimt sich das?", fuer: "12", dauer: "4 Min",
           text: "Du sagst zwei Wörter. Reimen sie sich, zeigen die Kinder Daumen hoch, sonst runter:\n\n- Maus – Haus\n- Ball – Fisch\n- Hose – Rose\n- Sonne – Mond\n- Kerze – Herz",
           antworten: ["👍 reimt sich", "👎 reimt sich nicht"],
-          folie: "Reimt sich das?\n\n👍 ja · 👎 nein" },
+          folie: "Reimt sich das?\n\n👍 ja · 👎 nein",
+          loesungen: ["1", "2", "1", "2", "2"] },
         { titel: "Reim-Gedicht der Klasse", fuer: "34", dauer: "5 Min",
           text: "Gemeinsam dichtet ihr an der Tafel vier Zeilen über die Klasse oder das Wetter. Jede zweite Zeile muss sich reimen. Am Ende tragen alle das Gedicht vor.",
           folie: "Wir dichten zusammen **vier Zeilen**. ✍️\n\nJede zweite Zeile muss sich reimen." }
