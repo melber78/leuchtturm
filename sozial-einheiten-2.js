@@ -621,7 +621,7 @@ SOZIAL_EINHEIT({
     kategorie: "Konflikte lösen",
     ziel12: "Erkennen, dass bei einem Streit beide etwas bekommen können",
     ziel34: "Kompromisse aushandeln und prüfen, ob sie für beide fair sind",
-    material: "Klebeband (Brücke auf dem Boden, ca. 2 m lang)\nKonfliktkarten für die Tischpaare",
+    material: "Klebeband (Brücke auf dem Boden, ca. 2 m lang)\nZahlenkarten 1–4 (Antwort-Set)\nPlakat „So finden wir einen Kompromiss“",
     lerntext12: { titel: "Die zwei Ziegen", text:
 `Über einen Bach führt eine schmale Brücke. Von links kommt eine weiße Ziege. Von rechts kommt eine schwarze Ziege. In der Mitte treffen sie sich.
 
@@ -658,19 +658,15 @@ Am Ende stimmen alle 22 Kinder dafür. Niemand hat alles bekommen, was er wollte
           folie: "Auf dem Boden ist eine **Brücke** 🌉. Zwei Kinder kommen von beiden Seiten.\n\nAufgabe: aneinander vorbeikommen – ohne von der Linie zu treten und ohne zu schubsen.\n\nDie anderen geben Tipps.",
           emoji: "🌉",
           warum: "Zwei wollen vorbei – wie geht das, ohne zu schubsen?" },
-        { titel: "Kompromiss-Werkstatt", fuer: "alle", dauer: "6 Min",
-          text: "Die Tischnachbarn bekommen eine Konfliktkarte und suchen eine Lösung, bei der beide etwas bekommen. Kl. 1/2 dürfen dabei mit dir zusammenarbeiten.\n\n- Beide wollen am Fenster sitzen.\n- Der eine will Fußball spielen, der andere Fangen.\n- Es gibt nur noch ein Stück Kuchen.\n- Beide wollen die rote Schaufel.\n\nJedes Paar stellt seine Lösung vom Platz aus vor.",
-          quiz: "karten",
-          frage: "Findet eine Lösung, bei der **beide** etwas bekommen.",
-          folie: "Ihr bekommt einen Streit. Findet eine Lösung, bei der **beide** etwas bekommen. 🤝\n\nDanach stellt ihr eure Lösung vor.",
+        { titel: "Kompromiss-Werkstatt", fuer: "alle", dauer: "8 Min",
+          text: "**Material:** Zahlenkarten 1–4 (Antwort-Set). Auf der Folie bzw. dem Plakat stehen die vier Kompromiss-Ideen: **1 = Abwechseln** · **2 = Teilen** · **3 = Zusammen machen** · **4 = Losen**. Du liest nur vor.\n\n**So geht's:** Eine Situation erscheint. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte. Dann fragst du ein Kind: „Wie genau würdet ihr das machen?“ – und alle prüfen: **Bekommen beide etwas?** Dann auflösen. Oft passen mehrere Ideen – Hauptsache: fair für beide.\n\n- Beide wollen zuerst schaukeln.\n- Es gibt nur noch ein Stück Kuchen.\n- Einer will Fußball spielen, der andere Fangen.\n- Beide wollen mit dem Lego-Bagger spielen.\n- Beide wollen am Fenster sitzen.\n- Es gibt nur noch eine Tüte Gummibärchen für zwei.\n- Beide wollen beim Theater die Prinzessin sein.\n- Ihr wollt beide die große Kiste Bausteine.",
+          quiz: "zahlen",
+          antworten: ["🔄 1 · Abwechseln", "✂️ 2 · Teilen", "🤝 3 · Zusammen machen", "🎲 4 · Losen"],
+          loesungen: ["1", "2", "1", "1,3", "1,4", "2", "1,4", "2,3"],
+          folie: "Leg deine **Zahlenkarten 1–4** vor dich. So finden wir einen **Kompromiss**:\n\n🔄 **1** Abwechseln\n✂️ **2** Teilen\n🤝 **3** Zusammen machen\n🎲 **4** Losen\n\nFair ist es, wenn **beide** etwas bekommen. Auf **„1, 2, 3 – hoch!“** zeigst du deine Karte.",
           kern: ["12", "34"],
           emoji: "🤝",
-          warum: "Wir suchen Lösungen, bei denen beide etwas bekommen." },
-        { titel: "Fair-Check", fuer: "34", dauer: "2 Min",
-          text: "Die anderen prüfen jede vorgestellte Lösung mit dem Daumen: Bekommen beide etwas? Fühlt sich keiner übergangen? Dann Daumen hoch.",
-          folie: "Ist die Lösung fair?\n\n✔️ Bekommen beide etwas?\n✔️ Fühlt sich keiner übergangen?\n\nDann Daumen hoch 👍",
-          emoji: "✔️",
-          warum: "Wir prüfen: Ist die Lösung fair für beide?" }
+          warum: "Zwei wollen dasselbe. Wir suchen Lösungen, bei denen beide etwas bekommen." }
     ],
     ab12: {
       "titel": "Beide bekommen etwas",
