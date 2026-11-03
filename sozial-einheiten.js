@@ -200,125 +200,154 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
 /* ------------------------------------------------------------ */
 {
     id: "v-streit-loesen",
-    titel: "Streit lösen",
+    titel: "Streit: Erst raus, dann reden",
     kategorie: "Konflikte lösen",
     dauer: 40,
-    ziel12: "Stopp-Regel anwenden, Hilfe holen",
-    ziel34: "Ich-Botschaften formulieren, faire Lösungen für einen Streit finden",
-    material: "Stopp-Schild (rote Pappe am Stab)\nZahlenkarten 1–4 (Arbeitsmaterial)",
+    ziel12: "Im Streit aussteigen: weggehen und Hilfe holen statt hauen",
+    ziel34: "Merken, wann es kocht, rechtzeitig aussteigen und den Streit später mit Hilfe klären",
+    material: "Zahlenkarten 1–3 (Antwort-Set)\nPlakat „Erst raus, dann reden“ (Arbeitsmaterial)",
     verlauf: [
-        { zeit: "0–5",   phase: "Ankommen",     k12: "Begrüßung, Gefühlsbarometer", k34: "Begrüßung, Gefühlsbarometer" },
-        { zeit: "5–13",  phase: "Lerntext",     k12: "„Die Schaukel“ hören, Stopp-Schild einführen", k34: "„Streit um den Fußball“ hören, Du- und Ich-Botschaft vergleichen" },
-        { zeit: "13–25", phase: "Übung",        k12: "Stopp-Chor, Lösungs-Karten", k34: "Stopp-Chor, Lösungs-Karten mit Ich-Botschaft, Ich-Botschaften-Werkstatt" },
-        { zeit: "25–35", phase: "Arbeitsblatt", k12: "AB 1/2: Stopp-Regel und Hilfe holen", k34: "AB 3/4: Ich-Botschaften und faire Lösungen" },
-        { zeit: "35–40", phase: "Abschluss",    k12: "Daumenrunde, Applauswelle", k34: "„Heute habe ich gelernt …“, Applauswelle" }
+      {
+        "zeit": "0–5",
+        "phase": "Ankommen",
+        "k12": "Begrüßung, Gefühlsbarometer",
+        "k34": "Begrüßung, Gefühlsbarometer"
+      },
+      {
+        "zeit": "5–15",
+        "phase": "Geschichte",
+        "k12": "„Die Schaukel“ hören, die 4 Schritte an der Tafel",
+        "k34": "„Kein Tor!“ hören, Tafelbild Merken – Raus – Holen – Später reden"
+      },
+      {
+        "zeit": "15–23",
+        "phase": "Übung",
+        "k12": "Was jetzt? (Zahlenkarten)",
+        "k34": "Was jetzt? (Zahlenkarten)"
+      },
+      {
+        "zeit": "23–33",
+        "phase": "Arbeitsblatt",
+        "k12": "AB 1/2: Erst raus, dann reden",
+        "k34": "AB 3/4: Mein Notfall-Plan"
+      },
+      {
+        "zeit": "33–40",
+        "phase": "Abschluss",
+        "k12": "Daumenrunde, Applauswelle",
+        "k34": "„Mein Raus-Satz ist …“, Applauswelle"
+      }
     ],
     lerntext12: {
-        titel: "Die Schaukel",
-        text:
-`Auf dem Schulhof gibt es nur eine Schaukel. Ella will schaukeln. Max will auch schaukeln.
-
-Max schubst Ella weg. Ella fällt hin. Sie ist wütend und will Max hauen.
-
-Da denkt Ella an das Stopp-Schild. Sie hebt die Hand und ruft laut: **„Stopp! Das will ich nicht!“**
-
-Max bleibt stehen. Er schaut Ella an. Dann geht Ella zur Lehrerin und holt Hilfe.
-
-Zusammen überlegen sie: Erst schaukelt Ella bis 50. Dann schaukelt Max bis 50. Max sagt: „Tut mir leid, dass ich dich geschubst habe.“
-
-**Nach dem Vorlesen:**
-1. Was ist auf dem Schulhof passiert?
-2. Wie hat sich Ella gefühlt, als Max sie geschubst hat?
-3. Was hat Ella gemacht, statt zu hauen?
-4. Wie haben die beiden das Schaukel-Problem gelöst?
-5. Alle zusammen: Hand hoch – „Stopp! Das will ich nicht!“`
+      "titel": "Die Schaukel",
+      "text": "Auf dem Schulhof gibt es nur eine Schaukel. Ella will schaukeln. Max will auch schaukeln.\n\nMax schubst Ella weg. Ella fällt hin. Ihr Bauch wird heiß. Ihre Hände werden zu Fäusten. Ella ist **wütend**. Sie will Max hauen.\n\nDa merkt Ella: „Es kocht in mir!“ Sie macht ihre Fäuste auf. Sie sagt nur: **„Stopp!“** – und dann **geht sie weg**. Weit weg von Max.\n\nElla läuft zur Lehrerin. „Max hat mich geschubst. Ich bin so wütend!“ Die Lehrerin sagt: „Gut, dass du weggegangen bist. Komm, wir atmen erst einmal.“\n\nNach der Pause sitzen Ella, Max und die Lehrerin zusammen. Jetzt sind alle ruhig. Max sagt: „Tut mir leid, dass ich dich geschubst habe.“ Morgen schaukelt Ella zuerst.\n\n**Nach dem Vorlesen:**\n1. Warum war Ella so wütend?\n2. Woran hat Ella gemerkt, dass es in ihr kocht?\n3. Was hat Ella gemacht, statt Max zu hauen?\n4. Wann haben Ella und Max den Streit geklärt – und wer hat geholfen?\n\n**Tipp für dich:** Schreib die vier Schritte an die Tafel: Merken – Raus – Holen – Später reden."
     },
     lerntext34: {
-        titel: "Streit um den Fußball",
-        text:
-`In der großen Pause wollen Kenan und Sophie mit dem Klassenfußball spielen. Beide haben ihn gleichzeitig gepackt. „Du bist so gemein, du nimmst immer alles!“, schreit Sophie. „Und du bist eine Petze!“, schreit Kenan zurück. Der Streit wird immer lauter.
-
-Die Streitschlichterin Hanna kommt dazu. „Stopp. Wir gehen den Friedensweg.“
-
-Zuerst darf Sophie sprechen, Kenan hört nur zu. Sophie atmet durch und sagt: „Ich bin wütend, weil ich gestern schon nicht spielen durfte. Ich wünsche mir, dass wir uns abwechseln.“
-
-Dann ist Kenan dran: „Ich bin sauer, weil ich den Ball zuerst hatte. Ich wünsche mir, dass du mich nicht anschreist.“
-
-Hanna fragt: „Was könnte eine Lösung sein, mit der ihr beide zufrieden seid?“ Nach kurzer Überlegung schlägt Kenan vor: „Wir spielen zusammen – jeder wählt drei Kinder für sein Team.“ Sophie nickt.
-
-**Fragen zum Gespräch:**
-1. Was haben Sophie und Kenan am Anfang gesagt? Wie wirkten diese Sätze?
-2. Was ist anders an den Sätzen auf dem Friedensweg?
-3. Warum darf immer nur einer sprechen?
-4. Ist die Lösung fair? Fallen dir noch andere Lösungen ein?
-
-**Tafelbild Ich-Botschaft:** Ich fühle mich …, weil … Ich wünsche mir, dass …`
+      "titel": "Kein Tor!",
+      "text": "In der großen Pause spielen Kenan und Sophie Fußball. Kenan schießt aufs Tor. Sophie ruft: „Kein Tor! Der war daneben!“ Kenan: „Spinnst du? Der war drin!“\n\nSophie schubst ihn. Ein paar Kinder rufen: „Lass dir das nicht gefallen, Kenan!“ Kenan spürt, wie sein Kopf heiß wird. Sein Kiefer ist fest, seine Fäuste auch. Er ist kurz vorm Explodieren.\n\nKenan weiß: Wenn er jetzt bleibt, gibt es eine Prügelei. Und dann ist er wieder der Schuldige. Er sagt nur: „Ich hab keinen Bock auf Stress.“ Dann dreht er sich um und geht zur Bank. Die anderen lachen. Es kostet ihn viel Kraft, nicht zurückzugehen.\n\nAn der Bank atmet Kenan tief durch. Er zählt die Autos auf dem Parkplatz. Langsam wird sein Kopf kühler. Dann geht er zur Pausenaufsicht: „Mit Sophie gab es Stress. Ich bin weggegangen.“\n\nNach der Pause setzen sich Kenan, Sophie und die Schulsozialarbeiterin zusammen. Jetzt können beide in Ruhe sagen, was sie geärgert hat. Sie verabreden: Beim nächsten Streit um ein Tor entscheidet die Aufsicht.\n\n**Fragen zum Gespräch:**\n1. Woran hat Kenan gemerkt, dass er kurz vorm Explodieren ist?\n2. Warum war es so schwer für ihn, wegzugehen?\n3. Was hat ihm an der Bank geholfen, ruhig zu werden?\n4. Warum klappt das Klären erst nach der Pause – und nicht mitten im Streit?\n\n**Tafelbild:** Merken – Raus – Holen – Später reden"
     },
     uebungen: [
-        { titel: "Stopp-Chor", fuer: "alle", dauer: "5 Min",
-          text: "**So geht's:** Du liest eine Situation vor. Ist sie **nicht okay**, stehen alle Kinder an ihrem Platz auf, strecken die Stopp-Hand nach vorn und sagen gemeinsam mit fester Stimme: **„Stopp! Das will ich nicht!“** Ist sie **okay**, bleiben alle sitzen. Du leitest nur an – du spielst nicht mit.\n\n- Jemand nimmt dir einfach den Stift weg.\n- Jemand fragt: „Darf ich mitspielen?“\n- Jemand schubst dich in der Schlange.\n- Jemand leiht dir seinen Radiergummi.\n- Jemand lacht dich aus.\n- Jemand kitzelt dich, obwohl du nicht willst.\n- Jemand sagt: „Toll gemacht!“\n- Jemand zieht dich am Pulli.\n\n**Stopp-Stimme üben:** Zum Schluss sagen alle den Satz dreimal – erst ganz leise und piepsig, dann laut geschrien, dann fest und klar mit Blick nach vorn. Frage: „Welche Stimme wirkt am besten?“ (die dritte)",
-          text12: "**So geht's:** Du liest eine Situation vor. Ist sie **nicht okay**, stehen alle Kinder an ihrem Platz auf, strecken die Stopp-Hand nach vorn und sagen gemeinsam mit fester Stimme: **„Stopp! Das will ich nicht!“** Ist sie **okay**, bleiben alle sitzen. Du leitest nur an – du spielst nicht mit.\n\n- Jemand nimmt dir einfach den Stift weg.\n- Jemand fragt: „Darf ich mitspielen?“\n- Jemand schubst dich in der Schlange.\n- Jemand leiht dir seinen Radiergummi.\n- Jemand lacht dich aus.\n- Jemand kitzelt dich, obwohl du nicht willst.\n- Jemand sagt: „Toll gemacht!“\n- Jemand zieht dich am Pulli.\n\n**Stopp-Stimme üben:** Zum Schluss sagen alle den Satz dreimal – erst ganz leise und piepsig, dann laut geschrien, dann fest und klar mit Blick nach vorn. Frage: „Welche Stimme wirkt am besten?“ (die dritte)",
-          text34: "**So geht's:** Du liest eine Situation vor. Ist sie **nicht okay**, stehen alle Kinder an ihrem Platz auf, strecken die Stopp-Hand nach vorn und sagen gemeinsam mit fester Stimme: **„Stopp! Das will ich nicht!“** Ist sie **okay**, bleiben alle sitzen. Du leitest nur an – du spielst nicht mit.\n\n- Jemand liest heimlich in deinem Heft.\n- Jemand fragt: „Kann ich mir deinen Stift leihen?“\n- Jemand macht ein Foto von dir und lacht.\n- Jemand sagt: „Gutes Tor!“\n- Jemand stellt dir ein Bein.\n- Jemand beleidigt deine Familie.\n- Jemand fragt: „Wollen wir zusammen arbeiten?“\n- Jemand drängt dich in die Ecke.\n\n**Eigene Worte:** Danach dreht ihr das Glücksrad („Wer ist dran?“). Das Kind sagt vom Platz aus Stopp mit eigenen Worten, z. B. „Hör auf. Ich will das nicht.“ – fest, ruhig, mit Blick nach vorn. Kein Schreien, kein Schimpfwort.",
-          folie: "Ich lese dir etwas vor.\n\n👍 **Okay?** Dann bleibst du sitzen.\n\n✋ **Nicht okay?** Steh auf, streck die Stopp-Hand nach vorn und sag laut und klar: **„Stopp! Das will ich nicht!“**",
-          quiz: "stopp",
-          antworten: ["👍 okay", "✋ Stopp!"],
-          kern: ["12"] },
-        { titel: "Lösungs-Karten", fuer: "alle", dauer: "8 Min",
-          text: "**Material:** die Zahlenkarten 1–4 (gibt es einmal für alle Themen). Die Bedeutung steht auf der Folie bzw. an der Tafel: **1 = Abwechseln · 2 = Teilen · 3 = Zusammen machen · 4 = Hilfe holen.** Du musst nichts vorspielen – du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Die Kinder halten auf dein Zeichen („1, 2, 3 – hoch!“) die Zahlenkarte hoch, die passt. Dann fragst du ein oder zwei Kinder: „Warum passt deine Karte?“ Oft passen mehrere Karten – das ist richtig so.\n\n- Zwei Kinder wollen gleichzeitig schaukeln.\n- Es gibt nur noch einen roten Stift.\n- Einer will Fangen spielen, der andere Verstecken.\n- Beide wollen das letzte Stück Kuchen.\n- Ein Kind haut ein anderes.\n- Ein Kind wirft immer wieder den Turm um.\n\n**Wichtig:** Wenn jemand haut oder wehtut, ist die richtige Karte immer 4 – Hilfe holen.",
-          text12: "**Material:** die Zahlenkarten 1–4 (gibt es einmal für alle Themen). Die Bedeutung steht auf der Folie bzw. an der Tafel: **1 = Abwechseln · 2 = Teilen · 3 = Zusammen machen · 4 = Hilfe holen.** Du musst nichts vorspielen – du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Die Kinder überlegen kurz und halten auf dein Zeichen („1, 2, 3 – hoch!“) die Zahlenkarte hoch, die passt. Dann fragst du ein oder zwei Kinder: „Warum passt deine Karte?“ Oft passen mehrere Karten – das ist richtig so.\n\n- Zwei Kinder wollen gleichzeitig schaukeln.\n- Es gibt nur noch einen roten Stift.\n- Einer will Fangen spielen, der andere Verstecken.\n- Beide wollen das letzte Stück Kuchen.\n- Ein Kind haut ein anderes.\n- Ein Kind wirft immer wieder den Turm um.\n\n**Wichtig:** Wenn jemand haut oder wehtut, ist die richtige Karte immer 4 – Hilfe holen.\n\n**Zum Schluss** sprechen alle zusammen: „Bei Streit gibt es viele Lösungen. Wenn jemand wehtut, hole ich Hilfe.“",
-          text34: "**Material:** die Zahlenkarten 1–4 (gibt es einmal für alle Themen). Die Bedeutung steht auf der Folie bzw. an der Tafel: **1 = Abwechseln · 2 = Teilen · 3 = Zusammen machen · 4 = Hilfe holen.** Du musst nichts vorspielen – du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Die Kinder halten auf dein Zeichen („1, 2, 3 – hoch!“) die Zahlenkarte hoch, die passt. Dann zwei Fragen an einzelne Kinder (vom Platz aus):\n1. „Warum passt deine Karte?“\n2. „Was könnte einer der beiden als Ich-Botschaft sagen?“ („Ich bin sauer, weil … Ich wünsche mir, dass …“)\n\n- Zwei wollen gleichzeitig an die Tischtennisplatte.\n- Beim Fußball streiten zwei, ob es ein Tor war.\n- Beide wollen Kapitän sein.\n- In der Gruppenarbeit will einer alles bestimmen.\n- Jemand schickt ein Foto von dir ohne zu fragen weiter.\n- In der Schlange wird geschubst, es wird gerangelt.\n\n**Wichtig:** Bei Gewalt oder Bloßstellen (Foto) ist die richtige Karte immer 4 – Hilfe holen.\n\n**Zum Schluss:** Ein Kind fasst zusammen: Welche Lösung kam heute am häufigsten?",
-          folie: "Leg deine **Zahlenkarten 1–4** vor dich:\n\n**1** 🔄 Abwechseln · **2** 🍕 Teilen · **3** 🤝 Zusammen machen · **4** 🙋 Hilfe holen\n\nGleich kommt ein Streit. Auf **„1, 2, 3 – hoch!“** zeigst du die Karte, die passt.",
-          folie34: "Leg deine **Zahlenkarten 1–4** vor dich:\n\n**1** 🔄 Abwechseln · **2** 🍕 Teilen · **3** 🤝 Zusammen machen · **4** 🙋 Hilfe holen\n\nAuf **„1, 2, 3 – hoch!“** zeigst du die Karte, die passt. Danach: Warum? Und was könnte einer mit einer Ich-Botschaft sagen?",
-          quiz: "loesung",
-          antworten: ["1️⃣ Abwechseln", "2️⃣ Teilen", "3️⃣ Zusammen machen", "4️⃣ Hilfe holen"],
-          kern: ["34"] },
-        { titel: "Ich-Botschaften-Werkstatt", fuer: "34", dauer: "4 Min",
-          text: "Lies Du-Botschaften vor, die Kinder verwandeln sie mündlich:\n\n- „Du nervst!“\n- „Du lässt mich nie mitspielen!“\n- „Du hast meinen Stift kaputt gemacht, du Idiot!“",
-          quiz: "karten",
-          frage: "Mach daraus eine Ich-Botschaft: „Ich fühle mich …, weil … Ich wünsche mir, dass …“",
-          folie: "Gleich siehst du einen **Du-Satz**. Der macht Streit.\n\nMach daraus eine **Ich-Botschaft**:\n„Ich fühle mich …, weil … Ich wünsche mir, dass …“" }
+      {
+        "titel": "Was jetzt?",
+        "fuer": "alle",
+        "dauer": "8 Min",
+        "kern": [
+          "12",
+          "34"
+        ],
+        "text": "**Material:** Zahlenkarten 1–3 (aus dem Antwort-Set). An der Tafel bzw. auf der Folie: **1 = Weggehen · 2 = Hilfe holen · 3 = Später reden.** Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte: Was machst du **jetzt**? Danach fragst du: „Was ist daran schwer?“ Ehrliche Antworten sind erlaubt („Weggehen ist peinlich“) – genau darüber lohnt es sich zu reden.\n\n- Beim Fußball sagt einer, dein Tor zählt nicht. Alle schauen zu.\n- Jemand sagt einen Spruch über deine Mutter.\n- Einer rempelt dich im Flur an und grinst.\n- Im Klassenchat lachen alle über ein Foto von dir.\n- Jemand stellt sich dir in den Weg und sagt: „Was willst du?“\n\n**Wichtig:** Bei Gewalt, Drohung oder Bloßstellen ist immer auch 2 richtig: Hilfe holen.",
+        "text12": "**Material:** Zahlenkarten 1–3 (aus dem Antwort-Set). An der Tafel bzw. auf der Folie: **1 = Weggehen · 2 = Hilfe holen · 3 = Später reden.** Du liest nur vor.\n\n**So geht's:** Du liest einen Streit vor. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte: Was machst du jetzt? Oft passen mehrere – frag ein, zwei Kinder: „Warum?“\n\n- Jemand schubst dich in der Schlange.\n- Jemand nimmt dir den Ball weg.\n- Jemand sagt: „Du bist doof!“\n- Ein Kind haut dich.\n- Jemand macht deinen Turm kaputt.\n\n**Wichtig:** Wenn jemand haut oder wehtut, ist immer auch 2 richtig: Hilfe holen.",
+        "text34": "**Material:** Zahlenkarten 1–3 (aus dem Antwort-Set). An der Tafel bzw. auf der Folie: **1 = Weggehen · 2 = Hilfe holen · 3 = Später reden.** Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte: Was machst du **jetzt**? Danach fragst du: „Was ist daran schwer?“ Ehrliche Antworten sind erlaubt („Weggehen ist peinlich“) – genau darüber lohnt es sich zu reden.\n\n- Beim Fußball sagt einer, dein Tor zählt nicht. Alle schauen zu.\n- Jemand sagt einen Spruch über deine Mutter.\n- Einer rempelt dich im Flur an und grinst.\n- Im Klassenchat lachen alle über ein Foto von dir.\n- Jemand stellt sich dir in den Weg und sagt: „Was willst du?“\n\n**Wichtig:** Bei Gewalt, Drohung oder Bloßstellen ist immer auch 2 richtig: Hilfe holen.",
+        "quiz": "zahlen",
+        "antworten": [
+          "1️⃣ Weggehen",
+          "2️⃣ Hilfe holen",
+          "3️⃣ Später reden"
+        ],
+        "folie": "Leg deine **Zahlenkarten 1–3** vor dich:\n\n**1** 🚶 Weggehen · **2** 🙋 Hilfe holen · **3** 🗣️ Später reden\n\nGleich kommt ein Streit. Was machst du **jetzt**? Auf **„1, 2, 3 – hoch!“** zeigst du deine Karte."
+      },
+      {
+        "titel": "Mein Raus-Satz",
+        "fuer": "alle",
+        "dauer": "4 Min",
+        "text": "Jedes Kind sucht sich einen kurzen Satz aus, mit dem es aus einem Streit aussteigt, und sagt ihn einmal laut vom Platz – ruhig, Blick nach vorn, dann Kopf zur Seite drehen (= weggehen). Die anderen klatschen.\n\n- „Stopp. Ich geh jetzt.“\n- „Ich hab keinen Bock auf Stress.“\n- „Ich hol jetzt einen Erwachsenen.“\n- „Wir reden später.“",
+        "text12": "Jedes Kind sucht sich einen kurzen Satz aus und sagt ihn einmal laut vom Platz – ruhig, Blick nach vorn, dann Kopf zur Seite drehen (= weggehen). Die anderen klatschen.\n\n- „Stopp. Ich geh jetzt.“\n- „Ich hol die Lehrerin.“\n- „Wir reden später.“",
+        "quiz": "liste",
+        "folie": "Wenn es in dir kocht, sagst du einen **kurzen Satz** – und gehst.\n\nSuch dir deinen Satz aus und sag ihn laut. Dann dreh den Kopf zur Seite."
+      },
+      {
+        "titel": "Unser Ruheplatz",
+        "fuer": "alle",
+        "dauer": "4 Min",
+        "text": "Gemeinsam legt ihr fest: Wohin kann man im Klassenraum und auf dem Schulhof gehen, wenn es kocht? (Leseecke, Fensterbank, Bank neben der Aufsicht …) Wer mag, geht einmal langsam vom Platz zum Ruheplatz im Raum und wieder zurück – so üben alle den Weg. Abmachung: Wer am Ruheplatz ist, wird in Ruhe gelassen.",
+        "folie": "Wohin kannst du gehen, wenn es in dir **kocht**? 🪑\n\nWir suchen einen **Ruheplatz** – hier im Raum und auf dem Schulhof.\n\nAbmachung: Wer dort ist, wird in Ruhe gelassen."
+      }
     ],
     ab12: {
-      "titel": "Stopp – so geht's!",
+      "titel": "Erst raus, dann reden",
       "gemeinsam": true,
       "aufgaben": [
         {
-          "typ": "malen",
-          "text": "Male das Stopp-Schild rot an.",
-          "bild": "stopp"
-        },
-        {
           "typ": "daumen",
-          "text": "Jemand nimmt dir das Spielzeug weg. Ist das gut? Kreise ein: 👍 oder 👎.",
+          "text": "Es kocht in dir. Ist das gut? Kreise ein: 👍 oder 👎.",
+          "art": "daumen",
           "zeilen": [
-            "Ich haue zurück.",
-            "Ich sage laut: „Stopp!“",
+            "Ich haue.",
+            "Ich gehe weg.",
+            "Ich hole Hilfe.",
             "Ich schreie ein böses Wort.",
-            "Ich hole Hilfe."
-          ],
-          "art": "daumen"
+            "Ich atme tief."
+          ]
         },
         {
           "typ": "malen",
-          "text": "Male: Wer hilft dir in der Schule?",
+          "text": "Male deinen Ruheplatz.",
+          "bild": ""
+        },
+        {
+          "typ": "malen",
+          "text": "Male den Erwachsenen, den du holst.",
           "bild": ""
         }
       ]
     },
     ab34: {
-        titel: "Mit Worten statt mit Fäusten",
-        aufgaben: [
-            { typ: "tabelle", text: "Du-Botschaft (D) oder Ich-Botschaft (I)? Kreuze die richtige Spalte an.",
-              spalten: ["Satz", "D", "I"],
-              zeilen: [["Du bist immer so gemein!", "", ""], ["Ich bin traurig, weil du mich ausgelacht hast.", "", ""], ["Du machst alles kaputt!", "", ""], ["Ich ärgere mich, weil ich warten musste.", "", ""]] },
-            { typ: "luecken", text: "Verwandle in eine Ich-Botschaft.", nummern: true,
-              saetze: ["„Du lässt mich nie mitspielen!“\nIch fühle mich ___, weil ___.\nIch wünsche mir, dass ___.",
-                       "„Du hast meine Zeichnung zerknittert!“\nIch fühle mich ___, weil ___.\nIch wünsche mir, dass ___."] },
-            { typ: "luecken", text: "Wie hat Hanna den Streit geklärt? Bringe die Schritte in die richtige Reihenfolge (1–4).", nummern: false,
-              saetze: ["___ Wir finden eine Lösung, mit der beide zufrieden sind.", "___ Stopp – wir hören auf zu streiten.", "___ Der andere sagt, wie er sich fühlt.", "___ Ich sage, wie ich mich fühle."] },
-            { typ: "luecken", text: "Zwei Kinder wollen gleichzeitig am Computer sitzen. Schreibe zwei faire Lösungen auf.", nummern: true,
-              saetze: ["___", "___"] }
-        ]
+      "titel": "Mein Notfall-Plan bei Streit",
+      "aufgaben": [
+        {
+          "typ": "ankreuzen",
+          "text": "Es kocht. Was hilft wirklich? Kreuze an.",
+          "nebeneinander": false,
+          "optionen": [
+            "zurückschubsen",
+            "weggehen",
+            "bis 10 zählen",
+            "einen Erwachsenen holen",
+            "laut beleidigen",
+            "tief atmen"
+          ]
+        },
+        {
+          "typ": "luecken",
+          "text": "Mein Notfall-Plan.",
+          "nummern": true,
+          "saetze": [
+            "Ich merke, dass es kocht, wenn mein Körper ___.",
+            "Mein Raus-Satz: „___“",
+            "Mein Ruheplatz: ___",
+            "Diesen Erwachsenen hole ich: ___"
+          ]
+        },
+        {
+          "typ": "luecken",
+          "text": "Später, wenn ich ruhig bin, sage ich:",
+          "nummern": false,
+          "saetze": [
+            "Ich war wütend, weil ___.",
+            "Ich wünsche mir, dass ___."
+          ]
+        }
+      ]
     }
 },
 
