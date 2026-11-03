@@ -223,6 +223,14 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
     -webkit-print-color-adjust:exact; print-color-adjust:exact;
 }
 .blatt.zu-voll{ outline:4px solid var(--rot); outline-offset:-4px; }
+.blatt.lese{ line-height:1.6; }
+.lese-inhalt{ flex:1 1 auto; display:flex; flex-direction:column; gap:.55em; margin-top:4mm; min-height:0; }
+.lese-abschnitt{ display:flex; gap:.6em; align-items:flex-start; }
+.lese-nr{ flex:0 0 auto; width:1.55em; height:1.55em; border-radius:50%; background:var(--meer); color:#fff; font-family:"Nunito",sans-serif; font-weight:900; font-size:.8em; display:flex; align-items:center; justify-content:center; margin-top:.25em; }
+.lese-abschnitt .md p{ margin:0 0 .3em; }
+.lese-fragen{ margin-top:auto; border:.4mm solid #c9d6e3; border-radius:3mm; padding:.4em .8em; background:#f6f9fb; font-size:.9em; }
+.lese-fragen b{ font-family:"Nunito",sans-serif; }
+.lese-fragen ol{ margin:.2em 0 0; padding-left:1.3em; }
 .blatt > *{ flex-shrink:0; }
 .blatt-kopf{ display:flex; align-items:flex-end; justify-content:space-between; gap:4mm; border-bottom:.6mm solid var(--meer); padding-bottom:2mm; }
 .blatt-titel{ font-size:1.55em; font-weight:700; line-height:1.15; color:var(--nacht); }
@@ -710,6 +718,37 @@ function blattBauen(e, stufe){
         `<div class="blatt-inhalt">${inhaltHtml}</div>`;
     return blatt;
 }
+// Lesetext für die Kinder: nur die Geschichte (ohne Lehrer-Hinweise), Abschnitte wie auf den Folien
+function lesetextBlatt(e, stufe){
+    const lt = (stufe === "34" ? e.lerntext34 : e.lerntext12) || {};
+    let teile = [], fragen = [];
+    if (window.sozialPraesentation) {
+        const f = window.sozialPraesentation.folienBauen(e, stufe);
+        teile = f.filter(x => x.typ === "geschichte").map(x => x.text);
+        const fr = f.find(x => x.typ === "fragen");
+        if (stufe === "34" && fr && /Fragen zum Gespräch/i.test(lt.text || "")) fragen = fr.fragen;
+    } else {
+        teile = String(lt.text || "").split(/\*\*\s*(Nach dem Vorlesen|Fragen zum Gespräch)/i)[0].split(/\n\s*\n/).map(t => t.trim()).filter(Boolean);
+    }
+    const blatt = document.createElement("div");
+    blatt.className = "blatt lese " + (stufe === "34" ? "stufe34" : "stufe12 kl2");
+    blatt.innerHTML =
+        `<div class="blatt-kopf"><div class="blatt-titel">${inline(lt.titel || e.titel)}</div>` +
+        `<div class="blatt-meta"><i class="fa-solid fa-tower-observation"></i> ${esc(window.BEREICH.name)} · Lesetext<br>Klasse ${stufe === "34" ? "3/4" : "1/2"}</div></div>` +
+        `<div class="lese-inhalt">${teile.map((t, i) => `<div class="lese-abschnitt">${teile.length > 1 ? `<span class="lese-nr">${i + 1}</span>` : ""}<div class="md">${md(t)}</div></div>`).join("")}
+        ${fragen.length ? `<div class="lese-fragen"><b>Zum Nachdenken</b><ol>${fragen.map(q => `<li>${esc(q)}</li>`).join("")}</ol></div>` : ""}</div>`;
+    return blatt;
+}
+// Lesetext so groß wie möglich auf genau eine Seite
+function leseEinpassen(blatt){
+    let lo = 10, hi = blatt.classList.contains("stufe34") ? 22 : 26;
+    blatt.style.fontSize = hi + "pt";
+    if (passt(blatt)) return true;
+    for (let i = 0; i < 12; i++) { const m = (lo + hi) / 2; blatt.style.fontSize = m + "pt"; if (passt(blatt)) lo = m; else hi = m; }
+    blatt.style.fontSize = lo + "pt";
+    return passt(blatt);
+}
+
 // Größte Schrift suchen, bei der alles auf genau eine Seite passt; der Rest der Seite
 // geht an Malfelder bzw. gleichmäßig an die Abstände.
 function passt(b){ return b.scrollHeight <= b.clientHeight + 1; }
@@ -802,7 +841,16 @@ function lehrerHtml(e){
 async function drucken(e, was){
     const ziel = document.getElementById("druck");
     ziel.innerHTML = "";
-    if (was === "regie12" || was === "regie34") {
+    if (was === "lese12" || was === "lese34") {
+        const st = was.slice(4);
+        const anzahl = Math.max(1, Math.min(30, parseInt((document.getElementById("leseAnzahl") || {}).value, 10) || 1));
+        try { localStorage.setItem("sozial_anzahl", anzahl); } catch (err) {}
+        const erstes = lesetextBlatt(e, st);
+        ziel.appendChild(erstes);
+        await schriften();
+        leseEinpassen(erstes);
+        for (let k = 1; k < anzahl; k++) ziel.appendChild(erstes.cloneNode(true));
+    } else if (was === "regie12" || was === "regie34") {
         const st = was.slice(5);
         ziel.innerHTML = `<div class="lehrer-druck"><div class="ld-kopf"><div class="ld-meta">${esc(window.BEREICH.name)} · ${esc(e.kategorie)} · ${esc(e.dauer || 40)} Minuten · Klasse ${st === "12" ? "1/2" : "3/4"}</div><h1>${esc(e.titel)} – Schritt für Schritt</h1></div>${window.sozialRegie.bauen(e, st)}</div>`;
     } else if (was === "rituale") {
@@ -819,7 +867,7 @@ async function drucken(e, was){
         if (voll.length && !confirm("Ein Arbeitsblatt ist zu voll für eine Seite und wird unten abgeschnitten. Trotzdem drucken?")) { ziel.innerHTML = ""; return; }
     }
     const titel = document.title;
-    document.title = (e ? e.titel : "Rituale") + ({ regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 2", ab34: " – AB Kl. 3-4" }[was] || "");
+    document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 2", ab34: " – AB Kl. 3-4" }[was] || "");
     window.addEventListener("afterprint", () => { ziel.innerHTML = ""; document.title = titel; }, { once: true });
     setTimeout(() => window.print(), 60);
 }
@@ -1015,7 +1063,13 @@ function zeigeStunde(id){
                 <button class="btn blau" data-druck="ab34"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 3/4</button>
                 <button class="btn gold" data-druck="alles"><i class="fa-solid fa-layer-group"></i> Alles zusammen</button>
             </div>
-            <p class="ed-hilfe" style="margin-top:10px">Tipp: Im Druckfenster „Als PDF sichern“ wählen, um die Stunde als PDF abzulegen.</p>
+            <div class="knopfleiste" style="margin-top:10px;align-items:center">
+                <strong style="font-size:14px">Lesetext für die Kinder:</strong>
+                <button class="btn" data-druck="lese12"><i class="fa-solid fa-book-open"></i> Kl. 1/2</button>
+                <button class="btn" data-druck="lese34"><i class="fa-solid fa-book-open"></i> Kl. 3/4</button>
+                <label style="display:inline-flex;gap:6px;align-items:center;font-weight:800;font-size:14px">Exemplare <input type="number" id="leseAnzahl" min="1" max="30" value="${(() => { try { return parseInt(localStorage.getItem("sozial_anzahl"), 10) || 9; } catch (err) { return 9; } })()}" style="width:70px"></label>
+            </div>
+            <p class="ed-hilfe" style="margin-top:10px">Der Lesetext kommt ohne deine Hinweise auf eine A4-Seite – die Abschnitt-Nummern passen zu den Folien („Wer liest vor?“). Tipp: Im Druckfenster „Als PDF sichern“ wählen, um die Stunde als PDF abzulegen.</p>
         </div>
 
         ${window.sozialMaterial ? `<div class="karte"><div class="detail-kopf" style="margin:0 0 12px"><div class="titel"><h2 style="margin:0"><i class="fa-solid fa-scissors"></i> Arbeitsmaterial</h2>
@@ -1066,7 +1120,7 @@ function zeigeStunde(id){
     }
     vorschauZeigen(document.getElementById("v34"), e, "34");
     if (e.nur34) {
-        inhalt.querySelectorAll('[data-einstieg="12"], [data-pptx="12"], [data-druck="ab1"], [data-druck="ab2"], [data-druck="regie12"], [data-va="12"], .nur12').forEach(x => x.remove());
+        inhalt.querySelectorAll('[data-einstieg="12"], [data-pptx="12"], [data-druck="ab1"], [data-druck="ab2"], [data-druck="regie12"], [data-druck="lese12"], [data-va="12"], .nur12').forEach(x => x.remove());
         const start34 = inhalt.querySelector('[data-einstieg="34"]'); if (start34) start34.classList.add("gold");
     }
     inhalt.querySelectorAll("[data-druck]").forEach(b => b.addEventListener("click", () => drucken(e, b.dataset.druck)));
