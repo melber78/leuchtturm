@@ -98,6 +98,10 @@ const CSS = `
 @media (max-width:700px){
     #praes .p-punkte{ display:none; }
     #praes .p-leiste .p-wort{ display:none; }
+    #praes .p-stimmen{ gap:10px 12px; flex-wrap:nowrap; }
+    #praes .p-saeule{ width:44px; height:18vh; }
+    #praes .p-symbol{ width:62px; height:62px; font-size:36px; }
+    #praes .p-stimme .p-name{ font-size:13px; max-width:78px; text-align:center; line-height:1.15; }
     #praes .p-leiste .p-pos{ flex:1; }
     #praes .p-leiste{ gap:6px; padding:6px 8px; }
     #praes .p-leiste button{ padding:9px 10px; font-size:15px; min-width:40px; }
@@ -218,7 +222,8 @@ function fragenAus(nach){
 function aufzaehlung(text){ return String(text || "").split("\n").filter(z => /^\s*[-•]\s+/.test(z)).map(z => z.replace(/^\s*[-•]\s+/, "").trim()); }
 function quizArt(text){
     const t = String(text).toLowerCase();
-    if (/lösungskarte/.test(t)) return "frage";
+    if (/lösungskarte/.test(t)) return "loesung";
+    if (/stopp-hand/.test(t)) return "stopp";
     if (/daumen/.test(t)) return "daumen";
     if (/rote|grüne|rot \(|grün \(|karte/.test(t)) return "ampel";
     if (/gefühl|fühlt|barometer|wie wütend|angst/.test(t)) return "gefuehle";
@@ -246,7 +251,7 @@ function folienBauen(e, stufe){
     (e.uebungen || []).forEach(u0 => {
         // Klassen sind getrennt: nur Übungen dieser Stufe, Text passend zur Stufe
         if (u0.fuer && u0.fuer !== "alle" && u0.fuer !== stufe) return;
-        const u = Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text });
+        const u = Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, folie: u0["folie" + stufe] || u0.folie || "" });
         f.push({ typ: "uebung", u });
         const punkte = aufzaehlung(u.text).slice(0, 8);
         const art = quizArt(u.text);
@@ -357,6 +362,8 @@ function stimmenHtml(schluessel, optionen){
 const GEFUEHLE_OPT = ["fröhlich", "traurig", "wütend", "ängstlich", "cool"].map(g => ({ wert: g, name: g, art: "gefuehl", zeichen: g }));
 function abstimmOptionen(art){
     if (art === "daumen") return [{ wert: "hoch", name: "Daumen hoch", art: "emoji", zeichen: "👍" }, { wert: "seite", name: "weiß nicht", art: "emoji", zeichen: "🤔" }, { wert: "runter", name: "Daumen runter", art: "emoji", zeichen: "👎" }];
+    if (art === "loesung") return [{ wert: "abwechseln", name: "Abwechseln", art: "emoji", zeichen: "🔄" }, { wert: "teilen", name: "Teilen", art: "emoji", zeichen: "🍕" }, { wert: "zusammen", name: "Zusammen machen", art: "emoji", zeichen: "🤝" }, { wert: "hilfe", name: "Hilfe holen", art: "emoji", zeichen: "🙋" }];
+    if (art === "stopp") return [{ wert: "ok", name: "okay", art: "emoji", zeichen: "👍" }, { wert: "stopp", name: "Stopp!", art: "emoji", zeichen: "✋" }];
     if (art === "ampel") return [{ wert: "gruen", name: "Grün", art: "emoji", zeichen: "🟢" }, { wert: "rot", name: "Rot", art: "emoji", zeichen: "🔴" }];
     return GEFUEHLE_OPT;
 }
@@ -393,17 +400,14 @@ function folieHtml(f, e){
             const min = minuten(f.u.dauer);
             const kurz = String(f.u.text || "").split(/\n\s*\n/)[0];
             return `<div>${fuerChip(f.u)}${f.u.dauer ? `<span class="p-chip">${esc(f.u.dauer)}</span>` : ""}</div><h2>${esc(f.u.titel)}</h2>
-                <div class="p-text" style="font-size:${String(f.u.text || "").length > 450 ? "clamp(14px,min(1.45vw,2.3vh),26px)" : String(f.u.text || "").length > 280 ? "clamp(17px,min(2.1vw,3.6vh),34px)" : "clamp(20px,min(2.6vw,4.6vh),40px)"}">${md(aufzaehlung(f.u.text).length ? kurz.split("\n").filter(z => !/^\s*[-•]/.test(z)).join("\n") : f.u.text)}</div>
+                <div class="p-text" style="font-size:${String(f.u.text || "").length > 450 ? "clamp(14px,min(1.45vw,2.3vh),26px)" : String(f.u.text || "").length > 280 ? "clamp(17px,min(2.1vw,3.6vh),34px)" : "clamp(20px,min(2.6vw,4.6vh),40px)"}">${md(f.u.folie ? f.u.folie : aufzaehlung(f.u.text).length ? kurz.split("\n").filter(z => !/^\s*[-•]/.test(z)).join("\n") : f.u.text)}</div>
                 <div class="p-reihe">${min ? `<button class="p-knopf gold" data-start="${min}">⏱ ${min} Minuten starten</button>` : ""}<button class="p-knopf hell" data-p="rad">🎡 Wer fängt an?</button></div>`;
         }
         case "abstimmung":
             return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage">${inline(f.aussage)}</div>${stimmenHtml("q" + zustand.i + f.aussage, abstimmOptionen(f.art))}`;
         case "arbeitsblatt":
-            return `<div class="p-bilder">${ltBild("stift")}${ltBild("heft")}</div><h2>Jetzt bist du dran!</h2>
-                <div class="p-reihe" style="margin-top:1vh">
-                    ${e.nur34 ? "" : `<span class="p-chip">Klasse 1: ${esc(e.ab12 && e.ab12.titel || "")}</span>
-                    <span class="p-chip">Klasse 2: ${esc(e.ab12 && e.ab12.titel || "")}</span>`}
-                    <span class="p-chip gold">Klasse 3/4: ${esc(e.ab34 && e.ab34.titel || "")}</span></div>
+            return `<div class="p-bilder">${ltBild("stift")}${ltBild("heft")}</div><h2>Bearbeite jetzt leise dein Arbeitsblatt.</h2>
+                <div class="p-text" style="font-size:clamp(20px,2.6vw,40px)">🤫 Wenn du fertig bist, drehst du dein Blatt um und wartest leise.</div>
                 <div class="p-reihe"><button class="p-knopf gold" data-start="10">⏱ 10 Minuten starten</button><button class="p-knopf hell" data-schale="1">🔔 Ruhe-Signal</button></div>`;
         case "abschluss":
             return `<h2>Was nimmst du heute mit?</h2><div class="p-text" style="font-size:clamp(22px,3vw,46px)">„Heute habe ich gelernt …“</div>
@@ -701,7 +705,7 @@ async function pptxExport(e, stufe = "12"){
                 const fuer = { alle: "Alle", "12": "Kl. 1/2", "34": "Kl. 3/4" }[f.u.fuer] || "Alle";
                 s.addText(fuer + (f.u.dauer ? " · " + f.u.dauer : ""), { x: 0, y: .5, w: W, h: .5, align: "center", fontFace: FONT, fontSize: 18, color: MEER, bold: true });
                 s.addText(f.u.titel, { x: .5, y: 1.05, w: W - 1, h: 1.1, align: "center", fontFace: FONT, fontSize: 46, bold: true, color: NACHT });
-                const kurz = String(f.u.text || "").split(/\n\s*\n/)[0].split("\n").filter(z => !/^\s*[-•]/.test(z)).join(" ");
+                const kurz = f.u.folie ? ohneMarkdown(f.u.folie) : String(f.u.text || "").split(/\n\s*\n/)[0].split("\n").filter(z => !/^\s*[-•]/.test(z)).join(" ");
                 s.addText(laufText(kurz), { x: 1, y: 2.4, w: W - 2, h: 3.6, align: "center", valign: "middle", fontFace: TEXT, fontSize: 24, color: "1F2D36" });
                 s.addNotes(ohneMarkdown(f.u.text));
                 fuss(s);
@@ -716,10 +720,8 @@ async function pptxExport(e, stufe = "12"){
                 break;
             case "arbeitsblatt":
                 await bilderSetzen(s, ["stift", "heft"], .8, 1.4);
-                s.addText("Jetzt bist du dran!", { x: 0, y: 2.4, w: W, h: 1.1, align: "center", fontFace: FONT, fontSize: 52, bold: true, color: NACHT });
-                s.addText((e.nur34 ? [] : [{ text: "Klasse 1 und 2: " + (e.ab12 && e.ab12.titel || ""), options: { breakLine: true } }]).concat([
-                    { text: "Klasse 3/4: " + (e.ab34 && e.ab34.titel || "") }
-                ]), { x: 1, y: 3.8, w: W - 2, h: 1.4, align: "center", fontFace: TEXT, fontSize: 24, color: MEER });
+                s.addText("Bearbeite jetzt leise dein Arbeitsblatt.", { x: .5, y: 2.4, w: W - 1, h: 1.2, align: "center", fontFace: FONT, fontSize: 44, bold: true, color: NACHT });
+                s.addText("Wenn du fertig bist, drehst du dein Blatt um und wartest leise.", { x: 1, y: 3.8, w: W - 2, h: 1, align: "center", fontFace: TEXT, fontSize: 24, color: MEER });
                 s.addNotes(e.nur34 ? "Arbeitsphase ca. 10 Minuten." : "Arbeitsphase ca. 10 Minuten. Klasse 1 bekommt die Vorlese-Fassung: Aufgaben und Antworten vorlesen, die Farbsymbole zeigen die Zeile.");
                 break;
             case "abschluss":
