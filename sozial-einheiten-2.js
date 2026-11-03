@@ -621,7 +621,7 @@ SOZIAL_EINHEIT({
     kategorie: "Konflikte lösen",
     ziel12: "Erkennen, dass bei einem Streit beide etwas bekommen können",
     ziel34: "Kompromisse aushandeln und prüfen, ob sie für beide fair sind",
-    material: "Klebeband (Brücke auf dem Boden, ca. 2 m lang)\nZahlenkarten 1–4 (Antwort-Set)\nPlakat „So finden wir einen Kompromiss“",
+    material: "Ein Gegenstand zum Tauschen (z. B. Redestein, Kuscheltier, Ball)\nZahlenkarten 1–4 (Antwort-Set)\nPlakat „So finden wir einen Kompromiss“",
     lerntext12: { titel: "Die rote Schaukel", text:
 `Große Pause. Auf dem Schulhof gibt es eine rote Schaukel. Mia rennt hin. Tom rennt auch hin.
 
@@ -655,11 +655,14 @@ Am Ende stimmen alle 22 Kinder dafür. Niemand hat alles bekommen, was er wollte
 3. Woran erkennt man, dass ein Kompromiss fair ist?
 4. Wann ist ein Kompromiss vielleicht nicht möglich?` },
     uebungen: [
-        { titel: "Die Brücke", fuer: "alle", dauer: "4 Min",
-          text: "Klebe vorn eine Linie als „Brücke“ auf den Boden. Zwei Kinder kommen von beiden Seiten und treffen sich in der Mitte. Ihre Aufgabe: aneinander vorbeikommen, ohne von der Linie zu treten – und ohne zu schubsen. Die anderen geben vom Platz aus Tipps. Mehrere Paare probieren es.",
-          folie: "Auf dem Boden ist eine **Brücke** 🌉. Zwei Kinder kommen von beiden Seiten.\n\nAufgabe: aneinander vorbeikommen – ohne von der Linie zu treten und ohne zu schubsen.\n\nDie anderen geben Tipps.",
-          emoji: "🌉",
-          warum: "Zwei wollen vorbei – wie geht das, ohne zu schubsen?" },
+        { titel: "Zählen und tauschen", fuer: "alle", dauer: "4 Min",
+          text: "**Material:** ein Gegenstand, den alle gern hätten (z. B. Redestein, Kuscheltier oder Ball).\n\nZwei Kinder kommen nach vorn – beide „wollen“ den Gegenstand. Eines hält ihn, die ganze Klasse zählt laut bis 10, dann wird getauscht – ohne Ziehen und Meckern. Danach kurz fragen: „War das fair? Wie hat sich das Warten angefühlt?“ Mehrere Paare sind dran (Glücksrad).",
+          text34: "**Material:** ein Gegenstand, den alle gern hätten (z. B. Redestein, Kuscheltier oder Ball).\n\nZwei Kinder kommen nach vorn – beide „wollen“ den Gegenstand. Sie handeln selbst eine Tauschregel aus (z. B. „bis 10 zählen“, „jeder eine Runde“) und sagen sie laut. Die Klasse zählt bzw. achtet darauf, dass die Regel eingehalten wird. Danach: „War das fair? Was war schwer am Warten?“ Mehrere Paare sind dran (Glücksrad).",
+          folie: "Zwei Kinder wollen **dasselbe**. 🔁\n\nEiner hat es – **alle zählen laut bis 10** – dann wird getauscht.\n\nOhne Ziehen. Ohne Meckern.",
+          folie34: "Zwei Kinder wollen **dasselbe**. 🔁\n\nIhr macht eine **Tauschregel** aus und sagt sie laut.\n\nDie Klasse passt auf, dass sie eingehalten wird.",
+          emoji: "🔁",
+          warum: "Wie bei Mia und Tom: Abwechseln klappt, wenn klar ist, wann getauscht wird.",
+          warum34: "Abwechseln klappt, wenn vorher klar ist, wann getauscht wird." },
         { titel: "Kompromiss-Werkstatt", fuer: "alle", dauer: "8 Min",
           text: "**Material:** Zahlenkarten 1–4 (Antwort-Set). Auf der Folie bzw. dem Plakat stehen die vier Kompromiss-Ideen: **1 = Abwechseln** · **2 = Teilen** · **3 = Zusammen machen** · **4 = Losen**. Du liest nur vor.\n\n**So geht's:** Eine Situation erscheint. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte. Dann fragst du ein Kind: „Wie genau würdet ihr das machen?“ – und alle prüfen: **Bekommen beide etwas?** Dann auflösen. Oft passen mehrere Ideen – Hauptsache: fair für beide.\n\n- Beide wollen zuerst schaukeln.\n- Es gibt nur noch ein Stück Kuchen.\n- Einer will Fußball spielen, der andere Fangen.\n- Beide wollen mit dem Lego-Bagger spielen.\n- Beide wollen am Fenster sitzen.\n- Es gibt nur noch eine Tüte Gummibärchen für zwei.\n- Beide wollen beim Theater die Prinzessin sein.\n- Ihr wollt beide die große Kiste Bausteine.",
           quiz: "zahlen",

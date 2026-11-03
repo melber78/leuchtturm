@@ -426,7 +426,7 @@ Später redet die Lehrerin mit beiden. Robin sagt: „Ich hab nicht gemerkt, das
 5. Wo ist bei dir die Grenze, wenn dich jemand anfasst?` },
     uebungen: [
         { titel: "Abstand spüren", dauer: "6 Min",
-          text: "Zwei Kinder, die freiwillig mitmachen, stehen sich vorn mit etwa vier Metern Abstand gegenüber. Kind A geht langsam Schritt für Schritt auf Kind B zu. Kind B hebt die Hand und sagt „Stopp“, sobald es ihm zu nah wird – Kind A bleibt SOFORT stehen. Markiere die Stelle mit Kreide oder Klebeband. Dann tauschen. Zwei, drei Paare probieren es, jedes Paar bekommt eine eigene Markierung. Beobachtung: Jeder hat einen anderen Abstand – und alle sind okay. Du leitest nur an.",
+          text: "Zwei Kinder, die freiwillig mitmachen, stehen sich vorn mit etwa vier Metern Abstand gegenüber. Kind A geht langsam Schritt für Schritt auf Kind B zu. Kind B hebt die Hand und sagt „Stopp“, sobald es ihm zu nah wird – Kind A bleibt SOFORT stehen. Die Klasse schaut, wo A stehen geblieben ist (z. B. „bis zur zweiten Bodenfliese“ oder „bis zum Tischbein“). Dann tauschen. Zwei, drei Paare probieren es. Beobachtung: Jeder hat einen anderen Abstand – und alle sind okay. Du leitest nur an.",
           folie: "Zwei Kinder stehen sich gegenüber. A geht **langsam** auf B zu.\n\nB sagt **„Stopp“**, wenn es zu nah ist – A bleibt **sofort** stehen. ✋\n\nJeder hat einen anderen Abstand – und alle sind okay.",
           emoji: "✋",
           warum: "Jeder braucht einen anderen Abstand. Wir probieren es aus." },
