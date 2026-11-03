@@ -75,7 +75,7 @@ const PFLASTER = `<svg viewBox="0 0 200 76" xmlns="http://www.w3.org/2000/svg"><
 const GLAS = `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg"><rect x="52" y="8" width="96" height="22" rx="6" fill="#c9d6e3" stroke="#16324a" stroke-width="3"/><path d="M60 30 Q40 46 40 70 L40 210 Q40 232 62 232 L138 232 Q160 232 160 210 L160 70 Q160 46 140 30 Z" fill="#eef6fb" stroke="#16324a" stroke-width="4"/>${[[70,205],[100,205],[130,205],[70,175],[100,175],[130,175],[70,145],[100,145],[130,145],[100,115]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="13" fill="white" stroke="#3d7ea6" stroke-width="2.5" stroke-dasharray="4 3"/><text x="${x}" y="${y+5}" text-anchor="middle" font-family="Arial" font-weight="700" font-size="13" fill="#9aa6ab">${i+1}</text>`).join("")}<path d="M52 60 L52 200" stroke="white" stroke-width="6" stroke-linecap="round" opacity=".8"/></svg>`;
 const KASTEN = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" font-family="Arial" font-weight="700"><rect x="35" y="35" width="130" height="130" rx="8" fill="#e7f1fb" stroke="#3d7ea6" stroke-width="5"/><g fill="#16324a" font-size="13" text-anchor="middle"><text x="100" y="26">1 · einatmen (4)</text><text x="100" y="186">3 · ausatmen (4)</text><text x="186" y="104" transform="rotate(90 186 100)">2 · halten (4)</text><text x="14" y="104" transform="rotate(-90 14 100)">4 · halten (4)</text></g><g fill="#f2a93b"><polygon points="150,27 162,35 150,43"/><polygon points="173,150 165,162 157,150"/><polygon points="50,173 38,165 50,157"/><polygon points="27,50 35,38 43,50"/></g><text x="100" y="108" text-anchor="middle" font-size="16" fill="#3d7ea6">Kasten-Atmen</text></svg>`;
 
-const FARBE = { froh: "#ffe08a", traurig: "#a9cff0", wuetend: "#f5a3a3", angst: "#d5c4f0", ruhig: "#bfe6c3", ueberrascht: "#ffd1a3", stolz: "#f9d56e", muede: "#d8dde0", gelangweilt: "#e3e0d7", neutral: "#eeeeee" };
+const FARBE = { cool: "#9fd8e8", froh: "#ffe08a", traurig: "#a9cff0", wuetend: "#f5a3a3", angst: "#d5c4f0", ruhig: "#bfe6c3", ueberrascht: "#ffd1a3", stolz: "#f9d56e", muede: "#d8dde0", gelangweilt: "#e3e0d7", neutral: "#eeeeee" };
 function gesichtBunt(g){
     const art = gefuehlArt(g);
     return gesichtSvg(art, false).replace('<circle cx="50" cy="50" r="45" fill="none"', `<circle cx="50" cy="50" r="45" fill="${FARBE[art] || "#eee"}"`);
@@ -87,7 +87,7 @@ const leer = (n, vorlage) => Array.from({ length: n }, () => Object.assign({}, v
 const B = {
     /* --- Für jede Stunde --- */
     "gefuehlsbarometer": { titel: "Gefühlsbarometer (5 Gesichter)", gruppe: "Rituale", art: "karten", proSeite: 2,
-        items: ["froh", "traurig", "wütend", "ängstlich", "ruhig"].map(g => G(g)), hinweis: "Farbig drucken und an Tafel oder Plakat hängen; daneben die Namensklammern." },
+        items: ["fröhlich", "traurig", "wütend", "ängstlich", "cool"].map(g => G(g)), hinweis: "Farbig drucken und an Tafel oder Plakat hängen; daneben die Namensklammern." },
     "gespraechsregeln": { titel: "Plakat: Gesprächsregeln", gruppe: "Rituale", art: "plakat",
         punkte: [{ emoji: "🪨", text: "Wer den Redestein hat, spricht." }, { emoji: "👂", text: "Wir hören zu und lachen niemanden aus." }, { emoji: "✋", text: "Ich darf „Ich passe“ sagen." }, { emoji: "🤫", text: "Was hier gesagt wird, bleibt hier." }] },
     "namenszettel": { titel: "Namenszettel (8 pro Seite)", gruppe: "Rituale", art: "karten", proSeite: 8,
@@ -107,7 +107,7 @@ const B = {
     "klammer-etiketten": { titel: "Namensschilder für die Barometer-Klammern", gruppe: "Rituale", art: "karten", proSeite: 12,
         items: leer(12, { emoji: "📎", linien: 1 }), hinweis: "Ausschneiden, Namen von Hand eintragen und auf Wäscheklammern kleben – nichts wird gespeichert." },
     "barometer-plakat": { titel: "Plakat: Wie geht es mir heute?", gruppe: "Rituale", art: "plakat",
-        punkte: [{ emoji: "😄", text: "froh", symbolfeld: true }, { emoji: "😢", text: "traurig", symbolfeld: true }, { emoji: "😠", text: "wütend", symbolfeld: true }, { emoji: "😨", text: "ängstlich", symbolfeld: true }, { emoji: "😌", text: "ruhig", symbolfeld: true }],
+        punkte: [{ emoji: "😄", text: "fröhlich", symbolfeld: true }, { emoji: "😢", text: "traurig", symbolfeld: true }, { emoji: "😠", text: "wütend", symbolfeld: true }, { emoji: "😨", text: "ängstlich", symbolfeld: true }, { emoji: "😎", text: "cool", symbolfeld: true }],
         fuss: "Steck deine Klammer dahin, wo du gerade bist. Du musst nichts erklären." },
     "abschluss-saetze": { titel: "Satzstreifen für die Abschlussrunde", gruppe: "Rituale", art: "karten", proSeite: 6,
         items: [{ emoji: "💡", text: "Heute habe ich gelernt …" }, { emoji: "😊", text: "Mir hat gefallen …" }, { emoji: "🧗", text: "Schwierig war …" }, { emoji: "🎒", text: "Ich nehme mit …" }, { emoji: "⭐", text: "Ich bin stolz, weil …" }, { emoji: "🔜", text: "Nächstes Mal will ich …" }],

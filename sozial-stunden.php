@@ -550,6 +550,7 @@ function gefuehlArt(name){
     if (/traurig|trauer|einsam/.test(n)) return "traurig";
     if (/wut|wüt|sauer|ärger|zorn/.test(n)) return "wuetend";
     if (/angst|ängst|furcht|sorge|nervös/.test(n)) return "angst";
+    if (/\bcool|lässig/.test(n)) return "cool";
     if (/ruhig|entspannt|gelassen|zufrieden/.test(n)) return "ruhig";
     if (/überrasch|staun/.test(n)) return "ueberrascht";
     if (/stolz/.test(n)) return "stolz";
@@ -568,6 +569,7 @@ function gesichtSvg(art, leer){
             wuetend: `<path d="M24 29 L43 37" ${s}/><path d="M76 29 L57 37" ${s}/>` + `<circle cx="35" cy="44" r="4.2" fill="#222"/><circle cx="65" cy="44" r="4.2" fill="#222"/>` + `<path d="M32 72 Q50 61 68 72" ${s}/>`,
             angst: `<path d="M26 31 Q35 24 44 30" ${s}/><path d="M56 30 Q65 24 74 31" ${s}/><circle cx="35" cy="43" r="6.5" ${s}/><circle cx="65" cy="43" r="6.5" ${s}/><circle cx="35" cy="43" r="2.4" fill="#222"/><circle cx="65" cy="43" r="2.4" fill="#222"/>` + `<path d="M31 70 Q37 63 43 70 Q50 77 57 70 Q63 63 69 70" ${s}/>`,
             ruhig: `<path d="M27 43 Q35 48 43 43" ${s}/><path d="M57 43 Q65 48 73 43" ${s}/><path d="M37 64 Q50 72 63 64" ${s}/>`,
+            cool: `<path d="M18 38 H82" ${s}/><path d="M22 38 H46 Q46 53 34 53 Q22 53 22 38 Z" fill="#222" stroke="#222" stroke-width="2"/><path d="M54 38 H78 Q78 53 66 53 Q54 53 54 38 Z" fill="#222" stroke="#222" stroke-width="2"/><path d="M36 67 Q52 75 66 62" ${s}/>`,
             ueberrascht: `<path d="M27 30 Q35 25 43 30" ${s}/><path d="M57 30 Q65 25 73 30" ${s}/>` + augen + `<ellipse cx="50" cy="68" rx="7" ry="9" ${s}/>`,
             stolz: `<path d="M27 43 Q35 37 43 43" ${s}/><path d="M57 43 Q65 37 73 43" ${s}/><path d="M32 60 Q50 76 68 60" ${s}/>`,
             muede: `<path d="M27 44 Q35 47 43 44" ${s}/><path d="M57 44 Q65 47 73 44" ${s}/><path d="M28 38 L43 40" ${s}/><path d="M72 38 L57 40" ${s}/><ellipse cx="50" cy="68" rx="5" ry="6" ${s}/><text x="72" y="26" font-family="Arial" font-weight="900" font-size="16" fill="#222">z</text><text x="82" y="16" font-family="Arial" font-weight="900" font-size="12" fill="#222">z</text>`,

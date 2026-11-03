@@ -346,7 +346,7 @@ function stimmenHtml(schluessel, optionen){
         ${symbolHtml(o.art, o.zeichen)}<div class="p-name">${esc(o.name)}</div>
         <button class="p-minus" data-minus="1" title="Aus Versehen getippt? Eine Stimme zurücknehmen." style="visibility:${s[o.wert] ? "visible" : "hidden"}">↩ zurück</button></div>`).join("")}</div>`;
 }
-const GEFUEHLE_OPT = ["froh", "traurig", "wütend", "ängstlich", "ruhig"].map(g => ({ wert: g, name: g, art: "gefuehl", zeichen: g }));
+const GEFUEHLE_OPT = ["fröhlich", "traurig", "wütend", "ängstlich", "cool"].map(g => ({ wert: g, name: g, art: "gefuehl", zeichen: g }));
 function abstimmOptionen(art){
     if (art === "daumen") return [{ wert: "hoch", name: "Daumen hoch", art: "emoji", zeichen: "👍" }, { wert: "seite", name: "weiß nicht", art: "emoji", zeichen: "🤔" }, { wert: "runter", name: "Daumen runter", art: "emoji", zeichen: "👎" }];
     if (art === "ampel") return [{ wert: "gruen", name: "Grün", art: "emoji", zeichen: "🟢" }, { wert: "rot", name: "Rot", art: "emoji", zeichen: "🔴" }];
