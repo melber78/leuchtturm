@@ -41,6 +41,13 @@ if (!in_array($kind, $codes, true)) $antwort(false, ["fehler" => "Das Kürzel �
 
 $text = fn($w, $max) => mb_substr(trim((string)$w), 0, $max);
 $zeile = fn($w, $max) => mb_substr(trim(preg_replace('/\s+/u', ' ', (string)$w)), 0, $max);
+// Rezept einer Stunde (welche Blätter in welcher Phase) – nur kleine, einfache Daten übernehmen
+$rezeptPruefen = function ($r) {
+    if (!is_array($r) || !isset($r["items"]) || !is_array($r["items"])) return null;
+    $json = json_encode($r, JSON_UNESCAPED_UNICODE);
+    if ($json === false || strlen($json) > 20000) return null;
+    return json_decode($json, true);
+};
 $stundenStatus = fn($w, $std = "erledigt") => in_array($w, ["offen", "angefangen", "erledigt"], true) ? $w : $std;
 $datum = fn($d, $leer = false) => preg_match('/^\d{4}-\d{2}-\d{2}$/', (string)$d) ? (string)$d : ($leer ? "" : date("Y-m-d"));
 $liste = fn($l, $erlaubt) => array_values(array_unique(array_filter(is_array($l) ? $l : [], fn($k) => in_array($k, $erlaubt, true))));
@@ -126,6 +133,7 @@ switch ($aktion) {
             "inhalt" => $text($s["inhalt"] ?? "", 1500), "beobachtung" => $text($s["beobachtung"] ?? "", 1500),
             "status" => $stundenStatus($s["status"] ?? ""),
             "heft" => array_values(array_filter(array_map("strval", (array)($s["heft"] ?? [])), fn($i) => preg_match('/^[A-Za-z0-9_.-]{1,60}$/', $i))),
+            "rezept" => $rezeptPruefen($s["rezept"] ?? null),
         ];
         if ($neu["status"] === "erledigt") foreach ($neu["heft"] as $hid) $akte["erledigt"][$hid] = date("Y-m-d");
         array_unshift($akte["stunden"], $neu);
@@ -143,6 +151,8 @@ switch ($aktion) {
             if (isset($s["dauer"])) $st["dauer"] = max(5, min(240, (int)$s["dauer"]));
             if (isset($s["inhalt"])) $st["inhalt"] = $text($s["inhalt"], 1500);
             if (isset($s["beobachtung"])) $st["beobachtung"] = $text($s["beobachtung"], 1500);
+            if (isset($s["rezept"])) $st["rezept"] = $rezeptPruefen($s["rezept"]);
+            if (isset($s["heft"])) $st["heft"] = array_values(array_filter(array_map("strval", (array)$s["heft"]), fn($i) => preg_match('/^[A-Za-z0-9_.-]{1,60}$/', $i)));
             if (isset($s["status"])) {
                 $st["status"] = $stundenStatus($s["status"]);
                 // Blätter aus dem Trainingsheft, die zu dieser Stunde gehören, abhaken

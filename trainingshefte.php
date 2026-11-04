@@ -873,6 +873,7 @@ function stunden_zeigen(){
         return `<div class="stunde ${st}" data-id="${id}">
         <div><div class="datum">${af_datum(s.datum)}</div><div class="dauer">${s.dauer} Minuten</div>
             <div style="display:flex; gap:6px; margin-top:8px;">
+                <a class="knopf" style="padding:5px 10px; font-size:12px;" title="Im Generator öffnen: Blätter tauschen oder ergänzen, Ablaufplan neu drucken" href="lrs.php?stunde=${encodeURIComponent(AKTE_KIND)}&sid=${encodeURIComponent(s.id)}"><i class="fa-solid fa-layer-group"></i></a>
                 <button class="knopf" style="padding:5px 10px; font-size:12px;" title="Bearbeiten" onclick="stunden_bearbeiten='${id}'; stunden_zeigen()"><i class="fa-solid fa-pen"></i></button>
                 <button class="knopf" style="padding:5px 10px; font-size:12px; color:#c0392b; background:#fdeceb;" title="Löschen" onclick="stunde_loeschen('${id}')"><i class="fa-solid fa-trash"></i></button></div></div>
         <div><div class="st-statusreihe">${knoepfe}</div>
