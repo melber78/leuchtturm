@@ -8,7 +8,7 @@
    ============================================================ */
 (function () {
     const P = "https://www.planet-schule.de/schwerpunkt/knietzsche-der-kleinste-philosoph-der-welt/";
-    const ps = (slug, titel, hinweis) => ({ titel, url: P + slug + "-film-100.html", quelle: "Planet Schule (SWR/WDR) · Knietzsche", hinweis: hinweis || "" });
+    const ps = (slug, titel, hinweis) => ({ titel, url: P + slug + "-film-100.html", quelle: "Planet Schule (SWR/WDR) · Knietzsche", dauer: "ca. 3–4 Min.", hinweis: hinweis || "" });
     const yt = (id, titel, quelle, hinweis) => ({ titel, url: "https://www.youtube.com/watch?v=" + id, quelle, hinweis: hinweis || "" });
 
     const F = {
@@ -48,7 +48,7 @@
 
     window.SOZIAL_MEDIEN = {
         "v-gefuehle-erkennen":  [F.gefuehle, F.srfGefuehle],
-        "v-streit-loesen":      [F.mausStreit],
+        "v-streit-loesen":      [Object.assign({}, F.wut, { hinweis: "Passt zu „Es kocht in mir“: Was passiert bei Wut – und was hilft?" })],
         "v-freundschaft":       [F.freundschaft],
         "v-regeln-miteinander": [F.freiheit],
         "v-wut-werkzeugkasten": [F.wut],
@@ -101,7 +101,7 @@
         "k-gefuehle-zeigen":    [F.gefuehle, F.traurigkeit],
         "k-neid":               [F.glueck],
         "k-verpetzen":          [F.gewissen, F.logoMobbing],
-        "k-schlichten":         [F.mausStreit],
+        "k-schlichten":         [],
         "k-ruf":                [F.ich],
         "k-mutter":             [F.respekt],
         "k-schimpfwoerter":     [F.respekt, F.elliCyber],
