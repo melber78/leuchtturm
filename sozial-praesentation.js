@@ -148,6 +148,18 @@ const CSS = `
 #praes .p-rad-optionen input[type=checkbox]{ width:1.2em; height:1.2em; }
 #praes .p-namen{ width:min(560px,80vw); min-height:4em; height:4.5em; font:inherit; font-size:18px; border:2px solid #dfe5e2; border-radius:12px; padding:.4em .6em; margin-top:.5em; }
 #praes .p-dialog input{ font:inherit; font-size:22px; width:4.5em; text-align:center; border:2px solid #dfe5e2; border-radius:12px; padding:.2em; }
+#praes .p-ruhe{ position:absolute; inset:0; z-index:30; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.2vh; text-align:center; color:white; cursor:pointer;
+    background:radial-gradient(circle at 50% 40%, #2b5f86 0%, #16324a 70%); animation:pRuheAtem 6s ease-in-out infinite, pFade .25s; padding:3vh 4vw; }
+#praes .p-ruhe-icon{ font-size:clamp(90px,17vh,220px); line-height:1; animation:pRuhePuls 2s ease-in-out infinite; }
+#praes .p-ruhe h2{ color:white; font-size:clamp(40px,8vh,110px); margin:0; letter-spacing:.02em; }
+#praes .p-ruhe-regeln{ display:flex; gap:2vw; flex-wrap:wrap; justify-content:center; }
+#praes .p-ruhe-regeln div{ background:rgba(255,255,255,.12); border:2px solid rgba(255,255,255,.25); border-radius:22px; padding:1.4vh 2vw; font:800 clamp(18px,3.2vh,38px)/1.2 "Nunito",sans-serif; display:flex; flex-direction:column; align-items:center; gap:.4em; min-width:9em; }
+#praes .p-ruhe-regeln div span{ font-size:1.8em; line-height:1; }
+#praes .p-ruhe-zeit{ font:800 clamp(16px,2.6vh,30px)/1.3 "Nunito",sans-serif; opacity:.85; }
+#praes .p-ruhe-zeit b{ font-variant-numeric:tabular-nums; color:#f2a93b; }
+#praes .p-ruhe .p-knopf{ margin-top:1vh; }
+@keyframes pRuhePuls{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.08); } }
+@keyframes pRuheAtem{ 0%,100%{ filter:brightness(1); } 50%{ filter:brightness(1.18); } }
 #praes .p-konfetti{ position:absolute; inset:0; pointer-events:none; z-index:20; }
 `;
 
@@ -164,6 +176,20 @@ function klangschale(lautstaerke = .5){
         g.gain.exponentialRampToValueAtTime(.0001, t + 5.5);
         o.connect(g).connect(a.destination); o.start(t); o.stop(t + 5.6);
     });
+}
+// Ruhe-Gong: drei sanfte, absteigende Töne, dann die Klangschale
+function ruheGong(){
+    const a = audio(); if (!a) return;
+    [[784, 0], [659, .45], [523, .9]].forEach(([f, d]) => {
+        const t = a.currentTime + d;
+        [[f, .32], [f * 2, .08], [f * 3, .03]].forEach(([fr, v]) => {
+            const o = a.createOscillator(), g = a.createGain();
+            o.type = "sine"; o.frequency.value = fr;
+            g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + .015); g.gain.exponentialRampToValueAtTime(.0001, t + 2.2);
+            o.connect(g).connect(a.destination); o.start(t); o.stop(t + 2.3);
+        });
+    });
+    setTimeout(() => klangschale(.35), 1600);
 }
 function tick(){ const a = audio(); if (!a) return; const o = a.createOscillator(), g = a.createGain(), t = a.currentTime; o.frequency.value = 1200; o.type = "square"; g.gain.setValueAtTime(.06, t); g.gain.exponentialRampToValueAtTime(.0001, t + .04); o.connect(g).connect(a.destination); o.start(t); o.stop(t + .05); }
 function plopp(hoch = 1){ const a = audio(); if (!a) return; const o = a.createOscillator(), g = a.createGain(), t = a.currentTime; o.type = "sine"; o.frequency.setValueAtTime(420 * hoch, t); o.frequency.exponentialRampToValueAtTime(900 * hoch, t + .08); g.gain.setValueAtTime(.25, t); g.gain.exponentialRampToValueAtTime(.0001, t + .15); o.connect(g).connect(a.destination); o.start(t); o.stop(t + .16); }
@@ -318,6 +344,7 @@ function praesentationStarten(e, startStufe){
             <button data-p="rad" title="Wer ist dran?">🎡<span class="p-wort"> Wer ist dran?</span></button>
             <button data-p="timer" title="Timer">⏱<span class="p-wort"> Timer</span></button>
             <button data-p="silben" class="p-silbenknopf" title="Silbenfarben an/aus – zum Selbstlesen an der Tafel"><span class="p-s1">Sil</span><span class="p-s2">ben</span></button>
+            <button data-p="ruhe" title="Ruhe-Signal: zu laut? (Taste R)">🤫<span class="p-wort"> Ruhe!</span></button>
             <button data-p="schale" title="Klangschale">🔔</button>
             <button data-p="vollbild" title="Vollbild (F)">⛶</button>
         </div>`;
@@ -334,8 +361,31 @@ function praesentationStarten(e, startStufe){
     zeigen(0);
     if (wurzel.requestFullscreen) wurzel.requestFullscreen().catch(() => {});
 }
+/* Ruhe-Signal: großes Bild + Gong. Die Wartezeit läuft sichtbar mit – weiter geht's, wenn alle leise sind. */
+function ruheSignal(){
+    if (!zustand) return;
+    const alt = zustand.wurzel.querySelector(".p-ruhe");
+    if (alt) { ruheEnde(); return; }
+    const o = document.createElement("div");
+    o.className = "p-ruhe";
+    o.innerHTML = `<div class="p-ruhe-icon">🤫</div><h2>Psst … Ruhe bitte!</h2>
+        <div class="p-ruhe-regeln"><div><span>👀</span>Augen nach vorn</div><div><span>🤐</span>Mund zu</div><div><span>✋</span>Hände still</div></div>
+        <div class="p-ruhe-zeit">Wir warten, bis alle leise sind … <b>0:00</b></div>
+        <button class="p-knopf gold">✅ Alle sind leise – weiter</button>`;
+    zustand.wurzel.appendChild(o);
+    ruheGong();
+    const start = Date.now(), zeit = o.querySelector(".p-ruhe-zeit b");
+    zustand.ruhe = setInterval(() => { const sek = Math.floor((Date.now() - start) / 1000); zeit.textContent = Math.floor(sek / 60) + ":" + String(sek % 60).padStart(2, "0"); }, 250);
+    o.addEventListener("click", ruheEnde);
+}
+function ruheEnde(){
+    if (!zustand) return;
+    clearInterval(zustand.ruhe); zustand.ruhe = null;
+    const o = zustand.wurzel.querySelector(".p-ruhe"); if (o) o.remove();
+}
 function praesentationBeenden(){
     if (!zustand) return;
+    if (zustand.ruhe) clearInterval(zustand.ruhe);
     if (zustand.timer) clearInterval(zustand.timer.id);
     if (window.speechSynthesis) speechSynthesis.cancel();
     document.removeEventListener("keydown", tasten);
@@ -346,10 +396,16 @@ function praesentationBeenden(){
 function tasten(ev){
     if (!zustand) return;
     if (ev.target && /INPUT|TEXTAREA/.test(ev.target.tagName)) return;
+    if (zustand.wurzel.querySelector(".p-ruhe")) {   // während des Ruhe-Signals nicht weiterblättern
+        if ([" ", "Enter", "Escape", "r", "R"].includes(ev.key)) { ev.preventDefault(); ruheEnde(); }
+        else if (["ArrowRight", "PageDown", "ArrowLeft", "PageUp", "Backspace"].includes(ev.key)) ev.preventDefault();
+        return;
+    }
     if (["ArrowRight", "PageDown", " ", "Enter"].includes(ev.key)) { ev.preventDefault(); naechste(); }
     else if (["ArrowLeft", "PageUp", "Backspace"].includes(ev.key)) { ev.preventDefault(); zeigen(zustand.i - 1, true); }
-    else if (ev.key === "Escape") { if (zustand.wurzel.querySelector(".p-overlay")) zustand.wurzel.querySelector(".p-overlay").remove(); else if (!document.fullscreenElement) praesentationBeenden(); }
+    else if (ev.key === "Escape") { if (zustand.wurzel.querySelector(".p-ruhe")) ruheEnde(); else if (zustand.wurzel.querySelector(".p-overlay")) zustand.wurzel.querySelector(".p-overlay").remove(); else if (!document.fullscreenElement) praesentationBeenden(); }
     else if (ev.key === "f" || ev.key === "F") vollbild();
+    else if (ev.key === "r" || ev.key === "R") ruheSignal();
 }
 function naechste(){
     // Bei den Fragen erst Frage für Frage aufdecken
@@ -367,6 +423,7 @@ function leistenKlick(ev){
     else if (a === "zurueck") zeigen(zustand.i - 1, true);
     else if (a === "vollbild") vollbild();
     else if (a === "schale") klangschale();
+    else if (a === "ruhe") ruheSignal();
     else if (a === "silben") {
         zustand.silben = !zustand.silben;
         b.classList.toggle("an", zustand.silben);
