@@ -41,6 +41,7 @@ if (!in_array($kind, $codes, true)) $antwort(false, ["fehler" => "Das Kürzel �
 
 $text = fn($w, $max) => mb_substr(trim((string)$w), 0, $max);
 $zeile = fn($w, $max) => mb_substr(trim(preg_replace('/\s+/u', ' ', (string)$w)), 0, $max);
+$stundenStatus = fn($w, $std = "erledigt") => in_array($w, ["offen", "angefangen", "erledigt"], true) ? $w : $std;
 $datum = fn($d, $leer = false) => preg_match('/^\d{4}-\d{2}-\d{2}$/', (string)$d) ? (string)$d : ($leer ? "" : date("Y-m-d"));
 $liste = fn($l, $erlaubt) => array_values(array_unique(array_filter(is_array($l) ? $l : [], fn($k) => in_array($k, $erlaubt, true))));
 
@@ -123,11 +124,14 @@ switch ($aktion) {
             "id" => uniqid("s_"), "datum" => $datum($s["datum"] ?? ""),
             "dauer" => max(5, min(240, (int)($s["dauer"] ?? 40))),
             "inhalt" => $text($s["inhalt"] ?? "", 1500), "beobachtung" => $text($s["beobachtung"] ?? "", 1500),
+            "status" => $stundenStatus($s["status"] ?? ""),
+            "heft" => array_values(array_filter(array_map("strval", (array)($s["heft"] ?? [])), fn($i) => preg_match('/^[A-Za-z0-9_.-]{1,60}$/', $i))),
         ];
+        if ($neu["status"] === "erledigt") foreach ($neu["heft"] as $hid) $akte["erledigt"][$hid] = date("Y-m-d");
         array_unshift($akte["stunden"], $neu);
         usort($akte["stunden"], fn($a, $b) => strcmp($b["datum"], $a["datum"]));
         $akte["stunden"] = array_slice($akte["stunden"], 0, 300);
-        $geaendert = true; $meldung = "Stunde vom " . date("d.m.Y", strtotime($neu["datum"])) . " eingetragen.";
+        $geaendert = true; $meldung = "Stunde vom " . date("d.m.Y", strtotime($neu["datum"])) . ($neu["status"] === "offen" ? " als geplant" : "") . " eingetragen.";
         break;
 
     case "stunde_aendern":
@@ -139,6 +143,11 @@ switch ($aktion) {
             if (isset($s["dauer"])) $st["dauer"] = max(5, min(240, (int)$s["dauer"]));
             if (isset($s["inhalt"])) $st["inhalt"] = $text($s["inhalt"], 1500);
             if (isset($s["beobachtung"])) $st["beobachtung"] = $text($s["beobachtung"], 1500);
+            if (isset($s["status"])) {
+                $st["status"] = $stundenStatus($s["status"]);
+                // Blätter aus dem Trainingsheft, die zu dieser Stunde gehören, abhaken
+                if ($st["status"] === "erledigt") foreach ((array)($st["heft"] ?? []) as $hid) $akte["erledigt"][$hid] = date("Y-m-d");
+            }
             $geaendert = true;
         }
         unset($st);

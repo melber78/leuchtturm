@@ -7324,7 +7324,7 @@ function std_heftZeigen(){
     liste.innerHTML = sortiert.map(m => `<label class="${m.erledigt ? "erledigt" : ""}" title="${ws_esc(m.titel)}"><input type="checkbox" class="std-heft-cb" value="${ws_esc(m.id)}" ${vorher.has(m.id) ? "checked" : ""}>
         <span>${m.erledigt ? "✓ " : ""}${ws_esc(m.titel)}</span><small>${std_heftDruckbar(m) ? ws_esc(STD_HEFT_PHASE[m.bereich] || "Symptomtraining") : "separat drucken"}</small></label>`).join("");
     const offen = hefte.filter(m => !m.erledigt).length;
-    hinweis.innerHTML = `${offen} von ${hefte.length} noch offen. Angehakte Blätter kommen in die passende Phase der Stunde (PDFs und Bilder direkt als Seite). Beim „In die Akte eintragen“ werden sie im Trainingsheft abgehakt. <a href="${fp_akteLink(code, "heft")}" target="_blank">Trainingsheft öffnen</a>`;
+    hinweis.innerHTML = `${offen} von ${hefte.length} noch offen. Angehakte Blätter kommen in die passende Phase der Stunde (PDFs und Bilder direkt als Seite). Sobald die Stunde in der Akte auf ✓ erledigt steht, werden sie im Trainingsheft abgehakt. <a href="${fp_akteLink(code, "heft")}" target="_blank">Trainingsheft öffnen</a>`;
 }
 function std_heftGewaehlt(code){
     const ids = [...document.querySelectorAll(".std-heft-cb:checked")].map(c => c.value);
@@ -7403,6 +7403,7 @@ function std_akteLeiste(){
     if (!code) return;
     el.innerHTML = `<i class="fa-solid fa-folder-open" style="color:var(--meer);"></i> Stunde (${std_letzte.dauer} Min.) für <b>${ws_esc(code)}</b>
         <input type="date" id="std-akte-datum" value="${new Date().toISOString().slice(0, 10)}" style="width:auto; padding:6px 10px;">
+        <select id="std-akte-stand" style="width:auto; padding:6px 10px;"><option value="offen">○ geplant</option><option value="erledigt">✓ schon gehalten</option></select>
         <button class="btn klein" onclick="std_inAkte()"><i class="fa-solid fa-floppy-disk"></i> In die Akte eintragen</button><span id="std-akte-status"></span>`;
 }
 async function std_inAkte(){
@@ -7410,19 +7411,17 @@ async function std_inAkte(){
     const inhalt = info.phasen.map(p => `${p.phase} (${p.zeit}): ${p.inhalt.replace(/<[^>]+>/g, "").replace(/&[a-z]+;/g, " ")}`).join("\n");
     try {
         const antwort = await fetch("akte.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ aktion: "stunde_hinzu", kind: info.kind, stunde: { datum: lt_wert("std-akte-datum"), dauer: info.dauer, inhalt } }) });
+            body: JSON.stringify({ aktion: "stunde_hinzu", kind: info.kind, stunde: { datum: lt_wert("std-akte-datum"), dauer: info.dauer, inhalt, status: lt_wert("std-akte-stand") || "offen", heft: info.heft || [] } }) });
         const j = await antwort.json().catch(() => ({ ok: false, fehler: "Keine Antwort – liegt akte.php im Leuchtturm-Ordner?" }));
         if (!j.ok) throw new Error(j.fehler);
         let heftText = "";
         if (info.heft && info.heft.length){
-            let n = 0;
-            for (const id of info.heft){
-                const r = await fetch("akte.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ aktion: "erledigt", kind: info.kind, material_id: id, an: true }) }).then(x => x.json()).catch(() => ({}));
-                if (r.ok){ n++; const m = (LRS_HEFTE[info.kind] || []).find(x => x.id === id); if (m) m.erledigt = true; }
-            }
-            if (n) heftText = ` ${n} ${n === 1 ? "Blatt" : "Blätter"} im Trainingsheft als erledigt abgehakt.`;
-            std_heftZeigen();
+            const n = info.heft.length;
+            if (lt_wert("std-akte-stand") === "erledigt"){
+                info.heft.forEach(id => { const m = (LRS_HEFTE[info.kind] || []).find(x => x.id === id); if (m) m.erledigt = true; });
+                heftText = ` ${n} ${n === 1 ? "Blatt" : "Blätter"} im Trainingsheft abgehakt.`;
+                std_heftZeigen();
+            } else heftText = ` ${n === 1 ? "Das Heft-Blatt wird" : "Die " + n + " Heft-Blätter werden"} abgehakt, sobald du die Stunde in der Akte auf ✓ erledigt setzt.`;
         }
         st.innerHTML = `✅ ${ws_esc(j.meldung)}${heftText} <a href="${fp_akteLink(info.kind, "stunden")}" target="_blank">Zur Akte</a>`;
     } catch (e){ st.textContent = "⚠️ " + e.message; }

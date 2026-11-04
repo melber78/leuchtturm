@@ -353,6 +353,17 @@ textarea{ resize:vertical; min-height:62px; font-weight:600; }
 .stunde .datum{ font-weight:900; color:var(--nacht); }
 .stunde .dauer{ font-size:12px; color:#7c8a94; font-weight:800; }
 .stunde .inhalt{ font-size:14px; white-space:pre-line; }
+.stunde.offen{ border-color:#d6dee3; border-style:dashed; }
+.stunde.angefangen{ border-color:#f2a93b; background:#fffaf0; }
+.stunde.bearbeiten{ border-color:#3d7ea6; }
+.st-statusreihe{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+.st-status{ border:2px solid #e2e8ec; background:#fff; border-radius:999px; padding:4px 10px; font:inherit; font-size:12px; font-weight:800; color:#7c8a94; cursor:pointer; }
+.st-status.offen.an{ background:#eef1f3; border-color:#9aa6ab; color:#16324a; }
+.st-status.angefangen.an{ background:#fff4dc; border-color:#f2a93b; color:#8a5a00; }
+.st-status.erledigt.an{ background:#2e8b57; border-color:#2e8b57; color:#fff; }
+.st-filter{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.st-fknopf{ border:2px solid #e2e8ec; background:#fff; border-radius:12px; padding:6px 12px; font:inherit; font-size:13px; font-weight:800; color:#16324a; cursor:pointer; }
+.st-fknopf.an{ background:#16324a; border-color:#16324a; color:#fff; }
 .erledigt-box{ display:flex; align-items:center; gap:6px; font-size:12px; font-weight:800; color:#3aa35b; cursor:pointer; white-space:nowrap; }
 .erledigt-box input{ width:18px; height:18px; accent-color:#3aa35b; }
 .mat-karte.erledigt{ opacity:.6; }
@@ -476,7 +487,7 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
         <h3><i class="fa-solid fa-calendar-check"></i> Stunden</h3>
         <?php if (!$letzteStunden): ?><p class="leer-text" style="margin:0;">Noch keine Stunde eingetragen.</p><?php endif; ?>
         <?php foreach ($letzteStunden as $st): ?>
-            <div class="klein" style="color:var(--text);"><b><?= h(date("d.m.Y", strtotime($st["datum"]))) ?></b> · <?= h(mb_strimwidth(str_replace("\n", " · ", $st["inhalt"]), 0, 80, "…")) ?></div>
+            <div class="klein" style="color:var(--text);"><?= ["offen" => "○", "angefangen" => "◐"][$st["status"] ?? ""] ?? "✓" ?> <b><?= h(date("d.m.Y", strtotime($st["datum"]))) ?></b> · <?= h(mb_strimwidth(str_replace("\n", " · ", $st["inhalt"]), 0, 80, "…")) ?></div>
         <?php endforeach; ?>
         <div class="aktionen">
             <a class="knopf voll" href="lrs.php?stunde=<?= urlencode($aktuellesKind) ?>"><i class="fa-solid fa-layer-group"></i> Stunde planen</a>
@@ -645,11 +656,13 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
         <div class="plan-raster" style="margin-top:12px;">
             <div><label>Datum</label><input type="date" id="s-datum" value="<?= date("Y-m-d") ?>"></div>
             <div><label>Dauer (Minuten)</label><input type="number" id="s-dauer" value="40" min="5" max="240"></div>
+            <div><label>Stand</label><select id="s-status"><option value="offen">○ geplant / offen</option><option value="angefangen">◐ angefangen</option><option value="erledigt" selected>✓ erledigt</option></select></div>
         </div>
         <label>Inhalte</label><textarea id="s-inhalt" placeholder="z. B. Zahlentafel · Schärfung: Lückenwörter · Lernbox"></textarea>
         <label>Beobachtung</label><textarea id="s-beob"></textarea>
         <button class="knopf voll" style="margin-top:10px;" onclick="stunde_neu()"><i class="fa-solid fa-floppy-disk"></i> Eintragen</button>
     </details>
+    <div class="st-filter" id="stunden-filter"></div>
     <div id="stunden-liste" style="display:flex; flex-direction:column; gap:12px;"></div>
 </div>
 <?php endif; ?>
@@ -833,21 +846,54 @@ function heft_filter(){
 }
 
 /* --- Stunden --- */
+const ST_STATUS = { offen: { z: "○", t: "offen" }, angefangen: { z: "◐", t: "angefangen" }, erledigt: { z: "✓", t: "erledigt" } };
+let stunden_filterWert = "alle", stunden_bearbeiten = null;
+function stunde_status(s){ return ST_STATUS[s.status] ? s.status : "erledigt"; }   // ältere Einträge gelten als erledigt
 function stunden_zeigen(){
     const el = document.getElementById("stunden-liste");
     if (!el) return;
-    const liste = AKTE.stunden || [];
-    el.innerHTML = liste.length ? liste.map(s => `<div class="stunde" data-id="${af_esc(s.id)}">
+    const alle = AKTE.stunden || [];
+    const fl = document.getElementById("stunden-filter");
+    if (fl) {
+        const n = k => alle.filter(s => stunde_status(s) === k).length;
+        fl.innerHTML = [["alle", "Alle", alle.length], ["offen", "○ Offen", n("offen")], ["angefangen", "◐ Angefangen", n("angefangen")], ["erledigt", "✓ Erledigt", n("erledigt")]]
+            .map(([k, t, z]) => `<button class="st-fknopf${stunden_filterWert === k ? " an" : ""}" onclick="stunden_filterWert='${k}'; stunden_zeigen()">${t} <b>${z}</b></button>`).join("");
+    }
+    const liste = alle.filter(s => stunden_filterWert === "alle" || stunde_status(s) === stunden_filterWert);
+    el.innerHTML = liste.length ? liste.map(s => {
+        const id = af_esc(s.id), st = stunde_status(s);
+        const knoepfe = Object.entries(ST_STATUS).map(([k, v]) => `<button class="st-status ${k}${st === k ? " an" : ""}" title="${v.t}" onclick="stunde_statusSetzen('${id}', '${k}')">${v.z} ${v.t}</button>`).join("");
+        if (stunden_bearbeiten === s.id) return `<div class="stunde bearbeiten ${st}" data-id="${id}">
+            <div><label>Datum</label><input type="date" id="se-datum" value="${af_esc(s.datum)}">
+                <label>Dauer (Min.)</label><input type="number" id="se-dauer" value="${af_esc(s.dauer)}" min="5" max="240"></div>
+            <div><label>Inhalte</label><textarea id="se-inhalt" rows="6">${af_esc(s.inhalt)}</textarea>
+                <label>Beobachtung</label><textarea id="se-beob" rows="2">${af_esc(s.beobachtung)}</textarea>
+                <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;"><button class="knopf voll" onclick="stunde_speichern('${id}')"><i class="fa-solid fa-floppy-disk"></i> Speichern</button><button class="knopf" onclick="stunden_bearbeiten=null; stunden_zeigen()">Abbrechen</button></div></div>
+        </div>`;
+        return `<div class="stunde ${st}" data-id="${id}">
         <div><div class="datum">${af_datum(s.datum)}</div><div class="dauer">${s.dauer} Minuten</div>
-            <button class="knopf" style="margin-top:8px; padding:5px 10px; font-size:12px; color:#c0392b; background:#fdeceb;" onclick="stunde_loeschen('${af_esc(s.id)}')"><i class="fa-solid fa-trash"></i></button></div>
-        <div><div class="inhalt">${af_esc(s.inhalt) || '<span class="leer-text">ohne Inhaltsangabe</span>'}</div>
-            <label>Beobachtung</label><textarea rows="2" onchange="stunde_beob('${af_esc(s.id)}', this.value)" placeholder="Wie lief die Stunde? (wird beim Verlassen des Feldes gespeichert)">${af_esc(s.beobachtung)}</textarea></div>
-    </div>`).join("") : `<div class="leer">Noch keine Stunden eingetragen.</div>`;
+            <div style="display:flex; gap:6px; margin-top:8px;">
+                <button class="knopf" style="padding:5px 10px; font-size:12px;" title="Bearbeiten" onclick="stunden_bearbeiten='${id}'; stunden_zeigen()"><i class="fa-solid fa-pen"></i></button>
+                <button class="knopf" style="padding:5px 10px; font-size:12px; color:#c0392b; background:#fdeceb;" title="Löschen" onclick="stunde_loeschen('${id}')"><i class="fa-solid fa-trash"></i></button></div></div>
+        <div><div class="st-statusreihe">${knoepfe}</div>
+            <div class="inhalt">${af_esc(s.inhalt) || '<span class="leer-text">ohne Inhaltsangabe</span>'}</div>
+            <label>Beobachtung</label><textarea rows="2" onchange="stunde_beob('${id}', this.value)" placeholder="Wie lief die Stunde? Wo habt ihr aufgehört? (wird beim Verlassen des Feldes gespeichert)">${af_esc(s.beobachtung)}</textarea></div>
+    </div>`; }).join("") : `<div class="leer">${alle.length ? "Keine Stunden mit diesem Stand." : "Noch keine Stunden eingetragen."}</div>`;
+}
+async function stunde_statusSetzen(id, status){
+    try { await akte_api({ aktion: "stunde_aendern", id, stunde: { status } }); stunden_zeigen(); } catch (e){ alert(e.message); }
+}
+async function stunde_speichern(id){
+    try {
+        await akte_api({ aktion: "stunde_aendern", id, stunde: { datum: document.getElementById("se-datum").value, dauer: document.getElementById("se-dauer").value,
+            inhalt: document.getElementById("se-inhalt").value, beobachtung: document.getElementById("se-beob").value } });
+        stunden_bearbeiten = null; stunden_zeigen();
+    } catch (e){ alert(e.message); }
 }
 async function stunde_neu(){
     try {
         await akte_api({ aktion: "stunde_hinzu", stunde: { datum: document.getElementById("s-datum").value, dauer: document.getElementById("s-dauer").value,
-            inhalt: document.getElementById("s-inhalt").value, beobachtung: document.getElementById("s-beob").value } });
+            inhalt: document.getElementById("s-inhalt").value, beobachtung: document.getElementById("s-beob").value, status: document.getElementById("s-status").value } });
         document.getElementById("s-inhalt").value = ""; document.getElementById("s-beob").value = "";
         stunden_zeigen();
     } catch (e){ alert(e.message); }
