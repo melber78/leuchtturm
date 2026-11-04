@@ -15,6 +15,22 @@ foreach (lrsJsonLesen(__DIR__ . "/material-daten/akten.json") as $code => $a) {
     if (!in_array((string)$code, $lrsKinder, true) || !is_array($a)) continue;
     $lrsAkten[(string)$code] = ["klasse" => (string)($a["klasse"] ?? ""), "f" => $a["plan"]["f"] ?? [], "r" => $a["plan"]["r"] ?? [], "l" => $a["plan"]["l"] ?? [], "lb" => (string)($a["plan"]["lb"] ?? ""), "ziele" => count($a["plan"]["ziele"] ?? [])];
 }
+// Trainingshefte: zugewiesene Materialien je Kürzel (für „Aus dem Trainingsheft“ in der Stunde)
+$lrsHefte = [];
+$lrsMatById = [];
+foreach (lrsJsonLesen(__DIR__ . "/material-daten/materialien.json") as $m) if (isset($m["id"])) $lrsMatById[$m["id"]] = $m;
+$lrsAktenRoh = lrsJsonLesen(__DIR__ . "/material-daten/akten.json");
+foreach (lrsJsonLesen(__DIR__ . "/material-daten/kinder.json") as $k) {
+    $code = (string)($k["code"] ?? "");
+    if ($code === "") continue;
+    $erl = (array)($lrsAktenRoh[$code]["erledigt"] ?? []);
+    foreach ($k["hefte"] ?? [] as $h) {
+        $m = $lrsMatById[$h["material_id"] ?? ""] ?? null;
+        if (!$m || empty($m["gespeichert_als"])) continue;
+        $lrsHefte[$code][] = ["id" => (string)$m["id"], "titel" => (string)($m["titel"] ?? $m["dateiname"] ?? "Material"), "bereich" => (string)($m["bereich"] ?? ""),
+            "pfad" => "material-dateien/" . $m["gespeichert_als"], "endung" => strtolower(pathinfo($m["gespeichert_als"], PATHINFO_EXTENSION)), "erledigt" => isset($erl[$m["id"]])];
+    }
+}
 // Förderkartei: Fehlerwörter je Kürzel (für Blätter mit den eigenen Wörtern eines Kindes)
 $lrsKartei = [];
 foreach (lrsJsonLesen(__DIR__ . "/material-daten/foerderkartei.json") as $code => $d) {
@@ -747,6 +763,13 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .fp-kind-info a{ color:var(--meer); }
 .fp-kind-knoepfe{ display:flex; gap:8px; flex-wrap:wrap; }
 .fp-kind-knoepfe .btn{ margin-top:0; }
+.std-heft-liste{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:6px 14px; }
+.std-heft-liste label{ display:flex; gap:8px; align-items:center; text-transform:none; letter-spacing:0; font-size:13px; font-weight:700; color:var(--text); margin:0; background:#f6f9fb; border-radius:10px; padding:7px 10px; cursor:pointer; }
+.std-heft-liste label.erledigt{ opacity:.6; }
+.std-heft-liste label small{ color:var(--meer); font-weight:800; margin-left:auto; white-space:nowrap; }
+@media (max-width:700px){ .std-heft-liste{ grid-template-columns:1fr; } }
+.ws-seite.std-heftseite{ padding:0; display:flex; align-items:center; justify-content:center; }
+.ws-seite.std-heftseite img{ width:100%; height:100%; object-fit:contain; display:block; }
 .std-akte{ margin-top:12px; display:none; align-items:center; gap:10px; flex-wrap:wrap; background:#eef4f8; border-radius:14px; padding:10px 14px; font-size:13px; font-weight:700; }
 .std-akte .btn{ margin-top:0; }
 /* ---------- Aufmerksamkeit: Bilder-Blätter ---------- */
@@ -1404,6 +1427,11 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             <div><label>Anzahl</label><select id="std-symptom-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
         </div>
         <p class="beschreibung" id="std-hinweis" style="margin:6px 0 0;"></p>
+        <div class="std-heft" id="std-heft" style="display:none;">
+            <label style="margin-top:12px;"><i class="fa-solid fa-book-bookmark"></i> Aus dem Trainingsheft</label>
+            <div class="std-heft-liste" id="std-heft-liste"></div>
+            <p class="beschreibung" id="std-heft-hinweis" style="margin:6px 0 0;"></p>
+        </div>
         <p class="beschreibung" style="margin:4px 0 0;">„Anzahl“: Das gewählte Blatt kommt zuerst, weitere Blätter derselben Reihe werden passend ergänzt – die Zeiten im Ablaufplan verteilen sich automatisch neu.</p>
         <label style="margin-top:12px;">Dazu</label>
         <div class="fp-wahl">
@@ -3901,6 +3929,9 @@ async function fs_erstellen(bereich){
         if (problem){ alert(problem); ausgabe.style.display = "none"; return; }
     }
     ausgabe.style.display = "block";
+    if (s.vorher){
+        try { await s.vorher(ctx); } catch (e){ alert(e.message || "Vorbereitung fehlgeschlagen."); ausgabe.style.display = "none"; return; }
+    }
     // Mappen (Stunde, Förderpaket, Kärtchen …): Blätter werden erst jetzt festgelegt
     if (s.dynamisch){
         s.blaetter = s.dynamisch(ctx);
@@ -6336,6 +6367,7 @@ const FS_SERIEN = {
 const LRS_KINDER = <?= json_encode(array_values($lrsKinder), JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
 const LRS_AKTEN = <?= json_encode((object)$lrsAkten, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
 const LRS_KARTEI = <?= json_encode((object)$lrsKartei, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
+const LRS_HEFTE = <?= json_encode((object)$lrsHefte, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
 
 function lt_wert(id){ const el = document.getElementById(id); return el ? el.value : ""; }
 function lt_an(id){ const el = document.getElementById(id); return !!(el && el.checked); }
@@ -7014,7 +7046,9 @@ function std_auswahlAufbauen(){
         std_ausAkte(lt_wert("std-kind"));
         if (lt_wert("std-kind") && kt_woerter(lt_wert("std-kind")).length) document.getElementById("std-symptom").value = "kartei";
         std_blattListen();
+        std_heftZeigen();
     });
+    std_heftZeigen();
     std_blattListen();
 }
 function std_blattListen(){
@@ -7137,6 +7171,7 @@ function std_dynamisch(){
     const zeiten = ["", "", "", "", ""];
     phasen.push({ phase: "Ankommen", zeit: zeiten[0], inhalt: "Begrüßung, kurzes Gespräch: Wie war die Woche? Was hat in der Schule gut geklappt?" + (code && kt_woerter(code).length ? ` Lernbox: fällige Wörter von ${ws_esc(code)} abfragen.` : "") });
 
+    const pos = {};
     const aufm = lt_wert("std-aufm");
     if (aufm){
         let sk, nr, b = null;
@@ -7147,6 +7182,7 @@ function std_dynamisch(){
         liste.forEach(x => { blaetter.push(fp_blattEintrag(sk, x, 0)); geuebt.push(x.name); });
         phasen.push({ phase: "Aufmerksamkeit", zeit: zeiten[1], inhalt: `${liste.length > 1 ? "Blätter" : "Blatt"} ${std_namen(liste)} – Einstieg, Konzentration aufbauen.`, n: liste.length });
     }
+    pos.Aufmerksamkeit = blaetter.length;
     const f = lt_wert("std-funktion");
     if (f){
         const fb = lt_wert("std-funktion-blatt");
@@ -7155,6 +7191,7 @@ function std_dynamisch(){
         liste.forEach(x => { blaetter.push(fp_blattEintrag(f, x, 0)); geuebt.push(x.name); });
         phasen.push({ phase: "Funktionstraining", zeit: zeiten[2], inhalt: `${ws_esc(FS_SERIEN[f].label)}: ${std_namen(liste)}. Ziel: ${ws_esc(FP_ZIELE[f] || "")}.`, n: liste.length });
     }
+    pos.Funktionstraining = blaetter.length;
     const sy = lt_wert("std-symptom"), sb = lt_wert("std-symptom-blatt");
     if (sy.startsWith("rs:")){
         const key = sy.slice(3);
@@ -7196,10 +7233,12 @@ function std_dynamisch(){
         liste.forEach(x => { blaetter.push({ nr: "0", kurz: `Worterarbeitung: ${x.kurz}`, name: x.name, bau: () => ({ seite: x.fn(woerter) }) }); geuebt.push(`Worterarbeitung: ${x.name}`); });
         phasen.push({ phase: "Symptomtraining", zeit: zeiten[3], inhalt: `Worterarbeitung ${std_namen(liste)} mit ${woerter.map(w => ws_esc(w.silben.join("-"))).join(", ")}.`, n: liste.length });
     }
+    pos.Symptomtraining = blaetter.length;
+    const heftIds = std_heftEinbauen(code, phasen, blaetter, pos, geuebt);
     phasen.push({ phase: "Abschluss", zeit: zeiten[4], inhalt: "Stunden-Rückblick, Stempel im Lernpass, kurzes Spiel (z. B. Reimwörter-Ping-Pong)" + (lt_an("std-eltern") ? ", Elternblatt mitgeben." : ".") });
 
     std_zeitenVerteilen(phasen, dauer);
-    const info = { kind: code, phasen, geuebt, merksatz, dauer };
+    const info = { kind: code, phasen, geuebt, merksatz, dauer, heft: heftIds };
     std_letzte = info;
     setTimeout(std_akteLeiste, 0);
     const ergebnis = [];
@@ -7261,6 +7300,99 @@ async function fp_planSpeichern(){
     } catch (e){ info.textContent = "⚠️ " + (e.message || "Speichern fehlgeschlagen."); }
 }
 
+/* ---------- Stunde: Blätter aus dem Trainingsheft des Kindes ---------- */
+const STD_HEFT_PHASE = { aufmerksamkeit: "Aufmerksamkeit", optdiff: "Funktionstraining", optged: "Funktionstraining", optser: "Funktionstraining",
+    akdiff: "Funktionstraining", akged: "Funktionstraining", akser: "Funktionstraining", koerper: "Funktionstraining", raum: "Funktionstraining" };
+const STD_HEFT_BILD = ["jpg", "jpeg", "png", "gif", "webp"];
+const STD_HEFT_MAX_SEITEN = 12;
+const std_heftCache = {};   // id -> [Bild-URLs je Seite]
+function std_heftDruckbar(m){ return m.endung === "pdf" || STD_HEFT_BILD.includes(m.endung); }
+function std_heftZeigen(){
+    const box = document.getElementById("std-heft"), liste = document.getElementById("std-heft-liste");
+    if (!box) return;
+    const code = lt_wert("std-kind"), hefte = (code && LRS_HEFTE[code]) || [];
+    const vorher = new Set([...document.querySelectorAll(".std-heft-cb:checked")].map(c => c.value));
+    box.style.display = code ? "" : "none";
+    if (!code) return;
+    const hinweis = document.getElementById("std-heft-hinweis");
+    if (!hefte.length){
+        liste.innerHTML = "";
+        hinweis.innerHTML = `Im Trainingsheft von ${ws_esc(code)} ist noch nichts. <a href="${fp_akteLink(code, "heft")}" target="_blank">Trainingsheft öffnen</a>`;
+        return;
+    }
+    const sortiert = [...hefte].sort((a, b) => a.erledigt - b.erledigt);
+    liste.innerHTML = sortiert.map(m => `<label class="${m.erledigt ? "erledigt" : ""}" title="${ws_esc(m.titel)}"><input type="checkbox" class="std-heft-cb" value="${ws_esc(m.id)}" ${vorher.has(m.id) ? "checked" : ""}>
+        <span>${m.erledigt ? "✓ " : ""}${ws_esc(m.titel)}</span><small>${std_heftDruckbar(m) ? ws_esc(STD_HEFT_PHASE[m.bereich] || "Symptomtraining") : "separat drucken"}</small></label>`).join("");
+    const offen = hefte.filter(m => !m.erledigt).length;
+    hinweis.innerHTML = `${offen} von ${hefte.length} noch offen. Angehakte Blätter kommen in die passende Phase der Stunde (PDFs und Bilder direkt als Seite). Beim „In die Akte eintragen“ werden sie im Trainingsheft abgehakt. <a href="${fp_akteLink(code, "heft")}" target="_blank">Trainingsheft öffnen</a>`;
+}
+function std_heftGewaehlt(code){
+    const ids = [...document.querySelectorAll(".std-heft-cb:checked")].map(c => c.value);
+    return ((code && LRS_HEFTE[code]) || []).filter(m => ids.includes(m.id));
+}
+async function std_heftVorbereiten(){
+    const code = lt_wert("std-kind");
+    const pdfs = std_heftGewaehlt(code).filter(m => m.endung === "pdf" && !std_heftCache[m.id]);
+    if (!pdfs.length) return;
+    const hinweis = document.getElementById("std-heft-hinweis"), alt = hinweis.innerHTML;
+    await ws_skriptLaden("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js", () => window.pdfjsLib);
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    try {
+        for (const m of pdfs){
+            hinweis.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> „${ws_esc(m.titel)}“ wird vorbereitet …`;
+            const pdf = await pdfjsLib.getDocument(new URL(m.pfad, location.href).href).promise;
+            const seiten = [];
+            for (let i = 1; i <= Math.min(pdf.numPages, STD_HEFT_MAX_SEITEN); i++){
+                const seite = await pdf.getPage(i);
+                const v1 = seite.getViewport({ scale: 1 });
+                const vp = seite.getViewport({ scale: 1400 / Math.min(v1.width, v1.height) });
+                const c = document.createElement("canvas");
+                c.width = Math.round(vp.width); c.height = Math.round(vp.height);
+                const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height);
+                await seite.render({ canvasContext: g, viewport: vp }).promise;
+                seiten.push(c.toDataURL("image/jpeg", 0.88));
+            }
+            std_heftCache[m.id] = seiten;
+        }
+    } catch (e){
+        throw new Error("Ein PDF aus dem Trainingsheft konnte nicht geöffnet werden. Bitte Internetverbindung prüfen oder das Blatt abwählen.");
+    } finally { hinweis.innerHTML = alt; }
+}
+function std_heftSeite(bild){ return `<div class="ws-seite std-heftseite" data-blatt="0"><img src="${bild}" alt=""></div>`; }
+// Baut die gewählten Heft-Blätter in Phasen und Blattliste ein; gibt die Material-IDs zurück
+function std_heftEinbauen(code, phasen, blaetter, pos, geuebt){
+    const gewaehlt = std_heftGewaehlt(code);
+    if (!gewaehlt.length) return [];
+    const REIHE = ["Ankommen", "Aufmerksamkeit", "Funktionstraining", "Symptomtraining", "Abschluss"];
+    const neu = { Aufmerksamkeit: [], Funktionstraining: [], Symptomtraining: [] };
+    gewaehlt.forEach(m => {
+        const ph = STD_HEFT_PHASE[m.bereich] || "Symptomtraining";
+        let seiten = [];
+        if (m.endung === "pdf") seiten = std_heftCache[m.id] || [];
+        else if (STD_HEFT_BILD.includes(m.endung)) seiten = [new URL(m.pfad, location.href).href];
+        neu[ph].push({ m, seiten });
+        geuebt.push(`Trainingsheft: ${m.titel}`);
+    });
+    // Blätter von hinten nach vorn einfügen, damit die gemerkten Positionen stimmen
+    ["Symptomtraining", "Funktionstraining", "Aufmerksamkeit"].forEach(ph => {
+        const eintraege = neu[ph].flatMap(({ m, seiten }) => seiten.map((bild, i) => ({ nr: "0", kurz: `Heft: ${m.titel}${seiten.length > 1 ? " (" + (i + 1) + ")" : ""}`,
+            name: `Trainingsheft: ${m.titel}${seiten.length > 1 ? ` – Seite ${i + 1}` : ""}`, bau: () => ({ seite: std_heftSeite(bild) }) })));
+        blaetter.splice(pos[ph], 0, ...eintraege);
+    });
+    Object.entries(neu).forEach(([ph, liste]) => {
+        if (!liste.length) return;
+        const text = "Aus dem Trainingsheft: " + liste.map(({ m, seiten }) => `„${ws_esc(m.titel)}“${seiten.length ? "" : " (separat drucken)"}`).join(", ") + ".";
+        const da = phasen.find(p => p.phase === ph);
+        if (da){ da.inhalt += " " + text; da.n = (da.n || 1) + liste.length; }
+        else {
+            const p = { phase: ph, zeit: "", inhalt: text, n: liste.length };
+            const idx = phasen.findIndex(x => REIHE.indexOf(x.phase) > REIHE.indexOf(ph));
+            if (idx < 0) phasen.push(p); else phasen.splice(idx, 0, p);
+        }
+    });
+    return gewaehlt.map(m => m.id);
+}
+
 /* ---------- Kinder-Akte: Stunde eintragen ---------- */
 let std_letzte = null;
 function std_akteLeiste(){
@@ -7281,7 +7413,18 @@ async function std_inAkte(){
             body: JSON.stringify({ aktion: "stunde_hinzu", kind: info.kind, stunde: { datum: lt_wert("std-akte-datum"), dauer: info.dauer, inhalt } }) });
         const j = await antwort.json().catch(() => ({ ok: false, fehler: "Keine Antwort – liegt akte.php im Leuchtturm-Ordner?" }));
         if (!j.ok) throw new Error(j.fehler);
-        st.innerHTML = `✅ ${ws_esc(j.meldung)} <a href="${fp_akteLink(info.kind, "stunden")}" target="_blank">Zur Akte</a>`;
+        let heftText = "";
+        if (info.heft && info.heft.length){
+            let n = 0;
+            for (const id of info.heft){
+                const r = await fetch("akte.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ aktion: "erledigt", kind: info.kind, material_id: id, an: true }) }).then(x => x.json()).catch(() => ({}));
+                if (r.ok){ n++; const m = (LRS_HEFTE[info.kind] || []).find(x => x.id === id); if (m) m.erledigt = true; }
+            }
+            if (n) heftText = ` ${n} ${n === 1 ? "Blatt" : "Blätter"} im Trainingsheft als erledigt abgehakt.`;
+            std_heftZeigen();
+        }
+        st.innerHTML = `✅ ${ws_esc(j.meldung)}${heftText} <a href="${fp_akteLink(info.kind, "stunden")}" target="_blank">Zur Akte</a>`;
     } catch (e){ st.textContent = "⚠️ " + e.message; }
 }
 // Kind gewählt: Klasse und Schwerpunkte aus der Akte vorschlagen
@@ -9246,7 +9389,7 @@ Object.assign(FS_SERIEN, {
 
     stunde: { tab: "stunde", mat: "foerderplan", ohneAuswahl: true, label: "Stunde", afs: "AFS-Stunde", ordner: "Stunden",
         tippVoll: "Reihenfolge wie in der Stunde: Ablaufplan (für dich) · Aufmerksamkeit · Funktion · Symptom · Rückblick. Alles bleibt bearbeitbar.",
-        dynamisch: std_dynamisch, pruefen: std_pruefen,
+        dynamisch: std_dynamisch, pruefen: std_pruefen, vorher: std_heftVorbereiten,
         speicherName: () => `Stunde ${new Date().toLocaleDateString("de-DE")}${lt_wert("std-kind") ? " – " + lt_wert("std-kind") : ""}`, einzelTitel: true,
         kind: () => lt_wert("std-kind"),
         blaetter: [] },
