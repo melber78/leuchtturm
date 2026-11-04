@@ -621,7 +621,7 @@ SOZIAL_EINHEIT({
     kategorie: "Konflikte lösen",
     ziel12: "Erkennen, dass bei einem Streit beide etwas bekommen können",
     ziel34: "Kompromisse aushandeln und prüfen, ob sie für beide fair sind",
-    material: "Ein Gegenstand zum Tauschen (z. B. Redestein, Kuscheltier, Ball)\nZahlenkarten 1–4 (Antwort-Set)\nPlakat „So finden wir einen Kompromiss“",
+    material: "Ein Gegenstand zum Tauschen (z. B. Redestein, Kuscheltier, Ball)\nPlakat „So finden wir einen Kompromiss“",
     lerntext12: { titel: "Die rote Schaukel", text:
 `Große Pause. Auf dem Schulhof gibt es eine rote Schaukel. Mia rennt hin. Tom rennt auch hin.
 
@@ -664,11 +664,11 @@ Am Ende stimmen alle 22 Kinder dafür. Niemand hat alles bekommen, was er wollte
           warum: "Wie bei Mia und Tom: Abwechseln klappt, wenn klar ist, wann getauscht wird.",
           warum34: "Abwechseln klappt, wenn vorher klar ist, wann getauscht wird." },
         { titel: "Kompromiss-Werkstatt", fuer: "alle", dauer: "8 Min",
-          text: "**Material:** Zahlenkarten 1–4 (Antwort-Set). Auf der Folie bzw. dem Plakat stehen die vier Kompromiss-Ideen: **1 = Abwechseln** · **2 = Teilen** · **3 = Zusammen machen** · **4 = Losen**. Du liest nur vor.\n\n**So geht's:** Eine Situation erscheint. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte. Dann fragst du ein Kind: „Wie genau würdet ihr das machen?“ – und alle prüfen: **Bekommen beide etwas?** Dann auflösen. Oft passen mehrere Ideen – Hauptsache: fair für beide.\n\n- Beide wollen zuerst schaukeln.\n- Es gibt nur noch ein Stück Kuchen.\n- Einer will Fußball spielen, der andere Fangen.\n- Beide wollen mit dem Lego-Bagger spielen.\n- Beide wollen am Fenster sitzen.\n- Es gibt nur noch eine Tüte Gummibärchen für zwei.\n- Beide wollen beim Theater die Prinzessin sein.\n- Ihr wollt beide die große Kiste Bausteine.",
+          text: "**Material:** keins. Auf der Folie bzw. dem Plakat stehen die vier Kompromiss-Ideen: **1 = Abwechseln** · **2 = Teilen** · **3 = Zusammen machen** · **4 = Losen**. Du liest nur vor.\n\n**So geht's:** Eine Situation erscheint. Das Glücksrad bestimmt 2–3 Kinder, die nacheinander nach vorn kommen und ihre Antwort an der Tafel antippen – bei jeder Situation andere Kinder, so ist jedes Kind einmal dran. Die anderen zeigen mit dem Daumen, ob sie zustimmen. Dann fragst du das Kind vorn: „Wie genau würdet ihr das machen?“ – und alle prüfen: **Bekommen beide etwas?** Dann auflösen. Oft passen mehrere Ideen – Hauptsache: fair für beide.\n\n- Beide wollen zuerst schaukeln.\n- Es gibt nur noch ein Stück Kuchen.\n- Einer will Fußball spielen, der andere Fangen.\n- Beide wollen mit dem Lego-Bagger spielen.\n- Beide wollen am Fenster sitzen.\n- Es gibt nur noch eine Tüte Gummibärchen für zwei.\n- Beide wollen beim Theater die Prinzessin sein.\n- Ihr wollt beide die große Kiste Bausteine.",
           quiz: "zahlen",
           antworten: ["🔄 1 · Abwechseln", "✂️ 2 · Teilen", "🤝 3 · Zusammen machen", "🎲 4 · Losen"],
           loesungen: ["1", "2", "1", "1,3", "1,4", "2", "1,4", "2,3"],
-          folie: "Leg deine **Zahlenkarten 1–4** vor dich. So finden wir einen **Kompromiss**:\n\n🔄 **1** Abwechseln\n✂️ **2** Teilen\n🤝 **3** Zusammen machen\n🎲 **4** Losen\n\nFair ist es, wenn **beide** etwas bekommen. Auf **„1, 2, 3 – hoch!“** zeigst du deine Karte.",
+          folie: "So finden wir einen **Kompromiss**:\n\n🔄 **1** Abwechseln\n✂️ **2** Teilen\n🤝 **3** Zusammen machen\n🎲 **4** Losen\n\nFair ist es, wenn **beide** etwas bekommen. Komm nach vorn und **tippe auf deine Antwort**. 👆",
           kern: ["12", "34"],
           emoji: "🤝",
           warum: "Zwei wollen dasselbe. Wir suchen Lösungen, bei denen beide etwas bekommen." }

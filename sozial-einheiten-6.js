@@ -98,7 +98,7 @@ Jamal wird still. Dann schubst er Deniz so heftig, dass der hinfällt. „Bist d
           text: "Du liest Sprüche und Situationen vor. Die Kinder zeigen mit den Fingern: 1 = Spaß, 2 = Grenze, 3 = zu weit. Wichtig: Es gibt unterschiedliche Meinungen – genau darum geht es. Frag nach: „Warum ist das für dich schon eine 3?“\n\n- „Du hast heute mal wieder verpennt, oder?“\n- Ein Witz über die Klamotten von jemandem.\n- Ein Spruch über die Familie von jemandem.\n- „Du kannst ja nicht mal richtig lesen.“\n- Ein Spitzname, den der andere nicht mag.\n- Lachen, wenn jemand beim Fußball hinfällt.\n- Ein Foto von jemandem in die Gruppe schicken und lästern.",
           quiz: "zahlen",
           antworten: ["1️⃣ Spaß", "2️⃣ Grenze", "3️⃣ zu weit"],
-          folie: "Wie findest du diesen Spruch?\n\n**1** = Spaß · **2** = Grenze · **3** = zu weit\n\nHalte deine Zahlenkarte hoch. Es gibt unterschiedliche Meinungen – genau darum geht es.",
+          folie: "Wie findest du diesen Spruch?\n\n**1** = Spaß · **2** = Grenze · **3** = zu weit\n\nKomm nach vorn und **tippe auf deine Antwort**. 👆 Es gibt unterschiedliche Meinungen – genau darum geht es.",
           kern: ["34"],
           emoji: "🎯",
           warum: "Wann wird aus Spaß Ernst? Ihr entscheidet." },

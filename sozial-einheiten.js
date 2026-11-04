@@ -211,7 +211,7 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
     dauer: 40,
     ziel12: "Im Streit aussteigen: weggehen und Hilfe holen statt hauen",
     ziel34: "Merken, wann es kocht, rechtzeitig aussteigen und den Streit später mit Hilfe klären",
-    material: "Zahlenkarten 1–3 (Antwort-Set)\nPlakat „Streit-Ampel“ (Arbeitsmaterial)",
+    material: "Plakat „Streit-Ampel“ (Arbeitsmaterial)",
     verlauf: [
       {
         "zeit": "0–5",
@@ -228,8 +228,8 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
       {
         "zeit": "15–23",
         "phase": "Übung",
-        "k12": "Was jetzt? – Streit-Ampel (Zahlenkarten)",
-        "k34": "Was jetzt? – Streit-Ampel (Zahlenkarten)"
+        "k12": "Was jetzt? – Streit-Ampel (an der Tafel antippen)",
+        "k34": "Was jetzt? – Streit-Ampel (an der Tafel antippen)"
       },
       {
         "zeit": "23–33",
@@ -263,9 +263,9 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
           "12",
           "34"
         ],
-        "text": "**Material:** Zahlenkarten 1–3 (Antwort-Set). An der Tafel bzw. auf der Folie steht die Streit-Ampel: **1 = „Stopp“ sagen oder nicht beachten** (kleiner Ärger) · **2 = Weggehen** (es kocht in mir) · **3 = Erwachsenen holen** (jemand tut weh oder droht). Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte. Danach: „Warum?“ und „Was ist daran schwer?“ Ehrliche Antworten sind erlaubt („Weggehen ist peinlich“) – genau darüber lohnt es sich zu reden. Wenn zwei Karten passen, ist das okay – Hauptsache: nicht zuschlagen.\n\n- Einer sagt im Vorbeigehen „Opfer“.\n- Jemand macht sich über deine Schuhe lustig.\n- Du merkst: Kopf heiß, Fäuste fest – gleich knallt's.\n- Jemand sagt einen Spruch über deine Mutter, alle lachen, du kochst.\n- Einer schubst dich immer wieder, damit du zuschlägst.\n- Jemand droht: „Nach der Schule bist du dran.“\n- Ein Video von dir wird im Klassenchat herumgeschickt.",
-        "text12": "**Material:** Zahlenkarten 1–3 (Antwort-Set). An der Tafel bzw. auf der Folie steht die Streit-Ampel: **1 = „Stopp“ sagen oder nicht beachten** (kleiner Ärger) · **2 = Weggehen** (es kocht in mir) · **3 = Erwachsenen holen** (jemand tut weh oder droht). Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte. Dann fragst du ein Kind: „Warum?“ Wenn zwei Karten passen, ist das okay – Hauptsache: nicht zuhauen.\n\n- Jemand sagt: „Du bist doof!“\n- Jemand drängelt sich in der Schlange vor.\n- Du bist so wütend, dass du hauen willst.\n- Jemand ärgert dich weiter, obwohl du „Stopp“ gesagt hast.\n- Ein Kind haut dich.\n- Ein Kind tritt ein anderes Kind, das am Boden liegt.",
-        "text34": "**Material:** Zahlenkarten 1–3 (Antwort-Set). An der Tafel bzw. auf der Folie steht die Streit-Ampel: **1 = „Stopp“ sagen oder nicht beachten** (kleiner Ärger) · **2 = Weggehen** (es kocht in mir) · **3 = Erwachsenen holen** (jemand tut weh oder droht). Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Auf „1, 2, 3 – hoch!“ zeigen die Kinder die Karte. Danach: „Warum?“ und „Was ist daran schwer?“ Ehrliche Antworten sind erlaubt („Weggehen ist peinlich“) – genau darüber lohnt es sich zu reden. Wenn zwei Karten passen, ist das okay – Hauptsache: nicht zuschlagen.\n\n- Einer sagt im Vorbeigehen „Opfer“.\n- Jemand macht sich über deine Schuhe lustig.\n- Du merkst: Kopf heiß, Fäuste fest – gleich knallt's.\n- Jemand sagt einen Spruch über deine Mutter, alle lachen, du kochst.\n- Einer schubst dich immer wieder, damit du zuschlägst.\n- Jemand droht: „Nach der Schule bist du dran.“\n- Ein Video von dir wird im Klassenchat herumgeschickt.",
+        "text": "**Material:** keins. An der Tafel bzw. auf der Folie steht die Streit-Ampel: **1 = „Stopp“ sagen oder nicht beachten** (kleiner Ärger) · **2 = Weggehen** (es kocht in mir) · **3 = Erwachsenen holen** (jemand tut weh oder droht). Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Das Glücksrad bestimmt 2–3 Kinder, die nacheinander nach vorn kommen und ihre Antwort an der Tafel antippen – bei jeder Situation andere Kinder, so ist jedes Kind einmal dran. Die anderen zeigen mit dem Daumen, ob sie zustimmen. Danach: „Warum?“ und „Was ist daran schwer?“ Ehrliche Antworten sind erlaubt („Weggehen ist peinlich“) – genau darüber lohnt es sich zu reden. Wenn zwei Antworten passen, ist das okay – Hauptsache: nicht zuschlagen.\n\n- Einer sagt im Vorbeigehen „Opfer“.\n- Jemand macht sich über deine Schuhe lustig.\n- Du merkst: Kopf heiß, Fäuste fest – gleich knallt's.\n- Jemand sagt einen Spruch über deine Mutter, alle lachen, du kochst.\n- Einer schubst dich immer wieder, damit du zuschlägst.\n- Jemand droht: „Nach der Schule bist du dran.“\n- Ein Video von dir wird im Klassenchat herumgeschickt.",
+        "text12": "**Material:** keins. An der Tafel bzw. auf der Folie steht die Streit-Ampel: **1 = „Stopp“ sagen oder nicht beachten** (kleiner Ärger) · **2 = Weggehen** (es kocht in mir) · **3 = Erwachsenen holen** (jemand tut weh oder droht). Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Das Glücksrad bestimmt 2–3 Kinder, die nacheinander nach vorn kommen und ihre Antwort an der Tafel antippen – bei jeder Situation andere Kinder, so ist jedes Kind einmal dran. Die anderen zeigen mit dem Daumen, ob sie zustimmen. Dann fragst du ein Kind: „Warum?“ Wenn zwei Antworten passen, ist das okay – Hauptsache: nicht zuhauen.\n\n- Jemand sagt: „Du bist doof!“\n- Jemand drängelt sich in der Schlange vor.\n- Du bist so wütend, dass du hauen willst.\n- Jemand ärgert dich weiter, obwohl du „Stopp“ gesagt hast.\n- Ein Kind haut dich.\n- Ein Kind tritt ein anderes Kind, das am Boden liegt.",
+        "text34": "**Material:** keins. An der Tafel bzw. auf der Folie steht die Streit-Ampel: **1 = „Stopp“ sagen oder nicht beachten** (kleiner Ärger) · **2 = Weggehen** (es kocht in mir) · **3 = Erwachsenen holen** (jemand tut weh oder droht). Du liest nur vor.\n\n**So geht's:** Du liest eine Situation vor. Das Glücksrad bestimmt 2–3 Kinder, die nacheinander nach vorn kommen und ihre Antwort an der Tafel antippen – bei jeder Situation andere Kinder, so ist jedes Kind einmal dran. Die anderen zeigen mit dem Daumen, ob sie zustimmen. Danach: „Warum?“ und „Was ist daran schwer?“ Ehrliche Antworten sind erlaubt („Weggehen ist peinlich“) – genau darüber lohnt es sich zu reden. Wenn zwei Antworten passen, ist das okay – Hauptsache: nicht zuschlagen.\n\n- Einer sagt im Vorbeigehen „Opfer“.\n- Jemand macht sich über deine Schuhe lustig.\n- Du merkst: Kopf heiß, Fäuste fest – gleich knallt's.\n- Jemand sagt einen Spruch über deine Mutter, alle lachen, du kochst.\n- Einer schubst dich immer wieder, damit du zuschlägst.\n- Jemand droht: „Nach der Schule bist du dran.“\n- Ein Video von dir wird im Klassenchat herumgeschickt.",
         "quiz": "zahlen",
         "antworten": [
           "🟢 1 · „Stopp“ / nicht beachten",
@@ -289,7 +289,7 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
           "3",
           "3"
         ],
-        "folie": "Die **Streit-Ampel** – leg deine **Zahlenkarten 1–3** vor dich:\n\n🟢 **1** Kleiner Ärger → „Stopp“ sagen oder nicht beachten\n🟡 **2** Es kocht in mir → weggehen\n🔴 **3** Jemand tut weh oder droht → Erwachsenen holen\n\nWas machst du? Auf **„1, 2, 3 – hoch!“** zeigst du deine Karte."
+        "folie": "Die **Streit-Ampel**:\n\n🟢 **1** Kleiner Ärger → „Stopp“ sagen oder nicht beachten\n🟡 **2** Es kocht in mir → weggehen\n🔴 **3** Jemand tut weh oder droht → Erwachsenen holen\n\nWas machst du? Komm nach vorn und **tippe auf deine Antwort**. 👆"
       },
       {
         "titel": "Mein Raus-Satz",

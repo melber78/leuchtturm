@@ -305,10 +305,10 @@ Am Nachmittag setzt sich die Klasse zusammen. „Wir brauchen ein paar Regeln“
           emoji: "📜",
           warum: "Wir prüfen Regeln: Wozu gibt es sie?" },
         { titel: "Faire Konsequenz?", dauer: "5 Min",
-          text: "Du liest Regelverstöße und Konsequenzen vor. Die Kinder zeigen mit Daumen: fair, geht so, unfair – und begründen.\n\n- Jemand macht das Klo dreckig – muss es sauber machen.\n- Jemand schwänzt – darf eine Woche nicht in die Pause.\n- Jemand schlägt – bekommt einen Elternanruf.\n- Jemand zerkratzt einen Tisch – muss ihn abschleifen helfen.\n- Die ganze Klasse wird bestraft, weil einer gestört hat.",
+          text: "Du liest Regelverstöße und Konsequenzen vor. Per Glücksrad kommen 2–3 Kinder nach vorn und tippen an der Tafel: fair, geht so, unfair – und begründen. Die anderen zeigen mit dem Daumen, ob sie zustimmen.\n\n- Jemand macht das Klo dreckig – muss es sauber machen.\n- Jemand schwänzt – darf eine Woche nicht in die Pause.\n- Jemand schlägt – bekommt einen Elternanruf.\n- Jemand zerkratzt einen Tisch – muss ihn abschleifen helfen.\n- Die ganze Klasse wird bestraft, weil einer gestört hat.",
           quiz: "zahlen",
           antworten: ["1️⃣ fair", "2️⃣ geht so", "3️⃣ unfair"],
-          folie: "Ist diese Konsequenz fair?\n\n**1** = fair · **2** = geht so · **3** = unfair\n\nHalte deine Zahlenkarte hoch und sag, warum.",
+          folie: "Ist diese Konsequenz fair?\n\n**1** = fair · **2** = geht so · **3** = unfair\n\nKomm nach vorn, **tippe auf deine Antwort** 👆 und sag, warum.",
           kern: ["34"],
           emoji: "⚖️",
           warum: "Ist diese Konsequenz fair? Ihr entscheidet." }
