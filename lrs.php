@@ -706,6 +706,23 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .eb-rueck{ border:2px dashed #8FA3B8; border-radius:14px; padding:10px 14px; font-size:14.5px; display:flex; flex-direction:column; gap:10px; }
 .eb-rueck .linie{ border-bottom:1.5px solid #8FA3B8; height:18px; }
 .std-tabelle{ width:100%; border-collapse:collapse; }
+#bereich-stunde.std-erstmodus .std-nur-foerder{ display:none !important; }
+#bereich-stunde:not(.std-erstmodus) .std-nur-erst{ display:none !important; }
+.es-stufe{ border-top:2px dashed #C9D6E3; padding-top:8px; }
+.es-lab{ font-size:12px; font-weight:700; color:#7c8a94; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
+.es-kacheln{ display:flex; flex-wrap:wrap; gap:6px 22px; color:#1E2A36; }
+.es-zeile{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; border-bottom:1.5px dotted #C9D6E3; }
+.es-zeile p{ margin:0; }
+.es-n{ font-size:12px; color:#7c8a94; font-variant-numeric:tabular-nums; flex:none; }
+.es-ck{ display:flex; flex-wrap:wrap; gap:4px 16px; font-size:14px; }
+.es-ck span::before{ content:"☐ "; color:#1D4F86; }
+.es-grid{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:6px 22px; font-size:14px; }
+.es-feld{ display:flex; gap:6px; align-items:baseline; }
+.es-feld i{ flex:1; border-bottom:1.5px solid #1E2A36; min-height:16px; font-style:normal; }
+.es-h{ font-size:14px; font-weight:700; color:#1D4F86; text-transform:uppercase; letter-spacing:.05em; }
+.es-box{ background:#F3F6FA; border-radius:14px; padding:10px 16px; font-size:14.5px; line-height:1.45; }
+.es-box ul{ margin:0; padding-left:18px; }
+.es-obs{ background:repeating-linear-gradient(to bottom, transparent 0, transparent 25px, #C9D6E3 25px, #C9D6E3 26.5px); min-width:170px; }
 .std-tabelle th{ background:#E8EDF3; font-size:14px; text-align:left; padding:7px 9px; border:1.5px solid #C9D6E3; }
 .std-tabelle td{ border:1.5px solid #C9D6E3; font-size:15px; padding:8px 9px; vertical-align:top; line-height:1.35; }
 .std-felder{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px 18px; font-size:15px; background:#F3F6FA; border-radius:14px; padding:12px 16px; }
@@ -1447,6 +1464,11 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             <div><label>Dauer der Stunde</label><div style="display:flex; gap:8px;"><select id="std-dauer" onchange="std_dauerWechsel()" style="flex:1;"><option value="20">20 Minuten</option><option value="25">25 Minuten</option><option value="30">30 Minuten</option><option value="35">35 Minuten</option><option value="40" selected>40 Minuten</option><option value="45">45 Minuten</option><option value="50">50 Minuten</option><option value="60">60 Minuten</option><option value="75">75 Minuten</option><option value="90">90 Minuten</option><option value="eigen">andere Dauer …</option></select><input type="number" id="std-dauer-eigen" min="10" max="180" step="5" value="40" style="display:none; width:90px;" onchange="std_dauerWechsel()" title="Minuten"></div></div>
         </div>
         <div class="zeile zwei" style="margin-top:12px;">
+            <div><label>Art der Stunde</label><select id="std-art" onchange="std_artWechsel()"><option value="foerder">Förderstunde (AFS-Aufbau)</option><option value="erst">Erststunde – Kennenlernen &amp; Lese-Schnappschuss</option></select></div>
+            <div class="std-nur-erst"><label>Lesetext-Darstellung</label><select id="std-erst-silben"><option value="farbig">mit Silbenfarben</option><option value="boegen">mit Silbenbögen</option><option value="normal">ohne Silbenhilfe</option></select></div>
+        </div>
+        <p class="beschreibung std-nur-erst" style="margin:6px 0 0;">Für den ersten Termin mit einem neuen Kind: Kennenlernen, ein Aufmerksamkeitsblatt, ein Lese-Schnappschuss mit Schülerblatt (Text, darunter Wörter, Silben und Buchstaben als Rückfallstufen) und Lehrerexemplar mit Beobachtungsbogen, Wahrnehmungsspiele und ein Abschluss mit Erfolgserlebnis.</p>
+        <div class="zeile zwei" style="margin-top:12px;">
             <div><label>Klassenstufe</label><select id="std-klasse"><option value="1">Klasse 1</option><option value="2">Klasse 2</option><option value="3">Klasse 3</option><option value="4">Klasse 4</option><option value="5">Klasse 5</option><option value="6">Klasse 6</option><option value="7">Klasse 7</option><option value="8">Klasse 8</option></select></div>
             <div><label>Schwierigkeit</label><select id="std-schwierigkeit"><option value="leicht">leicht</option><option value="mittel">mittel</option><option value="schwer">schwer</option></select></div>
         </div>
@@ -1455,28 +1477,28 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             <div class="std-leer"></div>
             <div><label>Anzahl</label><select id="std-aufm-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option></select></div>
         </div>
-        <div class="zeile std-anz-zeile" style="margin-top:12px;">
+        <div class="zeile std-anz-zeile std-nur-foerder" style="margin-top:12px;">
             <div><label>Funktionstraining</label><select id="std-funktion"></select></div>
             <div><label>Blatt</label><select id="std-funktion-blatt"></select></div>
             <div><label>Anzahl</label><select id="std-funktion-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
         </div>
-        <div class="zeile std-anz-zeile" style="margin-top:12px;">
+        <div class="zeile std-anz-zeile std-nur-foerder" style="margin-top:12px;">
             <div><label>Symptomtraining</label><select id="std-symptom"></select></div>
             <div><label>Blatt</label><select id="std-symptom-blatt"></select></div>
             <div><label>Anzahl</label><select id="std-symptom-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
         </div>
-        <p class="beschreibung" id="std-hinweis" style="margin:6px 0 0;"></p>
-        <div class="std-heft" id="std-heft" style="display:none;">
+        <p class="beschreibung std-nur-foerder" id="std-hinweis" style="margin:6px 0 0;"></p>
+        <div class="std-heft std-nur-foerder" id="std-heft" style="display:none;">
             <label style="margin-top:12px;"><i class="fa-solid fa-book-bookmark"></i> Aus dem Trainingsheft</label>
             <div class="std-heft-liste" id="std-heft-liste"></div>
             <p class="beschreibung" id="std-heft-hinweis" style="margin:6px 0 0;"></p>
         </div>
-        <div class="std-heft" id="std-weiter" style="display:none;">
+        <div class="std-heft std-nur-foerder" id="std-weiter" style="display:none;">
             <label style="margin-top:12px;"><i class="fa-solid fa-forward"></i> Nicht geschafft – aus früheren Stunden</label>
             <div class="std-weiter-liste" id="std-weiter-liste"></div>
             <p class="beschreibung" style="margin:6px 0 0;">Angehakte Blätter kommen in diese Stunde (Weiterarbeiten am alten Blatt). Sie werden nicht neu gedruckt – bei Bedarf in der Blattliste unten wieder anhaken.</p>
         </div>
-        <p class="beschreibung" style="margin:4px 0 0;">„Anzahl“: Das gewählte Blatt kommt zuerst, weitere Blätter derselben Reihe werden passend ergänzt – die Zeiten im Ablaufplan verteilen sich automatisch neu.</p>
+        <p class="beschreibung std-nur-foerder" style="margin:4px 0 0;">„Anzahl“: Das gewählte Blatt kommt zuerst, weitere Blätter derselben Reihe werden passend ergänzt – die Zeiten im Ablaufplan verteilen sich automatisch neu.</p>
         <label style="margin-top:12px;">Dazu</label>
         <div class="fp-wahl">
             <label><input type="checkbox" id="std-plan" checked> Ablaufplan (für dich)</label>
@@ -7071,6 +7093,8 @@ function std_auswahlAufbauen(){
     if (!aufm || aufm.options.length) return;
     std_dauerLaden();
     std_einstellungenVerbinden();
+    try { if (localStorage.getItem("lt_std_art") === "erst") document.getElementById("std-art").value = "erst"; } catch (e){}
+    std_artWechsel();
     aufm.innerHTML = `<option value="zufall">Passend zur Klassenstufe (zufällig)</option>` +
         ["aufmerksamkeit", "aufmerksamkeit5"].map(k => `<optgroup label="${ws_esc(FS_SERIEN[k].label)}">${fs_katalog(k).map(b => `<option value="${k}:${b.nr}">${ws_esc(b.name)}${b.ab ? ` (ab Kl. ${b.ab})` : ""}</option>`).join("")}</optgroup>`).join("") +
         `<option value="">– ohne Aufmerksamkeitsblatt –</option>`;
@@ -7158,10 +7182,11 @@ function std_dauerLaden(){
     std_dauerWechsel();
 }
 // Gewichte je Phase; fehlende Phasen fallen weg, der Rest wird auf die Gesamtdauer hochgerechnet
-const STD_GEWICHT = { Ankommen: 3, Aufmerksamkeit: 7, Funktionstraining: 14, Symptomtraining: 15, Abschluss: 5 };
-const STD_MINDEST = { Ankommen: 2, Aufmerksamkeit: 3, Funktionstraining: 5, Symptomtraining: 5, Abschluss: 2 };
-function std_zeitenVerteilen(phasen, gesamt){
-    const gew = p => STD_GEWICHT[p.phase] * (1 + 0.6 * ((p.n || 1) - 1));
+const STD_GEWICHT = { Ankommen: 3, Aufmerksamkeit: 7, Funktionstraining: 14, Symptomtraining: 15, Abschluss: 5, "Lese-Schnappschuss": 10, "Wahrnehmung als Spiel": 13 };
+const STD_MINDEST = { Ankommen: 2, Aufmerksamkeit: 3, Funktionstraining: 5, Symptomtraining: 5, Abschluss: 2, "Lese-Schnappschuss": 5, "Wahrnehmung als Spiel": 4 };
+function std_zeitenVerteilen(phasen, gesamt, gewichte){
+    const G = gewichte || STD_GEWICHT;
+    const gew = p => G[p.phase] * (1 + 0.6 * ((p.n || 1) - 1));
     const summe = phasen.reduce((a, p) => a + gew(p), 0);
     const roh = phasen.map(p => Math.max(STD_MINDEST[p.phase], gesamt * gew(p) / summe));
     let min = roh.map(Math.floor);
@@ -7233,6 +7258,13 @@ function std_rezeptAusFormular(){
         else { [sk, nr] = aufm.split(":"); b = fs_katalog(sk).find(x => x.nr === nr); }
         const pool = fs_katalog(sk).filter(x => au_passt(x) && (x.nr !== "3" || sk !== "aufmerksamkeit5"));
         std_mehrere(pool.length ? pool : fs_katalog(sk), b, std_anzahl("std-aufm-anzahl")).forEach(x => neu({ p: "Aufmerksamkeit", t: "fs", s: sk, nr: x.nr }));
+    }
+    if (lt_wert("std-art") === "erst"){
+        r.erst = { art: lt_wert("std-erst-silben") || "farbig" };
+        r.lesetext = es_textWaehlen().t;
+        neu({ p: "Symptomtraining", t: "erst", b: "lesen" });
+        neu({ p: "Symptomtraining", t: "erst", b: "beob" });
+        return r;
     }
     const f = lt_wert("std-funktion");
     if (f){
@@ -7388,11 +7420,13 @@ function std_itemInfo(it, r){
     if (it.t === "kartei"){ const b = KT_BLAETTER.find(x => x.nr === it.nr); return b ? { name: b.name, gruppe: "Meine Fehlerwörter", ok: true } : { name: "?", ok: false }; }
     if (it.t === "ws"){ const b = WS_BLAETTER.find(x => x.nr === it.nr); return b ? { name: b.name, gruppe: "Worterarbeitung", ok: true } : { name: "?", ok: false }; }
     if (it.t === "le"){ const st = LE_STUFEN[it.st], b = st && (LE_BLAETTER[it.st] || [])[it.i]; return b ? { name: b.name, gruppe: `Lesen ${st.nr} ${st.name}`, ok: true } : { name: "?", ok: false }; }
+    if (it.t === "erst") return { name: it.b === "lesen" ? "Lese-Schnappschuss: Schülerblatt" : "Lehrerexemplar & Beobachtungsbogen", gruppe: "Erststunde", ok: true };
     if (it.t === "heft"){ const m = ((code && LRS_HEFTE[code]) || []).find(x => x.id === it.id); return m ? { name: m.titel, gruppe: "Trainingsheft", ok: true, m } : { name: "Heft-Blatt (nicht mehr im Heft)", ok: false }; }
     return { name: "?", ok: false };
 }
 // Rezept → Blätter + Ablaufplan
 function std_ausRezept(r){
+    if (r.erst) return es_ausRezept(r);
     const code = r.kind, blaetter = [], geuebt = [];
     let merksatz = "";
     const ctxLesen = { lt: null }, ctxDiktat = { dk: null };
@@ -7493,6 +7527,128 @@ function std_ausRezept(r){
     }
     return ergebnis.map((b, i) => ({ ...b, nr: String(i + 1) }));
 }
+/* ---------- Erststunde: Kennenlernen & Lese-Schnappschuss ---------- */
+function std_artWechsel(){
+    const erst = lt_wert("std-art") === "erst";
+    document.getElementById("bereich-stunde").classList.toggle("std-erstmodus", erst);
+    try { localStorage.setItem("lt_std_art", erst ? "erst" : "foerder"); } catch (e){}
+}
+// Diagnose-Lesetexte (eigene Texte, HSP-orientiert); sonst ein Text aus dem Lesetraining passend zur Klasse
+const ES_TEXTE = [
+    { k: 2, t: "Die Katze Mimi", x: "Mimi ist eine kleine, weiße Katze. Sie wohnt bei Lena im Garten. Jeden Morgen läuft Mimi zur Terrasse und miaut laut. Lena gibt ihr dann Milch in eine Schale. Am liebsten spielt Mimi mit einem roten Ball. Sie jagt ihn durch den ganzen Garten. Am Abend schläft Mimi auf einer weichen Decke.",
+      fragen: ["Welche Farbe hat Mimi?", "Was gibt Lena ihr?", "Womit spielt Mimi am liebsten?", "Wo schläft Mimi am Abend?"] },
+    { k: 3, t: "Backen mit Oma", x: "Am Samstagnachmittag besucht Mia ihre Oma. In der Küche duftet es schon nach frischen Plätzchen. Oma hat den Teig aus Mehl, Butter und Zucker vorbereitet. Mia darf kleine Sterne und Monde ausstechen. Vorsichtig legt sie die Plätzchen auf ein Backblech. Während die Plätzchen im Ofen backen, deckt Mia den Tisch für den Kaffee. Nach zwanzig Minuten holt Oma das Blech heraus. Ein süßer Duft breitet sich in der ganzen Wohnung aus. Gemeinsam setzen sie sich an den Tisch und probieren die warmen Plätzchen.",
+      fragen: ["Wen besucht Mia?", "Woraus ist der Teig?", "Welche Formen sticht Mia aus?", "Was macht Mia, während die Plätzchen backen?"] },
+];
+function es_vonLt(t){ return { t: t.t, x: t.x, fragen: [...(t.mc || []).map(f => f[0]), ...(t.of || []).map(f => f[0])].slice(0, 4) }; }
+function es_textWaehlen(){
+    const k = lt_klasse();
+    const eigen = ES_TEXTE.find(t => t.k === k);
+    if (eigen) return eigen;
+    const passend = LT_TEXTE.filter(t => t.k === k && t.s === "m");
+    return es_vonLt(zufallsElement(passend.length ? passend : LT_TEXTE.filter(t => t.k === k)));
+}
+function es_text(titel){
+    const eigen = ES_TEXTE.find(t => t.t === titel);
+    if (eigen) return eigen;
+    const lt = LT_TEXTE.find(t => t.t === titel);
+    return lt ? es_vonLt(lt) : es_textWaehlen();
+}
+function es_kacheln(woerter, art){
+    return st_tokens(woerter.join(" ")).filter(t => t.typ === "wort").map((t, i) => st_wortHtml(t, art, i)).join("");
+}
+function es_schuelerblatt(et, art){
+    const k = lt_klasse();
+    const gr = LT_SCHRIFT[k] || 22, ab = LT_ABSTAND[k] || 1.9, schrift = k >= 5 ? "'Atkinson Hyperlegible', 'Andika', sans-serif" : "'Andika', sans-serif";
+    const tokens = st_tokens(et.x).filter(t => t.typ === "wort");
+    const gesehen = new Set(), woerter = [];
+    const gross = t => /^[A-ZÄÖÜ]/.test(t.kern);
+    tokens.filter(t => gross(t) && t.silben.length >= 2).concat(tokens.filter(t => gross(t) && t.silben.length < 2), tokens.filter(t => !gross(t) && t.silben.length >= 2))
+        .forEach(t => { if (woerter.length < 12 && !gesehen.has(t.kern.toLowerCase())){ gesehen.add(t.kern.toLowerCase()); woerter.push(t.kern); } });
+    const silben = "ma mi mo mu la le li lo sa so ba be bi ka ke ro ri na ne".split(" ");
+    const letters = [...new Set(et.x.replace(/[^A-Za-zÄÖÜäöüß]/g, "").split(""))].slice(0, 16);
+    ["ei", "au", "ie", "sch"].forEach(g => { if (et.x.toLowerCase().includes(g)) letters.push(g); });
+    const stufen = `
+        <div class="es-stufe"><div class="es-lab">Wörter</div><div class="es-kacheln" style="font-family:${schrift}; font-size:${Math.round(gr * 0.82)}px;">${es_kacheln(woerter, art)}</div></div>
+        ${k <= 4 ? `<div class="es-stufe"><div class="es-lab">Silben</div><div class="es-kacheln" style="font-family:${schrift}; font-size:${Math.round(gr * 0.78)}px;">${es_kacheln(silben, art)}</div></div>
+        <div class="es-stufe"><div class="es-lab">Buchstaben</div><div class="es-kacheln" style="font-family:${schrift}; font-size:${Math.round(gr * 0.78)}px; gap:6px 18px;">${letters.map(ws_esc).map(l => `<span>${l}</span>`).join("")}</div></div>` : ""}`;
+    return { titel: ws_esc(et.t), extra: { max: 1, info: true, label: "Lese-Schnappschuss", afs: "Symptom · Lesen (Erstkontakt)", reif: k >= 5 }, html: `
+        <div class="st-text" style="font-size:${gr}px; line-height:${ab}; font-family:${schrift};">${st_html(st_tokens(et.x), { art, saetze: true })}</div>
+        <div style="flex:1;"></div>
+        ${stufen}` };
+}
+function es_lehrerexemplar(et, art){
+    const n = lt_woerter(et.x).length;
+    let summe = 0;
+    const zeilen = lt_saetze(et.x).map(satz => { summe += lt_woerter(satz).length;
+        return `<div class="es-zeile"><div>${st_html(st_tokens(satz), { art, saetze: false })}</div><span class="es-n">${summe}</span></div>`; }).join("");
+    return { titel: "Lehrerexemplar & Beobachtungsbogen", extra: { info: true, max: 1, reif: true, label: "Lese-Schnappschuss", afs: "Beobachtung Lesen", kopfRechts: `Text: „${ws_esc(et.t)}“ · ${n} Wörter` }, html: `
+        <div class="st-text" style="font-size:17px; line-height:1.9; font-family:'Andika', sans-serif;">${zeilen}</div>
+        <div class="es-h">Messung</div>
+        <div class="es-grid">
+            <div class="es-feld">Lesezeit:<i></i>Min.<i></i>Sek.</div><div class="es-feld">Fehler gesamt:<i></i></div>
+            <div class="es-feld">Wörter/Min. (${n} ÷ Sek. × 60):<i></i></div><div class="es-feld">gelesen bis Wort Nr.:<i></i></div>
+        </div>
+        <div class="es-h">Lesestrategie</div>
+        <div class="es-ck"><span>buchstabierend</span><span>silbierend</span><span>wortweise</span><span>flüssig</span><span>rät vom Anfangsbuchstaben</span><span>synthetisiert nicht (Laute einzeln)</span><span>korrigiert sich selbst</span></div>
+        <div class="es-h">Fehlerarten (Strichliste)</div>
+        <table class="std-tabelle"><tbody>
+            ${["Auslassung (Laut, Silbe, Wort)", "Hinzufügung", "Verwechslung (b/d, ei/ie, m/n)", "Ersetzung / Raten", "Wortendung falsch", "Zeilenverlust / Wiederholung"].map(f => `<tr><td style="padding:5px 9px; font-size:14px; width:55%;">${f}</td><td></td></tr>`).join("")}
+        </tbody></table>
+        <div class="es-grid">
+            <div><div class="es-h" style="margin-bottom:4px;">Verhalten</div>
+                <div class="es-ck"><span>zeigt mit Finger</span><span>geringer Abstand</span><span>stockt / lange Pausen</span><span>ermüdet schnell</span><span>vermeidet / lenkt ab</span><span>beachtet Satzzeichen</span></div>
+                <div class="es-feld" style="margin-top:6px;">Unsichere Buchstaben:<i></i></div></div>
+            <div><div class="es-h" style="margin-bottom:4px;">Verständnis (mündlich)</div>
+                <div class="es-ck" style="flex-direction:column;">${et.fragen.map(f => `<span>${ws_esc(f)}</span>`).join("")}</div></div>
+        </div>
+        <div class="es-h">Erreichte Stufe</div>
+        <div class="es-ck"><span>Text</span><span>Wörter</span>${lt_klasse() <= 4 ? "<span>Silben</span><span>Buchstaben</span>" : ""}</div>` };
+}
+function es_ablaufplan(info){
+    const zeilen = info.phasen.map(p => `<tr><td><b>${p.phase}</b></td><td style="white-space:nowrap;"><b>${p.zeit}</b><br><small style="color:#7c8a94;">Min. ${p.von}–${p.bis}</small></td><td>${p.inhalt}</td><td class="es-obs"></td></tr>`).join("");
+    return { titel: "Ablaufplan · Erststunde", extra: { info: true, max: 1, reif: true, label: "Stundenplanung", afs: "Erstkontakt · Kennenlernen und Lese-Schnappschuss", kopfRechts: `Kürzel: <b>${ws_esc(info.kind || "______")}</b> · Datum: <span class="ws-linie" style="width:120px;"></span>` }, html: `
+        <div class="dk-info"><span>Dauer: <b>${info.dauer} Minuten</b></span><span>Klasse: <b>${lt_klasse()}</b></span><span>Beginn: <span style="display:inline-block; width:70px; border-bottom:1.5px solid #1E2A36;"></span> Uhr</span></div>
+        <table class="std-tabelle"><thead><tr><th style="width:130px;">Phase</th><th style="width:80px;">Zeit</th><th>Inhalt / Material</th><th style="width:170px;">Beobachtung</th></tr></thead><tbody>${zeilen}</tbody></table>
+        <div class="es-h">Nächste Termine</div>
+        <div class="es-box"><ul>
+            <li>AFS-Test (EÖDL), ggf. auf zwei Termine verteilt</li>
+            <li>Diktat zur Klassenstufe (Testdiktat mit Auswertungsbogen)</li>
+            <li>Trainingsheft im Leuchtturm anlegen${info.kind ? "" : " · Kürzel: ____________"}</li>
+            <li>Gespräch mit den Eltern vereinbaren</li></ul></div>
+        <div class="es-h">Erster Eindruck</div>
+        <div style="${LT_LINIENFELD}"></div>` };
+}
+function es_ausRezept(r){
+    const code = r.kind, et = es_text(r.lesetext), art = (r.erst && r.erst.art) || "farbig";
+    r.lesetext = et.t;
+    const items = r.items.filter(it => std_itemInfo(it, r).ok);
+    const mitCache = (eintrag, uid) => ({ ...eintrag, uid, cache: std_cache[uid] || null });
+    const blaetter = [], geuebt = [];
+    const aufm = items.filter(it => it.p === "Aufmerksamkeit" && it.t === "fs");
+    aufm.forEach(it => { const b = fs_katalog(it.s).find(x => x.nr === it.nr); blaetter.push(mitCache(fp_blattEintrag(it.s, b, 0), it.u)); geuebt.push(b.name); });
+    items.filter(it => it.t === "erst").forEach(it => {
+        if (it.b === "lesen") blaetter.push(mitCache({ nr: "0", kurz: "Schülerblatt", name: `Lesetext „${et.t}“ (Schülerblatt)`, bau: () => es_schuelerblatt(et, art) }, it.u));
+        else blaetter.push(mitCache({ nr: "0", kurz: "Beobachtung", name: "Lehrerexemplar & Beobachtungsbogen", bau: () => es_lehrerexemplar(et, art) }, it.u));
+    });
+    geuebt.push(`Lesen: ${et.t}`);
+    const n = lt_woerter(et.x).length;
+    const phasen = [{ phase: "Ankommen", inhalt: "Kennenlernen: Hobbys, Lieblingstier, was am Lesen schwer ist. Smiley-Skala: „Wie gern liest du?“ und „Wie schwer ist Lesen für dich?“" }];
+    if (aufm.length) phasen.push({ phase: "Aufmerksamkeit", n: aufm.length, inhalt: `${aufm.length > 1 ? "Blätter" : "Blatt"} ${aufm.map(it => `„${ws_esc(std_itemInfo(it, r).name)}“`).join(", ")} – leicht, muss sicher gelingen.` });
+    phasen.push({ phase: "Lese-Schnappschuss", inhalt: `Schülerblatt „${ws_esc(et.t)}“ (${n} Wörter), Lehrerexemplar mitführen: Zeit stoppen, Fehler markieren. Zu schwer? Sofort eine Stufe tiefer: Wörter → Silben → Buchstaben. Danach Verständnisfragen mündlich. Abbrechen, bevor Frust entsteht.` });
+    phasen.push({ phase: "Wahrnehmung als Spiel", inhalt: "<b>Akustische Differenzierung:</b> gleich oder anders? Tasse – Kasse · Dach – Bach · Nase – Nase · Hose – Rose · Wand – Wand. <b>Akustische Serialität:</b> Silben klatschen, ersten und letzten Laut nennen. <b>Optische Differenzierung:</b> b / d / p / q suchen. <b>Optisches Gedächtnis:</b> Kim-Spiel mit 4–5 Bildkarten." });
+    phasen.push({ phase: "Abschluss", inhalt: "Erfolgsmoment mit etwas, das sicher klappt. Konkretes Lob, Ausblick auf die nächste Stunde" + (r.rueck ? ", Stunden-Rückblick" : "") + (r.eltern ? ", Elternblatt mitgeben" : "") + "." });
+    std_zeitenVerteilen(phasen, r.dauer || 40, { ...STD_GEWICHT, Ankommen: 7, Aufmerksamkeit: 5 });
+    const info = { kind: code, phasen, geuebt, merksatz: "", dauer: r.dauer || 40, heft: [], rezept: r };
+    std_letzte = info;
+    setTimeout(() => { std_akteLeiste(); std_editorZeigen(); std_blattLeisten(); }, 0);
+    const ergebnis = [];
+    if (r.plan) ergebnis.push({ nr: "0", kurz: "Ablaufplan", name: "Ablaufplan Erststunde (für dich)", bau: () => es_ablaufplan(info) });
+    ergebnis.push(...blaetter);
+    if (r.rueck) ergebnis.push({ nr: "0", kurz: "Rückblick", name: "Stunden-Rückblick", bau: () => std_rueckblick(info) });
+    if (r.eltern) ergebnis.push({ nr: "0", kurz: "Elternblatt", name: "Elternblatt", bau: () => eb_blatt(["aufmerksamkeit"], code) });
+    return ergebnis.map((b, i) => ({ ...b, nr: String(i + 1) }));
+}
 function std_dynamisch(){
     if (!std_bearbeiten || !std_rezept){ std_rezept = std_rezeptAusFormular(); std_cache = {}; std_akteId = null; std_akteHinweis = ""; std_standVorschlag = "offen"; }
     return std_ausRezept(std_rezept);
@@ -7532,10 +7688,11 @@ function std_optionen(ph, r){
     if (heft.length) gruppen.push(["Aus dem Trainingsheft", heft.map(m => opt({ t: "heft", id: m.id }, (m.erledigt ? "✓ " : "") + m.titel + (std_heftDruckbar(m) ? "" : " (separat drucken)")))]);
     return gruppen.map(([g, o]) => `<optgroup label="${ws_esc(g)}">${o.join("")}</optgroup>`).join("");
 }
-function std_gleich(a, b){ return ["t", "s", "nr", "k", "a", "d", "id", "st", "i"].every(k => String(a[k] ?? "") === String(b[k] ?? "")); }
+function std_gleich(a, b){ return ["t", "s", "nr", "k", "a", "d", "id", "st", "i", "b"].every(k => String(a[k] ?? "") === String(b[k] ?? "")); }
 function std_editorZeigen(){
     const el = document.getElementById("std-editor");
     if (!el || !std_rezept) return;
+    if (std_rezept.erst){ el.style.display = "none"; el.innerHTML = ""; return; }
     const r = std_rezept;
     el.style.display = "";
     el.innerHTML = `<div class="std-ed-kopf"><b><i class="fa-solid fa-pen-to-square"></i> Blätter dieser Stunde anpassen</b>
@@ -7686,6 +7843,8 @@ async function std_ausAkteOeffnen(code, sid){
     if (/^[1-8]$/.test(String(r.klasse || ""))){ const l = document.getElementById("std-klasse"); l.value = r.klasse; l.dispatchEvent(new Event("change")); }
     if (r.stufe){ const sw = document.getElementById("std-schwierigkeit"); sw.value = r.stufe; sw.dispatchEvent(new Event("change")); }
     std_rezept = r; std_cache = {};
+    { const a = document.getElementById("std-art"); if (a){ a.value = r.erst ? "erst" : "foerder"; std_artWechsel(); }
+      const sv = document.getElementById("std-erst-silben"); if (sv && r.erst) sv.value = r.erst.art || "farbig"; }
     const heftIds = r.items.filter(it => it.t === "heft").map(it => it.id);
     try { await std_heftVorbereiten(heftIds); } catch (e){}
     std_bearbeiten = true;
