@@ -791,6 +791,22 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .std-ed-zeile select{ flex:1; min-width:0; }
 .std-ed-x{ border:0; background:#fdeceb; color:#c0392b; border-radius:10px; width:38px; font-weight:900; cursor:pointer; }
 .std-ed-neu{ border-style:dashed !important; color:#3d7ea6; font-weight:800; }
+.std-ed-zeile.ng select{ background:#fff4dc; border-color:#f2a93b; }
+.std-ed-zeile.weiter select{ background:#eef5fb; }
+.std-ed-knopf{ border:0; background:#eef2f5; color:var(--nacht); border-radius:10px; min-width:38px; padding:0 8px; font-weight:900; cursor:pointer; font-size:13px; white-space:nowrap; }
+.std-ed-knopf:hover{ background:#dbe6ee; }
+.std-ed-knopf:disabled{ opacity:.35; cursor:default; }
+.std-ed-knopf.an{ background:#f2a93b; color:#fff; }
+.std-weiter-liste{ display:flex; flex-direction:column; gap:6px; margin-top:6px; }
+.std-weiter-liste label{ display:flex; gap:8px; align-items:center; margin:0; font-weight:700; font-size:14px; text-transform:none; letter-spacing:normal; color:var(--nacht); background:#fff4dc; border-radius:10px; padding:7px 10px; cursor:pointer; }
+.std-weiter-liste small{ margin-left:auto; color:#8a5a00; font-weight:800; white-space:nowrap; }
+.std-blatt-leiste{ display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin:14px auto 6px; font-family:Nunito,sans-serif; }
+.std-blatt-leiste button{ border:2px solid #dbe6ee; background:#fff; color:var(--nacht); border-radius:999px; padding:5px 12px; font-family:inherit; font-size:13px; font-weight:800; cursor:pointer; }
+.std-blatt-leiste button:hover{ border-color:var(--meer); color:var(--meer); }
+.std-blatt-leiste button.an{ background:#f2a93b; border-color:#f2a93b; color:#fff; }
+.std-blatt-leiste .std-bl-name{ font-size:12px; font-weight:800; color:#7c8a94; align-self:center; margin-right:4px; }
+@media print{ .std-blatt-leiste{ display:none !important; } }
+.std-blatt-leiste:has(+ .ws-seite.ws-aus){ display:none; }
 .std-ed-hinweis{ font-size:12.5px; font-weight:700; color:#8a5a00; background:#fff4dc; border-radius:10px; padding:8px 10px; }
 @media (max-width:700px){ .std-ed-phase{ grid-template-columns:1fr; } .std-ed-name{ padding-top:0; } }
 .std-akte{ margin-top:12px; display:none; align-items:center; gap:10px; flex-wrap:wrap; background:#eef4f8; border-radius:14px; padding:10px 14px; font-size:13px; font-weight:700; }
@@ -1454,6 +1470,11 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             <label style="margin-top:12px;"><i class="fa-solid fa-book-bookmark"></i> Aus dem Trainingsheft</label>
             <div class="std-heft-liste" id="std-heft-liste"></div>
             <p class="beschreibung" id="std-heft-hinweis" style="margin:6px 0 0;"></p>
+        </div>
+        <div class="std-heft" id="std-weiter" style="display:none;">
+            <label style="margin-top:12px;"><i class="fa-solid fa-forward"></i> Nicht geschafft – aus früheren Stunden</label>
+            <div class="std-weiter-liste" id="std-weiter-liste"></div>
+            <p class="beschreibung" style="margin:6px 0 0;">Angehakte Blätter kommen in diese Stunde (Weiterarbeiten am alten Blatt). Sie werden nicht neu gedruckt – bei Bedarf in der Blattliste unten wieder anhaken.</p>
         </div>
         <p class="beschreibung" style="margin:4px 0 0;">„Anzahl“: Das gewählte Blatt kommt zuerst, weitere Blätter derselben Reihe werden passend ergänzt – die Zeiten im Ablaufplan verteilen sich automatisch neu.</p>
         <label style="margin-top:12px;">Dazu</label>
@@ -4116,7 +4137,7 @@ function fs_speichernOeffnen(bereich){
 
 function fs_wahlHtml(s){
     return `<strong style="font-size:13px; color:var(--nacht);">Blätter:</strong>` +
-        (s.blaetter || []).map(b => `<label title="${ws_esc(b.name)}"><input type="checkbox" class="fs-wahl" data-bereich="${s.key}" value="${b.nr}" checked onchange="fs_blattwahl('${s.key}')"> ${b.nr} ${ws_esc(b.kurz)}</label>`).join("");
+        (s.blaetter || []).map(b => `<label title="${ws_esc(b.name)}${b.weiter ? " – liegt schon beim Kind (nicht geschafft)" : ""}"><input type="checkbox" class="fs-wahl" data-bereich="${s.key}" value="${b.nr}" ${b.weiter ? "" : "checked"} onchange="fs_blattwahl('${s.key}')"> ${b.nr} ${ws_esc(b.kurz)}</label>`).join("");
 }
 
 function fs_ausgabeAnlegen(s){
@@ -7075,8 +7096,10 @@ function std_auswahlAufbauen(){
         if (lt_wert("std-kind") && kt_woerter(lt_wert("std-kind")).length) document.getElementById("std-symptom").value = "kartei";
         std_blattListen();
         std_heftZeigen();
+        std_weiterZeigen();
     });
     std_heftZeigen();
+    std_weiterZeigen();
     std_blattListen();
 }
 function std_blattListen(){
@@ -7233,7 +7256,127 @@ function std_rezeptAusFormular(){
         std_mehrere(WS_BLAETTER, WS_BLAETTER.find(x => x.nr === sb) || WS_BLAETTER[0], n).forEach(x => neu({ p: "Symptomtraining", t: "ws", nr: x.nr }));
     }
     std_heftGewaehlt(code).forEach(m => neu({ p: STD_HEFT_PHASE[m.bereich] || "Symptomtraining", t: "heft", id: m.id }));
+    // Nicht geschaffte Blätter aus früheren Stunden: jeweils an den Anfang ihrer Phase
+    const weiter = std_weiterGewaehlt(code);
+    // dasselbe Blatt nicht zusätzlich neu vorschlagen
+    r.items = r.items.filter(it => !weiter.some(w => std_gleich(w.it, it)));
+    weiter.reverse().forEach(w => {
+        const it = { ...JSON.parse(JSON.stringify(w.it)), u: std_neuUid(), von: w.sid + ":" + w.it.u, vd: w.datum };
+        delete it.ng;
+        const i = r.items.findIndex(x => STD_PHASEN.indexOf(x.p) >= STD_PHASEN.indexOf(it.p));
+        if (i < 0) r.items.push(it); else r.items.splice(i, 0, it);
+    });
     return r;
+}
+
+/* ---------- Nicht geschaffte Blätter → nächste Stunde ---------- */
+function std_datumKurz(d){ const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || ""); return m ? `${m[3]}.${m[2]}.` : ""; }
+// Alle als „nicht geschafft“ markierten Blätter eines Kindes, die noch in keine spätere Stunde übernommen wurden
+function std_offeneUebertraege(code){
+    const stunden = (code && LRS_STUNDEN[code]) || [];
+    const uebernommen = new Set();
+    stunden.forEach(st => ((st.rezept && st.rezept.items) || []).forEach(it => { if (it.von) uebernommen.add(it.von); }));
+    const offen = [];
+    [...stunden].sort((a, b) => String(a.datum).localeCompare(String(b.datum))).forEach(st => {
+        const r = st.rezept;
+        if (!r || !r.items) return;
+        r.items.forEach(it => {
+            if (!it.ng || !it.u || uebernommen.has(st.id + ":" + it.u)) return;
+            const info = std_itemInfo(it, { ...r, kind: code });
+            if (info.ok) offen.push({ sid: st.id, datum: st.datum, it, name: info.name, gruppe: info.gruppe });
+        });
+    });
+    return offen;
+}
+function std_weiterZeigen(){
+    const box = document.getElementById("std-weiter"), liste = document.getElementById("std-weiter-liste");
+    if (!box) return;
+    const code = lt_wert("std-kind"), offen = std_offeneUebertraege(code);
+    const vorher = new Set([...document.querySelectorAll(".std-weiter-cb")].map(c => c.checked ? c.value : "-" + c.value));
+    box.style.display = offen.length ? "" : "none";
+    liste.innerHTML = offen.map(w => { const key = w.sid + ":" + w.it.u;
+        return `<label><input type="checkbox" class="std-weiter-cb" value="${ws_esc(key)}" ${vorher.has("-" + key) ? "" : "checked"}>
+            <span>${ws_esc(w.name)} <span style="color:#7c8a94; font-weight:700;">· ${ws_esc(w.gruppe)}</span></span><small>vom ${std_datumKurz(w.datum)}</small></label>`; }).join("");
+}
+function std_weiterGewaehlt(code){
+    const an = new Set([...document.querySelectorAll(".std-weiter-cb:checked")].map(c => c.value));
+    return std_offeneUebertraege(code).filter(w => an.has(w.sid + ":" + w.it.u));
+}
+
+/* ---------- Einzelnes Blatt tauschen / neu mischen ---------- */
+// Andere Blätter derselben Art (für „anderes Blatt“)
+function std_alternativen(it, r){
+    const gleich = x => r.items.some(y => y.u !== it.u && std_gleich(y, x));
+    let pool = [];
+    if (it.t === "fs"){
+        const k = fs_katalog(it.s);
+        const passt = it.s.startsWith("aufmerksamkeit") ? k.filter(x => au_passt(x) && (x.nr !== "3" || it.s !== "aufmerksamkeit5")) : k;
+        pool = (passt.length ? passt : k).map(b => ({ t: "fs", s: it.s, nr: b.nr }));
+    }
+    else if (it.t === "rs") pool = FS_SERIEN.rechtschreibung.blaetter.map(b => ({ t: "rs", k: it.k, nr: b.nr }));
+    else if (it.t === "lesen") pool = LT_AUFGABEN.map(a => ({ t: "lesen", a: a.key }));
+    else if (it.t === "le") pool = (LE_BLAETTER[it.st] || []).map((b, i) => ({ t: "le", st: it.st, i }));
+    else if (it.t === "kartei") pool = KT_BLAETTER.map(b => ({ t: "kartei", nr: b.nr }));
+    else if (it.t === "ws") pool = WS_BLAETTER.map(b => ({ t: "ws", nr: b.nr }));
+    else if (it.t === "diktat") pool = STD_DIKTAT.map(d => ({ t: "diktat", d: d.key }));
+    pool = pool.filter(x => !std_gleich(x, it));
+    const frei = pool.filter(x => !gleich(x));
+    return frei.length ? frei : pool;
+}
+function std_itemErsetzen(alt, neu){
+    Object.keys(alt).forEach(k => { if (!["u", "p", "von", "vd"].includes(k)) delete alt[k]; });
+    Object.assign(alt, neu, { u: std_neuUid() });   // neue ID → nur dieses Blatt wird neu erstellt
+}
+function std_anderesBlatt(u){
+    const r = std_rezept, it = r && r.items.find(x => x.u === u);
+    if (!it) return;
+    const pool = std_alternativen(it, r);
+    if (!pool.length){ alert("Für dieses Blatt gibt es keine Alternative derselben Art."); return; }
+    const neu = zufallsElement(pool);
+    std_itemErsetzen(it, neu);
+    std_nachAenderung(neu);
+}
+function std_blattMischen(u){
+    const r = std_rezept, it = r && r.items.find(x => x.u === u);
+    if (!it) return;
+    it.u = std_neuUid();
+    std_nachAenderung();
+}
+function std_ngUmschalten(u){
+    const r = std_rezept, it = r && r.items.find(x => x.u === u);
+    if (!it) return;
+    if (it.ng) delete it.ng; else it.ng = true;
+    std_nachAenderung();
+}
+// Kleine Leiste über jedem Blatt der Stunde (wird nicht gedruckt)
+function std_blattLeisten(){
+    const s = FS_SERIEN.stunde, box = document.getElementById("fs-blaetter-stunde");
+    if (!s || !box || !std_rezept) return;
+    box.querySelectorAll(".std-blatt-leiste").forEach(x => x.remove());
+    const gezeigt = new Set();
+    fs_seiten("stunde").forEach(seite => {
+        const b = (s.blaetter || []).find(x => x.nr === seite.dataset.blatt);
+        if (!b || !b.uid) return;
+        const u = String(b.uid).split(":")[0];
+        const it = std_rezept.items.find(x => x.u === u);
+        if (!it || gezeigt.has(u)) return;
+        gezeigt.add(u);
+        const name = std_itemInfo(it, std_rezept).name;
+        const alt = it.t !== "heft" && std_alternativen(it, std_rezept).length;
+        const leiste = document.createElement("div");
+        leiste.className = "std-blatt-leiste";
+        leiste.innerHTML = `<span class="std-bl-name">${it.von ? "↪ " : ""}${ws_esc(name)}</span>
+            ${alt ? `<button type="button" data-a="tausch" title="Ein anderes Blatt derselben Art"><i class="fa-solid fa-dice"></i> anderes Blatt</button>` : ""}
+            ${it.t !== "heft" ? `<button type="button" data-a="mischen" title="Gleiches Blatt mit neuen Aufgaben"><i class="fa-solid fa-shuffle"></i> neu mischen</button>` : ""}
+            <button type="button" data-a="ng" class="${it.ng ? "an" : ""}" title="Kommt in die nächste Stunde"><i class="fa-solid fa-forward"></i> ${it.ng ? "nicht geschafft ✓" : "nicht geschafft"}</button>`;
+        leiste.addEventListener("click", ev => {
+            const k = ev.target.closest("[data-a]"); if (!k) return;
+            if (k.dataset.a === "tausch") std_anderesBlatt(u);
+            else if (k.dataset.a === "mischen") std_blattMischen(u);
+            else std_ngUmschalten(u);
+        });
+        seite.parentNode.insertBefore(leiste, seite);
+    });
 }
 // Name eines Rezept-Eintrags (für Ablaufplan, Rückblick und Bearbeiten)
 function std_itemInfo(it, r){
@@ -7256,8 +7399,12 @@ function std_ausRezept(r){
     const items = r.items.filter(it => std_itemInfo(it, r).ok);
     const mitCache = (eintrag, uid) => ({ ...eintrag, uid, cache: std_cache[uid] || null });
     const phasenText = {};
+    if (items.some(it => it.t === "lesen") && !items.some(it => it.t === "lesen" && !it.von)){ const t = LT_TEXTE.find(x => x.t === r.lesetext); ctxLesen.lt = t ? std_lesetextVon(t) : std_lesetext(); r.lesetext = ctxLesen.lt.text.t; }
+    if (items.some(it => it.t === "diktat") && !items.some(it => it.t === "diktat" && !it.von)){ const t = DK_TEXTE.find(x => x.t === r.diktat); ctxDiktat.dk = t ? { text: dk_kuerzen(t, "mittel"), klasse: lt_klasse(), reif: lt_klasse() >= 5 } : std_diktat(); r.diktat = ctxDiktat.dk.text.t; }
     STD_PHASEN.forEach(ph => {
-        const liste = items.filter(it => it.p === ph), teile = [];
+        const alle = items.filter(it => it.p === ph), teile = [];
+        const weiter = alle.filter(it => it.von), liste = alle.filter(it => !it.von);
+        if (weiter.length) teile.push(`Weiterarbeiten (in der letzten Stunde nicht geschafft): ${weiter.map(it => `„${ws_esc(std_itemInfo(it, r).name)}“${it.vd ? " (vom " + std_datumKurz(it.vd) + ")" : ""}`).join(", ")}.`);
         // Aufmerksamkeit / Funktion: nach Reihe gruppiert
         const fs = liste.filter(it => it.t === "fs");
         [...new Set(fs.map(it => it.s))].forEach(sk => {
@@ -7289,11 +7436,12 @@ function std_ausRezept(r){
         if (ws.length) teile.push(`Worterarbeitung ${ws.map(it => `„${ws_esc(std_itemInfo(it, r).name)}“`).join(", ")} mit ${ws_woerterLesen().map(w => ws_esc(w.silben.join("-"))).join(", ")}.`);
         const heft = liste.filter(it => it.t === "heft");
         if (heft.length) teile.push("Aus dem Trainingsheft: " + heft.map(it => { const m = std_itemInfo(it, r).m; return `„${ws_esc(m.titel)}“${std_heftDruckbar(m) ? "" : " (separat drucken)"}`; }).join(", ") + ".");
-        if (teile.length) phasenText[ph] = { text: teile.join(" "), n: liste.length };
+        if (teile.length) phasenText[ph] = { text: teile.join(" "), n: alle.length };
     });
     // Blätter in Phasen-Reihenfolge, innerhalb der Phase in Rezept-Reihenfolge
     STD_PHASEN.forEach(ph => items.filter(it => it.p === ph).forEach(it => {
         const info = std_itemInfo(it, r);
+        const start = blaetter.length;
         if (it.t === "fs"){ const b = fs_katalog(it.s).find(x => x.nr === it.nr); blaetter.push(mitCache(fp_blattEintrag(it.s, b, 0), it.u)); geuebt.push(b.name); }
         else if (it.t === "rs"){ const b = FS_SERIEN.rechtschreibung.blaetter.find(x => x.nr === it.nr); blaetter.push(mitCache(fp_rsEintrag(it.k, b.bau, b.name, 0, code), it.u)); geuebt.push(`${RS_NAMEN[it.k] ? RS_NAMEN[it.k].kurz : it.k}: ${b.name}`); }
         else if (it.t === "lesen"){
@@ -7325,15 +7473,16 @@ function std_ausRezept(r){
             seiten.forEach((bild, i) => blaetter.push({ nr: "0", uid: it.u + ":" + i, kurz: `Heft: ${m.titel}${seiten.length > 1 ? " (" + (i + 1) + ")" : ""}`, name: `Trainingsheft: ${m.titel}${seiten.length > 1 ? ` – Seite ${i + 1}` : ""}`, bau: () => ({ seite: std_heftSeite(bild) }) }));
             geuebt.push(`Trainingsheft: ${m.titel}`);
         }
+        if (it.von) for (let i = start; i < blaetter.length; i++) if (blaetter[i].uid !== "lesetext" || !items.some(x => x.t === "lesen" && !x.von)) blaetter[i] = { ...blaetter[i], weiter: true, kurz: "↪ " + blaetter[i].kurz };
     }));
     const phasen = [{ phase: "Ankommen", zeit: "", inhalt: "Begrüßung, kurzes Gespräch: Wie war die Woche? Was hat in der Schule gut geklappt?" + (code && kt_woerter(code).length ? ` Lernbox: fällige Wörter von ${ws_esc(code)} abfragen.` : "") }];
     STD_PHASEN.forEach(ph => { if (phasenText[ph]) phasen.push({ phase: ph, zeit: "", inhalt: phasenText[ph].text, n: phasenText[ph].n }); });
     phasen.push({ phase: "Abschluss", zeit: "", inhalt: "Stunden-Rückblick, Stempel im Lernpass, kurzes Spiel (z. B. Reimwörter-Ping-Pong)" + (r.eltern ? ", Elternblatt mitgeben." : ".") });
     std_zeitenVerteilen(phasen, r.dauer || 40);
-    const heftIds = items.filter(it => it.t === "heft").map(it => it.id);
+    const heftIds = items.filter(it => it.t === "heft" && !it.ng).map(it => it.id);
     const info = { kind: code, phasen, geuebt, merksatz, dauer: r.dauer || 40, heft: heftIds, rezept: r };
     std_letzte = info;
-    setTimeout(() => { std_akteLeiste(); std_editorZeigen(); }, 0);
+    setTimeout(() => { std_akteLeiste(); std_editorZeigen(); std_blattLeisten(); }, 0);
     const ergebnis = [];
     if (r.plan) ergebnis.push({ nr: "0", kurz: "Ablaufplan", name: "Ablaufplan (für dich)", bau: () => std_ablaufplan(info) });
     ergebnis.push(...blaetter);
@@ -7390,13 +7539,17 @@ function std_editorZeigen(){
     const r = std_rezept;
     el.style.display = "";
     el.innerHTML = `<div class="std-ed-kopf"><b><i class="fa-solid fa-pen-to-square"></i> Blätter dieser Stunde anpassen</b>
-        <span>Tauschen, hinzufügen oder entfernen – der Ablaufplan passt sich automatisch an. Unveränderte Blätter bleiben genau so.</span></div>` +
+        <span>Tauschen, hinzufügen oder entfernen – der Ablaufplan passt sich automatisch an. Unveränderte Blätter bleiben genau so.
+        <i class="fa-solid fa-dice"></i> = anderes Blatt derselben Art · <i class="fa-solid fa-forward"></i> = nicht geschafft, kommt in die nächste Stunde.</span></div>` +
         STD_PHASEN.map(ph => {
             const liste = r.items.filter(it => it.p === ph);
             const optHtml = std_optionen(ph, r);
             return `<div class="std-ed-phase"><div class="std-ed-name">${ph}</div><div class="std-ed-zeilen">
                 ${liste.map(it => { const info = std_itemInfo(it, r), sel = encodeURIComponent(JSON.stringify({ t: it.t, s: it.s, nr: it.nr, k: it.k, a: it.a, d: it.d, id: it.id, st: it.st, i: it.i }));
-                    return `<div class="std-ed-zeile"><select data-tausch="${it.u}">${info.ok ? "" : `<option selected>${ws_esc(info.name)}</option>`}${optHtml}</select>
+                    const alt = it.t !== "heft" && std_alternativen(it, r).length;
+                    return `<div class="std-ed-zeile ${it.ng ? "ng" : ""} ${it.von ? "weiter" : ""}"><select data-tausch="${it.u}" title="${it.von ? "Aus der Stunde vom " + std_datumKurz(it.vd) + " übernommen" : ""}">${info.ok ? "" : `<option selected>${ws_esc(info.name)}</option>`}${optHtml}</select>
+                        <button class="std-ed-knopf" data-ed="tausch" data-u="${it.u}" title="Anderes Blatt derselben Art" ${alt ? "" : "disabled"}><i class="fa-solid fa-dice"></i></button>
+                        <button class="std-ed-knopf ${it.ng ? "an" : ""}" data-ed="ng" data-u="${it.u}" title="${it.ng ? "Nicht geschafft – kommt in die nächste Stunde (nochmal tippen = doch geschafft)" : "Als nicht geschafft markieren – kommt in die nächste Stunde"}"><i class="fa-solid fa-forward"></i></button>
                         <button class="std-ed-x" data-weg="${it.u}" title="Blatt entfernen">✕</button></div>`; }).join("")}
                 <select class="std-ed-neu" data-neu="${ph}"><option value="">+ Blatt hinzufügen …</option>${optHtml}</select></div></div>`;
         }).join("") +
@@ -7409,11 +7562,13 @@ function std_editorZeigen(){
         sel.addEventListener("change", () => {
             const neu = JSON.parse(decodeURIComponent(sel.value));
             const alt = r.items.find(x => x.u === sel.dataset.tausch);
-            Object.keys(alt).forEach(k => { if (!["u", "p"].includes(k)) delete alt[k]; });
-            Object.assign(alt, neu, { u: std_neuUid() });   // neue ID → dieses Blatt wird neu erstellt
+            std_itemErsetzen(alt, neu);
             std_nachAenderung(neu);
         });
     });
+    el.querySelectorAll("[data-ed]").forEach(b => b.addEventListener("click", () => {
+        if (b.dataset.ed === "tausch") std_anderesBlatt(b.dataset.u); else std_ngUmschalten(b.dataset.u);
+    }));
     el.querySelectorAll("[data-weg]").forEach(b => b.addEventListener("click", () => {
         r.items = r.items.filter(x => x.u !== b.dataset.weg);
         std_nachAenderung();
@@ -7623,7 +7778,8 @@ function std_heftGewaehlt(code){
 }
 async function std_heftVorbereiten(ids){
     const code = lt_wert("std-kind");
-    if (!Array.isArray(ids)) ids = std_bearbeiten && std_rezept ? std_rezept.items.filter(it => it.t === "heft").map(it => it.id) : std_heftGewaehlt(code).map(m => m.id);
+    if (!Array.isArray(ids)) ids = std_bearbeiten && std_rezept ? std_rezept.items.filter(it => it.t === "heft").map(it => it.id)
+        : [...std_heftGewaehlt(code).map(m => m.id), ...std_weiterGewaehlt(code).filter(w => w.it.t === "heft").map(w => w.it.id)];
     const pdfs = ((code && LRS_HEFTE[code]) || []).filter(m => ids.includes(m.id) && m.endung === "pdf" && !std_heftCache[m.id]);
     if (!pdfs.length) return;
     const hinweis = document.getElementById("std-heft-hinweis"), alt = hinweis.innerHTML;
@@ -7669,7 +7825,9 @@ async function std_inAkte(aendern){
     const st = document.getElementById("std-akte-status"), info = std_letzte;
     const rezept = JSON.parse(JSON.stringify(info.rezept || {}));
     delete rezept.ausText;
-    const inhalt = info.phasen.map(p => `${p.phase} (${p.zeit}): ${p.inhalt.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&[a-z]+;/g, " ")}`).join("\n");
+    const ng = (rezept.items || []).filter(it => it.ng).map(it => `„${std_itemInfo(it, rezept).name}“`);
+    const inhalt = info.phasen.map(p => `${p.phase} (${p.zeit}): ${p.inhalt.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&[a-z]+;/g, " ")}`).join("\n")
+        + (ng.length ? `\nNicht geschafft (kommt in die nächste Stunde): ${ng.join(", ")}` : "");
     try {
         const antwort = await fetch("akte.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
             body: JSON.stringify(aendern && std_akteId
@@ -7680,11 +7838,13 @@ async function std_inAkte(aendern){
         if (aendern && std_akteId){
             const liste = LRS_STUNDEN[info.kind] || [], alt = liste.find(x => x.id === std_akteId);
             if (alt) Object.assign(alt, { inhalt, dauer: info.dauer, rezept, heft: info.heft || [] });
+            std_weiterZeigen();
             std_akteHinweis = `✅ Änderungen gespeichert – der Ablaufplan oben ist aktuell. <a href="${fp_akteLink(info.kind, "stunden")}" target="_blank">Zur Akte</a>`;
             st.innerHTML = std_akteHinweis;
             return;
         }
         if (j.akte && j.akte.stunden){ LRS_STUNDEN[info.kind] = j.akte.stunden.map(x => ({ id: x.id, datum: x.datum, dauer: x.dauer, inhalt: x.inhalt, rezept: x.rezept || null, heft: x.heft || [] })); const n = j.akte.stunden.find(x => x.inhalt === inhalt); if (n){ std_akteId = n.id; std_akteLeiste(); std_editorZeigen(); } }
+        std_weiterZeigen();
         let heftText = "";
         if (info.heft && info.heft.length){
             const n = info.heft.length;
