@@ -97,6 +97,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-08", "Lernzeit mit Eule Ella", "Lernangebot: eigene Tafel-Welt (grüne Kreidetafel, Lernpfad, Sternenglas) und 8 neue Stunden „Lernen lernen“.", "sozial-stunden.php?bereich=lernangebot"],
     ["2026-11-08", "Lernangebot Grundschule", "Fertige 40-Minuten-Stunden Deutsch, Mathe &amp; Lernen lernen, Methodenpool mit Stundenplaner, Tafel-Übungen und Arbeitsblatt-Generator.", "sozial-stunden.php?bereich=lernangebot"],
     ["2026-11-02", "Lesetraining von Buchstaben bis Text", "In der Kinder-Akte unter <b>Förderplan</b>: Lesestufen 1–5 und bekannte Buchstaben wählen – das Förderpaket nimmt sie mit.", "trainingshefte.php"],
     ["2026-11-02", "Vertretungsstunden", "22 fertige 40-Minuten-Stunden für Kl. 1–4 mit Zufallsauswahl und Arbeitsblättern.", "sozial-stunden.php?bereich=vertretung"],

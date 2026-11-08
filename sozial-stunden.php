@@ -275,7 +275,8 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .blatt-name .ln.kurz{ flex:0 0 32mm; }
 .blatt-inhalt{ flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
 .blatt-fuss{ margin-top:auto; padding-top:1.5mm; border-top:.25mm solid #dfe5e2; font-family:"Nunito",sans-serif; font-size:7.5pt; font-weight:700; color:#8a979c; text-align:center; }
-.blatt.lese .lese-inhalt{ min-height:0; }
+/* Inhalt darf nicht schrumpfen – sonst rutscht er unbemerkt unter die Fußzeile */
+.blatt-inhalt, .blatt .lese-inhalt{ flex-shrink:0 !important; }
 .blatt-inhalt > *{ flex-shrink:0; }
 .luft{ flex:1 0 2.5mm; }
 .aufgabe.dehnbar{ flex:6 0 auto; display:flex; flex-direction:column; }
@@ -752,7 +753,7 @@ function aufgabeHtml(a, stufe = "34"){
         case "ankreuzen":
             return `<div class="kreuz-liste${a.nebeneinander ? " reihe" : ""}">` + (a.optionen || []).map((o, i) => {
                 const x = eintrag(o, i);
-                return `<div class="kreuz">${x.vorn}<span class="box"></span>${x.bild}${linienText(x.text)}</div>`;
+                return `<div class="kreuz">${x.vorn}<span class="box"></span>${x.bild}${String(x.text).trim() || !x.bild ? linienText(x.text) : ""}</div>`;
             }).join("") + "</div>";
         case "zuordnen": {
             const l = a.links || [], r = a.rechts || [], n = Math.max(l.length, r.length);

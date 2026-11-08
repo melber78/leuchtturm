@@ -40,7 +40,22 @@ const NEU = {
         fuss: "Fehler sind Helfer – sie zeigen mir, was ich noch übe.", wozu: "Zur Stunde „Fehler sind Helfer“ und für jede Arbeitsphase." },
     "lern-plakat-lerndaumen": { titel: "Plakat: Lern-Daumen", gruppe: "Lernangebot", art: "plakat",
         punkte: [{ emoji: "👍", text: "Das kann ich schon sicher." }, { emoji: "👉", text: "Das klappt schon ein bisschen." }, { emoji: "👎", text: "Das übe ich noch." }],
-        fuss: "Am Ende jeder Stunde: Wie gut kann ich das jetzt?", wozu: "Für den Abschluss jeder Lernangebot-Stunde." }
+        fuss: "Am Ende jeder Stunde: Wie gut kann ich das jetzt?", wozu: "Für den Abschluss jeder Lernangebot-Stunde." },
+    "lern-plakat-auftraege": { titel: "Plakat: Auftrags-Zeichen", gruppe: "Lernangebot", art: "plakat",
+        punkte: [{ emoji: "☑️", text: "Kreuze an." }, { emoji: "🔗", text: "Verbinde." }, { emoji: "⭕", text: "Kreise ein." }, { emoji: "✏️", text: "Schreibe." }, { emoji: "🖍️", text: "Male aus." }, { emoji: "〰️", text: "Unterstreiche." }],
+        fuss: "Erst schauen: Was soll ich tun? Dann loslegen.", wozu: "Zur Stunde „Aufträge verstehen“ – und dauerhaft neben der Tafel." },
+    "lern-plakat-hilfe": { titel: "Plakat: Die Hilfe-Treppe", gruppe: "Lernangebot", art: "plakat", nummern: true,
+        punkte: [{ emoji: "👀", text: "Noch einmal genau lesen und schauen." }, { emoji: "🧰", text: "Ein Hilfsmittel nehmen (Rechenkette, Wörterbuch, Beispiel im Heft)." }, { emoji: "🤫", text: "Den Nachbarn leise fragen." }, { emoji: "🙋", text: "Hand heben – die Lehrerin kommt." }],
+        fuss: "Feststecken ist normal. Wichtig ist, was du dann machst.", wozu: "Zur Stunde „Ich weiß nicht weiter“ – hängt dauerhaft im Raum." },
+    "lern-plakat-pausen": { titel: "Plakat: Pausen-Ideen für den Kopf", gruppe: "Lernangebot", art: "plakat",
+        punkte: [{ emoji: "🙆", text: "Aufstehen und strecken." }, { emoji: "💧", text: "Wasser trinken." }, { emoji: "🪟", text: "Fenster auf, frische Luft." }, { emoji: "🌬️", text: "Dreimal tief atmen." }, { emoji: "✖️", text: "Überkreuz-Bewegung." }],
+        fuss: "Kurze Pause – dann geht es wieder viel besser.", wozu: "Zur Stunde „Pause fürs Gehirn“." },
+    "lern-plakat-mut": { titel: "Plakat: Mut-Sätze", gruppe: "Lernangebot", art: "plakat",
+        punkte: [{ emoji: "🌱", text: "Ich kann das NOCH nicht." }, { emoji: "🔁", text: "Ich probiere es noch einmal." }, { emoji: "🪜", text: "Ich mache einen kleinen Schritt nach dem anderen." }, { emoji: "🙋", text: "Ich darf um Hilfe fragen." }, { emoji: "🔍", text: "Fehler zeigen mir, was ich noch übe." }],
+        fuss: "Was du zu dir selbst sagst, macht dich stark.", wozu: "Zur Stunde „Dranbleiben“ – hängt dauerhaft im Raum." },
+    "lern-zielkarten": { titel: "Ziel-Karten", gruppe: "Lernangebot", art: "karten", proSeite: 4, kopf: "🎯 Mein Ziel bis nächste Woche",
+        items: Array.from({ length: 4 }, () => ({ text: "Ich übe: …… · So oft: …… · Geschafft? ☐", linien: 3 })),
+        hinweis: "Eine Karte pro Kind; nächste Woche gemeinsam nachschauen.", wozu: "Zur Stunde „Mein Ziel für diese Woche“." }
 };
 Object.assign(B, NEU);
 Object.assign(SM.zuordnung || {}, {
@@ -48,6 +63,11 @@ Object.assign(SM.zuordnung || {}, {
     "l-arbeitsplatz": ["lern-plakat-startklar"],
     "l-fehler-helfer": ["lern-plakat-kontrolle"],
     "l-zahlenland": ["lern-zahlenkarten-20"],
-    "l-abc-training": ["lern-buchstaben"]
+    "l-abc-training": ["lern-buchstaben"],
+    "l-auftraege-verstehen": ["lern-plakat-auftraege"],
+    "l-hilfe-holen": ["lern-plakat-hilfe"],
+    "l-pausen": ["lern-plakat-pausen"],
+    "l-dranbleiben": ["lern-plakat-mut"],
+    "l-ziele": ["lern-zielkarten"]
 });
 })();

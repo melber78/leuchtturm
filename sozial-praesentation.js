@@ -161,7 +161,116 @@ const CSS = `
 @keyframes pRuhePuls{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.08); } }
 @keyframes pRuheAtem{ 0%,100%{ filter:brightness(1); } 50%{ filter:brightness(1.18); } }
 #praes .p-konfetti{ position:absolute; inset:0; pointer-events:none; z-index:20; }
+
+/* ============================================================
+   LERNZEIT (Lernangebot): eigene Welt – grüne Kreidetafel mit
+   Holzrahmen, Kreideschrift, Eule Ella, Lernpfad statt Punkte.
+   ============================================================ */
+#praes.lern{ background:#6b4423; padding:1.2vh 1.2vw 0; color:#f4f1e8; font-family:"Andika","Nunito",sans-serif; }
+#praes.lern .p-buehne{ border-radius:14px; box-shadow:inset 0 0 0 .6vh #4a2e15, inset 0 0 60px rgba(0,0,0,.45);
+    background:radial-gradient(ellipse at 30% 20%, rgba(255,255,255,.07), transparent 55%), radial-gradient(ellipse at 80% 90%, rgba(255,255,255,.05), transparent 50%), linear-gradient(160deg, #2f6b50, #23533e 60%, #1d4634); }
+#praes.lern .p-buehne::after{ content:""; position:absolute; left:6%; right:6%; bottom:0; height:1.3vh; background:linear-gradient(#8a5a2e,#6b4423); border-radius:6px 6px 0 0; box-shadow:0 -2px 6px rgba(0,0,0,.3); pointer-events:none; }
+#praes.lern h1, #praes.lern h2{ font-family:"Patrick Hand","Andika",sans-serif; color:#fffdf5; font-weight:400; letter-spacing:.01em; text-shadow:0 0 1px rgba(255,255,255,.6), 0 2px 0 rgba(0,0,0,.15); }
+#praes.lern h1{ font-size:clamp(40px,8vw,128px); }
+#praes.lern h2{ font-size:clamp(30px,5vw,74px); }
+#praes.lern .p-klein{ color:#ffe066; font-family:"Patrick Hand","Andika",sans-serif; font-weight:400; font-size:clamp(18px,2.1vw,30px); letter-spacing:.04em; }
+#praes.lern .p-text{ color:#f4f1e8; }
+#praes.lern .p-chip{ background:transparent; border:2px dashed rgba(255,255,255,.55); color:#fffdf5; }
+#praes.lern .p-chip.gold{ border-color:#ffe066; color:#ffe066; }
+#praes.lern .p-chip.gruen{ border-color:#b5e48c; color:#b5e48c; }
+#praes.lern .p-knopf{ background:#ffe066; color:#1d4634; border-radius:12px 18px 14px 20px; box-shadow:0 5px 0 #c9a72e, 0 8px 18px rgba(0,0,0,.3); font-family:"Patrick Hand","Andika",sans-serif; font-weight:400; font-size:clamp(18px,2.2vw,32px); }
+#praes.lern .p-knopf.gold{ background:#ff8fab; color:#3b1020; box-shadow:0 5px 0 #c9637c, 0 8px 18px rgba(0,0,0,.3); }
+#praes.lern .p-knopf.hell{ background:rgba(255,255,255,.12); color:#fffdf5; border:2px solid rgba(255,255,255,.5); box-shadow:none; }
+#praes.lern .p-aussage, #praes.lern .p-frage, #praes.lern .p-liste div, #praes.lern .p-film{ background:rgba(255,255,255,.06); color:#fffdf5; border:3px solid rgba(255,255,255,.75); border-radius:16px 26px 18px 30px; box-shadow:none; }
+#praes.lern .p-frage.an{ border-color:#ffe066; box-shadow:0 0 0 4px rgba(255,224,102,.25); }
+#praes.lern .p-frage.aufgabe{ background:rgba(255,224,102,.1); }
+#praes.lern .p-frage .nr{ color:#ffe066; }
+#praes.lern .p-film span{ color:#d8e6dc; }
+#praes.lern .p-saeule{ background:rgba(255,255,255,.08); border:2px dashed rgba(255,255,255,.4); }
+#praes.lern .p-saeule .p-fuell{ background:repeating-linear-gradient(-45deg,#ffe066 0 10px,#f5d24c 10px 20px); }
+#praes.lern .p-saeule .p-zahl{ color:#1d4634; }
+#praes.lern .p-symbol{ background:#fffdf5; box-shadow:0 0 0 4px rgba(255,255,255,.25); }
+#praes.lern .p-stimme .p-name{ font-family:"Patrick Hand","Andika",sans-serif; font-weight:400; font-size:clamp(18px,2vw,30px); }
+#praes.lern .p-stimme.richtig .p-symbol{ box-shadow:0 0 0 6px #b5e48c, 0 0 30px rgba(181,228,140,.6); }
+#praes.lern .p-stimme.richtig .p-name::after{ color:#b5e48c; }
+#praes.lern .p-minus{ color:rgba(255,255,255,.55); }
+#praes.lern .p-leiste{ background:#6b4423; box-shadow:none; padding:8px 4px; }
+#praes.lern .p-leiste button{ background:#8a5a2e; color:#fff3dc; box-shadow:inset 0 -3px 0 rgba(0,0,0,.25); }
+#praes.lern .p-leiste button:hover{ background:#a06c3a; }
+#praes.lern .p-leiste .p-pos{ color:#f1d9b5; }
+#praes.lern .p-timer{ background:#fffdf5; color:#1d4634; font-family:"Patrick Hand","Andika",sans-serif; box-shadow:0 0 0 5px #8a5a2e, 0 10px 24px rgba(0,0,0,.35); }
+#praes.lern .p-timer button{ background:#e7efe9; color:#1d4634; }
+#praes.lern .p-overlay{ background:rgba(20,45,33,.7); }
+#praes.lern .p-dialog{ background:#fffdf5; border:8px solid #8a5a2e; color:#1f2d36; }
+#praes.lern .p-dialog .p-knopf.hell{ color:#1d4634; border-color:#1d4634; }
+#praes.lern .p-zeiger{ border-top-color:#2f6b50; }
+#praes.lern .p-ergebnis{ color:#2f6b50; }
+#praes.lern .p-ruhe{ background:radial-gradient(circle at 50% 40%, #2f6b50 0%, #1d4634 70%); }
+#praes.lern .p-ruhe h2{ color:#fffdf5; }
+#praes.lern .p-ruhe-zeit b{ color:#ffe066; }
+#praes.lern .p-vorleser{ background:#ffe066; color:#1d4634; }
+#praes.lern .p-s1{ color:#8ecae6; } #praes.lern .p-s2{ color:#ff8fab; }
+#praes.lern .p-silbenknopf.an{ background:#a06c3a !important; box-shadow:inset 0 0 0 2px #ffe066; }
+/* Kreide-Kritzeleien und Eule */
+#praes .l-kritzel{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+#praes .l-kritzel span{ position:absolute; font-family:"Patrick Hand","Andika",sans-serif; color:rgba(255,255,255,.13); font-size:clamp(30px,5vw,80px); animation:lSchweb 7s ease-in-out infinite; }
+@keyframes lSchweb{ 0%,100%{ transform:translateY(0) rotate(-6deg); } 50%{ transform:translateY(-16px) rotate(6deg); } }
+#praes .l-eule{ width:clamp(110px,22vh,260px); height:auto; filter:drop-shadow(0 8px 14px rgba(0,0,0,.35)); animation:lWipp 3.2s ease-in-out infinite; transform-origin:50% 100%; }
+#praes .l-eule.klein{ width:clamp(70px,13vh,150px); }
+@keyframes lWipp{ 0%,100%{ transform:rotate(-4deg); } 50%{ transform:rotate(4deg); } }
+#praes .l-eule .l-lid{ animation:lBlinzel 5s infinite; transform-origin:center; transform-box:fill-box; }
+@keyframes lBlinzel{ 0%,92%,100%{ transform:scaleY(0); } 95%{ transform:scaleY(1); } }
+#praes .l-mit-eule{ display:flex; align-items:flex-end; gap:2vw; justify-content:center; }
+#praes .l-blase{ position:relative; background:#fffdf5; color:#1d4634; border-radius:28px 34px 30px 24px; padding:.6em 1em; font-family:"Patrick Hand","Andika",sans-serif; font-size:clamp(22px,3vw,48px); max-width:min(60vw,900px); text-align:left; line-height:1.2; margin-bottom:8vh; box-shadow:0 8px 0 rgba(0,0,0,.15); }
+#praes .l-blase::after{ content:""; position:absolute; left:-22px; bottom:28px; border:14px solid transparent; border-right:26px solid #fffdf5; border-left:0; }
+#praes .l-blase small{ display:block; font-size:.6em; color:#2f6b50; letter-spacing:.06em; text-transform:uppercase; }
+#praes .l-stempel{ display:inline-block; font-family:"Patrick Hand","Andika",sans-serif; font-size:clamp(20px,2.6vw,40px); color:#1d4634; background:#ffe066; padding:.1em .7em; border-radius:6px; transform:rotate(-3deg); box-shadow:0 4px 0 #c9a72e; margin-bottom:2vh; letter-spacing:.08em; }
+#praes .l-check{ display:flex; gap:2vw; justify-content:center; flex-wrap:wrap; margin:2vh 0; }
+#praes .l-check div{ border:3px solid rgba(255,255,255,.75); border-radius:14px 22px 16px 24px; padding:.5em 1em; font-family:"Patrick Hand","Andika",sans-serif; font-size:clamp(20px,2.6vw,40px); display:flex; align-items:center; gap:.5em; }
+#praes .l-check b{ color:#ffe066; font-weight:400; font-size:1.3em; }
+/* Lernpfad statt Punkte */
+#praes .l-pfad{ flex:1; display:flex; align-items:center; justify-content:center; gap:0; min-width:0; }
+#praes .l-station{ display:flex; flex-direction:column; align-items:center; gap:2px; color:#f1d9b5; font:400 13px "Patrick Hand","Andika",sans-serif; cursor:pointer; padding:0 .4vw; opacity:.55; position:relative; }
+#praes .l-station .l-punkt{ width:34px; height:34px; border-radius:50%; background:#8a5a2e; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:inset 0 -3px 0 rgba(0,0,0,.25); }
+#praes .l-station.war{ opacity:.85; }
+#praes .l-station.war .l-punkt{ background:#b5e48c; }
+#praes .l-station.an{ opacity:1; color:#ffe066; }
+#praes .l-station.an .l-punkt{ background:#ffe066; transform:scale(1.25); box-shadow:0 0 0 4px rgba(255,224,102,.35); }
+#praes .l-weg{ width:clamp(14px,3vw,60px); height:4px; background:repeating-linear-gradient(90deg,#f1d9b5 0 6px,transparent 6px 12px); opacity:.5; margin-bottom:16px; }
+@media (max-width:700px){ #praes .l-station span.l-name{ display:none; } #praes .l-weg{ width:8px; } }
+/* Sternenglas */
+#praes .l-zwei{ display:flex; gap:5vw; align-items:flex-end; justify-content:center; flex-wrap:wrap; }
+#praes .l-zwei .p-saeule{ height:15vh; }
+#praes .l-glasbox{ display:flex; align-items:flex-end; gap:1.5vw; }
+#praes .l-glas{ position:relative; width:clamp(120px,18vh,220px); height:clamp(130px,22vh,250px); border:5px solid rgba(255,255,255,.85); border-top:0; border-radius:0 0 40px 40px; margin:1vh auto 0; display:flex; flex-wrap:wrap-reverse; align-content:flex-start; justify-content:center; gap:2px; padding:10px; overflow:hidden; }
+#praes .l-glas::before{ content:""; position:absolute; top:-10px; left:-14px; right:-14px; height:12px; border:5px solid rgba(255,255,255,.85); border-radius:8px; }
+#praes .l-glas i{ font-style:normal; font-size:clamp(18px,2.6vh,30px); line-height:1; animation:lStern .5s cubic-bezier(.2,1.6,.4,1); }
+@keyframes lStern{ from{ transform:translateY(-30vh) scale(1.8); } }
+#praes .l-glas-zahl{ font-family:"Patrick Hand","Andika",sans-serif; font-size:clamp(20px,2.6vw,38px); color:#ffe066; margin-top:.4em; }
 `;
+const LERN = () => !!(window.BEREICH && window.BEREICH.key === "lernangebot");
+// Eule Ella – eigene Zeichnung
+const EULE = `<svg class="l-eule" viewBox="0 0 140 160" xmlns="http://www.w3.org/2000/svg">
+  <path d="M30 40 L22 8 L52 30 Z M110 40 L118 8 L88 30 Z" fill="#7b5236"/>
+  <ellipse cx="70" cy="92" rx="52" ry="60" fill="#9c6b45"/>
+  <ellipse cx="70" cy="108" rx="34" ry="40" fill="#e9d3b4"/>
+  <path d="M50 96 q5 6 10 0 M65 104 q5 6 10 0 M80 96 q5 6 10 0 M58 118 q5 6 10 0 M73 118 q5 6 10 0" fill="none" stroke="#c9a67e" stroke-width="3" stroke-linecap="round"/>
+  <path d="M20 86 Q4 110 22 136 Q30 120 32 96 Z M120 86 Q136 110 118 136 Q110 120 108 96 Z" fill="#7b5236"/>
+  <circle cx="50" cy="62" r="22" fill="#fffdf5" stroke="#ffe066" stroke-width="5"/><circle cx="90" cy="62" r="22" fill="#fffdf5" stroke="#ffe066" stroke-width="5"/>
+  <circle cx="53" cy="64" r="10" fill="#1d2b22"/><circle cx="87" cy="64" r="10" fill="#1d2b22"/>
+  <circle cx="56" cy="60" r="3.5" fill="#fff"/><circle cx="90" cy="60" r="3.5" fill="#fff"/>
+  <rect class="l-lid" x="28" y="40" width="84" height="44" rx="20" fill="#9c6b45"/>
+  <path d="M63 76 L77 76 L70 90 Z" fill="#f4a03a"/>
+  <path d="M50 150 l-6 8 M54 150 v9 M58 150 l6 8 M82 150 l-6 8 M86 150 v9 M90 150 l6 8" stroke="#f4a03a" stroke-width="4" stroke-linecap="round"/>
+  <path d="M40 30 Q70 14 100 30 L100 36 Q70 22 40 36 Z" fill="#1d4634"/><rect x="62" y="12" width="16" height="8" fill="#1d4634"/><path d="M78 16 q14 4 10 22" fill="none" stroke="#ffe066" stroke-width="3"/>
+</svg>`;
+const eule = (klein) => klein ? EULE.replace('class="l-eule"', 'class="l-eule klein"') : EULE;
+const KRITZEL = () => `<div class="l-kritzel">${[["1+2", 6, 12], ["ABC", 82, 10], ["★", 14, 70], ["7·8", 78, 72], ["a e i", 40, 86], ["✓", 92, 44], ["Aa", 4, 40], ["=", 60, 6]].map(([t, x, y], k) => `<span style="left:${x}%;top:${y}%;animation-delay:${k * .7}s">${t}</span>`).join("")}</div>`;
+// Lernpfad: welche Station gehört zu welcher Folie?
+const STATIONEN = [["start", "🚩", "Start"], ["geschichte", "📖", "Geschichte"], ["ueben", "🎯", "Üben"], ["arbeiten", "✏️", "Arbeiten"], ["ziel", "⭐", "Ziel"]];
+function station(typ){ return typ === "titel" ? 0 : /geschichte|fragen|film/.test(typ) ? 1 : typ === "arbeitsblatt" ? 3 : typ === "abschluss" ? 4 : 2; }
+function sterneLesen(st){ try { return parseInt(localStorage.getItem("lern_sterne_" + st), 10) || 0; } catch (e) { return 0; } }
+function sterneSchreiben(st, n){ try { localStorage.setItem("lern_sterne_" + st, String(n)); } catch (e) {} }
 
 /* ---------------- Klänge (ohne Dateien, mit Web Audio) ---------------- */
 let ton = null;
@@ -334,6 +443,10 @@ function praesentationStarten(e, startStufe){
     praesentationBeenden();
     const wurzel = document.createElement("div");
     wurzel.id = "praes";
+    if (LERN()) {
+        wurzel.classList.add("lern");
+        if (!document.getElementById("lernSchrift")) { const l = document.createElement("link"); l.id = "lernSchrift"; l.rel = "stylesheet"; l.href = "https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap"; document.head.appendChild(l); }
+    }
     wurzel.innerHTML = `<div class="p-buehne"></div>
         <div class="p-leiste">
             <button data-p="zu" title="Schließen (Esc)">✕</button>
@@ -368,7 +481,7 @@ function ruheSignal(){
     if (alt) { ruheEnde(); return; }
     const o = document.createElement("div");
     o.className = "p-ruhe";
-    o.innerHTML = `<div class="p-ruhe-icon">🤫</div><h2>Psst … Ruhe bitte!</h2>
+    o.innerHTML = `${LERN() ? eule() : '<div class="p-ruhe-icon">🤫</div>'}<h2>${LERN() ? "Psst … Eule Ella denkt nach!" : "Psst … Ruhe bitte!"}</h2>
         <div class="p-ruhe-regeln"><div><span>👀</span>Augen nach vorn</div><div><span>🤐</span>Mund zu</div><div><span>✋</span>Hände still</div></div>
         <div class="p-ruhe-zeit">Wir warten, bis alle leise sind … <b>0:00</b></div>
         <button class="p-knopf gold">✅ Alle sind leise – weiter</button>`;
@@ -445,12 +558,18 @@ function zeigen(i, rueckwaerts){
     const el = document.createElement("div");
     el.className = "p-folie" + (rueckwaerts ? " zurueck" : "");
     el.innerHTML = folieHtml(f, z.e);
-    if (f.typ === "titel") el.classList.add("p-titel");
+    if (f.typ === "titel" && !LERN()) el.classList.add("p-titel");
     z.buehne.querySelectorAll(".p-folie").forEach(x => x.remove());
     z.buehne.appendChild(el);
     folieAktivieren(el, f);
     if (z.silben) silbenLaden().then(() => { if (el.isConnected) silbenAnwenden(el); });
     z.wurzel.querySelector(".p-pos").textContent = (i + 1) + " / " + z.folien.length;
+    if (LERN()) {
+        const jetzt = station(f.typ);
+        z.wurzel.querySelector(".p-punkte").className = "p-punkte l-pfad";
+        z.wurzel.querySelector(".p-punkte").innerHTML = STATIONEN.map(([, sym, name], k) => { const ziel = z.folien.findIndex(x => station(x.typ) === k);
+            return (k ? '<span class="l-weg"></span>' : "") + `<span class="l-station ${k === jetzt ? "an" : k < jetzt ? "war" : ""}" ${ziel >= 0 ? `data-p="punkt" data-n="${ziel}"` : ""} title="${name}"><span class="l-punkt">${k === jetzt ? "🦉" : sym}</span><span class="l-name">${name}</span></span>`; }).join("");
+    } else
     z.wurzel.querySelector(".p-punkte").innerHTML = z.folien.map((_, k) => `<i data-p="punkt" data-n="${k}" class="${k === i ? "an" : ""}"></i>`).join("");
 }
 
@@ -478,6 +597,29 @@ function abstimmOptionen(art, u){
 
 function folieHtml(f, e){
     const fuerChip = u => `<span class="p-chip ${u.fuer === "34" ? "gold" : u.fuer === "12" ? "" : "gruen"}">${{ alle: "Alle", "12": "Kl. 1/2", "34": "Kl. 3/4" }[u.fuer] || "Alle"}</span>`;
+    if (LERN()) {
+        const zielText = zustand.stufe === "34" ? e.ziel34 : (e.ziel12 || e.ziel34);
+        if (f.typ === "titel") return `${KRITZEL()}<div class="l-stempel">LERNZEIT · ${esc(String(e.kategorie || "").replace(/:.*/, ""))}</div><h1>${esc(e.titel)}</h1>
+            <div class="l-mit-eule">${eule()}<div class="l-blase"><small>Eule Ella sagt:</small>Heute üben wir: ${esc(zielText || e.titel)}</div></div>
+            <div class="p-wahl"><button class="p-knopf ${zustand.stufe === "12" ? "" : "hell"}" data-stufe="12">Klasse 1/2</button><button class="p-knopf ${zustand.stufe === "34" ? "" : "hell"}" data-stufe="34">Klasse 3/4</button></div>`;
+        if (f.typ === "ankuendigung") {
+            const reihe = zustand.folien.filter(x => x.typ === "uebung"), nr = reihe.findIndex(x => x.u === f.u) + 1;
+            return `<div class="p-klein">${f.u.zusatz ? "Extra-Runde – wenn noch Zeit ist" : reihe.length > 1 ? "Station " + nr + " von " + reihe.length : "Unsere Übung"}</div>
+                <div class="l-mit-eule">${eule(true)}<div class="l-blase"><small>Gleich kommt:</small>${f.u.emoji || "🎯"} ${esc(f.u.titel)}${f.u.warum ? `<br><span style="font-size:.7em">${inline(f.u.warum)}</span>` : ""}</div></div>
+                ${f.u.zusatz && f.weiter ? `<div class="p-reihe"><button class="p-knopf hell" data-springen="${f.weiter}">⏭ Überspringen</button></div>` : ""}`;
+        }
+        if (f.typ === "arbeitsblatt") return `${KRITZEL()}<div class="l-stempel">JETZT BIST DU DRAN!</div>
+            <div class="l-mit-eule">${eule()}<div class="l-blase"><small>Eule Ella sagt:</small>Jeder arbeitet an seinem Platz. Wenn du feststeckst: Hilfe-Treppe!</div></div>
+            <div class="l-check"><div><b>1</b> Name schreiben</div><div><b>2</b> Aufgabe genau lesen</div><div><b>3</b> Los geht’s!</div><div><b>✓</b> Fertig? Kontrollieren!</div></div>
+            <div class="p-reihe"><button class="p-knopf" data-start="11">⏱ 11 Minuten starten</button><button class="p-knopf hell" data-p="ruhe">🤫 Leise-Signal</button></div>`;
+        if (f.typ === "abschluss") {
+            const n = sterneLesen(zustand.stufe);
+            return `<h2>Wie gut kannst du das jetzt?</h2><div class="l-zwei">
+                ${stimmenHtml("lerndaumen", [{ wert: "sicher", name: "kann ich sicher", art: "emoji", zeichen: "👍" }, { wert: "bisschen", name: "ein bisschen", art: "emoji", zeichen: "👉" }, { wert: "noch", name: "übe ich noch", art: "emoji", zeichen: "👎" }])}
+                <div class="l-glasbox">${eule(true)}<div><div class="l-glas" id="lGlas">${"<i>⭐</i>".repeat(Math.min(n, 60))}</div><div class="l-glas-zahl">Sternenglas Kl. ${zustand.stufe === "34" ? "3/4" : "1/2"}: <b id="lZahl">${n}</b></div></div></div></div>
+                <div class="p-reihe"><button class="p-knopf" data-stern="1">⭐ Stern ins Glas!</button><button class="p-knopf hell" data-p="rad">🎡 Wer erzählt?</button></div>`;
+        }
+    }
     switch (f.typ) {
         case "titel": {
             const lt = zustand.stufe === "34" ? e.lerntext34 : e.lerntext12;
@@ -576,6 +718,12 @@ function folieAktivieren(el, f){
         } });
     }));
     el.querySelectorAll("[data-welle]").forEach(b => b.addEventListener("click", () => applauswelle(el)));
+    el.querySelectorAll("[data-stern]").forEach(b => b.addEventListener("click", () => {
+        const n = sterneLesen(zustand.stufe) + 1; sterneSchreiben(zustand.stufe, n);
+        const glas = el.querySelector("#lGlas"); if (glas && n <= 60) glas.insertAdjacentHTML("beforeend", "<i>⭐</i>");
+        const zahl = el.querySelector("#lZahl"); if (zahl) zahl.textContent = n;
+        fanfare(); konfetti(zustand.buehne);
+    }));
 }
 
 function vorlesen(text, knopf){
@@ -838,7 +986,8 @@ async function pptxExport(e, stufe = "12"){
     const p = new window.PptxGenJS();
     p.layout = "LAYOUT_WIDE"; // 13,33 × 7,5 Zoll
     p.title = e.titel; p.subject = (window.BEREICH && window.BEREICH.name) || "Sozialtraining"; p.company = "Leuchtturm";
-    const NACHT = "16324A", MEER = "3D7EA6", GOLD = "F2A93B", CREME = "FDFAF3", GRAU = "7C8A85";
+    const lern = LERN();
+    const NACHT = lern ? "1D4634" : "16324A", MEER = lern ? "2E8B57" : "3D7EA6", GOLD = lern ? "F4D35E" : "F2A93B", CREME = lern ? "EEF5EC" : "FDFAF3", GRAU = lern ? "5F7A68" : "7C8A85";
     const W = 13.33, H = 7.5, FONT = "Arial Rounded MT Bold", TEXT = "Arial";
     const folien = folienBauen(e, stufe);
     const bildCache = {};
@@ -865,7 +1014,7 @@ async function pptxExport(e, stufe = "12"){
         switch (f.typ) {
             case "titel": {
                 s.background = { color: NACHT };
-                s.addText(String((window.BEREICH && window.BEREICH.name) || "Sozialtraining").toUpperCase() + " · " + String(e.kategorie || "").toUpperCase(), { x: 0, y: .7, w: W, h: .5, align: "center", fontFace: FONT, fontSize: 18, color: "F2C97B", charSpacing: 2 });
+                s.addText((lern ? "LERNZEIT" : String((window.BEREICH && window.BEREICH.name) || "Sozialtraining").toUpperCase()) + " · " + String(e.kategorie || "").toUpperCase(), { x: 0, y: .7, w: W, h: .5, align: "center", fontFace: FONT, fontSize: 18, color: lern ? "FFE066" : "F2C97B", charSpacing: 2 });
                 const bilder = bilderImText((stufe === "34" ? e.lerntext34 : e.lerntext12 || {}).text, 3);
                 await bilderSetzen(s, bilder.length ? bilder : [KAT_BILD[e.kategorie]].filter(Boolean), 1.6, 1.7);
                 s.addText(e.titel, { x: .5, y: 3.6, w: W - 1, h: 1.6, align: "center", fontFace: FONT, fontSize: 60, bold: true, color: "FFFFFF" });
@@ -936,15 +1085,15 @@ async function pptxExport(e, stufe = "12"){
                 break;
             case "arbeitsblatt":
                 await bilderSetzen(s, ["stift", "heft"], .8, 1.4);
-                s.addText("Bearbeite jetzt leise dein Arbeitsblatt.", { x: .5, y: 2.4, w: W - 1, h: 1.2, align: "center", fontFace: FONT, fontSize: 44, bold: true, color: NACHT });
+                s.addText(lern ? "Jetzt bist du dran!" : "Bearbeite jetzt leise dein Arbeitsblatt.", { x: .5, y: 2.4, w: W - 1, h: 1.2, align: "center", fontFace: FONT, fontSize: 44, bold: true, color: NACHT });
                 s.addText("Wenn du fertig bist, drehst du dein Blatt um und wartest leise.", { x: 1, y: 3.8, w: W - 2, h: 1, align: "center", fontFace: TEXT, fontSize: 24, color: MEER });
                 s.addNotes(e.nur34 ? "Arbeitsphase ca. 10 Minuten." : "Arbeitsphase ca. 10 Minuten. Kl. 1/2: jede Aufgabe und jede Zeile vorlesen, die Farbsymbole zeigen die Zeile.");
                 break;
             case "abschluss":
                 s.background = { color: NACHT };
-                s.addText("Was nimmst du heute mit?", { x: 0, y: 1.2, w: W, h: 1.2, align: "center", fontFace: FONT, fontSize: 50, bold: true, color: "FFFFFF" });
-                s.addText("„Heute habe ich gelernt …“", { x: 0, y: 2.6, w: W, h: .9, align: "center", fontFace: TEXT, fontSize: 30, color: "F2C97B" });
-                s.addText("👏 👏 👏 👏 👏 👏 👏 👏 👏", { x: 0, y: 4, w: W, h: 1.2, align: "center", fontSize: 48 });
+                s.addText(lern ? "Wie gut kannst du das jetzt?" : "Was nimmst du heute mit?", { x: 0, y: 1.2, w: W, h: 1.2, align: "center", fontFace: FONT, fontSize: 50, bold: true, color: "FFFFFF" });
+                s.addText(lern ? "👍 kann ich sicher   👉 ein bisschen   👎 übe ich noch" : "„Heute habe ich gelernt …“", { x: 0, y: 2.6, w: W, h: .9, align: "center", fontFace: TEXT, fontSize: 30, color: lern ? "FFE066" : "F2C97B" });
+                s.addText(lern ? "⭐ ⭐ ⭐  Stern ins Sternenglas!  ⭐ ⭐ ⭐" : "👏 👏 👏 👏 👏 👏 👏 👏 👏", { x: 0, y: 4, w: W, h: 1.2, align: "center", fontSize: lern ? 36 : 48, color: "FFFFFF" });
                 s.addNotes("Abschlussrunde, danach Applauswelle: der Reihe nach auf jeden Platz zeigen, jedes Kind klatscht einmal, zum Schluss alle zusammen.");
                 break;
         }

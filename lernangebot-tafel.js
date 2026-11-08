@@ -369,9 +369,9 @@ W.timer = {
     std: { minuten: 5 },
     eigen(el, e, api){
         const gesamt = (+e.minuten || 5) * 60; let rest = gesamt, laeuft = true;
-        el.innerHTML = `<div class="lt-timer"><svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="96" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="16"/><circle class="lt-ring" cx="110" cy="110" r="96" fill="none" stroke="#f2a93b" stroke-width="16" stroke-linecap="round" transform="rotate(-90 110 110)" stroke-dasharray="603" stroke-dashoffset="0"/></svg><div class="lt-zeit"></div></div>`;
+        el.innerHTML = `<div class="lt-timer"><svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="96" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="16"/><circle class="lt-ring" cx="110" cy="110" r="96" fill="none" stroke="#ffe066" stroke-width="16" stroke-linecap="round" transform="rotate(-90 110 110)" stroke-dasharray="603" stroke-dashoffset="0"/></svg><div class="lt-zeit"></div></div>`;
         const zeit = el.querySelector(".lt-zeit"), ring = el.querySelector(".lt-ring");
-        const zeigen = () => { zeit.textContent = Math.floor(rest / 60) + ":" + String(rest % 60).padStart(2, "0"); ring.setAttribute("stroke-dashoffset", String(603 * (1 - rest / gesamt))); ring.setAttribute("stroke", rest <= 10 ? "#e74c3c" : "#f2a93b"); };
+        const zeigen = () => { zeit.textContent = Math.floor(rest / 60) + ":" + String(rest % 60).padStart(2, "0"); ring.setAttribute("stroke-dashoffset", String(603 * (1 - rest / gesamt))); ring.setAttribute("stroke", rest <= 10 ? "#ff8fab" : "#ffe066"); };
         zeigen();
         api.intervall(() => { if (!laeuft || rest <= 0) return; rest--; zeigen(); if (rest === 0) { api.gong(); zeit.textContent = "Fertig! 🔔"; } }, 1000);
         api.weiterText("⏸ Pause"); api.weiter = () => { laeuft = !laeuft; if (rest === 0) { rest = gesamt; laeuft = true; zeigen(); } api.weiterText(laeuft ? "⏸ Pause" : "▶ Weiter"); };
@@ -405,19 +405,55 @@ W.gluecksrad = {
     }
 };
 
+const AUFTRAEGE = ["Heb die rechte Hand.", "Klopf zweimal auf den Tisch.", "Leg deinen Stift auf dein Heft.", "Schließ kurz die Augen.", "Zeig auf die Tür.", "Steh auf und setz dich wieder.", "Klatsch dreimal.", "Leg beide Hände auf den Kopf.", "Zeig deinem Nachbarn drei Finger.", "Dreh dich einmal um.", "Tipp dir auf die Nase.", "Halte dein Heft hoch.", "Stampf einmal mit dem Fuß.", "Zeig zum Fenster.", "Mach dich ganz klein.", "Winke deinem Nachbarn.", "Leg deinen Radiergummi in die Mitte vom Tisch.", "Heb die linke Hand und den rechten Fuß."];
+W.auftraege = {
+    titel: "Merk-Aufträge", emoji: "📋", gruppe: "Allgemein",
+    text: "Mehrere Aufträge erscheinen kurz – dann aus dem Kopf am Platz ausführen. Trainiert Zuhören, Lesen und Merken.",
+    optionen: [
+        { k: "schritte", label: "Schritte", werte: [[2, "2 Aufträge"], [3, "3 Aufträge"], [4, "4 Aufträge"]] },
+        { k: "zeit", label: "Zeigen", werte: [[5000, "5 Sek."], [8000, "8 Sek."], [12000, "12 Sek."], [0, "vorlesen (immer sichtbar)"]] }
+    ],
+    std: { schritte: 2, zeit: 8000 },
+    aufgabe(e){
+        const liste = mischen(AUFTRAEGE).slice(0, +e.schritte || 2);
+        const html = liste.map((t, i) => `<div><span class="lt-nr">${i + 1}</span>${esc(t)}</div>`).join("");
+        return { html: `<div class="lt-blitz"><div class="lt-auftraege">${html}</div></div><div class="lt-frage">${+e.zeit ? "Merk dir die Aufträge – gleich sind sie weg!" : "Hör gut zu – auf „Los!“ machen alle mit."}</div>`, blitz: +e.zeit, loesung: `<div class="lt-auftraege klein">${html}</div>` };
+    }
+};
+
+const BEWEGUNG = [["🙆", "Ganz groß strecken – und wieder klein machen"], ["🔄", "Arme kreisen – vorwärts und rückwärts"], ["✖️", "Überkreuz: rechter Ellbogen zum linken Knie – und andersrum"], ["∞", "Mit dem Finger eine liegende Acht in die Luft malen"], ["🦩", "Auf einem Bein stehen – wie ein Flamingo"], ["🏃", "Auf der Stelle laufen"], ["🤷", "Schultern hoch zu den Ohren – und fallen lassen"], ["👐", "Hände ausschütteln, als wären sie nass"], ["🌬️", "Dreimal tief einatmen – und langsam ausatmen"], ["👀", "Augen-Yoga: nach oben, unten, links, rechts schauen"], ["🧘", "Hände vor der Brust zusammendrücken – 5 Sekunden"], ["🐢", "In Zeitlupe hinsetzen und wieder aufstehen"]];
+W.bewegung = {
+    titel: "Bewegungspause", emoji: "🤸", gruppe: "Allgemein",
+    text: "Übungen am Platz – wechseln automatisch. Lädt den Kopf-Akku wieder auf.",
+    optionen: [{ k: "sekunden", label: "Dauer", werte: [[60, "1 Minute"], [120, "2 Minuten"], [180, "3 Minuten"]] }],
+    std: { sekunden: 60 },
+    eigen(el, e, api){
+        const liste = mischen(BEWEGUNG), proUebung = 15, gesamt = +e.sekunden || 60; let t = 0;
+        const zeigen = () => { const u = liste[Math.floor(t / proUebung) % liste.length], rest = proUebung - (t % proUebung);
+            el.innerHTML = `<div style="font-size:clamp(80px,min(14vw,22vh),240px);line-height:1">${u[0]}</div><div class="lt-gross" style="font-size:clamp(30px,min(5vw,8vh),80px)">${esc(u[1])}</div><div class="lt-frage">noch ${rest} Sek. · gesamt ${Math.max(0, gesamt - t)} Sek.</div>`; };
+        zeigen();
+        api.intervall(() => { t++; if (t >= gesamt) { api.stop(); api.gong(); el.innerHTML = `<div style="font-size:clamp(80px,14vw,240px)">🔋</div><div class="lt-gross">Akku voll!</div><div class="lt-frage">Setzt euch leise hin.</div>`; return; } if (t % proUebung === 0) api.klang(740, .15); zeigen(); }, 1000);
+        api.ohneLoesung();
+    }
+};
+
 /* ---------------- Vollbild-Ansicht ---------------- */
+/* Gleiche Welt wie die Lernzeit-Präsentation: grüne Kreidetafel im Holzrahmen, Kreideschrift, Eule Ella */
 const CSS = `
-.lt-voll{ position:fixed; inset:0; z-index:9999; background:radial-gradient(circle at 50% 30%, #23507a, #16324a 70%); color:#fff; font-family:"Nunito",sans-serif; display:flex; flex-direction:column; user-select:none; }
-.lt-leiste{ display:flex; align-items:center; gap:10px; padding:12px 18px; flex-wrap:wrap; background:rgba(0,0,0,.18); }
-.lt-leiste h2{ margin:0; font-size:clamp(18px,2.2vw,28px); font-weight:900; flex:1 1 200px; }
-.lt-leiste select{ font:800 15px "Nunito",sans-serif; border-radius:10px; border:0; padding:8px 10px; background:#fff; color:#16324a; }
-.lt-x{ border:0; background:rgba(255,255,255,.15); color:#fff; width:44px; height:44px; border-radius:12px; font-size:22px; cursor:pointer; }
-.lt-buehne{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.2vh; padding:2vh 3vw; text-align:center; min-height:0; overflow:hidden; }
-.lt-gross{ font-size:clamp(44px,min(9vw,14vh),160px); font-weight:900; line-height:1.1; }
+.lt-voll{ position:fixed; inset:0; z-index:9999; background:#6b4423; color:#fffdf5; font-family:"Andika","Nunito",sans-serif; display:flex; flex-direction:column; user-select:none; padding:1vh 1vw 0; }
+.lt-leiste{ display:flex; align-items:center; gap:10px; padding:6px 10px 10px; flex-wrap:wrap; }
+.lt-leiste h2{ margin:0; font:400 clamp(22px,2.6vw,34px) "Patrick Hand","Andika",sans-serif; flex:1 1 200px; color:#ffe066; display:flex; align-items:center; gap:.4em; }
+.lt-leiste h2 svg{ width:1.6em; height:1.6em; }
+.lt-leiste select{ font:700 15px "Andika","Nunito",sans-serif; border-radius:10px; border:0; padding:8px 10px; background:#fff3dc; color:#4a2e15; }
+.lt-x{ border:0; background:#8a5a2e; color:#fff3dc; width:44px; height:44px; border-radius:12px; font-size:22px; cursor:pointer; box-shadow:inset 0 -3px 0 rgba(0,0,0,.25); }
+.lt-buehne{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.2vh; padding:2vh 3vw; text-align:center; min-height:0; overflow:hidden; position:relative; border-radius:14px;
+    box-shadow:inset 0 0 0 .6vh #4a2e15, inset 0 0 60px rgba(0,0,0,.45);
+    background:radial-gradient(ellipse at 30% 20%, rgba(255,255,255,.07), transparent 55%), linear-gradient(160deg, #2f6b50, #23533e 60%, #1d4634); }
+.lt-gross{ font-size:clamp(44px,min(9vw,14vh),160px); font-family:"Patrick Hand","Andika",sans-serif; font-weight:400; line-height:1.1; text-shadow:0 0 1px rgba(255,255,255,.6); }
 .lt-lesen{ font-family:"Andika","Nunito",sans-serif; font-weight:700; letter-spacing:.02em; }
 .lt-lesen.lang{ font-size:clamp(28px,min(5vw,9vh),90px); }
 .lt-emoji{ letter-spacing:.1em; }
-.lt-frage{ font-size:clamp(20px,min(3vw,4.6vh),44px); font-weight:800; opacity:.85; }
+.lt-frage{ font-size:clamp(22px,min(3.2vw,4.8vh),46px); font-family:"Patrick Hand","Andika",sans-serif; color:#ffe066; }
 .lt-klein{ font-size:clamp(16px,min(2.2vw,3.4vh),32px); font-weight:700; opacity:.85; }
 .lt-svg{ max-width:min(90vw,1100px); max-height:46vh; width:100%; }
 .lt-breit, .lt-blitz{ width:min(88vw,1000px); }
@@ -432,24 +468,27 @@ const CSS = `
 .lt-paar{ display:flex; align-items:center; gap:3vw; }
 .lt-paar .lt-bild{ background:#fff; border-radius:26px; padding:1.6vh; }
 .lt-plus{ font-size:clamp(40px,6vw,90px); font-weight:900; opacity:.7; }
-.lt-luecke{ display:inline-block; min-width:1.1em; border-bottom:.08em solid #f2a93b; color:#f2a93b; }
+.lt-luecke{ display:inline-block; min-width:1.1em; border-bottom:.08em solid #ffe066; color:#ffe066; }
 .lt-luecke.gross{ font-size:clamp(60px,8vw,140px); border:0; }
 .lt-abc{ letter-spacing:.25em; }
+.lt-auftraege{ display:flex; flex-direction:column; gap:1.6vh; text-align:left; font-size:clamp(26px,min(4.2vw,6.4vh),64px); font-weight:800; background:rgba(255,255,255,.08); border-radius:24px; padding:2.4vh 3vw; }
+.lt-auftraege.klein{ font-size:clamp(18px,min(2.4vw,3.6vh),36px); padding:1vh 2vw; }
+.lt-nr{ display:inline-flex; align-items:center; justify-content:center; width:1.4em; height:1.4em; border-radius:50%; background:#f2a93b; color:#16324a; font-weight:900; margin-right:.5em; font-size:.8em; vertical-align:middle; }
 .lt-antworten{ display:flex; gap:1.6vw; flex-wrap:wrap; justify-content:center; }
-.lt-antwort{ border:4px solid rgba(255,255,255,.35); background:rgba(255,255,255,.08); color:#fff; border-radius:22px; padding:1.4vh 2.4vw; font:900 clamp(22px,min(3.4vw,5vh),52px) "Nunito",sans-serif; cursor:pointer; display:flex; align-items:center; gap:.5em; transition:.15s; }
-.lt-antwort .nr{ background:#fff; color:#16324a; border-radius:12px; width:1.4em; height:1.4em; display:inline-flex; align-items:center; justify-content:center; font-size:.8em; }
-.lt-antwort.gewaehlt{ border-color:#f2a93b; background:rgba(242,169,59,.25); }
-.lt-antwort.richtig{ border-color:#2ecc71; background:rgba(46,204,113,.35); }
+.lt-antwort{ border:4px solid rgba(255,255,255,.75); background:rgba(255,255,255,.06); color:#fff; border-radius:16px 26px 18px 30px; padding:1.4vh 2.4vw; font:400 clamp(24px,min(3.6vw,5.2vh),56px) "Patrick Hand","Andika",sans-serif; cursor:pointer; display:flex; align-items:center; gap:.5em; transition:.15s; }
+.lt-antwort .nr{ background:#ffe066; color:#1d4634; border-radius:12px; width:1.4em; height:1.4em; display:inline-flex; align-items:center; justify-content:center; font-size:.8em; }
+.lt-antwort.gewaehlt{ border-color:#ffe066; background:rgba(255,224,102,.2); }
+.lt-antwort.richtig{ border-color:#b5e48c; background:rgba(181,228,140,.3); }
 .lt-antwort.falsch{ opacity:.35; }
 .lt-loesung{ min-height:1.4em; font-size:clamp(24px,min(3.6vw,5.4vh),56px); font-weight:800; display:flex; align-items:center; gap:.5em; flex-wrap:wrap; justify-content:center; }
 .lt-loesung .lt-bild{ width:1.8em; height:1.8em; background:#fff; border-radius:12px; padding:4px; }
-.lt-loes-zahl{ font-size:1.5em; font-weight:900; color:#f2a93b; }
-.lt-steuer{ display:flex; gap:12px; justify-content:center; padding:14px; flex-wrap:wrap; background:rgba(0,0,0,.18); }
-.lt-knopf{ border:0; border-radius:16px; padding:14px 26px; font:900 clamp(16px,1.8vw,24px) "Nunito",sans-serif; cursor:pointer; background:rgba(255,255,255,.15); color:#fff; }
-.lt-knopf.gold{ background:#f2a93b; color:#16324a; }
-.lt-zaehler{ align-self:center; font-weight:800; opacity:.7; }
+.lt-loes-zahl{ font-size:1.5em; font-family:"Patrick Hand","Andika",sans-serif; font-weight:400; color:#ffe066; }
+.lt-steuer{ display:flex; gap:12px; justify-content:center; padding:10px; flex-wrap:wrap; }
+.lt-knopf{ border:0; border-radius:12px 18px 14px 20px; padding:12px 24px; font:400 clamp(18px,2vw,28px) "Patrick Hand","Andika",sans-serif; cursor:pointer; background:#8a5a2e; color:#fff3dc; box-shadow:inset 0 -3px 0 rgba(0,0,0,.25); }
+.lt-knopf.gold{ background:#ffe066; color:#1d4634; box-shadow:0 5px 0 #c9a72e; }
+.lt-zaehler{ align-self:center; color:#f1d9b5; font-family:"Patrick Hand","Andika",sans-serif; font-size:18px; }
 .lt-silben{ display:inline-flex; gap:.15em; font-family:"Andika","Nunito",sans-serif; }
-.lt-silbe{ border-bottom:.12em solid #f2a93b; border-radius:0 0 50% 50%; padding:0 .12em .1em; }
+.lt-silbe{ border-bottom:.12em solid #ffe066; border-radius:0 0 50% 50%; padding:0 .12em .1em; }
 .lt-geld{ display:flex; flex-wrap:wrap; gap:1.6vw; justify-content:center; align-items:center; max-width:90vw; }
 .lt-muenze{ --g:1; width:calc(clamp(70px,9vw,150px) * var(--g)); height:calc(clamp(70px,9vw,150px) * var(--g)); border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:900; font-size:calc(clamp(18px,2.2vw,36px) * var(--g)); color:#3b2a06; box-shadow:inset 0 0 0 6px rgba(0,0,0,.12), 0 6px 14px rgba(0,0,0,.3); }
 .lt-muenze.kupfer{ background:radial-gradient(circle at 35% 30%, #f0b08a, #b86b3f); }
@@ -464,10 +503,10 @@ const CSS = `
 .lt-wuerfel{ width:clamp(120px,min(22vw,36vh),340px); }
 .lt-timer{ position:relative; width:min(60vh,70vw); }
 .lt-timer svg{ width:100%; }
-.lt-zeit{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:clamp(50px,min(11vw,16vh),200px); font-weight:900; }
+.lt-zeit{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:clamp(50px,min(11vw,16vh),200px); font-family:"Patrick Hand","Andika",sans-serif; }
 .lt-rad-box{ position:relative; width:min(62vh,80vw); }
 .lt-rad{ width:100%; }
-.lt-rad-zeiger{ position:absolute; top:-2.5vh; left:50%; transform:translateX(-50%); font-size:clamp(34px,5vh,60px); color:#f2a93b; text-shadow:0 2px 6px rgba(0,0,0,.4); }
+.lt-rad-zeiger{ position:absolute; top:-2.5vh; left:50%; transform:translateX(-50%); font-size:clamp(34px,5vh,60px); color:#ffe066; text-shadow:0 2px 6px rgba(0,0,0,.4); }
 /* Übersicht im Leuchtturm */
 .lt-uebersicht h3{ font-size:15px; font-weight:900; color:#7c8a85; text-transform:uppercase; letter-spacing:.04em; margin:22px 0 10px; }
 .lt-karten{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
@@ -477,7 +516,10 @@ const CSS = `
 .lt-karte b{ font-size:17px; font-weight:900; }
 .lt-karte span{ font-size:13.5px; color:#55636a; }
 `;
-function cssLaden(){ if (!document.getElementById("lernTafelCss")) { const s = document.createElement("style"); s.id = "lernTafelCss"; s.textContent = CSS; document.head.appendChild(s); } }
+const EULE_MINI = `<svg viewBox="0 0 140 160"><path d="M30 40 L22 8 L52 30 Z M110 40 L118 8 L88 30 Z" fill="#7b5236"/><ellipse cx="70" cy="92" rx="52" ry="60" fill="#9c6b45"/><ellipse cx="70" cy="108" rx="34" ry="40" fill="#e9d3b4"/><circle cx="50" cy="62" r="22" fill="#fffdf5" stroke="#ffe066" stroke-width="5"/><circle cx="90" cy="62" r="22" fill="#fffdf5" stroke="#ffe066" stroke-width="5"/><circle cx="53" cy="64" r="10" fill="#1d2b22"/><circle cx="87" cy="64" r="10" fill="#1d2b22"/><path d="M63 76 L77 76 L70 90 Z" fill="#f4a03a"/></svg>`;
+function cssLaden(){
+    if (!document.getElementById("lernSchrift")) { const l = document.createElement("link"); l.id = "lernSchrift"; l.rel = "stylesheet"; l.href = "https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap"; document.head.appendChild(l); }
+    if (!document.getElementById("lernTafelCss")) { const s = document.createElement("style"); s.id = "lernTafelCss"; s.textContent = CSS; document.head.appendChild(s); } }
 
 let audio = null;
 function klang(f = 660, d = .2, typ = "sine"){
@@ -497,7 +539,7 @@ function starten(id, einstellung = {}){
     const e = Object.assign({}, w.std, einstellung);
     const el = document.createElement("div");
     el.className = "lt-voll";
-    el.innerHTML = `<div class="lt-leiste"><h2>${w.emoji} ${esc(w.titel)}</h2>
+    el.innerHTML = `<div class="lt-leiste"><h2>${EULE_MINI}<span>${w.emoji} ${esc(w.titel)}</span></h2>
         ${(w.optionen || []).map(o => `<label><select data-opt="${o.k}" title="${esc(o.label)}">${o.werte.map(([v, l]) => `<option value="${esc(JSON.stringify(v))}" ${JSON.stringify(v) === JSON.stringify(e[o.k]) ? "selected" : ""}>${esc(o.label)}: ${esc(l)}</option>`).join("")}</select></label>`).join("")}
         <button class="lt-x" data-voll title="Vollbild an/aus">⛶</button><button class="lt-x" data-zu title="Schließen (Esc)">✕</button></div>
         <div class="lt-buehne"><div class="lt-inhalt"></div><div class="lt-antworten"></div><div class="lt-loesung"></div></div>
