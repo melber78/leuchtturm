@@ -272,7 +272,7 @@ const CSS = `
 #praes .l-gr.an{ background:#ffe066; color:#1d4634; border-style:solid; border-color:#ffe066; }
 #praes .l-glas-zahl{ font-family:"Patrick Hand","Andika",sans-serif; font-size:clamp(20px,2.6vw,38px); color:#ffe066; margin-top:.4em; }
 /* Lernangebot-Ablauf: Quizshow „Klasse gegen Eule Ella“ */
-#praes .l-score{ position:absolute; top:1.4vh; right:1.4vw; z-index:5; display:flex; align-items:center; gap:.4em; font:400 clamp(18px,2.2vw,34px) "Patrick Hand","Andika",sans-serif; color:#fffdf5; background:rgba(0,0,0,.28); border:2px dashed rgba(255,255,255,.55); border-radius:14px 20px 16px 22px; padding:.15em .7em; }
+#praes .l-score{ position:absolute; top:1.4vh; left:1.4vw; z-index:5; display:flex; align-items:center; gap:.4em; font:400 clamp(18px,2.2vw,34px) "Patrick Hand","Andika",sans-serif; color:#fffdf5; background:rgba(0,0,0,.28); border:2px dashed rgba(255,255,255,.55); border-radius:14px 20px 16px 22px; padding:.15em .7em; }
 #praes .l-score[hidden]{ display:none; }
 #praes .l-score b{ color:#ffe066; font-weight:400; font-size:1.25em; }
 #praes .l-score i{ font-style:normal; opacity:.6; }
@@ -310,6 +310,16 @@ const CSS = `
 #praes .l-schritt.war{ border-color:#b5e48c; border-style:solid; }
 #praes .l-schritt.bereit{ animation:lPuls 1s ease-in-out infinite; border-color:#ffe066; }
 @keyframes lPuls{ 50%{ transform:scale(1.07); box-shadow:0 0 0 8px rgba(255,224,102,.25); } }
+#praes .l-leise{ font:400 clamp(18px,2.2vw,34px) "Patrick Hand","Andika",sans-serif; color:#ffe066; margin-top:2vh; animation:lPuls 2s ease-in-out infinite; }
+#praes .l-leise[hidden]{ display:none; }
+@media (max-width:700px){
+    #praes.lern .p-folie{ padding-top:7vh; }
+    #praes .l-tps{ flex-wrap:nowrap; gap:2vw; width:100%; }
+    #praes .l-schritt{ min-width:0; flex:1 1 0; font-size:26px; padding:.4em .2em; }
+    #praes .l-schritt b{ font-size:.62em; }
+    #praes .l-schritt span{ font-size:.48em; }
+    #praes .l-tpfeil{ display:none; }
+}
 #praes .l-tpfeil{ font-style:normal; font-size:clamp(22px,3vw,44px); color:rgba(255,255,255,.5); }
 #praes .l-level{ font:400 clamp(26px,4vw,64px) "Patrick Hand","Andika",sans-serif; color:#3b1020; background:#ff8fab; padding:.05em .8em; border-radius:10px; transform:rotate(-4deg); box-shadow:0 6px 0 #c9637c; letter-spacing:.06em; animation:lStempel .5s cubic-bezier(.2,1.6,.4,1); }
 #praes .l-level.bonus{ background:#b5e48c; color:#1d4634; box-shadow:0 6px 0 #7fae5a; }
@@ -317,7 +327,7 @@ const CSS = `
 #praes .l-chall{ display:flex; align-items:center; gap:1.2vw; justify-content:center; margin:2vh 0 1vh; }
 #praes .l-chall h2{ margin:0; }
 #praes .l-chall-emoji{ font-size:clamp(44px,8vh,100px); line-height:1; }
-#praes .l-quizkopf{ display:flex; justify-content:space-between; width:min(90vw,1300px); font:400 clamp(16px,1.9vw,30px) "Patrick Hand","Andika",sans-serif; color:#ffe066; padding-right:9vw; }
+#praes .l-quizkopf{ display:flex; justify-content:space-between; width:min(90vw,1300px); font:400 clamp(16px,1.9vw,30px) "Patrick Hand","Andika",sans-serif; color:#ffe066; padding-left:9vw; }
 #praes .l-quizfrage{ background:#fffdf5; color:#1d4634; font:400 clamp(26px,min(4vw,6.6vh),64px)/1.2 "Patrick Hand","Andika",sans-serif; padding:.5em 1em; border-radius:18px; width:min(88vw,1250px); margin:1.5vh 0 2.5vh; box-shadow:0 8px 0 rgba(0,0,0,.2); }
 #praes .l-optionen{ display:flex; gap:1.4vw; justify-content:center; flex-wrap:wrap; }
 #praes .l-opt{ display:flex; align-items:center; gap:.4em; font:400 clamp(20px,2.4vw,40px) "Patrick Hand","Andika",sans-serif; border:3px solid rgba(255,255,255,.75); border-radius:14px 22px 16px 24px; padding:.3em .8em .3em .3em; transition:opacity .3s, transform .3s; }
@@ -331,7 +341,7 @@ const CSS = `
 #praes .l-countdown[hidden]{ display:none; }
 #praes .l-countdown.puls{ animation:lZahl .9s ease-out; }
 @keyframes lZahl{ from{ transform:scale(1.6); opacity:.3; } }
-#praes .l-countdown.hoch{ font-size:clamp(50px,11vh,140px); color:#ff8fab; animation:lZahl .5s cubic-bezier(.2,1.6,.4,1); }
+#praes .l-countdown.hoch{ font-size:clamp(40px,min(11vh,12vw),140px); text-align:center; color:#ff8fab; animation:lZahl .5s cubic-bezier(.2,1.6,.4,1); }
 #praes .l-pkreihe{ margin-top:1.6vh; }
 #praes.lern .p-knopf.l-pk{ font-size:clamp(16px,1.7vw,26px); padding:.3em .9em; }
 #praes.lern .p-knopf.l-pk.gewaehlt{ outline:4px solid #b5e48c; outline-offset:3px; }
@@ -736,6 +746,16 @@ function naechste(){
     if (schrittZeigen(zustand.buehne)) return;   // „Ella erklärt“: erst Schritt für Schritt aufdecken
     zeigen(zustand.i + 1);
 }
+function countdownStart(el, text){
+    const cd = el.querySelector(".l-countdown"); if (!cd) return;
+    if (zustand.mini) clearInterval(zustand.mini);
+    let n = 3; cd.hidden = false; cd.classList.remove("hoch"); cd.textContent = n; tick();
+    zustand.mini = setInterval(() => {
+        n--;
+        if (n > 0) { cd.textContent = n; cd.classList.remove("puls"); void cd.offsetWidth; cd.classList.add("puls"); tick(); }
+        else { clearInterval(zustand.mini); zustand.mini = null; cd.textContent = text; cd.classList.add("hoch"); plopp(1.4); setTimeout(() => { cd.hidden = true; cd.classList.remove("hoch"); }, 1600); }
+    }, 900);
+}
 function schrittZeigen(el){
     const s = el.querySelector(".l-sch[hidden]"); if (!s) return false;
     s.hidden = false; plopp(1.1);
@@ -848,7 +868,9 @@ function folieHtml(f, e){
             return `<div class="p-klein">Denk-Runde ${f.nr} / ${f.von} · ${esc(f.titel || "")}</div>
                 <div class="l-denkfrage"${haupt.length > 90 ? ' style="font-size:clamp(22px,min(3vw,5vh),48px)"' : ""}>${esc(haupt)}</div>
                 ${f.frage && f.auftrag ? `<div class="l-auftrag">👉 ${esc(f.auftrag)}</div>` : ""}
-                <div class="l-tps"><button class="l-schritt" data-tps="0">🤔<b>Denken</b><span>allein · 30 s</span></button><i class="l-tpfeil">➜</i><button class="l-schritt" data-tps="1">🤝<b>Partner</b><span>flüstern · 45 s</span></button><i class="l-tpfeil">➜</i><button class="l-schritt" data-tps="2">🙋<b>Teilen</b><span>Glücksrad</span></button></div>`;
+                <div class="l-tps"><button class="l-schritt" data-tps="0">✏️<b>Aufschreiben</b><span>${zustand.stufe === "34" ? "jeder für sich" : "malen oder schreiben"} · 40 s</span></button><i class="l-tpfeil">➜</i><button class="l-schritt" data-tps="1">🙌<b>Hochhalten</b><span>3-2-1 – alle zugleich</span></button><i class="l-tpfeil">➜</i><button class="l-schritt" data-tps="2">🎡<b>Erklären</b><span>Glücksrad</span></button></div>
+                <div class="l-leise" hidden>🤫 Jeder für sich – ganz leise. Eule Ella wartet.</div>
+                <div class="l-countdown" hidden></div>`;
         }
         if (f.typ === "challenge") {
             const min = minuten(f.u.dauer);
@@ -1073,27 +1095,20 @@ function folieAktivieren(el, f){
         const k = +b.dataset.tps, alle = [...el.querySelectorAll("[data-tps]")];
         if (zustand.mini) { clearInterval(zustand.mini); zustand.mini = null; }
         alle.forEach((x, j) => { x.classList.toggle("an", j === k); x.classList.toggle("war", j < k); x.classList.remove("bereit"); const sp = x.querySelector("span"); if (sp.dataset.alt) sp.textContent = sp.dataset.alt; });
-        if (k === 2) { gluecksrad({ titel: "🙋 Wer teilt seine Idee?" }); return; }
+        const leise = el.querySelector(".l-leise"); if (leise) leise.hidden = k !== 0;
+        if (k === 2) { gluecksrad({ titel: "🎡 Wer erklärt seine Antwort?" }); return; }
+        if (k === 1) { countdownStart(el, "🙌 Alle hoch!"); setTimeout(() => { b.classList.remove("an"); b.classList.add("war"); if (alle[2]) alle[2].classList.add("bereit"); }, 4600); return; }
         const sp = b.querySelector("span"); sp.dataset.alt = sp.dataset.alt || sp.textContent;
-        let rest = k === 0 ? 30 : 45;
+        let rest = 40;
         const z = () => { sp.textContent = "noch " + rest + " s"; };
         z(); klangschale(.3);
         zustand.mini = setInterval(() => {
             rest--; z();
             if (rest > 0 && rest <= 3) tick();
-            if (rest <= 0) { clearInterval(zustand.mini); zustand.mini = null; sp.textContent = sp.dataset.alt; b.classList.remove("an"); b.classList.add("war"); plopp(1.3); if (alle[k + 1]) alle[k + 1].classList.add("bereit"); }
+            if (rest <= 0) { clearInterval(zustand.mini); zustand.mini = null; sp.textContent = sp.dataset.alt; if (leise) leise.hidden = true; klangschale(.4); b.classList.remove("an"); b.classList.add("war"); plopp(1.3); if (alle[k + 1]) alle[k + 1].classList.add("bereit"); }
         }, 1000);
     }));
-    el.querySelectorAll("[data-countdown]").forEach(b => b.addEventListener("click", () => {
-        const cd = el.querySelector(".l-countdown"); if (!cd) return;
-        if (zustand.mini) clearInterval(zustand.mini);
-        let n = 5; cd.hidden = false; cd.classList.remove("hoch"); cd.textContent = n; tick();
-        zustand.mini = setInterval(() => {
-            n--;
-            if (n > 0) { cd.textContent = n; cd.classList.remove("puls"); void cd.offsetWidth; cd.classList.add("puls"); tick(); }
-            else { clearInterval(zustand.mini); zustand.mini = null; cd.textContent = b.dataset.countdown.length > 2 ? b.dataset.countdown : "✋ Karten hoch!"; cd.classList.add("hoch"); plopp(1.4); setTimeout(() => { cd.hidden = true; cd.classList.remove("hoch"); }, 1600); }
-        }, 900);
-    }));
+    el.querySelectorAll("[data-countdown]").forEach(b => b.addEventListener("click", () => countdownStart(el, b.dataset.countdown.length > 2 ? b.dataset.countdown : "✋ Karten hoch!")));
     el.querySelectorAll("[data-aufdecken]").forEach(b => b.addEventListener("click", () => {
         const richtig = f.loesung || [];
         el.querySelectorAll(".l-opt").forEach((o, k) => o.classList.add(richtig.includes(k + 1) ? "richtig" : "falsch"));
@@ -1517,7 +1532,7 @@ async function pptxExport(e, stufe = "12"){
                 s.addText("Denk-Runde " + f.nr + " / " + f.von, { x: 0, y: .5, w: W, h: .5, align: "center", fontFace: FONT, fontSize: 18, color: MEER, bold: true });
                 s.addText(laufText(f.frage || f.auftrag), { x: 1, y: 1.3, w: W - 2, h: 2.4, align: "center", valign: "middle", fontFace: FONT, fontSize: 38, bold: true, color: NACHT });
                 if (f.frage && f.auftrag) s.addText("👉 " + f.auftrag, { x: 1, y: 3.8, w: W - 2, h: .8, align: "center", fontFace: TEXT, fontSize: 22, color: MEER });
-                s.addText("🤔 Denken (30 s)   ➜   🤝 Partner (45 s)   ➜   🙋 Teilen", { x: .5, y: 5, w: W - 1, h: .9, align: "center", fontFace: FONT, fontSize: 26, color: NACHT, fill: { color: GOLD } });
+                s.addText("✏️ Aufschreiben (40 s)   ➜   🙌 3-2-1 hochhalten   ➜   🎡 Erklären", { x: .5, y: 5, w: W - 1, h: .9, align: "center", fontFace: FONT, fontSize: 26, color: NACHT, fill: { color: GOLD } });
                 fuss(s);
                 break;
             case "challenge": {

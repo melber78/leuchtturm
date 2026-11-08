@@ -231,7 +231,7 @@ function lerntextL(e, st){
     const ein = window.lernEinstieg ? window.lernEinstieg(e, st) : { art: "geschichte" };
     if (ein.art === "knobel") return { zweck: "Neugierig machen: Ein Rätsel weckt den Kopf – alle denken mit, niemand muss es sofort wissen.", schritte: [
         li("Zeig die Folie <b>„Knobel-Rätsel“</b> und lies das Rätsel langsam vor.", sag(ein.frage)),
-        li("<b>1 Minute knobeln:</b> erst allein im Kopf, dann leise mit dem Nachbarn flüstern. Noch nichts reinrufen!"),
+        li("<b>1 Minute knobeln:</b> jeder für sich, die Lösung auf einen Schmierzettel schreiben oder malen. Noch nichts reinrufen!"),
         li("Ideen sammeln: 2–3 Kinder sagen ihre Lösung – erst mal ohne „richtig“ oder „falsch“."),
         ...(ein.tipps && ein.tipps.length ? [li("Kommt keiner drauf? Tipps nacheinander aufdecken:", `<div class="regie-text"><ol style="margin:2px 0;padding-left:18px">${ein.tipps.map(t => `<li>${inline(t)}</li>`).join("")}</ol></div>`)] : []),
         li("<b>Auflösen:</b> " + inline(ein.loesung) + (ein.warum ? " – " + inline(ein.warum) : ""), sag("Wer kann erklären, wie man darauf kommt?")),
@@ -240,17 +240,17 @@ function lerntextL(e, st){
     if (ein.art === "erklaert") return { zweck: "Kurz und klar erklären, worum es heute geht – danach probieren es alle sofort selbst aus.", schritte: [
         li("Zeig die Folie <b>„Ella erklärt“</b> und lies den Merksatz vor. Alle sprechen ihn einmal nach.", sag(ein.merksatz)),
         li("<b>So geht’s:</b> Die Schritte nacheinander aufdecken (Pfeiltaste) und an einem Beispiel vormachen:", `<div class="regie-text"><ol style="margin:2px 0;padding-left:18px">${(ein.schritte || []).map(t => `<li>${inline(t)}</li>`).join("")}</ol></div>`),
-        li("<b>Jetzt ihr:</b> Mitmach-Aufgabe zeigen, kurz überlegen lassen, dann mit „3-2-1“ alle gleichzeitig antworten (Finger, Karte oder flüstern).", sag(ein.aufgabe)),
+        li("<b>Jetzt ihr:</b> Mitmach-Aufgabe zeigen, kurz überlegen lassen, dann mit „3-2-1“ alle gleichzeitig antworten (Finger, Karte oder Schmierzettel hochhalten).", sag(ein.aufgabe)),
         li("<b>Lösung:</b> " + inline(ein.loesung)),
     ], tipp: "Halte die Erklärung kurz (höchstens 3 Minuten). Lieber ein zweites Beispiel gemeinsam machen als länger reden." };
     if (ein.art === "fehler") { const fehl = (ein.zeilen || []).filter(z => z[2]);
         return { zweck: "Profi-Check nach dem Üben: Wer Fehler bei anderen findet, schaut auch bei sich selbst genauer hin.", schritte: [
         li("Zeig die Folie <b>„Fehler-Detektiv“</b>.", sag(`Eule Ella hat geübt – aber ${fehl.length} Fehler haben sich versteckt. Wer findet sie?`)),
-        li("<b>1 Minute suchen:</b> leise allein, dann mit dem Nachbarn vergleichen."),
+        li("<b>1 Minute suchen:</b> jeder für sich – die gefundenen Fehler auf dem Schmierzettel notieren (Nummer der Zeile)."),
         li("Kinder kommen dran (Glücksrad), zeigen auf eine Zeile und sagen, ob sie stimmt. Tipp die Zeile an – die Folie deckt auf und zeigt die Verbesserung.",
             `<div class="regie-text"><ul style="margin:2px 0;padding-left:18px">${fehl.map(z => `<li>${inline(z[0] ? z[0] + " → " : "")}${inline(z[1])} <b>✗ richtig: ${inline(z[2])}</b>${z[3] ? " – " + inline(z[3]) : ""}</li>`).join("")}</ul></div>`),
         li("Wichtig: Die Kinder sollen <b>erklären</b>, warum es falsch ist – nicht nur „falsch“ rufen."),
-        ...(ein.frage ? [li("<b>Denk-Runde</b> (Denken – Partner – Teilen):", sag(ein.frage))] : []),
+        ...(ein.frage ? [li("<b>Denk-Runde:</b> Jeder schreibt oder malt seine Antwort auf einen Schmierzettel (40 s, leise), dann „3-2-1 – alle hoch!“, dann erklärt ein Kind (Glücksrad).", sag(ein.frage))] : []),
     ], tipp: "Ella darf Fehler machen – das nimmt den Druck raus. Gut passt danach: „Und wo schaust du bei deinem Arbeitsblatt genau hin?“" }; }
     const p = lerntext(e, st);
     if (!p) return null;
