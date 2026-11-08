@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0b0820">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Plaque Invaders">
+<title>Plaque Invaders</title>
+<style>
+:root{
+    --nacht:#0b0820; --cyan:#29f0ff; --pink:#ff3ea5; --gelb:#ffe14d; --gruen:#3dff8b; --rot:#ff4757; --lila:#8b5cff;
+    --text:#eef3ff; --dim:#8f96c9;
+    --pixel:"Courier New", ui-monospace, Menlo, monospace;
+}
+*{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body{ margin:0; height:100%; background:var(--nacht); }
+body{ font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--text); overflow:hidden; user-select:none; -webkit-user-select:none; }
+button{ font:inherit; border:0; cursor:pointer; color:inherit; }
+#sterne{ position:fixed; inset:0; z-index:0; width:100%; height:100%; }
+.seite{ position:fixed; inset:0; z-index:1; display:none; flex-direction:column; align-items:center; padding:max(14px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); overflow-y:auto; }
+.seite.an{ display:flex; }
+.logo{ font-family:var(--pixel); font-weight:900; text-align:center; line-height:.95; margin:40px 0 4px; letter-spacing:.04em; }
+.logo .a{ display:block; font-size:clamp(34px,10vw,56px); color:var(--cyan); text-shadow:0 0 10px var(--cyan), 0 0 30px #29f0ff88, 4px 4px 0 #0f5d7a; }
+.logo .b{ display:block; font-size:clamp(40px,12vw,68px); color:var(--pink); text-shadow:0 0 10px var(--pink), 0 0 30px #ff3ea588, 4px 4px 0 #6e1046; }
+.slogan{ font-family:var(--pixel); color:var(--gelb); font-weight:900; font-size:13px; letter-spacing:.1em; text-transform:uppercase; text-align:center; margin:8px 0 14px; animation:blink 1.4s steps(2) infinite; }
+@keyframes blink{ 50%{ opacity:.35; } }
+.titel{ font-family:var(--pixel); font-weight:900; font-size:clamp(20px,6vw,28px); letter-spacing:.06em; text-transform:uppercase; color:var(--cyan); text-shadow:0 0 8px #29f0ff99; text-align:center; margin:.4em 0; }
+.knopf{ font-family:var(--pixel); font-weight:900; text-transform:uppercase; letter-spacing:.08em; font-size:19px; padding:16px 26px; border-radius:6px; background:var(--pink); color:#fff; box-shadow:0 0 0 3px #fff2, 0 0 24px #ff3ea5aa, 0 6px 0 #8a1458; transition:transform .1s; }
+.knopf:active{ transform:translateY(4px); box-shadow:0 0 0 3px #fff2, 0 0 18px #ff3ea5aa, 0 2px 0 #8a1458; }
+.knopf:disabled{ filter:grayscale(1); opacity:.4; }
+.knopf.cyan{ background:var(--cyan); color:var(--nacht); box-shadow:0 0 0 3px #fff2, 0 0 24px #29f0ffaa, 0 6px 0 #0f6c80; }
+.knopf.dunkel{ background:#ffffff14; color:var(--text); box-shadow:inset 0 0 0 2px #ffffff30; }
+.knopf.klein{ font-size:14px; padding:10px 16px; }
+.icon-knopf{ position:absolute; top:max(12px, env(safe-area-inset-top)); width:44px; height:44px; border-radius:8px; background:#ffffff14; box-shadow:inset 0 0 0 2px #ffffff26; font-size:20px; }
+.panel{ background:linear-gradient(#1a1245ee,#120c33ee); border-radius:10px; padding:16px; width:min(100%,520px); box-shadow:inset 0 0 0 2px #8b5cff55, 0 0 30px #8b5cff22; }
+.dim{ color:var(--dim); font-size:14px; line-height:1.45; }
+.fuss{ margin-top:auto; padding-top:14px; color:#6f75a8; font-size:11.5px; text-align:center; }
+
+/* Spieler-Auswahl */
+.spieler{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; width:min(100%,520px); margin:8px 0 16px; }
+.sp{ position:relative; border-radius:10px; padding:14px 10px 12px; background:#ffffff0c; box-shadow:inset 0 0 0 2px #ffffff22; text-align:center; transition:transform .15s, box-shadow .15s; }
+.sp.an{ background:#29f0ff14; box-shadow:inset 0 0 0 3px var(--cyan), 0 0 22px #29f0ff55; transform:scale(1.03); }
+.sp .skin{ font-size:54px; line-height:1.1; }
+.sp .name{ font-weight:900; font-size:20px; margin-top:2px; }
+.sp .rang{ font-family:var(--pixel); font-size:11px; font-weight:900; color:var(--gelb); letter-spacing:.06em; text-transform:uppercase; margin-top:3px; }
+.sp .lvl{ position:absolute; top:8px; left:8px; font-family:var(--pixel); font-weight:900; font-size:12px; background:var(--lila); color:#fff; border-radius:4px; padding:2px 6px; }
+.sp .haken{ position:absolute; top:6px; right:8px; font-size:20px; opacity:0; transition:opacity .15s; }
+.sp.an .haken{ opacity:1; }
+.xpbar{ height:6px; border-radius:3px; background:#ffffff1a; margin-top:8px; overflow:hidden; }
+.xpbar div{ height:100%; background:linear-gradient(90deg,var(--cyan),var(--pink)); }
+.sp.neu{ display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--dim); font-weight:800; min-height:150px; border:2px dashed #ffffff30; box-shadow:none; }
+.rekord{ font-family:var(--pixel); font-weight:900; color:var(--gelb); font-size:14px; letter-spacing:.08em; text-align:center; margin-bottom:10px; }
+
+/* Spiel */
+#spiel{ padding:0; }
+#feld{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+.hud{ position:absolute; left:0; right:0; top:0; padding:max(10px, env(safe-area-inset-top)) 12px 0; display:flex; align-items:flex-start; justify-content:space-between; gap:8px; pointer-events:none; font-family:var(--pixel); font-weight:900; z-index:2; }
+.hud .box{ background:#0b0820b0; border-radius:6px; padding:6px 10px; box-shadow:inset 0 0 0 2px #ffffff22; }
+.hud .lab{ font-size:10px; color:var(--dim); letter-spacing:.1em; }
+.hud .wert{ font-size:21px; color:var(--text); letter-spacing:.03em; }
+#hudScore{ color:var(--gelb); text-shadow:0 0 8px #ffe14d88; }
+#hudCombo{ color:var(--pink); text-shadow:0 0 8px #ff3ea588; }
+.hud .x{ pointer-events:auto; width:40px; height:40px; border-radius:6px; background:#ffffff14; box-shadow:inset 0 0 0 2px #ffffff26; font-size:18px; }
+.sektor{ position:absolute; left:50%; transform:translateX(-50%); top:calc(max(10px, env(safe-area-inset-top)) + 58px); z-index:2; font-family:var(--pixel); font-weight:900; text-align:center; pointer-events:none; }
+.sektor .s1{ font-size:11px; color:var(--dim); letter-spacing:.14em; }
+.sektor .s2{ font-size:20px; color:var(--cyan); text-shadow:0 0 8px #29f0ff88; letter-spacing:.06em; white-space:nowrap; }
+.zeitbar{ position:absolute; left:12px; right:12px; top:calc(max(10px, env(safe-area-inset-top)) + 108px); height:8px; border-radius:4px; background:#ffffff18; overflow:hidden; z-index:2; }
+.zeitbar div{ height:100%; width:0; background:linear-gradient(90deg,var(--gruen),var(--cyan)); box-shadow:0 0 10px var(--cyan); }
+.zeitbar span{ position:absolute; top:0; bottom:0; width:2px; background:#0b0820; }
+.meldung{ position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); z-index:3; font-family:var(--pixel); font-weight:900; text-align:center; pointer-events:none; text-transform:uppercase; letter-spacing:.06em; opacity:0; width:94vw; line-height:1.05; }
+.meldung.zeig{ animation:meldung 1.5s ease-out forwards; }
+@keyframes meldung{ 0%{ opacity:0; transform:translate(-50%,-50%) scale(.5); } 15%{ opacity:1; transform:translate(-50%,-50%) scale(1.1); } 30%{ transform:translate(-50%,-50%) scale(1); } 80%{ opacity:1; } 100%{ opacity:0; transform:translate(-50%,-70%); } }
+.status{ position:absolute; left:12px; right:12px; bottom:max(14px, env(safe-area-inset-bottom)); z-index:2; display:flex; align-items:center; justify-content:center; gap:10px; min-height:52px; border-radius:8px; font-family:var(--pixel); font-weight:900; font-size:clamp(14px,4.2vw,20px); letter-spacing:.04em; text-transform:uppercase; background:#0b0820c0; box-shadow:inset 0 0 0 2px #ffffff26; transition:background .2s, box-shadow .2s; }
+.status.putzt{ background:#0f3a2acc; box-shadow:inset 0 0 0 2px var(--gruen), 0 0 22px #3dff8b55; color:var(--gruen); }
+.status.quatsch{ background:#4a0d1bcc; box-shadow:inset 0 0 0 2px var(--rot), 0 0 22px #ff475788; color:#ff8a95; animation:wackel .35s; }
+.status.still{ color:var(--gelb); box-shadow:inset 0 0 0 2px #ffe14d88; }
+@keyframes wackel{ 25%{ transform:translateX(-8px); } 75%{ transform:translateX(8px); } }
+.pegel{ position:absolute; left:12px; right:12px; bottom:calc(max(14px, env(safe-area-inset-bottom)) + 60px); height:4px; border-radius:2px; background:#ffffff14; z-index:2; overflow:hidden; }
+.pegel div{ height:100%; width:0; background:#ffffff88; }
+.glitch{ animation:glitch .4s steps(3) 2; }
+@keyframes glitch{ 0%{ filter:hue-rotate(0); transform:translate(0); } 33%{ filter:hue-rotate(90deg) saturate(3); transform:translate(-6px,3px); } 66%{ filter:hue-rotate(-90deg); transform:translate(6px,-3px); } 100%{ filter:none; transform:none; } }
+
+/* Ergebnis */
+.ergebnis-titel{ font-family:var(--pixel); font-weight:900; font-size:clamp(28px,8.5vw,44px); color:var(--gelb); text-shadow:0 0 14px #ffe14daa, 4px 4px 0 #7a5b00; text-align:center; margin:28px 0 4px; letter-spacing:.04em; }
+.punkte{ font-family:var(--pixel); font-weight:900; font-size:clamp(40px,13vw,64px); color:#fff; text-shadow:0 0 18px var(--cyan); text-align:center; }
+.neuer-rekord{ font-family:var(--pixel); font-weight:900; color:var(--pink); text-align:center; letter-spacing:.1em; animation:blink .7s steps(2) infinite; margin-bottom:6px; }
+.zahnsterne{ font-size:44px; text-align:center; margin:2px 0 8px; letter-spacing:.06em; }
+.zahnsterne span{ display:inline-block; animation:plopp .5s cubic-bezier(.2,1.7,.4,1) both; }
+.zahnsterne span.aus{ filter:grayscale(1) brightness(.45); }
+@keyframes plopp{ from{ transform:scale(0) rotate(-120deg); } }
+.statistik{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; text-align:center; font-family:var(--pixel); font-weight:900; margin:0 0 10px; }
+.statistik div{ background:#ffffff0c; border-radius:6px; padding:8px 4px; }
+.statistik b{ display:block; font-size:22px; }
+.statistik small{ font-size:10px; color:var(--dim); letter-spacing:.08em; }
+.xp-zeile{ display:flex; align-items:center; gap:10px; padding:8px 0; border-top:1px solid #ffffff14; }
+.xp-zeile .skin{ font-size:34px; }
+.xp-zeile .mitte{ flex:1; }
+.xp-zeile b{ font-size:17px; }
+.xp-zeile .rang{ font-family:var(--pixel); font-weight:900; font-size:11px; color:var(--gelb); letter-spacing:.06em; }
+.xp-zeile .plus{ font-family:var(--pixel); font-weight:900; color:var(--gruen); font-size:16px; }
+.lvlup{ color:var(--pink); font-family:var(--pixel); font-weight:900; font-size:12px; animation:blink .6s steps(2) infinite; }
+.erfolge{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+.erfolg{ background:#ffe14d1c; box-shadow:inset 0 0 0 2px #ffe14d66; border-radius:6px; padding:6px 10px; font-weight:800; font-size:14px; }
+.woche{ display:grid; grid-template-columns:auto repeat(7,1fr); gap:4px; align-items:center; text-align:center; font-family:var(--pixel); font-weight:900; font-size:11px; color:var(--dim); margin-top:6px; }
+.woche .z{ height:28px; border-radius:4px; background:#ffffff0e; display:flex; align-items:center; justify-content:center; font-size:15px; color:var(--gruen); }
+.woche .z.heute{ box-shadow:inset 0 0 0 2px var(--cyan); }
+
+/* Eltern / Einrichten */
+.feld{ display:block; font-weight:800; margin:14px 0 6px; font-size:15px; }
+input[type=text]{ width:100%; font:inherit; font-size:19px; padding:12px 14px; border-radius:8px; border:2px solid #8b5cff66; background:#0b0820; color:var(--text); }
+.wahl{ display:flex; gap:6px; flex-wrap:wrap; }
+.wahl button{ background:#ffffff10; border-radius:6px; padding:9px 13px; font-weight:800; font-size:15px; box-shadow:inset 0 0 0 2px #ffffff22; }
+.wahl button.an{ background:var(--cyan); color:var(--nacht); box-shadow:none; }
+.skins{ display:flex; flex-wrap:wrap; gap:6px; }
+.skins button{ font-size:32px; background:#ffffff10; border-radius:8px; padding:4px 8px; box-shadow:inset 0 0 0 2px #ffffff1a; }
+.skins button.an{ background:#29f0ff22; box-shadow:inset 0 0 0 3px var(--cyan); }
+.zeile{ display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+.liste .zeile{ border-bottom:1px solid #ffffff14; padding:8px 0; }
+.liste button{ background:#ff475722; color:#ff9aa4; border-radius:6px; padding:7px 10px; font-weight:800; font-size:13px; }
+input[type=range]{ width:100%; accent-color:var(--cyan); }
+.fehler{ background:#ff475722; color:#ffb3ba; border-radius:8px; padding:10px 12px; font-weight:800; margin-top:12px; }
+.schritt{ text-align:center; }
+.schritt .gross{ font-size:70px; margin:6px 0; }
+.balken{ height:14px; border-radius:7px; background:#ffffff14; overflow:hidden; margin:12px 0; }
+.balken div{ height:100%; width:0; background:linear-gradient(90deg,var(--gruen),var(--cyan)); }
+</style>
+</head>
+<body>
+<canvas id="sterne"></canvas>
+
+<!-- START -->
+<section class="seite an" id="start">
+    <button class="icon-knopf" style="right:14px" data-zu="eltern" aria-label="Einstellungen">⚙️</button>
+    <div class="logo"><span class="a">PLAQUE</span><span class="b">INVADERS</span></div>
+    <div class="slogan">▶ Putzen = Feuer · Quatschen = Störsignal ◀</div>
+    <div class="rekord" id="rekord"></div>
+    <div class="titel" style="font-size:16px">Wer ist im Team?</div>
+    <div class="spieler" id="spielerListe"></div>
+    <button class="knopf" id="losKnopf">▶ Mission starten</button>
+    <div class="fuss">Das Mikrofon hört nur, wie es klingt – nichts wird aufgenommen oder gespeichert.</div>
+</section>
+
+<!-- SPIEL -->
+<section class="seite" id="spiel">
+    <canvas id="feld"></canvas>
+    <div class="hud">
+        <div class="box"><div class="lab">SCORE</div><div class="wert" id="hudScore">0</div></div>
+        <div class="box" style="text-align:center"><div class="lab">COMBO</div><div class="wert" id="hudCombo">x1</div></div>
+        <div class="box" style="text-align:right"><div class="lab">ZEIT</div><div class="wert" id="hudZeit">2:00</div></div>
+        <button class="x" id="abbrechen" aria-label="Abbrechen">✕</button>
+    </div>
+    <div class="sektor"><div class="s1" id="sektorNr">SEKTOR 1/4</div><div class="s2" id="sektorName">⬆ OBEN LINKS</div></div>
+    <div class="zeitbar"><div id="zeitbar"></div><span style="left:25%"></span><span style="left:50%"></span><span style="left:75%"></span></div>
+    <div class="meldung" id="meldung"></div>
+    <div class="pegel"><div id="pegel"></div></div>
+    <div class="status" id="status"><span id="statusIco">🎯</span><span id="statusText">Bereit?</span></div>
+</section>
+
+<!-- ERGEBNIS -->
+<section class="seite" id="ende">
+    <div class="ergebnis-titel" id="endeTitel">MISSION ERFÜLLT</div>
+    <div class="neuer-rekord" id="endeRekord" hidden>★ NEUER TEAM-REKORD ★</div>
+    <div class="punkte" id="endePunkte">0</div>
+    <div class="zahnsterne" id="endeSterne"></div>
+    <div class="panel">
+        <div class="statistik">
+            <div><b id="stInv">0</b><small>INVADERS</small></div>
+            <div><b id="stCombo">x1</b><small>MAX COMBO</small></div>
+            <div><b id="stQuatsch">0</b><small>STÖRSIGNALE</small></div>
+        </div>
+        <div id="endeSpieler"></div>
+        <div class="erfolge" id="endeErfolge"></div>
+    </div>
+    <div class="panel" style="margin-top:12px">
+        <div class="zeile"><b>Diese Woche</b><span class="dim" id="serie"></span></div>
+        <div class="woche" id="woche"></div>
+    </div>
+    <div style="margin:16px 0 6px"><button class="knopf cyan" data-zu="start">▶ Weiter</button></div>
+</section>
+
+<!-- ELTERN -->
+<section class="seite" id="eltern">
+    <div class="titel" style="margin-top:28px">Einstellungen</div>
+    <div class="panel" id="elternTor">
+        <p class="dim" style="text-align:center">Nur für Erwachsene – kurze Aufgabe:</p>
+        <p style="text-align:center;font-family:var(--pixel);font-size:30px;font-weight:900" id="torAufgabe"></p>
+        <input type="text" inputmode="numeric" id="torAntwort" placeholder="Ergebnis">
+        <div style="display:flex;gap:10px;margin-top:14px;justify-content:center"><button class="knopf dunkel klein" data-zu="start">Zurück</button><button class="knopf klein" id="torOk">OK</button></div>
+    </div>
+    <div id="elternInhalt" hidden style="width:min(100%,520px);display:flex;flex-direction:column;gap:12px">
+        <div class="panel">
+            <div class="titel" style="font-size:17px;text-align:left">🎤 Mikrofon einrichten</div>
+            <p class="dim">Einmal mit den Kindern und ihren Zahnbürsten einrichten, damit das Spiel Putzen und Quatschen unterscheiden kann. Das Handy dabei so hinlegen wie später beim Putzen – nah am Waschbecken.</p>
+            <p class="dim" id="einrichtStatus"></p>
+            <button class="knopf cyan klein" data-zu="einrichten">Jetzt einrichten</button>
+        </div>
+        <div class="panel">
+            <div class="titel" style="font-size:17px;text-align:left">⏱ Spiel</div>
+            <span class="feld">Putz-Zeit</span>
+            <div class="wahl" id="wahlDauer"></div>
+            <span class="feld">Wie streng beim Quatschen?</span>
+            <input type="range" id="strenge" min="1" max="5" step="1">
+            <div class="zeile dim"><span>locker</span><span>streng</span></div>
+            <span class="feld">Töne</span>
+            <div class="wahl" id="wahlTon"></div>
+        </div>
+        <div class="panel liste">
+            <div class="titel" style="font-size:17px;text-align:left">👾 Spieler</div>
+            <div id="spielerVerwaltung"></div>
+            <button class="knopf klein" data-zu="neuerSpieler" style="margin-top:12px">+ Spieler</button>
+        </div>
+        <button class="knopf dunkel" data-zu="start">Fertig</button>
+    </div>
+</section>
+
+<!-- NEUER SPIELER -->
+<section class="seite" id="neuerSpieler">
+    <div class="titel" style="margin-top:28px">Neuer Spieler</div>
+    <div class="panel">
+        <span class="feld" style="margin-top:0">Name</span>
+        <input type="text" id="neuName" maxlength="12" placeholder="Name">
+        <span class="feld">Skin</span>
+        <div class="skins" id="neuSkin"></div>
+        <span class="feld">Laser-Farbe</span>
+        <div class="skins" id="neuFarbe"></div>
+        <div style="display:flex;gap:10px;margin-top:18px;justify-content:center"><button class="knopf dunkel klein" data-zu="start">Zurück</button><button class="knopf klein" id="neuOk">Speichern</button></div>
+    </div>
+</section>
+
+<!-- EINRICHTEN -->
+<section class="seite" id="einrichten">
+    <div class="titel" style="margin-top:28px">Mikrofon einrichten</div>
+    <div class="panel schritt" id="schritt"></div>
+</section>
+
+<script>
+"use strict";
+/* ================================================================
+   PLAQUE INVADERS – Zahnputz-Spiel
+   Mikrofon → Frequenzbänder → „putzen“, „quatschen“ oder „still“.
+   Putzen feuert die Laser-Zahnbürsten (nur dann läuft die Zeit),
+   Quatschen ist ein Störsignal: Combo weg, Invader kommen zurück.
+   Mehrere Kinder spielen gleichzeitig als Team an einem Handy.
+   Alles bleibt auf diesem Gerät (localStorage) – nichts wird aufgenommen.
+   ================================================================ */
+const $ = s => document.querySelector(s);
+const LS = "plaque-invaders";
+let D = { spieler: [], team: [], dauer: 120, strenge: 3, ton: true, kalib: null, rekord: 0 };
+try { Object.assign(D, JSON.parse(localStorage.getItem(LS) || "{}")); } catch (e) {}
+const speichern = () => { try { localStorage.setItem(LS, JSON.stringify(D)); } catch (e) {} };
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const SKINS = ["🤖", "👽", "🥷", "🐉", "🦖", "🦈", "🐺", "🦊", "🐼", "🦄", "🧙", "🧛", "🐸", "🐙", "🦁", "🐯"];
+const FARBEN = ["#29f0ff", "#ff3ea5", "#3dff8b", "#ffe14d", "#8b5cff", "#ff8a3d"];
+const RAENGE = ["Rookie", "Plaque-Jäger", "Karies-Killer", "Bürsten-Profi", "Schaum-Meister", "Laser-Elite", "Zahn-Legende", "Galaxie-Boss"];
+const xpFuerLevel = l => 150 * l + 50 * l * l;
+const levelVon = xp => { let l = 0; while (xp >= xpFuerLevel(l + 1)) l++; return l; };
+const rangVon = l => RAENGE[Math.min(RAENGE.length - 1, Math.floor(l / 2))];
+const tagKey = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+
+let laeuft = false;
+function seite(id){
+    document.querySelectorAll(".seite").forEach(s => s.classList.toggle("an", s.id === id));
+    ({ start: startZeigen, eltern: elternZeigen, neuerSpieler: neuerSpielerZeigen, einrichten: () => einrichten(0) })[id]?.();
+}
+document.addEventListener("click", ev => { const z = ev.target.closest("[data-zu]"); if (z) { if (laeuft) spielEnde(false); seite(z.dataset.zu); } });
+
+/* ---------------- Sternenhimmel ---------------- */
+const sc = $("#sterne"), sx = sc.getContext("2d");
+let sterne = [];
+function sterneGroesse(){ sc.width = innerWidth * devicePixelRatio; sc.height = innerHeight * devicePixelRatio; sterne = Array.from({ length: 130 }, () => ({ x: Math.random(), y: Math.random(), z: .25 + Math.random() * .75 })); }
+addEventListener("resize", sterneGroesse); sterneGroesse();
+(function sterneMalen(){
+    sx.fillStyle = "#0b0820"; sx.fillRect(0, 0, sc.width, sc.height);
+    const g = sx.createRadialGradient(sc.width * .5, sc.height * .15, 0, sc.width * .5, sc.height * .15, sc.height * .8);
+    g.addColorStop(0, "#26166a"); g.addColorStop(1, "#0b082000"); sx.fillStyle = g; sx.fillRect(0, 0, sc.width, sc.height);
+    for (const s of sterne) { s.y += .0006 * s.z * (laeuft ? 4 : 1); if (s.y > 1) { s.y = 0; s.x = Math.random(); } sx.fillStyle = `rgba(255,255,255,${s.z})`; const r = s.z * 1.7 * devicePixelRatio; sx.fillRect(s.x * sc.width, s.y * sc.height, r, r); }
+    requestAnimationFrame(sterneMalen);
+})();
+
+/* ---------------- Start / Team ---------------- */
+function startZeigen(){
+    D.team = D.team.filter(i => i < D.spieler.length);
+    $("#rekord").textContent = D.rekord ? "TEAM-HIGHSCORE: " + D.rekord.toLocaleString("de-DE") : "";
+    $("#spielerListe").innerHTML = D.spieler.map((p, i) => {
+        const l = levelVon(p.xp || 0), von = xpFuerLevel(l), bis = xpFuerLevel(l + 1);
+        return `<button class="sp ${D.team.includes(i) ? "an" : ""}" data-i="${i}"><span class="lvl">LV ${l + 1}</span><span class="haken">✅</span><div class="skin">${p.skin}</div><div class="name" style="color:${p.farbe}">${esc(p.name)}</div><div class="rang">${rangVon(l)}</div><div class="xpbar"><div style="width:${((p.xp || 0) - von) / (bis - von) * 100}%"></div></div></button>`;
+    }).join("") + `<button class="sp neu" data-zu="neuerSpieler"><span style="font-size:30px">＋</span>Spieler</button>`;
+    $("#spielerListe").querySelectorAll("[data-i]").forEach(b => b.onclick = () => { const i = +b.dataset.i; D.team = D.team.includes(i) ? D.team.filter(x => x !== i) : [...D.team, i]; speichern(); startZeigen(); });
+    $("#losKnopf").disabled = !D.team.length;
+    $("#losKnopf").textContent = D.team.length > 1 ? "▶ Team-Mission starten" : "▶ Mission starten";
+}
+$("#losKnopf").onclick = () => {
+    if (!D.team.length) return;
+    if (!D.kalib && !confirm("Das Mikrofon ist noch nicht eingerichtet – dann erkennt das Spiel Putzen nur grob.\n\nTrotzdem starten? (Einrichten: ⚙️ oben rechts)")) return;
+    spielStart();
+};
+
+/* ---------------- Spieler anlegen ---------------- */
+let neu = { skin: SKINS[0], farbe: FARBEN[0] };
+function neuerSpielerZeigen(){
+    $("#neuName").value = "";
+    neu = { skin: SKINS[Math.floor(Math.random() * SKINS.length)], farbe: FARBEN[D.spieler.length % FARBEN.length] };
+    const malen = () => {
+        $("#neuSkin").innerHTML = SKINS.map(s => `<button class="${s === neu.skin ? "an" : ""}" data-s="${s}">${s}</button>`).join("");
+        $("#neuFarbe").innerHTML = FARBEN.map(f => `<button class="${f === neu.farbe ? "an" : ""}" data-f="${f}"><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:${f};box-shadow:0 0 10px ${f}"></span></button>`).join("");
+        $("#neuSkin").querySelectorAll("button").forEach(b => b.onclick = () => { neu.skin = b.dataset.s; malen(); });
+        $("#neuFarbe").querySelectorAll("button").forEach(b => b.onclick = () => { neu.farbe = b.dataset.f; malen(); });
+    };
+    malen();
+}
+$("#neuOk").onclick = () => {
+    const name = $("#neuName").value.trim(); if (!name) { $("#neuName").focus(); return; }
+    D.spieler.push({ name, skin: neu.skin, farbe: neu.farbe, xp: 0, tage: {}, erfolge: [], missionen: 0 });
+    D.team = [...D.team, D.spieler.length - 1]; speichern(); seite("start");
+};
+
+/* ---------------- Eltern ---------------- */
+let torLoesung = 0;
+function elternZeigen(){
+    const a = 6 + Math.floor(Math.random() * 7), b = 6 + Math.floor(Math.random() * 7);
+    torLoesung = a * b; $("#torAufgabe").textContent = a + " × " + b; $("#torAntwort").value = "";
+    $("#elternTor").hidden = false; $("#elternInhalt").hidden = true;
+}
+$("#torOk").onclick = () => { if (+$("#torAntwort").value !== torLoesung) { $("#torAntwort").value = ""; $("#torAntwort").placeholder = "Leider falsch"; return; } $("#elternTor").hidden = true; $("#elternInhalt").hidden = false; elternInhalt(); };
+function elternInhalt(){
+    $("#einrichtStatus").textContent = D.kalib ? "✅ Eingerichtet am " + new Date(D.kalib.datum).toLocaleDateString("de-DE") + ". Bei neuer Zahnbürste oder anderem Ort neu einrichten." : "⚠️ Noch nicht eingerichtet.";
+    const wahl = (box, werte, akt, setzen) => { $(box).innerHTML = werte.map(([v, l]) => `<button class="${String(akt) === String(v) ? "an" : ""}" data-v="${v}">${l}</button>`).join(""); $(box).querySelectorAll("button").forEach(b => b.onclick = () => { setzen(b.dataset.v); speichern(); elternInhalt(); }); };
+    wahl("#wahlDauer", [[60, "1 Min"], [120, "2 Min"], [150, "2½ Min"], [180, "3 Min"]], D.dauer, v => D.dauer = +v);
+    wahl("#wahlTon", [["an", "an"], ["aus", "aus"]], D.ton ? "an" : "aus", v => D.ton = v === "an");
+    $("#strenge").value = D.strenge; $("#strenge").oninput = e => { D.strenge = +e.target.value; speichern(); };
+    $("#spielerVerwaltung").innerHTML = D.spieler.length ? D.spieler.map((p, i) => `<div class="zeile"><span style="font-weight:800;font-size:18px">${p.skin} <span style="color:${p.farbe}">${esc(p.name)}</span> <small class="dim">LV ${levelVon(p.xp || 0) + 1} · ${p.xp || 0} XP</small></span><span><button data-null="${i}">XP auf 0</button> <button data-weg="${i}">Löschen</button></span></div>`).join("") : '<p class="dim">Noch keine Spieler.</p>';
+    $("#spielerVerwaltung").querySelectorAll("[data-weg]").forEach(b => b.onclick = () => { const i = +b.dataset.weg; if (confirm("„" + D.spieler[i].name + "“ löschen?")) { D.spieler.splice(i, 1); D.team = D.team.filter(x => x !== i).map(x => x > i ? x - 1 : x); speichern(); elternInhalt(); } });
+    $("#spielerVerwaltung").querySelectorAll("[data-null]").forEach(b => b.onclick = () => { const p = D.spieler[+b.dataset.null]; if (confirm("XP, Kalender und Erfolge von „" + p.name + "“ zurücksetzen?")) { p.xp = 0; p.tage = {}; p.erfolge = []; p.missionen = 0; speichern(); elternInhalt(); } });
+}
+
+/* ================================================================
+   Mikrofon und Geräusch-Erkennung
+   ================================================================ */
+const BAENDER = [[100, 250], [250, 500], [500, 1000], [1000, 2000], [2000, 3500], [3500, 5500], [5500, 8000], [8000, 11000]];
+let audio = null, analyser = null, stream = null, spektrum = null, binHz = 0;
+async function mikrofonAn(){
+    if (stream) return;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("Dieser Browser erlaubt kein Mikrofon. Die Seite muss über https geöffnet werden.");
+    stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+    audio = new (window.AudioContext || window.webkitAudioContext)();
+    if (audio.state === "suspended") await audio.resume();
+    analyser = audio.createAnalyser(); analyser.fftSize = 2048; analyser.smoothingTimeConstant = .4;
+    audio.createMediaStreamSource(stream).connect(analyser);
+    spektrum = new Float32Array(analyser.frequencyBinCount); binHz = audio.sampleRate / analyser.fftSize;
+}
+function mikrofonAus(){ if (stream) stream.getTracks().forEach(t => t.stop()); if (audio) audio.close().catch(() => {}); stream = audio = analyser = null; }
+function merkmale(){
+    analyser.getFloatFrequencyData(spektrum);
+    const b = BAENDER.map(([lo, hi]) => { let s = 0, n = 0; for (let i = Math.floor(lo / binHz); i <= Math.min(spektrum.length - 1, Math.ceil(hi / binHz)); i++) { s += Math.pow(10, spektrum[i] / 10); n++; } return 10 * Math.log10(s / Math.max(1, n) + 1e-12); });
+    const laut = 10 * Math.log10(b.reduce((a, x) => a + Math.pow(10, x / 10), 0) / b.length + 1e-12);
+    const mittel = b.reduce((a, x) => a + x, 0) / b.length;
+    let lg = 0, li = 0, n = 0;
+    for (let i = Math.floor(200 / binHz); i < Math.min(spektrum.length, Math.ceil(8000 / binHz)); i++) { const p = Math.pow(10, spektrum[i] / 10) + 1e-14; lg += Math.log(p); li += p; n++; }
+    return { laut, form: b.map(x => x - mittel), flach: Math.exp(lg / n) / (li / n) };
+}
+const abstand = (m, k) => { let s = 0; for (let i = 0; i < m.form.length; i++) s += (m.form[i] - k.form[i]) ** 2; return Math.sqrt(s / m.form.length) + Math.abs(m.flach - k.flach) * 30; };
+function einordnen(m){
+    const K = D.kalib, strenge = (D.strenge || 3) - 3;
+    if (K) {
+        const schwelle = K.still + Math.max(4, (Math.min(K.putzen.laut, K.quatsch.laut) - K.still) * .35);
+        if (m.laut < schwelle) return "still";
+        return abstand(m, K.quatsch) * (1 - strenge * .12) < abstand(m, K.putzen) ? "quatschen" : "putzen";
+    }
+    if (m.laut < -62) return "still";
+    const hell = (m.form[4] + m.form[5] + m.form[6]) - (m.form[1] + m.form[2]);
+    return (m.flach > .28 || hell > 6) && !(hell < -4 - strenge * 2) ? "putzen" : "quatschen";
+}
+
+/* ---------------- Einrichten ---------------- */
+const SCHRITTE = [
+    { k: "still", gross: "🤫", titel: "Alle ganz leise", text: "Das Spiel misst, wie leise es im Bad ist.", sek: 3, knopf: "Start" },
+    { k: "putzen", gross: "🪥", titel: "Jetzt putzen!", text: "Mit den echten Zahnbürsten putzen – beide gleichzeitig, wie sonst auch. Nicht reden!", sek: 7, knopf: "Los – putzen!" },
+    { k: "quatsch", gross: "🗣️", titel: "Jetzt quatschen!", text: "Reden, lachen, kichern – aber nicht putzen.", sek: 6, knopf: "Los – quatschen!" }
+];
+let kalibNeu = {};
+function einrichten(nr){
+    const box = $("#schritt");
+    if (nr === 0) kalibNeu = {};
+    if (nr >= SCHRITTE.length) {
+        D.kalib = { ...kalibNeu, datum: Date.now() }; speichern(); mikrofonAus();
+        box.innerHTML = `<div class="gross">✅</div><div class="titel">Fertig!</div><p class="dim">Tipp: Das Handy beim Putzen immer ungefähr an dieselbe Stelle legen.</p><button class="knopf" data-zu="start">Zum Spiel</button>`;
+        return;
+    }
+    const s = SCHRITTE[nr];
+    box.innerHTML = `<p class="dim">Schritt ${nr + 1} von ${SCHRITTE.length}</p><div class="gross">${s.gross}</div><div class="titel">${s.titel}</div><p class="dim">${s.text}</p><div class="balken"><div id="kBalken"></div></div><button class="knopf cyan" id="kStart">${s.knopf}</button><div id="kFehler"></div><p style="margin-top:14px"><button class="knopf dunkel klein" data-zu="eltern">Abbrechen</button></p>`;
+    $("#kStart").onclick = async () => {
+        try { await mikrofonAn(); } catch (e) { $("#kFehler").innerHTML = `<div class="fehler">${esc(e.message || "Kein Zugriff aufs Mikrofon – bitte im Browser erlauben.")}</div>`; return; }
+        $("#kStart").disabled = true; $("#kStart").textContent = "Ich höre zu …";
+        const proben = [];
+        await new Promise(r => setTimeout(r, s.k === "still" ? 300 : 700));
+        const start = performance.now();
+        const t = setInterval(() => {
+            proben.push(merkmale());
+            const p = Math.min(1, (performance.now() - start) / (s.sek * 1000));
+            $("#kBalken").style.width = (p * 100) + "%";
+            if (p < 1) return;
+            clearInterval(t);
+            if (s.k === "still") { const l = proben.map(x => x.laut).sort((a, b) => a - b); kalibNeu.still = l[Math.floor(l.length * .8)]; }
+            else {
+                const top = proben.slice().sort((a, b) => b.laut - a.laut).slice(0, Math.max(5, Math.floor(proben.length * .6)));
+                const form = BAENDER.map((_, i) => top.reduce((a, x) => a + x.form[i], 0) / top.length);
+                const flach = top.reduce((a, x) => a + x.flach, 0) / top.length, laut = top.reduce((a, x) => a + x.laut, 0) / top.length;
+                if (laut < (kalibNeu.still ?? -90) + 3) { $("#kFehler").innerHTML = `<div class="fehler">Zu leise – Handy näher hinlegen und noch einmal.</div>`; $("#kStart").disabled = false; $("#kStart").textContent = "Noch einmal"; return; }
+                kalibNeu[s.k] = { form, flach, laut };
+            }
+            einrichten(nr + 1);
+        }, 100);
+    };
+}
+
+/* ================================================================
+   Spiel: Pixel-Invader auf Canvas
+   ================================================================ */
+const INVADER = [
+    ["..X.....X..", "...X...X...", "..XXXXXXX..", ".XX.XXX.XX.", "XXXXXXXXXXX", "X.XXXXXXX.X", "X.X.....X.X", "...XX.XX..."],
+    ["....XXX....", ".XXXXXXXXX.", "XXXXXXXXXXX", "XXX..X..XXX", "XXXXXXXXXXX", "..XX...XX..", ".XX.XXX.XX.", "XX.......XX"],
+    ["...XXXXX...", "..XXXXXXX..", ".XX.XXX.XX.", ".XXXXXXXXX.", "..X.XXX.X..", ".X.......X.", "X.X.....X.X", ".X.......X."]
+];
+const BOSS = ["......XXXXXXX......", "...XXXXXXXXXXXXX...", "..XXXXXXXXXXXXXXX..", ".XXXX..XXXXX..XXXX.", "XXXX....XXX....XXXX", "XXXXX..XXXXX..XXXXX", "XXXXXXXXXXXXXXXXXXX", "XXX.X.X.X.X.X.X.XXX", ".XXXXXXXXXXXXXXXXX.", "..XXX.XXXXXXX.XXX..", "..XX...XX.XX...XX..", ".XX...XX...XX...XX.", "XX...............XX"];
+const INV_FARBEN = ["#3dff8b", "#ff3ea5", "#ffe14d", "#8b5cff", "#29f0ff", "#ff8a3d"];
+const ZONEN = [["⬆", "OBEN LINKS"], ["⬆", "OBEN RECHTS"], ["⬇", "UNTEN RECHTS"], ["⬇", "UNTEN LINKS"]];
+function pixelBild(muster, farbe, g){
+    const c = document.createElement("canvas"), w = muster[0].length, h = muster.length, rand = g * 2;
+    c.width = w * g + rand * 2; c.height = h * g + rand * 2;
+    const x = c.getContext("2d");
+    x.shadowColor = farbe; x.shadowBlur = g * 1.4; x.fillStyle = farbe;
+    muster.forEach((z, j) => [...z].forEach((p, i) => { if (p === "X") x.fillRect(rand + i * g, rand + j * g, g, g); }));
+    return c;
+}
+
+let S = null, schleife = null, raf = 0, wach = null;
+const fc = $("#feld"), fx = fc.getContext("2d");
+let FW = 0, FH = 0, PX = 4, BILDER = [], BOSS_BILD = null;
+function feldGroesse(){
+    const r = devicePixelRatio || 1; FW = innerWidth; FH = innerHeight;
+    fc.width = FW * r; fc.height = FH * r; fx.setTransform(r, 0, 0, r, 0, 0);
+    PX = Math.max(3, Math.min(7, Math.floor(Math.min(FW / 5 / 11 / 1.6, FH / 110))));
+    BILDER = INV_FARBEN.map((f, k) => pixelBild(INVADER[k % INVADER.length], f, PX));
+    BOSS_BILD = pixelBild(BOSS, "#ff4757", Math.round(PX * 2.2));
+}
+addEventListener("resize", () => { if (laeuft) feldGroesse(); });
+
+async function spielStart(){
+    try { await mikrofonAn(); } catch (e) { alert(e.message || "Kein Zugriff aufs Mikrofon – bitte im Browser erlauben."); return; }
+    try { wach = await navigator.wakeLock?.request("screen"); } catch (e) {}
+    seite("spiel"); feldGroesse();
+    const team = D.team.map(i => D.spieler[i]);
+    S = { team, putzzeit: 0, sektor: -1, score: 0, combo: 1, comboZeit: 0, maxCombo: 1, kills: 0, quatsch: 0, quatschIn: 0, stillSeit: 0, zustand: "still",
+          verlauf: [], inv: [], schuesse: [], teile: [], boss: null, wellenX: 0, wellenY: 0, wellenDir: 1, feuerTakt: 0, schussNr: 0,
+          kanonen: team.map((p, k) => ({ p, x: (k + 1) / (team.length + 1), feuer: 0 })) };
+    $("#hudScore").textContent = "0"; $("#hudCombo").textContent = "x1";
+    laeuft = true;
+    sektorStarten(0);
+    status("still", "🎯", "Bürsten an – Feuer frei!");
+    let letzte = performance.now();
+    schleife = setInterval(() => {
+        const jetzt = performance.now(), dt = Math.min(.25, (jetzt - letzte) / 1000); letzte = jetzt;
+        const m = merkmale();
+        $("#pegel").style.width = Math.max(0, Math.min(100, (m.laut + 85) * 1.4)) + "%";
+        S.verlauf.push(einordnen(m)); if (S.verlauf.length > 6) S.verlauf.shift();
+        const n = k => S.verlauf.filter(x => x === k).length;
+        logik(n("quatschen") >= 4 ? "quatschen" : n("putzen") >= 3 ? "putzen" : "still", dt);
+    }, 100);
+    let vorher = performance.now();
+    const malen = jetzt => { const dt = Math.min(.05, (jetzt - vorher) / 1000); vorher = jetzt; if (S) zeichnen(dt); raf = requestAnimationFrame(malen); };
+    raf = requestAnimationFrame(malen);
+}
+// Pro Sektor eine Welle. Die Treffer pro Invader sind so berechnet, dass die
+// Welle genau dann besiegt ist, wenn die Putzzeit des Sektors vorbei ist.
+const PRO_SEKUNDE = 4;
+function sektorStarten(nr){
+    S.sektor = nr;
+    const proSektor = D.dauer / 4;
+    $("#sektorNr").textContent = nr === 3 ? "SEKTOR 4/4 · BOSS" : "SEKTOR " + (nr + 1) + "/4";
+    $("#sektorName").textContent = ZONEN[nr][0] + " " + ZONEN[nr][1];
+    if (nr === 3) {
+        S.inv = [];
+        S.boss = { hp: proSektor * PRO_SEKUNDE, max: proSektor * PRO_SEKUNDE, x: .5, y: .3, t: 0, treffer: 0 };
+        meldung("⚠ BOSS ⚠<br><span style='font-size:.5em'>KARIES-KÖNIG</span>", "#ff4757");
+    } else {
+        const anzahl = 15, hp = proSektor * PRO_SEKUNDE / anzahl;
+        S.inv = [];
+        for (let r = 0; r < 3; r++) for (let c = 0; c < 5; c++) S.inv.push({ r, c, hp, max: hp, bild: (nr * 2 + r) % BILDER.length, lebt: true, wackel: Math.random() * 6, treffer: 0, neu: 0 });
+        S.wellenY = 0; S.wellenX = 0;
+        meldung("WELLE " + (nr + 1) + "<br><span style='font-size:.5em'>" + ZONEN[nr][1] + "</span>", "#29f0ff");
+    }
+    piep(440 + nr * 110, .12);
+}
+function invPos(v){
+    const b = BILDER[0], bw = b.width, bh = b.height, abst = bw * 1.15;
+    const breite = 4 * abst + bw;
+    const x0 = (FW - breite) / 2 + S.wellenX * Math.max(0, Math.min(50, (FW - breite) / 2 - 10));
+    const y0 = 150 + S.wellenY;
+    return { x: x0 + v.c * abst + bw / 2, y: y0 + v.r * bh * 1.05 + bh / 2 };
+}
+function logik(z, dt){
+    if (!laeuft || laeuft === "endet") return;
+    const proSektor = D.dauer / 4;
+    if (z === "putzen") {
+        S.putzzeit += dt; S.stillSeit = 0; S.comboZeit += dt;
+        const neueCombo = S.comboZeit > 24 ? 5 : S.comboZeit > 16 ? 4 : S.comboZeit > 10 ? 3 : S.comboZeit > 5 ? 2 : 1;
+        if (neueCombo > S.combo) { S.combo = neueCombo; S.maxCombo = Math.max(S.maxCombo, S.combo); $("#hudCombo").textContent = "x" + S.combo; meldung("COMBO x" + S.combo + "!", "#ff3ea5"); }
+        S.feuerTakt += dt * PRO_SEKUNDE;
+        while (S.feuerTakt >= 1) { S.feuerTakt -= 1; feuern(); }
+        if (S.zustand !== "putzen") status("putzen", "🪥", "Feuer! Weiterputzen!");
+        if (S.putzzeit >= (S.sektor + 1) * proSektor && S.sektor < 3) sektorStarten(S.sektor + 1);
+        if (S.putzzeit >= D.dauer) { setTimeout(() => spielEnde(true), 900); laeuft = "endet"; }
+    } else if (z === "quatschen") {
+        S.quatschIn += dt;
+        if (S.zustand !== "quatschen") status("quatschen", "📡", "Störsignal! Nicht quatschen!");
+        if (S.quatschIn >= 1.4) { S.quatschIn = 0; stoersignal(); }
+    } else {
+        S.stillSeit += dt; S.quatschIn = Math.max(0, S.quatschIn - dt);
+        if (S.stillSeit > 2.5) {
+            if (S.zustand !== "still") status("still", "⚠", "Feuer aus – weiterputzen!");
+            if (S.stillSeit > 4 && S.combo > 1) { S.combo = 1; S.comboZeit = 0; $("#hudCombo").textContent = "x1"; }
+        }
+    }
+    const rest = Math.max(0, D.dauer - S.putzzeit);
+    $("#hudZeit").textContent = Math.floor(rest / 60) + ":" + String(Math.floor(rest % 60)).padStart(2, "0");
+    $("#zeitbar").style.width = (S.putzzeit / D.dauer * 100) + "%";
+}
+function kanonenY(){ return FH - 200; }
+function feuern(){
+    const k = S.kanonen[(S.schussNr++) % S.kanonen.length];
+    const kx = k.x * FW, ky = kanonenY() - 24;
+    let ziel;
+    if (S.boss) ziel = { boss: true, x: S.boss.x * FW + (Math.random() - .5) * 40, y: S.boss.y * FH + Math.sin(S.boss.t * 1.6) * 10 + (Math.random() - .5) * 30 };
+    else {
+        const lebend = S.inv.filter(v => v.lebt); if (!lebend.length) return;
+        lebend.sort((a, b) => (b.r - a.r) || (Math.abs(invPos(a).x - kx) - Math.abs(invPos(b).x - kx)));
+        const v = lebend[0], p = invPos(v); ziel = { v, x: p.x, y: p.y };
+    }
+    k.feuer = .12;
+    S.schuesse.push({ x: kx, y: ky, zx: ziel.x, zy: ziel.y, t: 0, ziel, farbe: k.p.farbe });
+}
+function treffer(s){
+    const z = s.ziel;
+    if (z.boss) {
+        if (!S.boss) return;
+        S.boss.hp -= 1; S.boss.treffer = .1; S.score += 15 * S.combo; funken(s.zx, s.zy, "#ff4757", 6);
+        if (S.boss.hp <= 0) { explosion(S.boss.x * FW, S.boss.y * FH, "#ff4757", 120); explosion(S.boss.x * FW, S.boss.y * FH, "#ffe14d", 60); S.score += 1000 * S.combo; S.kills++; S.bossBesiegt = true; S.boss = null; meldung("BOSS BESIEGT!", "#ffe14d"); knall(.7); }
+    } else if (z.v && z.v.lebt) {
+        z.v.hp -= 1; z.v.treffer = .1; funken(s.zx, s.zy, INV_FARBEN[z.v.bild], 4);
+        if (z.v.hp <= .001) { z.v.lebt = false; S.kills++; S.score += 100 * S.combo; explosion(s.zx, s.zy, INV_FARBEN[z.v.bild], 30); knall(.25); }
+        else S.score += 5 * S.combo;
+    }
+    $("#hudScore").textContent = Math.round(S.score).toLocaleString("de-DE");
+}
+function stoersignal(){
+    S.quatsch++; S.combo = 1; S.comboZeit = 0; $("#hudCombo").textContent = "x1";
+    const sp = $("#spiel"); sp.classList.remove("glitch"); void sp.offsetWidth; sp.classList.add("glitch");
+    if (S.boss) { S.boss.hp = Math.min(S.boss.max, S.boss.hp + S.boss.max * .06); meldung("BOSS HEILT SICH!", "#ff4757"); }
+    else {
+        const tot = S.inv.filter(v => !v.lebt);
+        if (tot.length) { const v = tot[Math.floor(Math.random() * tot.length)]; v.lebt = true; v.hp = v.max * .6; v.neu = 1; meldung("INVADER IST ZURÜCK!", "#ff4757"); }
+        else { S.inv.forEach(v => { if (v.lebt) v.hp = Math.min(v.max, v.hp + v.max * .3); }); meldung("STÖRSIGNAL!", "#ff4757"); }
+        S.wellenY = Math.min(FH * .25, S.wellenY + 12);
+    }
+    S.score = Math.max(0, S.score - 50); $("#hudScore").textContent = Math.round(S.score).toLocaleString("de-DE");
+    piep(150, .14, "square");
+    if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+}
+function status(z, ico, text){ S.zustand = z; $("#status").className = "status " + ({ putzen: "putzt", quatschen: "quatsch", still: "still" }[z]); $("#statusIco").textContent = ico; $("#statusText").textContent = text; }
+function meldung(html, farbe){ const m = $("#meldung"); m.innerHTML = `<div style="font-size:clamp(24px,8vw,48px);color:${farbe};text-shadow:0 0 16px ${farbe}, 3px 3px 0 #000">${html}</div>`; m.classList.remove("zeig"); void m.offsetWidth; m.classList.add("zeig"); }
+function funken(x, y, farbe, n){ for (let i = 0; i < n; i++) S.teile.push({ x, y, vx: (Math.random() - .5) * 220, vy: (Math.random() - .7) * 220, t: .35 + Math.random() * .25, farbe, g: 2 + Math.random() * 2 }); }
+function explosion(x, y, farbe, n){ for (let i = 0; i < n; i++) { const w = Math.random() * Math.PI * 2, v = 60 + Math.random() * 280; S.teile.push({ x, y, vx: Math.cos(w) * v, vy: Math.sin(w) * v, t: .5 + Math.random() * .6, farbe: Math.random() < .3 ? "#ffffff" : farbe, g: 3 + Math.random() * 4 }); } }
+
+function zeichnen(dt){
+    fx.clearRect(0, 0, FW, FH);
+    S.wellenX += S.wellenDir * dt * .45; if (Math.abs(S.wellenX) > 1) { S.wellenDir *= -1; S.wellenX = Math.sign(S.wellenX); }
+    if (S.zustand === "still" && S.stillSeit > 2.5 && !S.boss) S.wellenY = Math.min(FH * .25, S.wellenY + dt * 8);   // ohne Putzen rücken sie näher
+    const zeit = performance.now() / 1000;
+    for (const v of S.inv) {
+        if (!v.lebt) continue;
+        const p = invPos(v), b = BILDER[v.bild];
+        fx.save(); fx.translate(p.x, p.y + Math.sin(zeit * 3 + v.wackel) * 2);
+        if (v.neu > 0) { v.neu = Math.max(0, v.neu - dt * 1.5); const s = 1 + v.neu * .7; fx.scale(s, s); fx.globalAlpha = 1 - v.neu * .4; }
+        if (v.treffer > 0) { v.treffer -= dt; fx.globalAlpha = .55; }
+        fx.drawImage(b, -b.width / 2, -b.height / 2);
+        fx.globalAlpha = 1;
+        const anteil = v.hp / v.max;
+        if (anteil < 1) { const w = b.width * .6; fx.fillStyle = "#ffffff30"; fx.fillRect(-w / 2, b.height / 2 - 2, w, 3); fx.fillStyle = INV_FARBEN[v.bild]; fx.fillRect(-w / 2, b.height / 2 - 2, w * anteil, 3); }
+        fx.restore();
+    }
+    if (S.boss) {
+        const B = S.boss; B.t += dt; B.x = .5 + Math.sin(B.t * .7) * .2;
+        const bx = B.x * FW, by = B.y * FH + Math.sin(B.t * 1.6) * 10;
+        fx.save(); fx.translate(bx, by);
+        if (B.treffer > 0) { B.treffer -= dt; fx.translate((Math.random() - .5) * 6, 0); fx.globalAlpha = .75; }
+        fx.drawImage(BOSS_BILD, -BOSS_BILD.width / 2, -BOSS_BILD.height / 2); fx.globalAlpha = 1; fx.restore();
+        const bw = Math.min(FW * .7, 360), x0 = (FW - bw) / 2, y0 = B.y * FH + BOSS_BILD.height / 2 + 24;
+        fx.fillStyle = "#ffffff22"; fx.fillRect(x0, y0, bw, 10);
+        fx.fillStyle = "#ff4757"; fx.shadowColor = "#ff4757"; fx.shadowBlur = 12; fx.fillRect(x0, y0, bw * Math.max(0, B.hp / B.max), 10); fx.shadowBlur = 0;
+        fx.font = "900 12px 'Courier New', monospace"; fx.fillStyle = "#ffb3ba"; fx.textAlign = "center"; fx.fillText("KARIES-KÖNIG", FW / 2, y0 - 6);
+    }
+    for (let i = S.schuesse.length - 1; i >= 0; i--) {
+        const s = S.schuesse[i]; s.t += dt * 4.5;
+        const t1 = Math.min(1, s.t), t2 = Math.max(0, s.t - .2);
+        fx.strokeStyle = s.farbe; fx.lineWidth = 4; fx.shadowColor = s.farbe; fx.shadowBlur = 14; fx.lineCap = "round";
+        fx.beginPath(); fx.moveTo(s.x + (s.zx - s.x) * t2, s.y + (s.zy - s.y) * t2); fx.lineTo(s.x + (s.zx - s.x) * t1, s.y + (s.zy - s.y) * t1); fx.stroke(); fx.shadowBlur = 0;
+        if (s.t >= 1) { S.schuesse.splice(i, 1); treffer(s); }
+    }
+    for (let i = S.teile.length - 1; i >= 0; i--) {
+        const t = S.teile[i]; t.t -= dt; t.x += t.vx * dt; t.y += t.vy * dt; t.vy += 260 * dt;
+        if (t.t <= 0) { S.teile.splice(i, 1); continue; }
+        fx.globalAlpha = Math.min(1, t.t * 2.5); fx.fillStyle = t.farbe; fx.fillRect(t.x, t.y, t.g, t.g);
+    }
+    fx.globalAlpha = 1;
+    // Laser-Zahnbürsten: eine pro Spieler, mit Skin und Name darunter
+    const ky = kanonenY();
+    for (const k of S.kanonen) {
+        const kx = k.x * FW;
+        if (k.feuer > 0) k.feuer -= dt;
+        fx.save(); fx.translate(kx, ky);
+        fx.shadowColor = k.p.farbe; fx.shadowBlur = k.feuer > 0 ? 28 : 12; fx.fillStyle = k.p.farbe;
+        fx.fillRect(-7, 0, 14, 46);
+        fx.fillRect(-15, -16, 30, 18);
+        fx.fillStyle = "#ffffff"; for (let j = -11; j <= 11; j += 5.5) fx.fillRect(j - 1.5, -27 - (k.feuer > 0 ? 3 : 0), 3, 12);
+        fx.shadowBlur = 0;
+        fx.font = "30px system-ui, sans-serif"; fx.textAlign = "center"; fx.fillText(k.p.skin, 0, 84);
+        fx.font = "900 12px 'Courier New', monospace"; fx.fillStyle = k.p.farbe; fx.fillText(k.p.name.toUpperCase(), 0, 102);
+        fx.restore();
+    }
+}
+
+/* ---------------- Ende, XP, Erfolge ---------------- */
+$("#abbrechen").onclick = () => { if (confirm("Mission abbrechen? (Dann gibt es keine Punkte.)")) { spielEnde(false); seite("start"); } };
+function spielEnde(geschafft){
+    if (!laeuft) return;
+    laeuft = false; clearInterval(schleife); cancelAnimationFrame(raf); mikrofonAus();
+    try { wach && wach.release(); } catch (e) {} wach = null;
+    if (!geschafft) { S = null; return; }
+    const sterne = S.quatsch <= 1 ? 3 : S.quatsch <= 4 ? 2 : 1;
+    S.score += sterne === 3 ? 500 : sterne === 2 ? 200 : 0;
+    const score = Math.round(S.score);
+    const rekord = score > (D.rekord || 0); if (rekord) D.rekord = score;
+    const heute = new Date(), tag = tagKey(heute), z = heute.getHours() < 14 ? "m" : "a";
+    const xp = 100 + sterne * 50 + Math.round(score / 40);
+    const zeilen = [], neueErfolge = [];
+    for (const p of S.team) {
+        const lvVorher = levelVon(p.xp || 0);
+        p.xp = (p.xp || 0) + xp; p.missionen = (p.missionen || 0) + 1;
+        p.tage = p.tage || {}; p.tage[tag] = p.tage[tag] || {}; p.tage[tag][z] = Math.max(p.tage[tag][z] || 0, sterne);
+        Object.keys(p.tage).sort().slice(0, -90).forEach(k => delete p.tage[k]);
+        const lv = levelVon(p.xp);
+        p.erfolge = p.erfolge || [];
+        const pruefe = (id, text, bed) => { if (bed && !p.erfolge.includes(id)) { p.erfolge.push(id); neueErfolge.push(text); } };
+        pruefe("erste", "🚀 Erste Mission", true);
+        pruefe("still", "🤐 Funkstille – kein Störsignal", S.quatsch === 0);
+        pruefe("boss", "👑 Karies-König besiegt", !!S.bossBesiegt);
+        pruefe("combo5", "🔥 Combo x5", S.maxCombo >= 5);
+        pruefe("serie3", "📅 3 Tage am Stück", serieVon(p) >= 3);
+        pruefe("serie7", "🏅 7 Tage am Stück", serieVon(p) >= 7);
+        pruefe("m25", "🎖️ 25 Missionen", p.missionen >= 25);
+        zeilen.push(`<div class="xp-zeile"><span class="skin">${p.skin}</span><div class="mitte"><b style="color:${p.farbe}">${esc(p.name)}</b> <span class="rang">LV ${lv + 1} · ${rangVon(lv).toUpperCase()}</span>${lv > lvVorher ? ` <span class="lvlup">LEVEL UP!</span>` : ""}<div class="xpbar"><div style="width:${(p.xp - xpFuerLevel(lv)) / (xpFuerLevel(lv + 1) - xpFuerLevel(lv)) * 100}%"></div></div></div><span class="plus">+${xp} XP</span></div>`);
+    }
+    speichern();
+    const st = S; S = null;
+    seite("ende");
+    $("#endeTitel").textContent = sterne === 3 ? "PERFEKTE MISSION" : sterne === 2 ? "MISSION ERFÜLLT" : "GESCHAFFT";
+    $("#endeRekord").hidden = !rekord;
+    zaehlen($("#endePunkte"), score);
+    $("#endeSterne").innerHTML = [0, 1, 2].map(k => `<span class="${k < sterne ? "" : "aus"}" style="animation-delay:${.3 + k * .25}s">🦷</span>`).join("");
+    $("#stInv").textContent = st.kills; $("#stCombo").textContent = "x" + st.maxCombo; $("#stQuatsch").textContent = st.quatsch;
+    $("#endeSpieler").innerHTML = zeilen.join("");
+    $("#endeErfolge").innerHTML = [...new Set(neueErfolge)].map(t => `<span class="erfolg">${t}</span>`).join("");
+    wocheZeigen(st.team[0]);
+    jingle(sterne);
+}
+function serieVon(p){ let n = 0; const d = new Date(); for (;;) { if (p.tage && p.tage[tagKey(d)]) { n++; d.setDate(d.getDate() - 1); } else break; } return n; }
+function wocheZeigen(p){
+    const heute = new Date(), mo = new Date(heute); mo.setDate(heute.getDate() - ((heute.getDay() + 6) % 7));
+    const tage = Array.from({ length: 7 }, (_, k) => { const d = new Date(mo); d.setDate(mo.getDate() + k); return d; });
+    const zelle = (d, z) => { const w = (p.tage || {})[tagKey(d)]?.[z]; return `<div class="z${tagKey(d) === tagKey(heute) ? " heute" : ""}">${w ? (w === 3 ? "🦷" : "✓") : ""}</div>`; };
+    $("#woche").innerHTML = `<span></span>${["MO", "DI", "MI", "DO", "FR", "SA", "SO"].map(t => `<span>${t}</span>`).join("")}<span>☀️</span>${tage.map(d => zelle(d, "m")).join("")}<span>🌙</span>${tage.map(d => zelle(d, "a")).join("")}`;
+    const s = serieVon(p); $("#serie").textContent = s > 1 ? "🔥 " + s + " Tage Serie" : "";
+}
+function zaehlen(el, ziel){ const t0 = performance.now(); (function f(){ const p = Math.min(1, (performance.now() - t0) / 1200); el.textContent = Math.round(ziel * (1 - Math.pow(1 - p, 3))).toLocaleString("de-DE"); if (p < 1) requestAnimationFrame(f); })(); }
+
+/* ---------------- Töne ----------------
+   Während des Spiels nur kurze, leise Geräusche – sonst hört das Mikrofon sie als „Quatschen“. */
+function piep(f, d, typ = "sine"){
+    if (!D.ton || !audio) return;
+    try { const o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime; o.type = typ; o.frequency.value = f; g.gain.setValueAtTime(.05, t); g.gain.exponentialRampToValueAtTime(.0001, t + d); o.connect(g).connect(audio.destination); o.start(t); o.stop(t + d + .02); } catch (e) {}
+}
+function knall(laut){
+    if (!D.ton || !audio) return;
+    try { const n = Math.floor(audio.sampleRate * .18), b = audio.createBuffer(1, n, audio.sampleRate), x = b.getChannelData(0); for (let i = 0; i < n; i++) x[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3); const q = audio.createBufferSource(), g = audio.createGain(), f = audio.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = 900; g.gain.value = .12 * laut; q.buffer = b; q.connect(f).connect(g).connect(audio.destination); q.start(); } catch (e) {}
+}
+function jingle(sterne){
+    if (!D.ton) return;
+    try { const a = new (window.AudioContext || window.webkitAudioContext)(); (sterne === 3 ? [523, 659, 784, 1047, 1319] : [523, 659, 784, 1047]).forEach((f, i) => { const o = a.createOscillator(), g = a.createGain(), t = a.currentTime + i * .12; o.type = "square"; o.frequency.value = f; g.gain.setValueAtTime(.06, t); g.gain.exponentialRampToValueAtTime(.0001, t + .3); o.connect(g).connect(a.destination); o.start(t); o.stop(t + .32); }); setTimeout(() => a.close(), 1600); } catch (e) {}
+}
+document.addEventListener("visibilitychange", () => { if (document.hidden && laeuft) { spielEnde(false); seite("start"); } });
+
+seite("start");
+</script>
+</body>
+</html>
