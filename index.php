@@ -91,12 +91,13 @@ body{
 <header class="portal-header">
 <div class="portal-icon"><i class="fa-solid fa-tower-observation"></i></div>
 <h1>Leuchtturm</h1>
-<p>Orientierung &amp; Material für LRS-Förderung, Sozialtraining und Vertretung</p>
+<p>Orientierung &amp; Material für LRS-Förderung, Sozialtraining, Lernangebot und Vertretung</p>
 </header>
 
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-08", "Lernangebot Grundschule", "Fertige 40-Minuten-Stunden Deutsch, Mathe &amp; Lernen lernen, Methodenpool mit Stundenplaner, Tafel-Übungen und Arbeitsblatt-Generator.", "sozial-stunden.php?bereich=lernangebot"],
     ["2026-11-02", "Lesetraining von Buchstaben bis Text", "In der Kinder-Akte unter <b>Förderplan</b>: Lesestufen 1–5 und bekannte Buchstaben wählen – das Förderpaket nimmt sie mit.", "trainingshefte.php"],
     ["2026-11-02", "Vertretungsstunden", "22 fertige 40-Minuten-Stunden für Kl. 1–4 mit Zufallsauswahl und Arbeitsblättern.", "sozial-stunden.php?bereich=vertretung"],
     ["2026-10-30", "Sozialtraining: Präsentation & Material", "Tafel-Präsentation, PowerPoint, Filme und Gefühlskarten zu jeder Stunde.", "sozial-stunden.php"],
@@ -141,13 +142,19 @@ $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strt
 
 </section>
 
-<h2 class="gruppe"><i class="fa-solid fa-people-group"></i> Sozialtraining &amp; Vertretung</h2>
+<h2 class="gruppe"><i class="fa-solid fa-people-group"></i> Grundschule: Sozialtraining, Lernangebot &amp; Vertretung</h2>
 <section class="portal-grid">
 
 <a href="sozial-stunden.php" class="portal-card haupt">
 <i class="fa-solid fa-calendar-week"></i>
 <h2>Sozialtraining-Stunden</h2>
 <p>36 fertige Stunden, Jahresplan, Präsentation &amp; Material – Kl. 1/2 und 3/4</p>
+</a>
+
+<a href="sozial-stunden.php?bereich=lernangebot" class="portal-card haupt">
+<i class="fa-solid fa-seedling"></i>
+<h2>Lernangebot</h2>
+<p>40-Minuten-Stunden Deutsch, Mathe &amp; Lernen lernen – Planer, Tafel &amp; Arbeitsblätter</p>
 </a>
 
 <a href="sozial-stunden.php?bereich=vertretung" class="portal-card">

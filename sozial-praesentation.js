@@ -220,7 +220,7 @@ function konfetti(buehne){
 
 /* ---------------- Inhalte aufbereiten ---------------- */
 function ohneMarkdown(t){ return String(t || "").replace(/\*\*(.+?)\*\*/g, "$1").replace(/\*(.+?)\*/g, "$1").replace(/^###\s+/gm, "").replace(/^\s*[-•]\s+/gm, "").trim(); }
-const KAT_BILD = { "Gefühle": "regenbogen", "Konflikte lösen": "blitz", "Freundschaft": "geschenk", "Regeln & Miteinander": "glocke", "Selbstwert & Stärken": "pokal", "Kommunikation": "telefon", "Kooperation & Teamgeist": "puzzle", "Achtsamkeit & Ruhe": "kleeblatt", "Vielfalt & Respekt": "regenbogen" };
+const KAT_BILD = { "Gefühle": "regenbogen", "Konflikte lösen": "blitz", "Freundschaft": "geschenk", "Regeln & Miteinander": "glocke", "Selbstwert & Stärken": "pokal", "Kommunikation": "telefon", "Kooperation & Teamgeist": "puzzle", "Achtsamkeit & Ruhe": "kleeblatt", "Vielfalt & Respekt": "regenbogen", "Deutsch: Lesen": "buch", "Deutsch: Schreiben & Rechtschreiben": "stift", "Mathe: Zahlen & Rechnen": "wuerfel", "Mathe: Formen, Größen & Knobeln": "lineal", "Lernen lernen": "lampe", "Gemischt & spielerisch": "puzzle" };
 let bildRegex = null;
 // Findet Bilder aus der Bildersammlung, deren Name im Text vorkommt (auch „Hasen“, „Bären“ …)
 function bilderImText(text, max = 3){
@@ -292,7 +292,7 @@ window.sozialMedien = medienFuer;
 function folienBauen(e, stufe){
     const f = [];
     f.push({ typ: "titel" });
-    if (!(window.BEREICH && window.BEREICH.key === "vertretung")) f.push({ typ: "barometer" });
+    if (!(window.BEREICH && (window.BEREICH.key === "vertretung" || window.BEREICH.key === "lernangebot"))) f.push({ typ: "barometer" });
     const lt = stufe === "34" ? e.lerntext34 : e.lerntext12;
     const { erz, nach } = geschichteZerlegen(lt && lt.text);
     erz.forEach((a, i) => f.push({ typ: "geschichte", titel: lt.titel, text: a, nr: i + 1, von: erz.length }));
@@ -304,7 +304,7 @@ function folienBauen(e, stufe){
     ueListe.forEach(u0 => {
         // Klassen sind getrennt: nur Übungen dieser Stufe, Text passend zur Stufe
         if (u0.fuer && u0.fuer !== "alle" && u0.fuer !== stufe) return;
-        const u = Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, folie: u0["folie" + stufe] || u0.folie || "", warum: u0["warum" + stufe] || u0.warum || "", zusatz: !!(window.istZusatz && window.istZusatz(e, u0, stufe)) });
+        const u = Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, antworten: u0["antworten" + stufe] || u0.antworten, folie: u0["folie" + stufe] || u0.folie || "", warum: u0["warum" + stufe] || u0.warum || "", zusatz: !!(window.istZusatz && window.istZusatz(e, u0, stufe)) });
         // quiz: daumen/ampel/… = Abstimmung je Punkt · karten = je Punkt eine Folie ohne Abstimmung ·
         // liste = alle Punkte auf der Übungsfolie · keine = Punkte nur für die Lehrkraft
         const punkte = aufzaehlung(u.text).slice(0, 10).map(p => p.split(/\s+→\s+/)[0]);

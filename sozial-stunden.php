@@ -11,11 +11,15 @@
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 if (empty($_SESSION["sozial_csrf"])) $_SESSION["sozial_csrf"] = bin2hex(random_bytes(16));
 
-// Zwei Bereiche auf einer Seite: Sozialtraining (Standard) und Vertretungsstunden (?bereich=vertretung)
-$BEREICH = (($_GET["bereich"] ?? "") === "vertretung") ? "vertretung" : "sozial";
-$B_INFO = $BEREICH === "vertretung"
-    ? ["name" => "Vertretung", "titel" => "Vertretungsstunden", "icon" => "fa-shuffle", "datei" => "vertretung.json", "vorlagen" => "vertretung-einheiten"]
-    : ["name" => "Sozialtraining", "titel" => "Sozialtraining-Stunden", "icon" => "fa-people-group", "datei" => "sozialtraining.json", "vorlagen" => "sozial-einheiten"];
+// Drei Bereiche auf einer Seite: Sozialtraining (Standard), Vertretungsstunden (?bereich=vertretung)
+// und Lernangebot (?bereich=lernangebot)
+$BEREICHE = [
+    "sozial"      => ["name" => "Sozialtraining", "titel" => "Sozialtraining-Stunden", "icon" => "fa-people-group", "datei" => "sozialtraining.json", "vorlagen" => "sozial-einheiten"],
+    "vertretung"  => ["name" => "Vertretung", "titel" => "Vertretungsstunden", "icon" => "fa-shuffle", "datei" => "vertretung.json", "vorlagen" => "vertretung-einheiten"],
+    "lernangebot" => ["name" => "Lernangebot", "titel" => "Lernangebot", "icon" => "fa-seedling", "datei" => "lernangebot.json", "vorlagen" => "lernangebot-einheiten"],
+];
+$BEREICH = isset($BEREICHE[$_GET["bereich"] ?? ""]) ? $_GET["bereich"] : "sozial";
+$B_INFO = $BEREICHE[$BEREICH];
 $datei = __DIR__ . "/material-daten/" . $B_INFO["datei"];
 $dateiKaputt = false;
 $daten = [];
@@ -270,6 +274,8 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .blatt-name .ln{ flex:1; }
 .blatt-name .ln.kurz{ flex:0 0 32mm; }
 .blatt-inhalt{ flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
+.blatt-fuss{ margin-top:auto; padding-top:1.5mm; border-top:.25mm solid #dfe5e2; font-family:"Nunito",sans-serif; font-size:7.5pt; font-weight:700; color:#8a979c; text-align:center; }
+.blatt.lese .lese-inhalt{ min-height:0; }
 .blatt-inhalt > *{ flex-shrink:0; }
 .luft{ flex:1 0 2.5mm; }
 .aufgabe.dehnbar{ flex:6 0 auto; display:flex; flex-direction:column; }
@@ -284,6 +290,10 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .lz + .lz{ margin-top:.25em; }
 .lz.nur-text{ min-height:0; padding-top:.15em; }
 .lz > span.t{ white-space:pre-wrap; }
+.lz.gruppen{ column-gap:1.2em; }
+.lz-g{ display:inline-flex; align-items:flex-end; flex:1 1 auto; }
+.lz-g > span.t{ white-space:pre; }
+.lz-g .ln{ min-width:2.4em; flex:1 1 2.4em; }
 .box{ display:inline-block; width:.9em; height:.9em; border:.35mm solid #333; border-radius:.12em; vertical-align:-.1em; margin-right:.15em; flex:0 0 auto; background:white; }
 .schreiblinie{ height:calc(2.1em * var(--z)); border-bottom:.35mm solid #555; }
 .blatt.stufe12 .schreiblinie{ height:calc(2.4em * var(--z)); }
@@ -381,6 +391,12 @@ table.ab-tab td .lz{ min-height:0; }
 <?php if ($BEREICH === "sozial"): ?>
             <a href="#jahresplan" data-reiter="jahresplan"><i class="fa-solid fa-calendar-week"></i> Jahresplan</a>
             <a href="#rituale" data-reiter="rituale"><i class="fa-solid fa-hands-holding-circle"></i> Rituale</a>
+<?php elseif ($BEREICH === "lernangebot"): ?>
+            <a href="#jahresplan" data-reiter="jahresplan"><i class="fa-solid fa-calendar-week"></i> Jahresplan</a>
+            <a href="#methoden" data-reiter="methoden"><i class="fa-solid fa-shapes"></i> Methoden &amp; Planer</a>
+            <a href="#tafel" data-reiter="tafel"><i class="fa-solid fa-chalkboard"></i> Tafel</a>
+            <a href="lernangebot-generator.php"><i class="fa-solid fa-wand-magic-sparkles"></i> Arbeitsblätter</a>
+            <a href="#rituale" data-reiter="rituale"><i class="fa-solid fa-box-archive"></i> Material</a>
 <?php else: ?>
             <a href="#rituale" data-reiter="rituale"><i class="fa-solid fa-box-archive"></i> Material</a>
             <a href="sozial-stunden.php" style="margin-left:auto"><i class="fa-solid fa-people-group"></i> Zum Sozialtraining</a>
@@ -391,7 +407,7 @@ table.ab-tab td .lz{ min-height:0; }
 
 <main class="seite">
     <?php if ($dateiKaputt): ?>
-    <div class="hinweis rot"><i class="fa-solid fa-triangle-exclamation"></i> Die Datei material-daten/sozialtraining.json ist beschädigt. Deine eigenen Stunden werden deshalb gerade nicht angezeigt, und Speichern ist gesperrt, damit nichts verloren geht. Eine Sicherung findest du unter update-backup/.</div>
+    <div class="hinweis rot"><i class="fa-solid fa-triangle-exclamation"></i> Die Datei material-daten/<?= htmlspecialchars($B_INFO["datei"]) ?> ist beschädigt. Deine eigenen Stunden werden deshalb gerade nicht angezeigt, und Speichern ist gesperrt, damit nichts verloren geht. Eine Sicherung findest du unter update-backup/.</div>
     <?php endif; ?>
     <div id="inhalt"></div>
 </main>
@@ -510,10 +526,10 @@ function toast(text, fehler = false){
 }
 
 async function senden(daten){
-    if (window.SOZIAL_GESPERRT) throw new Error("Speichern ist gesperrt, weil sozialtraining.json beschädigt ist.");
+    if (window.SOZIAL_GESPERRT) throw new Error("Speichern ist gesperrt, weil die Datei mit deinen Stunden beschädigt ist.");
     let r;
     try {
-        r = await fetch("sozial-speichern.php" + (window.BEREICH.key === "vertretung" ? "?bereich=vertretung" : ""), { method: "POST", credentials: "same-origin",
+        r = await fetch("sozial-speichern.php" + (window.BEREICH.key !== "sozial" ? "?bereich=" + window.BEREICH.key : ""), { method: "POST", credentials: "same-origin",
             headers: { "Content-Type": "application/json", "X-CSRF": window.SOZIAL_CSRF }, body: JSON.stringify(daten) });
     } catch (e) { throw new Error("Keine Verbindung zum Server. Bitte gleich noch einmal versuchen."); }
     let antwort;
@@ -625,16 +641,22 @@ function ausmalbild(name){
    ============================================================ */
 const t0 = teile => teile[0].trim() !== "";
 // Text mit ___ (Schreiblinie) und ☐ (Kästchen), mehrzeilig
+function linienTeile(zeile){
+    const teile = zeile.split(/_{3,}/);
+    let html = "";
+    teile.forEach((t, i) => {
+        if (t) html += `<span class="t">${inline(t).replace(/☐/g, '<span class="box"></span>')}</span>`;
+        // Linie ganz vorn mit Text dahinter = kurzes Feld (z. B. zum Nummerieren oder für F/K)
+        if (i < teile.length - 1) html += (i === 0 && !t && teile[1].trim()) ? '<span class="ln vorne"></span>' : '<span class="ln"></span>';
+    });
+    return { html, nurText: teile.length === 1 && t0(teile) };
+}
 function linienText(text){
     return String(text ?? "").split("\n").map(zeile => {
-        const teile = zeile.split(/_{3,}/);
-        let html = "";
-        teile.forEach((t, i) => {
-            if (t) html += `<span class="t">${inline(t).replace(/☐/g, '<span class="box"></span>')}</span>`;
-            // Linie ganz vorn mit Text dahinter = kurzes Feld (z. B. zum Nummerieren oder für F/K)
-            if (i < teile.length - 1) html += (i === 0 && !t && teile[1].trim()) ? '<span class="ln vorne"></span>' : '<span class="ln"></span>';
-        });
-        const nurText = teile.length === 1 && t0(teile);
+        // Mehrere Aufgaben in einer Zeile (durch 3+ Leerzeichen getrennt): jede bleibt beim Umbrechen zusammen
+        const gruppen = /_{3,}/.test(zeile) ? zeile.trim().split(/ {3,}/) : [];
+        if (gruppen.length > 1) return `<div class="lz gruppen">${gruppen.map(g => `<span class="lz-g">${linienTeile(g).html}</span>`).join("")}</div>`;
+        const { html, nurText } = linienTeile(zeile);
         return `<div class="lz${nurText ? " nur-text" : ""}">${html || '<span class="ln"></span>'}</div>`;
     }).join("");
 }
@@ -705,8 +727,9 @@ function aufgabenSymbol(typ){
     return `<svg class="af-symbol" viewBox="0 0 24 24">${z[typ] || z.schreiben}</svg>`;
 }
 
-// Sozialtraining: EIN Arbeitsblatt für alle Kinder aus Kl. 1 und 2 (Vertretung: weiter Kl. 1 und Kl. 2 getrennt)
-function gemeinsam12(){ return !(window.BEREICH && window.BEREICH.key === "vertretung"); }
+// Sozialtraining: EIN Arbeitsblatt für alle Kinder aus Kl. 1 und 2 (Vertretung und Lernangebot: Kl. 1 und Kl. 2 getrennt)
+function gemeinsam12(){ return !(window.BEREICH && (window.BEREICH.key === "vertretung" || window.BEREICH.key === "lernangebot")); }
+function mitPlan(){ return window.BEREICH.key !== "vertretung"; }
 function ab12Stufen(){ return gemeinsam12() ? ["12"] : ["1", "2"]; }
 const DAUMEN_ZEICHEN = {
     daumen: ['<span class="dz-emoji">👍</span>', '<span class="dz-emoji">👎</span>'],
@@ -751,7 +774,8 @@ function aufgabeHtml(a, stufe = "34"){
             });
             const speicher = (a.woerter || []).filter(w => String(w).trim()).length
                 ? `<div class="wortspeicher"><b>Wortspeicher:</b>${a.woerter.filter(w => String(w).trim()).map(w => `<span>${inline(w)}</span>`).join("")}</div>` : "";
-            const kreuzSpalte = sp.map((s, i) => i > 0 && String(s).trim().length <= 4 && (a.zeilen || []).every(z => !String(z[i] ?? "").trim()));
+            // Kästchen-Spalten: ausdrücklich über kreuz: [Spaltennummern] – sonst kurze, leere Spalten (z. B. „ja“, „1“)
+            const kreuzSpalte = sp.map((s, i) => Array.isArray(a.kreuz) ? a.kreuz.includes(i) : (i > 0 && String(s).trim().length <= 4 && (a.zeilen || []).every(z => !String(z[i] ?? "").trim())));
             return speicher + '<table class="ab-tab">' +
                 (sp.length ? "<tr>" + sp.map((s, i) => `<th${breite[i] ? ` style="width:${breite[i]}"` : ""}>${inline(s)}</th>`).join("") + "</tr>" : "") +
                 (a.zeilen || []).map((z, zi) => "<tr>" + (sp.length ? sp.map((_, i) => z[i]) : z).map((c, ci) => {
@@ -779,6 +803,8 @@ function aufgabeHtml(a, stufe = "34"){
     }
     return "";
 }
+// Fußzeile auf jedem Blatt für die Kinder
+const FUSS = '<div class="blatt-fuss">Melanie Bernshausen · Diplomierte Mediendidaktikerin (EÖDL)</div>';
 // stufe: "1" (Vorlese-Fassung Kl. 1), "2" (Kl. 2) oder "34" – Kl. 1 und 2 nutzen beide das 1/2-Blatt
 function blattBauen(e, stufe){
     // Sozialtraining: ein Blatt für Kl. 1 und 2. Vertretung: „12“ = gemischte Gruppe (Vorlese-Fassung ohne Schreibaufgaben), „1“/„2“ = einzelne Stufe
@@ -813,7 +839,7 @@ function blattBauen(e, stufe){
         `<div class="blatt-meta"><i class="fa-solid fa-tower-observation"></i> ${esc(window.BEREICH.name)}<br>Klasse ${stufe === "34" ? "3/4" : stufe === "12" ? "1/2" : stufe}</div></div>` +
         `<div class="blatt-name"><span>Name:</span><span class="ln"></span>${stufe === "1" || stufe === "12" ? "" : '<span>Datum:</span><span class="ln kurz"></span>'}</div>` +
         (ab.kontext ? `<div class="blatt-kontext">📖 ${inline(ab.kontext)}</div>` : "") +
-        `<div class="blatt-inhalt">${inhaltHtml}</div>`;
+        `<div class="blatt-inhalt">${inhaltHtml}</div>` + FUSS;
     return blatt;
 }
 // Lesetext für die Kinder: nur die Geschichte (ohne Lehrer-Hinweise), Abschnitte wie auf den Folien
@@ -834,7 +860,7 @@ function lesetextBlatt(e, stufe){
         `<div class="blatt-kopf"><div class="blatt-titel">${inline(lt.titel || e.titel)}</div>` +
         `<div class="blatt-meta"><i class="fa-solid fa-tower-observation"></i> ${esc(window.BEREICH.name)} · Lesetext<br>Klasse ${stufe === "34" ? "3/4" : "1/2"}</div></div>` +
         `<div class="lese-inhalt">${teile.map((t, i) => `<div class="lese-abschnitt">${teile.length > 1 ? `<span class="lese-nr">${i + 1}</span>` : ""}<div class="md">${md(t)}</div></div>`).join("")}
-        ${fragen.length ? `<div class="lese-fragen"><b>Zum Nachdenken</b><ol>${fragen.map(q => `<li>${esc(q)}</li>`).join("")}</ol></div>` : ""}</div>`;
+        ${fragen.length ? `<div class="lese-fragen"><b>Zum Nachdenken</b><ol>${fragen.map(q => `<li>${esc(q)}</li>`).join("")}</ol></div>` : ""}</div>` + FUSS;
     return blatt;
 }
 // Lesetext so groß wie möglich auf genau eine Seite
@@ -1116,6 +1142,8 @@ function route(){
     if (ansicht === "neu") return zeigeEditor(null);
     if (ansicht === "jahresplan") return zeigeJahresplan();
     if (ansicht === "rituale") return zeigeRituale();
+    if (ansicht === "methoden" && window.lernMethoden) { reiterSetzen("methoden"); return window.lernMethoden.zeigen(inhalt, id); }
+    if (ansicht === "tafel" && window.lernTafel) { reiterSetzen("tafel"); return window.lernTafel.uebersicht(inhalt); }
     zeigeBibliothek();
 }
 window.addEventListener("hashchange", route);
@@ -1130,15 +1158,16 @@ function zeigeBibliothek(){
     const kats = [...new Set([...KATEGORIEN, ...alleEinheiten().map(e => e.kategorie).filter(Boolean)])];
     inhalt.innerHTML = `
         <div id="dieseWoche"></div>
+        ${window.BEREICH.key === "lernangebot" && !(DATEN.jahresplan && Object.keys(DATEN.jahresplan.wochen || {}).length) ? `<div class="hinweis" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="flex:1 1 300px"><i class="fa-solid fa-seedling"></i> <b>So geht’s:</b> Fertige Stunde wählen und in den <a href="#jahresplan">Jahresplan</a> eintragen – oder im <a href="#methoden">Planer</a> eine eigene Stunde aus Methoden bauen. Für zwischendurch: <a href="#tafel">Tafel-Übungen</a> und der <a href="lernangebot-generator.php">Arbeitsblatt-Generator</a>.</span></div>` : ""}
         <div class="werkzeug">
             <input type="search" id="suche" placeholder="Stunde suchen …" value="${esc(filterText)}">
             <select id="filterKat"><option value="">Alle Themen</option>${kats.map(k => `<option ${k === filterKat ? "selected" : ""}>${esc(k)}</option>`).join("")}</select>
-            ${window.BEREICH.key === "vertretung" ? `<label class="ed-check" style="margin:0;background:white;border-radius:10px;padding:0 14px;display:flex;align-items:center;gap:8px;white-space:nowrap;width:auto"><input type="checkbox" id="nurOhne" style="width:auto;margin:0" ${filterOhne ? "checked" : ""}> nur ohne Vorbereitung</label>
+            ${window.BEREICH.key !== "sozial" ? `<label class="ed-check" style="margin:0;background:white;border-radius:10px;padding:0 14px;display:flex;align-items:center;gap:8px;white-space:nowrap;width:auto"><input type="checkbox" id="nurOhne" style="width:auto;margin:0" ${filterOhne ? "checked" : ""}> nur ohne Vorbereitung</label>
             <button class="btn blau" id="zufall"><i class="fa-solid fa-dice"></i> Zufallsstunde</button>` : ""}
             <a class="btn gold" href="#neu"><i class="fa-solid fa-plus"></i> Neue Stunde</a>
         </div>
         <div id="kartenListe"></div>`;
-    const dw = window.BEREICH.key === "sozial" ? aktuelleWoche() : null;
+    const dw = mitPlan() ? aktuelleWoche() : null;
     if (dw && dw.einheit) dieseWocheZeigen(dw);
     const liste = () => {
         const q = filterText.toLowerCase();
@@ -1225,6 +1254,9 @@ function zeigeStunde(id){
                 <button class="btn" data-pptx="12"><i class="fa-solid fa-file-powerpoint"></i> PowerPoint Kl. 1/2</button>
                 <button class="btn" data-pptx="34"><i class="fa-solid fa-file-powerpoint"></i> PowerPoint Kl. 3/4</button>
             </div></div>` : ""}
+        ${window.lernTafel && Array.isArray(e.tafel) && e.tafel.length ? `<div class="karte"><h2><i class="fa-solid fa-chalkboard"></i> Passende Tafel-Übungen</h2>
+            <p class="ed-hilfe" style="margin:0 0 10px">Startet im Vollbild an der digitalen Tafel – schon passend eingestellt.</p>
+            <div class="knopfleiste">${e.tafel.map((t, k) => { const w = window.lernTafel.info(t.werkzeug); return w ? `<button class="btn ${k ? "" : "gold"}" data-tafel="${k}">${w.emoji} ${esc(t.titel || w.titel)}${t.fuer ? ` <span class="chip ${t.fuer === "34" ? "gold" : ""}">${t.fuer === "34" ? "Kl. 3/4" : "Kl. 1/2"}</span>` : ""}</button>` : ""; }).join("")}</div></div>` : ""}
         ${(window.sozialMedien ? window.sozialMedien(e) : []).length ? `<div class="karte"><h2><i class="fa-solid fa-film"></i> Filme</h2>
             ${window.sozialMedien(e).map(m => `<div class="uebung"><div class="uebung-kopf"><strong><a href="${esc(m.url)}" target="_blank" rel="noopener">${esc(m.titel || m.url)}</a></strong>${m.quelle ? `<span class="chip">${esc(m.quelle)}</span>` : ""}${m.dauer ? `<span class="chip">${esc(m.dauer)}</span>` : ""}${m.fuer ? `<span class="chip gold">${esc(m.fuer)}</span>` : ""}</div>${m.hinweis ? `<div class="md"><p>${esc(m.hinweis)}</p></div>` : ""}</div>`).join("")}
             <p class="ed-hilfe">Mediathek-Links können nach einiger Zeit ablaufen – bitte vor der Stunde kurz prüfen. Eigene Filme trägst du über „Bearbeiten“ bzw. „Anpassen“ ein.</p></div>` : ""}
@@ -1256,7 +1288,7 @@ function zeigeStunde(id){
                     const w = DATEN.jahresplan?.wochen?.[iso(d)];
                     const belegt = w?.frei ? " – frei/Ferien" : (w && wochenThemen(w).length) ? " – belegt: " + wochenThemen(w).map(x => finde(x)?.titel || "?").join(" / ") : "";
                     return `<option value="${iso(d)}">KW ${kw(d)} · ${kurzDatum(d)}${esc(belegt)}</option>`; }).join("")}</select>
-                ${window.BEREICH.key === "sozial" ? `<select id="planStufe" style="width:auto">${e.nur34 ? "" : '<option value="beide">für Kl. 1/2 und 3/4</option><option value="12">nur für Kl. 1/2</option>'}<option value="34">nur für Kl. 3/4</option></select>` : ""}
+                ${mitPlan() ? `<select id="planStufe" style="width:auto">${e.nur34 ? "" : '<option value="beide">für Kl. 1/2 und 3/4</option><option value="12">nur für Kl. 1/2</option>'}<option value="34">nur für Kl. 3/4</option></select>` : ""}
                 <button class="btn gold" id="einplanen"><i class="fa-solid fa-check"></i> Eintragen</button>
             </div>
         </div>
@@ -1329,6 +1361,7 @@ function zeigeStunde(id){
         if (alle) { alle.disabled = !mats.length; alle.addEventListener("click", () => window.sozialMaterial.drucken(mats, e.titel + " – Material")); }
     }
     inhalt.querySelectorAll("[data-einstieg]").forEach(b => b.addEventListener("click", () => window.sozialPraesentation.starten(e, b.dataset.einstieg)));
+    inhalt.querySelectorAll("[data-tafel]").forEach(b => b.addEventListener("click", () => { const t = e.tafel[+b.dataset.tafel]; window.lernTafel.starten(t.werkzeug, t.einstellung || {}); }));
     inhalt.querySelectorAll("[data-pptx]").forEach(b => b.addEventListener("click", async () => {
         const alt = b.innerHTML; b.disabled = true; b.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Wird erstellt …';
         try { await window.sozialPraesentation.pptx(e, b.dataset.pptx); toast("PowerPoint heruntergeladen"); }
@@ -1685,7 +1718,7 @@ function klassenStatusSetzen(wocheIso, klId, neu){
 function naechsterStatus(st){ return STATUS_FOLGE[(STATUS_FOLGE.indexOf(st || "") + 1) % STATUS_FOLGE.length]; }
 function planKlassen(){
     const p = plan();
-    if (window.BEREICH.key === "vertretung") return [];
+    if (!mitPlan()) return [];
     if (!Array.isArray(p.klassen)) p.klassen = KLASSEN_STANDARD.map(k => ({ ...k }));
     return p.klassen;
 }
@@ -1918,8 +1951,9 @@ function materialEintraege(ids, ziel){
 function materialBibliothekZeigen(bib){
     const SM = window.sozialMaterial, gruppen = {};
     Object.entries(SM.bibliothek).forEach(([id, m]) => (gruppen[m.gruppe] = gruppen[m.gruppe] || []).push(id));
-    // Im Vertretungsbereich die Vertretungs-Vorlagen zuerst
-    const namen = Object.keys(gruppen).sort((a, b) => (window.BEREICH.key === "vertretung" ? (b.startsWith("Vertretung") - a.startsWith("Vertretung")) : (a.startsWith("Vertretung") - b.startsWith("Vertretung"))));
+    // Im Vertretungs- bzw. Lernangebot-Bereich die eigenen Vorlagen zuerst
+    const vorn = { vertretung: "Vertretung", lernangebot: "Lernangebot" }[window.BEREICH.key];
+    const namen = Object.keys(gruppen).sort((a, b) => vorn ? (b.startsWith(vorn) - a.startsWith(vorn)) : ((a.startsWith("Vertretung") || a.startsWith("Lernangebot")) - (b.startsWith("Vertretung") || b.startsWith("Lernangebot"))));
     bib.innerHTML = namen.map((g, k) => `<details class="ed-block" data-g="${esc(g)}"><summary style="font-weight:900;cursor:pointer">${esc(g)} <span class="chip">${gruppen[g].length}</span></summary><div class="m-uebersicht" style="margin-top:12px"></div></details>`).join("");
     bib.querySelectorAll("details").forEach(d => d.addEventListener("toggle", () => { const z = d.querySelector(".m-uebersicht"); if (d.open && !z.childElementCount) materialEintraege(gruppen[d.dataset.g], z); }));
 }
@@ -1929,7 +1963,7 @@ function rituale(){ return typeof DATEN.rituale === "string" && DATEN.rituale.tr
 function zeigeRituale(bearbeiten = false){
     reiterSetzen("rituale");
     const SM = window.sozialMaterial || {};
-    if (!bearbeiten && window.BEREICH.key === "vertretung") {
+    if (!bearbeiten && window.BEREICH.key !== "sozial") {
         inhalt.innerHTML = window.sozialMaterial ? `<div class="karte"><h2><i class="fa-solid fa-box-archive"></i> Material-Bibliothek</h2><p class="ed-hilfe" style="margin-top:0">Alle Vorlagen zum Ausdrucken. Thema aufklappen, um die Vorschau zu sehen.</p><div id="ritBib"></div></div>` : "";
         if (window.sozialMaterial) materialBibliothekZeigen(document.getElementById("ritBib"));
         return;
@@ -1972,12 +2006,14 @@ function zeigeRituale(bearbeiten = false){
 
 route();
 </script>
-<?php foreach (["sozial-medien.js", "sozial-praesentation.js", "sozial-material.js", "sozial-regie.js"] as $zusatz): if (file_exists(__DIR__ . "/" . $zusatz)): ?>
+<?php $zusaetze = ["sozial-medien.js", "sozial-praesentation.js", "sozial-material.js", "sozial-regie.js"];
+if ($BEREICH === "lernangebot") array_push($zusaetze, "lernangebot-woerter.js", "lernangebot-material.js", "lernangebot-tafel.js", "lernangebot-methoden.js");
+foreach ($zusaetze as $zusatz): if (file_exists(__DIR__ . "/" . $zusatz)): ?>
 <script src="<?= $zusatz ?>?v=<?= @filemtime(__DIR__ . "/" . $zusatz) ?: 1 ?>"></script>
 <?php endif; endforeach; ?>
 <script>
 // Ansicht neu zeichnen, sobald Präsentation und Filmliste geladen sind (Knöpfe/Filme erscheinen dann)
-if (location.hash.startsWith("#stunde/")) route();
+if (/^#(stunde|methoden|tafel)/.test(location.hash)) route();
 </script>
 </body>
 </html>

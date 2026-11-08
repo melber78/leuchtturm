@@ -81,7 +81,7 @@ function abAufgaben(ab, stufe){
 /* ---------- Phasen ---------- */
 function vorher(e, st, vertretung){
     const punkte = [];
-    const gem = !(window.BEREICH && window.BEREICH.key === "vertretung");
+    const gem = !(window.BEREICH && (window.BEREICH.key === "vertretung" || window.BEREICH.key === "lernangebot"));
     const ab = st === "12" ? (gem ? "das Arbeitsblatt <b>Kl. 1/2</b> (ein Blatt für alle, ohne Lesen und Schreiben)" : "die Arbeitsblätter <b>Kl. 1</b> (ohne Lesen/Schreiben) bzw. <b>Kl. 2</b> – je nach Kind") : "das Arbeitsblatt <b>Kl. 3/4</b>";
     punkte.push(`Drucke ${ab} – für jedes Kind eins und eins als Reserve.`);
     String(e.material || "").split("\n").map(z => z.trim()).filter(Boolean).forEach(m => punkte.push(inline(m)));
@@ -160,7 +160,7 @@ function arbeitsblatt(e, st){
     const schritte = [
         li("Schieb den Zeiger auf „Arbeitsblatt“ und teile die Blätter aus.", sag(`Jetzt arbeitet jeder an seinem Platz: „${ab.titel}“. Wenn du Hilfe brauchst, heb die Hand – ich komme zu dir.`)),
     ];
-    if (st === "12" && !(window.BEREICH && window.BEREICH.key === "vertretung")) {
+    if (st === "12" && !(window.BEREICH && (window.BEREICH.key === "vertretung" || window.BEREICH.key === "lernangebot"))) {
         schritte.push(li("<b>Ein Blatt für alle (Kl. 1 und 2):</b> Lies jede Aufgabe vor – und bei Zeilen zum Einkreisen jede Zeile einzeln. Zeig dabei auf das Farbsymbol am Rand. Erst wenn alle eingekreist haben, liest du die nächste Zeile.",
             sag("Wir sind beim roten Kreis. Da steht: … Ist das gut? Kreise den Daumen ein."), `<ol class="regie-ab">${(ab.aufgaben || []).map(a => `<li>${a.text ? `${inline(a.text)} <i>(${TYP_NAMEN[a.typ] || a.typ})</i>` : esc(TYP_NAMEN[a.typ] || a.typ)}</li>`).join("")}</ol>`));
         schritte.push(li("Wer schneller fertig ist, malt die Bilder weiter aus. Kinder der Kl. 2 dürfen zu ihrem Bild ein Wort dazuschreiben."));
@@ -205,12 +205,71 @@ function nachher(vertretung){
     return `<div class="regie-nachher"><h3 style="margin:0 0 4px">📝 Nach der Stunde (2 Min für dich)</h3><ul>${fragen.map(f => `<li>${f}</li>`).join("")}</ul></div>`;
 }
 
+/* ---------- Lernangebot (Deutsch, Mathe, Lernen lernen) ---------- */
+function vorherL(e, st){
+    const punkte = [];
+    punkte.push(`Drucke ${st === "12" ? "die Arbeitsblätter <b>Kl. 1/2 gemischt</b> (Kl. 1, ohne Schreiben) und <b>nur Kl. 2</b> – je nachdem, wer kommt" : "das Arbeitsblatt <b>Kl. 3/4</b>"} – lieber zwei Reserve-Blätter mehr.`);
+    String(e.material || "").split("\n").map(z => z.trim()).filter(Boolean).forEach(m => punkte.push(inline(m)));
+    const mats = window.sozialMaterial ? window.sozialMaterial.fuer(e) : [];
+    if (mats.length) punkte.push("Arbeitsmaterial (unten auf der Stundenseite): " + mats.map(m => "„" + esc(m.titel) + "“").join(", ") + ".");
+    if (Array.isArray(e.tafel) && e.tafel.length) punkte.push("Tafel-Übung einmal kurz öffnen und testen (Knopf „Passende Tafel-Übungen“ auf der Stundenseite).");
+    punkte.push("Ziel der Stunde in Kinder-Sprache an die Tafel: „Heute üben wir …“ – das hilft allen, dranzubleiben.");
+    punkte.push("Für schnelle Kinder: ein Extra-Blatt aus dem Arbeitsblatt-Generator oder die Rückseite („Erfinde selbst zwei Aufgaben“).");
+    return `<div class="regie-vorher"><h3>✅ Vor der Stunde (ca. 5–10 Min Vorbereitung)</h3><ul>${punkte.map(p => `<li>${p}</li>`).join("")}</ul></div>`;
+}
+function ankommenL(e, st){
+    const ziel = kurzZiel(st === "12" ? e.ziel12 : e.ziel34);
+    const warm = e["warmup" + st] || e.warmup || "";
+    return { zweck: "Ankommen, Kopf einschalten – immer gleich, damit die Kinder wissen, was kommt.", schritte: [
+        li("Die Kinder setzen sich an ihren Platz. Ruhezeichen (Hand hoch) und warten, bis es still ist."),
+        li("<b>Begrüßung</b> – kurz und freundlich.", sag("Schön, dass ihr da seid! Heute im Lernangebot …")),
+        li("<b>Kopf-Start (2 Min):</b> " + (warm ? inline(warm) : "eine kurze Blitzrunde – z. B. Blitzrechnen oder Blitzlesen an der Tafel (Reiter „Tafel“). Alle antworten leise mit den Fingern oder rufen nur, wenn sie drankommen.")),
+        li("<b>Ziel nennen</b> und an die Tafel zeigen.", sag(`Heute üben wir: ${ziel}. Am Ende der Stunde schauen wir, ob es geklappt hat.`)),
+    ], tipp: "Unruhige Gruppe? Den Kopf-Start lieber im Stehen machen (aufstehen, wer die Lösung weiß) – Bewegung hilft beim Ankommen." };
+}
+function lerntextL(e, st){
+    const p = lerntext(e, st);
+    if (!p) return null;
+    p.zweck = "Neugierig machen: Die kleine Geschichte führt zum Thema der Stunde – die Kinder sollen merken, wofür sie das brauchen.";
+    p.tipp = "Lass die Kinder raten und vermuten – Fehler sind hier ausdrücklich erlaubt. Gute Ideen kurz an die Tafel schreiben.";
+    return p;
+}
+function uebungL(e, st){
+    const p = uebung(e, st, false);
+    if (!p) return null;
+    p.zweck = "Gemeinsam üben – erst zusammen, dann allein. Möglichst viele Kinder sollen dabei aktiv sein, nicht nur eins.";
+    p.tipp = "Alle sind gleichzeitig dran: Antworten mit den Fingern zeigen, mit der grünen/roten Karte, mit den Zahlenkarten 1–4 oder auf dem Schmierzettel – so weißt du sofort, wer es schon kann. Fürs Drankommen hilft das Glücksrad in der Präsentation.";
+    return p;
+}
+function abL(e, st){
+    const p = arbeitsblatt(e, st);
+    if (!p) return null;
+    p.zweck = "Jedes Kind übt in seinem Tempo – du hast Zeit für die Kinder, die Hilfe brauchen.";
+    p.tipp = "Fehler ruhig ansprechen, aber freundlich: „Schau noch mal bei Nummer 3.“ Wer fertig ist, kontrolliert mit dem Nachbarn oder erfindet auf der Rückseite eigene Aufgaben. Wer feststeckt, darf Material benutzen (Rechenkette, Anlauttabelle).";
+    return p;
+}
+function abschlussL(e, st){
+    const ziel = kurzZiel(st === "12" ? e.ziel12 : e.ziel34);
+    return { zweck: "Lernen sichtbar machen: Was kann ich jetzt? Und die Stunde gut beenden.", schritte: [
+        li("Ruhezeichen, Stifte weg."),
+        li("<b>Lern-Daumen:</b> Jedes Kind zeigt mit dem Daumen, wie gut es heute geklappt hat (hoch – zur Seite – runter).", sag(`Wir haben geübt: ${ziel}. Wie gut kannst du das jetzt?`)),
+        li(st === "12" ? "Ein, zwei Kinder zeigen ihr Blatt oder sagen ein Wort / eine Aufgabe, die sie heute geschafft haben." : "Zwei, drei Kinder beenden den Satz: „Heute habe ich gelernt …“ oder „Ein Trick, den ich mir merke: …“"),
+        li("<b>Applauswelle</b> für alle – zum Schluss klatschen alle zusammen."),
+        li("Blätter in die Mappe, Platz aufräumen."),
+    ], tipp: "Daumen runter ist ein wertvoller Hinweis, kein Problem: Merk dir kurz, wer – das ist dein Startpunkt für die nächste Stunde." };
+}
+function nachherL(){
+    const fragen = ["Wer hat es schon sicher gekonnt, wer braucht das Thema noch einmal?", "Welche Aufgabe war für viele zu schwer oder zu leicht?", "Was nehme ich in der nächsten Stunde als Kopf-Start wieder auf?"];
+    return `<div class="regie-nachher"><h3 style="margin:0 0 4px">📝 Nach der Stunde (2 Min für dich)</h3><ul>${fragen.map(f => `<li>${f}</li>`).join("")}</ul></div>`;
+}
+
 /* ---------- Zusammenbauen ---------- */
 function bauen(e, st){
     cssLaden();
     st = st === "34" ? "34" : "12";
     const vertretung = window.BEREICH && window.BEREICH.key === "vertretung";
-    const bau = { ankommen, lerntext, uebung, ab: arbeitsblatt, abschluss };
+    const lern = window.BEREICH && window.BEREICH.key === "lernangebot";
+    const bau = lern ? { ankommen: ankommenL, lerntext: lerntextL, uebung: uebungL, ab: abL, abschluss: abschlussL } : { ankommen, lerntext, uebung, ab: arbeitsblatt, abschluss };
     const phasen = (e.verlauf || []).map(v => {
         const typ = phasenTyp(v.phase);
         let p = bau[typ] ? bau[typ](e, st, vertretung) : null;
@@ -218,7 +277,7 @@ function bauen(e, st){
         return `<div class="regie-phase"><div class="regie-zeit"><b>${esc(v.zeit)}</b><span>Min · ${esc(v.phase)}</span></div>
             <div>${p.zweck ? `<p class="regie-zweck">${p.zweck}</p>` : ""}<ol class="regie-schritte">${p.schritte.join("")}</ol>${p.tipp ? tipp(p.tipp) : ""}</div></div>`;
     }).join("");
-    return `<div class="regie">${vorher(e, st, vertretung)}${phasen}${nachher(vertretung)}</div>`;
+    return `<div class="regie">${lern ? vorherL(e, st) : vorher(e, st, vertretung)}${phasen}${lern ? nachherL() : nachher(vertretung)}</div>`;
 }
 
 window.sozialRegie = { bauen, cssLaden };

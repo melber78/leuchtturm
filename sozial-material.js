@@ -444,7 +444,7 @@ function materialFuer(e){
 const RASTER = { 1: [1, 1], 2: [1, 2], 4: [2, 2], 6: [2, 3], 8: [2, 4], 12: [3, 4] };
 const GROESSE = { 1: { sym: 150, txt: 46, kopf: 11 }, 2: { sym: 78, txt: 34, kopf: 10 }, 4: { sym: 46, txt: 22, kopf: 9 }, 6: { sym: 36, txt: 18, kopf: 8 }, 8: { sym: 28, txt: 15, kopf: 7.5 }, 12: { sym: 20, txt: 12, kopf: 7 } };
 function seite(klasse){ const s = document.createElement("div"); s.className = "mseite " + (klasse || ""); return s; }
-function fussHtml(m, nr, von){ return `<div class="m-fuss"><span>${esc((window.BEREICH && window.BEREICH.name) || "Sozialtraining")} · ${esc(m.titel)}</span><span>${von > 1 ? nr + " / " + von : ""}</span></div>`; }
+function fussHtml(m, nr, von){ return `<div class="m-fuss"><span>${esc((window.BEREICH && window.BEREICH.name) || "Sozialtraining")} · ${esc(m.titel)}</span><span>Melanie Bernshausen · Diplomierte Mediendidaktikerin (EÖDL)${von > 1 ? " · " + nr + " / " + von : ""}</span></div>`; }
 function symbolHtml(it){
     if (it.svg) return it.svg;
     if (it.gesicht) return gesichtBunt(it.gesicht);
