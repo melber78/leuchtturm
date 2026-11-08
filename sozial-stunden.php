@@ -850,8 +850,12 @@ function lesetextBlatt(e, stufe){
     if (window.sozialPraesentation) {
         const f = window.sozialPraesentation.folienBauen(e, stufe);
         teile = f.filter(x => x.typ === "geschichte").map(x => x.text);
+        if (!teile.length) teile = String((f.find(x => x.typ === "fall") || {}).text || "").split(/\n\s*\n/).map(t => t.trim()).filter(Boolean);   // Lernangebot: „Fall-Akte“
         const fr = f.find(x => x.typ === "fragen");
-        if (stufe === "34" && fr && /Fragen zum Gespräch/i.test(lt.text || "")) fragen = fr.fragen;
+        if (stufe === "34" && /Fragen zum Gespräch/i.test(lt.text || "")) {
+            if (fr) fragen = fr.fragen.filter(q => q.art !== "aufgabe").map(q => q.text || q);
+            else fragen = f.filter(x => x.typ === "denkrunde" && x.frage).map(x => x.frage);
+        }
     } else {
         teile = String(lt.text || "").split(/\*\*\s*(Nach dem Vorlesen|Fragen zum Gespräch)/i)[0].split(/\n\s*\n/).map(t => t.trim()).filter(Boolean);
     }

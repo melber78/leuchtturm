@@ -238,16 +238,19 @@ const CSS = `
 #praes .l-stempel{ display:inline-block; font-family:"Patrick Hand","Andika",sans-serif; font-size:clamp(20px,2.6vw,40px); color:#1d4634; background:#ffe066; padding:.1em .7em; border-radius:6px; transform:rotate(-3deg); box-shadow:0 4px 0 #c9a72e; margin-bottom:2vh; letter-spacing:.08em; }
 #praes .l-check{ display:flex; gap:2vw; justify-content:center; flex-wrap:wrap; margin:2vh 0; }
 #praes .l-check div{ border:3px solid rgba(255,255,255,.75); border-radius:14px 22px 16px 24px; padding:.5em 1em; font-family:"Patrick Hand","Andika",sans-serif; font-size:clamp(20px,2.6vw,40px); display:flex; align-items:center; gap:.5em; }
+#praes .l-check.klein{ margin:1vh 0 2vh; gap:1.2vw; }
+#praes .l-check.klein div{ font-size:clamp(17px,2vw,32px); padding:.35em .8em; }
 #praes .l-check b{ color:#ffe066; font-weight:400; font-size:1.3em; }
 /* Lernpfad statt Punkte */
-#praes .l-pfad{ flex:1; display:flex; align-items:center; justify-content:center; gap:0; min-width:0; }
+#praes .l-pfad{ flex:1; display:flex; flex-wrap:nowrap; align-items:center; justify-content:center; gap:0; min-width:0; }
 #praes .l-station{ display:flex; flex-direction:column; align-items:center; gap:2px; color:#f1d9b5; font:400 13px "Patrick Hand","Andika",sans-serif; cursor:pointer; padding:0 .4vw; opacity:.55; position:relative; }
 #praes .l-station .l-punkt{ width:34px; height:34px; border-radius:50%; background:#8a5a2e; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:inset 0 -3px 0 rgba(0,0,0,.25); }
+#praes .l-station .l-name{ white-space:nowrap; }
 #praes .l-station.war{ opacity:.85; }
 #praes .l-station.war .l-punkt{ background:#b5e48c; }
 #praes .l-station.an{ opacity:1; color:#ffe066; }
 #praes .l-station.an .l-punkt{ background:#ffe066; transform:scale(1.25); box-shadow:0 0 0 4px rgba(255,224,102,.35); }
-#praes .l-weg{ width:clamp(14px,3vw,60px); height:4px; background:repeating-linear-gradient(90deg,#f1d9b5 0 6px,transparent 6px 12px); opacity:.5; margin-bottom:16px; }
+#praes .l-weg{ flex-shrink:1; min-width:6px; width:clamp(8px,2vw,48px); height:4px; background:repeating-linear-gradient(90deg,#f1d9b5 0 6px,transparent 6px 12px); opacity:.5; margin-bottom:16px; }
 @media (max-width:700px){ #praes .l-station span.l-name{ display:none; } #praes .l-weg{ width:8px; } }
 /* Sternenglas */
 #praes .l-zwei{ display:flex; gap:5vw; align-items:flex-end; justify-content:center; flex-wrap:wrap; }
@@ -258,6 +261,74 @@ const CSS = `
 #praes .l-glas i{ font-style:normal; font-size:clamp(18px,2.6vh,30px); line-height:1; animation:lStern .5s cubic-bezier(.2,1.6,.4,1); }
 @keyframes lStern{ from{ transform:translateY(-30vh) scale(1.8); } }
 #praes .l-glas-zahl{ font-family:"Patrick Hand","Andika",sans-serif; font-size:clamp(20px,2.6vw,38px); color:#ffe066; margin-top:.4em; }
+/* Lernangebot-Ablauf: Quizshow „Klasse gegen Eule Ella“ */
+#praes .l-score{ position:absolute; top:1.4vh; right:1.4vw; z-index:5; display:flex; align-items:center; gap:.4em; font:400 clamp(18px,2.2vw,34px) "Patrick Hand","Andika",sans-serif; color:#fffdf5; background:rgba(0,0,0,.28); border:2px dashed rgba(255,255,255,.55); border-radius:14px 20px 16px 22px; padding:.15em .7em; }
+#praes .l-score[hidden]{ display:none; }
+#praes .l-score b{ color:#ffe066; font-weight:400; font-size:1.25em; }
+#praes .l-score i{ font-style:normal; opacity:.6; }
+#praes .l-score.bump{ animation:lBump .5s cubic-bezier(.2,1.8,.4,1); }
+@keyframes lBump{ 40%{ transform:scale(1.35); } }
+#praes .l-mtitel{ margin:.1em 0 .2em; }
+#praes .l-auftragskarte{ background:#fffdf5; color:#1d4634; font:400 clamp(20px,2.6vw,42px)/1.2 "Patrick Hand","Andika",sans-serif; padding:.4em 1em; border-radius:6px; transform:rotate(-1.2deg); box-shadow:0 8px 0 rgba(0,0,0,.18); position:relative; max-width:min(80vw,1100px); }
+#praes .l-auftragskarte::before{ content:""; position:absolute; top:-12px; left:50%; width:90px; height:24px; margin-left:-45px; background:rgba(255,224,102,.75); transform:rotate(3deg); }
+#praes .l-auftragskarte small{ display:block; font-size:.6em; color:#2f6b50; letter-spacing:.08em; text-transform:uppercase; }
+#praes .l-karte{ display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:.4vw; margin:3vh 0 1vh; }
+#praes .l-ort{ display:flex; flex-direction:column; align-items:center; gap:.2em; font-family:"Patrick Hand","Andika",sans-serif; }
+#praes .l-ort span{ width:clamp(48px,7vh,90px); height:clamp(48px,7vh,90px); border:3px solid rgba(255,255,255,.8); border-radius:50% 46% 52% 48%; display:flex; align-items:center; justify-content:center; font-size:clamp(24px,4vh,46px); background:rgba(255,255,255,.06); }
+#praes .l-ort b{ font-weight:400; font-size:clamp(15px,1.7vw,26px); color:#ffe066; }
+#praes .l-kpfeil{ width:clamp(18px,4vw,70px); height:4px; margin-bottom:1.6em; background:repeating-linear-gradient(90deg,#fffdf5 0 8px,transparent 8px 14px); opacity:.6; }
+#praes .l-duell{ display:flex; align-items:center; gap:1.2vw; font:400 clamp(17px,2vw,30px)/1.25 "Patrick Hand","Andika",sans-serif; text-align:left; }
+#praes .l-duell b{ color:#ffe066; font-weight:400; font-size:1.2em; }
+#praes .l-duell .l-eule{ width:clamp(56px,9vh,110px); }
+#praes .l-zettel{ background:#fffdf5; color:#1d4634; font:400 clamp(24px,3.6vw,58px)/1.25 "Patrick Hand","Andika",sans-serif; padding:.6em 1.1em; border-radius:4px; max-width:min(82vw,1200px); transform:rotate(1deg); box-shadow:0 10px 0 rgba(0,0,0,.18); margin-top:2vh; background-image:repeating-linear-gradient(transparent 0 1.24em, rgba(47,107,80,.15) 1.24em 1.3em); }
+#praes .l-akte{ position:relative; background:#f3e2bf; color:#3b2a1a; border-radius:4px 14px 10px 10px; padding:2vh 2.4vw 1.6vh; margin-top:4vh; max-width:min(80vw,1250px); width:100%; text-align:left; box-shadow:0 12px 0 rgba(0,0,0,.2); transform:rotate(-.5deg); }
+#praes .l-akte-reiter{ position:absolute; top:-3.2vh; left:2vw; background:#e6cf9f; color:#7a4a1c; font:400 clamp(16px,1.8vw,28px) "Patrick Hand","Andika",sans-serif; padding:.1em .9em; border-radius:10px 10px 0 0; letter-spacing:.08em; }
+#praes .l-akte-titel{ font:400 clamp(24px,3.2vw,50px) "Patrick Hand","Andika",sans-serif; color:#7a2e1c; border-bottom:2px dashed rgba(122,74,28,.4); margin-bottom:.4em; }
+#praes.lern .l-akte .p-text, #praes .l-akte .p-text{ color:#3b2a1a; max-width:none; line-height:1.38; }
+#praes .l-akte .p-text p{ margin:.0 0 .5em; }
+#praes .l-denkfrage{ font:400 clamp(28px,4.4vw,72px)/1.15 "Patrick Hand","Andika",sans-serif; color:#fffdf5; max-width:min(86vw,1300px); margin:2vh 0 1vh; position:relative; }
+#praes .l-denkfrage::before{ content:"?"; position:absolute; left:-.8em; top:-.3em; font-size:1.6em; color:rgba(255,224,102,.35); transform:rotate(-12deg); }
+#praes .l-auftrag{ font:400 clamp(20px,2.6vw,40px) "Patrick Hand","Andika",sans-serif; color:#ffe066; margin-bottom:1vh; }
+#praes .l-tps{ display:flex; align-items:center; justify-content:center; gap:1vw; flex-wrap:wrap; margin-top:3vh; }
+#praes .l-schritt{ display:flex; flex-direction:column; align-items:center; gap:.1em; min-width:clamp(120px,16vw,240px); padding:.5em 1em; font-size:clamp(30px,5vh,56px); background:rgba(255,255,255,.06); color:#fffdf5; border:3px dashed rgba(255,255,255,.6); border-radius:18px 26px 20px 28px; cursor:pointer; font-family:"Patrick Hand","Andika",sans-serif; }
+#praes .l-schritt b{ font-weight:400; font-size:.75em; }
+#praes .l-schritt span{ font-size:.42em; opacity:.8; }
+#praes .l-schritt.an{ background:#ffe066; color:#1d4634; border-style:solid; border-color:#ffe066; transform:scale(1.06); }
+#praes .l-schritt.war{ border-color:#b5e48c; border-style:solid; }
+#praes .l-schritt.bereit{ animation:lPuls 1s ease-in-out infinite; border-color:#ffe066; }
+@keyframes lPuls{ 50%{ transform:scale(1.07); box-shadow:0 0 0 8px rgba(255,224,102,.25); } }
+#praes .l-tpfeil{ font-style:normal; font-size:clamp(22px,3vw,44px); color:rgba(255,255,255,.5); }
+#praes .l-level{ font:400 clamp(26px,4vw,64px) "Patrick Hand","Andika",sans-serif; color:#3b1020; background:#ff8fab; padding:.05em .8em; border-radius:10px; transform:rotate(-4deg); box-shadow:0 6px 0 #c9637c; letter-spacing:.06em; animation:lStempel .5s cubic-bezier(.2,1.6,.4,1); }
+#praes .l-level.bonus{ background:#b5e48c; color:#1d4634; box-shadow:0 6px 0 #7fae5a; }
+@keyframes lStempel{ from{ transform:scale(2.4) rotate(-14deg); opacity:0; } }
+#praes .l-chall{ display:flex; align-items:center; gap:1.2vw; justify-content:center; margin:2vh 0 1vh; }
+#praes .l-chall h2{ margin:0; }
+#praes .l-chall-emoji{ font-size:clamp(44px,8vh,100px); line-height:1; }
+#praes .l-quizkopf{ display:flex; justify-content:space-between; width:min(90vw,1300px); font:400 clamp(16px,1.9vw,30px) "Patrick Hand","Andika",sans-serif; color:#ffe066; padding-right:9vw; }
+#praes .l-quizfrage{ background:#fffdf5; color:#1d4634; font:400 clamp(26px,min(4vw,6.6vh),64px)/1.2 "Patrick Hand","Andika",sans-serif; padding:.5em 1em; border-radius:18px; width:min(88vw,1250px); margin:1.5vh 0 2.5vh; box-shadow:0 8px 0 rgba(0,0,0,.2); }
+#praes .l-optionen{ display:flex; gap:1.4vw; justify-content:center; flex-wrap:wrap; }
+#praes .l-opt{ display:flex; align-items:center; gap:.4em; font:400 clamp(20px,2.4vw,40px) "Patrick Hand","Andika",sans-serif; border:3px solid rgba(255,255,255,.75); border-radius:14px 22px 16px 24px; padding:.3em .8em .3em .3em; transition:opacity .3s, transform .3s; }
+#praes .l-opt .l-nr{ width:1.5em; height:1.5em; border-radius:50%; background:#ffe066; color:#1d4634; display:flex; align-items:center; justify-content:center; }
+#praes .l-opt .l-oz{ font-size:1.3em; line-height:1; }
+#praes .l-opt .l-oz svg{ width:1.6em; height:1.6em; background:#fffdf5; border-radius:50%; }
+#praes .l-opt.richtig{ border-color:#b5e48c; background:rgba(181,228,140,.2); transform:scale(1.1); box-shadow:0 0 30px rgba(181,228,140,.5); }
+#praes .l-opt.richtig .l-on::after{ content:" ✓"; color:#b5e48c; }
+#praes .l-opt.falsch{ opacity:.3; }
+#praes .l-countdown{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; font:400 clamp(120px,30vh,320px) "Patrick Hand","Andika",sans-serif; color:#ffe066; text-shadow:0 10px 0 rgba(0,0,0,.25); background:rgba(29,70,52,.55); z-index:3; }
+#praes .l-countdown[hidden]{ display:none; }
+#praes .l-countdown.puls{ animation:lZahl .9s ease-out; }
+@keyframes lZahl{ from{ transform:scale(1.6); opacity:.3; } }
+#praes .l-countdown.hoch{ font-size:clamp(50px,11vh,140px); color:#ff8fab; animation:lZahl .5s cubic-bezier(.2,1.6,.4,1); }
+#praes .l-pkreihe{ margin-top:1.6vh; }
+#praes.lern .p-knopf.l-pk{ font-size:clamp(16px,1.7vw,26px); padding:.3em .9em; }
+#praes.lern .p-knopf.l-pk.gewaehlt{ outline:4px solid #b5e48c; outline-offset:3px; }
+#praes .l-raetselkarte{ position:relative; background:#fffdf5; color:#1d4634; font:400 clamp(28px,4.4vw,70px)/1.2 "Patrick Hand","Andika",sans-serif; padding:1em 1.4em; border-radius:22px; width:min(80vw,1100px); margin:2vh 0; box-shadow:0 10px 0 rgba(0,0,0,.2); transform:rotate(-1deg); animation:lKarte .6s cubic-bezier(.2,1.2,.4,1); }
+@keyframes lKarte{ from{ transform:rotateY(90deg); } }
+#praes .l-rk-ecke{ position:absolute; top:.2em; left:.4em; font-size:.8em; color:#ff8fab; }
+#praes .l-endstand{ display:flex; align-items:center; gap:2vw; font:400 clamp(18px,2.1vw,34px) "Patrick Hand","Andika",sans-serif; }
+#praes .l-es{ display:flex; flex-direction:column; align-items:center; border:3px solid rgba(255,255,255,.7); border-radius:18px; padding:.2em 1em; }
+#praes .l-es b{ font-weight:400; font-size:1.7em; color:#ffe066; line-height:1; }
+#praes .l-es-mitte{ font-size:2em; opacity:.6; }
 `;
 const LERN = () => !!(window.BEREICH && window.BEREICH.key === "lernangebot");
 // Eule Ella – eigene Zeichnung
@@ -278,8 +349,10 @@ const EULE = `<svg class="l-eule" viewBox="0 0 140 160" xmlns="http://www.w3.org
 const eule = (klein) => klein ? EULE.replace('class="l-eule"', 'class="l-eule klein"') : EULE;
 const KRITZEL = () => `<div class="l-kritzel">${[["1+2", 6, 12], ["ABC", 82, 10], ["★", 14, 70], ["7·8", 78, 72], ["a e i", 40, 86], ["✓", 92, 44], ["Aa", 4, 40], ["=", 60, 6]].map(([t, x, y], k) => `<span style="left:${x}%;top:${y}%;animation-delay:${k * .7}s">${t}</span>`).join("")}</div>`;
 // Lernpfad: welche Station gehört zu welcher Folie?
-const STATIONEN = [["start", "🚩", "Start"], ["geschichte", "📖", "Geschichte"], ["ueben", "🎯", "Üben"], ["arbeiten", "✏️", "Arbeiten"], ["ziel", "⭐", "Ziel"]];
-function station(typ){ return typ === "titel" ? 0 : /geschichte|fragen|film/.test(typ) ? 1 : typ === "arbeitsblatt" ? 3 : typ === "abschluss" ? 4 : 2; }
+const STATIONEN = [["mission", "🗺️", "Mission"], ["kopf", "🧠", "Kopf-Start"], ["fall", "🔍", "Fall"], ["challenge", "🏆", "Challenges"], ["arbeiten", "✏️", "Arbeiten"], ["ziel", "⭐", "Ziel"]];
+function station(typ){ const m = { mission: 0, kopfstart: 1, fall: 2, film: 2, denkrunde: 2, arbeitsblatt: 4, abschluss: 5 }; return typ in m ? m[typ] : 3; }
+/* Eule Ella ruft „Hu-hu“, wenn sie einen Punkt bekommt */
+function euleRuf(){ const a = audio(); if (!a) return; [0, .32].forEach((d, k) => { const o = a.createOscillator(), g = a.createGain(), t = a.currentTime + d; o.type = "sine"; o.frequency.setValueAtTime(k ? 330 : 392, t); o.frequency.exponentialRampToValueAtTime(k ? 262 : 330, t + .25); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.25, t + .04); g.gain.exponentialRampToValueAtTime(.0001, t + .28); o.connect(g).connect(a.destination); o.start(t); o.stop(t + .3); }); }
 function sterneLesen(st){ try { return parseInt(localStorage.getItem("lern_sterne_" + st), 10) || 0; } catch (e) { return 0; } }
 function sterneSchreiben(st, n){ try { localStorage.setItem("lern_sterne_" + st, String(n)); } catch (e) {} }
 
@@ -409,7 +482,51 @@ function medienFuer(e){
 }
 window.sozialMedien = medienFuer;
 
+/* Lernangebot: eigener Ablauf als Quizshow „Klasse gegen Eule Ella“ –
+   Mission → Kopf-Start → Detektiv-Fall → Denk-Runde → Challenges/Quiz → Tafel-Challenge → Arbeiten → Endstand */
+function uebungStufe(e, u0, stufe){
+    return Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, antworten: u0["antworten" + stufe] || u0.antworten, folie: u0["folie" + stufe] || u0.folie || "", warum: u0["warum" + stufe] || u0.warum || "", zusatz: !!(window.istZusatz && window.istZusatz(e, u0, stufe)) });
+}
+function folienBauenLern(e, stufe){
+    const f = [];
+    const tafel = (e.tafel || []).filter(t => t && t.werkzeug && (!t.fuer || t.fuer === "alle" || t.fuer === stufe));
+    f.push({ typ: "mission" });
+    f.push({ typ: "kopfstart", warmup: stufe === "34" ? (e.warmup34 || e.warmup12 || e.warmup) : (e.warmup12 || e.warmup34 || e.warmup), tafel: tafel[0] || null });
+    const lt = stufe === "34" ? e.lerntext34 : e.lerntext12;
+    const { erz, nach } = geschichteZerlegen(lt && lt.text);
+    if (erz.length) f.push({ typ: "fall", titel: lt.titel, text: erz.join("\n\n") });
+    const medien = medienFuer(e);
+    if (medien.length) f.push({ typ: "film", medien });
+    // Denk-Runden: je Frage eine Folie, ein nachfolgender Auftrag gehört zur Frage davor
+    const runden = [];
+    fragenAus(nach).forEach(q => {
+        const letzte = runden[runden.length - 1];
+        if (q.art === "aufgabe" && letzte && !letzte.auftrag) letzte.auftrag = q.text;
+        else runden.push(q.art === "frage" ? { frage: q.text } : { frage: "", auftrag: q.text });
+    });
+    runden.forEach((r, k) => f.push(Object.assign({ typ: "denkrunde", titel: lt.titel, nr: k + 1, von: runden.length }, r)));
+    const ueListe = (window.uebungenFuer ? window.uebungenFuer(e, stufe) : (e.uebungen || [])).filter(u0 => !(u0.fuer && u0.fuer !== "alle" && u0.fuer !== stufe));
+    let nr = 0;
+    ueListe.forEach(u0 => {
+        const u = uebungStufe(e, u0, stufe);
+        const punkte = aufzaehlung(u.text).slice(0, 10).map(p => p.split(/\s+→\s+/)[0]);
+        const art = u.quiz || quizArt(u.text);
+        if (art === "liste" && punkte.length) u.liste = punkte;
+        f.push({ typ: "challenge", u, nr: u.zusatz ? 0 : ++nr });
+        if (punkte.length >= 2 && art === "karten") punkte.forEach((p, i) => f.push({ typ: "raetsel", u, aussage: p, nr: i + 1, von: punkte.length }));
+        else if (punkte.length >= 2 && !["frage", "keine", "liste", "karten"].includes(art)) {
+            const loes = u0["loesungen" + stufe] || u0.loesungen || [];
+            punkte.forEach((p, i) => f.push({ typ: "quiz", u, art, aussage: p, nr: i + 1, von: punkte.length, loesung: loes[i] ? String(loes[i]).split(/[,\s]+/).map(Number).filter(Boolean) : [] }));
+        }
+    });
+    tafel.slice(1).forEach(t => f.push({ typ: "tafelchallenge", tafel: t }));
+    f.push({ typ: "arbeitsblatt" });
+    f.push({ typ: "abschluss" });
+    f.forEach((x, i) => { if (x.typ === "challenge" && x.u.zusatz) { let j = i + 1; while (j < f.length && (f[j].typ === "quiz" || f[j].typ === "raetsel") && f[j].u === x.u) j++; x.weiter = j; } });
+    return f;
+}
 function folienBauen(e, stufe){
+    if (LERN()) return folienBauenLern(e, stufe);
     const f = [];
     f.push({ typ: "titel" });
     if (!(window.BEREICH && (window.BEREICH.key === "vertretung" || window.BEREICH.key === "lernangebot"))) f.push({ typ: "barometer" });
@@ -476,7 +593,7 @@ function praesentationStarten(e, startStufe){
     document.body.appendChild(wurzel);
     let anzahl = 9;
     try { anzahl = Math.max(2, Math.min(30, parseInt(localStorage.getItem("sozial_anzahl"), 10) || 9)); } catch (err) {}
-    zustand = { e, stufe: startStufe || "12", wurzel, buehne: wurzel.querySelector(".p-buehne"), i: 0, folien: [], stimmen: {}, anzahl, timer: null, gelesen: new Set(), vorleser: {} };
+    zustand = { e, stufe: startStufe || "12", wurzel, buehne: wurzel.querySelector(".p-buehne"), i: 0, folien: [], stimmen: {}, anzahl, timer: null, gelesen: new Set(), vorleser: {}, punkte: { klasse: 0, eule: 0 }, gewertet: {}, mini: null };
     try { zustand.silben = localStorage.getItem("sozial_silben_" + zustand.stufe) === "1"; } catch (err) { zustand.silben = false; }
     wurzel.querySelector(".p-silbenknopf").classList.toggle("an", zustand.silben);
     if (zustand.silben) silbenLaden().then(() => { if (zustand) silbenAnwenden(zustand.buehne); });
@@ -566,6 +683,7 @@ function zeigen(i, rueckwaerts){
     const z = zustand;
     if (i < 0 || i >= z.folien.length) return;
     if (window.speechSynthesis) speechSynthesis.cancel();
+    if (z.mini) { clearInterval(z.mini); z.mini = null; }
     if (i !== z.i) { const dran = z.wurzel.querySelector(".p-dran"); if (dran) dran.remove(); }   // Glücksrad-Nummer gilt nur für diese Folie
     z.i = i;
     const f = z.folien[i];
@@ -579,6 +697,7 @@ function zeigen(i, rueckwaerts){
     if (z.silben) silbenLaden().then(() => { if (el.isConnected) silbenAnwenden(el); });
     z.wurzel.querySelector(".p-pos").textContent = (i + 1) + " / " + z.folien.length;
     if (LERN()) {
+        scoreZeichnen(false, f.typ === "mission" || f.typ === "abschluss");
         const jetzt = station(f.typ);
         z.wurzel.querySelector(".p-punkte").className = "p-punkte l-pfad";
         z.wurzel.querySelector(".p-punkte").innerHTML = STATIONEN.map(([, sym, name], k) => { const ziel = z.folien.findIndex(x => station(x.typ) === k);
@@ -613,22 +732,72 @@ function folieHtml(f, e){
     const fuerChip = u => `<span class="p-chip ${u.fuer === "34" ? "gold" : u.fuer === "12" ? "" : "gruen"}">${{ alle: "Alle", "12": "Kl. 1/2", "34": "Kl. 3/4" }[u.fuer] || "Alle"}</span>`;
     if (LERN()) {
         const zielText = zustand.stufe === "34" ? e.ziel34 : (e.ziel12 || e.ziel34);
-        if (f.typ === "titel") return `${KRITZEL()}<div class="l-stempel">LERNZEIT · ${esc(String(e.kategorie || "").replace(/:.*/, ""))}</div><h1>${esc(e.titel)}</h1>
-            <div class="l-mit-eule">${eule()}<div class="l-blase"><small>Eule Ella sagt:</small>Heute üben wir: ${esc(zielText || e.titel)}</div></div>
-            <div class="p-wahl"><button class="p-knopf ${zustand.stufe === "12" ? "" : "hell"}" data-stufe="12">Klasse 1/2</button><button class="p-knopf ${zustand.stufe === "34" ? "" : "hell"}" data-stufe="34">Klasse 3/4</button></div>`;
-        if (f.typ === "ankuendigung") {
-            const reihe = zustand.folien.filter(x => x.typ === "uebung"), nr = reihe.findIndex(x => x.u === f.u) + 1;
-            return `<div class="p-klein">${f.u.zusatz ? "Extra-Runde – wenn noch Zeit ist" : reihe.length > 1 ? "Station " + nr + " von " + reihe.length : "Unsere Übung"}</div>
-                <div class="l-mit-eule">${eule(true)}<div class="l-blase"><small>Gleich kommt:</small>${f.u.emoji || "🎯"} ${esc(f.u.titel)}${f.u.warum ? `<br><span style="font-size:.7em">${inline(f.u.warum)}</span>` : ""}</div></div>
-                ${f.u.zusatz && f.weiter ? `<div class="p-reihe"><button class="p-knopf hell" data-springen="${f.weiter}">⏭ Überspringen</button></div>` : ""}`;
+        const groesse = (t, a, b2) => String(t || "").length > a ? "clamp(15px,min(1.7vw,2.9vh),28px)" : String(t || "").length > b2 ? "clamp(18px,min(2.2vw,3.7vh),34px)" : "clamp(22px,min(2.8vw,4.6vh),42px)";
+        const punktKnoepfe = `<button class="p-knopf l-pk" data-punkt="klasse">🧒 Punkt für die Klasse</button><button class="p-knopf hell l-pk" data-punkt="eule">🦉 Punkt für Ella</button>`;
+        if (f.typ === "mission") {
+            const n = zustand.folien.filter(x => x.typ === "challenge" && !x.u.zusatz).length + zustand.folien.filter(x => x.typ === "tafelchallenge").length;
+            const orte = [["🧠", "Kopf-Start"], ["🔍", "Der Fall"], ["🏆", n + " Challenge" + (n === 1 ? "" : "s")], ["✏️", "Arbeiten"], ["⭐", "Ziel"]];
+            return `${KRITZEL()}<div class="l-stempel">MISSION · ${esc(String(e.kategorie || "").replace(/:.*/, "").toUpperCase())}</div><h2 class="l-mtitel">${esc(e.titel)}</h2>
+                <div class="l-auftragskarte"><small>Eure Mission:</small>${esc(zielText || e.titel)}</div>
+                <div class="l-karte">${orte.map(([sym, name], k) => (k ? '<span class="l-kpfeil"></span>' : "") + `<div class="l-ort"><span>${sym}</span><b>${esc(name)}</b></div>`).join("")}</div>
+                <div class="l-duell">${eule(true)}<div><b>Klasse gegen Eule Ella!</b><br>Richtig gelöst? Punkt für euch. Daneben? Punkt für Ella.</div></div>
+                <div class="p-wahl"><button class="p-knopf ${zustand.stufe === "12" ? "" : "hell"}" data-stufe="12">Klasse 1/2</button><button class="p-knopf ${zustand.stufe === "34" ? "" : "hell"}" data-stufe="34">Klasse 3/4</button></div>`;
         }
-        if (f.typ === "arbeitsblatt") return `${KRITZEL()}<div class="l-stempel">JETZT BIST DU DRAN!</div>
-            <div class="l-mit-eule">${eule()}<div class="l-blase"><small>Eule Ella sagt:</small>Jeder arbeitet an seinem Platz. Wenn du feststeckst: Hilfe-Treppe!</div></div>
-            <div class="l-check"><div><b>1</b> Name schreiben</div><div><b>2</b> Aufgabe genau lesen</div><div><b>3</b> Los geht’s!</div><div><b>✓</b> Fertig? Kontrollieren!</div></div>
-            <div class="p-reihe"><button class="p-knopf" data-start="11">⏱ 11 Minuten starten</button><button class="p-knopf hell" data-p="ruhe">🤫 Leise-Signal</button></div>`;
+        if (f.typ === "kopfstart") {
+            const inf = f.tafel && window.lernTafel && window.lernTafel.info(f.tafel.werkzeug);
+            return `<div class="l-stempel">KOPF-START · 3 MINUTEN</div><h2>🧠 Gehirn einschalten!</h2>
+                <div class="l-zettel">${inline(f.warmup || "Blitzrunde: Ich frage – ihr antwortet blitzschnell!")}</div>
+                <div class="p-reihe">${inf ? `<button class="p-knopf" data-tafel="1">${inf.emoji || "▶"} ${esc(f.tafel.titel || inf.titel)} an der Tafel</button>` : ""}<button class="p-knopf hell" data-start="3">⏱ 3 Minuten</button></div>`;
+        }
+        if (f.typ === "fall") {
+            const leser = zustand.vorleser[zustand.i];
+            return `<div class="l-akte"><div class="l-akte-reiter">🔍 FALL-AKTE</div><div class="l-akte-titel">${esc(f.titel || "")}</div>
+                <div class="p-text l-akte-text" style="font-size:${f.text.length > 750 ? "clamp(14px,min(1.55vw,2.6vh),26px)" : f.text.length > 350 ? "clamp(16px,min(1.9vw,3.3vh),32px)" : "clamp(20px,min(2.5vw,4.3vh),40px)"}">${md(f.text)}</div></div>
+                <div class="p-reihe" style="margin-top:2vh"><button class="p-knopf" data-vorlesen="1">🔊 Vorlesen</button><button class="p-knopf hell" data-vorleser="1">🎡 Wer liest vor?</button><span class="p-vorleser"${leser ? "" : " hidden"}>📖 Es liest: <b>${esc(leser || "")}</b></span></div>`;
+        }
+        if (f.typ === "denkrunde") {
+            const haupt = f.frage || f.auftrag;
+            return `<div class="p-klein">Denk-Runde ${f.nr} / ${f.von} · ${esc(f.titel || "")}</div>
+                <div class="l-denkfrage"${haupt.length > 90 ? ' style="font-size:clamp(22px,min(3vw,5vh),48px)"' : ""}>${esc(haupt)}</div>
+                ${f.frage && f.auftrag ? `<div class="l-auftrag">👉 ${esc(f.auftrag)}</div>` : ""}
+                <div class="l-tps"><button class="l-schritt" data-tps="0">🤔<b>Denken</b><span>allein · 30 s</span></button><i class="l-tpfeil">➜</i><button class="l-schritt" data-tps="1">🤝<b>Partner</b><span>flüstern · 45 s</span></button><i class="l-tpfeil">➜</i><button class="l-schritt" data-tps="2">🙋<b>Teilen</b><span>Glücksrad</span></button></div>`;
+        }
+        if (f.typ === "challenge") {
+            const min = minuten(f.u.dauer);
+            const kurz = String(f.u.text || "").split(/\n\s*\n/)[0];
+            const text = f.u.folie ? f.u.folie : aufzaehlung(f.u.text).length ? kurz.split("\n").filter(z => !/^\s*[-•]/.test(z)).join("\n") : f.u.text;
+            return `<div class="l-level${f.u.zusatz ? " bonus" : ""}">${f.u.zusatz ? "BONUS-LEVEL" : "CHALLENGE " + f.nr}</div>
+                <div class="l-chall"><span class="l-chall-emoji">${f.u.emoji || "🎯"}</span><h2>${esc(f.u.titel)}</h2></div>
+                <div class="p-text" style="font-size:${groesse(text, 420, 260)}">${md(text)}</div>${f.u.liste ? `<div class="p-liste">${f.u.liste.map(x => `<div>${inline(x)}</div>`).join("")}</div>` : ""}
+                <div class="p-reihe">${min ? `<button class="p-knopf" data-start="${min}">⏱ ${min} Minuten</button>` : ""}<button class="p-knopf hell" data-p="rad">🎡 Wer fängt an?</button>${f.u.zusatz && f.weiter ? `<button class="p-knopf hell" data-springen="${f.weiter}">⏭ Überspringen</button>` : ""}</div>`;
+        }
+        if (f.typ === "quiz") {
+            const opt = abstimmOptionen(f.art, f.u);
+            return `<div class="l-quizkopf"><span>${f.u.emoji || "🏆"} ${esc(f.u.titel)}</span><span>Frage ${f.nr} / ${f.von}</span></div>
+                <div class="l-quizfrage"${f.aussage.length > 70 ? ' style="font-size:clamp(20px,min(2.8vw,4.6vh),44px)"' : ""}>${inline(f.aussage)}</div>
+                <div class="l-optionen">${opt.map((o, k) => `<div class="l-opt">${/^\d/.test(o.zeichen) ? "" : `<span class="l-nr">${k + 1}</span>`}<span class="l-oz">${o.art === "gefuehl" ? gesichtSvg(gefuehlArt(o.zeichen), false) : esc(o.zeichen)}</span><span class="l-on">${esc(o.name)}</span></div>`).join("")}</div>
+                <div class="l-countdown" hidden></div>
+                <div class="p-reihe"><button class="p-knopf gold" data-countdown="1">⏳ 3-2-1 … Karten hoch!</button>${f.loesung && f.loesung.length ? '<button class="p-knopf hell" data-aufdecken="1">✅ Auflösen</button>' : ""}</div>
+                <div class="p-reihe l-pkreihe">${punktKnoepfe}</div>`;
+        }
+        if (f.typ === "raetsel") return `<div class="l-quizkopf"><span>${f.u.emoji || "🃏"} ${esc(f.u.titel)}</span><span>Karte ${f.nr} / ${f.von}</span></div>
+                <div class="l-raetselkarte"${f.aussage.length > 80 ? ' style="font-size:clamp(20px,min(2.8vw,4.6vh),44px)"' : ""}><span class="l-rk-ecke">?</span>${inline(f.aussage)}</div>${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${inline(f.u.frage)}</div>` : ""}
+                <div class="p-reihe"><button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div><div class="p-reihe l-pkreihe">${punktKnoepfe}</div>`;
+        if (f.typ === "tafelchallenge") {
+            const inf = (window.lernTafel && window.lernTafel.info(f.tafel.werkzeug)) || { emoji: "🧩", titel: f.tafel.titel, text: "" };
+            return `<div class="l-level">TAFEL-CHALLENGE</div><div class="l-chall"><span class="l-chall-emoji">${inf.emoji || "🧩"}</span><h2>${esc(f.tafel.titel || inf.titel)}</h2></div>
+                ${inf.text ? `<div class="p-text" style="font-size:clamp(20px,min(2.4vw,4vh),38px)">${esc(inf.text)}</div>` : ""}
+                <div class="p-reihe"><button class="p-knopf" data-tafel="1">▶ An der Tafel starten</button></div><div class="p-reihe l-pkreihe">${punktKnoepfe}</div>`;
+        }
+        if (f.typ === "arbeitsblatt") return `${KRITZEL()}<div class="l-stempel">ARBEITSPHASE · 11 MINUTEN</div><h2>✏️ Jetzt bist du dran!</h2>
+            <div class="l-check klein"><div><b>1</b> Name schreiben</div><div><b>2</b> Aufgabe genau lesen</div><div><b>3</b> Los geht’s!</div><div><b>✓</b> Fertig? Kontrollieren!</div></div>
+            <div class="l-duell">${eule(true)}<div>Feststecken? <b>Hilfe-Treppe:</b> 👀 nochmal lesen · 🧰 Hilfsmittel · 🤫 Nachbarn fragen · 🙋 Hand heben<br>Je leiser ihr arbeitet, desto mehr Tiere kommen in den Leise-Wald!</div></div>
+            <div class="p-reihe"><button class="p-knopf" data-start="11">⏱ 11 Minuten</button>${window.lernTafel ? '<button class="p-knopf gold" data-p="leise">🌳 Leise-Wald an</button>' : ""}<button class="p-knopf hell" data-p="ruhe">🤫 Leise-Signal</button></div>`;
         if (f.typ === "abschluss") {
-            const n = sterneLesen(zustand.stufe);
-            return `<h2>Wie gut kannst du das jetzt?</h2><div class="l-zwei">
+            const n = sterneLesen(zustand.stufe), P = zustand.punkte, gespielt = P.klasse + P.eule > 0;
+            const sieg = P.klasse > P.eule ? "Ihr habt Eule Ella geschlagen! 🎉 Bonus-Stern!" : P.klasse === P.eule ? "Unentschieden – stark!" : "Diesmal gewinnt Ella – nächstes Mal schlagt ihr sie!";
+            return `${gespielt ? `<div class="l-endstand"><div class="l-es k">🧒 Klasse<b>${P.klasse}</b></div><div class="l-es-mitte">:</div><div class="l-es e">🦉 Ella<b>${P.eule}</b></div></div><div class="p-klein">${sieg}</div>` : ""}
+                <h2 style="font-size:clamp(26px,3.6vw,54px)">Wie gut kannst du das jetzt?</h2><div class="l-zwei">
                 ${stimmenHtml("lerndaumen", [{ wert: "sicher", name: "kann ich sicher", art: "emoji", zeichen: "👍" }, { wert: "bisschen", name: "ein bisschen", art: "emoji", zeichen: "👉" }, { wert: "noch", name: "übe ich noch", art: "emoji", zeichen: "👎" }])}
                 <div class="l-glasbox">${eule(true)}<div><div class="l-glas" id="lGlas">${"<i>⭐</i>".repeat(Math.min(n, 60))}</div><div class="l-glas-zahl">Sternenglas Kl. ${zustand.stufe === "34" ? "3/4" : "1/2"}: <b id="lZahl">${n}</b></div></div></div></div>
                 <div class="p-reihe"><button class="p-knopf" data-stern="1">⭐ Stern ins Glas!</button><button class="p-knopf hell" data-p="rad">🎡 Wer erzählt?</button></div>`;
@@ -692,6 +861,15 @@ function folieHtml(f, e){
     return "";
 }
 
+/* Spielstand „Klasse gegen Eule Ella“ oben rechts auf der Tafel */
+function scoreZeichnen(neu, verstecken){
+    const z = zustand; if (!z || !LERN()) return;
+    let s = z.wurzel.querySelector(".l-score");
+    if (!s) { s = document.createElement("div"); s.className = "l-score"; s.title = "Spielstand – Punkte gibt es bei den Quiz-Folien"; z.buehne.appendChild(s); }
+    s.hidden = !!verstecken;
+    s.innerHTML = `<span>🧒 <b>${z.punkte.klasse}</b></span><i>:</i><span><b>${z.punkte.eule}</b> 🦉</span>`;
+    if (neu) { s.classList.remove("bump"); void s.offsetWidth; s.classList.add("bump"); }
+}
 function folieAktivieren(el, f){
     // Abstimmungen
     el.querySelectorAll(".p-stimmen").forEach(box => {
@@ -711,7 +889,7 @@ function folieAktivieren(el, f){
         requestAnimationFrame(zeichnen);
     });
     el.querySelectorAll("[data-stufe]").forEach(b => b.addEventListener("click", () => {
-        zustand.stufe = b.dataset.stufe; zustand.folien = folienBauen(zustand.e, zustand.stufe); zeigen(0);
+        zustand.stufe = b.dataset.stufe; zustand.punkte = { klasse: 0, eule: 0 }; zustand.gewertet = {}; zustand.folien = folienBauen(zustand.e, zustand.stufe); zeigen(0);
     }));
     el.querySelectorAll("[data-frage]").forEach(q => q.addEventListener("click", () => el.querySelectorAll(".p-frage").forEach((x, k) => { x.classList.toggle("an", x === q); if (k <= +q.dataset.frage) x.classList.add("war"); })));
     el.querySelectorAll("[data-start]").forEach(b => b.addEventListener("click", () => timerStarten(+b.dataset.start * 60)));
@@ -732,6 +910,47 @@ function folieAktivieren(el, f){
         } });
     }));
     el.querySelectorAll("[data-welle]").forEach(b => b.addEventListener("click", () => applauswelle(el)));
+    // Lernangebot: Tafel-Spiel, Denk-Runde, Countdown, Auflösen, Punkte
+    el.querySelectorAll("[data-tafel]").forEach(b => b.addEventListener("click", () => { if (window.lernTafel && f.tafel) window.lernTafel.starten(f.tafel.werkzeug, f.tafel.einstellung || {}); }));
+    el.querySelectorAll("[data-tps]").forEach(b => b.addEventListener("click", () => {
+        const k = +b.dataset.tps, alle = [...el.querySelectorAll("[data-tps]")];
+        if (zustand.mini) { clearInterval(zustand.mini); zustand.mini = null; }
+        alle.forEach((x, j) => { x.classList.toggle("an", j === k); x.classList.toggle("war", j < k); x.classList.remove("bereit"); const sp = x.querySelector("span"); if (sp.dataset.alt) sp.textContent = sp.dataset.alt; });
+        if (k === 2) { gluecksrad({ titel: "🙋 Wer teilt seine Idee?" }); return; }
+        const sp = b.querySelector("span"); sp.dataset.alt = sp.dataset.alt || sp.textContent;
+        let rest = k === 0 ? 30 : 45;
+        const z = () => { sp.textContent = "noch " + rest + " s"; };
+        z(); klangschale(.3);
+        zustand.mini = setInterval(() => {
+            rest--; z();
+            if (rest > 0 && rest <= 3) tick();
+            if (rest <= 0) { clearInterval(zustand.mini); zustand.mini = null; sp.textContent = sp.dataset.alt; b.classList.remove("an"); b.classList.add("war"); plopp(1.3); if (alle[k + 1]) alle[k + 1].classList.add("bereit"); }
+        }, 1000);
+    }));
+    el.querySelectorAll("[data-countdown]").forEach(b => b.addEventListener("click", () => {
+        const cd = el.querySelector(".l-countdown"); if (!cd) return;
+        if (zustand.mini) clearInterval(zustand.mini);
+        let n = 5; cd.hidden = false; cd.classList.remove("hoch"); cd.textContent = n; tick();
+        zustand.mini = setInterval(() => {
+            n--;
+            if (n > 0) { cd.textContent = n; cd.classList.remove("puls"); void cd.offsetWidth; cd.classList.add("puls"); tick(); }
+            else { clearInterval(zustand.mini); zustand.mini = null; cd.textContent = "✋ Karten hoch!"; cd.classList.add("hoch"); plopp(1.4); setTimeout(() => { cd.hidden = true; cd.classList.remove("hoch"); }, 1600); }
+        }, 900);
+    }));
+    el.querySelectorAll("[data-aufdecken]").forEach(b => b.addEventListener("click", () => {
+        const richtig = f.loesung || [];
+        el.querySelectorAll(".l-opt").forEach((o, k) => o.classList.add(richtig.includes(k + 1) ? "richtig" : "falsch"));
+        b.remove(); fanfare();
+    }));
+    const pkZeigen = () => el.querySelectorAll("[data-punkt]").forEach(b => b.classList.toggle("gewaehlt", zustand.gewertet[zustand.i] === b.dataset.punkt));
+    el.querySelectorAll("[data-punkt]").forEach(b => b.addEventListener("click", () => {
+        const wer = b.dataset.punkt, i = zustand.i, P = zustand.punkte, alt = zustand.gewertet[i];
+        if (alt) P[alt] = Math.max(0, P[alt] - 1);
+        zustand.gewertet[i] = alt === wer ? undefined : wer;
+        if (zustand.gewertet[i]) { P[wer]++; if (wer === "klasse") { fanfare(); konfetti(zustand.buehne); } else euleRuf(); }
+        pkZeigen(); scoreZeichnen(true);
+    }));
+    pkZeigen();
     el.querySelectorAll("[data-stern]").forEach(b => b.addEventListener("click", () => {
         const n = sterneLesen(zustand.stufe) + 1; sterneSchreiben(zustand.stufe, n);
         const glas = el.querySelector("#lGlas"); if (glas && n <= 60) glas.insertAdjacentHTML("beforeend", "<i>⭐</i>");
@@ -1097,6 +1316,68 @@ async function pptxExport(e, stufe = "12"){
                 if (f.u.frage) s.addText(laufText(f.u.frage), { x: 1, y: 4.1, w: W - 2, h: 1, align: "center", fontFace: TEXT, fontSize: 22, color: MEER });
                 s.addNotes(ohneMarkdown(f.u.text));
                 break;
+            case "mission": {
+                s.background = { color: NACHT };
+                s.addText("MISSION · " + String(e.kategorie || "").toUpperCase(), { x: 0, y: .6, w: W, h: .5, align: "center", fontFace: FONT, fontSize: 18, color: GOLD });
+                s.addText(e.titel, { x: .5, y: 1.3, w: W - 1, h: 1.3, align: "center", fontFace: FONT, fontSize: 54, bold: true, color: "FFFFFF" });
+                s.addText("Eure Mission: " + ((stufe === "34" ? e.ziel34 : e.ziel12 || e.ziel34) || ""), { x: 1, y: 2.8, w: W - 2, h: 1.1, align: "center", fontFace: TEXT, fontSize: 24, color: NACHT, fill: { color: CREME } });
+                s.addText("🧠 Kopf-Start  ➜  🔍 Der Fall  ➜  🏆 Challenges  ➜  ✏️ Arbeiten  ➜  ⭐ Ziel", { x: .5, y: 4.3, w: W - 1, h: .8, align: "center", fontFace: FONT, fontSize: 24, color: "FFFFFF" });
+                s.addText("🧒 Klasse gegen Eule Ella 🦉 – richtig gelöst: Punkt für euch, daneben: Punkt für Ella.", { x: .5, y: 5.4, w: W - 1, h: .7, align: "center", fontFace: TEXT, fontSize: 20, color: GOLD });
+                s.addNotes("Ziele – Kl. 1/2: " + (e.ziel12 || "") + "\nKl. 3/4: " + (e.ziel34 || "") + "\nMaterial: " + (e.material || "").replace(/\n/g, ", ") + "\nPunkte an der Tafel mitzählen (Strichliste Klasse | Ella).");
+                break;
+            }
+            case "kopfstart":
+                s.addText("KOPF-START · 3 MINUTEN", { x: 0, y: .6, w: W, h: .5, align: "center", fontFace: FONT, fontSize: 18, color: MEER, bold: true });
+                s.addText("🧠 Gehirn einschalten!", { x: 0, y: 1.2, w: W, h: 1, align: "center", fontFace: FONT, fontSize: 46, bold: true, color: NACHT });
+                s.addText(laufText(ohneMarkdown(f.warmup || "Blitzrunde")), { x: 1.2, y: 2.6, w: W - 2.4, h: 2.8, align: "center", valign: "middle", fontFace: TEXT, fontSize: 32, color: "1F2D36", fill: { color: "FFFFFF" } });
+                if (f.tafel) s.addNotes("Passendes Tafel-Spiel im Leuchtturm: " + (f.tafel.titel || f.tafel.werkzeug));
+                fuss(s);
+                break;
+            case "fall":
+                s.addText("🔍 FALL-AKTE: " + (f.titel || ""), { x: .6, y: .4, w: W - 1.2, h: .8, fontFace: FONT, fontSize: 30, bold: true, color: "7A2E1C" });
+                s.addText(laufText(ohneMarkdown(f.text)), { x: .8, y: 1.3, w: W - 1.6, h: H - 2.1, valign: "top", fontFace: TEXT, fontSize: f.text.length > 700 ? 18 : 22, color: "3B2A1A", fill: { color: "F3E2BF" }, paraSpaceAfter: 6 });
+                s.addNotes(ohneMarkdown(f.text));
+                fuss(s);
+                break;
+            case "denkrunde":
+                s.addText("Denk-Runde " + f.nr + " / " + f.von, { x: 0, y: .5, w: W, h: .5, align: "center", fontFace: FONT, fontSize: 18, color: MEER, bold: true });
+                s.addText(laufText(f.frage || f.auftrag), { x: 1, y: 1.3, w: W - 2, h: 2.4, align: "center", valign: "middle", fontFace: FONT, fontSize: 38, bold: true, color: NACHT });
+                if (f.frage && f.auftrag) s.addText("👉 " + f.auftrag, { x: 1, y: 3.8, w: W - 2, h: .8, align: "center", fontFace: TEXT, fontSize: 22, color: MEER });
+                s.addText("🤔 Denken (30 s)   ➜   🤝 Partner (45 s)   ➜   🙋 Teilen", { x: .5, y: 5, w: W - 1, h: .9, align: "center", fontFace: FONT, fontSize: 26, color: NACHT, fill: { color: GOLD } });
+                fuss(s);
+                break;
+            case "challenge": {
+                s.addText(f.u.zusatz ? "BONUS-LEVEL" : "CHALLENGE " + f.nr, { x: 0, y: .5, w: W, h: .6, align: "center", fontFace: FONT, fontSize: 24, bold: true, color: "C9637C" });
+                s.addText((f.u.emoji ? f.u.emoji + " " : "") + f.u.titel, { x: .5, y: 1.1, w: W - 1, h: 1.1, align: "center", fontFace: FONT, fontSize: 44, bold: true, color: NACHT });
+                const kurz = f.u.folie ? ohneMarkdown(f.u.folie) + (f.u.liste ? "\n\n" + f.u.liste.map(x => "• " + ohneMarkdown(x)).join("\n") : "") : String(f.u.text || "").split(/\n\s*\n/)[0].split("\n").filter(z => !/^\s*[-•]/.test(z)).join(" ");
+                s.addText(laufText(kurz), { x: 1, y: 2.4, w: W - 2, h: 3.6, align: "center", valign: "middle", fontFace: TEXT, fontSize: 24, color: "1F2D36" });
+                s.addNotes(ohneMarkdown(f.u.text));
+                fuss(s);
+                break;
+            }
+            case "quiz": {
+                const opt = abstimmOptionen(f.art, f.u);
+                s.addText(f.u.titel + " · Frage " + f.nr + " / " + f.von, { x: 0, y: .4, w: W, h: .45, align: "center", fontFace: FONT, fontSize: 16, color: GRAU });
+                s.addText(laufText(ohneMarkdown(f.aussage)), { x: 1.2, y: 1.05, w: W - 2.4, h: 2, align: "center", valign: "middle", fontFace: FONT, fontSize: 36, bold: true, color: NACHT, fill: { color: "FFFFFF" } });
+                s.addText(opt.map((o, k) => (k + 1) + "  " + (o.art === "gefuehl" ? "" : o.zeichen + " ") + o.name).join("     "), { x: .5, y: 3.6, w: W - 1, h: 1, align: "center", fontFace: FONT, fontSize: 26, color: NACHT });
+                s.addText("⏳ 3 – 2 – 1 … Karten hoch!", { x: 0, y: 5, w: W, h: .7, align: "center", fontFace: FONT, fontSize: 24, color: MEER });
+                s.addNotes((f.loesung && f.loesung.length ? "Lösung: " + f.loesung.map(n => (opt[n - 1] || {}).name).join(" oder ") + "\n\n" : "") + ohneMarkdown(f.u.text));
+                break;
+            }
+            case "raetsel":
+                s.addText(f.u.titel + " · Karte " + f.nr + " / " + f.von, { x: 0, y: .4, w: W, h: .45, align: "center", fontFace: FONT, fontSize: 16, color: GRAU });
+                s.addText(laufText(ohneMarkdown(f.aussage)), { x: 1.4, y: 1.4, w: W - 2.8, h: 2.6, align: "center", valign: "middle", fontFace: FONT, fontSize: 38, bold: true, color: NACHT, fill: { color: "FFFFFF" } });
+                if (f.u.frage) s.addText(laufText(f.u.frage), { x: 1, y: 4.3, w: W - 2, h: 1, align: "center", fontFace: TEXT, fontSize: 22, color: MEER });
+                s.addNotes(ohneMarkdown(f.u.text));
+                break;
+            case "tafelchallenge": {
+                const inf = (window.lernTafel && window.lernTafel.info(f.tafel.werkzeug)) || {};
+                s.addText("TAFEL-CHALLENGE", { x: 0, y: 1, w: W, h: .6, align: "center", fontFace: FONT, fontSize: 24, bold: true, color: "C9637C" });
+                s.addText((inf.emoji ? inf.emoji + " " : "") + (f.tafel.titel || inf.titel || ""), { x: .5, y: 1.9, w: W - 1, h: 1.2, align: "center", fontFace: FONT, fontSize: 44, bold: true, color: NACHT });
+                if (inf.text) s.addText(laufText(inf.text), { x: 1, y: 3.4, w: W - 2, h: 1.6, align: "center", fontFace: TEXT, fontSize: 22, color: "1F2D36" });
+                s.addNotes("Dieses Tafel-Spiel läuft im Leuchtturm (Präsentation oder Reiter „Tafel“).");
+                break;
+            }
             case "arbeitsblatt":
                 await bilderSetzen(s, ["stift", "heft"], .8, 1.4);
                 s.addText(lern ? "Jetzt bist du dran!" : "Bearbeite jetzt leise dein Arbeitsblatt.", { x: .5, y: 2.4, w: W - 1, h: 1.2, align: "center", fontFace: FONT, fontSize: 44, bold: true, color: NACHT });
