@@ -246,6 +246,7 @@ const CSS = `
 #praes .l-station{ display:flex; flex-direction:column; align-items:center; gap:2px; color:#f1d9b5; font:400 13px "Patrick Hand","Andika",sans-serif; cursor:pointer; padding:0 .4vw; opacity:.55; position:relative; }
 #praes .l-station .l-punkt{ width:34px; height:34px; border-radius:50%; background:#8a5a2e; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:inset 0 -3px 0 rgba(0,0,0,.25); }
 #praes .l-station .l-name{ white-space:nowrap; }
+@media (max-width:1500px){ #praes .l-station:not(.an) .l-name{ display:none; } #praes .l-weg{ margin-bottom:0; } }
 #praes .l-station.war{ opacity:.85; }
 #praes .l-station.war .l-punkt{ background:#b5e48c; }
 #praes .l-station.an{ opacity:1; color:#ffe066; }
@@ -328,6 +329,41 @@ const CSS = `
 #praes .l-raetselkarte{ position:relative; background:#fffdf5; color:#1d4634; font:400 clamp(28px,4.4vw,70px)/1.2 "Patrick Hand","Andika",sans-serif; padding:1em 1.4em; border-radius:22px; width:min(80vw,1100px); margin:2vh 0; box-shadow:0 10px 0 rgba(0,0,0,.2); transform:rotate(-1deg); animation:lKarte .6s cubic-bezier(.2,1.2,.4,1); }
 @keyframes lKarte{ from{ transform:rotateY(90deg); } }
 #praes .l-rk-ecke{ position:absolute; top:.2em; left:.4em; font-size:.8em; color:#ff8fab; }
+#praes .l-level.klein{ font-size:clamp(22px,3vw,48px); }
+#praes .l-level.gruen{ background:#b5e48c; color:#1d4634; box-shadow:0 6px 0 #7fae5a; }
+#praes .l-level.lila{ background:#cdb4ff; color:#2b1650; box-shadow:0 6px 0 #9479d1; }
+#praes .l-level.rot{ background:#ff8fab; color:#3b1020; }
+#praes .l-raetselkarte.l-knobel{ font-size:clamp(22px,min(3.2vw,5vh),54px); padding:.55em 1.1em; margin:1.5vh 0 1vh; }
+#praes .l-kbild{ font-size:1.2em; letter-spacing:.08em; margin-bottom:.25em; color:#2f6b50; }
+#praes .l-tipps{ display:flex; flex-direction:column; gap:.6vh; align-items:center; }
+#praes .l-tipp{ font:400 clamp(16px,min(2vw,3.4vh),32px) "Patrick Hand","Andika",sans-serif; color:#ffe066; animation:lZahl .4s ease-out; }
+#praes .l-tipp[hidden], #praes .l-sch[hidden], #praes .l-loesung[hidden]{ display:none; }
+#praes .l-loesung{ background:#b5e48c; color:#1d4634; font:400 clamp(20px,min(2.8vw,4.4vh),46px)/1.2 "Patrick Hand","Andika",sans-serif; padding:.3em 1em; border-radius:16px; margin-top:1vh; animation:lStempel .45s cubic-bezier(.2,1.6,.4,1); max-width:min(86vw,1200px); }
+#praes .l-loesung b{ font-weight:400; }
+#praes .l-loesung small{ display:block; font-size:.6em; color:#2f6b50; }
+#praes .l-erkl{ margin-top:1vh; }
+#praes .l-erkl .l-blase{ margin-bottom:3vh; font-size:clamp(18px,min(2.5vw,4vh),42px); }
+#praes .l-schritte{ display:flex; flex-direction:column; gap:1vh; width:min(82vw,1100px); margin-top:1vh; }
+#praes .l-sch{ display:flex; align-items:center; gap:.6em; text-align:left; font:400 clamp(17px,min(2.3vw,3.7vh),38px)/1.2 "Patrick Hand","Andika",sans-serif; border:3px dashed rgba(255,255,255,.6); border-radius:14px 22px 16px 24px; padding:.25em .7em; animation:lKarte .45s ease-out; }
+#praes .l-sch b{ flex:0 0 auto; width:1.6em; height:1.6em; border-radius:50%; background:#ffe066; color:#1d4634; display:flex; align-items:center; justify-content:center; font-weight:400; }
+#praes .l-heft{ user-select:none; -webkit-user-select:none; background:#fffdf5; color:#1f3a8a; width:min(80vw,1050px); border-radius:6px; box-shadow:0 10px 0 rgba(0,0,0,.2); padding:1vh 2vw 1vh 4.5vw; position:relative; transform:rotate(-.6deg);
+    background-image:linear-gradient(90deg, transparent 3.2vw, rgba(220,60,60,.55) 3.2vw, rgba(220,60,60,.55) calc(3.2vw + 2px), transparent calc(3.2vw + 2px)); }
+#praes .l-hz{ display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) 1.4em; align-items:center; gap:.2em .6em; text-align:left; font:400 clamp(16px,min(2.3vw,3.4vh),36px)/1.2 "Patrick Hand","Andika",sans-serif; padding:.18em 0; border-bottom:2px solid rgba(31,58,138,.15); cursor:pointer; }
+#praes .l-hz:last-child{ border-bottom:0; }
+#praes .l-heft.lang .l-hz{ font-size:clamp(16px,min(2vw,3.3vh),32px); grid-template-columns:minmax(0,1fr) auto minmax(0,1.3fr) 1.4em; }
+#praes .l-hz.kopf{ cursor:default; color:#7a8aa8; font-size:clamp(13px,1.4vw,22px) !important; text-transform:uppercase; letter-spacing:.06em; }
+#praes .l-hz .l-ha{ color:#1d2733; }
+#praes .l-hz .l-hp{ color:#9aa5b8; }
+#praes .l-hz .l-hm{ font-size:1.2em; text-align:center; }
+#praes .l-hz .l-hk{ grid-column:1 / -1; color:#c0262d; display:none; padding-left:.2em; font-size:.85em; }
+#praes .l-hz .l-hk small{ font-size:.72em; color:#7a4a1c; }
+#praes .l-hz:hover:not(.auf):not(.kopf){ background:rgba(255,224,102,.25); }
+#praes .l-hz.ok .l-hm{ color:#2e8b57; }
+#praes .l-hz.falsch .l-hb{ text-decoration:line-through; text-decoration-color:#c0262d; text-decoration-thickness:3px; }
+#praes .l-hz.falsch .l-hm{ color:#c0262d; }
+#praes .l-hz.falsch .l-hk{ display:block; animation:lZahl .4s ease-out; }
+#praes .l-fz{ font:400 clamp(18px,2.2vw,34px) "Patrick Hand","Andika",sans-serif; margin-top:1.4vh; }
+#praes .l-fz b{ color:#ffe066; font-weight:400; font-size:1.3em; }
 #praes .l-endstand{ display:flex; align-items:center; gap:2vw; font:400 clamp(18px,2.1vw,34px) "Patrick Hand","Andika",sans-serif; }
 #praes .l-es{ display:flex; flex-direction:column; align-items:center; border:3px solid rgba(255,255,255,.7); border-radius:18px; padding:.2em 1em; }
 #praes .l-es b{ font-weight:400; font-size:1.7em; color:#ffe066; line-height:1; }
@@ -352,8 +388,11 @@ const EULE = `<svg class="l-eule" viewBox="0 0 140 160" xmlns="http://www.w3.org
 const eule = (klein) => klein ? EULE.replace('class="l-eule"', 'class="l-eule klein"') : EULE;
 const KRITZEL = () => `<div class="l-kritzel">${[["1+2", 6, 12], ["ABC", 82, 10], ["★", 14, 70], ["7·8", 78, 72], ["a e i", 40, 86], ["✓", 92, 44], ["Aa", 4, 40], ["=", 60, 6]].map(([t, x, y], k) => `<span style="left:${x}%;top:${y}%;animation-delay:${k * .7}s">${t}</span>`).join("")}</div>`;
 // Lernpfad: welche Station gehört zu welcher Folie?
-const STATIONEN = [["mission", "🗺️", "Mission"], ["kopf", "🧠", "Kopf-Start"], ["fall", "📖", "Geschichte"], ["challenge", "🏆", "Challenges"], ["arbeiten", "✏️", "Arbeiten"], ["ziel", "⭐", "Ziel"]];
-function station(typ){ const m = { mission: 0, kopfstart: 1, fall: 2, film: 2, denkrunde: 2, arbeitsblatt: 4, abschluss: 5 }; return typ in m ? m[typ] : 3; }
+/* Lernpfad: welche Stationen es gibt, ergibt sich aus den Folien – jede Stunde kann anders ablaufen */
+const STATION = { mission: ["🗺️", "Mission"], kopf: ["🧠", "Kopf-Start"], geschichte: ["📖", "Geschichte"], knobel: ["🧩", "Knobel-Rätsel"], erklaert: ["🦉", "Ella erklärt"], fehler: ["🔎", "Fehler-Detektiv"], challenge: ["🏆", "Challenges"], arbeiten: ["✏️", "Arbeiten"], ziel: ["⭐", "Ziel"] };
+const TYP_STATION = { mission: "mission", kopfstart: "kopf", fall: "geschichte", film: "geschichte", denkrunde: "geschichte", knobel: "knobel", erklaert: "erklaert", mitmachen: "erklaert", fehler: "fehler", arbeitsblatt: "arbeiten", abschluss: "ziel" };
+function stationVon(f){ return f.st || TYP_STATION[f.typ] || "challenge"; }
+function pfadVon(folien){ return [...new Set(folien.map(stationVon))]; }
 /* Eule Ella ruft „Hu-hu“, wenn sie einen Punkt bekommt */
 function euleRuf(){ const a = audio(); if (!a) return; [0, .32].forEach((d, k) => { const o = a.createOscillator(), g = a.createGain(), t = a.currentTime + d; o.type = "sine"; o.frequency.setValueAtTime(k ? 330 : 392, t); o.frequency.exponentialRampToValueAtTime(k ? 262 : 330, t + .25); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.25, t + .04); g.gain.exponentialRampToValueAtTime(.0001, t + .28); o.connect(g).connect(a.destination); o.start(t); o.stop(t + .3); }); }
 function sterneLesen(st){ try { return parseInt(localStorage.getItem("lern_sterne_" + st), 10) || 0; } catch (e) { return 0; } }
@@ -495,6 +534,10 @@ function folienBauenLern(e, stufe){
     const tafel = (e.tafel || []).filter(t => t && t.werkzeug && (!t.fuer || t.fuer === "alle" || t.fuer === stufe));
     f.push({ typ: "mission" });
     f.push({ typ: "kopfstart", warmup: stufe === "34" ? (e.warmup34 || e.warmup12 || e.warmup) : (e.warmup12 || e.warmup34 || e.warmup), tafel: tafel[0] || null });
+    const ein = window.lernEinstieg ? window.lernEinstieg(e, stufe) : { art: "geschichte" };
+    if (ein.art === "knobel") f.push({ typ: "knobel", d: ein });
+    else if (ein.art === "erklaert") { f.push({ typ: "erklaert", d: ein }); if (ein.aufgabe) f.push({ typ: "mitmachen", d: ein }); }
+    else if (ein.art !== "fehler") {
     const lt = stufe === "34" ? e.lerntext34 : e.lerntext12;
     const { erz, nach } = geschichteZerlegen(lt && lt.text);
     const ersteFrage = fragenAus(nach).find(q => q.art === "frage");
@@ -509,6 +552,7 @@ function folienBauenLern(e, stufe){
         else runden.push(q.art === "frage" ? { frage: q.text } : { frage: "", auftrag: q.text });
     });
     runden.forEach((r, k) => f.push(Object.assign({ typ: "denkrunde", titel: lt.titel, nr: k + 1, von: runden.length }, r)));
+    }
     const ueListe = (window.uebungenFuer ? window.uebungenFuer(e, stufe) : (e.uebungen || [])).filter(u0 => !(u0.fuer && u0.fuer !== "alle" && u0.fuer !== stufe));
     let nr = 0;
     ueListe.forEach(u0 => {
@@ -524,6 +568,10 @@ function folienBauenLern(e, stufe){
         }
     });
     tafel.slice(1).forEach(t => f.push({ typ: "tafelchallenge", tafel: t }));
+    if (ein.art === "fehler") {   // Profi-Check nach dem Üben
+        f.push({ typ: "fehler", d: ein });
+        if (ein.frage) f.push({ typ: "denkrunde", titel: "Fehler-Detektiv", frage: ein.frage, nr: 1, von: 1, st: "fehler" });
+    }
     f.push({ typ: "arbeitsblatt" });
     f.push({ typ: "abschluss" });
     f.forEach((x, i) => { if (x.typ === "challenge" && x.u.zusatz) { let j = i + 1; while (j < f.length && (f[j].typ === "quiz" || f[j].typ === "raetsel") && f[j].u === x.u) j++; x.weiter = j; } });
@@ -658,7 +706,15 @@ function naechste(){
     // Bei den Fragen erst Frage für Frage aufdecken
     const fr = zustand.buehne.querySelector(".p-fragen");
     if (fr) { const alle = [...fr.querySelectorAll(".p-frage")], an = alle.findIndex(x => x.classList.contains("an")); if (an < alle.length - 1) { alle.forEach((x, k) => { x.classList.toggle("an", k === an + 1); if (k <= an + 1) x.classList.add("war"); }); return; } }
+    if (schrittZeigen(zustand.buehne)) return;   // „Ella erklärt“: erst Schritt für Schritt aufdecken
     zeigen(zustand.i + 1);
+}
+function schrittZeigen(el){
+    const s = el.querySelector(".l-sch[hidden]"); if (!s) return false;
+    s.hidden = false; plopp(1.1);
+    const b = el.querySelector("[data-schritt]"), rest = el.querySelectorAll(".l-sch[hidden]").length, nr = el.querySelectorAll(".l-sch").length - rest + 1;
+    if (b) { if (rest) b.textContent = "▶ Schritt " + nr; else b.remove(); }
+    return true;
 }
 function vollbild(){ const w = zustand.wurzel; if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); else if (w.requestFullscreen) w.requestFullscreen().catch(() => {}); }
 function leistenKlick(ev){
@@ -702,10 +758,10 @@ function zeigen(i, rueckwaerts){
     z.wurzel.querySelector(".p-pos").textContent = (i + 1) + " / " + z.folien.length;
     if (LERN()) {
         scoreZeichnen(false, f.typ === "mission" || f.typ === "abschluss");
-        const jetzt = station(f.typ);
+        const pfad = pfadVon(z.folien), jetzt = pfad.indexOf(stationVon(f));
         z.wurzel.querySelector(".p-punkte").className = "p-punkte l-pfad";
-        z.wurzel.querySelector(".p-punkte").innerHTML = STATIONEN.map(([, sym, name], k) => { const ziel = z.folien.findIndex(x => station(x.typ) === k);
-            return (k ? '<span class="l-weg"></span>' : "") + `<span class="l-station ${k === jetzt ? "an" : k < jetzt ? "war" : ""}" ${ziel >= 0 ? `data-p="punkt" data-n="${ziel}"` : ""} title="${name}"><span class="l-punkt">${k === jetzt ? "🦉" : sym}</span><span class="l-name">${name}</span></span>`; }).join("");
+        z.wurzel.querySelector(".p-punkte").innerHTML = pfad.map((key, k) => { const [sym, name] = STATION[key], ziel = z.folien.findIndex(x => stationVon(x) === key);
+            return (k ? '<span class="l-weg"></span>' : "") + `<span class="l-station ${k === jetzt ? "an" : k < jetzt ? "war" : ""}" data-p="punkt" data-n="${ziel}" title="${name}"><span class="l-punkt">${k === jetzt ? "🦉" : sym}</span><span class="l-name">${name}</span></span>`; }).join("");
     } else
     z.wurzel.querySelector(".p-punkte").innerHTML = z.folien.map((_, k) => `<i data-p="punkt" data-n="${k}" class="${k === i ? "an" : ""}"></i>`).join("");
 }
@@ -740,7 +796,7 @@ function folieHtml(f, e){
         const punktKnoepfe = `<button class="p-knopf l-pk" data-punkt="klasse">🧒 Punkt für die Klasse</button><button class="p-knopf hell l-pk" data-punkt="eule">🦉 Punkt für Ella</button>`;
         if (f.typ === "mission") {
             const n = zustand.folien.filter(x => x.typ === "challenge" && !x.u.zusatz).length + zustand.folien.filter(x => x.typ === "tafelchallenge").length;
-            const orte = [["🧠", "Kopf-Start"], ["📖", "Geschichte"], ["🏆", n + " Challenge" + (n === 1 ? "" : "s")], ["✏️", "Arbeiten"], ["⭐", "Ziel"]];
+            const orte = pfadVon(zustand.folien).filter(k => k !== "mission").map(k => k === "challenge" ? ["🏆", n + " Challenge" + (n === 1 ? "" : "s")] : STATION[k]);
             return `${KRITZEL()}<div class="l-stempel">MISSION · ${esc(String(e.kategorie || "").replace(/:.*/, "").toUpperCase())}</div><h2 class="l-mtitel">${esc(e.titel)}</h2>
                 <div class="l-auftragskarte"><small>Eure Mission:</small>${esc(zielText || e.titel)}</div>
                 <div class="l-karte">${orte.map(([sym, name], k) => (k ? '<span class="l-kpfeil"></span>' : "") + `<div class="l-ort"><span>${sym}</span><b>${esc(name)}</b></div>`).join("")}</div>
@@ -787,6 +843,31 @@ function folieHtml(f, e){
         if (f.typ === "raetsel") return `<div class="l-quizkopf"><span>${f.u.emoji || "🃏"} ${esc(f.u.titel)}</span><span>Karte ${f.nr} / ${f.von}</span></div>
                 <div class="l-raetselkarte"${f.aussage.length > 80 ? ' style="font-size:clamp(20px,min(2.8vw,4.6vh),44px)"' : ""}><span class="l-rk-ecke">?</span>${inline(f.aussage)}</div>${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${inline(f.u.frage)}</div>` : ""}
                 <div class="p-reihe"><button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div><div class="p-reihe l-pkreihe">${punktKnoepfe}</div>`;
+        if (f.typ === "knobel") { const d = f.d;
+            return `<div class="l-level lila">KNOBEL-RÄTSEL</div>
+                <div class="l-raetselkarte l-knobel"${String(d.frage).length > 110 ? ' style="font-size:clamp(20px,min(2.8vw,4.6vh),44px)"' : ""}>${d.bild ? `<div class="l-kbild">${esc(d.bild)}</div>` : ""}${inline(d.frage)}</div>
+                <div class="l-tipps">${(d.tipps || []).map(t => `<div class="l-tipp" hidden>💡 ${inline(t)}</div>`).join("")}</div>
+                <div class="l-loesung" hidden>🔑 <b>${inline(d.loesung)}</b>${d.warum ? `<small>${inline(d.warum)}</small>` : ""}</div>
+                <div class="p-reihe"><button class="p-knopf hell" data-start="1">⏱ 1 Minute knobeln</button>${(d.tipps || []).length ? `<button class="p-knopf" data-tipp="1">💡 Tipp</button>` : ""}<button class="p-knopf gold" data-loesung="1">🔑 Lösung</button></div>
+                <div class="p-reihe l-pkreihe">${punktKnoepfe}</div>`; }
+        if (f.typ === "erklaert") { const d = f.d;
+            return `<div class="l-level gruen">ELLA ERKLÄRT</div>
+                <div class="l-mit-eule l-erkl">${eule(true)}<div class="l-blase"><small>Merk dir:</small>${inline(d.merksatz)}</div></div>
+                <div class="l-schritte">${(d.schritte || []).map((t, k) => `<div class="l-sch" hidden><b>${k + 1}</b><span>${inline(t)}</span></div>`).join("")}</div>
+                <div class="p-reihe"><button class="p-knopf" data-schritt="1">▶ So geht’s: Schritt 1</button></div>`; }
+        if (f.typ === "mitmachen") { const d = f.d;
+            return `<div class="l-level gruen">🖐️ JETZT IHR!</div>
+                <div class="l-quizfrage"${String(d.aufgabe).length > 90 ? ' style="font-size:clamp(20px,min(2.8vw,4.6vh),44px)"' : ""}>${inline(d.aufgabe)}</div>
+                <div class="l-loesung" hidden>✅ <b>${inline(d.loesung)}</b></div>
+                <div class="l-countdown" hidden></div>
+                <div class="p-reihe"><button class="p-knopf gold" data-countdown="✋ Zeigt es!">⏳ 3-2-1 … zeigen!</button><button class="p-knopf hell" data-loesung="1">✅ Lösung</button></div>
+                <div class="p-reihe l-pkreihe">${punktKnoepfe}</div>`; }
+        if (f.typ === "fehler") { const d = f.d, n = (d.zeilen || []).filter(z => z[2]).length, sp = d.spalten;
+            return `<div class="l-level rot klein">FEHLER-DETEKTIV</div>
+                <div class="p-klein" style="margin:.4em 0">Eule Ella hat geübt – <b style="color:#ff8fab">${n} Fehler</b> haben sich versteckt. Findet ihr sie?</div>
+                <div class="l-heft${sp ? " lang" : ""}">${sp ? `<div class="l-hz kopf"><span class="l-ha">${esc(sp[0])}</span><span class="l-hp"></span><span class="l-hb">${esc(sp[1])}</span></div>` : ""}${(d.zeilen || []).map((z, k) => `<div class="l-hz" data-hz="${k}"><span class="l-ha">${inline(z[0] || "")}</span><span class="l-hp">${z[0] ? "→" : ""}</span><span class="l-hb">${inline(z[1])}</span><span class="l-hm"></span><span class="l-hk"></span></div>`).join("")}</div>
+                <div class="l-fz">🔎 Gefunden: <b>0</b> / ${n}</div>
+                <div class="p-reihe l-pkreihe"><button class="p-knopf hell l-pk" data-start="1">⏱ 1 Minute suchen</button><button class="p-knopf hell l-pk" data-p="rad">🎡 Wer hat einen gefunden?</button>${punktKnoepfe}</div>`; }
         if (f.typ === "tafelchallenge") {
             const inf = (window.lernTafel && window.lernTafel.info(f.tafel.werkzeug)) || { emoji: "🧩", titel: f.tafel.titel, text: "" };
             return `<div class="l-level">TAFEL-CHALLENGE</div><div class="l-chall"><span class="l-chall-emoji">${inf.emoji || "🧩"}</span><h2>${esc(f.tafel.titel || inf.titel)}</h2></div>
@@ -938,13 +1019,30 @@ function folieAktivieren(el, f){
         zustand.mini = setInterval(() => {
             n--;
             if (n > 0) { cd.textContent = n; cd.classList.remove("puls"); void cd.offsetWidth; cd.classList.add("puls"); tick(); }
-            else { clearInterval(zustand.mini); zustand.mini = null; cd.textContent = "✋ Karten hoch!"; cd.classList.add("hoch"); plopp(1.4); setTimeout(() => { cd.hidden = true; cd.classList.remove("hoch"); }, 1600); }
+            else { clearInterval(zustand.mini); zustand.mini = null; cd.textContent = b.dataset.countdown.length > 2 ? b.dataset.countdown : "✋ Karten hoch!"; cd.classList.add("hoch"); plopp(1.4); setTimeout(() => { cd.hidden = true; cd.classList.remove("hoch"); }, 1600); }
         }, 900);
     }));
     el.querySelectorAll("[data-aufdecken]").forEach(b => b.addEventListener("click", () => {
         const richtig = f.loesung || [];
         el.querySelectorAll(".l-opt").forEach((o, k) => o.classList.add(richtig.includes(k + 1) ? "richtig" : "falsch"));
         b.remove(); fanfare();
+    }));
+    el.querySelectorAll("[data-tipp]").forEach(b => b.addEventListener("click", () => {
+        const t = el.querySelector(".l-tipp[hidden]"); if (t) { t.hidden = false; plopp(1.2); }
+        if (!el.querySelector(".l-tipp[hidden]")) b.remove();
+    }));
+    el.querySelectorAll("[data-loesung]").forEach(b => b.addEventListener("click", () => {
+        const l = el.querySelector(".l-loesung"); if (l) l.hidden = false;
+        b.remove(); fanfare();
+    }));
+    el.querySelectorAll("[data-schritt]").forEach(b => b.addEventListener("click", () => schrittZeigen(el)));
+    el.querySelectorAll("[data-hz]").forEach(z => z.addEventListener("click", () => {
+        if (z.classList.contains("auf")) return;
+        const d = f.d.zeilen[+z.dataset.hz]; z.classList.add("auf");
+        if (d[2]) { z.classList.add("falsch"); z.querySelector(".l-hm").textContent = "✗"; z.querySelector(".l-hk").innerHTML = `<b>${inline(d[2])}</b>${d[3] ? ` <small>${inline(d[3])}</small>` : ""}`;
+            const zahl = el.querySelector(".l-fz b"); zahl.textContent = +zahl.textContent + 1; plopp(1.4);
+            if (!el.querySelector(".l-hz.falsch:not(.auf)") && el.querySelectorAll(".l-hz.falsch").length === f.d.zeilen.filter(x => x[2]).length) fanfare(); }
+        else { z.classList.add("ok"); z.querySelector(".l-hm").textContent = "✓"; plopp(.9); }
     }));
     const pkZeigen = () => el.querySelectorAll("[data-punkt]").forEach(b => b.classList.toggle("gewaehlt", zustand.gewertet[zustand.i] === b.dataset.punkt));
     el.querySelectorAll("[data-punkt]").forEach(b => b.addEventListener("click", () => {
@@ -1374,6 +1472,34 @@ async function pptxExport(e, stufe = "12"){
                 if (f.u.frage) s.addText(laufText(f.u.frage), { x: 1, y: 4.3, w: W - 2, h: 1, align: "center", fontFace: TEXT, fontSize: 22, color: MEER });
                 s.addNotes(ohneMarkdown(f.u.text));
                 break;
+            case "knobel":
+                s.addText("KNOBEL-RÄTSEL", { x: 0, y: .5, w: W, h: .6, align: "center", fontFace: FONT, fontSize: 24, bold: true, color: "6A4FB3" });
+                s.addText((f.d.bild ? f.d.bild + "\n" : "") + ohneMarkdown(f.d.frage), { x: 1.2, y: 1.3, w: W - 2.4, h: 3, align: "center", valign: "middle", fontFace: FONT, fontSize: 32, bold: true, color: NACHT, fill: { color: "FFFFFF" } });
+                s.addText("💡 Tipps und 🔑 Lösung stehen in den Notizen.", { x: 0, y: 4.8, w: W, h: .6, align: "center", fontFace: TEXT, fontSize: 18, color: GRAU });
+                s.addNotes("Tipps:\n" + (f.d.tipps || []).map(t => "- " + t).join("\n") + "\n\nLösung: " + f.d.loesung + (f.d.warum ? "\n" + f.d.warum : ""));
+                fuss(s);
+                break;
+            case "erklaert":
+                s.addText("ELLA ERKLÄRT", { x: 0, y: .5, w: W, h: .6, align: "center", fontFace: FONT, fontSize: 24, bold: true, color: MEER });
+                s.addText(ohneMarkdown(f.d.merksatz), { x: 1, y: 1.2, w: W - 2, h: 1.5, align: "center", valign: "middle", fontFace: FONT, fontSize: 30, bold: true, color: NACHT, fill: { color: GOLD } });
+                s.addText((f.d.schritte || []).map((t, k) => ({ text: t, options: { bullet: { type: "number" }, paraSpaceAfter: 10 } })), { x: 1.5, y: 3, w: W - 3, h: 3.4, valign: "top", fontFace: TEXT, fontSize: 24, color: "1F2D36" });
+                fuss(s);
+                break;
+            case "mitmachen":
+                s.addText("JETZT IHR! 🖐️", { x: 0, y: .6, w: W, h: .7, align: "center", fontFace: FONT, fontSize: 30, bold: true, color: MEER });
+                s.addText(laufText(ohneMarkdown(f.d.aufgabe)), { x: 1.2, y: 1.6, w: W - 2.4, h: 2.8, align: "center", valign: "middle", fontFace: FONT, fontSize: 32, bold: true, color: NACHT, fill: { color: "FFFFFF" } });
+                s.addNotes("Lösung: " + f.d.loesung);
+                fuss(s);
+                break;
+            case "fehler": {
+                const z = f.d.zeilen || [];
+                s.addText("FEHLER-DETEKTIV 🔎", { x: 0, y: .4, w: W, h: .6, align: "center", fontFace: FONT, fontSize: 26, bold: true, color: "C9637C" });
+                s.addText("Eule Ella hat geübt – " + z.filter(x => x[2]).length + " Fehler haben sich versteckt. Findet ihr sie?", { x: 0, y: 1, w: W, h: .5, align: "center", fontFace: TEXT, fontSize: 18, color: GRAU });
+                s.addText(z.map(x => ({ text: (x[0] ? x[0] + "  →  " : "") + x[1], options: { breakLine: true, paraSpaceAfter: 12 } })), { x: 1.4, y: 1.7, w: W - 2.8, h: 4.6, valign: "top", fontFace: TEXT, fontSize: z.some(x => (x[0] + x[1]).length > 50) ? 18 : 26, color: "1F3A8A", fill: { color: "FFFFFF" } });
+                s.addNotes("Lösung:\n" + z.map(x => (x[0] ? x[0] + " → " : "") + x[1] + (x[2] ? "  ✗ richtig: " + x[2] + (x[3] ? " (" + x[3] + ")" : "") : "  ✓")).join("\n"));
+                fuss(s);
+                break;
+            }
             case "tafelchallenge": {
                 const inf = (window.lernTafel && window.lernTafel.info(f.tafel.werkzeug)) || {};
                 s.addText("TAFEL-CHALLENGE", { x: 0, y: 1, w: W, h: .6, align: "center", fontFace: FONT, fontSize: 24, bold: true, color: "C9637C" });

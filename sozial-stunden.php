@@ -850,7 +850,8 @@ function lesetextBlatt(e, stufe){
     if (window.sozialPraesentation) {
         const f = window.sozialPraesentation.folienBauen(e, stufe);
         teile = f.filter(x => x.typ === "geschichte").map(x => x.text);
-        if (!teile.length) teile = String((f.find(x => x.typ === "fall") || {}).text || "").split(/\n\s*\n/).map(t => t.trim()).filter(Boolean);   // Lernangebot: „Fall-Akte“
+        if (!teile.length) teile = String((f.find(x => x.typ === "fall") || {}).text || "").split(/\n\s*\n/).map(t => t.trim()).filter(Boolean);
+        if (!teile.length) teile = String(lt.text || "").split(/\*\*\s*(Nach dem Vorlesen|Fragen zum Gespräch)/i)[0].split(/\n\s*\n/).map(t => t.trim()).filter(Boolean);   // Lernangebot mit anderem Einstieg
         const fr = f.find(x => x.typ === "fragen");
         if (stufe === "34" && /Fragen zum Gespräch/i.test(lt.text || "")) {
             if (fr) fragen = fr.fragen.filter(q => q.art !== "aufgabe").map(q => q.text || q);
@@ -2012,7 +2013,7 @@ function zeigeRituale(bearbeiten = false){
 route();
 </script>
 <?php $zusaetze = ["sozial-medien.js", "sozial-praesentation.js", "sozial-material.js", "sozial-regie.js"];
-if ($BEREICH === "lernangebot") array_push($zusaetze, "lernangebot-woerter.js", "lernangebot-material.js", "lernangebot-tafel.js", "lernangebot-methoden.js");
+if ($BEREICH === "lernangebot") array_push($zusaetze, "lernangebot-einstiege.js", "lernangebot-woerter.js", "lernangebot-material.js", "lernangebot-tafel.js", "lernangebot-methoden.js");
 else $zusaetze[] = "lernangebot-tafel.js";   // für Leise-Meer in der Präsentation
 foreach ($zusaetze as $zusatz): if (file_exists(__DIR__ . "/" . $zusatz)): ?>
 <script src="<?= $zusatz ?>?v=<?= @filemtime(__DIR__ . "/" . $zusatz) ?: 1 ?>"></script>
