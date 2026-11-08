@@ -362,58 +362,167 @@ W.wuerfel = {
     }
 };
 
-/* Leise-Wald: Je leiser die Klasse, desto mehr Tiere kommen hervor.
+/* Leise-Wald / Leise-Meer: Je leiser die Klasse, desto mehr Tiere kommen in die Szene.
+   Die Tiere laufen, hüpfen, fliegen und schwimmen herum; bei Lärm laufen sie davon.
    Das Mikrofon misst nur die Lautstärke – es wird nichts aufgenommen, gespeichert oder verschickt. */
-const MEER_TIERE = ["fisch", "tropenfisch", "wal", "delfin", "krake", "krebs", "robbe", "qualle", "schildkroete", "kugelfisch", "ente", "pinguin"];
-const TURM = `<svg viewBox="0 0 60 120"><path d="M18 112 L24 34 L36 34 L42 112 Z" fill="#fffdf5"/><path d="M20.5 84 L39.5 84 L40.6 98 L19.4 98 Z M22.5 58 L37.5 58 L38.4 70 L21.6 70 Z" fill="#e74c3c"/><rect x="21" y="22" width="18" height="12" rx="2" fill="#f2c97b"/><path d="M18 22 L30 10 L42 22 Z" fill="#e74c3c"/><rect x="14" y="110" width="32" height="8" rx="2" fill="#7c8a85"/></svg>`;
 const WALD_TIERE = ["hase", "igel", "fuchs", "eule", "eichhoernchen", "maus", "baer", "hirsch", "frosch", "schnecke", "vogel", "schmetterling"];
+const MEER_TIERE = ["fisch", "delfin", "krebs", "ente", "qualle", "wal", "tropenfisch", "schildkroete", "krake", "robbe", "kugelfisch", "pinguin"];
+const TURM = `<svg viewBox="0 0 60 120"><path d="M18 112 L24 34 L36 34 L42 112 Z" fill="#fffdf5"/><path d="M20.5 84 L39.5 84 L40.6 98 L19.4 98 Z M22.5 58 L37.5 58 L38.4 70 L21.6 70 Z" fill="#e74c3c"/><rect x="21" y="22" width="18" height="12" rx="2" fill="#f2c97b"/><path d="M18 22 L30 10 L42 22 Z" fill="#e74c3c"/><rect x="14" y="110" width="32" height="8" rx="2" fill="#7c8a85"/></svg>`;
+// art: lauf · huepf · kriech · flieg · flatter (Wald) – schwimm · oben · spring · treib · sand (Meer); v = Tempo (Bildbreiten pro Sekunde), g = Größe
+const VERHALTEN = {
+    hase: { art: "huepf", v: .16, g: .95 }, igel: { art: "lauf", v: .05, g: .75 }, fuchs: { art: "lauf", v: .12, g: 1.05 }, eule: { art: "flieg", v: .07, g: .85 },
+    eichhoernchen: { art: "huepf", v: .2, g: .75 }, maus: { art: "lauf", v: .17, g: .55 }, baer: { art: "lauf", v: .05, g: 1.4 }, hirsch: { art: "lauf", v: .08, g: 1.35 },
+    frosch: { art: "huepf", v: .1, g: .7 }, schnecke: { art: "kriech", v: .015, g: .6 }, vogel: { art: "flieg", v: .13, g: .65 }, schmetterling: { art: "flatter", v: .07, g: .55 },
+    fisch: { art: "schwimm", v: .09, g: .75 }, tropenfisch: { art: "schwimm", v: .11, g: .7 }, kugelfisch: { art: "schwimm", v: .05, g: .75 }, schildkroete: { art: "schwimm", v: .035, g: 1 },
+    delfin: { art: "spring", v: .14, g: 1.15 }, pinguin: { art: "spring", v: .1, g: .85 }, wal: { art: "oben", v: .035, g: 1.7 }, robbe: { art: "oben", v: .06, g: 1 }, ente: { art: "oben", v: .05, g: .75 },
+    krake: { art: "treib", v: .025, g: 1 }, qualle: { art: "treib", v: .02, g: .8 }, krebs: { art: "sand", v: .06, g: .7 }
+};
+const FLIEGT = a => a === "flieg" || a === "flatter";
 W.leise = {
     titel: "Leise-Wald", emoji: "🌳", gruppe: "Allgemein",
-    text: "Je leiser ihr seid, desto mehr Tiere kommen aus dem Wald. Wird es laut, verstecken sie sich. (Mikrofon nötig – es wird nichts aufgenommen.)",
+    text: "Je leiser ihr seid, desto mehr Tiere kommen in den Wald und spielen dort. Wird es laut, laufen sie davon. (Mikrofon nötig – es wird nichts aufgenommen.)",
     optionen: [
         { k: "minuten", label: "Alle Tiere nach", werte: [[1, "1 Min. Ruhe"], [2, "2 Min. Ruhe"], [3, "3 Min. Ruhe"], [5, "5 Min. Ruhe"], [10, "10 Min. Ruhe"]] },
         { k: "tiere", label: "Tiere", werte: [[6, "6 Tiere"], [9, "9 Tiere"], [12, "12 Tiere"]] }
     ],
     std: { minuten: 3, tiere: 9 },
     eigen(el, e, api){
+        const meer = e.thema === "meer";
         const n = +e.tiere || 9, proTier = (+e.minuten || 3) * 60 / n;
         let schwelle = 45; try { schwelle = +localStorage.getItem("lt-leise-schwelle") || 45; } catch (x) {}
-        const meer = e.thema === "meer";
-        const tiere = mischen(meer ? MEER_TIERE : WALD_TIERE).slice(0, n);
-        el.innerHTML = `<div class="lw-szene${meer ? " lw-meer" : ""}">
-            ${meer ? `<div class="lw-turm">${TURM}</div><div class="lw-strahl"></div>` : '<div class="lw-baeume">🌲🌳🌲🌲🌳🌲🌳🌲</div>'}
-            <div class="lw-tiere">${tiere.map((t, i) => `<div class="lw-tier" style="--x:${(i + .5) / n * 100}%;--d:${(i % 3) * .15}s">${bild(t)}</div>`).join("")}</div>
-            <div class="lw-huegel">${meer ? '<div class="lw-welle w2"></div><div class="lw-welle"></div>' : ""}</div>
-            <div class="lw-blase" hidden>${meer ? "Psst … die Tiere tauchen ab! 🫧" : "Psst … zu laut! 🙉"}</div>
-        </div>
+        const reihe = (meer ? MEER_TIERE : WALD_TIERE).slice();
+        const liste = [...reihe.slice(0, 4), ...mischen(reihe.slice(4))].slice(0, n);   // abwechslungsreicher Start: laufen, fliegen, hüpfen …
+        const deko = meer
+            ? `<div class="lw-wolke" style="top:8%;--t:70s">☁️</div><div class="lw-wolke" style="top:18%;--t:95s;animation-delay:-40s">☁️</div>
+               <div class="lw-turm">${TURM}</div><div class="lw-strahl"></div>
+               <div class="lw-wasser"></div><div class="lw-sand"></div>
+               ${[8, 22, 47, 63, 81, 93].map((x, i) => `<div class="lw-tang" style="left:${x}%;animation-delay:${-i * .7}s">🌿</div>`).join("")}
+               ${Array.from({ length: 10 }, (_, i) => `<i class="lw-blase-luft" style="left:${5 + i * 9.5}%;--t:${5 + (i % 4) * 2}s;animation-delay:${-i * 1.3}s"></i>`).join("")}`
+            : `<div class="lw-sonne">☀️</div><div class="lw-wolke" style="top:6%;--t:80s">☁️</div><div class="lw-wolke" style="top:16%;--t:110s;animation-delay:-55s">☁️</div>
+               <div class="lw-baeume hinten">🌲🌲🌳🌲🌲🌲🌳🌲🌲🌳🌲</div><div class="lw-baeume">🌲🌳🌲🌲🌳🌲🌳🌲</div>
+               <div class="lw-boden"></div>
+               ${[12, 38, 66, 88].map((x, i) => `<div class="lw-blatt" style="left:${x}%;--t:${7 + i * 2}s;animation-delay:${-i * 2.5}s">🍂</div>`).join("")}
+               <div class="lw-busch" style="left:4%">🌿</div><div class="lw-busch" style="left:31%">🌱</div><div class="lw-busch" style="left:57%">🌿</div><div class="lw-busch" style="left:83%">🌱</div>`;
+        el.innerHTML = `<div class="lw-szene${meer ? " lw-meer" : ""}">${deko}<div class="lw-tiere"></div><div class="lw-blase" hidden></div></div>
         <div class="lw-anzeige">
             <span class="lw-zahl"><b>0</b> / ${n} Tiere</span>
             <div class="lw-messer"><div class="lw-pegel"></div><div class="lw-grenze"></div></div>
-            <label class="lw-regler" title="Wie laut darf es sein, bevor sich die Tiere verstecken?">streng <input type="range" min="15" max="85" value="${schwelle}"> locker</label>
+            <label class="lw-regler" title="Wie laut darf es sein, bevor die Tiere weglaufen?">streng <input type="range" min="15" max="85" value="${schwelle}"> locker</label>
         </div>
         <div class="lt-frage lw-hinweis">Tippe auf „Start“ und erlaube das Mikrofon.</div>`;
+        const szene = el.querySelector(".lw-szene"), ebene = el.querySelector(".lw-tiere");
         const kopf = el.querySelector(".lw-zahl b"), pegel = el.querySelector(".lw-pegel"), grenze = el.querySelector(".lw-grenze"), blase = el.querySelector(".lw-blase"), hinweis = el.querySelector(".lw-hinweis");
-        const felder = [...el.querySelectorAll(".lw-tier")];
         const regler = el.querySelector(".lw-regler input");
         const grenzeSetzen = () => { grenze.style.left = schwelle + "%"; };
         grenzeSetzen();
         regler.addEventListener("input", () => { schwelle = +regler.value; grenzeSetzen(); try { localStorage.setItem("lt-leise-schwelle", schwelle); } catch (x) {} });
+
+        /* ---------- Tiere: Position in Anteilen der Szene (0–1), Füße bei y ---------- */
+        const SPIEGEL = meer ? .4 : 0;          // Wasseroberfläche im Meer
+        const tiere = liste.map((b, i) => {
+            const c = VERHALTEN[b] || { art: meer ? "schwimm" : "lauf", v: .08, g: .9 };
+            const d = document.createElement("div");
+            d.className = "lw-tier"; d.innerHTML = `<div class="lw-koerper">${bild(b)}</div>`;
+            ebene.appendChild(d);
+            return { b, c, d, zust: "weg", x: 0, y: 0, zx: .5, zy: .5, dir: 1, t: Math.random() * 10, pause: 0, vorn: i % 2, sprung: 0, sprungIn: 3 + Math.random() * 4 };
+        });
+        const basisY = t => {
+            const a = t.c.art;
+            if (!meer) return FLIEGT(a) ? .14 + Math.random() * .26 : (t.vorn ? .9 : .76);
+            if (a === "oben") return SPIEGEL + .04;
+            if (a === "sand") return .95;
+            if (a === "treib") return .55 + Math.random() * .3;
+            if (a === "spring") return SPIEGEL + .14;
+            return .5 + Math.random() * .38;
+        };
+        function kommen(t){
+            t.zust = "kommt"; t.d.classList.add("da"); t.d.classList.remove("flieht");
+            const links = Math.random() < .5;
+            t.x = links ? -.12 : 1.12; t.dir = links ? 1 : -1;
+            t.y = basisY(t); t.zy = t.y;
+            if (FLIEGT(t.c.art)) t.y = -.15;
+            if (meer && t.c.art === "treib") { t.x = .15 + Math.random() * .7; t.y = 1.25; }
+            t.zx = .12 + Math.random() * .76;
+            api.klang(560 + Math.random() * 300, .12);
+        }
+        function fliehen(t){
+            t.zust = "flieht"; t.d.classList.add("flieht");
+            t.dir = t.x < .5 ? -1 : 1; t.zx = t.dir < 0 ? -.25 : 1.25;
+            if (FLIEGT(t.c.art)) t.zy = -.3;
+            if (meer && (t.c.art === "treib" || t.c.art === "sand")) t.zy = 1.3;
+        }
+        let W0 = szene.clientWidth || 800, H0 = szene.clientHeight || 400;
+        const groesse = () => Math.min(W0 * .1, H0 * .2);
+        let letzte = performance.now(), raf = 0, feier = false;
+        function schritt(jetzt){
+            const dt = Math.min(.05, (jetzt - letzte) / 1000); letzte = jetzt;
+            W0 = szene.clientWidth || W0; H0 = szene.clientHeight || H0;
+            const S = groesse();
+            for (const t of tiere) {
+                if (t.zust === "weg") continue;
+                const a = t.c.art, flieht = t.zust === "flieht";
+                const v = t.c.v * (flieht ? 4.5 : 1) * (W0 > 0 ? 1 : 0);
+                t.t += dt;
+                // waagerecht laufen/schwimmen, am Ziel kurz warten und ein neues Ziel suchen
+                if (t.pause > 0 && !flieht) t.pause -= dt;
+                else {
+                    const dx = t.zx - t.x;
+                    if (Math.abs(dx) < .01 && !flieht) {
+                        t.zust = "da"; t.pause = .4 + Math.random() * (a === "kriech" ? 1 : 2.5);
+                        t.zx = .08 + Math.random() * .84;
+                        if (meer && a === "treib") t.zy = .55 + Math.random() * .3;
+                        if (FLIEGT(a)) t.zy = .12 + Math.random() * .28;
+                    } else { t.dir = Math.sign(dx) || t.dir; t.x += Math.sign(dx) * Math.min(Math.abs(dx), v * dt); }
+                }
+                // senkrecht: sanft zum Ziel (Fliegen, Treiben, Ankommen von oben/unten, Weglaufen)
+                if (FLIEGT(a) || (meer && (a === "treib" || flieht))) t.y += (t.zy - t.y) * Math.min(1, dt * (flieht ? 2.5 : .8));
+                else if (t.zust === "kommt" && Math.abs(t.y - t.zy) > .005) t.y += (t.zy - t.y) * Math.min(1, dt * 2);
+                // Bewegungsart → Versatz, Drehung, Quetschen
+                let oy = 0, rot = 0, sy = 1;
+                const laeuft = t.pause <= 0 || flieht;
+                if (a === "huepf" && laeuft) oy = -Math.abs(Math.sin(t.t * (flieht ? 14 : 7))) * .09;
+                else if (a === "lauf" && laeuft) oy = -Math.abs(Math.sin(t.t * (flieht ? 22 : 11))) * .012;
+                else if (a === "kriech") sy = 1 + Math.sin(t.t * 3) * .06;
+                else if (a === "flieg") { oy = Math.sin(t.t * 2.2) * .03; rot = Math.sin(t.t * 2.2) * 6; }
+                else if (a === "flatter") { oy = Math.sin(t.t * 4.5) * .05 + Math.sin(t.t * 1.3) * .03; rot = Math.sin(t.t * 9) * 10; }
+                else if (a === "oben") { oy = Math.sin(t.t * 1.8) * .008; rot = Math.sin(t.t * 1.8) * 4; }
+                else if (a === "schwimm") { oy = Math.sin(t.t * 2) * .012; rot = Math.sin(t.t * 2) * 5; }
+                else if (a === "treib") { oy = Math.sin(t.t * 1.2) * .03; sy = 1 + Math.sin(t.t * 2.4) * .08; }
+                else if (a === "spring" && !flieht) {
+                    // ab und zu ein Sprung über die Wellen
+                    if (t.sprung <= 0) { t.sprungIn -= dt; if (t.sprungIn <= 0 && t.pause <= 0) { t.sprung = 1.3; t.sprungIn = 4 + Math.random() * 5; api.klang(900, .08); } oy = Math.sin(t.t * 2) * .01; }
+                    else { t.sprung -= dt; const p = 1 - t.sprung / 1.3; oy = -Math.sin(p * Math.PI) * .32; rot = (p - .5) * 70 * -t.dir; }
+                }
+                if (a === "sand" && laeuft) oy = -Math.abs(Math.sin(t.t * 16)) * .008;
+                const g = t.c.g * S * (meer ? 1 : (FLIEGT(a) ? 1 : (t.vorn ? 1 : .8)));
+                const px = t.x * W0 - g / 2, py = (t.y + oy) * H0 - g;
+                t.d.style.width = t.d.style.height = g + "px";
+                t.d.style.zIndex = FLIEGT(a) ? 6 : (t.vorn ? 5 : 3);
+                t.d.style.transform = `translate(${px}px, ${py}px) rotate(${rot}deg)`;
+                t.d.firstChild.style.transform = `scale(${t.dir > 0 ? -1 : 1}, ${sy})`;   // Bilder schauen nach links → beim Laufen nach rechts spiegeln
+                if (flieht && (t.x < -.2 || t.x > 1.2 || t.y < -.25 || t.y > 1.25)) { t.zust = "weg"; t.d.classList.remove("da", "flieht"); }
+            }
+            raf = requestAnimationFrame(schritt);
+        }
+        raf = requestAnimationFrame(schritt);
+
         let sichtbar = 0, ruhig = 0, laut = 0, sperre = 0, laeuft = false, fertig = false, stream = null, ctx = null, analyser = null, puffer = null, glatt = 0;
-        const zeigen = () => { felder.forEach((f, i) => f.classList.toggle("da", i < sichtbar)); kopf.textContent = sichtbar; };
+        const anzahlZeigen = () => { kopf.textContent = sichtbar; };
+        const erschrecken = () => { szene.classList.remove("schreck"); void szene.offsetWidth; szene.classList.add("schreck"); };
+        const jubeln = (an) => { szene.classList.toggle("jubel", an); };
         const starten = async () => {
             if (laeuft) return;
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { hinweis.textContent = "Dieses Gerät oder dieser Browser erlaubt kein Mikrofon (die Seite muss über https geöffnet sein)."; return; }
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-            } catch (x) { hinweis.textContent = "Kein Zugriff aufs Mikrofon – bitte im Browser erlauben und noch einmal „Start“ tippen."; return; }
+            try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } }); }
+            catch (x) { hinweis.textContent = "Kein Zugriff aufs Mikrofon – bitte im Browser erlauben und noch einmal „Start“ tippen."; return; }
             ctx = new (window.AudioContext || window.webkitAudioContext)();
             const quelle = ctx.createMediaStreamSource(stream);
             analyser = ctx.createAnalyser(); analyser.fftSize = 1024; puffer = new Float32Array(analyser.fftSize);
             quelle.connect(analyser);
-            laeuft = true; hinweis.textContent = meer ? "Je leiser ihr seid, desto mehr Tiere tauchen auf …" : "Je leiser ihr seid, desto mehr Tiere kommen heraus …";
+            laeuft = true; hinweis.textContent = meer ? "Psst … wer kommt wohl als Erstes zum Leuchtturm geschwommen?" : "Psst … wer kommt wohl als Erstes in den Wald?";
             api.weiterText("🔄 Neu starten");
         };
-        api.aufraeumen(() => { if (stream) stream.getTracks().forEach(t => t.stop()); if (ctx) ctx.close(); });
+        api.aufraeumen(() => { cancelAnimationFrame(raf); if (stream) stream.getTracks().forEach(t => t.stop()); if (ctx) ctx.close(); });
         // 10-mal pro Sekunde messen
         api.intervall(() => {
             if (!laeuft || !analyser) return;
@@ -428,19 +537,28 @@ W.leise = {
             if (glatt > schwelle) {
                 laut += .1; ruhig = Math.max(0, ruhig - .3);
                 if (laut >= .6 && Date.now() > sperre && sichtbar > 0) {
-                    sichtbar--; zeigen(); sperre = Date.now() + 1500; laut = 0;
-                    blase.hidden = false; setTimeout(() => { blase.hidden = true; }, 1300);
+                    sichtbar--; fliehen(tiere[sichtbar]); anzahlZeigen(); erschrecken(); sperre = Date.now() + 1500; laut = 0;
+                    blase.textContent = meer ? "Huch! Zu laut – " + (window.LT_BILDER[tiere[sichtbar].b] || [""])[0] + " taucht weg! 🫧" : "Huch! Zu laut – " + (window.LT_BILDER[tiere[sichtbar].b] || [""])[0] + " läuft weg! 🙉";
+                    blase.hidden = false; setTimeout(() => { blase.hidden = true; }, 1600);
+                    hinweis.textContent = "Wenn ihr wieder leise seid, kommt es zurück …";
                     api.klang(220, .25, "triangle");
                 }
             } else {
                 laut = Math.max(0, laut - .05); ruhig += .1;
                 if (ruhig >= proTier && sichtbar < n) {
-                    ruhig = 0; sichtbar++; zeigen(); api.klang(660 + sichtbar * 40, .15);
-                    if (sichtbar === n) { fertig = true; hinweis.textContent = "Geschafft! Alle Tiere sind da – ihr wart super leise! 🎉"; api.gong(); }
+                    ruhig = 0; kommen(tiere[sichtbar]); sichtbar++; anzahlZeigen();
+                    const name = (window.LT_BILDER[tiere[sichtbar - 1].b] || [""])[0];
+                    hinweis.textContent = sichtbar === n ? "" : (meer ? name + " ist aufgetaucht! Wer kommt als Nächstes?" : name + " ist da! Wer kommt als Nächstes?");
+                    if (sichtbar === n) { fertig = true; jubeln(true); hinweis.textContent = meer ? "Geschafft! Alle Tiere sind am Leuchtturm – ihr wart super leise! 🎉" : "Geschafft! Alle Tiere sind im Wald – ihr wart super leise! 🎉"; api.gong(); }
                 }
             }
         }, 100);
-        api.weiter = () => { if (!laeuft) starten(); else { sichtbar = 0; ruhig = 0; laut = 0; fertig = false; zeigen(); hinweis.textContent = "Neue Runde – wer schafft es, ganz leise zu sein?"; } };
+        api.weiter = () => {
+            if (!laeuft) { starten(); return; }
+            tiere.forEach(t => { if (t.zust !== "weg") fliehen(t); });
+            sichtbar = 0; ruhig = 0; laut = 0; fertig = false; jubeln(false); anzahlZeigen();
+            hinweis.textContent = "Neue Runde – wer schafft es, ganz leise zu sein?";
+        };
         api.weiterText("🎤 Start");
         api.ohneLoesung();
     }
@@ -604,29 +722,49 @@ const CSS = `
 .lt-meer .lt-buehne{ box-shadow:none; background:radial-gradient(circle at 50% 30%, #23507a, #16324a 70%); }
 .lt-meer .lt-frage, .lt-meer .lw-zahl, .lt-meer .lw-regler{ font-family:"Nunito",sans-serif; font-weight:800; }
 .lt-meer .lt-frage, .lt-meer .lw-zahl{ color:#f2c97b; }
-.lw-szene.lw-meer{ background:linear-gradient(#f7d9a8, #f2b880 30%, #3d7ea6 31%, #23507a); }
-.lw-meer .lw-huegel{ background:#2f6f99; box-shadow:none; border-radius:0; height:30%; bottom:0; }
-.lw-welle{ position:absolute; left:-10%; right:-10%; top:-26px; height:40px; background:radial-gradient(circle at 20px -6px, transparent 22px, #2f6f99 23px) 0 0 / 40px 40px repeat-x; animation:lwWelle 4s linear infinite; }
-.lw-welle.w2{ top:-36px; opacity:.5; animation-duration:7s; animation-direction:reverse; }
-@keyframes lwWelle{ to{ background-position:40px 0; } }
-.lw-meer .lw-tiere{ bottom:25%; }
-.lw-meer .lw-tier .lt-bild{ width:clamp(56px,min(9.5vw,16vh),150px); height:clamp(56px,min(9.5vw,16vh),150px); }
-.lw-turm{ position:absolute; right:5%; bottom:28%; width:clamp(40px,6vw,90px); }
-.lw-strahl{ position:absolute; right:calc(5% + clamp(20px,3vw,45px)); bottom:calc(28% + clamp(56px,8.6vw,130px)); width:60vw; height:30px; transform-origin:100% 50%; background:linear-gradient(270deg, rgba(255,240,190,.75), transparent); clip-path:polygon(0 0, 100% 45%, 100% 55%, 0 100%); animation:lwStrahl 6s ease-in-out infinite; }
-@keyframes lwStrahl{ 0%,100%{ transform:rotate(-6deg); } 50%{ transform:rotate(8deg); } }
 .lt-meer .lw-blase{ font-family:"Nunito",sans-serif; font-weight:900; color:#16324a; }
-/* Leise-Wald */
-.lw-szene{ position:relative; width:min(92vw,1300px); height:min(52vh,560px); overflow:hidden; border-radius:22px; background:linear-gradient(#173b2c, #23533e 70%); }
-.lw-baeume{ position:absolute; left:0; right:0; bottom:22%; text-align:center; font-size:clamp(50px,min(9vw,13vh),150px); letter-spacing:-.15em; opacity:.85; white-space:nowrap; }
-.lw-tiere{ position:absolute; left:3%; right:3%; bottom:12%; height:42%; }
-.lw-tier{ position:absolute; left:var(--x); bottom:0; transform:translate(-50%, 120%); transition:transform .7s cubic-bezier(.2,1.6,.4,1) var(--d); }
-.lw-tier.da{ transform:translate(-50%, 0); }
-.lw-tier .lt-bild{ width:clamp(50px,min(8.5vw,14vh),130px); height:clamp(50px,min(8.5vw,14vh),130px); }
-.lw-huegel{ position:absolute; left:-5%; right:-5%; bottom:-14%; height:34%; background:#5e8c3a; border-radius:50% 50% 0 0 / 70% 70% 0 0; box-shadow:inset 0 10px 0 #7aa84e; }
-.lw-blase{ position:absolute; top:10%; left:50%; transform:translateX(-50%); background:#fffdf5; color:#1d4634; border-radius:24px; padding:.3em .9em; font:400 clamp(26px,4vw,56px) "Patrick Hand","Andika",sans-serif; animation:lwWackel .3s 3; }
+
+/* Szene (Wald und Meer) */
+.lw-szene{ position:relative; width:min(94vw,1400px); height:min(58vh,620px); overflow:hidden; border-radius:22px; background:linear-gradient(#9fd3f0, #cfe9f7 45%, #b9dc9c 46%, #6fa04a); }
+.lw-tiere{ position:absolute; inset:0; z-index:4; }
+.lw-tier{ position:absolute; left:0; top:0; display:none; will-change:transform; }
+.lw-tier.da{ display:block; }
+.lw-koerper{ width:100%; height:100%; transform-origin:50% 100%; }
+.lw-koerper .lt-bild{ width:100%; height:100%; }
+.lw-tier.flieht .lw-koerper .lt-bild{ animation:lwZitter .12s infinite; }
+@keyframes lwZitter{ 50%{ transform:translateX(3px); } }
+.lw-szene.schreck .lw-tier.da:not(.flieht) .lw-koerper .lt-bild{ animation:lwSchreck .45s; }
+@keyframes lwSchreck{ 30%{ transform:translateY(-22%) scale(1.08); } 60%{ transform:translateY(0); } }
+.lw-szene.jubel .lw-tier.da .lw-koerper .lt-bild{ animation:lwJubel .7s ease-in-out infinite; }
+.lw-szene.jubel .lw-tier.da:nth-child(2n) .lw-koerper .lt-bild{ animation-delay:.35s; }
+@keyframes lwJubel{ 50%{ transform:translateY(-28%) rotate(6deg); } }
+.lw-sonne{ position:absolute; right:7%; top:6%; font-size:clamp(50px,7vw,110px); animation:lwDreh 30s linear infinite; z-index:1; }
+@keyframes lwDreh{ to{ transform:rotate(360deg); } }
+.lw-wolke{ position:absolute; left:-15%; font-size:clamp(50px,7vw,110px); opacity:.95; animation:lwZiehen var(--t,80s) linear infinite; z-index:1; }
+@keyframes lwZiehen{ to{ transform:translateX(130vw); } }
+.lw-baeume{ position:absolute; left:-2%; right:-2%; bottom:30%; text-align:center; font-size:clamp(56px,min(9vw,14vh),160px); letter-spacing:-.18em; white-space:nowrap; z-index:2; }
+.lw-baeume.hinten{ bottom:38%; font-size:clamp(36px,min(6vw,9vh),100px); opacity:.6; filter:saturate(.6) brightness(.85); z-index:1; }
+.lw-boden{ position:absolute; left:0; right:0; bottom:0; height:34%; background:linear-gradient(#7fb352, #5e8c3a); z-index:2; }
+.lw-busch{ position:absolute; bottom:-2%; font-size:clamp(46px,7vw,110px); z-index:4; transform-origin:50% 100%; animation:lwWiegen 3.5s ease-in-out infinite; }
+.lw-blatt{ position:absolute; top:-10%; font-size:clamp(20px,2.4vw,36px); z-index:7; animation:lwFallen var(--t,8s) linear infinite; }
+@keyframes lwFallen{ 0%{ transform:translate(0,0) rotate(0); opacity:0; } 10%{ opacity:1; } 100%{ transform:translate(6vw, 70vh) rotate(540deg); opacity:.2; } }
+@keyframes lwWiegen{ 0%,100%{ transform:rotate(-5deg); } 50%{ transform:rotate(5deg); } }
+.lw-blase{ position:absolute; top:7%; left:50%; transform:translateX(-50%); z-index:9; background:#fffdf5; color:#1d4634; border-radius:24px; padding:.3em .9em; font:400 clamp(24px,3.4vw,50px) "Patrick Hand","Andika",sans-serif; animation:lwWackel .3s 3; white-space:nowrap; }
 .lw-blase[hidden]{ display:none; }
-@keyframes lwWackel{ 50%{ transform:translateX(-50%) rotate(4deg) scale(1.08); } }
-.lw-anzeige{ display:flex; align-items:center; gap:2vw; flex-wrap:wrap; justify-content:center; width:min(92vw,1300px); }
+@keyframes lwWackel{ 50%{ transform:translateX(-50%) rotate(3deg) scale(1.06); } }
+/* Meer */
+.lw-szene.lw-meer{ background:linear-gradient(#f7d9a8, #f2b880 39%, #4f97c4 40%, #2b6e9c 75%, #1e5880); }
+.lw-wasser{ position:absolute; left:-10%; right:-10%; top:calc(40% - 18px); height:36px; z-index:5; background:radial-gradient(circle at 20px -4px, transparent 21px, rgba(79,151,196,.85) 22px) 0 0 / 40px 36px repeat-x; animation:lwWelle 4s linear infinite; pointer-events:none; }
+@keyframes lwWelle{ to{ background-position:40px 0; } }
+.lw-sand{ position:absolute; left:0; right:0; bottom:0; height:8%; background:#e8c98f; border-radius:50% 50% 0 0 / 30% 30% 0 0; z-index:2; }
+.lw-tang{ position:absolute; bottom:4%; font-size:clamp(40px,6vw,90px); z-index:3; transform-origin:50% 100%; animation:lwWiegen 4s ease-in-out infinite; filter:hue-rotate(-20deg); }
+.lw-blase-luft{ position:absolute; bottom:6%; width:10px; height:10px; border-radius:50%; border:2px solid rgba(255,255,255,.7); z-index:3; animation:lwAufsteigen var(--t,6s) linear infinite; }
+@keyframes lwAufsteigen{ 0%{ transform:translateY(0); opacity:0; } 15%{ opacity:1; } 100%{ transform:translateY(-34vh) translateX(10px); opacity:0; } }
+.lw-turm{ position:absolute; right:5%; top:calc(40% - clamp(70px,10vw,140px)); width:clamp(36px,5vw,70px); z-index:2; }
+.lw-strahl{ position:absolute; right:calc(5% + clamp(18px,2.5vw,35px)); top:calc(40% - clamp(60px,8.6vw,120px)); width:60vw; height:30px; transform-origin:100% 50%; background:linear-gradient(270deg, rgba(255,240,190,.8), transparent); clip-path:polygon(0 0, 100% 45%, 100% 55%, 0 100%); animation:lwStrahl 6s ease-in-out infinite; z-index:1; }
+@keyframes lwStrahl{ 0%,100%{ transform:rotate(-6deg); } 50%{ transform:rotate(8deg); } }
+/* Anzeige */
+.lw-anzeige{ display:flex; align-items:center; gap:2vw; flex-wrap:wrap; justify-content:center; width:min(94vw,1400px); }
 .lw-zahl{ font:400 clamp(24px,3vw,44px) "Patrick Hand","Andika",sans-serif; color:#ffe066; }
 .lw-messer{ position:relative; flex:1 1 260px; height:22px; border-radius:11px; background:rgba(255,255,255,.12); overflow:hidden; border:2px solid rgba(255,255,255,.4); }
 .lw-pegel{ height:100%; width:0; background:#b5e48c; transition:width .1s; }
