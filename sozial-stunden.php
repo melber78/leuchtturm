@@ -1721,6 +1721,9 @@ function klassenStatusSetzen(wocheIso, klId, neu){
         if (y && y.fortsetzung === wocheIso) { delete y.einheit; delete y.fortsetzung; if (/^Fortsetzung von KW/.test(y.notiz || "")) delete y.notiz; }
     }
 }
+// Für die Präsentation (Sternenglas je Gruppe)
+window.sozialGruppen = () => planKlassen();
+window.sozialSenden = d => senden(d);
 function naechsterStatus(st){ return STATUS_FOLGE[(STATUS_FOLGE.indexOf(st || "") + 1) % STATUS_FOLGE.length]; }
 function planKlassen(){
     const p = plan();

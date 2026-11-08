@@ -261,6 +261,15 @@ const CSS = `
 #praes .l-glas::before{ content:""; position:absolute; top:-10px; left:-14px; right:-14px; height:12px; border:5px solid rgba(255,255,255,.85); border-radius:8px; }
 #praes .l-glas i{ font-style:normal; font-size:clamp(18px,2.6vh,30px); line-height:1; animation:lStern .5s cubic-bezier(.2,1.6,.4,1); }
 @keyframes lStern{ from{ transform:translateY(-30vh) scale(1.8); } }
+#praes .l-glas::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:var(--fuell,0%); background:linear-gradient(rgba(255,224,102,.08),rgba(255,224,102,.28)); transition:height .6s; z-index:0; border-radius:0 0 34px 34px; }
+#praes .l-glas i{ position:relative; z-index:1; }
+#praes .l-glas.voll{ border-color:#ffe066; box-shadow:0 0 30px rgba(255,224,102,.5); }
+#praes .l-glas-rest{ font-family:"Patrick Hand","Andika",sans-serif; font-size:clamp(15px,1.7vw,26px); color:#f4f1e8; opacity:.85; }
+#praes .l-glas-fehler{ background:#fff3cd; color:#7a4a1c; border-radius:10px; padding:.3em .8em; margin-top:1vh; font-size:clamp(14px,1.5vw,22px); }
+#praes .l-glas-fehler[hidden], #praes [data-leeren][hidden]{ display:none; }
+#praes .l-gruppen{ display:flex; gap:.6vw; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:1.4vh; font:400 clamp(16px,1.8vw,28px) "Patrick Hand","Andika",sans-serif; }
+#praes .l-gr{ font:inherit; background:transparent; color:#fffdf5; border:2px dashed rgba(255,255,255,.6); border-radius:12px; padding:.15em .8em; cursor:pointer; }
+#praes .l-gr.an{ background:#ffe066; color:#1d4634; border-style:solid; border-color:#ffe066; }
 #praes .l-glas-zahl{ font-family:"Patrick Hand","Andika",sans-serif; font-size:clamp(20px,2.6vw,38px); color:#ffe066; margin-top:.4em; }
 /* Lernangebot-Ablauf: Quizshow „Klasse gegen Eule Ella“ */
 #praes .l-score{ position:absolute; top:1.4vh; right:1.4vw; z-index:5; display:flex; align-items:center; gap:.4em; font:400 clamp(18px,2.2vw,34px) "Patrick Hand","Andika",sans-serif; color:#fffdf5; background:rgba(0,0,0,.28); border:2px dashed rgba(255,255,255,.55); border-radius:14px 20px 16px 22px; padding:.15em .7em; }
@@ -395,8 +404,26 @@ function stationVon(f){ return f.st || TYP_STATION[f.typ] || "challenge"; }
 function pfadVon(folien){ return [...new Set(folien.map(stationVon))]; }
 /* Eule Ella ruft „Hu-hu“, wenn sie einen Punkt bekommt */
 function euleRuf(){ const a = audio(); if (!a) return; [0, .32].forEach((d, k) => { const o = a.createOscillator(), g = a.createGain(), t = a.currentTime + d; o.type = "sine"; o.frequency.setValueAtTime(k ? 330 : 392, t); o.frequency.exponentialRampToValueAtTime(k ? 262 : 330, t + .25); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.25, t + .04); g.gain.exponentialRampToValueAtTime(.0001, t + .28); o.connect(g).connect(a.destination); o.start(t); o.stop(t + .3); }); }
-function sterneLesen(st){ try { return parseInt(localStorage.getItem("lern_sterne_" + st), 10) || 0; } catch (e) { return 0; } }
-function sterneSchreiben(st, n){ try { localStorage.setItem("lern_sterne_" + st, String(n)); } catch (e) {} }
+/* Sternenglas je Gruppe (GS1–GS4 aus dem Jahresplan) – gezählt im Leuchtturm, damit es auf jedem Gerät gleich ist */
+function gruppenFuer(st){
+    const g = (window.sozialGruppen ? window.sozialGruppen() : []).filter(k => k && k.id && k.stufe === st);
+    return g.length ? g : [{ id: "kl" + st, name: st === "34" ? "Kl. 3/4" : "Kl. 1/2", stufe: st }];
+}
+function gruppeAktuell(){
+    const g = gruppenFuer(zustand.stufe);
+    let id = zustand.gruppe;
+    if (!g.some(x => x.id === id)) { try { id = localStorage.getItem("lern_gruppe_" + zustand.stufe); } catch (e) {} }
+    if (!g.some(x => x.id === id)) id = g[0].id;
+    zustand.gruppe = id;
+    return g.find(x => x.id === id);
+}
+function glas(id){ const s = (window.SOZIAL_DATEN && window.SOZIAL_DATEN.sterne) || {}; return Object.assign({ n: 0, ziel: 20, voll: 0 }, s[id] || {}); }
+async function glasAendern(id, daten){
+    if (!window.sozialSenden) throw new Error("Speichern klappt nur im Leuchtturm.");
+    const r = await window.sozialSenden(Object.assign({ aktion: "sterne_aendern", gruppe: id }, daten));
+    window.SOZIAL_DATEN.sterne = Object.assign(window.SOZIAL_DATEN.sterne || {}, { [id]: r.glas });
+    return glas(id);
+}
 
 /* ---------------- Klänge (ohne Dateien, mit Web Audio) ---------------- */
 let ton = null;
@@ -801,7 +828,8 @@ function folieHtml(f, e){
                 <div class="l-auftragskarte"><small>Eure Mission:</small>${esc(zielText || e.titel)}</div>
                 <div class="l-karte">${orte.map(([sym, name], k) => (k ? '<span class="l-kpfeil"></span>' : "") + `<div class="l-ort"><span>${sym}</span><b>${esc(name)}</b></div>`).join("")}</div>
                 <div class="l-duell">${eule(true)}<div><b>Klasse gegen Eule Ella!</b><br>Richtig gelöst? Punkt für euch. Daneben? Punkt für Ella.</div></div>
-                <div class="p-wahl"><button class="p-knopf ${zustand.stufe === "12" ? "" : "hell"}" data-stufe="12">Klasse 1/2</button><button class="p-knopf ${zustand.stufe === "34" ? "" : "hell"}" data-stufe="34">Klasse 3/4</button></div>`;
+                <div class="p-wahl"><button class="p-knopf ${zustand.stufe === "12" ? "" : "hell"}" data-stufe="12">Klasse 1/2</button><button class="p-knopf ${zustand.stufe === "34" ? "" : "hell"}" data-stufe="34">Klasse 3/4</button></div>
+                ${(() => { const g = gruppenFuer(zustand.stufe), a = gruppeAktuell(); return g.length > 1 ? `<div class="l-gruppen"><span>Unsere Gruppe:</span>${g.map(x => `<button class="l-gr ${x.id === a.id ? "an" : ""}" data-gruppe="${esc(x.id)}">${esc(x.name)}</button>`).join("")}</div>` : ""; })()}`;
         }
         if (f.typ === "kopfstart") {
             const inf = f.tafel && window.lernTafel && window.lernTafel.info(f.tafel.werkzeug);
@@ -879,13 +907,14 @@ function folieHtml(f, e){
             <div class="l-duell">${eule(true)}<div>Feststecken? <b>Hilfe-Treppe:</b> 👀 nochmal lesen · 🧰 Hilfsmittel · 🤫 Nachbarn fragen · 🙋 Hand heben<br>Je leiser ihr arbeitet, desto mehr Tiere kommen in den Leise-Wald!</div></div>
             <div class="p-reihe"><button class="p-knopf" data-start="11">⏱ 11 Minuten</button>${window.lernTafel ? '<button class="p-knopf gold" data-p="leise">🌳 Leise-Wald an</button>' : ""}<button class="p-knopf hell" data-p="ruhe">🤫 Leise-Signal</button></div>`;
         if (f.typ === "abschluss") {
-            const n = sterneLesen(zustand.stufe), P = zustand.punkte, gespielt = P.klasse + P.eule > 0;
+            const gr = gruppeAktuell(), G = glas(gr.id), P = zustand.punkte, gespielt = P.klasse + P.eule > 0;
             const sieg = P.klasse > P.eule ? "Ihr habt Eule Ella geschlagen! 🎉 Bonus-Stern!" : P.klasse === P.eule ? "Unentschieden – stark!" : "Diesmal gewinnt Ella – nächstes Mal schlagt ihr sie!";
             return `${gespielt ? `<div class="l-endstand"><div class="l-es k">🧒 Klasse<b>${P.klasse}</b></div><div class="l-es-mitte">:</div><div class="l-es e">🦉 Ella<b>${P.eule}</b></div></div><div class="p-klein">${sieg}</div>` : ""}
                 <h2 style="font-size:clamp(26px,3.6vw,54px)">Wie gut kannst du das jetzt?</h2><div class="l-zwei">
                 ${stimmenHtml("lerndaumen", [{ wert: "sicher", name: "kann ich sicher", art: "emoji", zeichen: "👍" }, { wert: "bisschen", name: "ein bisschen", art: "emoji", zeichen: "👉" }, { wert: "noch", name: "übe ich noch", art: "emoji", zeichen: "👎" }])}
-                <div class="l-glasbox">${eule(true)}<div><div class="l-glas" id="lGlas">${"<i>⭐</i>".repeat(Math.min(n, 60))}</div><div class="l-glas-zahl">Sternenglas Kl. ${zustand.stufe === "34" ? "3/4" : "1/2"}: <b id="lZahl">${n}</b></div></div></div></div>
-                <div class="p-reihe"><button class="p-knopf" data-stern="1">⭐ Stern ins Glas!</button><button class="p-knopf hell" data-p="rad">🎡 Wer erzählt?</button></div>`;
+                <div class="l-glasbox">${eule(true)}<div><div class="l-glas" id="lGlas"></div><div class="l-glas-zahl">Sternenglas ${esc(gr.name)}: <b id="lZahl"></b></div><div class="l-glas-rest" id="lRest"></div></div></div></div>
+                <div class="p-reihe"><button class="p-knopf" data-stern="1">⭐ Stern ins Glas!</button><button class="p-knopf hell l-pk" data-stern="-1" title="Aus Versehen? Einen Stern wieder herausnehmen.">↩</button><button class="p-knopf hell l-pk" data-ziel="1">🎯 Ziel</button><button class="p-knopf gold l-pk" data-leeren="1" hidden>🫙 Glas leeren</button><button class="p-knopf hell" data-p="rad">🎡 Wer erzählt?</button></div>
+                <div class="l-glas-fehler" hidden></div>`;
         }
     }
     switch (f.typ) {
@@ -954,6 +983,49 @@ function scoreZeichnen(neu, verstecken){
     s.hidden = !!verstecken;
     s.innerHTML = `<span>🧒 <b>${z.punkte.klasse}</b></span><i>:</i><span><b>${z.punkte.eule}</b> 🦉</span>`;
     if (neu) { s.classList.remove("bump"); void s.offsetWidth; s.classList.add("bump"); }
+}
+function glasZeichnen(el, G){
+    const glasEl = el.querySelector("#lGlas"), voll = G.n >= G.ziel;
+    const da = glasEl.querySelectorAll("i").length, soll = Math.min(G.n, 60);
+    if (soll < da) glasEl.querySelectorAll("i").forEach((x, k) => { if (k >= soll) x.remove(); });
+    else glasEl.insertAdjacentHTML("beforeend", "<i>⭐</i>".repeat(soll - da));
+    glasEl.style.setProperty("--fuell", Math.min(100, Math.round(G.n / G.ziel * 100)) + "%");
+    glasEl.classList.toggle("voll", voll);
+    el.querySelector("#lZahl").textContent = G.n + " / " + G.ziel;
+    el.querySelector("#lRest").textContent = voll ? "🎉 Voll! Zeit für eure Überraschung!" : "noch " + (G.ziel - G.n) + " bis zur Überraschung";
+    el.querySelector("[data-leeren]").hidden = !voll;
+}
+function glasAktivieren(el){
+    const gr = gruppeAktuell(), fehlerEl = el.querySelector(".l-glas-fehler");
+    const melden = t => { fehlerEl.hidden = !t; fehlerEl.textContent = t || ""; };
+    glasZeichnen(el, glas(gr.id));
+    const tun = async (daten, knopf) => {
+        const vorher = glas(gr.id);
+        if (knopf) knopf.disabled = true;
+        try { const G = await glasAendern(gr.id, daten); melden(""); glasZeichnen(el, G); return [vorher, G]; }
+        catch (err) { melden("⚠️ " + err.message); return [vorher, null]; }
+        finally { if (knopf) knopf.disabled = false; }
+    };
+    el.querySelectorAll("[data-stern]").forEach(b => b.addEventListener("click", async () => {
+        const plus = b.dataset.stern === "1";
+        const [vorher, G] = await tun({ delta: plus ? 1 : -1 }, b);
+        if (!G || !plus) return;
+        fanfare(); konfetti(zustand.buehne);
+        if (vorher.n < vorher.ziel && G.n >= G.ziel) setTimeout(() => {   // Glas gerade voll geworden
+            const o = overlay(`<div style="font-size:clamp(60px,12vh,130px);line-height:1">🫙✨</div><h2>Das Sternenglas ist voll!</h2><div class="p-klein">${esc(gr.name)} hat ${G.n} Sterne gesammelt. Zeit für eure Überraschung!</div>`);
+            o.classList.add("l-feier"); fanfare(); setTimeout(fanfare, 450); konfetti(zustand.buehne); setTimeout(() => konfetti(zustand.buehne), 700);
+        }, 700);
+    }));
+    el.querySelector("[data-ziel]").addEventListener("click", () => {
+        const G = glas(gr.id);
+        const o = overlay(`<h2>🎯 Ziel für ${esc(gr.name)}</h2><div class="p-klein">Bei wie vielen Sternen ist das Glas voll?</div>
+            <div class="p-reihe" style="align-items:center"><input type="number" min="3" max="200" value="${G.ziel}" data-zielwert="1" style="font-size:28px;width:110px;padding:6px 10px;border-radius:10px;border:2px solid #8a5a2e;text-align:center"><button class="p-knopf" data-zielok="1">Speichern</button></div>`);
+        o.querySelector("[data-zielok]").addEventListener("click", async () => { const z = parseInt(o.querySelector("[data-zielwert]").value, 10); if (!(z >= 3)) return; o.remove(); await tun({ ziel: Math.min(200, z) }); });
+    });
+    el.querySelector("[data-leeren]").addEventListener("click", () => {
+        const o = overlay(`<h2>🫙 Glas leeren?</h2><div class="p-klein">Das Glas von ${esc(gr.name)} fängt wieder bei 0 an – für die nächste Überraschung.</div><div class="p-reihe"><button class="p-knopf gold" data-leerok="1">Ja, leeren</button></div>`);
+        o.querySelector("[data-leerok]").addEventListener("click", async () => { o.remove(); await tun({ leeren: true }); });
+    });
 }
 function folieAktivieren(el, f){
     // Abstimmungen
@@ -1053,12 +1125,12 @@ function folieAktivieren(el, f){
         pkZeigen(); scoreZeichnen(true);
     }));
     pkZeigen();
-    el.querySelectorAll("[data-stern]").forEach(b => b.addEventListener("click", () => {
-        const n = sterneLesen(zustand.stufe) + 1; sterneSchreiben(zustand.stufe, n);
-        const glas = el.querySelector("#lGlas"); if (glas && n <= 60) glas.insertAdjacentHTML("beforeend", "<i>⭐</i>");
-        const zahl = el.querySelector("#lZahl"); if (zahl) zahl.textContent = n;
-        fanfare(); konfetti(zustand.buehne);
+    el.querySelectorAll("[data-gruppe]").forEach(b => b.addEventListener("click", () => {
+        zustand.gruppe = b.dataset.gruppe;
+        try { localStorage.setItem("lern_gruppe_" + zustand.stufe, zustand.gruppe); } catch (e) {}
+        el.querySelectorAll("[data-gruppe]").forEach(x => x.classList.toggle("an", x === b)); plopp(1.2);
     }));
+    if (el.querySelector("#lGlas")) glasAktivieren(el);
 }
 
 function vorlesen(text, knopf){

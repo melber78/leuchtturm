@@ -121,6 +121,27 @@ if ($aktion === "jahresplan_speichern") {
     antwort(true);
 }
 
+// Sternenglas einer Gruppe (Lernangebot): Stern dazu/weg, Ziel setzen, Glas leeren – zählt auf dem Server, damit es auf jedem Gerät gleich ist
+if ($aktion === "sterne_aendern") {
+    $gruppe = (string)($anfrage["gruppe"] ?? "");
+    if (!preg_match('/^[a-z0-9-]{1,40}$/', $gruppe)) antwort(false, ["fehler" => "Unbekannte Gruppe."]);
+    $delta = max(-1, min(1, (int)($anfrage["delta"] ?? 0)));
+    $ziel = isset($anfrage["ziel"]) ? max(3, min(200, (int)$anfrage["ziel"])) : null;
+    $leeren = !empty($anfrage["leeren"]);
+    [$ok, $erg] = aktualisieren($datei, function (&$d) use ($gruppe, $delta, $ziel, $leeren) {
+        if (!isset($d["sterne"]) || !is_array($d["sterne"])) $d["sterne"] = [];
+        $g = $d["sterne"][$gruppe] ?? ["n" => 0, "ziel" => 20, "voll" => 0];
+        $g["n"] = max(0, min(999, (int)($g["n"] ?? 0) + $delta));
+        if ($ziel !== null) $g["ziel"] = $ziel;
+        if ($leeren) { if ((int)$g["n"] >= (int)($g["ziel"] ?? 20)) $g["voll"] = (int)($g["voll"] ?? 0) + 1; $g["n"] = 0; }
+        $g["geaendert"] = date("Y-m-d H:i");
+        $d["sterne"][$gruppe] = $g;
+        return ["glas" => $g];
+    });
+    if (!$ok) antwort(false, ["fehler" => $erg]);
+    antwort(true, $erg);
+}
+
 if ($aktion === "rituale_speichern") {
     $r = $anfrage["rituale"] ?? null;
     $r = is_string($r) ? mb_substr(str_replace("\r", "", $r), 0, 20000) : null;
