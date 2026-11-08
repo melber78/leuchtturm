@@ -281,10 +281,13 @@ const CSS = `
 #praes .l-duell b{ color:#ffe066; font-weight:400; font-size:1.2em; }
 #praes .l-duell .l-eule{ width:clamp(56px,9vh,110px); }
 #praes .l-zettel{ background:#fffdf5; color:#1d4634; font:400 clamp(24px,3.6vw,58px)/1.25 "Patrick Hand","Andika",sans-serif; padding:.6em 1.1em; border-radius:4px; max-width:min(82vw,1200px); transform:rotate(1deg); box-shadow:0 10px 0 rgba(0,0,0,.18); margin-top:2vh; background-image:repeating-linear-gradient(transparent 0 1.24em, rgba(47,107,80,.15) 1.24em 1.3em); }
-#praes .l-akte{ position:relative; background:#f3e2bf; color:#3b2a1a; border-radius:4px 14px 10px 10px; padding:2vh 2.4vw 1.6vh; margin-top:4vh; max-width:min(80vw,1250px); width:100%; text-align:left; box-shadow:0 12px 0 rgba(0,0,0,.2); transform:rotate(-.5deg); }
-#praes .l-akte-reiter{ position:absolute; top:-3.2vh; left:2vw; background:#e6cf9f; color:#7a4a1c; font:400 clamp(16px,1.8vw,28px) "Patrick Hand","Andika",sans-serif; padding:.1em .9em; border-radius:10px 10px 0 0; letter-spacing:.08em; }
+#praes .l-akte{ position:relative; background:#fdf8ec; color:#2a1f14; border-radius:4px 14px 10px 10px; padding:2vh 2.4vw 1.6vh; margin-top:4vh; max-width:min(80vw,1250px); width:100%; text-align:left; box-shadow:0 12px 0 rgba(0,0,0,.2); transform:rotate(-.5deg); }
+#praes .l-akte-reiter{ position:absolute; top:-3.2vh; left:2vw; background:#fdf8ec; color:#7a4a1c; font:400 clamp(16px,1.8vw,28px) "Patrick Hand","Andika",sans-serif; padding:.1em .9em; border-radius:10px 10px 0 0; letter-spacing:.08em; }
 #praes .l-akte-titel{ font:400 clamp(24px,3.2vw,50px) "Patrick Hand","Andika",sans-serif; color:#7a2e1c; border-bottom:2px dashed rgba(122,74,28,.4); margin-bottom:.4em; }
-#praes.lern .l-akte .p-text, #praes .l-akte .p-text{ color:#3b2a1a; max-width:none; line-height:1.38; }
+#praes.lern .l-akte .p-text, #praes .l-akte .p-text{ color:#2a1f14; max-width:none; line-height:1.38; }
+#praes .l-akte .p-s1{ color:#1557a8 !important; } #praes .l-akte .p-s2{ color:#c0262d !important; }
+#praes .l-hoerauftrag{ background:#ffe066; color:#1d4634; font:400 clamp(17px,2vw,30px)/1.2 "Patrick Hand","Andika",sans-serif; padding:.3em .7em; border-radius:10px; margin:0 0 .6em; display:inline-block; transform:rotate(-.6deg); }
+#praes .l-hoerauftrag b{ font-weight:400; color:#7a2e1c; }
 #praes .l-akte .p-text p{ margin:.0 0 .5em; }
 #praes .l-denkfrage{ font:400 clamp(28px,4.4vw,72px)/1.15 "Patrick Hand","Andika",sans-serif; color:#fffdf5; max-width:min(86vw,1300px); margin:2vh 0 1vh; position:relative; }
 #praes .l-denkfrage::before{ content:"?"; position:absolute; left:-.8em; top:-.3em; font-size:1.6em; color:rgba(255,224,102,.35); transform:rotate(-12deg); }
@@ -349,7 +352,7 @@ const EULE = `<svg class="l-eule" viewBox="0 0 140 160" xmlns="http://www.w3.org
 const eule = (klein) => klein ? EULE.replace('class="l-eule"', 'class="l-eule klein"') : EULE;
 const KRITZEL = () => `<div class="l-kritzel">${[["1+2", 6, 12], ["ABC", 82, 10], ["★", 14, 70], ["7·8", 78, 72], ["a e i", 40, 86], ["✓", 92, 44], ["Aa", 4, 40], ["=", 60, 6]].map(([t, x, y], k) => `<span style="left:${x}%;top:${y}%;animation-delay:${k * .7}s">${t}</span>`).join("")}</div>`;
 // Lernpfad: welche Station gehört zu welcher Folie?
-const STATIONEN = [["mission", "🗺️", "Mission"], ["kopf", "🧠", "Kopf-Start"], ["fall", "🔍", "Fall"], ["challenge", "🏆", "Challenges"], ["arbeiten", "✏️", "Arbeiten"], ["ziel", "⭐", "Ziel"]];
+const STATIONEN = [["mission", "🗺️", "Mission"], ["kopf", "🧠", "Kopf-Start"], ["fall", "📖", "Geschichte"], ["challenge", "🏆", "Challenges"], ["arbeiten", "✏️", "Arbeiten"], ["ziel", "⭐", "Ziel"]];
 function station(typ){ const m = { mission: 0, kopfstart: 1, fall: 2, film: 2, denkrunde: 2, arbeitsblatt: 4, abschluss: 5 }; return typ in m ? m[typ] : 3; }
 /* Eule Ella ruft „Hu-hu“, wenn sie einen Punkt bekommt */
 function euleRuf(){ const a = audio(); if (!a) return; [0, .32].forEach((d, k) => { const o = a.createOscillator(), g = a.createGain(), t = a.currentTime + d; o.type = "sine"; o.frequency.setValueAtTime(k ? 330 : 392, t); o.frequency.exponentialRampToValueAtTime(k ? 262 : 330, t + .25); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.25, t + .04); g.gain.exponentialRampToValueAtTime(.0001, t + .28); o.connect(g).connect(a.destination); o.start(t); o.stop(t + .3); }); }
@@ -494,7 +497,8 @@ function folienBauenLern(e, stufe){
     f.push({ typ: "kopfstart", warmup: stufe === "34" ? (e.warmup34 || e.warmup12 || e.warmup) : (e.warmup12 || e.warmup34 || e.warmup), tafel: tafel[0] || null });
     const lt = stufe === "34" ? e.lerntext34 : e.lerntext12;
     const { erz, nach } = geschichteZerlegen(lt && lt.text);
-    if (erz.length) f.push({ typ: "fall", titel: lt.titel, text: erz.join("\n\n") });
+    const ersteFrage = fragenAus(nach).find(q => q.art === "frage");
+    if (erz.length) f.push({ typ: "fall", titel: lt.titel, text: erz.join("\n\n"), auftrag: ersteFrage ? ersteFrage.text : "" });
     const medien = medienFuer(e);
     if (medien.length) f.push({ typ: "film", medien });
     // Denk-Runden: je Frage eine Folie, ein nachfolgender Auftrag gehört zur Frage davor
@@ -736,7 +740,7 @@ function folieHtml(f, e){
         const punktKnoepfe = `<button class="p-knopf l-pk" data-punkt="klasse">🧒 Punkt für die Klasse</button><button class="p-knopf hell l-pk" data-punkt="eule">🦉 Punkt für Ella</button>`;
         if (f.typ === "mission") {
             const n = zustand.folien.filter(x => x.typ === "challenge" && !x.u.zusatz).length + zustand.folien.filter(x => x.typ === "tafelchallenge").length;
-            const orte = [["🧠", "Kopf-Start"], ["🔍", "Der Fall"], ["🏆", n + " Challenge" + (n === 1 ? "" : "s")], ["✏️", "Arbeiten"], ["⭐", "Ziel"]];
+            const orte = [["🧠", "Kopf-Start"], ["📖", "Geschichte"], ["🏆", n + " Challenge" + (n === 1 ? "" : "s")], ["✏️", "Arbeiten"], ["⭐", "Ziel"]];
             return `${KRITZEL()}<div class="l-stempel">MISSION · ${esc(String(e.kategorie || "").replace(/:.*/, "").toUpperCase())}</div><h2 class="l-mtitel">${esc(e.titel)}</h2>
                 <div class="l-auftragskarte"><small>Eure Mission:</small>${esc(zielText || e.titel)}</div>
                 <div class="l-karte">${orte.map(([sym, name], k) => (k ? '<span class="l-kpfeil"></span>' : "") + `<div class="l-ort"><span>${sym}</span><b>${esc(name)}</b></div>`).join("")}</div>
@@ -751,8 +755,8 @@ function folieHtml(f, e){
         }
         if (f.typ === "fall") {
             const leser = zustand.vorleser[zustand.i];
-            return `<div class="l-akte"><div class="l-akte-reiter">🔍 FALL-AKTE</div><div class="l-akte-titel">${esc(f.titel || "")}</div>
-                <div class="p-text l-akte-text" style="font-size:${f.text.length > 750 ? "clamp(14px,min(1.55vw,2.6vh),26px)" : f.text.length > 350 ? "clamp(16px,min(1.9vw,3.3vh),32px)" : "clamp(20px,min(2.5vw,4.3vh),40px)"}">${md(f.text)}</div></div>
+            return `<div class="l-akte"><div class="l-akte-reiter">📖 GESCHICHTE</div><div class="l-akte-titel">${esc(f.titel || "")}</div>${f.auftrag ? `<div class="l-hoerauftrag">👂 <b>Hör-Auftrag:</b> ${esc(f.auftrag)}</div>` : ""}
+                <div class="p-text l-akte-text" style="font-size:${f.text.length > 650 ? "clamp(14px,min(1.5vw,2.45vh),25px)" : f.text.length > 330 ? "clamp(16px,min(1.8vw,3.05vh),30px)" : "clamp(20px,min(2.5vw,4.3vh),40px)"}">${md(f.text)}</div></div>
                 <div class="p-reihe" style="margin-top:2vh"><button class="p-knopf" data-vorlesen="1">🔊 Vorlesen</button><button class="p-knopf hell" data-vorleser="1">🎡 Wer liest vor?</button><span class="p-vorleser"${leser ? "" : " hidden"}>📖 Es liest: <b>${esc(leser || "")}</b></span></div>`;
         }
         if (f.typ === "denkrunde") {
@@ -1321,7 +1325,7 @@ async function pptxExport(e, stufe = "12"){
                 s.addText("MISSION · " + String(e.kategorie || "").toUpperCase(), { x: 0, y: .6, w: W, h: .5, align: "center", fontFace: FONT, fontSize: 18, color: GOLD });
                 s.addText(e.titel, { x: .5, y: 1.3, w: W - 1, h: 1.3, align: "center", fontFace: FONT, fontSize: 54, bold: true, color: "FFFFFF" });
                 s.addText("Eure Mission: " + ((stufe === "34" ? e.ziel34 : e.ziel12 || e.ziel34) || ""), { x: 1, y: 2.8, w: W - 2, h: 1.1, align: "center", fontFace: TEXT, fontSize: 24, color: NACHT, fill: { color: CREME } });
-                s.addText("🧠 Kopf-Start  ➜  🔍 Der Fall  ➜  🏆 Challenges  ➜  ✏️ Arbeiten  ➜  ⭐ Ziel", { x: .5, y: 4.3, w: W - 1, h: .8, align: "center", fontFace: FONT, fontSize: 24, color: "FFFFFF" });
+                s.addText("🧠 Kopf-Start  ➜  📖 Geschichte  ➜  🏆 Challenges  ➜  ✏️ Arbeiten  ➜  ⭐ Ziel", { x: .5, y: 4.3, w: W - 1, h: .8, align: "center", fontFace: FONT, fontSize: 24, color: "FFFFFF" });
                 s.addText("🧒 Klasse gegen Eule Ella 🦉 – richtig gelöst: Punkt für euch, daneben: Punkt für Ella.", { x: .5, y: 5.4, w: W - 1, h: .7, align: "center", fontFace: TEXT, fontSize: 20, color: GOLD });
                 s.addNotes("Ziele – Kl. 1/2: " + (e.ziel12 || "") + "\nKl. 3/4: " + (e.ziel34 || "") + "\nMaterial: " + (e.material || "").replace(/\n/g, ", ") + "\nPunkte an der Tafel mitzählen (Strichliste Klasse | Ella).");
                 break;
@@ -1334,7 +1338,7 @@ async function pptxExport(e, stufe = "12"){
                 fuss(s);
                 break;
             case "fall":
-                s.addText("🔍 FALL-AKTE: " + (f.titel || ""), { x: .6, y: .4, w: W - 1.2, h: .8, fontFace: FONT, fontSize: 30, bold: true, color: "7A2E1C" });
+                s.addText("📖 " + (f.titel || "") + (f.auftrag ? "   ·   Achte auf: " + f.auftrag : ""), { x: .6, y: .4, w: W - 1.2, h: .8, fontFace: FONT, fontSize: 30, bold: true, color: "7A2E1C" });
                 s.addText(laufText(ohneMarkdown(f.text)), { x: .8, y: 1.3, w: W - 1.6, h: H - 2.1, valign: "top", fontFace: TEXT, fontSize: f.text.length > 700 ? 18 : 22, color: "3B2A1A", fill: { color: "F3E2BF" }, paraSpaceAfter: 6 });
                 s.addNotes(ohneMarkdown(f.text));
                 fuss(s);
