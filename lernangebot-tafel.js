@@ -14,7 +14,7 @@ const z = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
 const wahl = liste => liste[Math.floor(Math.random() * liste.length)];
 const mischen = liste => { const a = liste.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const bild = b => `<span class="lt-bild">${D().bildSvg(b)}</span>`;
+const bild = b => `<span class="lt-bild">${(window.LT_BILDER && window.LT_BILDER[b] && window.LT_BILDER[b][2]) || ""}</span>`;
 const zahl = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 // Antwort-Optionen: richtige + falsche, gemischt; liefert { antworten, richtig }
 function optionen(richtig, falsche, n = 3){
@@ -364,6 +364,8 @@ W.wuerfel = {
 
 /* Leise-Wald: Je leiser die Klasse, desto mehr Tiere kommen hervor.
    Das Mikrofon misst nur die Lautstärke – es wird nichts aufgenommen, gespeichert oder verschickt. */
+const MEER_TIERE = ["fisch", "tropenfisch", "wal", "delfin", "krake", "krebs", "robbe", "qualle", "schildkroete", "kugelfisch", "ente", "pinguin"];
+const TURM = `<svg viewBox="0 0 60 120"><path d="M18 112 L24 34 L36 34 L42 112 Z" fill="#fffdf5"/><path d="M20.5 84 L39.5 84 L40.6 98 L19.4 98 Z M22.5 58 L37.5 58 L38.4 70 L21.6 70 Z" fill="#e74c3c"/><rect x="21" y="22" width="18" height="12" rx="2" fill="#f2c97b"/><path d="M18 22 L30 10 L42 22 Z" fill="#e74c3c"/><rect x="14" y="110" width="32" height="8" rx="2" fill="#7c8a85"/></svg>`;
 const WALD_TIERE = ["hase", "igel", "fuchs", "eule", "eichhoernchen", "maus", "baer", "hirsch", "frosch", "schnecke", "vogel", "schmetterling"];
 W.leise = {
     titel: "Leise-Wald", emoji: "🌳", gruppe: "Allgemein",
@@ -376,12 +378,13 @@ W.leise = {
     eigen(el, e, api){
         const n = +e.tiere || 9, proTier = (+e.minuten || 3) * 60 / n;
         let schwelle = 45; try { schwelle = +localStorage.getItem("lt-leise-schwelle") || 45; } catch (x) {}
-        const tiere = mischen(WALD_TIERE).slice(0, n);
-        el.innerHTML = `<div class="lw-szene">
-            <div class="lw-baeume">🌲🌳🌲🌲🌳🌲🌳🌲</div>
+        const meer = e.thema === "meer";
+        const tiere = mischen(meer ? MEER_TIERE : WALD_TIERE).slice(0, n);
+        el.innerHTML = `<div class="lw-szene${meer ? " lw-meer" : ""}">
+            ${meer ? `<div class="lw-turm">${TURM}</div><div class="lw-strahl"></div>` : '<div class="lw-baeume">🌲🌳🌲🌲🌳🌲🌳🌲</div>'}
             <div class="lw-tiere">${tiere.map((t, i) => `<div class="lw-tier" style="--x:${(i + .5) / n * 100}%;--d:${(i % 3) * .15}s">${bild(t)}</div>`).join("")}</div>
-            <div class="lw-huegel"></div>
-            <div class="lw-blase" hidden>Psst … zu laut! 🙉</div>
+            <div class="lw-huegel">${meer ? '<div class="lw-welle w2"></div><div class="lw-welle"></div>' : ""}</div>
+            <div class="lw-blase" hidden>${meer ? "Psst … die Tiere tauchen ab! 🫧" : "Psst … zu laut! 🙉"}</div>
         </div>
         <div class="lw-anzeige">
             <span class="lw-zahl"><b>0</b> / ${n} Tiere</span>
@@ -407,7 +410,7 @@ W.leise = {
             const quelle = ctx.createMediaStreamSource(stream);
             analyser = ctx.createAnalyser(); analyser.fftSize = 1024; puffer = new Float32Array(analyser.fftSize);
             quelle.connect(analyser);
-            laeuft = true; hinweis.textContent = "Je leiser ihr seid, desto mehr Tiere kommen heraus …";
+            laeuft = true; hinweis.textContent = meer ? "Je leiser ihr seid, desto mehr Tiere tauchen auf …" : "Je leiser ihr seid, desto mehr Tiere kommen heraus …";
             api.weiterText("🔄 Neu starten");
         };
         api.aufraeumen(() => { if (stream) stream.getTracks().forEach(t => t.stop()); if (ctx) ctx.close(); });
@@ -588,6 +591,30 @@ const CSS = `
 .lt-rad-box{ position:relative; width:min(62vh,80vw); }
 .lt-rad{ width:100%; }
 .lt-rad-zeiger{ position:absolute; top:-2.5vh; left:50%; transform:translateX(-50%); font-size:clamp(34px,5vh,60px); color:#ffe066; text-shadow:0 2px 6px rgba(0,0,0,.4); }
+/* Geöffnet aus einer Präsentation (#praes): deren Überschrift-Stil nicht übernehmen */
+#praes .lt-voll .lt-leiste h2{ margin:0; font:400 clamp(22px,2.6vw,34px) "Patrick Hand","Andika",sans-serif; color:#ffe066; text-shadow:none; line-height:1.2; }
+#praes .lt-voll.lt-meer .lt-leiste h2{ font-family:"Nunito",sans-serif; font-weight:900; color:#f2c97b; }
+/* Leise-Meer (Sozialtraining & Vertretung): Leuchtturm-Welt */
+.lt-voll.lt-meer{ background:#16324a; font-family:"Nunito",sans-serif; }
+.lt-meer .lt-leiste h2{ font-family:"Nunito",sans-serif; font-weight:900; color:#f2c97b; }
+.lt-meer .lt-leiste h2 svg{ display:none; }
+.lt-meer .lt-leiste select{ background:#fff; color:#16324a; font-family:"Nunito",sans-serif; }
+.lt-meer .lt-x, .lt-meer .lt-knopf{ background:rgba(255,255,255,.14); color:#fff; box-shadow:none; font-family:"Nunito",sans-serif; font-weight:900; border-radius:16px; }
+.lt-meer .lt-knopf.gold{ background:#f2a93b; color:#16324a; }
+.lt-meer .lt-buehne{ box-shadow:none; background:radial-gradient(circle at 50% 30%, #23507a, #16324a 70%); }
+.lt-meer .lt-frage, .lt-meer .lw-zahl, .lt-meer .lw-regler{ font-family:"Nunito",sans-serif; font-weight:800; }
+.lt-meer .lt-frage, .lt-meer .lw-zahl{ color:#f2c97b; }
+.lw-szene.lw-meer{ background:linear-gradient(#f7d9a8, #f2b880 30%, #3d7ea6 31%, #23507a); }
+.lw-meer .lw-huegel{ background:#2f6f99; box-shadow:none; border-radius:0; height:30%; bottom:0; }
+.lw-welle{ position:absolute; left:-10%; right:-10%; top:-26px; height:40px; background:radial-gradient(circle at 20px -6px, transparent 22px, #2f6f99 23px) 0 0 / 40px 40px repeat-x; animation:lwWelle 4s linear infinite; }
+.lw-welle.w2{ top:-36px; opacity:.5; animation-duration:7s; animation-direction:reverse; }
+@keyframes lwWelle{ to{ background-position:40px 0; } }
+.lw-meer .lw-tiere{ bottom:25%; }
+.lw-meer .lw-tier .lt-bild{ width:clamp(56px,min(9.5vw,16vh),150px); height:clamp(56px,min(9.5vw,16vh),150px); }
+.lw-turm{ position:absolute; right:5%; bottom:28%; width:clamp(40px,6vw,90px); }
+.lw-strahl{ position:absolute; right:calc(5% + clamp(20px,3vw,45px)); bottom:calc(28% + clamp(56px,8.6vw,130px)); width:60vw; height:30px; transform-origin:100% 50%; background:linear-gradient(270deg, rgba(255,240,190,.75), transparent); clip-path:polygon(0 0, 100% 45%, 100% 55%, 0 100%); animation:lwStrahl 6s ease-in-out infinite; }
+@keyframes lwStrahl{ 0%,100%{ transform:rotate(-6deg); } 50%{ transform:rotate(8deg); } }
+.lt-meer .lw-blase{ font-family:"Nunito",sans-serif; font-weight:900; color:#16324a; }
 /* Leise-Wald */
 .lw-szene{ position:relative; width:min(92vw,1300px); height:min(52vh,560px); overflow:hidden; border-radius:22px; background:linear-gradient(#173b2c, #23533e 70%); }
 .lw-baeume{ position:absolute; left:0; right:0; bottom:22%; text-align:center; font-size:clamp(50px,min(9vw,13vh),150px); letter-spacing:-.15em; opacity:.85; white-space:nowrap; }
@@ -638,13 +665,15 @@ function starten(id, einstellung = {}){
     cssLaden(); schliessen();
     const e = Object.assign({}, w.std, einstellung);
     const el = document.createElement("div");
-    el.className = "lt-voll";
-    el.innerHTML = `<div class="lt-leiste"><h2>${EULE_MINI}<span>${w.emoji} ${esc(w.titel)}</span></h2>
+    el.className = "lt-voll" + (e.thema === "meer" ? " lt-meer" : "");
+    const kopf = e.thema === "meer" && id === "leise" ? "🌊 Leise-Meer" : w.emoji + " " + w.titel;
+    el.innerHTML = `<div class="lt-leiste"><h2>${EULE_MINI}<span>${esc(kopf)}</span></h2>
         ${(w.optionen || []).map(o => `<label><select data-opt="${o.k}" title="${esc(o.label)}">${o.werte.map(([v, l]) => `<option value="${esc(JSON.stringify(v))}" ${JSON.stringify(v) === JSON.stringify(e[o.k]) ? "selected" : ""}>${esc(o.label)}: ${esc(l)}</option>`).join("")}</select></label>`).join("")}
         <button class="lt-x" data-voll title="Vollbild an/aus">⛶</button><button class="lt-x" data-zu title="Schließen (Esc)">✕</button></div>
         <div class="lt-buehne"><div class="lt-inhalt"></div><div class="lt-antworten"></div><div class="lt-loesung"></div></div>
         <div class="lt-steuer"><span class="lt-zaehler"></span><button class="lt-knopf" data-loes>👁 Lösung</button><button class="lt-knopf" data-nochmal hidden>🔁 Nochmal zeigen</button><button class="lt-knopf gold" data-weiter>Nächste ▶</button></div>`;
-    document.body.appendChild(el);
+    const schonVoll = !!document.fullscreenElement;
+    (document.fullscreenElement || document.body).appendChild(el);
     const inhalt = el.querySelector(".lt-inhalt"), antw = el.querySelector(".lt-antworten"), loes = el.querySelector(".lt-loesung");
     const kWeiter = el.querySelector("[data-weiter]"), kLoes = el.querySelector("[data-loes]"), kNochmal = el.querySelector("[data-nochmal]");
     let aufgabe = null, gezeigt = false, nr = 0, timer = [], blitzT = null;
@@ -688,20 +717,21 @@ function starten(id, einstellung = {}){
     el.querySelector("[data-voll]").addEventListener("click", () => { try { document.fullscreenElement ? document.exitFullscreen() : el.requestFullscreen(); } catch (x) {} });
     const tasten = ev => {
         if (ev.target.tagName === "SELECT") return;
-        if (ev.key === "Escape") { schliessen(); }
+        if (ev.key === "Escape") { ev.stopImmediatePropagation(); schliessen(); }
         else if (ev.key === " " || ev.key === "ArrowRight" || ev.key === "PageDown" || ev.key === "Enter") { ev.preventDefault(); schritt(); }
         else if (ev.key.toLowerCase() === "l") zeigeLoesung();
         else if (/^[1-4]$/.test(ev.key)) { const b = antw.querySelectorAll(".lt-antwort")[+ev.key - 1]; if (b) b.click(); }
     };
     document.addEventListener("keydown", tasten);
-    offen = { el, stop, tasten };
-    try { el.requestFullscreen && el.requestFullscreen().catch(() => {}); } catch (x) {}
+    offen = { el, stop, tasten, eigenesVoll: !schonVoll };
+    if (!schonVoll) try { el.requestFullscreen && el.requestFullscreen().catch(() => {}); } catch (x) {}
     neu();
 }
 function schliessen(){
     if (!offen) return;
+    const eigen = offen.eigenesVoll;
     offen.stop(); document.removeEventListener("keydown", offen.tasten); offen.el.remove(); offen = null;
-    try { if (document.fullscreenElement) document.exitFullscreen(); } catch (x) {}
+    try { if (eigen && document.fullscreenElement) document.exitFullscreen(); } catch (x) {}
 }
 
 function info(id){ const w = W[id]; return w ? { titel: w.titel, emoji: w.emoji, text: w.text, gruppe: w.gruppe } : null; }

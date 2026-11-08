@@ -97,6 +97,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-08", "Leise-Meer im Sozialtraining", "In jeder Präsentation unten: 🌊 Leise-Meer – je leiser, desto mehr Meerestiere tauchen am Leuchtturm auf.", "sozial-stunden.php"],
     ["2026-11-08", "Leise-Wald", "Neue Tafel-Übung: Je leiser die Klasse, desto mehr Tiere kommen aus dem Wald (Mikrofon, es wird nichts aufgenommen).", "sozial-stunden.php?bereich=lernangebot#tafel"],
     ["2026-11-08", "Lernzeit mit Eule Ella", "Lernangebot: eigene Tafel-Welt (grüne Kreidetafel, Lernpfad, Sternenglas) und 8 neue Stunden „Lernen lernen“.", "sozial-stunden.php?bereich=lernangebot"],
     ["2026-11-08", "Lernangebot Grundschule", "Fertige 40-Minuten-Stunden Deutsch, Mathe &amp; Lernen lernen, Methodenpool mit Stundenplaner, Tafel-Übungen und Arbeitsblatt-Generator.", "sozial-stunden.php?bereich=lernangebot"],
