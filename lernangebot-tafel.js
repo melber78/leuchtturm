@@ -362,6 +362,87 @@ W.wuerfel = {
     }
 };
 
+/* Leise-Wald: Je leiser die Klasse, desto mehr Tiere kommen hervor.
+   Das Mikrofon misst nur die Lautstärke – es wird nichts aufgenommen, gespeichert oder verschickt. */
+const WALD_TIERE = ["hase", "igel", "fuchs", "eule", "eichhoernchen", "maus", "baer", "hirsch", "frosch", "schnecke", "vogel", "schmetterling"];
+W.leise = {
+    titel: "Leise-Wald", emoji: "🌳", gruppe: "Allgemein",
+    text: "Je leiser ihr seid, desto mehr Tiere kommen aus dem Wald. Wird es laut, verstecken sie sich. (Mikrofon nötig – es wird nichts aufgenommen.)",
+    optionen: [
+        { k: "minuten", label: "Alle Tiere nach", werte: [[1, "1 Min. Ruhe"], [2, "2 Min. Ruhe"], [3, "3 Min. Ruhe"], [5, "5 Min. Ruhe"], [10, "10 Min. Ruhe"]] },
+        { k: "tiere", label: "Tiere", werte: [[6, "6 Tiere"], [9, "9 Tiere"], [12, "12 Tiere"]] }
+    ],
+    std: { minuten: 3, tiere: 9 },
+    eigen(el, e, api){
+        const n = +e.tiere || 9, proTier = (+e.minuten || 3) * 60 / n;
+        let schwelle = 45; try { schwelle = +localStorage.getItem("lt-leise-schwelle") || 45; } catch (x) {}
+        const tiere = mischen(WALD_TIERE).slice(0, n);
+        el.innerHTML = `<div class="lw-szene">
+            <div class="lw-baeume">🌲🌳🌲🌲🌳🌲🌳🌲</div>
+            <div class="lw-tiere">${tiere.map((t, i) => `<div class="lw-tier" style="--x:${(i + .5) / n * 100}%;--d:${(i % 3) * .15}s">${bild(t)}</div>`).join("")}</div>
+            <div class="lw-huegel"></div>
+            <div class="lw-blase" hidden>Psst … zu laut! 🙉</div>
+        </div>
+        <div class="lw-anzeige">
+            <span class="lw-zahl"><b>0</b> / ${n} Tiere</span>
+            <div class="lw-messer"><div class="lw-pegel"></div><div class="lw-grenze"></div></div>
+            <label class="lw-regler" title="Wie laut darf es sein, bevor sich die Tiere verstecken?">streng <input type="range" min="15" max="85" value="${schwelle}"> locker</label>
+        </div>
+        <div class="lt-frage lw-hinweis">Tippe auf „Start“ und erlaube das Mikrofon.</div>`;
+        const kopf = el.querySelector(".lw-zahl b"), pegel = el.querySelector(".lw-pegel"), grenze = el.querySelector(".lw-grenze"), blase = el.querySelector(".lw-blase"), hinweis = el.querySelector(".lw-hinweis");
+        const felder = [...el.querySelectorAll(".lw-tier")];
+        const regler = el.querySelector(".lw-regler input");
+        const grenzeSetzen = () => { grenze.style.left = schwelle + "%"; };
+        grenzeSetzen();
+        regler.addEventListener("input", () => { schwelle = +regler.value; grenzeSetzen(); try { localStorage.setItem("lt-leise-schwelle", schwelle); } catch (x) {} });
+        let sichtbar = 0, ruhig = 0, laut = 0, sperre = 0, laeuft = false, fertig = false, stream = null, ctx = null, analyser = null, puffer = null, glatt = 0;
+        const zeigen = () => { felder.forEach((f, i) => f.classList.toggle("da", i < sichtbar)); kopf.textContent = sichtbar; };
+        const starten = async () => {
+            if (laeuft) return;
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { hinweis.textContent = "Dieses Gerät oder dieser Browser erlaubt kein Mikrofon (die Seite muss über https geöffnet sein)."; return; }
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+            } catch (x) { hinweis.textContent = "Kein Zugriff aufs Mikrofon – bitte im Browser erlauben und noch einmal „Start“ tippen."; return; }
+            ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const quelle = ctx.createMediaStreamSource(stream);
+            analyser = ctx.createAnalyser(); analyser.fftSize = 1024; puffer = new Float32Array(analyser.fftSize);
+            quelle.connect(analyser);
+            laeuft = true; hinweis.textContent = "Je leiser ihr seid, desto mehr Tiere kommen heraus …";
+            api.weiterText("🔄 Neu starten");
+        };
+        api.aufraeumen(() => { if (stream) stream.getTracks().forEach(t => t.stop()); if (ctx) ctx.close(); });
+        // 10-mal pro Sekunde messen
+        api.intervall(() => {
+            if (!laeuft || !analyser) return;
+            analyser.getFloatTimeDomainData(puffer);
+            let q = 0; for (let i = 0; i < puffer.length; i++) q += puffer[i] * puffer[i];
+            const db = 20 * Math.log10(Math.sqrt(q / puffer.length) + 1e-8);   // etwa −80 (still) bis 0 (sehr laut)
+            const wert = Math.max(0, Math.min(100, (db + 70) * 1.6));
+            glatt = glatt * .7 + wert * .3;
+            pegel.style.width = glatt + "%";
+            pegel.classList.toggle("laut", glatt > schwelle);
+            if (fertig) return;
+            if (glatt > schwelle) {
+                laut += .1; ruhig = Math.max(0, ruhig - .3);
+                if (laut >= .6 && Date.now() > sperre && sichtbar > 0) {
+                    sichtbar--; zeigen(); sperre = Date.now() + 1500; laut = 0;
+                    blase.hidden = false; setTimeout(() => { blase.hidden = true; }, 1300);
+                    api.klang(220, .25, "triangle");
+                }
+            } else {
+                laut = Math.max(0, laut - .05); ruhig += .1;
+                if (ruhig >= proTier && sichtbar < n) {
+                    ruhig = 0; sichtbar++; zeigen(); api.klang(660 + sichtbar * 40, .15);
+                    if (sichtbar === n) { fertig = true; hinweis.textContent = "Geschafft! Alle Tiere sind da – ihr wart super leise! 🎉"; api.gong(); }
+                }
+            }
+        }, 100);
+        api.weiter = () => { if (!laeuft) starten(); else { sichtbar = 0; ruhig = 0; laut = 0; fertig = false; zeigen(); hinweis.textContent = "Neue Runde – wer schafft es, ganz leise zu sein?"; } };
+        api.weiterText("🎤 Start");
+        api.ohneLoesung();
+    }
+};
+
 W.timer = {
     titel: "Timer", emoji: "⏱️", gruppe: "Allgemein",
     text: "Großer Countdown mit Ring und Gong – für Arbeitsphasen, Stationen und Aufräumen.",
@@ -507,6 +588,25 @@ const CSS = `
 .lt-rad-box{ position:relative; width:min(62vh,80vw); }
 .lt-rad{ width:100%; }
 .lt-rad-zeiger{ position:absolute; top:-2.5vh; left:50%; transform:translateX(-50%); font-size:clamp(34px,5vh,60px); color:#ffe066; text-shadow:0 2px 6px rgba(0,0,0,.4); }
+/* Leise-Wald */
+.lw-szene{ position:relative; width:min(92vw,1300px); height:min(52vh,560px); overflow:hidden; border-radius:22px; background:linear-gradient(#173b2c, #23533e 70%); }
+.lw-baeume{ position:absolute; left:0; right:0; bottom:22%; text-align:center; font-size:clamp(50px,min(9vw,13vh),150px); letter-spacing:-.15em; opacity:.85; white-space:nowrap; }
+.lw-tiere{ position:absolute; left:3%; right:3%; bottom:12%; height:42%; }
+.lw-tier{ position:absolute; left:var(--x); bottom:0; transform:translate(-50%, 120%); transition:transform .7s cubic-bezier(.2,1.6,.4,1) var(--d); }
+.lw-tier.da{ transform:translate(-50%, 0); }
+.lw-tier .lt-bild{ width:clamp(50px,min(8.5vw,14vh),130px); height:clamp(50px,min(8.5vw,14vh),130px); }
+.lw-huegel{ position:absolute; left:-5%; right:-5%; bottom:-14%; height:34%; background:#5e8c3a; border-radius:50% 50% 0 0 / 70% 70% 0 0; box-shadow:inset 0 10px 0 #7aa84e; }
+.lw-blase{ position:absolute; top:10%; left:50%; transform:translateX(-50%); background:#fffdf5; color:#1d4634; border-radius:24px; padding:.3em .9em; font:400 clamp(26px,4vw,56px) "Patrick Hand","Andika",sans-serif; animation:lwWackel .3s 3; }
+.lw-blase[hidden]{ display:none; }
+@keyframes lwWackel{ 50%{ transform:translateX(-50%) rotate(4deg) scale(1.08); } }
+.lw-anzeige{ display:flex; align-items:center; gap:2vw; flex-wrap:wrap; justify-content:center; width:min(92vw,1300px); }
+.lw-zahl{ font:400 clamp(24px,3vw,44px) "Patrick Hand","Andika",sans-serif; color:#ffe066; }
+.lw-messer{ position:relative; flex:1 1 260px; height:22px; border-radius:11px; background:rgba(255,255,255,.12); overflow:hidden; border:2px solid rgba(255,255,255,.4); }
+.lw-pegel{ height:100%; width:0; background:#b5e48c; transition:width .1s; }
+.lw-pegel.laut{ background:#ff8fab; }
+.lw-grenze{ position:absolute; top:-2px; bottom:-2px; width:4px; background:#ffe066; }
+.lw-regler{ display:flex; align-items:center; gap:.5em; font:400 18px "Patrick Hand","Andika",sans-serif; color:#f1d9b5; }
+.lw-regler input{ width:160px; accent-color:#ffe066; }
 /* Übersicht im Leuchtturm */
 .lt-uebersicht h3{ font-size:15px; font-weight:900; color:#7c8a85; text-transform:uppercase; letter-spacing:.04em; margin:22px 0 10px; }
 .lt-karten{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
@@ -548,10 +648,12 @@ function starten(id, einstellung = {}){
     const inhalt = el.querySelector(".lt-inhalt"), antw = el.querySelector(".lt-antworten"), loes = el.querySelector(".lt-loesung");
     const kWeiter = el.querySelector("[data-weiter]"), kLoes = el.querySelector("[data-loes]"), kNochmal = el.querySelector("[data-nochmal]");
     let aufgabe = null, gezeigt = false, nr = 0, timer = [], blitzT = null;
-    const stop = () => { timer.forEach(clearInterval); timer = []; };
+    let aufr = [];
+    const stop = () => { timer.forEach(clearInterval); timer = []; aufr.forEach(f => { try { f(); } catch (x) {} }); aufr = []; };
     const api = {
         stop, klang, gong,
         intervall: (f, ms) => timer.push(setInterval(f, ms)),
+        aufraeumen: f => aufr.push(f),
         loesungSetzen: (html, sofort) => { aufgabe = html ? { loesung: html } : null; loes.innerHTML = ""; gezeigt = false; kLoes.hidden = !html || !!sofort; if (html && sofort) { gezeigt = true; loes.innerHTML = html; } },
         weiterText: t => { kWeiter.textContent = t; },
         ohneLoesung: () => { kLoes.hidden = true; },

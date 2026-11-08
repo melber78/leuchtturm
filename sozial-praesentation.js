@@ -203,6 +203,17 @@ const CSS = `
 #praes.lern .p-overlay{ background:rgba(20,45,33,.7); }
 #praes.lern .p-dialog{ background:#fffdf5; border:8px solid #8a5a2e; color:#1f2d36; }
 #praes.lern .p-dialog .p-knopf.hell{ color:#1d4634; border-color:#1d4634; }
+/* Im hellen Dialog (Glücksrad, Timer) dunkle Schrift statt Kreideweiß */
+#praes.lern .p-dialog, #praes.lern .p-dialog h2, #praes.lern .p-dialog .p-klein, #praes.lern .p-dialog label{ color:#1d4634; text-shadow:none; }
+#praes.lern .p-dialog .p-knopf.gold{ color:#3b1020; }
+/* Handy: Lernpfad als eigene, kompakte Zeile */
+@media (max-width:700px){
+    #praes.lern .p-punkte.l-pfad{ display:flex !important; flex:1 1 100%; order:10; flex-wrap:nowrap; justify-content:center; padding-top:4px; }
+    #praes.lern .l-station{ padding:0 2px; }
+    #praes.lern .l-station .l-punkt{ width:28px; height:28px; font-size:15px; }
+    #praes.lern .l-station.an .l-punkt{ transform:scale(1.12); }
+    #praes.lern .l-weg{ width:14px; margin-bottom:0; }
+}
 #praes.lern .p-zeiger{ border-top-color:#2f6b50; }
 #praes.lern .p-ergebnis{ color:#2f6b50; }
 #praes.lern .p-ruhe{ background:radial-gradient(circle at 50% 40%, #2f6b50 0%, #1d4634 70%); }
