@@ -194,7 +194,15 @@ input[type=range]{ width:100%; accent-color:var(--cyan); }
             <div class="titel" style="font-size:17px;text-align:left">🎤 Mikrofon einrichten</div>
             <p class="dim">Einmal mit den Kindern und ihren Zahnbürsten einrichten, damit das Spiel Putzen und Quatschen unterscheiden kann. Das Handy dabei so hinlegen wie später beim Putzen – nah am Waschbecken.</p>
             <p class="dim" id="einrichtStatus"></p>
-            <button class="knopf cyan klein" data-zu="einrichten">Jetzt einrichten</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="knopf cyan klein" data-zu="einrichten">Jetzt einrichten</button><button class="knopf dunkel klein" id="testKnopf">🎤 Mikrofon-Test</button></div>
+            <div id="testBox" hidden style="margin-top:12px">
+                <div class="balken" style="height:18px"><div id="testPegel" style="transition:width .1s"></div></div>
+                <div style="font-family:var(--pixel);font-weight:900;font-size:22px;text-align:center" id="testErgebnis">…</div>
+                <p class="dim" style="text-align:center" id="testWerte"></p>
+                <p class="dim">Jetzt putzen, dann quatschen: Steht oben das Richtige? Wenn Putzen als „still“ angezeigt wird, das Handy näher hinlegen und neu einrichten. Klappt es gar nicht, unten „Erkennung: nur Lautstärke“ wählen.</p>
+            </div>
+            <span class="feld">Erkennung</span>
+            <div class="wahl" id="wahlModus"></div>
         </div>
         <div class="panel">
             <div class="titel" style="font-size:17px;text-align:left">⏱ Spiel</div>
@@ -293,6 +301,7 @@ function startZeigen(){
 }
 $("#losKnopf").onclick = () => {
     if (!D.team.length) return;
+    audioEntsperren();
     if (!D.kalib && !confirm("Das Mikrofon ist noch nicht eingerichtet – dann erkennt das Spiel Putzen nur grob.\n\nTrotzdem starten? (Einrichten: ⚙️ oben rechts)")) return;
     spielStart();
 };
@@ -329,23 +338,51 @@ function elternInhalt(){
     const wahl = (box, werte, akt, setzen) => { $(box).innerHTML = werte.map(([v, l]) => `<button class="${String(akt) === String(v) ? "an" : ""}" data-v="${v}">${l}</button>`).join(""); $(box).querySelectorAll("button").forEach(b => b.onclick = () => { setzen(b.dataset.v); speichern(); elternInhalt(); }); };
     wahl("#wahlDauer", [[60, "1 Min"], [120, "2 Min"], [150, "2½ Min"], [180, "3 Min"]], D.dauer, v => D.dauer = +v);
     wahl("#wahlTon", [["an", "an"], ["aus", "aus"]], D.ton ? "an" : "aus", v => D.ton = v === "an");
+    wahl("#wahlModus", [["klang", "nach Klang (genauer)"], ["laut", "nur Lautstärke (einfacher)"]], D.modus === "laut" ? "laut" : "klang", v => D.modus = v);
     $("#strenge").value = D.strenge; $("#strenge").oninput = e => { D.strenge = +e.target.value; speichern(); };
     $("#spielerVerwaltung").innerHTML = D.spieler.length ? D.spieler.map((p, i) => `<div class="zeile"><span style="font-weight:800;font-size:18px">${p.skin} <span style="color:${p.farbe}">${esc(p.name)}</span> <small class="dim">LV ${levelVon(p.xp || 0) + 1} · ${p.xp || 0} XP</small></span><span><button data-null="${i}">XP auf 0</button> <button data-weg="${i}">Löschen</button></span></div>`).join("") : '<p class="dim">Noch keine Spieler.</p>';
     $("#spielerVerwaltung").querySelectorAll("[data-weg]").forEach(b => b.onclick = () => { const i = +b.dataset.weg; if (confirm("„" + D.spieler[i].name + "“ löschen?")) { D.spieler.splice(i, 1); D.team = D.team.filter(x => x !== i).map(x => x > i ? x - 1 : x); speichern(); elternInhalt(); } });
     $("#spielerVerwaltung").querySelectorAll("[data-null]").forEach(b => b.onclick = () => { const p = D.spieler[+b.dataset.null]; if (confirm("XP, Kalender und Erfolge von „" + p.name + "“ zurücksetzen?")) { p.xp = 0; p.tage = {}; p.erfolge = []; p.missionen = 0; speichern(); elternInhalt(); } });
 }
 
+/* ---------------- Mikrofon-Test (Eltern) ---------------- */
+let testTimer = null;
+function testStoppen(){ clearInterval(testTimer); testTimer = null; if (!laeuft) mikrofonAus(); const b = $("#testBox"); if (b) b.hidden = true; const k = $("#testKnopf"); if (k) k.textContent = "🎤 Mikrofon-Test"; }
+$("#testKnopf").onclick = async () => {
+    if (testTimer) return testStoppen();
+    audioEntsperren();
+    try { await mikrofonAn(); } catch (e) { alert(e.message || "Kein Zugriff aufs Mikrofon – bitte im Browser erlauben."); return; }
+    $("#testBox").hidden = false; $("#testKnopf").textContent = "■ Test beenden";
+    const verlauf = [];
+    testTimer = setInterval(() => {
+        const m = merkmale(), k = einordnen(m);
+        verlauf.push(k); if (verlauf.length > 6) verlauf.shift();
+        const n = x => verlauf.filter(y => y === x).length;
+        const z = n("quatschen") >= 4 ? "quatschen" : n("putzen") >= 3 ? "putzen" : "still";
+        $("#testPegel").style.width = Math.max(0, Math.min(100, (m.laut + 85) * 1.4)) + "%";
+        $("#testErgebnis").innerHTML = { putzen: '<span style="color:var(--gruen)">🪥 PUTZEN</span>', quatschen: '<span style="color:var(--rot)">🗣️ QUATSCHEN</span>', still: '<span style="color:var(--gelb)">🤫 STILL</span>' }[z];
+        $("#testWerte").textContent = isFinite(m.laut) && m.laut > -115 ? "Lautstärke " + m.laut.toFixed(0) + " dB · Raum " + (grund ?? 0).toFixed(0) + " dB" + (D.kalib ? " · Putzen bei " + D.kalib.putzen.laut.toFixed(0) + " dB" : "") : "Kein Signal vom Mikrofon";
+    }, 100);
+};
+document.addEventListener("click", ev => { if (testTimer && ev.target.closest("[data-zu]")) testStoppen(); }, true);
+
 /* ================================================================
    Mikrofon und Geräusch-Erkennung
    ================================================================ */
 const BAENDER = [[100, 250], [250, 500], [500, 1000], [1000, 2000], [2000, 3500], [3500, 5500], [5500, 8000], [8000, 11000]];
 let audio = null, analyser = null, stream = null, spektrum = null, binHz = 0;
+// Muss direkt im Tipp-Ereignis aufgerufen werden (vor jedem await), sonst bleibt der Ton auf dem iPhone stumm
+function audioEntsperren(){
+    if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)();
+    if (audio.state === "suspended") audio.resume().catch(() => {});
+}
+document.addEventListener("pointerdown", () => { if (audio && audio.state === "suspended") audio.resume().catch(() => {}); });
 async function mikrofonAn(){
-    if (stream) return;
+    if (stream && analyser) return;
+    audioEntsperren();
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("Dieser Browser erlaubt kein Mikrofon. Die Seite muss über https geöffnet werden.");
     stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-    audio = new (window.AudioContext || window.webkitAudioContext)();
-    if (audio.state === "suspended") await audio.resume();
+    if (audio.state === "suspended") { try { await audio.resume(); } catch (e) {} }
     analyser = audio.createAnalyser(); analyser.fftSize = 2048; analyser.smoothingTimeConstant = .4;
     audio.createMediaStreamSource(stream).connect(analyser);
     spektrum = new Float32Array(analyser.frequencyBinCount); binHz = audio.sampleRate / analyser.fftSize;
@@ -361,16 +398,26 @@ function merkmale(){
     return { laut, form: b.map(x => x - mittel), flach: Math.exp(lg / n) / (li / n) };
 }
 const abstand = (m, k) => { let s = 0; for (let i = 0; i < m.form.length; i++) s += (m.form[i] - k.form[i]) ** 2; return Math.sqrt(s / m.form.length) + Math.abs(m.flach - k.flach) * 30; };
+// Grundpegel (Stille im Raum) läuft mit: langsam nach oben, schnell nach unten
+let grund = null;
+function grundMerken(laut){ if (!isFinite(laut)) return; if (grund === null || laut < grund) grund = laut; else grund += (laut - grund) * .004; }
 function einordnen(m){
     const K = D.kalib, strenge = (D.strenge || 3) - 3;
-    if (K) {
-        const schwelle = K.still + Math.max(4, (Math.min(K.putzen.laut, K.quatsch.laut) - K.still) * .35);
-        if (m.laut < schwelle) return "still";
-        return abstand(m, K.quatsch) * (1 - strenge * .12) < abstand(m, K.putzen) ? "quatschen" : "putzen";
+    grundMerken(m.laut);
+    if (!isFinite(m.laut) || m.laut < -115) return "still";
+    const still = K ? Math.min(K.still, grund ?? K.still) : (grund ?? -90);
+    // Putzen ist leiser als Reden – die Schwelle orientiert sich deshalb am Putz-Pegel
+    const putzLaut = K && K.putzen ? K.putzen.laut : still + 10;
+    const schwelle = still + Math.max(2, Math.min(6, (putzLaut - still) * .4));
+    if (m.laut < schwelle) return "still";
+    if (D.modus === "laut") {
+        // Einfacher Modus: jedes Geräusch zählt als Putzen, nur deutlich lauter (Reden, Lachen) ist Quatschen
+        const grenze = K && K.quatsch && K.putzen ? (K.putzen.laut + K.quatsch.laut) / 2 + 2 : still + 30;
+        return m.laut > grenze - strenge * 1.5 ? "quatschen" : "putzen";
     }
-    if (m.laut < -62) return "still";
+    if (K) return abstand(m, K.quatsch) * (1 - strenge * .12) < abstand(m, K.putzen) ? "quatschen" : "putzen";
     const hell = (m.form[4] + m.form[5] + m.form[6]) - (m.form[1] + m.form[2]);
-    return (m.flach > .28 || hell > 6) && !(hell < -4 - strenge * 2) ? "putzen" : "quatschen";
+    return (m.flach > .25 || hell > 4) && !(hell < -6 - strenge * 2) ? "putzen" : "quatschen";
 }
 
 /* ---------------- Einrichten ---------------- */
@@ -382,7 +429,7 @@ const SCHRITTE = [
 let kalibNeu = {};
 function einrichten(nr){
     const box = $("#schritt");
-    if (nr === 0) kalibNeu = {};
+    if (nr === 0) { kalibNeu = {}; grund = null; }
     if (nr >= SCHRITTE.length) {
         D.kalib = { ...kalibNeu, datum: Date.now() }; speichern(); mikrofonAus();
         box.innerHTML = `<div class="gross">✅</div><div class="titel">Fertig!</div><p class="dim">Tipp: Das Handy beim Putzen immer ungefähr an dieselbe Stelle legen.</p><button class="knopf" data-zu="start">Zum Spiel</button>`;
@@ -391,6 +438,7 @@ function einrichten(nr){
     const s = SCHRITTE[nr];
     box.innerHTML = `<p class="dim">Schritt ${nr + 1} von ${SCHRITTE.length}</p><div class="gross">${s.gross}</div><div class="titel">${s.titel}</div><p class="dim">${s.text}</p><div class="balken"><div id="kBalken"></div></div><button class="knopf cyan" id="kStart">${s.knopf}</button><div id="kFehler"></div><p style="margin-top:14px"><button class="knopf dunkel klein" data-zu="eltern">Abbrechen</button></p>`;
     $("#kStart").onclick = async () => {
+        audioEntsperren();
         try { await mikrofonAn(); } catch (e) { $("#kFehler").innerHTML = `<div class="fehler">${esc(e.message || "Kein Zugriff aufs Mikrofon – bitte im Browser erlauben.")}</div>`; return; }
         $("#kStart").disabled = true; $("#kStart").textContent = "Ich höre zu …";
         const proben = [];
@@ -450,7 +498,7 @@ addEventListener("resize", () => { if (laeuft) feldGroesse(); });
 async function spielStart(){
     try { await mikrofonAn(); } catch (e) { alert(e.message || "Kein Zugriff aufs Mikrofon – bitte im Browser erlauben."); return; }
     try { wach = await navigator.wakeLock?.request("screen"); } catch (e) {}
-    seite("spiel"); feldGroesse();
+    seite("spiel"); feldGroesse(); grund = D.kalib ? D.kalib.still : null;
     const team = D.team.map(i => D.spieler[i]);
     S = { team, putzzeit: 0, sektor: -1, score: 0, combo: 1, comboZeit: 0, maxCombo: 1, kills: 0, quatsch: 0, quatschIn: 0, stillSeit: 0, zustand: "still",
           verlauf: [], inv: [], schuesse: [], teile: [], boss: null, wellenX: 0, wellenY: 0, wellenDir: 1, feuerTakt: 0, schussNr: 0,
@@ -464,6 +512,9 @@ async function spielStart(){
         const jetzt = performance.now(), dt = Math.min(.25, (jetzt - letzte) / 1000); letzte = jetzt;
         const m = merkmale();
         $("#pegel").style.width = Math.max(0, Math.min(100, (m.laut + 85) * 1.4)) + "%";
+        S.messungen = (S.messungen || 0) + 1;
+        if (isFinite(m.laut) && m.laut > -115) S.signal = true;
+        if (S.messungen === 30 && !S.signal) { status("still", "🎤", "Kein Ton vom Mikrofon – siehe ⚙️ Mikrofon-Test"); if (audio && audio.state === "suspended") audio.resume().catch(() => {}); }
         S.verlauf.push(einordnen(m)); if (S.verlauf.length > 6) S.verlauf.shift();
         const n = k => S.verlauf.filter(x => x === k).length;
         logik(n("quatschen") >= 4 ? "quatschen" : n("putzen") >= 3 ? "putzen" : "still", dt);
