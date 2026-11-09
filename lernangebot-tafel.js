@@ -420,8 +420,8 @@ W.leise = {
     std: { minuten: 3, tiere: 9, modus: "ende", arbeitszeit: 10, ueberraschung: "tiere" },
     // kurze Erklärung je Art (steht vor dem Start unten)
     erklaerung: {
-        ende: "Während der Arbeit bleibt der Bildschirm ruhig – nur die Uhr läuft. Am Ende kommt die Überraschung: je leiser ihr wart, desto größer.",
-        melden: "Während der Arbeit bleibt der Bildschirm ruhig. Nur wenn es zu laut wird, erscheint kurz die Eule und sagt „Pssst!“. Am Ende seht ihr, wie oft sie kommen musste.",
+        ende: "In der Mitte wächst ganz langsam ein Baum – aber nur, solange es leise ist. Keine Uhr für die Kinder (Restzeit klein unten rechts). Am Ende kommt die Überraschung: je leiser ihr wart, desto größer.",
+        melden: "In der Mitte wächst langsam ein Baum, solange es leise ist. Nur wenn es zu laut wird, erscheint kurz die Eule und sagt „Pssst!“. Am Ende seht ihr, wie oft sie kommen musste.",
         sterne: "Für jede leise Minute kommt heimlich ein Stern ins Glas – das Glas bleibt zugedeckt. Erst wenn die Zeit um ist, wird aufgedeckt, wie viele Sterne ihr gesammelt habt.",
         zuschauen: "Je leiser ihr seid, desto mehr Tiere kommen live in den Wald. Wird es laut, laufen sie weg. (Lenkt eher ab – gut für Stillephasen ohne Arbeit.)"
     },
@@ -448,15 +448,30 @@ W.leise = {
                ${Array.from({ length: 10 }, (_, i) => `<i class="lw-blase-luft" style="left:${5 + i * 9.5}%;--t:${5 + (i % 4) * 2}s;animation-delay:${-i * 1.3}s"></i>`).join("")}`
             : `${WALD_SVG()}${[[7, 80, 0, 1], [17, 120, -60, .8], [10, 150, -110, .6]].map(([y, t, d, g]) => `<div class="lw-wolke2" style="top:${y}%;--t:${t}s;animation-delay:${d}s;--g:${g}">${WOLKE}</div>`).join("")}`;
         const ziel = meer ? "am Leuchtturm" : "im Wald";
-        const ruheText = { ende: "🤫 Arbeitet leise – am Ende wartet eine Überraschung!", melden: "🤫 Jetzt wird leise gearbeitet.", sterne: "🤫 Jede leise Minute bringt heimlich einen Stern ins Glas. Am Ende wird aufgedeckt!" }[modus] || "";
+        const ruheText = "";   // Kinder sehen nur Uhr und Symbol – Erklärungen stehen bei den Einstellungen
+        // Statt Uhr: ein Baum wächst ganz langsam – nur solange es leise ist
+        const BLUETEN = [[112,150],[176,128],[205,176],[96,196],[150,104],[140,168],[190,214],[118,232],[168,226],[226,140],[78,160],[150,200]];
+        const baum = `<div class="lw-baum-platz" style="--g:0"><svg viewBox="0 0 300 370" aria-hidden="true">
+            <ellipse cx="150" cy="352" rx="70" ry="9" fill="rgba(47,74,60,.12)"/>
+            <g class="lw-keim"><path d="M150 352 C150 340 151 332 150 322" stroke="#5f8f4e" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M150 330 C138 318 126 322 124 330 C134 336 144 334 150 330Z" fill="#7fb36e"/><path d="M150 326 C160 312 174 314 178 322 C168 330 158 330 150 326Z" fill="#94c47f"/><ellipse cx="150" cy="354" rx="10" ry="4" fill="#8a6a4a"/></g>
+            <g class="lw-baum-g">
+              <path d="M140 352 C142 300 144 260 146 230 L154 230 C156 260 158 300 160 352 Z" fill="#8a5f3c"/>
+              <path d="M147 262 C128 246 116 226 110 206" stroke="#8a5f3c" stroke-width="7" fill="none" stroke-linecap="round"/>
+              <path d="M153 252 C172 238 186 220 194 198" stroke="#8a5f3c" stroke-width="7" fill="none" stroke-linecap="round"/>
+              <g class="lw-krone">
+                <circle cx="150" cy="160" r="82" fill="#6aa25b"/><circle cx="96" cy="190" r="52" fill="#74ab63"/><circle cx="206" cy="186" r="54" fill="#5f9852"/>
+                <circle cx="120" cy="120" r="56" fill="#7fb36e"/><circle cx="184" cy="118" r="58" fill="#72a963"/><circle cx="150" cy="92" r="48" fill="#8cc07a"/>
+                <circle cx="128" cy="98" r="18" fill="#a5d192" opacity=".55"/><circle cx="94" cy="168" r="14" fill="#a5d192" opacity=".45"/>
+                <g class="lw-blueten">${BLUETEN.map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${i % 3 ? 6 : 8}" fill="${i % 2 ? "#f7c6d4" : "#fff4f7"}"/>`).join("")}</g>
+              </g>
+            </g></svg></div>`;
         const ruhe = ruhigerModus ? `<div class="lw-ruhe ${modus}${meer ? " meer" : ""}">
-            <div class="lw-r-karte">
-              ${modus === "sterne" ? `<div class="lw-r-reihe"><div class="lw-glas zu"><div class="lw-glas-sterne"></div><div class="lw-tuch"><span>?</span></div></div><div><div class="lw-r-uhr">${Math.floor(dauer / 60)}:00</div><div class="lw-r-zahl" hidden>⭐ <b>0</b> Sterne</div></div></div>`
-                : `<div class="lw-r-symbol">${modus === "ende" ? "🎁" : "🦉"}</div><div class="lw-r-uhr">${Math.floor(dauer / 60)}:00</div>`}
-              <div class="lw-r-text">${ruheText}</div>
-            </div>
+            ${modus === "sterne"
+                ? `<div class="lw-r-karte"><div class="lw-r-reihe"><div class="lw-glas zu"><div class="lw-glas-sterne"></div><div class="lw-tuch"><span>?</span></div></div><div class="lw-r-zahl" hidden>⭐ <b>0</b></div></div><div class="lw-r-text"></div></div>`
+                : `${baum}<div class="lw-r-karte lw-nurtext" hidden><div class="lw-r-text"></div></div>`}
+            <div class="lw-r-uhr" title="Restzeit">${Math.floor(dauer / 60)}:00</div>
             <div class="lw-fest" hidden></div>
-            <div class="lw-r-pssst" hidden><div><span>🦉</span><b>Pssst!</b><small>Bitte leise arbeiten.</small></div></div>
+            <div class="lw-r-pssst" hidden><div><span>🦉</span><b>Pssst!</b></div></div>
           </div>` : "";
         el.innerHTML = `<div class="lw-szene${meer ? " lw-meer" : ""}">${deko}<div class="lw-tiere"></div><div class="lw-blase" hidden></div>${ruhe}</div>
         <div class="lw-anzeige">
@@ -466,9 +481,12 @@ W.leise = {
         </div>
         <div class="lt-frage lw-hinweis">Tippe auf „Start“ und erlaube das Mikrofon.</div>`;
         const szene = el.querySelector(".lw-szene"), ebene = el.querySelector(".lw-tiere");
-        if (ruhigerModus) szene.classList.add("still");
+        if (modus === "sterne") szene.classList.add("still");
         const kopf = el.querySelector(".lw-zahl b"), pegel = el.querySelector(".lw-pegel"), grenze = el.querySelector(".lw-grenze"), blase = el.querySelector(".lw-blase"), hinweis = el.querySelector(".lw-hinweis");
-        const regler = el.querySelector(".lw-regler input");
+        // Lautstärke-Regler gehört zu den Einstellungen (oben), nicht auf die Tafel
+        const leisteEl = el.closest(".lt-voll") && el.closest(".lt-voll").querySelector(".lt-leiste");
+        if (leisteEl) { leisteEl.querySelectorAll(".lw-regler").forEach(r => r.remove()); const r = el.querySelector(".lw-regler"); leisteEl.insertBefore(r, leisteEl.querySelector(".lt-erkl") || leisteEl.querySelector(".lt-x")); }
+        const regler = (leisteEl || el).querySelector(".lw-regler input");
         const grenzeSetzen = () => { grenze.style.left = schwelle + "%"; };
         grenzeSetzen();
         regler.addEventListener("input", () => { schwelle = +regler.value; grenzeSetzen(); try { localStorage.setItem("lt-leise-schwelle", schwelle); } catch (x) {} });
@@ -568,14 +586,14 @@ W.leise = {
         const jubeln = (an) => { szene.classList.toggle("jubel", an); };
         const starten = async () => {
             if (laeuft) return;
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { hinweis.textContent = "Dieses Gerät oder dieser Browser erlaubt kein Mikrofon (die Seite muss über https geöffnet sein)."; return; }
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { hinweis.classList.add("wichtig"); hinweis.textContent = "Dieses Gerät oder dieser Browser erlaubt kein Mikrofon (die Seite muss über https geöffnet sein)."; return; }
             try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } }); }
-            catch (x) { hinweis.textContent = "Kein Zugriff aufs Mikrofon – bitte im Browser erlauben und noch einmal „Start“ tippen."; return; }
+            catch (x) { hinweis.classList.add("wichtig"); hinweis.textContent = "Kein Zugriff aufs Mikrofon – bitte im Browser erlauben und noch einmal „Start“ tippen."; return; }
             ctx = new (window.AudioContext || window.webkitAudioContext)();
             const quelle = ctx.createMediaStreamSource(stream);
             analyser = ctx.createAnalyser(); analyser.fftSize = 1024; puffer = new Float32Array(analyser.fftSize);
             quelle.connect(analyser);
-            laeuft = true; hinweis.textContent = ruhigerModus ? "" : meer ? "Psst … wer kommt wohl als Erstes zum Leuchtturm geschwommen?" : "Psst … wer kommt wohl als Erstes in den Wald?";
+            laeuft = true; hinweis.classList.remove("wichtig"); hinweis.textContent = ruhigerModus ? "" : meer ? "Psst … wer kommt wohl als Erstes zum Leuchtturm geschwommen?" : "Psst … wer kommt wohl als Erstes in den Wald?";
             api.weiterText("🔄 Neu starten");
         };
         api.aufraeumen(() => { cancelAnimationFrame(raf); if (stream) stream.getTracks().forEach(t => t.stop()); if (ctx) ctx.close(); });
@@ -613,7 +631,8 @@ W.leise = {
         /* ---------- Ruhige Modi: der Bildschirm bleibt während der Arbeit ruhig ---------- */
         const ruheEl = el.querySelector(".lw-ruhe");
         let zeit = 0, stillZeit = 0, lautAm = 0, pssstN = 0, sterne = 0, minLaut = 0, minZeit = 0, pssstSperre = 0;
-        const uhrEl = ruheEl && ruheEl.querySelector(".lw-r-uhr"), pssstEl = ruheEl && ruheEl.querySelector(".lw-r-pssst");
+        const uhrEl = ruheEl && ruheEl.querySelector(".lw-r-uhr"), pssstEl = ruheEl && ruheEl.querySelector(".lw-r-pssst"), baumEl = ruheEl && ruheEl.querySelector(".lw-baum-platz");
+        const baumWachsen = () => { if (baumEl) baumEl.style.setProperty("--g", Math.min(1, stillZeit / (dauer * .9)).toFixed(3)); };
         const mmss = sek => Math.floor(sek / 60) + ":" + String(Math.floor(sek % 60)).padStart(2, "0");
         function pssst(){
             pssstN++; pssstSperre = Date.now() + 5000;
@@ -631,6 +650,7 @@ W.leise = {
             if (lautAm >= 1.5 && Date.now() > pssstSperre && modus === "ende") { pssst(); lautAm = 0; }
             if (modus === "sterne" && minZeit >= 60) { if (minLaut < 4) sternDazu(); minZeit = 0; minLaut = 0; }
             if (uhrEl) uhrEl.textContent = mmss(Math.max(0, dauer - zeit));
+            if (Math.round(zeit * 10) % 10 === 0) baumWachsen();   // einmal pro Sekunde – ganz sanft
             if (zeit >= dauer) ruhigFertig();
         }
         /* ---------- Überraschungen am Ende (Konfetti, Luftballons, Pokal) ---------- */
@@ -651,7 +671,7 @@ W.leise = {
             if (stufe) [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => api.klang(f, .25, "triangle"), 300 + i * 160));
         }
         function ruhigFertig(){
-            fertig = true; api.gong();
+            fertig = true; api.gong(); baumWachsen();
             const anteil = zeit ? stillZeit / zeit : 0;
             const art = modus === "ende" ? (ueberWahl === "zufall" ? ueberArten[Math.floor(Math.random() * ueberArten.length)] : ueberWahl) : "";
             if (modus === "ende" && art !== "tiere") {
@@ -667,7 +687,7 @@ W.leise = {
                     if (sichtbar === k) { hinweis.textContent = k === n ? `Geschafft! Alle ${n} Tiere sind ${ziel} – ihr wart super leise! 🎉` : `${k} von ${n} Tieren sind ${ziel}! Nächstes Mal schafft ihr noch mehr. 🌱`; if (k === n) jubeln(true); } }, 900 + i * 700);
                 if (!k) hinweis.textContent = `Heute hat sich kein Tier ${ziel} getraut – es war zu laut. Nächstes Mal klappt's! 🍀`;
             } else if (modus === "sterne") {
-                uhrEl.textContent = "Fertig!"; const txt = ruheEl.querySelector(".lw-r-text"), zahl = ruheEl.querySelector(".lw-r-zahl"), glas = ruheEl.querySelector(".lw-glas"), topf = ruheEl.querySelector(".lw-glas-sterne");
+                uhrEl.textContent = ""; const txt = ruheEl.querySelector(".lw-r-text"), zahl = ruheEl.querySelector(".lw-r-zahl"), glas = ruheEl.querySelector(".lw-glas"), topf = ruheEl.querySelector(".lw-glas-sterne");
                 txt.textContent = "Und jetzt … aufdecken! 🥁";
                 setTimeout(() => {
                     glas.classList.remove("zu"); zahl.hidden = false; let i = 0;
@@ -682,19 +702,19 @@ W.leise = {
                     }, 550);
                 }, 1600);
             } else {
-                uhrEl.textContent = "Fertig! 🎉"; ruheEl.querySelector(".lw-r-text").textContent = pssstN === 0 ? "Super – kein einziges Mal „Pssst“! 🌟" : pssstN === 1 ? "Nur 1-mal „Pssst“ – gut gemacht!" : `${pssstN}-mal „Pssst“ – nächstes Mal schafft ihr weniger!`;
+                uhrEl.textContent = ""; ruheEl.querySelector(".lw-nurtext").hidden = false; ruheEl.querySelector(".lw-r-text").textContent = pssstN === 0 ? "Super – kein einziges Mal „Pssst“! 🌟" : pssstN === 1 ? "Nur 1-mal „Pssst“ – gut gemacht!" : `${pssstN}-mal „Pssst“ – nächstes Mal schafft ihr weniger!`;
             }
         }
-        hinweis.textContent = W.leise.erklaerung[modus];
-        if (meer && modus === "zuschauen") hinweis.textContent = "Je leiser ihr seid, desto mehr Tiere kommen ans Meer. Wird es laut, schwimmen sie weg.";
+        hinweis.textContent = "";
         api.weiter = () => {
             if (!laeuft) { starten(); return; }
             if (ruhigerModus) {   // neue Runde
                 zeit = stillZeit = lautAm = pssstN = sterne = minLaut = minZeit = 0; fertig = false; jubeln(false);
                 tiere.forEach(t => { if (t.zust !== "weg") fliehen(t); }); sichtbar = 0; anzahlZeigen(); kopf.parentNode.hidden = true;
-                ruheEl.classList.remove("weg", "fest"); szene.classList.add("still"); const fe = ruheEl.querySelector(".lw-fest"); fe.hidden = true; fe.innerHTML = ""; ruheEl.querySelector(".lw-r-text").textContent = ruheText;
+                if (uhrEl) uhrEl.textContent = mmss(dauer); baumWachsen(); const nt = ruheEl.querySelector(".lw-nurtext"); if (nt) nt.hidden = true;
+                ruheEl.classList.remove("weg", "fest"); szene.classList.toggle("still", modus === "sterne"); const fe = ruheEl.querySelector(".lw-fest"); fe.hidden = true; fe.innerHTML = ""; ruheEl.querySelector(".lw-r-text").textContent = ruheText;
                 if (modus === "sterne") { ruheEl.querySelector(".lw-glas-sterne").innerHTML = ""; ruheEl.querySelector(".lw-r-zahl b").textContent = "0"; ruheEl.querySelector(".lw-r-zahl").hidden = true; ruheEl.querySelector(".lw-glas").classList.add("zu"); }
-                hinweis.textContent = "Neue Runde – leise arbeiten!"; return;
+                hinweis.textContent = ""; return;
             }
             tiere.forEach(t => { if (t.zust !== "weg") fliehen(t); });
             sichtbar = 0; ruhig = 0; laut = 0; fertig = false; jubeln(false); anzahlZeigen();
@@ -985,6 +1005,108 @@ const CSS = `
 .lw-grenze{ position:absolute; top:-2px; bottom:-2px; width:4px; background:#ffe066; }
 .lw-regler{ display:flex; align-items:center; gap:.5em; font:400 18px "Patrick Hand","Andika",sans-serif; color:#f1d9b5; }
 .lw-regler input{ width:160px; accent-color:#ffe066; }
+
+/* ===== Leise-Wald: ruhiges, weiches Design (nur Uhr und Wald, Infos bei den Einstellungen) ===== */
+.lt-kompakt{ --lw-tinte:#2f4a3c; --lw-sanft:#6f8a7b; --lw-grund:#eef3ee; background:linear-gradient(170deg,#f3f6f1 0%,#e4ede6 100%); color:var(--lw-tinte); font-family:"Nunito","Andika",sans-serif; padding:14px 16px 0; }
+.lt-kompakt .lt-leiste{ gap:8px; padding:0 0 12px; }
+.lt-kompakt .lt-leiste h2{ font:800 22px "Nunito",sans-serif; color:var(--lw-tinte); letter-spacing:-.01em; }
+.lt-kompakt .lt-leiste h2 svg{ width:1.3em; height:1.3em; }
+.lt-kompakt .lt-leiste select{ background:#fff; color:var(--lw-tinte); font:700 14px "Nunito",sans-serif; border:1px solid #d9e3db; border-radius:999px; padding:9px 14px; box-shadow:0 1px 2px rgba(47,74,60,.05); }
+.lt-kompakt .lt-x{ background:#fff; color:var(--lw-tinte); border:1px solid #d9e3db; border-radius:50%; box-shadow:none; font-size:18px; }
+.lt-kompakt .lt-erkl{ flex:1 1 100%; order:9; font:600 13.5px/1.45 "Nunito",sans-serif; color:var(--lw-sanft); padding:2px 6px 0; }
+.lt-kompakt .lw-regler{ font:700 13px "Nunito",sans-serif; color:var(--lw-sanft); background:#fff; border:1px solid #d9e3db; border-radius:999px; padding:6px 14px; gap:8px; }
+.lt-kompakt .lw-regler input{ width:110px; accent-color:#6fa58a; }
+.lt-kompakt .lt-buehne{ background:none; box-shadow:none; padding:0; border-radius:0; gap:10px; justify-content:stretch; }
+.lt-kompakt .lt-inhalt{ flex:1; width:100%; min-height:0; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.lt-kompakt .lw-szene{ flex:1; width:100%; height:auto; min-height:0; border-radius:28px; box-shadow:0 18px 50px rgba(47,74,60,.14); }
+.lt-kompakt .lw-anzeige{ width:100%; gap:14px; flex-wrap:nowrap; }
+.lt-kompakt .lw-messer{ height:6px; border:0; border-radius:3px; background:rgba(47,74,60,.1); overflow:visible; }
+.lt-kompakt .lw-pegel{ border-radius:3px; background:#9cc9a8; }
+.lt-kompakt .lw-pegel.laut{ background:#e9a3a3; }
+.lt-kompakt .lw-grenze{ top:-4px; bottom:-4px; width:2px; background:rgba(47,74,60,.35); border-radius:1px; }
+.lt-kompakt .lw-zahl{ font:800 18px "Nunito",sans-serif; color:var(--lw-tinte); white-space:nowrap; }
+.lt-kompakt .lw-hinweis{ display:none; }
+.lt-kompakt .lw-hinweis.wichtig{ display:block; font:700 16px "Nunito",sans-serif; color:#a14a3b; background:#fff; border-radius:14px; padding:8px 14px; }
+.lt-kompakt .lt-steuer{ padding:12px 0 14px; }
+.lt-kompakt .lt-knopf{ font:800 17px "Nunito",sans-serif; border-radius:999px; padding:12px 28px; background:#fff; color:var(--lw-tinte); border:1px solid #d9e3db; box-shadow:0 4px 14px rgba(47,74,60,.08); }
+.lt-kompakt .lt-knopf.gold{ background:var(--lw-tinte); color:#fff; border-color:var(--lw-tinte); box-shadow:0 6px 18px rgba(47,74,60,.25); }
+.lt-kompakt.ist-voll .lt-steuer{ padding:8px 0 10px; }
+.lt-kompakt.ist-voll .lt-knopf.gold{ opacity:.55; transition:opacity .2s; } .lt-kompakt.ist-voll .lt-knopf.gold:hover{ opacity:1; }
+.lt-kompakt.ist-voll .lt-leiste.auf{ background:rgba(250,252,249,.97); border-radius:0 0 22px 22px; padding:14px 16px; box-shadow:0 10px 40px rgba(47,74,60,.18); }
+/* ruhige Karte: Glas, großer Ring mit Uhr */
+.lt-kompakt .lw-ruhe{ background:rgba(236,243,237,.38); backdrop-filter:blur(14px) saturate(1.1); -webkit-backdrop-filter:blur(14px) saturate(1.1); color:var(--lw-tinte); }
+.lt-kompakt .lw-r-karte{ background:rgba(255,255,255,.55); border:1px solid rgba(255,255,255,.7); border-radius:40px; padding:clamp(18px,4vh,44px) clamp(24px,4vw,64px); box-shadow:0 24px 60px rgba(47,74,60,.12); gap:clamp(8px,1.6vh,18px); }
+.lw-r-ring{ position:relative; width:clamp(170px,min(26vw,42vh),430px); aspect-ratio:1; display:flex; align-items:center; justify-content:center; }
+.lw-r-ring svg{ position:absolute; inset:0; width:100%; height:100%; }
+.lw-ring-bg{ fill:none; stroke:rgba(47,74,60,.1); stroke-width:6; }
+.lw-ring{ fill:none; stroke:#7fb594; stroke-width:6; stroke-linecap:round; transition:stroke-dashoffset 1s linear; }
+.lt-kompakt .lw-r-uhr{ position:relative; font:300 clamp(52px,min(8vw,13vh),150px)/1 "Nunito",sans-serif; letter-spacing:-.03em; color:var(--lw-tinte); }
+.lt-kompakt .lw-r-symbol{ font-size:clamp(30px,min(3.6vw,6vh),60px); opacity:.9; margin-top:-.2em; }
+.lt-kompakt .lw-r-text{ font:700 clamp(18px,min(2.2vw,3.8vh),36px)/1.3 "Nunito",sans-serif; color:var(--lw-tinte); }
+.lt-kompakt .lw-r-text:empty{ display:none; }
+.lt-kompakt .lw-r-spalte{ display:flex; flex-direction:column; align-items:center; gap:6px; }
+.lt-kompakt .lw-r-pssst{ background:rgba(236,243,237,.6); backdrop-filter:blur(10px); }
+.lt-kompakt .lw-r-pssst > div{ background:rgba(255,255,255,.85); border-radius:48px; padding:3vh 6vw; box-shadow:0 24px 60px rgba(47,74,60,.15); }
+.lt-kompakt .lw-r-pssst b{ font-weight:800; color:#b5655a; letter-spacing:-.02em; }
+.lt-voll.lt-kompakt.lt-meer{ background:linear-gradient(170deg,#f1f6f9,#e2edf3); --lw-tinte:#21405a; }
+.lt-kompakt.lt-meer .lt-leiste h2{ color:var(--lw-tinte); }
+.lt-kompakt .lt-antworten, .lt-kompakt .lt-loesung{ display:none; }
+.lt-kompakt .lt-leiste h2{ flex:0 0 auto; margin-right:8px; }
+.lt-kompakt:not(.ist-voll) .lt-leiste [data-voll]{ margin-left:auto; }
+.lt-kompakt.ist-voll .lt-leiste.auf .lt-einst{ margin-left:auto; }
+.lt-kompakt .lt-x{ width:40px; height:40px; flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; }
+.lt-kompakt .lw-r-pssst{ background:rgba(236,243,237,.88) !important; }
+/* Sterne: sanfter Abendhimmel */
+.lt-kompakt .lw-ruhe.sterne{ background:radial-gradient(ellipse at 50% 120%, #4a5d9c 0%, #27315f 55%, #1b2247 100%); }
+.lt-kompakt .lw-ruhe.sterne .lw-r-karte{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.1); box-shadow:none; }
+.lt-kompakt .lw-ruhe.sterne .lw-r-uhr, .lt-kompakt .lw-ruhe.sterne .lw-r-text{ color:#f4f1e6; }
+.lt-kompakt .lw-ruhe.sterne .lw-ring-bg{ stroke:rgba(255,255,255,.12); } .lt-kompakt .lw-ruhe.sterne .lw-ring{ stroke:#f2d98c; }
+.lt-kompakt .lw-ruhe.sterne .lw-r-ring{ width:clamp(150px,min(20vw,34vh),340px); }
+.lt-kompakt .lw-ruhe.sterne .lw-r-zahl{ color:#f2d98c; font-weight:800; }
+.lt-kompakt .lw-tuch{ background:linear-gradient(160deg,#8f87c9,#6b63a8); box-shadow:inset 0 -14px 24px rgba(0,0,0,.18); }
+.lt-kompakt .lw-tuch span{ color:#fff; font-weight:300; text-shadow:none; opacity:.85; }
+.lt-kompakt .lw-glas{ border-width:3px; border-color:rgba(255,255,255,.55); }
+/* Überraschungskarte passend weich */
+.lt-kompakt .lw-fest-karte{ background:rgba(255,255,255,.8); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.8); box-shadow:0 24px 60px rgba(47,74,60,.15); }
+.lt-kompakt .lw-fest-karte b{ font-weight:800; color:var(--lw-tinte); letter-spacing:-.02em; }
+.lt-kompakt .lw-fest-karte small{ font-weight:700; color:var(--lw-sanft); }
+@media (max-width:700px){
+  .lt-kompakt{ padding:10px 10px 0; }
+  .lt-kompakt .lt-leiste h2{ font-size:20px; min-height:40px; margin:0; padding-right:100px; }
+  .lt-kompakt .lt-leiste .lt-x{ top:0; }
+  .lt-kompakt.ist-voll .lt-leiste.auf h2{ padding-right:150px; } .lt-kompakt .lt-leiste [data-voll]{ right:50px; } .lt-kompakt .lt-leiste [data-einst]{ right:100px; } .lt-kompakt .lt-leiste [data-zu]{ right:0; }
+  .lt-kompakt .lt-leiste select{ font-size:13px; padding:8px 10px; }
+  .lt-kompakt .lw-regler{ grid-column:1 / -1; justify-content:center; }
+  .lt-kompakt .lt-erkl{ grid-column:1 / -1; }
+  .lt-kompakt .lw-szene{ border-radius:22px; }
+  .lt-kompakt .lw-r-karte{ border-radius:30px; padding:18px 22px; }
+  .lt-kompakt .lw-r-reihe{ gap:16px; }
+  .lt-kompakt .lw-glas{ width:96px; height:124px; }
+}
+
+/* Baum statt Uhr */
+.lt-kompakt .lw-ruhe:not(.sterne){ background:rgba(240,246,240,.18); backdrop-filter:blur(2.5px) saturate(.92); -webkit-backdrop-filter:blur(2.5px) saturate(.92); align-items:flex-end; }
+.lw-baum-platz{ position:absolute; left:50%; bottom:2%; height:82%; aspect-ratio:300/370; transform:translateX(-50%); }
+.lw-baum-platz svg{ width:100%; height:100%; overflow:visible; }
+.lw-baum-g{ transform-box:view-box; transform-origin:150px 352px; transform:scale(calc(.12 + .88 * var(--g))); opacity:clamp(0, calc(var(--g) * 12 - .2), 1); transition:transform 2.5s ease-out, opacity 2s; }
+.lw-keim{ transform-box:view-box; transform-origin:150px 352px; opacity:clamp(0, calc(1 - var(--g) * 10), 1); transition:opacity 2s; }
+.lw-krone{ transform-box:view-box; transform-origin:150px 240px; animation:lwWiegen 9s ease-in-out infinite alternate; }
+.lw-blueten{ opacity:clamp(0, calc((var(--g) - .72) * 4), 1); transition:opacity 3s; }
+@keyframes lwWiegen{ from{ transform:rotate(-1deg); } to{ transform:rotate(1deg); } }
+.lt-kompakt .lw-r-uhr{ position:absolute; right:14px; bottom:10px; z-index:4; font:700 12px "Nunito",sans-serif; letter-spacing:0; color:rgba(47,74,60,.35); }
+.lt-kompakt .lw-ruhe.sterne .lw-r-uhr{ color:rgba(255,255,255,.28); }
+.lt-kompakt .lw-nurtext{ position:absolute; top:8%; left:50%; transform:translateX(-50%); z-index:3; padding:14px 26px; }
+.lt-kompakt .lw-nurtext[hidden]{ display:none; }
+.lt-kompakt .lw-ruhe.sterne .lw-r-karte{ padding:clamp(20px,4vh,44px) clamp(28px,5vw,70px); }
+.lt-kompakt .lw-ruhe.sterne .lw-glas{ width:clamp(130px,15vw,250px); height:clamp(160px,30vh,320px); }
+@media (prefers-reduced-motion:reduce){ .lw-krone{ animation:none; } }
+.lt-kompakt:not(.ist-voll) .lt-einst{ display:none !important; }
+.lt-kompakt .lw-fest{ align-items:flex-start; padding-top:5%; }
+.lt-kompakt .lw-fest-karte{ padding:14px 30px 16px; border-radius:28px; }
+.lt-kompakt .lw-fest-bild{ font-size:clamp(44px,min(6vw,10vh),100px); }
+.lt-kompakt .lw-fest-karte b{ font-size:clamp(26px,min(3.4vw,6vh),60px); }
+.lt-kompakt .lw-fest-karte small{ font-size:clamp(14px,min(1.6vw,2.6vh),26px); }
+.lt-kompakt .lw-nurtext{ top:5%; }
 /* Übersicht im Leuchtturm */
 .lt-uebersicht h3{ font-size:15px; font-weight:900; color:#7c8a85; text-transform:uppercase; letter-spacing:.04em; margin:22px 0 10px; }
 .lt-karten{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
@@ -1020,6 +1142,7 @@ function starten(id, einstellung = {}){
     const kopf = e.thema === "meer" && id === "leise" ? "🌊 Leise-Meer" : w.emoji + " " + w.titel;
     el.innerHTML = `<div class="lt-leiste"><h2>${EULE_MINI}<span>${esc(kopf)}</span></h2>
         ${(w.optionen || []).map(o => `<label data-optlabel="${o.k}" ${o.zeigen && !o.zeigen(e) ? 'style="display:none"' : ""}><select data-opt="${o.k}" title="${esc(o.label)}">${o.werte.map(([v, l]) => `<option value="${esc(JSON.stringify(v))}" ${JSON.stringify(v) === JSON.stringify(e[o.k]) ? "selected" : ""}>${esc(o.label)}: ${esc(l)}</option>`).join("")}</select></label>`).join("")}
+        ${w.erklaerung ? '<div class="lt-erkl"></div>' : ""}
         ${w.vollKompakt ? '<button class="lt-x lt-einst" data-einst title="Einstellungen ein-/ausblenden">⚙</button>' : ""}<button class="lt-x" data-voll title="Vollbild an/aus">⛶</button><button class="lt-x" data-zu title="Schließen (Esc)">✕</button></div>
         <div class="lt-buehne"><div class="lt-inhalt"></div><div class="lt-antworten"></div><div class="lt-loesung"></div></div>
         <div class="lt-steuer"><span class="lt-zaehler"></span><button class="lt-knopf" data-loes>👁 Lösung</button><button class="lt-knopf" data-nochmal hidden>🔁 Nochmal zeigen</button><button class="lt-knopf gold" data-weiter>Nächste ▶</button></div>`;
@@ -1063,7 +1186,9 @@ function starten(id, einstellung = {}){
     const schritt = () => { if (api.weiter) return api.weiter(); if (!gezeigt && aufgabe && aufgabe.loesung) return zeigeLoesung(); neu(); };
     kWeiter.addEventListener("click", () => { if (api.weiter) api.weiter(); else neu(); });
     kLoes.addEventListener("click", zeigeLoesung);
-    const optSichtbar = () => (w.optionen || []).forEach(o => { const l = el.querySelector(`[data-optlabel="${o.k}"]`); if (l) l.style.display = o.zeigen && !o.zeigen(e) ? "none" : ""; });
+    const optSichtbar = () => { (w.optionen || []).forEach(o => { const l = el.querySelector(`[data-optlabel="${o.k}"]`); if (l) l.style.display = o.zeigen && !o.zeigen(e) ? "none" : ""; });
+        const erkl = el.querySelector(".lt-erkl"); if (erkl && w.erklaerung) erkl.textContent = "ℹ️ " + (w.erklaerung[e.modus] || ""); };
+    optSichtbar();
     el.querySelectorAll("[data-opt]").forEach(s => s.addEventListener("change", () => { e[s.dataset.opt] = JSON.parse(s.value); nr = 0; optSichtbar(); neu(); }));
     el.querySelector("[data-zu]").addEventListener("click", schliessen);
     // Leise-Wald: im Vollbild nur kleine Knöpfe oben rechts, Einstellungen über ⚙
