@@ -40,6 +40,13 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .kachel p{ margin:0; color:var(--grau); font-weight:700; font-size:14px; }
 .kachel.bald{ opacity:.55; cursor:default; } .kachel.bald:hover{ transform:none; }
 
+.lw-wahl{ position:fixed; inset:0; background:rgba(22,50,74,.45); display:none; align-items:center; justify-content:center; z-index:30; padding:20px; }
+.lw-wahl.an{ display:flex; }
+.lw-wahl-box{ background:var(--schaum); border-radius:26px; padding:20px 24px 24px; width:min(1000px,100%); max-height:94vh; overflow:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.lw-wahl-kopf{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.lw-wahl-kopf h2{ margin:0; font-size:24px; font-weight:900; color:var(--nacht); }
+.lw-wahl-kopf button{ border:0; background:white; border-radius:50%; width:44px; height:44px; font-size:20px; cursor:pointer; box-shadow:var(--schatten); }
+.lw-wahl .kacheln{ grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); }
 /* Tafel-Ansicht (Vollbild) */
 #tafel{ position:fixed; inset:0; display:none; flex-direction:column; background:radial-gradient(circle at 20% 0%, #fbf7ee, #efe8da); z-index:10; user-select:none; -webkit-user-select:none; }
 #tafel.an{ display:flex; }
@@ -324,22 +331,37 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
+        <button class="kachel" type="button" onclick="leiseWahl(true)">
+            <div class="bild" style="font-size:46px;background:linear-gradient(135deg,#e9f5e1,#e3f2fb)">🌳🤫</div>
+            <h2>Leise-Wald</h2>
+            <p>Leise arbeiten mit Mikrofon – vier Arten: Überraschung am Ende, Pssst-Eule, Stille-Sterne oder Tiere live.</p>
+        </button>
+<?php endif; ?>
+    </div>
+</div>
+
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
+<div id="leiseWahl" class="lw-wahl" onclick="if (event.target === this) leiseWahl(false)">
+    <div class="lw-wahl-box">
+        <div class="lw-wahl-kopf"><h2>🌳 Leise-Wald – welche Art?</h2><button type="button" onclick="leiseWahl(false)" title="Schließen">✕</button></div>
+        <div class="kacheln">
 <?php foreach ([
-    ["ende", "🌳🎁", "#e9f5e1", "Leise-Wald: Überraschung am Ende", "Für die Arbeitsphase: Während der Arbeit nur eine ruhige Uhr – am Ende kommen so viele Tiere, wie die Klasse leise war."],
-    ["melden", "🦉🤫", "#fff3d6", "Leise-Wald: Nur melden, wenn's laut wird", "Der Bildschirm bleibt ruhig. Wird es zu laut, erscheint die Eule mit „Pssst!“ und ein leiser Ton."],
-    ["sterne", "⭐🫙", "#eef3fb", "Leise-Wald: Stille-Sterne", "Jede leise Minute bringt still einen Stern ins Glas – am Ende zählt die Klasse die Sterne."],
-    ["zuschauen", "🦊🐰", "#e3f2fb", "Leise-Wald: Tiere kommen live", "Für kurze Ruhephasen ohne Arbeitsauftrag: Je leiser, desto mehr Tiere kommen in den Wald – bei Lärm laufen sie weg."],
+    ["ende", "🌳🎁", "#e9f5e1", "Überraschung am Ende", "Für die Arbeitsphase: Während der Arbeit nur eine ruhige Uhr – am Ende kommen so viele Tiere, wie die Klasse leise war."],
+    ["melden", "🦉🤫", "#fff3d6", "Nur melden, wenn's laut wird", "Der Bildschirm bleibt ruhig. Wird es zu laut, erscheint die Eule mit „Pssst!“ und ein leiser Ton."],
+    ["sterne", "⭐🫙", "#eef3fb", "Stille-Sterne", "Jede leise Minute bringt still einen Stern ins Glas – am Ende zählt die Klasse die Sterne."],
+    ["zuschauen", "🦊🐰", "#e3f2fb", "Tiere kommen live", "Für kurze Ruhephasen ohne Arbeitsauftrag: Je leiser, desto mehr Tiere kommen in den Wald – bei Lärm laufen sie weg."],
 ] as [$m, $bild, $farbe, $titel, $text]): ?>
-        <button class="kachel" type="button" onclick="leiseStarten('<?= $m ?>')">
+        <button class="kachel" type="button" onclick="leiseWahl(false); leiseStarten('<?= $m ?>')">
             <div class="bild" style="font-size:46px;background:<?= $farbe ?>"><?= $bild ?></div>
             <h2><?= htmlspecialchars($titel) ?></h2>
             <p><?= htmlspecialchars($text) ?></p>
         </button>
 <?php endforeach; ?>
-<?php endif; ?>
+        </div>
     </div>
 </div>
 
+<?php endif; ?>
 <div id="morgen">
     <div class="mg-leiste">
         <button class="tb-k rund" onclick="tafelMorgen.schliessen()" title="Zurück zur Übersicht"><i class="fa-solid fa-arrow-left"></i></button>
@@ -417,7 +439,8 @@ window.TB_ERLAUBT = <?= json_encode(["buchstabenkurs" => !$LT_GAST || lt_gastDar
 <script>
 // Leise-Wald direkt aus den Tafelbildern (auch über tafelbilder.php#leise-ende usw.)
 function leiseStarten(modus){ if (window.lernTafel) window.lernTafel.starten("leise", { modus }); }
-document.addEventListener("DOMContentLoaded", () => { const m = /^#leise-(ende|melden|sterne|zuschauen)$/.exec(location.hash); if (m) leiseStarten(m[1]); });
+function leiseWahl(an){ const w = document.getElementById("leiseWahl"); if (w) w.classList.toggle("an", an); }
+document.addEventListener("DOMContentLoaded", () => { const m = /^#leise-(ende|melden|sterne|zuschauen)$/.exec(location.hash); if (m) leiseStarten(m[1]); else if (location.hash === "#leise") leiseWahl(true); });
 </script>
 <script>
 "use strict";

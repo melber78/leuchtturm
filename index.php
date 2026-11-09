@@ -206,28 +206,10 @@ $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strt
 <p>Tagesstart an der Tafel: Datum, Wetter, Stundenplan, Auspacken, Hinweise</p>
 </a>
 
-<a href="tafelbilder.php#leise-ende" class="portal-card">
-<i class="fa-solid fa-gift"></i>
-<h2>Leise-Wald: Überraschung</h2>
-<p>Ruhige Uhr während der Arbeit – am Ende kommen die Tiere</p>
-</a>
-
-<a href="tafelbilder.php#leise-melden" class="portal-card">
-<i class="fa-solid fa-volume-xmark"></i>
-<h2>Leise-Wald: Pssst-Eule</h2>
-<p>Bildschirm bleibt ruhig, meldet sich nur bei Lärm</p>
-</a>
-
-<a href="tafelbilder.php#leise-sterne" class="portal-card">
-<i class="fa-solid fa-star"></i>
-<h2>Leise-Wald: Stille-Sterne</h2>
-<p>Jede leise Minute ein Stern ins Glas</p>
-</a>
-
-<a href="tafelbilder.php#leise-zuschauen" class="portal-card">
+<a href="tafelbilder.php#leise" class="portal-card">
 <i class="fa-solid fa-tree"></i>
-<h2>Leise-Wald: live</h2>
-<p>Je leiser, desto mehr Tiere – zum Zuschauen</p>
+<h2>Leise-Wald</h2>
+<p>Leise arbeiten: Überraschung am Ende, Pssst-Eule, Stille-Sterne oder Tiere live</p>
 </a>
 
 <a href="tafelbilder.php" class="portal-card">
