@@ -1506,6 +1506,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             <label><input type="checkbox" id="std-eltern"> Elternblatt mitgeben</label>
         </div>
         <button class="btn" onclick="fs_erstellen('stunde')"><i class="fa-solid fa-layer-group"></i> Stunde zusammenstellen</button>
+        <button class="btn sekundaer" type="button" onclick="std_timerOeffnen()" title="Timer mit den Phasen und Minuten der Stunde"><i class="fa-solid fa-stopwatch"></i> Timer für die Stunde</button>
         <div class="std-akte" id="std-akte"></div>
         <div class="std-editor" id="std-editor" style="display:none;"></div>
     </div>
@@ -7973,6 +7974,12 @@ async function std_heftVorbereiten(ids){
     } finally { hinweis.innerHTML = alt; }
 }
 function std_heftSeite(bild){ return `<div class="ws-seite std-heftseite" data-blatt="0"><img src="${bild}" alt=""></div>`; }
+/* ---------- Stunden-Timer: Phasen und Minuten der zuletzt zusammengestellten Stunde ---------- */
+function std_timerOeffnen(){
+    let ph = std_letzte && (std_letzte.phasen || []).map(p => [p.phase, parseInt(p.zeit, 10) || 0]).filter(x => x[1] > 0);
+    if (!ph || !ph.length){ const t = [{ phase: "Ankommen" }, { phase: "Aufmerksamkeit" }, { phase: "Funktionstraining" }, { phase: "Symptomtraining" }, { phase: "Abschluss" }]; std_zeitenVerteilen(t, std_dauer()); ph = t.map(p => [p.phase, parseInt(p.zeit, 10)]); }
+    window.open("lrs-timer.php?p=" + ph.map(([n, m]) => encodeURIComponent(n) + ":" + m).join(","), "lrs-timer");
+}
 /* ---------- Kinder-Akte: Stunde eintragen ---------- */
 let std_letzte = null;
 function std_akteLeiste(){
