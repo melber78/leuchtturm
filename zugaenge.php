@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $idx = null; foreach ($liste as $i => $g) if (($g["id"] ?? "") === $id) $idx = $i;
         if ($aktion === "anlegen") {
             $bereiche = array_values(array_intersect(array_keys(LT_GAST_BEREICHE), (array)($_POST["bereiche"] ?? [])));
-            $bis = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST["bis"] ?? "") ? $_POST["bis"] : date("Y-m-d", strtotime("+30 days"));
+            $bis = !empty($_POST["dauerhaft"]) ? "" : (preg_match('/^\d{4}-\d{2}-\d{2}$/', $_POST["bis"] ?? "") ? $_POST["bis"] : date("Y-m-d", strtotime("+30 days")));
             if (!$bereiche) $meldung = "Bitte mindestens einen Bereich ankreuzen.";
             else {
                 $code = lt_neuerCode();
@@ -38,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         } elseif ($idx !== null) {
             if ($aktion === "code") { $code = lt_neuerCode(); $liste[$idx]["codeHash"] = lt_codeHash($code); $neu = ["g" => $liste[$idx], "code" => $code]; }
+            elseif ($aktion === "dauerhaft") { $liste[$idx]["bis"] = ""; $liste[$idx]["gesperrt"] = false; $meldung = "Zugang gilt jetzt unbefristet."; }
             elseif ($aktion === "verlaengern") { $basis = max(time(), strtotime(($liste[$idx]["bis"] ?: date("Y-m-d")) . " 12:00")); $liste[$idx]["bis"] = date("Y-m-d", strtotime("+30 days", $basis)); $liste[$idx]["gesperrt"] = false; $meldung = "Verlängert bis " . date("d.m.Y", strtotime($liste[$idx]["bis"])) . "."; }
             elseif ($aktion === "sperren") { $liste[$idx]["gesperrt"] = empty($liste[$idx]["gesperrt"]); $meldung = $liste[$idx]["gesperrt"] ? "Zugang gesperrt." : "Zugang wieder aktiv."; }
             elseif ($aktion === "bereiche") { $b = array_values(array_intersect(array_keys(LT_GAST_BEREICHE), (array)($_POST["bereiche"] ?? []))); if ($b) { $liste[$idx]["bereiche"] = $b; $liste[$idx]["v2"] = true; $meldung = "Freigaben gespeichert."; } else $meldung = "Bitte mindestens einen Bereich ankreuzen."; }
@@ -121,7 +122,7 @@ textarea{ width:100%; font:600 14px/1.5 "Nunito",sans-serif; border:2px solid #d
 <?php if ($meldung): ?><div class="meldung"><?= h($meldung) ?></div><?php endif; ?>
 
 <?php if ($neu): $link = $basisUrl . "?code=" . rawurlencode($neu["code"]);
-    $text = "Hallo" . ($neu["g"]["name"] ? " " . $neu["g"]["name"] : "") . ",\n\nhier ist dein Zugang zum Testen (" . bereichNamen($neu["g"]) . "):\n\n" . $link . "\n\nOder auf " . $basisUrl . " den Code eingeben: " . $neu["code"] . "\nGültig bis " . date("d.m.Y", strtotime($neu["g"]["bis"])) . ". Was du speicherst, siehst nur du – probier ruhig alles aus.\n\nViele Grüße\nMelanie"; ?>
+    $text = "Hallo" . ($neu["g"]["name"] ? " " . $neu["g"]["name"] : "") . ",\n\nhier ist dein Zugang zum Testen (" . bereichNamen($neu["g"]) . "):\n\n" . $link . "\n\nOder auf " . $basisUrl . " den Code eingeben: " . $neu["code"] . ($neu["g"]["bis"] ? "\nGültig bis " . date("d.m.Y", strtotime($neu["g"]["bis"])) . "." : "\nDer Zugang ist unbefristet.") . " Was du speicherst, siehst nur du – probier ruhig alles aus.\n\nViele Grüße\nMelanie"; ?>
 <div class="karte neu">
     <h2><i class="fa-solid fa-key"></i> Zugang für <?= h($neu["g"]["name"] ?: "Gast") ?></h2>
     <div>Code:</div><div class="code"><?= h($neu["code"]) ?></div>
@@ -139,7 +140,7 @@ textarea{ width:100%; font:600 14px/1.5 "Nunito",sans-serif; border:2px solid #d
     <input type="hidden" name="csrf" value="<?= h($CSRF) ?>"><input type="hidden" name="aktion" value="anlegen">
     <div class="reihe">
         <div><label class="feld">Name der Lehrkraft (z. B. „Frau Schulz“)</label><input type="text" name="name" maxlength="40" placeholder="Frau Schulz"></div>
-        <div style="flex:0 1 200px"><label class="feld">Gültig bis</label><input type="date" name="bis" value="<?= date("Y-m-d", strtotime("+30 days")) ?>" min="<?= date("Y-m-d") ?>"></div>
+        <div style="flex:0 1 200px"><label class="feld">Gültig bis</label><input type="date" name="bis" value="<?= date("Y-m-d", strtotime("+30 days")) ?>" min="<?= date("Y-m-d") ?>"><label style="display:flex;gap:6px;align-items:center;font-weight:800;margin-top:6px;font-size:14px"><input type="checkbox" name="dauerhaft" value="1" style="width:auto"> unbefristet</label></div>
     </div>
     <div>
         <?= bereichAuswahl(["sozial", "lernangebot", "vertretung", "morgen", "buchstabenkurs"]) ?>
@@ -153,9 +154,9 @@ textarea{ width:100%; font:600 14px/1.5 "Nunito",sans-serif; border:2px solid #d
     <?php foreach ($liste as $g): [$st, $farbe] = status($g); ?>
     <div class="gast">
         <div class="info"><b><?= h($g["name"] ?: "Gast") ?></b><span class="chip <?= $farbe ?>"><?= $st ?></span>
-            <small><?= h(bereichNamen($g)) ?> · bis <?= h(date("d.m.Y", strtotime($g["bis"]))) ?> · <?= $g["zuletzt"] ? "zuletzt angemeldet " . h(date("d.m.Y H:i", strtotime($g["zuletzt"]))) : "noch nicht angemeldet" ?></small></div>
+            <small><?= h(bereichNamen($g)) ?> · <?= $g["bis"] ? "bis " . h(date("d.m.Y", strtotime($g["bis"]))) : "unbefristet" ?> · <?= $g["zuletzt"] ? "zuletzt angemeldet " . h(date("d.m.Y H:i", strtotime($g["zuletzt"]))) : "noch nicht angemeldet" ?></small></div>
         <div class="aktionen">
-            <?php foreach ([["code", "fa-rotate", "Neuer Code", ""], ["verlaengern", "fa-calendar-plus", "+30 Tage", ""], ["sperren", empty($g["gesperrt"]) ? "fa-lock" : "fa-lock-open", empty($g["gesperrt"]) ? "Sperren" : "Entsperren", ""], ["loeschen", "fa-trash", "Löschen", "rot"]] as [$a, $i, $t, $k]): ?>
+            <?php foreach ([["code", "fa-rotate", "Neuer Code", ""], ["verlaengern", "fa-calendar-plus", "+30 Tage", ""], ...($g["bis"] ? [["dauerhaft", "fa-infinity", "Unbefristet", ""]] : []), ["sperren", empty($g["gesperrt"]) ? "fa-lock" : "fa-lock-open", empty($g["gesperrt"]) ? "Sperren" : "Entsperren", ""], ["loeschen", "fa-trash", "Löschen", "rot"]] as [$a, $i, $t, $k]): ?>
             <form method="post" <?= $a === "loeschen" ? "onsubmit=\"return confirm('Zugang und alles, was dieser Gast gespeichert hat, löschen?')\"" : "" ?>><input type="hidden" name="csrf" value="<?= h($CSRF) ?>"><input type="hidden" name="aktion" value="<?= $a ?>"><input type="hidden" name="id" value="<?= h($g["id"]) ?>"><button class="btn klein <?= $k ?>" type="submit"><i class="fa-solid <?= $i ?>"></i> <?= $t ?></button></form>
             <?php endforeach; ?>
         </div>
