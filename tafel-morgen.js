@@ -10,34 +10,42 @@
 "use strict";
 (function () {
 
-const FAECHER = {
-    deutsch:   { n: "Deutsch", e: "📖", f: "#e2574c", m: ["fibel", "heft", "federtasche"] },
-    mathe:     { n: "Mathe", e: "🔢", f: "#3d7ea6", m: ["mathebuch", "heft", "federtasche", "lineal"] },
-    sachunterricht: { n: "Sachunterricht", e: "🌱", f: "#3f9a5a", m: ["hefter", "federtasche"] },
-    englisch:  { n: "Englisch", e: "🇬🇧", f: "#6c5ce7", m: ["heft", "federtasche"] },
-    kunst:     { n: "Kunst", e: "🎨", f: "#e67e22", m: ["malkasten", "schere", "kleber", "federtasche"] },
-    musik:     { n: "Musik", e: "🎵", f: "#c0398b", m: ["hefter"] },
-    sport:     { n: "Sport", e: "⚽", f: "#16a085", m: ["sportbeutel", "trinkflasche"] },
-    religion:  { n: "Religion", e: "🕊️", f: "#8e7cc3", m: ["hefter"] },
-    ethik:     { n: "Ethik", e: "🤝", f: "#8e7cc3", m: ["hefter"] },
-    werken:    { n: "Werken", e: "🔨", f: "#a0522d", m: ["schere", "kleber"] },
-    lernangebot: { n: "Lernzeit", e: "🦉", f: "#2f6b50", m: ["federtasche"] },
+// Vorgaben – werden beim ersten Öffnen in die gespeicherten Daten übernommen und sind danach frei bearbeitbar
+const DEF_FAECHER = {
+    deutsch:   { n: "Deutsch", e: "📖", f: "#e2574c", m: ["fibel", "heft"] },
+    mathe:     { n: "Mathe", e: "🔢", f: "#3d7ea6", m: ["mathebuch", "heft", "lineal"] },
+    sachunterricht: { n: "Sachunterricht", e: "🌱", f: "#3f9a5a", m: [] },
+    englisch:  { n: "Englisch", e: "🇬🇧", f: "#6c5ce7", m: ["heft"] },
+    kunst:     { n: "Kunst", e: "🎨", f: "#e67e22", m: ["malkasten", "schere", "kleber"] },
+    musik:     { n: "Musik", e: "🎵", f: "#c0398b", m: [] },
+    religion:  { n: "Religion", e: "🕊️", f: "#8e7cc3", m: [] },
+    lernangebot: { n: "Lernangebot", e: "🦉", f: "#2f6b50", m: [] },
     sozial:    { n: "Sozialtraining", e: "💛", f: "#d4a017", m: [] },
-    foerder:   { n: "Förderunterricht", e: "⭐", f: "#5b8def", m: ["federtasche"] },
-    lesen:     { n: "Lesezeit", e: "📚", f: "#b5651d", m: ["lesebuch"] },
-    wochenplan: { n: "Wochenplan", e: "🗂️", f: "#607d8b", m: ["wochenplan", "federtasche"] },
-    schwimmen: { n: "Schwimmen", e: "🏊", f: "#0097a7", m: ["schwimmsachen"] },
-    klassenrat: { n: "Klassenrat", e: "🗣️", f: "#795548", m: [] },
+    foerder:   { n: "IFZ", e: "⭐", f: "#5b8def", m: [] },
+    arbeitszeit: { n: "Arbeitszeit", e: "🗂️", f: "#607d8b", m: ["lernpfad"] },
     ausflug:   { n: "Ausflug", e: "🚌", f: "#ef6c00", m: ["trinkflasche", "fruehstueck"] },
     frei:      { n: "frei", e: "🏠", f: "#9aa5ad", m: [] },
 };
-const MATERIAL = {
-    federtasche: ["✏️", "Federtasche"], heft: ["📒", "Heft"], fibel: ["📗", "Fibel"], lesebuch: ["📖", "Lesebuch"], mathebuch: ["📘", "Mathebuch"],
-    arbeitsheft: ["📓", "Arbeitsheft"], hefter: ["🗂️", "Hefter"], hausaufgabenheft: ["📔", "Hausaufgabenheft"], wochenplan: ["📋", "Wochenplan"],
-    lineal: ["📏", "Lineal"], schere: ["✂️", "Schere"], kleber: ["🧴", "Kleber"], malkasten: ["🎨", "Malkasten"], buntstifte: ["🖍️", "Buntstifte"],
-    sportbeutel: ["🎽", "Sportbeutel"], schwimmsachen: ["🩱", "Schwimmsachen"], trinkflasche: ["🥤", "Trinkflasche"], fruehstueck: ["🍎", "Frühstück"],
-    floete: ["🎶", "Flöte"], tablet: ["📱", "Tablet"], woerterbuch: ["📕", "Wörterbuch"],
+const DEF_MATERIAL = {
+    federmappe: { e: "✏️", n: "Federmappe" }, hausaufgabenheft: { e: "📔", n: "Hausaufgabenheft" }, postmappe: { e: "📨", n: "Postmappe" },
+    ordner_gelb: { e: "📁", n: "Gelber Ordner", farbe: "#f4c430" }, ordner_rot: { e: "📁", n: "Roter Ordner", farbe: "#d63b30" }, ordner_schwarz: { e: "📁", n: "Schwarzer Ordner", farbe: "#2d2d2d" },
+    lernpfad: { e: "🗺️", n: "Lernpfad" }, heft: { e: "📒", n: "Heft" }, fibel: { e: "📗", n: "Fibel" }, lesebuch: { e: "📖", n: "Lesebuch" }, mathebuch: { e: "📘", n: "Mathebuch" },
+    arbeitsheft: { e: "📓", n: "Arbeitsheft" }, lineal: { e: "📏", n: "Lineal" }, schere: { e: "✂️", n: "Schere" }, kleber: { e: "🧴", n: "Kleber" }, malkasten: { e: "🎨", n: "Malkasten" },
+    buntstifte: { e: "🖍️", n: "Buntstifte" }, sportbeutel: { e: "🎽", n: "Sportbeutel" }, trinkflasche: { e: "🥤", n: "Trinkflasche" }, fruehstueck: { e: "🍎", n: "Frühstück" },
+    tablet: { e: "📱", n: "Tablet" }, woerterbuch: { e: "📕", n: "Wörterbuch" },
 };
+const DEF_IMMER = ["federmappe", "hausaufgabenheft", "postmappe"];
+// Namen früherer Vorgabe-Fächer (falls sie noch im Stundenplan stehen)
+const ALT_FAECHER = { sport: ["Sport", "⚽"], ethik: ["Ethik", "🤝"], werken: ["Werken", "🔨"], schwimmen: ["Schwimmen", "🏊"], klassenrat: ["Klassenrat", "🗣️"], wochenplan: ["Lernpfad", "🗺️"] };
+let FAECHER = {}, MATERIAL = {};
+const kopie = o => JSON.parse(JSON.stringify(o));
+function fachInfo(key){ return FAECHER[key] || (ALT_FAECHER[key] ? { n: ALT_FAECHER[key][0], e: ALT_FAECHER[key][1], f: "#9aa5ad", m: [] } : { n: key, e: "📌", f: "#9aa5ad", m: [] }); }
+// Bild für ein Ding: farbige Ordner als gezeichneter Ordner, sonst Emoji
+function dingBild(key){
+    const m = MATERIAL[key]; if (!m) return "❔";
+    if (m.farbe) return `<svg class="mg-ordner" viewBox="0 0 64 52" aria-hidden="true"><path d="M3 9q0-5 5-5h16l6 6h26q5 0 5 5v29q0 5-5 5H8q-5 0-5-5z" fill="${esc(m.farbe)}" stroke="rgba(0,0,0,.35)" stroke-width="2"/><path d="M3 17h58v27q0 5-5 5H8q-5 0-5-5z" fill="${esc(m.farbe)}" stroke="rgba(0,0,0,.35)" stroke-width="2"/><rect x="10" y="24" width="18" height="10" rx="2" fill="rgba(255,255,255,.75)"/></svg>`;
+    return esc(m.e || "❔");
+}
 const WETTER = {
     sonnig: ["☀️", "sonnig"], heiter: ["🌤️", "heiter"], wolkig: ["⛅", "wolkig"], bedeckt: ["☁️", "bewölkt"], nebel: ["🌫️", "neblig"],
     niesel: ["🌦️", "Nieselregen"], regen: ["🌧️", "Regen"], schnee: ["❄️", "Schnee"], gewitter: ["⛈️", "Gewitter"], wind: ["🌬️", "windig"],
@@ -69,15 +77,29 @@ function kw(d){ const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.get
 function neueKlasse(name, stufe){
     return { id: neueId(), name: name || "1a", stufe: stufe || "12", lehrkraft: "", anrede: "", ort: { name: "Weißenfels", lat: 51.2, lon: 11.97 },
         zeiten: ZEITEN.map(z => z.slice()), pausen: PAUSEN.map(p => Object.assign({}, p)),
-        plan: { 1: [], 2: [], 3: [], 4: [], 5: [] }, material: {}, extra: {}, hinweise: [] };
+        plan: { 1: [], 2: [], 3: [], 4: [], 5: [] }, material: {}, extra: {}, immer: DEF_IMMER.slice(), hinweise: [] };
 }
 let D = window.TAFEL_DATEN && window.TAFEL_DATEN.morgen;
 if (!D || !Array.isArray(D.klassen) || !D.klassen.length) {
     try { D = JSON.parse(localStorage.getItem("tb_morgen") || "null"); } catch (x) { D = null; }
 }
 if (!D || !Array.isArray(D.klassen) || !D.klassen.length) { const k = neueKlasse("1a", "12"); k.beispiel = true;
-    k.plan = { 1: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "sachunterricht", l: "" }, { f: "sport", l: "" }], 2: [{ f: "mathe", l: "" }, { f: "deutsch", l: "" }, { f: "kunst", l: "" }, { f: "kunst", l: "" }], 3: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "musik", l: "" }, { f: "lernangebot", l: "" }], 4: [{ f: "mathe", l: "" }, { f: "deutsch", l: "" }, { f: "englisch", l: "" }, { f: "sport", l: "" }], 5: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "religion", l: "" }] };
+    k.plan = { 1: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "sachunterricht", l: "" }, { f: "musik", l: "" }], 2: [{ f: "mathe", l: "" }, { f: "deutsch", l: "" }, { f: "kunst", l: "" }, { f: "kunst", l: "" }], 3: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "musik", l: "" }, { f: "lernangebot", l: "" }], 4: [{ f: "mathe", l: "" }, { f: "deutsch", l: "" }, { f: "englisch", l: "" }, { f: "arbeitszeit", l: "" }], 5: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "religion", l: "" }] };
     D = { klassen: [k], aktiv: k.id }; }
+// Fächer und Material: einmal angelegt, danach gespeichert und bearbeitbar
+if (!D.katalog || typeof D.katalog !== "object") D.katalog = {};
+if (!D.katalog.faecher || Array.isArray(D.katalog.faecher)) D.katalog.faecher = kopie(DEF_FAECHER);
+if (!D.katalog.material || Array.isArray(D.katalog.material)) D.katalog.material = kopie(DEF_MATERIAL);
+FAECHER = D.katalog.faecher; MATERIAL = D.katalog.material;
+// Frühere Namen umstellen (Federtasche → Federmappe, Wochenplan → Lernpfad, Lesezeit → Lernangebot)
+const UMBENANNT = { federtasche: "federmappe", wochenplan: "lernpfad" };
+D.klassen.forEach(k => {
+    if (!Array.isArray(k.immer)) k.immer = DEF_IMMER.slice();
+    const um = l => [...new Set((l || []).map(m => UMBENANNT[m] || m))].filter(m => MATERIAL[m]);
+    if (k.material && !Array.isArray(k.material)) Object.keys(k.material).forEach(f => { k.material[f] = um(k.material[f]).filter(m => !k.immer.includes(m)); });
+    if (k.extra && !Array.isArray(k.extra)) Object.keys(k.extra).forEach(t => { k.extra[t] = um(k.extra[t]); });
+    Object.values(k.plan || {}).forEach(tag => (tag || []).forEach(st => { if (st && st.f === "lesen") st.f = "lernangebot"; }));
+});
 // Ältere Speicherungen: leere Objekte kamen als [] zurück – wieder zu Objekten machen
 D.klassen.forEach(k => ["plan", "material", "extra", "wetterManuell"].forEach(f => { if (!k[f] || Array.isArray(k[f])) k[f] = Object.assign({}, k[f] || {}); }));
 // Begrüßung: früher ganzer Satz, jetzt nur die Anrede (die Tageszeit kommt automatisch)
@@ -165,8 +187,8 @@ function jetztNr(k, d){
     return s ? s.nr : 0;
 }
 function materialHeute(k, d){
-    const set = [];
-    stundenHeute(k, d).forEach(s => { const liste = k.material[s.f] || (FAECHER[s.f] || {}).m || []; liste.forEach(m => { if (!set.includes(m)) set.push(m); }); });
+    const set = (k.immer || []).slice();
+    stundenHeute(k, d).forEach(s => { const liste = k.material[s.f] || fachInfo(s.f).m || []; liste.forEach(m => { if (!set.includes(m)) set.push(m); }); });
     (k.extra[d.getDay()] || []).forEach(m => { if (!set.includes(m)) set.push(m); });
     return set.filter(m => MATERIAL[m]);
 }
@@ -222,7 +244,7 @@ function zeichnen(){
       <section class="mg-karte mg-plan">
         <h2>${klein ? "Unser Tag" : "Stundenplan"}</h2>
         ${wochenende ? `<div class="mg-leer">🎈 Heute ist keine Schule.<br>Schönes Wochenende!</div>` : !st.length ? `<div class="mg-leer">Für ${TAGE[wt]} ist noch kein Stundenplan eingetragen.<br><button class="mg-k" data-bearbeiten="plan">✏️ Stundenplan eintragen</button></div>` :
-          `<ol class="mg-stunden">${st.map((s, i) => { const f = FAECHER[s.f] || { n: s.f, e: "📌", f: "#888" };
+          `<ol class="mg-stunden">${st.map((s, i) => { const f = fachInfo(s.f);
             const pause = pausen.find(p => +p.nach === s.nr && (st.some(x => x.nr > s.nr) || /mittag/i.test(p.name)));
             return `<li class="${s.nr === jetzt ? "jetzt" : ""} ${istHeute && jetzt && s.nr < jetzt ? "vorbei" : ""}" style="--ff:${f.f}">
               <span class="mg-nr">${s.nr}</span><span class="mg-fe">${f.e}</span>
@@ -234,7 +256,7 @@ function zeichnen(){
       <div class="mg-spalte">
         <section class="mg-karte mg-pack">
           <h2>${klein ? "Das brauche ich heute" : "Bitte auspacken"}</h2>
-          ${mat.length ? `<div class="mg-dinge ${mat.length > 9 ? "sehr-viele" : mat.length > 6 ? "viele" : ""}">${mat.map(m => `<button class="mg-ding ${abgehakt[m] ? "ok" : ""}" data-ding="${m}"><span>${MATERIAL[m][0]}</span><b>${esc(MATERIAL[m][1])}</b></button>`).join("")}</div>` : `<div class="mg-leer klein">–</div>`}
+          ${mat.length ? `<div class="mg-dinge ${mat.length > 9 ? "sehr-viele" : mat.length > 6 ? "viele" : ""}">${mat.map(m => `<button class="mg-ding ${abgehakt[m] ? "ok" : ""}" data-ding="${m}"><span>${dingBild(m)}</span><b>${esc(MATERIAL[m].n)}</b></button>`).join("")}</div>` : `<div class="mg-leer klein">–</div>`}
         </section>
         <section class="mg-karte mg-achtung">
           <h2>${klein ? "Denk daran!" : "Heute beachten"}</h2>
@@ -284,7 +306,7 @@ function bearbeiten(r){
     if (r) reiter = r;
     const p = document.getElementById("mgEditor"); p.classList.add("an");
     const k = klasse();
-    const R = { klasse: "🏫 Klasse", plan: "🗓️ Stundenplan", material: "🎒 Auspacken", hinweise: "📢 Hinweise" };
+    const R = { klasse: "🏫 Klasse", plan: "🗓️ Stundenplan", material: "🎒 Auspacken", faecher: "📚 Fächer", hinweise: "📢 Hinweise" };
     const fachOpt = sel => `<option value="">–</option>` + Object.entries(FAECHER).map(([key, f]) => `<option value="${key}" ${key === sel ? "selected" : ""}>${f.e} ${esc(f.n)}</option>`).join("");
     let html = `<div class="mg-ed-kopf"><div class="mg-reiter">${Object.entries(R).map(([key, n]) => `<button class="${key === reiter ? "an" : ""}" data-reiter="${key}">${n}</button>`).join("")}</div>
         <span id="mgStatus" class="mg-status">${speicherFehler ? "⚠ " + esc(speicherFehler) : ungesichert ? "" : "✓ gespeichert"}</span><button class="mg-k" data-schliessen>✓ Fertig</button></div><div class="mg-ed-inhalt">`;
@@ -309,11 +331,32 @@ function bearbeiten(r){
         <div class="mg-pausen">${(k.pausen || []).map((p, i) => `<div class="mg-reihe"><span>nach der</span><select data-pause="${i}|nach">${[1, 2, 3, 4, 5, 6, 7].map(n => `<option ${+p.nach === n ? "selected" : ""}>${n}</option>`).join("")}</select><span>. Stunde:</span><input data-pause="${i}|e" value="${esc(p.e || "")}" style="width:60px"><input data-pause="${i}|name" value="${esc(p.name)}" style="flex:1"><button class="mg-k hell" data-pauseweg="${i}">✕</button></div>`).join("")}
         <button class="mg-k hell" data-pauseplus>+ Pause</button></div>`;
     } else if (reiter === "material") {
-        html += `<p class="mg-hilfe">Was die Kinder für jedes Fach auspacken. Auf der Tafel erscheint alles, was für die Fächer des Tages gebraucht wird – die Kinder können es abhaken.</p>
-        <div class="mg-matliste">${[...new Set(Object.values(k.plan).flat().map(s => s && s.f).filter(Boolean))].concat(Object.keys(FAECHER)).filter((v, i, a) => a.indexOf(v) === i && v !== "frei").map(fk => { const f = FAECHER[fk], an = k.material[fk] || f.m;
-            return `<div class="mg-mat"><b>${f.e} ${esc(f.n)}</b><div>${Object.entries(MATERIAL).map(([m, [e, n]]) => `<button class="mg-mini ${an.includes(m) ? "an" : ""}" data-mat="${fk}|${m}" title="${esc(n)}">${e}</button>`).join("")}</div></div>`; }).join("")}</div>
+        const chips = (aktiv, attr) => Object.entries(MATERIAL).map(([m, x]) => `<button class="mg-mini ${aktiv.includes(m) ? "an" : ""}" ${attr(m)} title="${esc(x.n)}"><span>${dingBild(m)}</span><small>${esc(x.n)}</small></button>`).join("");
+        const imPlan = [...new Set(Object.values(k.plan).flat().map(x => x && x.f).filter(Boolean))];
+        html += `<div class="mg-info-box">🎒 Einmal festlegen – alles wird im Leuchtturm gespeichert und gilt jeden Tag automatisch. Auf der Tafel erscheint: was jeden Tag gebraucht wird, plus das Material der Fächer des Tages.</div>
+        <label>Jeden Tag</label>
+        <div class="mg-mat breit"><div class="mg-chips">${chips(k.immer || [], m => `data-immer="${m}"`)}</div></div>
+        <label>Je nach Fach</label>
+        <div class="mg-matliste">${imPlan.concat(Object.keys(FAECHER)).filter((v, i, a) => a.indexOf(v) === i && v !== "frei").map(fk => { const f = fachInfo(fk), an = k.material[fk] || f.m || [];
+            return `<div class="mg-mat"><b>${esc(f.e)} ${esc(f.n)}${imPlan.includes(fk) ? "" : ' <small class="mg-hilfe">(nicht im Stundenplan)</small>'}</b><div class="mg-chips">${chips(an, m => `data-mat="${fk}|${m}"`)}</div></div>`; }).join("")}</div>
         <label>Zusätzlich an bestimmten Tagen</label>
-        <div class="mg-matliste">${[1, 2, 3, 4, 5].map(t => `<div class="mg-mat"><b>${TAGE[t]}</b><div>${Object.entries(MATERIAL).map(([m, [e, n]]) => `<button class="mg-mini ${(k.extra[t] || []).includes(m) ? "an" : ""}" data-extra="${t}|${m}" title="${esc(n)}">${e}</button>`).join("")}</div></div>`).join("")}</div>`;
+        <div class="mg-matliste">${[1, 2, 3, 4, 5].map(t => `<div class="mg-mat"><b>${TAGE[t]}</b><div class="mg-chips">${chips(k.extra[t] || [], m => `data-extra="${t}|${m}"`)}</div></div>`).join("")}</div>
+        <label>Material-Liste bearbeiten (für alle Klassen)</label>
+        <div class="mg-liste">${Object.entries(MATERIAL).map(([m, x]) => `<div class="mg-reihe mg-eintrag"><span class="mg-vorschau">${dingBild(m)}</span>
+            <input data-mname="${m}" value="${esc(x.n)}" maxlength="30" style="flex:1">
+            <input data-memoji="${m}" value="${esc(x.e)}" maxlength="4" style="width:64px" title="Bild (Emoji)">
+            <label class="mg-farbwahl" title="als farbiger Ordner"><input type="checkbox" data-mordner="${m}" ${x.farbe ? "checked" : ""}> Ordner</label>
+            ${x.farbe ? `<input type="color" data-mfarbe="${m}" value="${esc(x.farbe)}">` : ""}
+            <button class="mg-k hell" data-mweg="${m}" title="entfernen">✕</button></div>`).join("")}
+        </div><button class="mg-k hell" data-mplus style="margin-top:8px">+ Neues Material</button>`;
+    } else if (reiter === "faecher") {
+        html += `<div class="mg-info-box">📚 Eure Fächer – Name, Bild und Farbe ändern, Fächer löschen oder neue anlegen. Gilt für alle Klassen und den Stundenplan.</div>
+        <div class="mg-liste">${Object.entries(FAECHER).map(([fk, f]) => `<div class="mg-reihe mg-eintrag" style="border-left:8px solid ${esc(f.f)}">
+            <input data-femoji="${fk}" value="${esc(f.e)}" maxlength="4" style="width:64px" title="Bild (Emoji)">
+            <input data-fname="${fk}" value="${esc(f.n)}" maxlength="30" style="flex:1">
+            <input type="color" data-ffarbe="${fk}" value="${esc(f.f)}" title="Farbe">
+            <button class="mg-k hell" data-fweg="${fk}" title="löschen">✕</button></div>`).join("")}
+        </div><button class="mg-k hell" data-fplus style="margin-top:8px">+ Neues Fach</button>`;
     } else {
         const heute = iso(tag());
         html += `<p class="mg-hilfe">Hinweise erscheinen unter „${k.stufe === "12" ? "Denk daran!" : "Heute beachten"}“ – nur an einem Tag, jede Woche am selben Tag oder immer. Kurze Sätze sind für Erstklässler am besten.</p>
@@ -356,7 +399,23 @@ function editorAktivieren(p, k){
     p.querySelectorAll("[data-pause]").forEach(i => i.addEventListener("change", () => { const [n, feld] = i.dataset.pause.split("|"); k.pausen[+n][feld] = feld === "nach" ? +i.value : i.value.trim(); speichern(); zeichnen(); }));
     p.querySelectorAll("[data-pauseweg]").forEach(b => b.addEventListener("click", () => { k.pausen.splice(+b.dataset.pauseweg, 1); neu(); }));
     const pp = p.querySelector("[data-pauseplus]"); if (pp) pp.addEventListener("click", () => { (k.pausen = k.pausen || []).push({ nach: 3, name: "Hofpause", e: "🛝" }); neu(); });
-    p.querySelectorAll("[data-mat]").forEach(b => b.addEventListener("click", () => { const [f, m] = b.dataset.mat.split("|"); const l = k.material[f] = (k.material[f] || FAECHER[f].m).slice(); const i = l.indexOf(m); i >= 0 ? l.splice(i, 1) : l.push(m); b.classList.toggle("an"); speichern(); }));
+    p.querySelectorAll("[data-mat]").forEach(b => b.addEventListener("click", () => { const [f, m] = b.dataset.mat.split("|"); const l = k.material[f] = (k.material[f] || fachInfo(f).m || []).slice(); const i = l.indexOf(m); i >= 0 ? l.splice(i, 1) : l.push(m); b.classList.toggle("an"); speichern(); }));
+    p.querySelectorAll("[data-immer]").forEach(b => b.addEventListener("click", () => { const m = b.dataset.immer, l = k.immer = k.immer || []; const i = l.indexOf(m); i >= 0 ? l.splice(i, 1) : l.push(m); b.classList.toggle("an"); speichern(); }));
+    p.querySelectorAll("[data-mname]").forEach(i => i.addEventListener("change", () => { MATERIAL[i.dataset.mname].n = i.value.trim() || MATERIAL[i.dataset.mname].n; neu(); }));
+    p.querySelectorAll("[data-memoji]").forEach(i => i.addEventListener("change", () => { MATERIAL[i.dataset.memoji].e = i.value.trim() || "❔"; neu(); }));
+    p.querySelectorAll("[data-mordner]").forEach(i => i.addEventListener("change", () => { const x = MATERIAL[i.dataset.mordner]; if (i.checked) x.farbe = x.farbe || "#3d7ea6"; else delete x.farbe; neu(); }));
+    p.querySelectorAll("[data-mfarbe]").forEach(i => i.addEventListener("change", () => { MATERIAL[i.dataset.mfarbe].farbe = i.value; neu(); }));
+    p.querySelectorAll("[data-mweg]").forEach(b => b.addEventListener("click", () => { const m = b.dataset.mweg; if (!confirm(`„${MATERIAL[m].n}“ aus der Liste löschen? Es verschwindet auch bei allen Fächern.`)) return;
+        delete MATERIAL[m]; D.klassen.forEach(x => { x.immer = (x.immer || []).filter(y => y !== m); Object.keys(x.material).forEach(f => x.material[f] = x.material[f].filter(y => y !== m)); Object.keys(x.extra).forEach(t => x.extra[t] = x.extra[t].filter(y => y !== m)); });
+        Object.values(FAECHER).forEach(f => f.m = (f.m || []).filter(y => y !== m)); neu(); }));
+    const mp = p.querySelector("[data-mplus]"); if (mp) mp.addEventListener("click", () => { const n = prompt("Name des Materials (z. B. Blauer Ordner):"); if (!n || !n.trim()) return; const key = "m" + neueId(); MATERIAL[key] = /ordner/i.test(n) ? { e: "📁", n: n.trim().slice(0, 30), farbe: "#3d7ea6" } : { e: "📦", n: n.trim().slice(0, 30) }; neu(); });
+    p.querySelectorAll("[data-fname]").forEach(i => i.addEventListener("change", () => { FAECHER[i.dataset.fname].n = i.value.trim() || FAECHER[i.dataset.fname].n; neu(); }));
+    p.querySelectorAll("[data-femoji]").forEach(i => i.addEventListener("change", () => { FAECHER[i.dataset.femoji].e = i.value.trim() || "📌"; neu(); }));
+    p.querySelectorAll("[data-ffarbe]").forEach(i => i.addEventListener("change", () => { FAECHER[i.dataset.ffarbe].f = i.value; neu(); }));
+    p.querySelectorAll("[data-fweg]").forEach(b => b.addEventListener("click", () => { const fk = b.dataset.fweg, imPlan = D.klassen.some(x => Object.values(x.plan).flat().some(s => s && s.f === fk));
+        if (!confirm(`Fach „${FAECHER[fk].n}“ löschen?` + (imPlan ? " Es wird auch aus dem Stundenplan entfernt." : ""))) return;
+        delete FAECHER[fk]; D.klassen.forEach(x => { Object.values(x.plan).forEach(t => (t || []).forEach(s => { if (s && s.f === fk) { s.f = ""; s.l = ""; } })); delete x.material[fk]; }); neu(); }));
+    const fp = p.querySelector("[data-fplus]"); if (fp) fp.addEventListener("click", () => { const n = prompt("Name des neuen Fachs:"); if (!n || !n.trim()) return; FAECHER["f" + neueId()] = { n: n.trim().slice(0, 30), e: "📌", f: "#607d8b", m: [] }; neu(); });
     p.querySelectorAll("[data-extra]").forEach(b => b.addEventListener("click", () => { const [t, m] = b.dataset.extra.split("|"); const l = k.extra[t] = k.extra[t] || []; const i = l.indexOf(m); i >= 0 ? l.splice(i, 1) : l.push(m); b.classList.toggle("an"); speichern(); }));
     const hp = p.querySelector("[data-hplus]");
     if (hp) hp.addEventListener("click", () => { const t = p.querySelector("#mgHT").value.trim(); if (!t) return; (k.hinweise = k.hinweise || []).push({ id: neueId(), e: p.querySelector("#mgHE").value, t, wann: p.querySelector("#mgHW").value }); aufraeumen(k); neu(); });

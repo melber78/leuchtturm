@@ -208,10 +208,22 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .mg-tabelle td:first-child{ min-width:30px; } .mg-tabelle td.mg-zeiten{ min-width:90px; }
 .mg-tabelle td select, .mg-tabelle td input{ margin-bottom:4px; font-size:14px; padding:6px 8px; }
 .mg-pausen .mg-reihe{ margin-bottom:6px; } .mg-pausen select{ width:auto !important; } .mg-pausen input{ width:auto; }
-.mg-matliste{ display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:10px; }
+.mg-matliste{ display:grid; grid-template-columns:repeat(auto-fill,minmax(420px,1fr)); gap:10px; }
 .mg-mat{ background:white; border-radius:14px; padding:10px 12px; box-shadow:0 2px 8px rgba(0,0,0,.04); }
 .mg-mat b{ display:block; margin-bottom:6px; }
-.mg-mini{ border:2px solid #eee; background:white; border-radius:10px; font-size:22px; width:42px; height:42px; margin:2px; cursor:pointer; opacity:.45; }
+.mg-mini{ border:2px solid #eee; background:white; border-radius:12px; width:78px; min-height:68px; margin:2px; cursor:pointer; opacity:.5; display:inline-flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:4px 2px; vertical-align:top; }
+.mg-mini span{ font-size:24px; line-height:1; height:28px; display:flex; align-items:center; }
+.mg-mini small{ font:800 10.5px/1.1 "Nunito",sans-serif; color:#16324a; text-align:center; }
+.mg-mini .mg-ordner, .mg-vorschau .mg-ordner{ width:30px; height:26px; }
+.mg-ding .mg-ordner{ width:1.15em; height:1em; }
+.mg-chips{ display:flex; flex-wrap:wrap; gap:2px; }
+.mg-mat.breit{ max-width:none; }
+.mg-liste{ display:flex; flex-direction:column; gap:6px; }
+.mg-eintrag{ background:white; border-radius:12px; padding:6px 10px; }
+.mg-eintrag input[type=color]{ width:48px; height:38px; padding:2px; }
+.mg-vorschau{ font-size:26px; width:40px; text-align:center; }
+.mg-farbwahl{ display:flex !important; align-items:center; gap:4px; margin:0 !important; text-transform:none !important; letter-spacing:0 !important; font-size:14px !important; color:#16324a !important; }
+.mg-farbwahl input{ width:auto !important; }
 .mg-mini.an{ opacity:1; border-color:#2e9e5b; background:#e9f7ee; }
 .mg-neuhinweis{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:white; padding:12px; border-radius:14px; }
 .mg-neuhinweis select{ width:auto !important; } .mg-neuhinweis input{ flex:1 1 260px; width:auto !important; }
