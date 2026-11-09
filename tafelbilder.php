@@ -13,7 +13,7 @@ $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESC
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tafelbilder · Leuchtturm</title>
-<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Patrick+Hand&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <!--
   Leuchtturm – Tafelbilder für die digitale Tafel
@@ -28,25 +28,60 @@ $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESC
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; }
 /* Übersicht */
-.uebersicht{ width:min(900px,94%); margin:34px auto 60px; }
-.uebersicht a.zurueck{ color:var(--meer); font-weight:800; text-decoration:none; }
-.uebersicht h1{ font-size:30px; font-weight:900; margin:12px 0 4px; }
-.uebersicht .unter{ color:var(--grau); font-weight:700; margin:0 0 24px; }
-.kacheln{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:18px; }
-.kachel{ background:white; border-radius:22px; box-shadow:var(--schatten); padding:24px 22px; text-decoration:none; color:var(--text); transition:.2s; cursor:pointer; border:0; text-align:left; font:inherit; }
-.kachel:hover{ transform:translateY(-4px); }
-.kachel .bild{ height:86px; border-radius:14px; background:#fff; border:2px solid #e6ebef; margin-bottom:14px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-.kachel h2{ margin:0 0 6px; font-size:19px; font-weight:900; }
-.kachel p{ margin:0; color:var(--grau); font-weight:700; font-size:14px; }
-.kachel.bald{ opacity:.55; cursor:default; } .kachel.bald:hover{ transform:none; }
-
-.lw-wahl{ position:fixed; inset:0; background:rgba(22,50,74,.45); display:none; align-items:center; justify-content:center; z-index:30; padding:20px; }
+body{ background:#f6f2ea; }
+.uebersicht{ width:min(1080px,94%); margin:26px auto 60px; }
+.uebersicht a.zurueck{ color:#8a6d3b; font-weight:800; text-decoration:none; font-size:15px; }
+.tb-banner{ margin:14px 0 26px; border-radius:28px; padding:30px 34px; color:#fffdf5; position:relative; overflow:hidden;
+  background:radial-gradient(circle at 85% 20%, rgba(255,255,255,.12), transparent 40%), linear-gradient(135deg,#2f6a50,#1f4a37); box-shadow:0 0 0 8px #8a5a2e, 0 14px 30px rgba(60,40,10,.18); }
+.tb-banner h1{ margin:0 0 6px; font:900 clamp(28px,4vw,42px) "Nunito",sans-serif; letter-spacing:-.01em; }
+.tb-banner p{ margin:0; font-weight:700; opacity:.85; font-size:16px; max-width:640px; }
+.tb-banner .kreide{ position:absolute; right:30px; bottom:18px; font:400 34px "Patrick Hand","Andika",sans-serif; opacity:.25; transform:rotate(-4deg); }
+.kacheln{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:22px; }
+.kachel{ background:white; border-radius:26px; box-shadow:0 10px 28px rgba(60,40,10,.08); padding:0; text-decoration:none; color:var(--text); transition:transform .2s, box-shadow .2s; cursor:pointer; border:0; text-align:left; font:inherit; overflow:hidden; display:flex; flex-direction:column; }
+.kachel:hover{ transform:translateY(-5px); box-shadow:0 18px 36px rgba(60,40,10,.14); }
+.k-buehne{ height:150px; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.k-text{ padding:18px 22px 20px; display:flex; flex-direction:column; gap:6px; flex:1; }
+.kachel h2{ margin:0; font-size:21px; font-weight:900; color:#1f2d36; }
+.kachel p{ margin:0; color:#6b7672; font-weight:700; font-size:14.5px; line-height:1.45; flex:1; }
+.k-tags{ display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+.k-tags span{ background:#f3efe6; color:#7c6a4f; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:800; }
+/* Bühnen der drei Tafelbilder */
+.k-kurs{ background:linear-gradient(#f1f7fd,#fdfbf6); padding:18px 26px; }
+.k-kurs #kachelBild{ width:100%; height:100%; }
+.k-morgen{ background:linear-gradient(135deg,#fff3d1,#e6f2fb); gap:10px; flex-direction:column; }
+.k-morgen .mini-gruss{ font:900 22px "Nunito",sans-serif; color:#16324a; display:flex; align-items:center; gap:8px; }
+.k-morgen .mini-gruss span{ font-size:30px; }
+.k-morgen .mini-raster{ display:flex; gap:8px; }
+.k-morgen .mini-raster i{ width:62px; height:46px; background:white; border-radius:10px; box-shadow:0 3px 8px rgba(22,50,74,.08); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:22px; }
+.k-wald{ background:linear-gradient(#bfe3f7 0 55%, #9fd08a 55%); }
+.k-wald .baeume{ position:absolute; bottom:38%; left:0; right:0; text-align:center; font-size:44px; letter-spacing:-.15em; }
+.k-wald .tiere{ position:absolute; bottom:10%; font-size:38px; display:flex; gap:22px; }
+.k-wald .psst{ position:absolute; top:12px; right:16px; background:white; border-radius:16px; padding:4px 10px; font:800 14px "Nunito",sans-serif; color:#1d4634; box-shadow:0 3px 8px rgba(0,0,0,.08); }
+/* Auswahl Leise-Wald */
+.lw-wahl{ position:fixed; inset:0; background:rgba(31,45,40,.55); backdrop-filter:blur(3px); display:none; align-items:center; justify-content:center; z-index:30; padding:20px; }
 .lw-wahl.an{ display:flex; }
-.lw-wahl-box{ background:var(--schaum); border-radius:26px; padding:20px 24px 24px; width:min(1000px,100%); max-height:94vh; overflow:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); }
-.lw-wahl-kopf{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
-.lw-wahl-kopf h2{ margin:0; font-size:24px; font-weight:900; color:var(--nacht); }
-.lw-wahl-kopf button{ border:0; background:white; border-radius:50%; width:44px; height:44px; font-size:20px; cursor:pointer; box-shadow:var(--schatten); }
-.lw-wahl .kacheln{ grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); }
+.lw-wahl-box{ background:#f6f2ea; border-radius:30px; padding:24px 26px 26px; width:min(1120px,100%); max-height:94vh; overflow:auto; box-shadow:0 24px 70px rgba(0,0,0,.35); }
+.lw-wahl-kopf{ display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+.lw-wahl-kopf h2{ margin:0; font-size:26px; font-weight:900; color:#1d4634; }
+.lw-wahl-kopf small{ display:block; font-size:14px; color:#7c6a4f; font-weight:700; margin-top:2px; }
+.lw-wahl-kopf button{ border:0; background:white; border-radius:50%; width:46px; height:46px; font-size:20px; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,.1); }
+.lw-arten{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+@media (max-width:960px){ .lw-arten{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:520px){ .lw-arten{ grid-template-columns:1fr; } }
+.lw-art{ border:0; padding:0; background:white; border-radius:24px; overflow:hidden; cursor:pointer; text-align:left; font:inherit; display:flex; flex-direction:column; box-shadow:0 8px 22px rgba(60,40,10,.1); transition:transform .2s, box-shadow .2s; }
+.lw-art:hover{ transform:translateY(-5px); box-shadow:0 16px 34px rgba(60,40,10,.18); }
+.lw-art .szene{ height:132px; position:relative; display:flex; align-items:center; justify-content:center; font-size:58px; overflow:hidden; }
+.lw-art .szene small{ position:absolute; font-size:24px; }
+.lw-art .inhalt{ padding:14px 16px 16px; display:flex; flex-direction:column; gap:6px; flex:1; }
+.lw-art .wann{ align-self:flex-start; border-radius:999px; padding:2px 10px; font-size:11.5px; font-weight:900; text-transform:uppercase; letter-spacing:.04em; }
+.lw-art h3{ margin:0; font-size:18px; font-weight:900; color:#1f2d36; line-height:1.2; }
+.lw-art p{ margin:0; font-size:13.5px; font-weight:700; color:#6b7672; line-height:1.45; flex:1; }
+.lw-art .los{ margin-top:6px; align-self:flex-start; border-radius:999px; padding:7px 14px; font-weight:900; font-size:14px; color:white; }
+.a-ende .szene{ background:radial-gradient(circle at 50% 120%, #7bbf63, #b7e0a5 60%, #e3f4d9); } .a-ende .wann, .a-ende .los{ background:#2f6a50; color:white; }
+.a-melden .szene{ background:radial-gradient(circle at 50% 110%, #f6c76a, #ffe7b3 65%, #fff6df); } .a-melden .wann{ background:#fff0c9; color:#8a5a00; } .a-melden .los{ background:#d98b1f; }
+.a-sterne .szene{ background:radial-gradient(circle at 30% 20%, #4c5db0, #23305e 70%); } .a-sterne .wann{ background:#e6e9fb; color:#2f3b85; } .a-sterne .los{ background:#3b4a9c; }
+.a-sterne .szene small{ color:#ffe066; }
+.a-live .szene{ background:linear-gradient(#bfe3f7 0 58%, #9fd08a 58%); } .a-live .wann{ background:#e3f2fb; color:#1f5f86; } .a-live .los{ background:#3d7ea6; }
 /* Tafel-Ansicht (Vollbild) */
 #tafel{ position:fixed; inset:0; display:none; flex-direction:column; background:radial-gradient(circle at 20% 0%, #fbf7ee, #efe8da); z-index:10; user-select:none; -webkit-user-select:none; }
 #tafel.an{ display:flex; }
@@ -313,28 +348,24 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 
 <div class="uebersicht" id="uebersicht">
     <a class="zurueck" href="<?= $LT_GAST ? "gast.php" : "index.php" ?>"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
-    <h1><i class="fa-solid fa-chalkboard"></i> Tafelbilder</h1>
-    <p class="unter">Für die digitale Tafel: öffnen, Vollbild an, mit dem Tafelstift direkt hineinschreiben.</p>
+    <div class="tb-banner"><h1>Tafelbilder</h1><p>Für die digitale Tafel: öffnen, Vollbild an – und mit dem Tafelstift direkt hineinschreiben.</p><span class="kreide">Aa · 1 2 3 · ☀</span></div>
     <div class="kacheln">
-<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs")): ?>
-        <button class="kachel" type="button" onclick="kursOeffnen()">
-            <div class="bild" id="kachelBild"></div>
-            <h2>Buchstabenkurs</h2>
-            <p>Buchstaben in der Lineatur vorschreiben, nachspuren und selbst schreiben – groß und klein, Druck- oder Grundschrift.</p>
-        </button>
-<?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
         <button class="kachel" type="button" onclick="tafelMorgen.oeffnen()">
-            <div class="bild" style="font-size:44px;gap:10px;background:linear-gradient(135deg,#fff7df,#e8f4fb)">☀️<span style="font:900 20px Nunito,sans-serif;color:#16324a">Guten Morgen!</span></div>
-            <h2>Guten Morgen! – Tagesstart</h2>
-            <p>Zum Stundenanfang: Begrüßung, Datum, Wetter, Stundenplan mit Lehrkräften, was auspacken, was beachten – passend für Kl. 1/2 oder 3/4.</p>
+            <div class="k-buehne k-morgen"><div class="mini-gruss"><span>☀️</span>Guten Morgen!</div><div class="mini-raster"><i>📅</i><i>🔢</i><i>🎒</i><i>⭐</i></div></div>
+            <div class="k-text"><h2>Guten Morgen!</h2><p>Der Tagesstart auf einen Blick: Datum, Wetter, Stundenplan, was auspacken, was beachten.</p><div class="k-tags"><span>Stundenanfang</span><span>Kl. 1–4</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs")): ?>
+        <button class="kachel" type="button" onclick="kursOeffnen()">
+            <div class="k-buehne k-kurs"><div id="kachelBild"></div></div>
+            <div class="k-text"><h2>Buchstabenkurs</h2><p>Buchstaben in der Lineatur vorschreiben, nachspuren und allein schreiben – Druck- oder Grundschrift.</p><div class="k-tags"><span>Tafelstift</span><span>Kl. 1</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
         <button class="kachel" type="button" onclick="leiseWahl(true)">
-            <div class="bild" style="font-size:46px;background:linear-gradient(135deg,#e9f5e1,#e3f2fb)">🌳🤫</div>
-            <h2>Leise-Wald</h2>
-            <p>Leise arbeiten mit Mikrofon – vier Arten: Überraschung am Ende, Pssst-Eule, Stille-Sterne oder Tiere live.</p>
+            <div class="k-buehne k-wald"><div class="baeume">🌲🌳🌲🌳🌲</div><div class="tiere">🦊🐰🦔</div><span class="psst">🤫 Pssst …</span></div>
+            <div class="k-text"><h2>Leise-Wald</h2><p>Leise arbeiten mit dem Mikrofon – vier Arten zur Auswahl, von der Überraschung am Ende bis zu den Stille-Sternen.</p><div class="k-tags"><span>Mikrofon</span><span>Arbeitsphase</span></div></div>
         </button>
 <?php endif; ?>
     </div>
@@ -343,24 +374,22 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
 <div id="leiseWahl" class="lw-wahl" onclick="if (event.target === this) leiseWahl(false)">
     <div class="lw-wahl-box">
-        <div class="lw-wahl-kopf"><h2>🌳 Leise-Wald – welche Art?</h2><button type="button" onclick="leiseWahl(false)" title="Schließen">✕</button></div>
-        <div class="kacheln">
+        <div class="lw-wahl-kopf"><div><h2>🌳 Leise-Wald</h2><small>Welche Art passt gerade?</small></div><button type="button" onclick="leiseWahl(false)" title="Schließen">✕</button></div>
+        <div class="lw-arten">
 <?php foreach ([
-    ["ende", "🌳🎁", "#e9f5e1", "Überraschung am Ende", "Für die Arbeitsphase: Während der Arbeit nur eine ruhige Uhr – am Ende kommen so viele Tiere, wie die Klasse leise war."],
-    ["melden", "🦉🤫", "#fff3d6", "Nur melden, wenn's laut wird", "Der Bildschirm bleibt ruhig. Wird es zu laut, erscheint die Eule mit „Pssst!“ und ein leiser Ton."],
-    ["sterne", "⭐🫙", "#eef3fb", "Stille-Sterne", "Jede leise Minute bringt still einen Stern ins Glas – am Ende zählt die Klasse die Sterne."],
-    ["zuschauen", "🦊🐰", "#e3f2fb", "Tiere kommen live", "Für kurze Ruhephasen ohne Arbeitsauftrag: Je leiser, desto mehr Tiere kommen in den Wald – bei Lärm laufen sie weg."],
-] as [$m, $bild, $farbe, $titel, $text]): ?>
-        <button class="kachel" type="button" onclick="leiseWahl(false); leiseStarten('<?= $m ?>')">
-            <div class="bild" style="font-size:46px;background:<?= $farbe ?>"><?= $bild ?></div>
-            <h2><?= htmlspecialchars($titel) ?></h2>
-            <p><?= htmlspecialchars($text) ?></p>
-        </button>
+    ["ende", "a-ende", "🎁", '<small style="left:16px;bottom:10px">🌲</small><small style="right:18px;bottom:14px">🌳</small><small style="right:40px;top:14px">🦊</small>', "Arbeitsphase", "Überraschung am Ende", "Während der Arbeit nur eine ruhige Uhr. Am Ende kommen so viele Tiere, wie die Klasse leise war."],
+    ["melden", "a-melden", "🦉", '<small style="right:22px;top:18px;font-size:18px;background:white;border-radius:12px;padding:2px 8px;font-weight:900;color:#c0392b">Pssst!</small>', "Arbeitsphase", "Pssst-Eule", "Der Bildschirm bleibt ruhig. Nur wenn es zu laut wird, kommt die Eule mit „Pssst!“."],
+    ["sterne", "a-sterne", "🫙", '<small style="left:22px;top:16px">⭐</small><small style="right:26px;top:30px;font-size:18px">✨</small><small style="left:44px;bottom:16px;font-size:18px">⭐</small>', "Arbeitsphase", "Stille-Sterne", "Jede leise Minute fällt still ein Stern ins Glas. Am Ende zählt die Klasse die Sterne."],
+    ["zuschauen", "a-live", "🦊", '<small style="left:22px;bottom:14px">🐰</small><small style="right:24px;bottom:12px">🦔</small><small style="right:30px;top:12px">🦉</small>', "kurze Ruhephase", "Tiere kommen live", "Je leiser, desto mehr Tiere kommen in den Wald – bei Lärm laufen sie weg. Zum Zuschauen."],
+] as [$m, $klasse, $haupt, $deko, $wann, $titel, $text]): ?>
+            <button class="lw-art <?= $klasse ?>" type="button" onclick="leiseWahl(false); leiseStarten('<?= $m ?>')">
+                <div class="szene"><?= $haupt ?><?= $deko ?></div>
+                <div class="inhalt"><span class="wann"><?= htmlspecialchars($wann) ?></span><h3><?= htmlspecialchars($titel) ?></h3><p><?= htmlspecialchars($text) ?></p><span class="los">Starten ▶</span></div>
+            </button>
 <?php endforeach; ?>
         </div>
     </div>
 </div>
-
 <?php endif; ?>
 <div id="morgen">
     <div class="mg-leiste">
