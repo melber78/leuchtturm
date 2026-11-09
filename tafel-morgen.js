@@ -42,6 +42,15 @@ const WETTER = {
     sonnig: ["☀️", "sonnig"], heiter: ["🌤️", "heiter"], wolkig: ["⛅", "wolkig"], bedeckt: ["☁️", "bewölkt"], nebel: ["🌫️", "neblig"],
     niesel: ["🌦️", "Nieselregen"], regen: ["🌧️", "Regen"], schnee: ["❄️", "Schnee"], gewitter: ["⛈️", "Gewitter"], wind: ["🌬️", "windig"],
 };
+// Buchstabe der Woche: Anlautbild (Bild + Wort)
+const ANLAUT = { a: ["🐒", "Affe"], b: ["🍌", "Banane"], c: ["🤡", "Clown"], d: ["🦖", "Dino"], e: ["🦆", "Ente"], f: ["🐟", "Fisch"], g: ["🦒", "Giraffe"], h: ["🐇", "Hase"],
+    i: ["🦔", "Igel"], j: ["🧥", "Jacke"], k: ["🐈", "Katze"], l: ["🦁", "Löwe"], m: ["🐭", "Maus"], n: ["👃", "Nase"], o: ["👂", "Ohr"], p: ["🐧", "Pinguin"], q: ["🪼", "Qualle"], qu: ["🪼", "Qualle"],
+    r: ["🌹", "Rose"], s: ["☀️", "Sonne"], t: ["🍅", "Tomate"], u: ["🦉", "Uhu"], v: ["🐦", "Vogel"], w: ["🐋", "Wal"], x: ["🎷", "Saxofon"], y: ["🧘", "Yoga"], z: ["🦓", "Zebra"],
+    "ä": ["🍏", "Äpfel"], "ö": ["🛢️", "Öl"], "ü": ["🎁", "Überraschung"], "ß": ["⚽", "Fußball"], au: ["🚗", "Auto"], ei: ["🥚", "Ei"], eu: ["🦉", "Eule"], ie: ["🐝", "Biene"],
+    sch: ["🐑", "Schaf"], ch: ["🐉", "Drache"], sp: ["🕷️", "Spinne"], st: ["⭐", "Stern"], pf: ["🐴", "Pferd"], ck: ["🔔", "Glocke"], ng: ["💍", "Ring"], nk: ["🏦", "Bank"] };
+const grossK = b => b === "ß" ? "" : b.charAt(0).toUpperCase() + b.slice(1);
+// Wort mit hervorgehobenem Buchstaben
+function wortMarkiert(wort, b){ const i = wort.toLowerCase().indexOf(b); return i < 0 ? esc(wort) : esc(wort.slice(0, i)) + `<em>${esc(wort.slice(i, i + b.length))}</em>` + esc(wort.slice(i + b.length)); }
 const HINWEIS_ICONS = ["📢", "⚠️", "🎂", "✉️", "📝", "🏃", "🍎", "🎉", "🧑‍🏫", "🏫", "🚌", "⏰", "💡", "❤️"];
 const TAGE = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
 const TAGE_FARBE = ["#e2574c", "#3d7ea6", "#e67e22", "#3f9a5a", "#8e44ad", "#d4a017", "#e2574c"];
@@ -165,11 +174,16 @@ function zeichnen(){
           <div class="mg-kopfzeile"><button class="mg-pfeil" data-tag="-1" title="Tag zurück">‹</button><h2>${istHeute ? "Heute ist" : tagVersatz === 1 ? "Morgen ist" : tagVersatz === -1 ? "Gestern war" : "Am"}</h2><button class="mg-pfeil" data-tag="1" title="Tag vor">›</button></div>
           <div class="mg-wtag">${TAGE[wt]}</div>
           <div class="mg-tagzahl"><b>${d.getDate()}.</b> <span>${MONATE[d.getMonth()]}${klein ? "" : " " + d.getFullYear()}</span></div>
-          ${klein ? `<div class="mg-woche">${[1, 2, 3, 4, 5].map(i => `<span class="${i === wt ? "an" : ""}" style="--tf:${TAGE_FARBE[i]}">${TAGE[i].slice(0, 2)}</span>`).join("")}</div><div class="mg-jz"><span>${jz[0]}</span>${jz[1]}</div>`
+          ${klein ? `<div class="mg-woche">${[1, 2, 3, 4, 5].map(i => `<span class="${i === wt ? "an" : ""}" style="--tf:${TAGE_FARBE[i]}">${TAGE[i].slice(0, 2)}</span>`).join("")}</div>${k.buchstabe ? "" : `<div class="mg-jz"><span>${jz[0]}</span>${jz[1]}</div>`}`
                   : `<div class="mg-info">${jz[0]} ${jz[1]} · Kalenderwoche ${kw(d)}</div>`}
           ${!istHeute ? `<button class="mg-heute" data-tag="0">↺ zurück zu heute</button>` : ""}
         </section>
-        <section class="mg-karte mg-wetter" data-wetter>
+        ${k.buchstabe ? (() => { const b = k.buchstabe.toLowerCase(), an = ANLAUT[b];
+            return `<section class="mg-karte mg-bdw" data-bdw="${esc(b)}" title="Im Buchstabenkurs öffnen">
+            <h2>Buchstabe der Woche</h2>
+            <div class="mg-bdw-reihe"><div class="mg-bdw-b ${b.length > 1 ? "lang" : ""}">${esc(grossK(b))}<span>${esc(b)}</span></div>
+            ${an ? `<div class="mg-bdw-bild"><span>${an[0]}</span><b>${wortMarkiert(an[1], b)}</b></div>` : ""}</div></section>`; })() : ""}
+        <section class="mg-karte mg-wetter ${k.buchstabe ? "kompakt" : ""}" data-wetter>
           <h2>Das Wetter</h2>
           ${wi ? `<div class="mg-wbild">${wi[0]}</div><div class="mg-wtext">${esc(wi[1])}${w.jetzt != null && !klein ? ` · ${w.jetzt} °C` : ""}</div>
             ${w.max != null ? `<div class="mg-temp">${klein ? `🌡️ ${w.jetzt != null ? w.jetzt : w.max} Grad` : `↓ ${w.min} °C &nbsp; ↑ ${w.max} °C`}</div>` : ""}
@@ -210,7 +224,8 @@ function uhr(){
 
 /* ---------- Bedienung auf der Tafel ---------- */
 function klick(ev){
-    const t = ev.target.closest("[data-tag],[data-wetter],[data-ding],[data-bearbeiten]"); if (!t) return;
+    const t = ev.target.closest("[data-tag],[data-wetter],[data-ding],[data-bearbeiten],[data-bdw]"); if (!t) return;
+    if (t.dataset.bdw) { if (window.kursMitBuchstabe) window.kursMitBuchstabe(t.dataset.bdw); return; }
     if (t.dataset.tag !== undefined) { tagVersatz = t.dataset.tag === "0" ? 0 : tagVersatz + +t.dataset.tag; abgehakt = {}; wetterLive = null; zeichnen(); wetterLaden(); return; }
     if (t.dataset.ding) { abgehakt[t.dataset.ding] = !abgehakt[t.dataset.ding]; t.classList.toggle("ok"); return; }
     if (t.dataset.bearbeiten) { bearbeiten(t.dataset.bearbeiten); return; }
@@ -251,6 +266,7 @@ function bearbeiten(r){
           <div><label>Name der Klasse</label><input data-feld="name" value="${esc(k.name)}" maxlength="20"></div>
           <div><label>Klassenstufe (Darstellung)</label><select data-feld="stufe"><option value="12" ${k.stufe === "12" ? "selected" : ""}>Klasse 1/2 – große Bilder, wenig Text</option><option value="34" ${k.stufe === "34" ? "selected" : ""}>Klasse 3/4 – mit Uhrzeiten und Temperaturen</option></select></div>
           <div style="grid-column:1/-1"><label>Begrüßung (leer = automatisch „Guten Morgen, liebe Klasse ${esc(k.name)}!“)</label><input data-feld="gruss" value="${esc(k.gruss)}" maxlength="80" placeholder="Guten Morgen, liebe Klasse ${esc(k.name)}!"></div>
+          <div><label>Buchstabe der Woche (leer = Feld ausblenden)</label><div class="mg-reihe"><input data-feld="buchstabe" value="${esc(k.buchstabe || "")}" maxlength="3" placeholder="z. B. m, ei, sch" style="flex:1">${kursBuchstabe() ? `<button class="mg-k hell" data-ausKurs>aus dem Buchstabenkurs: ${esc(kursBuchstabe())}</button>` : ""}</div><small class="mg-hilfe">Auch Laute wie au, ei, sch. Antippen auf der Tafel öffnet den Buchstabenkurs.</small></div>
           <div><label>Ort fürs Wetter</label><div class="mg-reihe"><input data-ort value="${esc((k.ort || {}).name || "")}" style="flex:1"><button class="mg-k hell" data-ortsuche>suchen</button></div><small class="mg-hilfe" id="mgOrt">${k.ort && k.ort.lat ? `📍 ${esc(k.ort.name)} (${(+k.ort.lat).toFixed(2)}, ${(+k.ort.lon).toFixed(2)})` : ""}</small></div>
         </div>
         ${D.klassen.length > 1 ? `<button class="mg-k rot" data-loeschen>🗑 Klasse ${esc(k.name)} löschen</button>` : ""}`;
@@ -287,7 +303,8 @@ function editorAktivieren(p, k){
     p.querySelectorAll("[data-klasse]").forEach(b => b.addEventListener("click", () => { D.aktiv = b.dataset.klasse; abgehakt = {}; wetterLive = null; neu(); wetterLaden(); }));
     const nb = p.querySelector("[data-neu]"); if (nb) nb.addEventListener("click", () => { const name = prompt("Name der neuen Klasse (z. B. 2b):"); if (!name) return; const x = neueKlasse(name.trim().slice(0, 20), klasse().stufe); x.ort = Object.assign({}, klasse().ort); x.zeiten = klasse().zeiten.map(z => z.slice()); D.klassen.push(x); D.aktiv = x.id; neu(); });
     const lb = p.querySelector("[data-loeschen]"); if (lb) lb.addEventListener("click", () => { if (!confirm(`Klasse ${k.name} mit Stundenplan und Hinweisen löschen?`)) return; D.klassen = D.klassen.filter(x => x.id !== k.id); D.aktiv = D.klassen[0].id; neu(); });
-    p.querySelectorAll("[data-feld]").forEach(i => i.addEventListener("change", () => { k[i.dataset.feld] = i.value.trim(); delete k.beispiel; speichern(); zeichnen(); }));
+    p.querySelectorAll("[data-feld]").forEach(i => i.addEventListener("change", () => { k[i.dataset.feld] = i.dataset.feld === "buchstabe" ? i.value.trim().toLowerCase() : i.value.trim(); delete k.beispiel; speichern(); zeichnen(); }));
+    const ak = p.querySelector("[data-ausKurs]"); if (ak) ak.addEventListener("click", () => { k.buchstabe = kursBuchstabe(); p.querySelector('[data-feld="buchstabe"]').value = k.buchstabe; speichern(); zeichnen(); });
     const os = p.querySelector("[data-ortsuche]");
     if (os) os.addEventListener("click", async () => {
         const name = p.querySelector("[data-ort]").value.trim(); if (!name) return;
@@ -316,6 +333,8 @@ function editorAktivieren(p, k){
     if (hp) hp.addEventListener("click", () => { const t = p.querySelector("#mgHT").value.trim(); if (!t) return; (k.hinweise = k.hinweise || []).push({ id: neueId(), e: p.querySelector("#mgHE").value, t, wann: p.querySelector("#mgHW").value }); aufraeumen(k); neu(); });
     p.querySelectorAll("[data-hweg]").forEach(b => b.addEventListener("click", () => { k.hinweise = k.hinweise.filter(h => h.id !== b.dataset.hweg); neu(); }));
 }
+// Buchstabe der Stunde aus dem Buchstabenkurs (auf diesem Gerät)
+function kursBuchstabe(){ try { return (JSON.parse(localStorage.getItem("tb_buchstabenkurs") || "{}").aktuell) || ""; } catch (x) { return ""; } }
 // Alte Tages-Hinweise (älter als 2 Wochen) entfernen
 function aufraeumen(k){ const grenze = iso(new Date(Date.now() - 14 * 864e5)); k.hinweise = (k.hinweise || []).filter(h => !/^\d{4}-/.test(h.wann) || h.wann >= grenze); }
 

@@ -13,7 +13,7 @@ $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESC
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tafelbilder · Leuchtturm</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <!--
   Leuchtturm – Tafelbilder für die digitale Tafel
@@ -118,6 +118,20 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .mg-woche span.an{ background:var(--tf); color:white; transform:scale(1.15); }
 .mg-jz{ margin-top:1.4vh; font:800 clamp(15px,min(1.6vw,2.7vh),30px) "Nunito",sans-serif; color:#8a7a60; display:flex; align-items:center; justify-content:center; gap:.4em; }
 .mg-jz span{ font-size:1.8em; }
+.mg-bdw{ cursor:pointer; flex:1.1 !important; background:linear-gradient(135deg,#fffdf6,#f2f8fd); }
+.mg-bdw-reihe{ flex:1; display:flex; align-items:center; justify-content:center; gap:1.2vw; min-height:0; }
+.mg-bdw-b{ font:700 clamp(44px,min(5.2vw,9vh),112px)/1.15 "Andika","Nunito",sans-serif; color:#1e4f8c; padding:.02em .3em .08em; border-radius:20px; background:#fff3c4; box-shadow:inset 0 -6px 0 rgba(0,0,0,.05); white-space:nowrap; }
+.mg-bdw-b span{ margin-left:.12em; }
+.mg-bdw-b.lang span{ margin-left:.35em; } .mg-bdw-b.lang{ font-size:clamp(34px,min(3.8vw,6.6vh),84px); }
+.mg-wetter.kompakt{ display:grid; grid-template-columns:auto 1fr; grid-template-rows:auto 1fr auto auto; column-gap:1vw; align-items:center; text-align:left; justify-items:start; }
+.mg-wetter.kompakt h2{ grid-column:1/-1; }
+.mg-wetter.kompakt .mg-wbild{ grid-row:2/5; font-size:clamp(40px,min(4.6vw,8vh),96px); }
+.mg-wetter.kompakt .mg-wtext{ align-self:end; } .mg-wetter.kompakt .mg-kleidung{ margin-top:.4vh; }
+.mg-bdw-bild{ display:flex; flex-direction:column; align-items:center; }
+.mg-bdw-bild span{ font-size:clamp(34px,min(4.2vw,7vh),84px); line-height:1.1; }
+.mg-bdw-bild b{ font:800 clamp(15px,min(1.6vw,2.7vh),30px) "Nunito",sans-serif; color:#16324a; }
+.mg-bdw-bild em{ font-style:normal; color:#e2574c; text-decoration:underline; text-decoration-thickness:3px; text-underline-offset:3px; }
+.mg-spalte .mg-datum{ flex:0 1 auto; }
 .mg-heute{ margin:1vh auto 0; border:0; background:#fff1c2; border-radius:999px; padding:6px 14px; font:800 14px "Nunito",sans-serif; cursor:pointer; }
 /* Wetter */
 .mg-wetter{ text-align:center; cursor:pointer; align-items:center; justify-content:center; }
@@ -639,6 +653,11 @@ function buchstabeSchritt(d){
 }
 function neuMischen(){ mischung++; wischen(); zeichnen(); }
 function vollbild(){ try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); } catch (x) {} }
+// Aus „Guten Morgen!“: Buchstabe der Woche im Buchstabenkurs öffnen
+function kursMitBuchstabe(b){
+    if (ALLE.includes(b)) { E.aktuell = b; E.ansicht = "buchstabe"; if (!E.gelernt.includes(b)) E.gelernt.push(b); merken(); }
+    tafelMorgen.schliessen(); kursOeffnen();
+}
 function kursOeffnen(){ document.getElementById("tafel").classList.add("an"); document.getElementById("uebersicht").style.display = "none"; history.replaceState(null, "", "#buchstabenkurs"); requestAnimationFrame(zeichnen); }
 function kursSchliessen(){ document.getElementById("tafel").classList.remove("an"); document.getElementById("uebersicht").style.display = ""; history.replaceState(null, "", location.pathname); }
 window.addEventListener("resize", () => { if (document.getElementById("tafel").classList.contains("an")) zeichnen(); });
