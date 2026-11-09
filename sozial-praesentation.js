@@ -290,6 +290,7 @@ const CSS = `
 #praes .l-duell{ display:flex; align-items:center; gap:1.2vw; font:400 clamp(17px,2vw,30px)/1.25 "Patrick Hand","Andika",sans-serif; text-align:left; }
 #praes .l-duell b{ color:#ffe066; font-weight:400; font-size:1.2em; }
 #praes .l-duell .l-eule{ width:clamp(56px,9vh,110px); }
+#praes .p-knopf.l-los{ font-size:clamp(22px,2.6vw,40px); padding:.5em 1.2em; animation:lPuls 1.6s ease-in-out infinite; border-color:#ffe066; }
 #praes .l-zettel{ background:#fffdf5; color:#1d4634; font:400 clamp(24px,3.6vw,58px)/1.25 "Patrick Hand","Andika",sans-serif; padding:.6em 1.1em; border-radius:4px; max-width:min(82vw,1200px); transform:rotate(1deg); box-shadow:0 10px 0 rgba(0,0,0,.18); margin-top:2vh; background-image:repeating-linear-gradient(transparent 0 1.24em, rgba(47,107,80,.15) 1.24em 1.3em); }
 #praes .l-akte{ position:relative; background:#fdf8ec; color:#2a1f14; border-radius:4px 14px 10px 10px; padding:2vh 2.4vw 1.6vh; margin-top:4vh; max-width:min(80vw,1250px); width:100%; text-align:left; box-shadow:0 12px 0 rgba(0,0,0,.2); transform:rotate(-.5deg); }
 #praes .l-akte-reiter{ position:absolute; top:-3.2vh; left:2vw; background:#fdf8ec; color:#7a4a1c; font:400 clamp(16px,1.8vw,28px) "Patrick Hand","Andika",sans-serif; padding:.1em .9em; border-radius:10px 10px 0 0; letter-spacing:.08em; }
@@ -566,11 +567,29 @@ window.sozialMedien = medienFuer;
 function uebungStufe(e, u0, stufe){
     return Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, antworten: u0["antworten" + stufe] || u0.antworten, folie: u0["folie" + stufe] || u0.folie || "", warum: u0["warum" + stufe] || u0.warum || "", zusatz: !!(window.istZusatz && window.istZusatz(e, u0, stufe)) });
 }
+function warmupTafel(text, stufe){
+    const t = String(text || ""), zr = (t.match(/bis (10|20|100|1000)\b/) || [])[1];
+    if (/Blitzrechnen|Einmaleins-Blitz/i.test(t)) {
+        const ein = { bis: +(zr || (stufe === "34" ? 100 : 10)), art: "plusminus" };
+        if (/Verdoppeln/i.test(t)) ein.art = "verdoppeln";
+        else if (/Ergänzen/i.test(t)) ein.art = "ergaenzen";
+        else if (/Einmaleins/i.test(t)) ein.art = "mal";
+        if (/Fehler/i.test(t)) ein.fehler = true;
+        return { werkzeug: "blitzrechnen", titel: "Blitzrechnen", einstellung: ein };
+    }
+    if (/Blitzlesen/i.test(t)) return { werkzeug: "blitzlesen", titel: "Blitzlesen", einstellung: { art: /Silben/i.test(t) ? "silben12" : /Sätze/i.test(t) ? "saetze" + stufe : "woerter" + stufe } };
+    const m = [[/Blitzblick|Zwanzigerfeld/i, "zwanzigerfeld"], [/Uhr-Blitz/i, "uhr"], [/Geld-Blitz/i, "geld"], [/ABC-Blitz/i, "abc"], [/Zahlenstrahl/i, "zahlenstrahl"], [/Kim-Spiel/i, "kim"], [/Bewegungspause/i, "bewegung"]].find(([r]) => r.test(t));
+    return m ? { werkzeug: m[1], einstellung: {} } : null;
+}
 function folienBauenLern(e, stufe){
     const f = [];
     const tafel = (e.tafel || []).filter(t => t && t.werkzeug && (!t.fuer || t.fuer === "alle" || t.fuer === stufe));
     f.push({ typ: "mission" });
-    f.push({ typ: "kopfstart", warmup: stufe === "34" ? (e.warmup34 || e.warmup12 || e.warmup) : (e.warmup12 || e.warmup34 || e.warmup), tafel: tafel[0] || null });
+    const warmup = stufe === "34" ? (e.warmup34 || e.warmup12 || e.warmup) : (e.warmup12 || e.warmup34 || e.warmup);
+    const warmTafel = warmupTafel(warmup, stufe);
+    // Passt der Kopf-Start zu einem Tafel-Spiel (z. B. Blitzrechnen), startet genau das – das eingeplante Tafel-Spiel wird dann zur Tafel-Challenge
+    if (warmTafel && tafel[0] && tafel[0].werkzeug !== warmTafel.werkzeug) tafel.splice(1, 0, tafel[0]);
+    f.push({ typ: "kopfstart", warmup, tafel: warmTafel || tafel[0] || null, warm: !!warmTafel });
     const ein = window.lernEinstieg ? window.lernEinstieg(e, stufe) : { art: "geschichte" };
     if (ein.art === "knobel") f.push({ typ: "knobel", d: ein });
     else if (ein.art === "erklaert") { f.push({ typ: "erklaert", d: ein }); if (ein.aufgabe) f.push({ typ: "mitmachen", d: ein }); }
@@ -744,6 +763,9 @@ function naechste(){
     const fr = zustand.buehne.querySelector(".p-fragen");
     if (fr) { const alle = [...fr.querySelectorAll(".p-frage")], an = alle.findIndex(x => x.classList.contains("an")); if (an < alle.length - 1) { alle.forEach((x, k) => { x.classList.toggle("an", k === an + 1); if (k <= an + 1) x.classList.add("war"); }); return; } }
     if (schrittZeigen(zustand.buehne)) return;   // „Ella erklärt“: erst Schritt für Schritt aufdecken
+    // Kopf-Start: „weiter“ startet zuerst das Aufwärm-Spiel (z. B. Blitzrechnen), nach dem Schließen geht es zur nächsten Folie
+    const fk = zustand.folien && zustand.folien[zustand.i];
+    if (fk && fk.typ === "kopfstart" && fk.warm && !fk.gestartet && window.lernTafel) { fk.gestartet = true; window.lernTafel.starten(fk.tafel.werkzeug, fk.tafel.einstellung || {}); return; }
     zeigen(zustand.i + 1);
 }
 function countdownStart(el, text){
@@ -855,7 +877,7 @@ function folieHtml(f, e){
             const inf = f.tafel && window.lernTafel && window.lernTafel.info(f.tafel.werkzeug);
             return `<div class="l-stempel">KOPF-START · 3 MINUTEN</div><h2>🧠 Gehirn einschalten!</h2>
                 <div class="l-zettel">${inline(f.warmup || "Blitzrunde: Ich frage – ihr antwortet blitzschnell!")}</div>
-                <div class="p-reihe">${inf ? `<button class="p-knopf" data-tafel="1">${inf.emoji || "▶"} ${esc(f.tafel.titel || inf.titel)} an der Tafel</button>` : ""}<button class="p-knopf hell" data-start="3">⏱ 3 Minuten</button></div>`;
+                <div class="p-reihe">${inf ? `<button class="p-knopf ${f.warm ? "l-los" : ""}" data-tafel="1">${inf.emoji || "▶"} ${esc(f.warm ? inf.titel + " starten" : (f.tafel.titel || inf.titel) + " an der Tafel")}</button>` : ""}<button class="p-knopf hell" data-start="3">⏱ 3 Minuten</button></div>`;
         }
         if (f.typ === "fall") {
             const leser = zustand.vorleser[zustand.i];
@@ -1090,7 +1112,7 @@ function folieAktivieren(el, f){
     }));
     el.querySelectorAll("[data-welle]").forEach(b => b.addEventListener("click", () => applauswelle(el)));
     // Lernangebot: Tafel-Spiel, Denk-Runde, Countdown, Auflösen, Punkte
-    el.querySelectorAll("[data-tafel]").forEach(b => b.addEventListener("click", () => { if (window.lernTafel && f.tafel) window.lernTafel.starten(f.tafel.werkzeug, f.tafel.einstellung || {}); }));
+    el.querySelectorAll("[data-tafel]").forEach(b => b.addEventListener("click", () => { if (window.lernTafel && f.tafel) f.gestartet = true, window.lernTafel.starten(f.tafel.werkzeug, f.tafel.einstellung || {}); }));
     el.querySelectorAll("[data-tps]").forEach(b => b.addEventListener("click", () => {
         const k = +b.dataset.tps, alle = [...el.querySelectorAll("[data-tps]")];
         if (zustand.mini) { clearInterval(zustand.mini); zustand.mini = null; }
