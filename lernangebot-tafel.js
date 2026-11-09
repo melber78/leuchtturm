@@ -421,7 +421,7 @@ W.leise = {
     // kurze Erklärung je Art (steht vor dem Start unten)
     erklaerung: {
         ende: "In der Mitte wächst ganz langsam ein Baum – aber nur, solange es leise ist. Keine Uhr für die Kinder (Restzeit klein unten rechts). Am Ende kommt die Überraschung: je leiser ihr wart, desto größer.",
-        melden: "In der Mitte wächst langsam ein Baum, solange es leise ist. Nur wenn es zu laut wird, erscheint kurz die Eule und sagt „Pssst!“. Am Ende seht ihr, wie oft sie kommen musste.",
+        melden: "Eine Eule schläft auf ihrem Ast, der Mond geht langsam auf (zeigt, wie weit die Zeit ist). Wird es zu laut, wacht sie auf und sagt „Pssst!“. Am Ende seht ihr, wie oft sie kommen musste.",
         sterne: "Für jede leise Minute kommt heimlich ein Stern ins Glas – das Glas bleibt zugedeckt. Erst wenn die Zeit um ist, wird aufgedeckt, wie viele Sterne ihr gesammelt habt.",
         zuschauen: "Je leiser ihr seid, desto mehr Tiere kommen live in den Wald. Wird es laut, laufen sie weg. (Lenkt eher ab – gut für Stillephasen ohne Arbeit.)"
     },
@@ -451,7 +451,7 @@ W.leise = {
         const ruheText = "";   // Kinder sehen nur Uhr und Symbol – Erklärungen stehen bei den Einstellungen
         // Statt Uhr: ein Baum wächst ganz langsam – nur solange es leise ist
         const BLUETEN = [[112,150],[176,128],[205,176],[96,196],[150,104],[140,168],[190,214],[118,232],[168,226],[226,140],[78,160],[150,200]];
-        const baum = `<div class="lw-baum-platz" style="--g:0"><svg viewBox="0 0 300 370" aria-hidden="true">
+        const baum = `<div class="lw-baum-platz"><svg viewBox="0 0 300 370" aria-hidden="true">
             <ellipse cx="150" cy="352" rx="70" ry="9" fill="rgba(47,74,60,.12)"/>
             <g class="lw-keim"><path d="M150 352 C150 340 151 332 150 322" stroke="#5f8f4e" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M150 330 C138 318 126 322 124 330 C134 336 144 334 150 330Z" fill="#7fb36e"/><path d="M150 326 C160 312 174 314 178 322 C168 330 158 330 150 326Z" fill="#94c47f"/><ellipse cx="150" cy="354" rx="10" ry="4" fill="#8a6a4a"/></g>
             <g class="lw-baum-g">
@@ -465,10 +465,50 @@ W.leise = {
                 <g class="lw-blueten">${BLUETEN.map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${i % 3 ? 6 : 8}" fill="${i % 2 ? "#f7c6d4" : "#fff4f7"}"/>`).join("")}</g>
               </g>
             </g></svg></div>`;
-        const ruhe = ruhigerModus ? `<div class="lw-ruhe ${modus}${meer ? " meer" : ""}">
-            ${modus === "sterne"
-                ? `<div class="lw-r-karte"><div class="lw-r-reihe"><div class="lw-glas zu"><div class="lw-glas-sterne"></div><div class="lw-tuch"><span>?</span></div></div><div class="lw-r-zahl" hidden>⭐ <b>0</b></div></div><div class="lw-r-text"></div></div>`
-                : `${baum}<div class="lw-r-karte lw-nurtext" hidden><div class="lw-r-text"></div></div>`}
+        // Pssst-Eule: schlafende Eule in der Abenddämmerung, der Mond geht langsam auf
+        const EULE = `<svg class="lw-eule" viewBox="0 0 200 230" aria-hidden="true">
+            <g class="lw-eule-koerper">
+              <path d="M52 62 L40 18 L80 44 Z M148 62 L160 18 L120 44 Z" fill="#8a5a3a"/>
+              <ellipse cx="100" cy="128" rx="74" ry="86" fill="#a5714a"/>
+              <path d="M30 120 C20 160 40 200 70 206 C56 180 50 150 52 118 Z" fill="#8a5a3a"/>
+              <path d="M170 120 C180 160 160 200 130 206 C144 180 150 150 148 118 Z" fill="#8a5a3a"/>
+              <ellipse cx="100" cy="150" rx="46" ry="54" fill="#f1dcc0"/>
+              <path d="M76 132 q6 6 12 0 M100 132 q6 6 12 0 M88 150 q6 6 12 0 M112 150 q6 6 12 0 M76 168 q6 6 12 0 M100 168 q6 6 12 0 M88 186 q6 6 12 0" stroke="#d8b892" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <circle cx="70" cy="86" r="30" fill="#f6e6cc"/><circle cx="130" cy="86" r="30" fill="#f6e6cc"/>
+              <g class="lw-augen-zu" stroke="#5a3a24" stroke-width="5" fill="none" stroke-linecap="round"><path d="M56 90 q14 10 28 0"/><path d="M116 90 q14 10 28 0"/></g>
+              <g class="lw-augen-auf"><circle cx="70" cy="86" r="15" fill="#2b2118"/><circle cx="130" cy="86" r="15" fill="#2b2118"/><circle cx="75" cy="80" r="5" fill="#fff"/><circle cx="135" cy="80" r="5" fill="#fff"/></g>
+              <circle cx="52" cy="106" r="7" fill="#f2a58e" opacity=".55"/><circle cx="148" cy="106" r="7" fill="#f2a58e" opacity=".55"/>
+              <path d="M92 100 L108 100 L100 114 Z" fill="#f0a03c"/>
+            </g>
+            <path d="M74 212 l-6 12 M82 212 v14 M90 212 l6 12 M110 212 l-6 12 M118 212 v14 M126 212 l6 12" stroke="#e39a3a" stroke-width="5" stroke-linecap="round"/>
+          </svg>`;
+        const abend = `<div class="lw-abend">
+            <div class="lw-mond"></div>
+            ${[[12,14],[22,30],[34,10],[48,24],[62,8],[76,20],[88,34],[8,40],[56,38],[30,44]].map(([x, y], i) => `<i class="lw-stern" style="left:${x}%;top:${y}%;--v:${(i % 5) / 10}"></i>`).join("")}
+            <svg class="lw-huegel" viewBox="0 0 1600 400" preserveAspectRatio="none"><path d="M0 230 Q300 150 620 210 T1220 190 T1600 200 V400 H0Z" fill="#7a6a72" opacity=".55"/><path d="M0 290 Q400 230 820 280 T1600 260 V400 H0Z" fill="#55604a"/><path d="M0 340 Q500 300 1000 330 T1600 320 V400 H0Z" fill="#46513d"/></svg>
+            <div class="lw-ast-platz"><svg class="lw-ast" viewBox="0 0 1000 200" preserveAspectRatio="xMinYMid meet"><path d="M-20 120 C200 100 420 118 640 112 C700 110 760 98 800 84" stroke="#6b4a32" stroke-width="26" fill="none" stroke-linecap="round"/><path d="M520 114 C560 86 600 70 650 64" stroke="#6b4a32" stroke-width="12" fill="none" stroke-linecap="round"/><ellipse cx="660" cy="60" rx="36" ry="16" fill="#6f8f55"/><ellipse cx="812" cy="80" rx="40" ry="18" fill="#7a9a5e"/><ellipse cx="300" cy="96" rx="34" ry="14" fill="#6f8f55"/></svg>
+            <div class="lw-eule-platz">${EULE}<div class="lw-zzz"><span>z</span><span>z</span><span>z</span></div><div class="lw-eule-blase" hidden>Pssst!</div></div></div>
+          </div>`;
+        // Stille-Sterne: Einmachglas unter einem karierten Tuch, ringsum Glühwürmchen
+        const glasSvg = `<svg class="lw-glas-bild" viewBox="0 0 220 300" aria-hidden="true">
+            <rect x="46" y="20" width="128" height="34" rx="8" fill="#c99a52"/><rect x="46" y="20" width="128" height="10" rx="5" fill="#ddb36c"/>
+            <path d="M54 54 H166 C190 70 196 96 196 120 V256 C196 278 180 290 158 290 H62 C40 290 24 278 24 256 V120 C24 96 30 70 54 54 Z" fill="rgba(255,248,230,.16)" stroke="rgba(255,248,230,.75)" stroke-width="5"/>
+            <path d="M44 110 C40 150 40 210 46 250" stroke="rgba(255,255,255,.45)" stroke-width="9" fill="none" stroke-linecap="round"/>
+          </svg>`;
+        const tuchSvg = `<svg class="lw-tuch-bild" viewBox="0 0 260 200" aria-hidden="true"><defs><pattern id="lwKaro" width="28" height="28" patternUnits="userSpaceOnUse"><rect width="28" height="28" fill="#fff6ea"/><rect width="14" height="28" fill="#d9574a" opacity=".55"/><rect width="28" height="14" fill="#d9574a" opacity=".55"/></pattern></defs>
+            <path d="M20 70 C40 30 220 30 240 70 L250 170 C230 182 210 160 190 176 C170 190 150 166 130 180 C110 192 90 168 70 180 C50 190 30 170 10 176 Z" fill="url(#lwKaro)" stroke="#c9483c" stroke-width="2"/>
+            <path d="M34 86 C90 104 170 104 226 86" stroke="#a8763a" stroke-width="5" fill="none"/><path d="M200 94 c18 -16 30 -6 18 6 c14 4 10 20 -10 8" stroke="#a8763a" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`;
+        const sterneSzene = `<div class="lw-nacht">
+            ${Array.from({ length: 14 }, (_, i) => `<i class="lw-gluehwurm" style="left:${(i * 37) % 96 + 2}%;top:${(i * 53) % 70 + 12}%;--t:${14 + (i % 5) * 4}s;--d:${-i * 2.3}s"></i>`).join("")}
+            ${[[10,10],[24,22],[40,8],[70,12],[84,26],[92,8],[56,20]].map(([x, y]) => `<i class="lw-stern" style="left:${x}%;top:${y}%;--v:.6"></i>`).join("")}
+            <svg class="lw-huegel" viewBox="0 0 1600 400" preserveAspectRatio="none"><path d="M0 300 Q400 250 820 290 T1600 280 V400 H0Z" fill="#3d3048"/><path d="M0 350 Q600 320 1100 345 T1600 340 V400 H0Z" fill="#30263a"/></svg>
+            <div class="lw-stumpf"></div>
+            <div class="lw-glas zu">${glasSvg}<div class="lw-glas-sterne"></div><div class="lw-tuch">${tuchSvg}</div><div class="lw-r-zahl" hidden>⭐ <b>0</b></div></div>
+          </div>`;
+        const geschenk = `<svg class="lw-geschenk" viewBox="0 0 100 100" aria-hidden="true"><rect x="12" y="40" width="76" height="54" rx="6" fill="#e2725b"/><rect x="6" y="28" width="88" height="18" rx="5" fill="#ee8a70"/><rect x="44" y="28" width="12" height="66" fill="#f6c453"/><path d="M50 28 C38 6 18 12 30 26 Z M50 28 C62 6 82 12 70 26 Z" fill="#f6c453"/></svg>`;
+        const ruhe = ruhigerModus ? `<div class="lw-ruhe ${modus}${meer ? " meer" : ""}" style="--g:0">
+            ${modus === "sterne" ? sterneSzene : modus === "melden" ? abend : `${baum}${geschenk}`}
+            <div class="lw-r-karte lw-nurtext" hidden><div class="lw-r-text"></div></div>
             <div class="lw-r-uhr" title="Restzeit">${Math.floor(dauer / 60)}:00</div>
             <div class="lw-fest" hidden></div>
             <div class="lw-r-pssst" hidden><div><span>🦉</span><b>Pssst!</b></div></div>
@@ -481,7 +521,6 @@ W.leise = {
         </div>
         <div class="lt-frage lw-hinweis">Tippe auf „Start“ und erlaube das Mikrofon.</div>`;
         const szene = el.querySelector(".lw-szene"), ebene = el.querySelector(".lw-tiere");
-        if (modus === "sterne") szene.classList.add("still");
         const kopf = el.querySelector(".lw-zahl b"), pegel = el.querySelector(".lw-pegel"), grenze = el.querySelector(".lw-grenze"), blase = el.querySelector(".lw-blase"), hinweis = el.querySelector(".lw-hinweis");
         // Lautstärke-Regler gehört zu den Einstellungen (oben), nicht auf die Tafel
         const leisteEl = el.closest(".lt-voll") && el.closest(".lt-voll").querySelector(".lt-leiste");
@@ -632,12 +671,18 @@ W.leise = {
         const ruheEl = el.querySelector(".lw-ruhe");
         let zeit = 0, stillZeit = 0, lautAm = 0, pssstN = 0, sterne = 0, minLaut = 0, minZeit = 0, pssstSperre = 0;
         const uhrEl = ruheEl && ruheEl.querySelector(".lw-r-uhr"), pssstEl = ruheEl && ruheEl.querySelector(".lw-r-pssst"), baumEl = ruheEl && ruheEl.querySelector(".lw-baum-platz");
-        const baumWachsen = () => { if (baumEl) baumEl.style.setProperty("--g", Math.min(1, stillZeit / (dauer * .9)).toFixed(3)); };
+        const baumWachsen = () => { if (ruheEl) ruheEl.style.setProperty("--g", (modus === "melden" ? Math.min(1, zeit / dauer) : Math.min(1, stillZeit / (dauer * .9))).toFixed(3)); };
+        const euleEl = ruheEl && ruheEl.querySelector(".lw-eule-platz"), blaseEl = ruheEl && ruheEl.querySelector(".lw-eule-blase");
+        let euleT = null;
         const mmss = sek => Math.floor(sek / 60) + ":" + String(Math.floor(sek % 60)).padStart(2, "0");
         function pssst(){
             pssstN++; pssstSperre = Date.now() + 5000;
-            pssstEl.hidden = false; pssstEl.classList.remove("an"); void pssstEl.offsetWidth; pssstEl.classList.add("an");
             api.klang(330, .3, "sine"); setTimeout(() => api.klang(262, .4, "sine"), 260);
+            if (euleEl) {   // die schlafende Eule wacht kurz auf
+                clearTimeout(euleT); euleEl.classList.add("wach"); blaseEl.textContent = "Pssst!"; blaseEl.hidden = false;
+                euleT = setTimeout(() => { euleEl.classList.remove("wach"); blaseEl.hidden = true; }, 2600); return;
+            }
+            pssstEl.hidden = false; pssstEl.classList.remove("an"); void pssstEl.offsetWidth; pssstEl.classList.add("an");
             setTimeout(() => { pssstEl.hidden = true; }, 2200);
         }
         function sternDazu(){
@@ -688,7 +733,7 @@ W.leise = {
                 if (!k) hinweis.textContent = `Heute hat sich kein Tier ${ziel} getraut – es war zu laut. Nächstes Mal klappt's! 🍀`;
             } else if (modus === "sterne") {
                 uhrEl.textContent = ""; const txt = ruheEl.querySelector(".lw-r-text"), zahl = ruheEl.querySelector(".lw-r-zahl"), glas = ruheEl.querySelector(".lw-glas"), topf = ruheEl.querySelector(".lw-glas-sterne");
-                txt.textContent = "Und jetzt … aufdecken! 🥁";
+                ruheEl.querySelector(".lw-nurtext").hidden = false; txt.textContent = "Und jetzt … aufdecken! 🥁";
                 setTimeout(() => {
                     glas.classList.remove("zu"); zahl.hidden = false; let i = 0;
                     const fertigText = () => { txt.textContent = sterne === 0 ? "Diesmal kein Stern – nächstes Mal schafft ihr das! 🍀" : sterne === 1 ? "Ihr habt 1 Stern gesammelt! ⭐" : `Ihr habt ${sterne} Sterne gesammelt! 🎉`; };
@@ -702,7 +747,8 @@ W.leise = {
                     }, 550);
                 }, 1600);
             } else {
-                uhrEl.textContent = ""; ruheEl.querySelector(".lw-nurtext").hidden = false; ruheEl.querySelector(".lw-r-text").textContent = pssstN === 0 ? "Super – kein einziges Mal „Pssst“! 🌟" : pssstN === 1 ? "Nur 1-mal „Pssst“ – gut gemacht!" : `${pssstN}-mal „Pssst“ – nächstes Mal schafft ihr weniger!`;
+                uhrEl.textContent = ""; clearTimeout(euleT); euleEl.classList.add("wach", "froh"); blaseEl.hidden = false;
+                blaseEl.textContent = pssstN === 0 ? "Danke! Ich habe super geschlafen! 🌙" : pssstN === 1 ? "Nur 1-mal geweckt – danke! 🌙" : `${pssstN}-mal geweckt … nächstes Mal schlafe ich länger! 💤`;
             }
         }
         hinweis.textContent = "";
@@ -711,8 +757,8 @@ W.leise = {
             if (ruhigerModus) {   // neue Runde
                 zeit = stillZeit = lautAm = pssstN = sterne = minLaut = minZeit = 0; fertig = false; jubeln(false);
                 tiere.forEach(t => { if (t.zust !== "weg") fliehen(t); }); sichtbar = 0; anzahlZeigen(); kopf.parentNode.hidden = true;
-                if (uhrEl) uhrEl.textContent = mmss(dauer); baumWachsen(); const nt = ruheEl.querySelector(".lw-nurtext"); if (nt) nt.hidden = true;
-                ruheEl.classList.remove("weg", "fest"); szene.classList.toggle("still", modus === "sterne"); const fe = ruheEl.querySelector(".lw-fest"); fe.hidden = true; fe.innerHTML = ""; ruheEl.querySelector(".lw-r-text").textContent = ruheText;
+                if (uhrEl) uhrEl.textContent = mmss(dauer); baumWachsen(); const nt = ruheEl.querySelector(".lw-nurtext"); if (nt) nt.hidden = true; if (euleEl) { euleEl.classList.remove("wach", "froh"); blaseEl.hidden = true; }
+                ruheEl.classList.remove("weg", "fest"); szene.classList.remove("still"); const fe = ruheEl.querySelector(".lw-fest"); fe.hidden = true; fe.innerHTML = ""; ruheEl.querySelector(".lw-r-text").textContent = ruheText;
                 if (modus === "sterne") { ruheEl.querySelector(".lw-glas-sterne").innerHTML = ""; ruheEl.querySelector(".lw-r-zahl b").textContent = "0"; ruheEl.querySelector(".lw-r-zahl").hidden = true; ruheEl.querySelector(".lw-glas").classList.add("zu"); }
                 hinweis.textContent = ""; return;
             }
@@ -1097,8 +1143,6 @@ const CSS = `
 .lt-kompakt .lw-ruhe.sterne .lw-r-uhr{ color:rgba(255,255,255,.28); }
 .lt-kompakt .lw-nurtext{ position:absolute; top:8%; left:50%; transform:translateX(-50%); z-index:3; padding:14px 26px; }
 .lt-kompakt .lw-nurtext[hidden]{ display:none; }
-.lt-kompakt .lw-ruhe.sterne .lw-r-karte{ padding:clamp(20px,4vh,44px) clamp(28px,5vw,70px); }
-.lt-kompakt .lw-ruhe.sterne .lw-glas{ width:clamp(130px,15vw,250px); height:clamp(160px,30vh,320px); }
 @media (prefers-reduced-motion:reduce){ .lw-krone{ animation:none; } }
 .lt-kompakt:not(.ist-voll) .lt-einst{ display:none !important; }
 .lt-kompakt .lw-fest{ align-items:flex-start; padding-top:5%; }
@@ -1107,6 +1151,85 @@ const CSS = `
 .lt-kompakt .lw-fest-karte b{ font-size:clamp(26px,min(3.4vw,6vh),60px); }
 .lt-kompakt .lw-fest-karte small{ font-size:clamp(14px,min(1.6vw,2.6vh),26px); }
 .lt-kompakt .lw-nurtext{ top:5%; }
+
+/* ===== warm & gemütlich ===== */
+.lt-kompakt{ --lw-tinte:#4a3a2a; --lw-sanft:#8a7560; --lw-rand:#eadfcd; background:linear-gradient(170deg,#fcf7ef 0%,#f4eadb 100%); }
+.lt-kompakt .lt-leiste select, .lt-kompakt .lt-x, .lt-kompakt .lw-regler, .lt-kompakt .lt-knopf{ border-color:var(--lw-rand); }
+.lt-kompakt .lw-regler input{ accent-color:#d98a52; }
+.lt-kompakt .lt-knopf.gold{ background:#c9764a; border-color:#c9764a; box-shadow:0 6px 18px rgba(201,118,74,.3); }
+.lt-kompakt .lw-szene{ box-shadow:0 18px 50px rgba(120,80,40,.16); }
+.lt-kompakt .lw-messer{ background:rgba(120,80,40,.12); } .lt-kompakt .lw-pegel{ background:#e8b77c; } .lt-kompakt .lw-pegel.laut{ background:#e07c6a; }
+.lt-kompakt .lw-grenze{ background:rgba(120,80,40,.4); }
+.lt-kompakt .lw-r-karte{ background:rgba(255,250,242,.88); border-color:rgba(255,255,255,.9); box-shadow:0 18px 50px rgba(120,80,40,.16); }
+.lt-kompakt .lw-r-text{ color:var(--lw-tinte); }
+.lt-kompakt .lw-fest-karte{ background:rgba(255,250,242,.92); }
+.lt-kompakt .lw-r-pssst{ background:rgba(252,243,230,.88) !important; }
+.lt-kompakt .lw-r-pssst > div{ background:#fffaf2; }
+/* Überraschung: warmes Morgenlicht + Geschenk */
+.lt-kompakt .lw-ruhe.ende{ background:linear-gradient(180deg, rgba(255,214,160,.22), rgba(255,236,200,.12)); backdrop-filter:blur(2px) sepia(.22) saturate(1.12); -webkit-backdrop-filter:blur(2px) sepia(.22) saturate(1.12); }
+.lw-geschenk{ position:absolute; bottom:3%; left:calc(50% + min(9vw, 15vh)); width:clamp(40px,min(5vw,9vh),90px); filter:drop-shadow(0 6px 10px rgba(120,60,30,.2)); animation:lwGeschenk 5s ease-in-out infinite; transform-origin:50% 100%; }
+@keyframes lwGeschenk{ 0%,88%,100%{ transform:rotate(0); } 92%{ transform:rotate(-4deg); } 96%{ transform:rotate(3deg); } }
+.lw-ruhe.fest .lw-geschenk{ display:none; }
+/* Pssst-Eule: Abenddämmerung, Mond steigt, Eule schläft */
+.lt-kompakt .lw-ruhe.melden{ background:none; backdrop-filter:none; -webkit-backdrop-filter:none; }
+.lw-abend{ position:absolute; inset:0; overflow:hidden; background:linear-gradient(180deg, #5d4a7a 0%, #a2637a 38%, #e59a72 68%, #f6c98e 100%); }
+.lw-abend::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg,#2f2a4f,#5b4466 60%,#7a5560); opacity:calc(var(--g) * .55); pointer-events:none; transition:opacity 3s; }
+.lw-mond{ position:absolute; right:16%; bottom:calc(18% + 58% * var(--g)); width:clamp(50px,min(7vw,12vh),120px); aspect-ratio:1; border-radius:50%; background:radial-gradient(circle at 38% 38%, #fffaf0, #fde9b6 70%); box-shadow:0 0 50px 18px rgba(255,236,180,.45); transition:bottom 3s linear; z-index:1; }
+.lw-stern{ position:absolute; width:4px; height:4px; border-radius:50%; background:#fff6dc; box-shadow:0 0 6px 2px rgba(255,240,200,.6); opacity:clamp(0, calc(var(--g) * 1.6 - var(--v)), 1); transition:opacity 3s; animation:lwFunkeln 4s ease-in-out infinite alternate; }
+.lw-nacht .lw-stern{ opacity:var(--v); }
+@keyframes lwFunkeln{ from{ transform:scale(.7); } to{ transform:scale(1.2); } }
+.lw-huegel{ position:absolute; left:0; right:0; bottom:0; width:100%; height:42%; z-index:2; }
+.lw-ast-platz{ position:absolute; left:0; top:46%; width:min(72%, 120vh); aspect-ratio:1000/200; z-index:3; }
+.lw-ast{ position:absolute; inset:0; width:100%; height:100%; }
+.lw-eule-platz{ position:absolute; z-index:4; left:34%; bottom:38%; width:21%; transform:translateX(-50%); }
+.lw-eule{ width:100%; display:block; overflow:visible; }
+.lw-eule-koerper{ transform-box:view-box; transform-origin:100px 212px; animation:lwAtmen 4.5s ease-in-out infinite; }
+@keyframes lwAtmen{ 0%,100%{ transform:scale(1,1); } 50%{ transform:scale(1.015,1.035); } }
+.lw-augen-auf{ display:none; } .lw-eule-platz.wach .lw-augen-auf{ display:inline; } .lw-eule-platz.wach .lw-augen-zu{ display:none; }
+.lw-eule-platz.wach .lw-eule-koerper{ animation:lwWach .5s ease-out; }
+@keyframes lwWach{ 0%{ transform:scale(1); } 40%{ transform:scale(1.08,1.12); } 100%{ transform:scale(1); } }
+.lw-zzz{ position:absolute; left:78%; top:-4%; pointer-events:none; }
+.lw-zzz span{ position:absolute; font:800 clamp(18px,2vw,34px) "Nunito",sans-serif; color:rgba(255,246,225,.85); animation:lwZzz 6s ease-in-out infinite; opacity:0; }
+.lw-zzz span:nth-child(2){ animation-delay:2s; font-size:clamp(22px,2.6vw,42px); } .lw-zzz span:nth-child(3){ animation-delay:4s; font-size:clamp(26px,3vw,50px); }
+@keyframes lwZzz{ 0%{ transform:translate(0,0); opacity:0; } 20%{ opacity:.9; } 100%{ transform:translate(40px,-70px); opacity:0; } }
+.lw-eule-platz.wach .lw-zzz{ display:none; }
+.lw-eule-blase{ position:absolute; left:92%; top:2%; white-space:nowrap; background:#fffaf2; color:#b5523f; font:800 clamp(22px,min(3vw,5vh),52px) "Nunito",sans-serif; padding:.35em .8em; border-radius:999px 999px 999px 8px; box-shadow:0 12px 30px rgba(60,30,40,.25); animation:lwBlase .35s cubic-bezier(.2,1.5,.4,1); }
+.lw-eule-blase[hidden]{ display:none; }
+.lw-eule-platz.froh .lw-eule-blase{ color:var(--lw-tinte); white-space:normal; width:max-content; max-width:min(52vw,560px); font-size:clamp(18px,min(2.4vw,4vh),40px); border-radius:28px 28px 28px 8px; }
+.lw-eule-platz.froh .lw-augen-auf{ display:none; } .lw-eule-platz.froh .lw-augen-zu{ display:inline; }
+.lw-eule-platz.froh .lw-augen-zu path{ transform:scaleY(-1); transform-box:fill-box; transform-origin:center; }
+@keyframes lwBlase{ from{ transform:scale(.4); opacity:0; } }
+/* Stille-Sterne: warme Nacht, Glas unter kariertem Tuch, Glühwürmchen */
+.lt-kompakt .lw-ruhe.sterne{ background:none; }
+.lt-kompakt .lw-ruhe.sterne::before{ display:none; }
+.lw-nacht{ position:absolute; inset:0; overflow:hidden; background:linear-gradient(180deg,#3a2c52 0%,#6a4867 45%,#b46a5c 80%,#d88d63 100%); }
+.lw-gluehwurm{ position:absolute; width:7px; height:7px; border-radius:50%; background:#ffe9a0; box-shadow:0 0 12px 5px rgba(255,214,110,.55); animation:lwSchweben var(--t) ease-in-out var(--d) infinite alternate, lwGlimmen 3.2s ease-in-out var(--d) infinite alternate; z-index:3; }
+@keyframes lwSchweben{ 0%{ transform:translate(0,0); } 33%{ transform:translate(30px,-20px); } 66%{ transform:translate(-20px,-36px); } 100%{ transform:translate(14px,10px); } }
+@keyframes lwGlimmen{ from{ opacity:.25; } to{ opacity:1; } }
+.lw-stumpf{ position:absolute; left:50%; bottom:6%; transform:translateX(-50%); width:clamp(150px,min(22vw,38vh),380px); height:clamp(30px,6vh,60px); border-radius:50% / 40%; background:radial-gradient(ellipse at 50% 30%, #b98a5c, #8a6040 70%); box-shadow:0 10px 0 #6e4a30; z-index:4; }
+.lt-kompakt .lw-nacht .lw-glas{ position:absolute; top:auto; left:50%; bottom:calc(6% + clamp(16px,3vh,30px)); transform:translateX(-50%); width:auto; height:62%; aspect-ratio:220/300; border:0; border-radius:0; background:none; box-shadow:none; overflow:visible; z-index:5; }
+.lw-nacht .lw-glas::before, .lw-nacht .lw-glas::after{ display:none; }
+.lw-glas-bild{ position:absolute; inset:0; width:100%; height:100%; }
+.lw-nacht .lw-glas-sterne{ position:absolute; left:14%; right:14%; top:22%; bottom:5%; overflow:hidden; border-radius:0 0 22% 22%; }
+.lw-nacht .lw-glas-sterne i{ font-size:clamp(20px,min(2.6vw,4.6vh),46px); filter:drop-shadow(0 0 8px rgba(255,214,110,.9)); }
+.lw-nacht .lw-glas:not(.zu) .lw-glas-bild{ filter:drop-shadow(0 0 30px rgba(255,214,110,.5)); transition:filter 2s; }
+.lt-kompakt .lw-nacht .lw-tuch{ position:absolute; inset:auto; left:-10%; right:-10%; top:-4%; height:62%; background:none; box-shadow:none; border-radius:0; display:block; z-index:2; transition:transform 1.4s cubic-bezier(.5,-.4,.4,1), opacity 1.4s; }
+.lw-tuch-bild{ width:100%; height:100%; display:block; filter:drop-shadow(0 8px 10px rgba(40,20,30,.3)); }
+.lt-kompakt .lw-nacht .lw-glas:not(.zu) .lw-tuch{ transform:translate(40%,-120%) rotate(28deg); opacity:0; }
+.lt-kompakt .lw-nacht .lw-r-zahl{ position:absolute; left:calc(100% + 24px); top:30%; white-space:nowrap; z-index:6; font:800 clamp(28px,min(3.6vw,6vh),60px) "Nunito",sans-serif; color:#ffe39a; text-shadow:0 0 18px rgba(255,214,110,.6); }
+.lt-kompakt .lw-ruhe.sterne .lw-r-uhr{ color:rgba(255,240,220,.35); }
+.lt-kompakt .lw-ruhe.sterne .lw-nurtext{ background:rgba(255,248,236,.9); }
+.lt-kompakt .lw-nurtext .lw-r-text{ max-width:none; }
+.lt-kompakt .lw-ruhe .lw-nurtext{ position:absolute; top:5%; left:50%; transform:translateX(-50%); width:max-content; max-width:86%; text-align:center; }
+.lt-kompakt .lw-ruhe.sterne .lw-r-text{ color:var(--lw-tinte); }
+@media (max-width:700px){
+  .lw-ast-platz{ top:56%; width:130%; left:-14%; } .lw-eule-platz{ left:40%; width:26%; }
+  .lw-eule-blase{ left:60%; top:-30%; } .lw-eule-platz.froh .lw-eule-blase{ left:-10%; top:-70%; max-width:72vw; }
+  .lt-kompakt .lw-nacht .lw-glas{ height:46%; }
+  .lt-kompakt .lw-nacht .lw-r-zahl{ left:50%; top:auto; bottom:calc(100% + 12px); transform:translateX(-50%); }
+  .lw-geschenk{ left:calc(50% + 70px); }
+}
+@media (prefers-reduced-motion:reduce){ .lw-gluehwurm, .lw-zzz span, .lw-eule-koerper, .lw-geschenk{ animation:none; } }
 /* Übersicht im Leuchtturm */
 .lt-uebersicht h3{ font-size:15px; font-weight:900; color:#7c8a85; text-transform:uppercase; letter-spacing:.04em; margin:22px 0 10px; }
 .lt-karten{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
