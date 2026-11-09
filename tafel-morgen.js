@@ -279,11 +279,12 @@ function zeichnen(){
                   : `<div class="mg-info">${jz[0]} ${jz[1]} · Kalenderwoche ${kw(d)}</div>`}
           ${!istHeute ? `<button class="mg-heute" data-tag="0">↺ zurück zu heute</button>` : ""}
         </section>
-        ${k.buchstabe ? (() => { const b = k.buchstabe.toLowerCase(), an = ANLAUT[b];
-            return `<section class="mg-karte mg-bdw" data-bdw="${esc(b)}" title="Im Buchstabenkurs öffnen">
-            <h2>Buchstabe der Woche</h2>
-            <div class="mg-bdw-reihe"><div class="mg-bdw-b ${b.length > 1 ? "lang" : ""}">${esc(grossK(b))}<span>${esc(b)}</span></div>
-            ${an ? `<div class="mg-bdw-bild"><span>${an[0]}</span><b>${wortMarkiert(an[1], b)}</b></div>` : ""}</div></section>`; })() : ""}
+        ${k.buchstabe ? (() => { const liste = buchstabenDerWoche(k), mehr = liste.length > 1;
+            return `<section class="mg-karte mg-bdw ${mehr ? "mehrere n" + liste.length : ""}" title="Antippen: im Buchstabenkurs üben">
+            <h2>${mehr ? "Buchstaben der Woche" : "Buchstabe der Woche"}</h2>
+            <div class="mg-bdw-reihe">${liste.map(b => { const an = ANLAUT[b];
+                return `<div class="mg-bdw-teil" data-bdw="${esc(b)}"><div class="mg-bdw-b ${b.length > 1 ? "lang" : ""}">${esc(grossK(b))}<span>${esc(b)}</span></div>
+                ${an ? `<div class="mg-bdw-bild"><span>${an[0]}</span><b>${wortMarkiert(an[1], b)}</b></div>` : ""}</div>`; }).join("")}</div></section>`; })() : ""}
         <section class="mg-karte mg-wetter ${k.buchstabe ? "kompakt" : ""}" data-wetter>
           <h2>Das Wetter</h2>
           ${wi ? `<div class="mg-wbild">${wi[0]}</div><div class="mg-wtext">${esc(wi[1])}${w.jetzt != null && !klein ? ` · ${w.jetzt} °C` : ""}</div>
@@ -407,7 +408,7 @@ function bearbeiten(r){
           <div><label>Name der Klasse</label><input data-feld="name" value="${esc(k.name)}" maxlength="20"></div>
           <div><label>Klassenstufe (Darstellung)</label><select data-feld="stufe"><option value="12" ${k.stufe === "12" ? "selected" : ""}>Klasse 1/2 – große Bilder, wenig Text</option><option value="34" ${k.stufe === "34" ? "selected" : ""}>Klasse 3/4 – mit Uhrzeiten und Temperaturen</option></select></div>
           <div style="grid-column:1/-1"><label>Anrede in der Begrüßung</label><input data-feld="anrede" value="${esc(k.anrede || "")}" maxlength="60" placeholder="liebe Klasse ${esc(k.name)}"><small class="mg-hilfe">Die Begrüßung passt sich der Uhrzeit an: bis 10 Uhr „Guten Morgen, …“, bis 17 Uhr „Guten Tag, …“, danach „Guten Abend, …“. Leer = „liebe Klasse ${esc(k.name)}“. Beispiel: „ihr Füchse“.</small></div>
-          <div><label>Buchstabe der Woche (leer = Feld ausblenden)</label><div class="mg-reihe"><input data-feld="buchstabe" value="${esc(k.buchstabe || "")}" maxlength="3" placeholder="z. B. m, ei, sch" style="flex:1">${kursBuchstabe() ? `<button class="mg-k hell" data-ausKurs>aus dem Buchstabenkurs: ${esc(kursBuchstabe())}</button>` : ""}</div><small class="mg-hilfe">Auch Laute wie au, ei, sch. Antippen auf der Tafel öffnet den Buchstabenkurs.</small></div>
+          <div><label>Buchstaben der Woche (leer = Feld ausblenden)</label><div class="mg-reihe"><input data-feld="buchstabe" value="${esc(k.buchstabe || "")}" maxlength="24" placeholder="z. B. m, a" style="flex:1">${kursBuchstabe() ? `<button class="mg-k hell" data-ausKurs>+ aus dem Buchstabenkurs: ${esc(kursBuchstabe())}</button>` : ""}</div><small class="mg-hilfe">Mehrere mit Komma trennen (bis zu 4), z. B. „m, a“ oder „ei, sch“. Antippen eines Buchstabens auf der Tafel öffnet ihn im Buchstabenkurs.</small></div>
           <div><label>Ort fürs Wetter</label><div class="mg-reihe"><input data-ort value="${esc((k.ort || {}).name || "")}" style="flex:1"><button class="mg-k hell" data-ortsuche>suchen</button></div><small class="mg-hilfe" id="mgOrt">${k.ort && k.ort.lat ? `📍 ${esc(k.ort.name)} (${(+k.ort.lat).toFixed(2)}, ${(+k.ort.lon).toFixed(2)})` : ""}</small></div>
         </div>
         ${D.klassen.length > 1 ? `<button class="mg-k rot" data-loeschen>🗑 Klasse ${esc(k.name)} löschen</button>` : ""}`;
@@ -494,7 +495,7 @@ function editorAktivieren(p, k){
     const dp = p.querySelector("[data-dplus]"); if (dp) dp.addEventListener("click", () => { k.dienste.push({ e: "⭐", n: "", kind: "" }); neu(); });
     const dr = p.querySelector("[data-drueck]"); if (dr) dr.addEventListener("click", () => { diensteRuecken(k, 1); neu(); });
     const da = p.querySelector("[data-dauto]"); if (da) da.addEventListener("change", () => { k.dienstAuto = da.checked; k.dienstWoche = wocheNr(new Date()); speichern(); });
-    const ak = p.querySelector("[data-ausKurs]"); if (ak) ak.addEventListener("click", () => { k.buchstabe = kursBuchstabe(); p.querySelector('[data-feld="buchstabe"]').value = k.buchstabe; speichern(); zeichnen(); });
+    const ak = p.querySelector("[data-ausKurs]"); if (ak) ak.addEventListener("click", () => { const neu = kursBuchstabe(), l = buchstabenDerWoche(k); if (!l.includes(neu)) l.push(neu); k.buchstabe = l.slice(-4).join(", "); p.querySelector('[data-feld="buchstabe"]').value = k.buchstabe; speichern(); zeichnen(); });
     const os = p.querySelector("[data-ortsuche]");
     if (os) os.addEventListener("click", async () => {
         const name = p.querySelector("[data-ort]").value.trim(); if (!name) return;
@@ -539,6 +540,8 @@ function editorAktivieren(p, k){
     if (hp) hp.addEventListener("click", () => { const t = p.querySelector("#mgHT").value.trim(); if (!t) return; (k.hinweise = k.hinweise || []).push({ id: neueId(), e: p.querySelector("#mgHE").value, t, wann: p.querySelector("#mgHW").value }); aufraeumen(k); neu(); });
     p.querySelectorAll("[data-hweg]").forEach(b => b.addEventListener("click", () => { k.hinweise = k.hinweise.filter(h => h.id !== b.dataset.hweg); neu(); }));
 }
+// Buchstaben der Woche: „m, a“ → ["m", "a"] (bis zu 4)
+function buchstabenDerWoche(k){ return [...new Set(String(k.buchstabe || "").toLowerCase().split(/[\s,;\/+&]+|\bund\b/).map(x => x.trim()).filter(x => x && x.length <= 3))].slice(0, 4); }
 // Buchstabe der Stunde aus dem Buchstabenkurs (auf diesem Gerät)
 function kursBuchstabe(){ try { return (JSON.parse(localStorage.getItem("tb_buchstabenkurs") || "{}").aktuell) || ""; } catch (x) { return ""; } }
 // Alte Tages-Hinweise (älter als 2 Wochen) entfernen

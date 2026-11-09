@@ -121,7 +121,7 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .mg-woche span.an{ background:var(--tf); color:white; transform:scale(1.15); }
 .mg-jz{ margin-top:1.4vh; font:800 clamp(15px,min(1.6vw,2.7vh),30px) "Nunito",sans-serif; color:#8a7a60; display:flex; align-items:center; justify-content:center; gap:.4em; }
 .mg-jz span{ font-size:1.8em; }
-.mg-bdw{ cursor:pointer; flex:1.1 !important; background:linear-gradient(135deg,#fffdf6,#f2f8fd); }
+.mg-bdw{ flex:1.1 !important; background:linear-gradient(135deg,#fffdf6,#f2f8fd); }
 .mg-bdw-reihe{ flex:1; display:flex; align-items:center; justify-content:center; gap:1.2vw; min-height:0; }
 .mg-bdw-b{ font:700 clamp(44px,min(5.2vw,9vh),112px)/1.15 "Andika","Nunito",sans-serif; color:#1e4f8c; padding:.02em .3em .08em; border-radius:20px; background:#fff3c4; box-shadow:inset 0 -6px 0 rgba(0,0,0,.05); white-space:nowrap; }
 .mg-bdw-b span{ margin-left:.12em; }
@@ -135,6 +135,18 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .mg-bdw-bild b{ font:800 clamp(15px,min(1.6vw,2.7vh),30px) "Nunito",sans-serif; color:#16324a; }
 .mg-bdw-bild em{ font-style:normal; color:#e2574c; text-decoration:underline; text-decoration-thickness:3px; text-underline-offset:3px; }
 .mg-spalte .mg-datum{ flex:0 1 auto; }
+.mg-bdw-teil{ display:flex; align-items:center; gap:.8vw; cursor:pointer; }
+.mg-bdw.mehrere .mg-bdw-reihe{ justify-content:space-around; gap:.6vw; }
+.mg-bdw.mehrere .mg-bdw-teil{ flex-direction:column; gap:.4vh; }
+.mg-bdw.mehrere .mg-bdw-b{ font-size:clamp(30px,min(3.2vw,5.6vh),70px); padding:0 .2em .04em; border-radius:14px; }
+.mg-bdw.mehrere .mg-bdw-b.lang{ font-size:clamp(24px,min(2.5vw,4.4vh),54px); }
+.mg-bdw.mehrere .mg-bdw-bild{ flex-direction:row; gap:.3vw; }
+.mg-bdw.mehrere .mg-bdw-bild span{ font-size:clamp(20px,min(2.2vw,3.8vh),44px); }
+.mg-bdw.mehrere .mg-bdw-bild b{ font-size:clamp(12px,min(1.2vw,2vh),22px); }
+.mg-bdw.n2 .mg-bdw-b{ font-size:clamp(36px,min(4vw,7.4vh),92px); } .mg-bdw.n2 .mg-bdw-b.lang{ font-size:clamp(26px,min(2.8vw,5vh),64px); }
+.mg-bdw.n2 .mg-bdw-bild span{ font-size:clamp(24px,min(2.6vw,4.4vh),52px); } .mg-bdw.n2 .mg-bdw-bild b{ font-size:clamp(14px,min(1.4vw,2.4vh),26px); }
+.mg-bdw.n3 .mg-bdw-b, .mg-bdw.n4 .mg-bdw-b{ font-size:clamp(22px,min(2.3vw,4vh),50px); }
+.mg-bdw.n3 .mg-bdw-bild b, .mg-bdw.n4 .mg-bdw-bild b{ display:none; }
 .mg-stunden li{ cursor:pointer; }
 .mg-stunden li.vorbei{ opacity:.38; filter:saturate(.4); }
 .mg-stunden li.gleich{ box-shadow:0 0 0 3px var(--ff); background:white; }
