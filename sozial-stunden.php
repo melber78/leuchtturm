@@ -1723,6 +1723,8 @@ function klassenStatusSetzen(wocheIso, klId, neu){
 }
 // Für die Präsentation (Sternenglas je Gruppe)
 window.sozialGruppen = () => planKlassen();
+// Klassenstufe einer Gruppe aus der Präsentation heraus ändern („1“–„4“ oder "" = gemischt)
+window.sozialKlasseSetzen = (id, kl) => { const k = planKlassen().find(x => x.id === id); if (!k) return; if (kl) k.klasse = kl; else delete k.klasse; planSpeichern(); };
 window.sozialSenden = d => senden(d);
 function naechsterStatus(st){ return STATUS_FOLGE[(STATUS_FOLGE.indexOf(st || "") + 1) % STATUS_FOLGE.length]; }
 function planKlassen(){
@@ -1823,7 +1825,7 @@ function zeigeJahresplan(){
     const anzahl = wochen.filter(d => p.wochen[iso(d)] && wochenThemen(p.wochen[iso(d)]).length).length;
     const zweiStufen = klassen.some(k => k.stufe === "12") && klassen.some(k => k.stufe === "34");
     const stand = klassenStand();
-    const stufeName = st => st === "34" ? "Kl. 3/4" : "Kl. 1/2";
+    const stufeName = (st, kl) => kl ? "Klasse " + kl : st === "34" ? "Kl. 3/4" : "Kl. 1/2";
 
     inhalt.innerHTML = `
         <div class="karte"><h2>Schuljahr</h2>
@@ -1836,13 +1838,13 @@ function zeigeJahresplan(){
             ${klassen.length ? `<details class="ed-block" style="margin:14px 0 0"><summary style="font-weight:900;cursor:pointer">Meine Klassen (${klassen.map(k => esc(k.name)).join(", ")}) bearbeiten</summary>
                 <div id="klassenListe" style="display:flex;flex-direction:column;gap:8px;margin-top:10px">${klassen.map((k, i) => `<div class="kl-zeile" data-i="${i}">
                     <input type="text" class="kl-name" value="${esc(k.name)}" maxlength="12" style="max-width:140px">
-                    <select class="kl-stufe" style="max-width:140px"><option value="12" ${k.stufe === "12" ? "selected" : ""}>Kl. 1/2</option><option value="34" ${k.stufe === "34" ? "selected" : ""}>Kl. 3/4</option></select>
+                    <select class="kl-stufe" style="max-width:190px" title="Klassenstufe – bestimmt z. B. den Zahlenraum beim Rechnen">${[["1","12","Klasse 1"],["2","12","Klasse 2"],["","12","Kl. 1/2 gemischt"],["3","34","Klasse 3"],["4","34","Klasse 4"],["","34","Kl. 3/4 gemischt"]].map(([kl, st, t]) => `<option value="${kl}|${st}" ${k.stufe === st && (k.klasse || "") === kl ? "selected" : ""}>${t}</option>`).join("")}</select>
                     <button class="btn klein rot kl-weg" title="Klasse entfernen"><i class="fa-solid fa-trash"></i></button></div>`).join("")}</div>
                 <button class="btn klein" id="klasseNeu" style="margin-top:10px"><i class="fa-solid fa-plus"></i> Klasse hinzufügen</button>
                 <p class="ed-hilfe">Nur Klassenbezeichnungen – keine Namen von Kindern.</p></details>` : ""}
         </div>
         ${klassen.length ? `<div class="karte"><h2>Stand je Klasse</h2><div class="kl-stand">${stand.map(s => `<div class="kl-karte">
-            <div class="kl-kopf"><b>${esc(s.k.name)}</b><span class="chip ${s.k.stufe === "34" ? "gold" : ""}">${stufeName(s.k.stufe)}</span></div>
+            <div class="kl-kopf"><b>${esc(s.k.name)}</b><span class="chip ${s.k.stufe === "34" ? "gold" : ""}">${stufeName(s.k.stufe, s.k.klasse)}</span></div>
             <div class="kl-zahlen"><span class="ok">✓ ${s.gehalten.length} gehalten</span><span class="aus">✗ ${s.ausgefallen.filter(a => !a.verschoben).length} ausgefallen</span>${s.angefangen ? `<span style="color:#b07a12">◐ ${s.angefangen} angefangen</span>` : ""}${s.entfallen ? `<span style="color:#7c8a94">– ${s.entfallen} entfallen</span>` : ""}</div>
             ${s.nachholen.length ? `<div class="kl-nach"><b>Nachholen:</b> ${s.nachholen.map(n => { const e = finde(n.id); return e ? `<a href="#stunde/${encodeURIComponent(e.id)}">${esc(e.titel)}</a> <small>(KW ${kw(n.d)})</small>` : ""; }).join(", ")}</div>` : `<div class="kl-nach leer">Nichts nachzuholen 👍</div>`}
             </div>`).join("")}</div></div>` : ""}
@@ -1850,7 +1852,7 @@ function zeigeJahresplan(){
         <div class="karte" style="padding:12px 14px">
             ${klassen.length ? `<p class="ed-hilfe" style="margin:0 0 8px">Klick auf das Kästchen einer Klasse: ○ offen → ✓ gehalten → ◐ angefangen (dieselbe Stunde wird für diese Klasse automatisch in die nächste Woche übernommen) → ✗ ausgefallen (kommt auf die Nachhol-Liste) → – entfällt (z. B. Ausflug, kein Termin – wird nicht nachgeholt). Mit <i class="fa-solid fa-sliders"></i> kannst du für eine Klasse ein anderes Thema (z. B. Nachholstunde) und eine Notiz eintragen.</p>` : ""}
             <div style="overflow-x:auto"><table class="plan">
-            <thead><tr><th>KW</th><th>Woche ab</th>${zweiStufen ? "<th>Thema Kl. 1/2</th><th>Thema Kl. 3/4</th>" : "<th>Stunde</th>"}${klassen.map(k => `<th class="kl-th" title="${stufeName(k.stufe)}">${esc(k.name)}</th>`).join("")}<th>Notiz</th>${klassen.length ? "" : `<th title="erledigt"><i class="fa-solid fa-check"></i></th>`}<th></th></tr></thead>
+            <thead><tr><th>KW</th><th>Woche ab</th>${zweiStufen ? "<th>Thema Kl. 1/2</th><th>Thema Kl. 3/4</th>" : "<th>Stunde</th>"}${klassen.map(k => `<th class="kl-th" title="${stufeName(k.stufe, k.klasse)}">${esc(k.name)}</th>`).join("")}<th>Notiz</th>${klassen.length ? "" : `<th title="erledigt"><i class="fa-solid fa-check"></i></th>`}<th></th></tr></thead>
             <tbody>${wochen.map(d => {
                 const k = iso(d), w = p.wochen[k] || {};
                 const wahlZelle = (st, label) => {
@@ -1896,7 +1898,7 @@ function zeigeJahresplan(){
         kl.querySelectorAll(".kl-zeile").forEach(z => {
             const k = p.klassen[+z.dataset.i];
             z.querySelector(".kl-name").addEventListener("change", ev => { k.name = ev.target.value.trim().slice(0, 12) || k.name; planSpeichern(); zeigeJahresplan(); });
-            z.querySelector(".kl-stufe").addEventListener("change", ev => { k.stufe = ev.target.value; planSpeichern(); zeigeJahresplan(); });
+            z.querySelector(".kl-stufe").addEventListener("change", ev => { const [kl, st] = ev.target.value.split("|"); k.stufe = st; if (kl) k.klasse = kl; else delete k.klasse; planSpeichern(); zeigeJahresplan(); });
             z.querySelector(".kl-weg").addEventListener("click", () => {
                 if (!confirm(`Klasse ${k.name} entfernen? Die Häkchen dieser Klasse werden nicht mehr angezeigt.`)) return;
                 p.klassen.splice(+z.dataset.i, 1); planSpeichern(); zeigeJahresplan();

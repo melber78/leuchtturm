@@ -269,6 +269,9 @@ const CSS = `
 #praes .l-glas-fehler[hidden], #praes [data-leeren][hidden]{ display:none; }
 #praes .l-gruppen{ display:flex; gap:.6vw; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:1.4vh; font:400 clamp(16px,1.8vw,28px) "Patrick Hand","Andika",sans-serif; }
 #praes .l-gr{ font:inherit; background:transparent; color:#fffdf5; border:2px dashed rgba(255,255,255,.6); border-radius:12px; padding:.15em .8em; cursor:pointer; }
+#praes .l-wahlzeile{ display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:.4vh 2.5vw; margin-top:1.4vh; }
+#praes .l-wahlzeile .l-gruppen{ margin-top:0; }
+#praes .l-klassen .l-gr{ padding:.15em .5em; }
 #praes .l-gr.an{ background:#ffe066; color:#1d4634; border-style:solid; border-color:#ffe066; }
 #praes .l-glas-zahl{ font-family:"Patrick Hand","Andika",sans-serif; font-size:clamp(20px,2.6vw,38px); color:#ffe066; margin-top:.4em; }
 /* Lernangebot-Ablauf: Quizshow „Klasse gegen Eule Ella“ */
@@ -581,6 +584,23 @@ function warmupTafel(text, stufe){
     const m = [[/Blitzblick|Zwanzigerfeld/i, "zwanzigerfeld"], [/Uhr-Blitz/i, "uhr"], [/Geld-Blitz/i, "geld"], [/ABC-Blitz/i, "abc"], [/Zahlenstrahl/i, "zahlenstrahl"], [/Kim-Spiel/i, "kim"], [/Bewegungspause/i, "bewegung"]].find(([r]) => r.test(t));
     return m ? { werkzeug: m[1], einstellung: {} } : null;
 }
+// Klassenstufe der aktuellen Gruppe („1“–„4“, "" = gemischt) und passende Tafel-Einstellungen (v. a. Zahlenraum)
+function klasseAktuell(){ const g = zustand && gruppeAktuell(); return (g && /^[1-4]$/.test(g.klasse || "") && (g.klasse <= "2") === (zustand.stufe === "12")) ? g.klasse : ""; }
+const ZAHLENRAUM = { "1": 10, "2": 20, "3": 100, "4": 1000 };
+function tafelEinstellung(t){
+    const e = Object.assign({}, t.einstellung || {}), kl = klasseAktuell();
+    if (!kl) return e;
+    const w = window.lernTafel && window.lernTafel.werkzeuge && window.lernTafel.werkzeuge[t.werkzeug];
+    const opt = w && (w.optionen || []).find(o => o.k === "bis");
+    if (opt) { const werte = opt.werte.map(x => +x[0]), ziel = ZAHLENRAUM[kl]; e.bis = werte.filter(v => v <= ziel).pop() || werte[0]; }
+    if (t.werkzeug === "blitzrechnen") {
+        if (kl === "1" && /^(mal|geteilt)$/.test(e.art || "")) e.art = "plusminus";
+        if (kl === "2" && /^(mal|geteilt)$/.test(e.art || "")) e.reihen = [2, 5, 10];
+    }
+    if (t.werkzeug === "blitzlesen" && kl === "1") e.art = "silben12";
+    return e;
+}
+function tafelStarten(f){ if (!window.lernTafel || !f.tafel) return; f.gestartet = true; window.lernTafel.starten(f.tafel.werkzeug, tafelEinstellung(f.tafel)); }
 function folienBauenLern(e, stufe){
     const f = [];
     const tafel = (e.tafel || []).filter(t => t && t.werkzeug && (!t.fuer || t.fuer === "alle" || t.fuer === stufe));
@@ -765,7 +785,7 @@ function naechste(){
     if (schrittZeigen(zustand.buehne)) return;   // „Ella erklärt“: erst Schritt für Schritt aufdecken
     // Kopf-Start: „weiter“ startet zuerst das Aufwärm-Spiel (z. B. Blitzrechnen), nach dem Schließen geht es zur nächsten Folie
     const fk = zustand.folien && zustand.folien[zustand.i];
-    if (fk && fk.typ === "kopfstart" && fk.warm && !fk.gestartet && window.lernTafel) { fk.gestartet = true; window.lernTafel.starten(fk.tafel.werkzeug, fk.tafel.einstellung || {}); return; }
+    if (fk && fk.typ === "kopfstart" && fk.warm && !fk.gestartet && window.lernTafel) { tafelStarten(fk); return; }
     zeigen(zustand.i + 1);
 }
 function countdownStart(el, text){
@@ -871,13 +891,15 @@ function folieHtml(f, e){
                 <div class="l-karte">${orte.map(([sym, name], k) => (k ? '<span class="l-kpfeil"></span>' : "") + `<div class="l-ort"><span>${sym}</span><b>${esc(name)}</b></div>`).join("")}</div>
                 <div class="l-duell">${eule(true)}<div><b>Klasse gegen Eule Ella!</b><br>Richtig gelöst? Punkt für euch. Daneben? Punkt für Ella.</div></div>
                 <div class="p-wahl"><button class="p-knopf ${zustand.stufe === "12" ? "" : "hell"}" data-stufe="12">Klasse 1/2</button><button class="p-knopf ${zustand.stufe === "34" ? "" : "hell"}" data-stufe="34">Klasse 3/4</button></div>
-                ${(() => { const g = gruppenFuer(zustand.stufe), a = gruppeAktuell(); return g.length > 1 ? `<div class="l-gruppen"><span>Unsere Gruppe:</span>${g.map(x => `<button class="l-gr ${x.id === a.id ? "an" : ""}" data-gruppe="${esc(x.id)}">${esc(x.name)}</button>`).join("")}</div>` : ""; })()}`;
+                ${(() => { const g = gruppenFuer(zustand.stufe), a = gruppeAktuell(); const kl = klasseAktuell(), ks = zustand.stufe === "34" ? ["3", "4"] : ["1", "2"];
+                    return `<div class="l-wahlzeile">` + (g.length > 1 ? `<div class="l-gruppen"><span>Unsere Gruppe:</span>${g.map(x => `<button class="l-gr ${x.id === a.id ? "an" : ""}" data-gruppe="${esc(x.id)}">${esc(x.name)}</button>`).join("")}</div>` : "")
+                        + (window.sozialKlasseSetzen && a && !/^kl(12|34)$/.test(a.id) ? `<div class="l-gruppen l-klassen"><span>Klasse:</span>${[...ks, ""].map(k => `<button class="l-gr ${kl === k ? "an" : ""}" data-klasse="${k}">${k ? "Kl. " + k : "gemischt"}</button>`).join("")}</div>` : "") + `</div>`; })()}`;
         }
         if (f.typ === "kopfstart") {
             const inf = f.tafel && window.lernTafel && window.lernTafel.info(f.tafel.werkzeug);
             return `<div class="l-stempel">KOPF-START · 3 MINUTEN</div><h2>🧠 Gehirn einschalten!</h2>
                 <div class="l-zettel">${inline(f.warmup || "Blitzrunde: Ich frage – ihr antwortet blitzschnell!")}</div>
-                <div class="p-reihe">${inf ? `<button class="p-knopf ${f.warm ? "l-los" : ""}" data-tafel="1">${inf.emoji || "▶"} ${esc(f.warm ? inf.titel + " starten" : (f.tafel.titel || inf.titel) + " an der Tafel")}</button>` : ""}<button class="p-knopf hell" data-start="3">⏱ 3 Minuten</button></div>`;
+                <div class="p-reihe">${inf ? `<button class="p-knopf ${f.warm ? "l-los" : ""}" data-tafel="1">${inf.emoji || "▶"} ${esc(f.warm ? inf.titel + (tafelEinstellung(f.tafel).bis ? " bis " + tafelEinstellung(f.tafel).bis : "") + " starten" : (f.tafel.titel || inf.titel) + " an der Tafel")}</button>` : ""}<button class="p-knopf hell" data-start="3">⏱ 3 Minuten</button></div>`;
         }
         if (f.typ === "fall") {
             const leser = zustand.vorleser[zustand.i];
@@ -1112,7 +1134,7 @@ function folieAktivieren(el, f){
     }));
     el.querySelectorAll("[data-welle]").forEach(b => b.addEventListener("click", () => applauswelle(el)));
     // Lernangebot: Tafel-Spiel, Denk-Runde, Countdown, Auflösen, Punkte
-    el.querySelectorAll("[data-tafel]").forEach(b => b.addEventListener("click", () => { if (window.lernTafel && f.tafel) f.gestartet = true, window.lernTafel.starten(f.tafel.werkzeug, f.tafel.einstellung || {}); }));
+    el.querySelectorAll("[data-tafel]").forEach(b => b.addEventListener("click", () => tafelStarten(f)));
     el.querySelectorAll("[data-tps]").forEach(b => b.addEventListener("click", () => {
         const k = +b.dataset.tps, alle = [...el.querySelectorAll("[data-tps]")];
         if (zustand.mini) { clearInterval(zustand.mini); zustand.mini = null; }
@@ -1162,10 +1184,16 @@ function folieAktivieren(el, f){
         pkZeigen(); scoreZeichnen(true);
     }));
     pkZeigen();
+    el.querySelectorAll("[data-klasse]").forEach(b => b.addEventListener("click", () => {
+        const g = gruppeAktuell(); if (!g || !window.sozialKlasseSetzen) return;
+        window.sozialKlasseSetzen(g.id, b.dataset.klasse);
+        el.querySelectorAll("[data-klasse]").forEach(x => x.classList.toggle("an", x === b)); plopp(1.2);
+    }));
     el.querySelectorAll("[data-gruppe]").forEach(b => b.addEventListener("click", () => {
         zustand.gruppe = b.dataset.gruppe;
         try { localStorage.setItem("lern_gruppe_" + zustand.stufe, zustand.gruppe); } catch (e) {}
         el.querySelectorAll("[data-gruppe]").forEach(x => x.classList.toggle("an", x === b)); plopp(1.2);
+        const kl = klasseAktuell(); el.querySelectorAll("[data-klasse]").forEach(x => x.classList.toggle("an", x.dataset.klasse === kl));
     }));
     if (el.querySelector("#lGlas")) glasAktivieren(el);
 }
