@@ -378,14 +378,43 @@ const VERHALTEN = {
     krake: { art: "treib", v: .025, g: 1 }, qualle: { art: "treib", v: .02, g: .8 }, krebs: { art: "sand", v: .06, g: .7 }
 };
 const FLIEGT = a => a === "flieg" || a === "flatter";
+// Gezeichneter Wald (Himmel, Sonne, Hügel, Tannen und Laubbäume in drei Ebenen, Blumenwiese)
+const WOLKE = `<svg viewBox="0 0 220 90"><g fill="#fff"><ellipse cx="70" cy="58" rx="58" ry="26"/><ellipse cx="118" cy="42" rx="46" ry="34"/><ellipse cx="160" cy="60" rx="44" ry="24"/><rect x="40" y="58" width="150" height="26" rx="13"/></g></svg>`;
+function WALD_SVG(){
+    const zz = (i, a, b) => a + ((Math.sin(i * 12.9898) * 43758.5453) % 1 + 1) % 1 * (b - a);   // feste „Zufallswerte“
+    const tanne = (x, y, h, f) => { const w = h * .42; return `<g><rect x="${x - h * .035}" y="${y - h * .12}" width="${h * .07}" height="${h * .14}" fill="#7a5532"/>` +
+        [0, 1, 2].map(k => { const t = y - h * .1 - k * h * .27, bw = w * (1 - k * .22); return `<path d="M${x - bw} ${t} L${x} ${t - h * .42} L${x + bw} ${t} Z" fill="${f}"/>`; }).join("") + `</g>`; };
+    const laub = (x, y, h, f, hell) => `<g><rect x="${x - h * .05}" y="${y - h * .45}" width="${h * .1}" height="${h * .45}" rx="${h * .03}" fill="#8a5a2e"/>
+        <circle cx="${x - h * .2}" cy="${y - h * .55}" r="${h * .26}" fill="${f}"/><circle cx="${x + h * .2}" cy="${y - h * .58}" r="${h * .25}" fill="${f}"/><circle cx="${x}" cy="${y - h * .8}" r="${h * .3}" fill="${f}"/>
+        <circle cx="${x - h * .08}" cy="${y - h * .9}" r="${h * .12}" fill="${hell}" opacity=".7"/></g>`;
+    let hinten = "", mitte = "", blumen = "";
+    for (let i = 0; i < 22; i++) hinten += tanne(i * 76 + zz(i, -18, 18), 452 + zz(i + 3, -8, 8), zz(i + 7, 90, 150), i % 3 ? "#7fae76" : "#8bb882");
+    [[90, 1], [330, 0], [560, 1], [800, 0], [1040, 1], [1290, 0], [1520, 1]].forEach(([x, art], i) => { const h = zz(i + 20, 150, 200);
+        mitte += art ? laub(x + zz(i, -30, 30), 512, h, i % 2 ? "#5e9e52" : "#4f8f45", "#86c272") : tanne(x + zz(i, -30, 30), 512, h * 1.15, "#4d8a48"); });
+    const farben = ["#ffffff", "#ffd84d", "#f48fb1", "#ffb74d", "#b39ddb"];
+    for (let i = 0; i < 60; i++) { const x = zz(i + 40, 0, 1600), y = zz(i + 90, 560, 690); blumen += `<circle cx="${x}" cy="${y}" r="${zz(i + 5, 3, 6)}" fill="${farben[i % 5]}" opacity=".9"/>`; }
+    return `<svg class="lw-wald" viewBox="0 0 1600 700" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs><linearGradient id="lwHimmel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fd6f5"/><stop offset=".6" stop-color="#d4eefc"/><stop offset="1" stop-color="#fdf3d8"/></linearGradient>
+        <radialGradient id="lwSonne"><stop offset="0" stop-color="#fff3b0" stop-opacity=".9"/><stop offset="1" stop-color="#fff3b0" stop-opacity="0"/></radialGradient>
+        <linearGradient id="lwWiese" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#84c26b"/><stop offset="1" stop-color="#5d9b47"/></linearGradient></defs>
+      <rect width="1600" height="700" fill="url(#lwHimmel)"/>
+      <circle cx="1330" cy="120" r="170" fill="url(#lwSonne)"/><circle class="lw-sonne2" cx="1330" cy="120" r="62" fill="#ffd45c"/>
+      <path d="M0 440 Q180 360 400 410 T 820 390 T 1240 405 T 1600 370 V700 H0 Z" fill="#bcdcae"/>
+      ${hinten}
+      <path d="M0 482 Q300 440 620 476 T 1200 466 T 1600 458 V700 H0 Z" fill="#9ccd88"/>
+      ${mitte}
+      <path d="M0 548 Q380 512 800 538 T 1600 526 V700 H0 Z" fill="url(#lwWiese)"/>
+      ${blumen}
+    </svg>`;
+}
 W.leise = {
     titel: "Leise-Wald", emoji: "🌳", gruppe: "Allgemein",
     text: "Je leiser ihr seid, desto mehr Tiere kommen in den Wald und spielen dort. Wird es laut, laufen sie davon. (Mikrofon nötig – es wird nichts aufgenommen.)",
     optionen: [
-        { k: "minuten", label: "Alle Tiere nach", werte: [[1, "1 Min. Ruhe"], [2, "2 Min. Ruhe"], [3, "3 Min. Ruhe"], [5, "5 Min. Ruhe"], [10, "10 Min. Ruhe"]] },
-        { k: "tiere", label: "Tiere", werte: [[6, "6 Tiere"], [9, "9 Tiere"], [12, "12 Tiere"]] },
+        { k: "minuten", label: "Alle Tiere nach", zeigen: e => e.modus === "zuschauen", werte: [[1, "1 Min. Ruhe"], [2, "2 Min. Ruhe"], [3, "3 Min. Ruhe"], [5, "5 Min. Ruhe"], [10, "10 Min. Ruhe"]] },
+        { k: "tiere", label: "Tiere", zeigen: e => e.modus === "zuschauen" || e.modus === "ende", werte: [[6, "6 Tiere"], [9, "9 Tiere"], [12, "12 Tiere"]] },
         { k: "modus", label: "Art", werte: [["ende", "Überraschung am Ende"], ["melden", "Nur melden, wenn's laut wird"], ["sterne", "Stille-Sterne sammeln"], ["zuschauen", "Tiere kommen live (zum Zuschauen)"]] },
-        { k: "arbeitszeit", label: "Arbeitszeit", werte: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 20, 25, 30].map(m => [m, m + " Min."]) }
+        { k: "arbeitszeit", label: "Arbeitszeit", zeigen: e => e.modus !== "zuschauen", werte: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 20, 25, 30].map(m => [m, m + " Min."]) }
     ],
     std: { minuten: 3, tiere: 9, modus: "ende", arbeitszeit: 10 },
     // zuletzt gewählte Art und Arbeitszeit merken (auf diesem Gerät)
@@ -407,18 +436,16 @@ W.leise = {
                <div class="lw-wasser"></div><div class="lw-sand"></div>
                ${[8, 22, 47, 63, 81, 93].map((x, i) => `<div class="lw-tang" style="left:${x}%;animation-delay:${-i * .7}s">🌿</div>`).join("")}
                ${Array.from({ length: 10 }, (_, i) => `<i class="lw-blase-luft" style="left:${5 + i * 9.5}%;--t:${5 + (i % 4) * 2}s;animation-delay:${-i * 1.3}s"></i>`).join("")}`
-            : `<div class="lw-sonne">☀️</div><div class="lw-wolke" style="top:6%;--t:80s">☁️</div><div class="lw-wolke" style="top:16%;--t:110s;animation-delay:-55s">☁️</div>
-               <div class="lw-baeume hinten">🌲🌲🌳🌲🌲🌲🌳🌲🌲🌳🌲</div><div class="lw-baeume">🌲🌳🌲🌲🌳🌲🌳🌲</div>
-               <div class="lw-boden"></div>
-               ${[12, 38, 66, 88].map((x, i) => `<div class="lw-blatt" style="left:${x}%;--t:${7 + i * 2}s;animation-delay:${-i * 2.5}s">🍂</div>`).join("")}
-               <div class="lw-busch" style="left:4%">🌿</div><div class="lw-busch" style="left:31%">🌱</div><div class="lw-busch" style="left:57%">🌿</div><div class="lw-busch" style="left:83%">🌱</div>`;
+            : `${WALD_SVG()}${[[7, 80, 0, 1], [17, 120, -60, .8], [10, 150, -110, .6]].map(([y, t, d, g]) => `<div class="lw-wolke2" style="top:${y}%;--t:${t}s;animation-delay:${d}s;--g:${g}">${WOLKE}</div>`).join("")}`;
         const ziel = meer ? "am Leuchtturm" : "im Wald";
         const ruheText = { ende: `🤫 Arbeitet leise – am Ende wartet eine Überraschung ${ziel}!`, melden: "🤫 Jetzt wird leise gearbeitet.", sterne: "🤫 Jede leise Minute bringt einen Stern ins Glas." }[modus] || "";
         const ruhe = ruhigerModus ? `<div class="lw-ruhe ${modus}${meer ? " meer" : ""}">
-            <div class="lw-r-uhr">${Math.floor(dauer / 60)}:00</div>
-            <div class="lw-r-text">${ruheText}</div>
-            ${modus === "sterne" ? `<div class="lw-glas"><div class="lw-glas-sterne"></div></div><div class="lw-r-zahl">⭐ <b>0</b></div>` : ""}
-            <div class="lw-r-pssst" hidden><span>🦉</span><b>Pssst!</b><small>Bitte leise arbeiten.</small></div>
+            <div class="lw-r-karte">
+              ${modus === "sterne" ? `<div class="lw-r-reihe"><div class="lw-glas"><div class="lw-glas-sterne"></div></div><div><div class="lw-r-uhr">${Math.floor(dauer / 60)}:00</div><div class="lw-r-zahl">⭐ <b>0</b> Sterne</div></div></div>`
+                : `<div class="lw-r-symbol">${modus === "ende" ? "🎁" : "🦉"}</div><div class="lw-r-uhr">${Math.floor(dauer / 60)}:00</div>`}
+              <div class="lw-r-text">${ruheText}</div>
+            </div>
+            <div class="lw-r-pssst" hidden><div><span>🦉</span><b>Pssst!</b><small>Bitte leise arbeiten.</small></div></div>
           </div>` : "";
         el.innerHTML = `<div class="lw-szene${meer ? " lw-meer" : ""}">${deko}<div class="lw-tiere"></div><div class="lw-blase" hidden></div>${ruhe}</div>
         <div class="lw-anzeige">
@@ -428,6 +455,7 @@ W.leise = {
         </div>
         <div class="lt-frage lw-hinweis">Tippe auf „Start“ und erlaube das Mikrofon.</div>`;
         const szene = el.querySelector(".lw-szene"), ebene = el.querySelector(".lw-tiere");
+        if (ruhigerModus) szene.classList.add("still");
         const kopf = el.querySelector(".lw-zahl b"), pegel = el.querySelector(".lw-pegel"), grenze = el.querySelector(".lw-grenze"), blase = el.querySelector(".lw-blase"), hinweis = el.querySelector(".lw-hinweis");
         const regler = el.querySelector(".lw-regler input");
         const grenzeSetzen = () => { grenze.style.left = schwelle + "%"; };
@@ -602,7 +630,7 @@ W.leise = {
             const anteil = zeit ? stillZeit / zeit : 0;
             if (modus === "ende") {
                 const k = Math.max(anteil > .25 ? 1 : 0, Math.min(n, Math.round(n * anteil / .9)));
-                ruheEl.classList.add("weg");
+                ruheEl.classList.add("weg"); szene.classList.remove("still");
                 hinweis.textContent = "Ihr habt " + Math.round(anteil * 100) + " % der Zeit leise gearbeitet …";
                 kopf.parentNode.hidden = false;
                 for (let i = 0; i < k; i++) setTimeout(() => { kommen(tiere[sichtbar]); sichtbar++; anzahlZeigen();
@@ -620,7 +648,7 @@ W.leise = {
             if (ruhigerModus) {   // neue Runde
                 zeit = stillZeit = lautAm = pssstN = sterne = minLaut = minZeit = 0; fertig = false; jubeln(false);
                 tiere.forEach(t => { if (t.zust !== "weg") fliehen(t); }); sichtbar = 0; anzahlZeigen(); kopf.parentNode.hidden = true;
-                ruheEl.classList.remove("weg"); ruheEl.querySelector(".lw-r-text").textContent = ruheText;
+                ruheEl.classList.remove("weg"); szene.classList.add("still"); ruheEl.querySelector(".lw-r-text").textContent = ruheText;
                 if (modus === "sterne") { ruheEl.querySelector(".lw-glas-sterne").innerHTML = ""; ruheEl.querySelector(".lw-r-zahl b").textContent = "0"; }
                 hinweis.textContent = "Neue Runde – leise arbeiten!"; return;
             }
@@ -715,6 +743,14 @@ const CSS = `
 .lt-leiste{ display:flex; align-items:center; gap:10px; padding:6px 10px 10px; flex-wrap:wrap; }
 .lt-leiste h2{ margin:0; font:400 clamp(22px,2.6vw,34px) "Patrick Hand","Andika",sans-serif; flex:1 1 200px; color:#ffe066; display:flex; align-items:center; gap:.4em; }
 .lt-leiste h2 svg{ width:1.6em; height:1.6em; }
+@media (max-width:700px){
+  .lt-leiste{ display:grid; grid-template-columns:1fr 1fr; gap:6px; padding:4px 4px 8px; position:relative; }
+  .lt-leiste h2{ grid-column:1 / -1; padding-right:110px; font-size:24px; }
+  .lt-leiste label{ min-width:0; } .lt-leiste label select{ width:100%; font-size:13px; padding:7px 8px; }
+  .lt-leiste label[data-optlabel="modus"]{ grid-column:1 / -1; }
+  .lt-leiste .lt-x{ position:absolute; top:4px; } .lt-leiste [data-voll]{ right:58px; } .lt-leiste [data-zu]{ right:4px; }
+  .lw-anzeige{ gap:8px; } .lw-regler{ font-size:14px; }
+}
 .lt-leiste select{ font:700 15px "Andika","Nunito",sans-serif; border-radius:10px; border:0; padding:8px 10px; background:#fff3dc; color:#4a2e15; }
 .lt-x{ border:0; background:#8a5a2e; color:#fff3dc; width:44px; height:44px; border-radius:12px; font-size:22px; cursor:pointer; box-shadow:inset 0 -3px 0 rgba(0,0,0,.25); }
 .lt-buehne{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.2vh; padding:2vh 3vw; text-align:center; min-height:0; overflow:hidden; position:relative; border-radius:14px;
@@ -833,23 +869,35 @@ const CSS = `
 .lw-strahl{ position:absolute; right:calc(5% + clamp(18px,2.5vw,35px)); top:calc(40% - clamp(60px,8.6vw,120px)); width:60vw; height:30px; transform-origin:100% 50%; background:linear-gradient(270deg, rgba(255,240,190,.8), transparent); clip-path:polygon(0 0, 100% 45%, 100% 55%, 0 100%); animation:lwStrahl 6s ease-in-out infinite; z-index:1; }
 @keyframes lwStrahl{ 0%,100%{ transform:rotate(-6deg); } 50%{ transform:rotate(8deg); } }
 /* Anzeige */
-.lw-ruhe{ position:absolute; inset:0; z-index:20; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2vh; background:linear-gradient(160deg,#eaf3e6,#dcebd3); color:#1d4634; text-align:center; transition:opacity 1.2s; }
-.lw-ruhe.meer{ background:linear-gradient(160deg,#e3f1f8,#cfe5f1); color:#16324a; }
+.lw-wald{ position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+.lw-wolke2{ position:absolute; left:-20%; width:calc(16% * var(--g,1)); min-width:90px; opacity:.92; animation:lwZiehen var(--t,90s) linear infinite; z-index:1; filter:drop-shadow(0 6px 10px rgba(80,120,160,.15)); }
+.lw-wolke2 svg{ width:100%; display:block; }
+.lw-szene.still *, .lw-szene.still{ animation-play-state:paused !important; }
+.lw-ruhe{ position:absolute; inset:0; z-index:20; display:flex; align-items:center; justify-content:center; background:rgba(240,248,236,.35); backdrop-filter:blur(9px) saturate(1.05); -webkit-backdrop-filter:blur(9px); color:#1d4634; text-align:center; transition:opacity 1.4s; }
+.lw-ruhe.meer{ background:rgba(225,240,248,.4); color:#16324a; }
+.lw-r-karte{ background:rgba(255,253,245,.9); border-radius:36px; padding:3vh 4vw 3.4vh; box-shadow:0 20px 50px rgba(30,60,40,.18); display:flex; flex-direction:column; align-items:center; gap:1.2vh; max-width:86%; }
+.lw-r-symbol{ font-size:clamp(40px,min(5vw,8vh),90px); line-height:1; }
+.lw-r-reihe{ display:flex; align-items:center; gap:3vw; }
+.lw-ruhe.sterne{ background:linear-gradient(#141d45,#2b3a7e); backdrop-filter:none; }
+.lw-ruhe.sterne::before{ content:""; position:absolute; inset:0; background-image:radial-gradient(2px 2px at 10% 20%,#fff,transparent),radial-gradient(1.5px 1.5px at 30% 70%,#fff,transparent),radial-gradient(2px 2px at 55% 15%,#fff,transparent),radial-gradient(1.5px 1.5px at 75% 45%,#fff,transparent),radial-gradient(2px 2px at 90% 25%,#fff,transparent),radial-gradient(1.5px 1.5px at 20% 85%,#fff,transparent),radial-gradient(1.5px 1.5px at 65% 85%,#fff,transparent),radial-gradient(2px 2px at 45% 40%,#fff,transparent); opacity:.7; }
+.lw-ruhe.sterne .lw-r-karte{ background:rgba(255,255,255,.07); box-shadow:none; color:#fff8dc; position:relative; border:1px solid rgba(255,255,255,.12); }
 .lw-ruhe.weg{ opacity:0; pointer-events:none; }
-.lw-r-uhr{ font:900 clamp(60px,min(12vw,20vh),220px)/1 "Nunito",sans-serif; font-variant-numeric:tabular-nums; opacity:.85; }
+.lw-r-uhr{ font:900 clamp(56px,min(10vw,17vh),190px)/1 "Nunito",sans-serif; font-variant-numeric:tabular-nums; letter-spacing:-.02em; }
 .lw-r-text{ font:400 clamp(22px,min(2.8vw,5vh),48px) "Patrick Hand","Andika",sans-serif; max-width:90%; }
-.lw-r-pssst{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(255,253,245,.94); z-index:3; }
+.lw-r-pssst{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(255,253,245,.55); backdrop-filter:blur(6px); z-index:3; }
+.lw-r-pssst > div{ background:#fffdf5; border-radius:40px; padding:2vh 5vw 3vh; display:flex; flex-direction:column; align-items:center; box-shadow:0 20px 60px rgba(0,0,0,.2); }
 .lw-r-pssst span{ font-size:clamp(90px,min(16vw,26vh),280px); line-height:1; }
 .lw-r-pssst b{ font:900 clamp(50px,min(8vw,13vh),140px) "Nunito",sans-serif; color:#c0392b; }
 .lw-r-pssst small{ font:800 clamp(20px,min(2.4vw,4vh),40px) "Nunito",sans-serif; color:#1d4634; }
 .lw-r-pssst.an span{ animation:lwPssst .35s 3; }
 @keyframes lwPssst{ 50%{ transform:rotate(6deg) scale(1.08); } }
 .lw-r-pssst[hidden], .lw-zahl[hidden]{ display:none; }
-.lw-glas{ position:relative; width:clamp(120px,14vw,240px); height:clamp(140px,22vh,260px); border:6px solid rgba(29,70,52,.35); border-top:0; border-radius:0 0 40px 40px; background:rgba(255,255,255,.55); overflow:hidden; }
+.lw-glas{ position:relative; width:clamp(120px,13vw,220px); height:clamp(150px,24vh,270px); border:5px solid rgba(255,255,255,.75); border-radius:28px 28px 60px 60px / 22px 22px 70px 70px; background:linear-gradient(90deg, rgba(255,255,255,.22), rgba(255,255,255,.06) 40%, rgba(255,255,255,.16)); overflow:hidden; box-shadow:inset 0 -10px 30px rgba(255,224,102,.15); }
+.lw-glas::before{ content:""; position:absolute; left:12%; right:12%; top:-2px; height:16px; border-radius:6px; background:#c8963e; box-shadow:0 3px 0 #9c6f26; z-index:2; }
+.lw-glas::after{ content:""; position:absolute; left:14%; top:16%; width:10%; height:55%; border-radius:20px; background:rgba(255,255,255,.35); }
 .lw-glas-sterne i{ position:absolute; bottom:var(--y); font-style:normal; font-size:clamp(22px,2.6vw,44px); animation:lwStern 1.6s ease-in both; }
 @keyframes lwStern{ from{ transform:translateY(-260px) rotate(-90deg); opacity:0; } 30%{ opacity:1; } to{ transform:none; } }
-.lw-r-zahl{ font:900 clamp(26px,3vw,52px) "Nunito",sans-serif; }
-.lw-ruhe.ende .lw-r-uhr, .lw-ruhe.melden .lw-r-uhr{ font-size:clamp(70px,min(14vw,24vh),260px); }
+.lw-r-zahl{ font:900 clamp(24px,2.8vw,48px) "Nunito",sans-serif; color:#ffe066; margin-top:1vh; }
 .lw-anzeige{ display:flex; align-items:center; gap:2vw; flex-wrap:wrap; justify-content:center; width:min(94vw,1400px); }
 .lw-zahl{ font:400 clamp(24px,3vw,44px) "Patrick Hand","Andika",sans-serif; color:#ffe066; }
 .lw-messer{ position:relative; flex:1 1 260px; height:22px; border-radius:11px; background:rgba(255,255,255,.12); overflow:hidden; border:2px solid rgba(255,255,255,.4); }
@@ -892,7 +940,7 @@ function starten(id, einstellung = {}){
     el.className = "lt-voll" + (e.thema === "meer" ? " lt-meer" : "");
     const kopf = e.thema === "meer" && id === "leise" ? "🌊 Leise-Meer" : w.emoji + " " + w.titel;
     el.innerHTML = `<div class="lt-leiste"><h2>${EULE_MINI}<span>${esc(kopf)}</span></h2>
-        ${(w.optionen || []).map(o => `<label><select data-opt="${o.k}" title="${esc(o.label)}">${o.werte.map(([v, l]) => `<option value="${esc(JSON.stringify(v))}" ${JSON.stringify(v) === JSON.stringify(e[o.k]) ? "selected" : ""}>${esc(o.label)}: ${esc(l)}</option>`).join("")}</select></label>`).join("")}
+        ${(w.optionen || []).map(o => `<label data-optlabel="${o.k}" ${o.zeigen && !o.zeigen(e) ? 'style="display:none"' : ""}><select data-opt="${o.k}" title="${esc(o.label)}">${o.werte.map(([v, l]) => `<option value="${esc(JSON.stringify(v))}" ${JSON.stringify(v) === JSON.stringify(e[o.k]) ? "selected" : ""}>${esc(o.label)}: ${esc(l)}</option>`).join("")}</select></label>`).join("")}
         <button class="lt-x" data-voll title="Vollbild an/aus">⛶</button><button class="lt-x" data-zu title="Schließen (Esc)">✕</button></div>
         <div class="lt-buehne"><div class="lt-inhalt"></div><div class="lt-antworten"></div><div class="lt-loesung"></div></div>
         <div class="lt-steuer"><span class="lt-zaehler"></span><button class="lt-knopf" data-loes>👁 Lösung</button><button class="lt-knopf" data-nochmal hidden>🔁 Nochmal zeigen</button><button class="lt-knopf gold" data-weiter>Nächste ▶</button></div>`;
@@ -936,7 +984,8 @@ function starten(id, einstellung = {}){
     const schritt = () => { if (api.weiter) return api.weiter(); if (!gezeigt && aufgabe && aufgabe.loesung) return zeigeLoesung(); neu(); };
     kWeiter.addEventListener("click", () => { if (api.weiter) api.weiter(); else neu(); });
     kLoes.addEventListener("click", zeigeLoesung);
-    el.querySelectorAll("[data-opt]").forEach(s => s.addEventListener("change", () => { e[s.dataset.opt] = JSON.parse(s.value); nr = 0; neu(); }));
+    const optSichtbar = () => (w.optionen || []).forEach(o => { const l = el.querySelector(`[data-optlabel="${o.k}"]`); if (l) l.style.display = o.zeigen && !o.zeigen(e) ? "none" : ""; });
+    el.querySelectorAll("[data-opt]").forEach(s => s.addEventListener("change", () => { e[s.dataset.opt] = JSON.parse(s.value); nr = 0; optSichtbar(); neu(); }));
     el.querySelector("[data-zu]").addEventListener("click", schliessen);
     el.querySelector("[data-voll]").addEventListener("click", () => { try { document.fullscreenElement ? document.exitFullscreen() : el.requestFullscreen(); } catch (x) {} });
     const tasten = ev => {
