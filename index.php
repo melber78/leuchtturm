@@ -97,6 +97,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-09", "Stundenplan für LRS-Kinder", "Wochenraster mit den Namen der Kinder statt Fächern – lokal, es wird nichts gespeichert. Drucken oder als PDF.", "stundenplan.php"],
     ["2026-11-09", "Stunden-Timer für die LRS-Stunde", "Alle Phasen (Ankommen bis Abschluss) mit Countdown, Gong und Endzeit – auch direkt aus der Stundenplanung.", "lrs-timer.php"],
     ["2026-11-09", "Tafelbild „Guten Morgen!“", "Zum Stundenanfang: Begrüßung, Datum, Wetter, Stundenplan mit Lehrkräften, was auspacken, was beachten – für Kl. 1/2 oder 3/4.", "tafelbilder.php#morgen"],
     ["2026-11-09", "Tafelbilder: Buchstabenkurs", "Buchstaben in der Lineatur an der digitalen Tafel vorschreiben, nachspuren und selbst schreiben – Druck- oder Grundschrift.", "tafelbilder.php#buchstabenkurs"],
@@ -145,6 +146,12 @@ $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strt
 <i class="fa-solid fa-stopwatch"></i>
 <h2>Stunden-Timer</h2>
 <p>Phasen der LRS-Stunde mit Zeit im Blick – Ankommen bis Abschluss</p>
+</a>
+
+<a href="stundenplan.php" class="portal-card">
+<i class="fa-solid fa-table-cells"></i>
+<h2>Stundenplan</h2>
+<p>Wochenplan mit den Namen der Kinder (lokal, nicht gespeichert)</p>
 </a>
 
 <a href="materialien.php" class="portal-card">

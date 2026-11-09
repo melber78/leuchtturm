@@ -14,3 +14,5 @@ Gast-Zugänge für Kolleginnen: `zugaenge.php` (anlegen, Code/Link, sperren, lö
 Daten (`material-daten/`, `material-dateien/`) und `auth.php` liegen nur auf dem Server und werden nie überschrieben.
 
 Bilder in `bilder.js`: Microsoft Fluent Emoji (MIT-Lizenz, Hinweis in der Datei).
+
+Stundenplan für LRS-Kinder und Fördergruppen: `stundenplan.php` (Namen statt Fächer, nur im Browser, es wird nichts gespeichert; Druck im Querformat ohne Fußzeile).
