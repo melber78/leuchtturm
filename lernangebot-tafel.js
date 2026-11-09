@@ -383,12 +383,21 @@ W.leise = {
     text: "Je leiser ihr seid, desto mehr Tiere kommen in den Wald und spielen dort. Wird es laut, laufen sie davon. (Mikrofon nötig – es wird nichts aufgenommen.)",
     optionen: [
         { k: "minuten", label: "Alle Tiere nach", werte: [[1, "1 Min. Ruhe"], [2, "2 Min. Ruhe"], [3, "3 Min. Ruhe"], [5, "5 Min. Ruhe"], [10, "10 Min. Ruhe"]] },
-        { k: "tiere", label: "Tiere", werte: [[6, "6 Tiere"], [9, "9 Tiere"], [12, "12 Tiere"]] }
+        { k: "tiere", label: "Tiere", werte: [[6, "6 Tiere"], [9, "9 Tiere"], [12, "12 Tiere"]] },
+        { k: "modus", label: "Art", werte: [["ende", "Überraschung am Ende"], ["melden", "Nur melden, wenn's laut wird"], ["sterne", "Stille-Sterne sammeln"], ["zuschauen", "Tiere kommen live (zum Zuschauen)"]] },
+        { k: "arbeitszeit", label: "Arbeitszeit", werte: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 20, 25, 30].map(m => [m, m + " Min."]) }
     ],
-    std: { minuten: 3, tiere: 9 },
+    std: { minuten: 3, tiere: 9, modus: "ende", arbeitszeit: 10 },
+    // zuletzt gewählte Art und Arbeitszeit merken (auf diesem Gerät)
+    gemerkt(){ try { return JSON.parse(localStorage.getItem("lt-leise-wahl") || "{}"); } catch (x) { return {}; } },
     eigen(el, e, api){
         const meer = e.thema === "meer";
         const n = +e.tiere || 9, proTier = (+e.minuten || 3) * 60 / n;
+        // Art: live zuschauen – oder ruhiger Bildschirm während der Arbeit (Überraschung am Ende, nur melden, Sterne)
+        const modus = ["ende", "melden", "sterne", "zuschauen"].includes(e.modus) ? e.modus : "ende";
+        const dauer = Math.max(60, (+e.arbeitszeit || 10) * 60);
+        const ruhigerModus = modus !== "zuschauen";
+        try { localStorage.setItem("lt-leise-wahl", JSON.stringify({ modus, arbeitszeit: Math.round(dauer / 60), tiere: n, minuten: +e.minuten || 3 })); } catch (x) {}
         let schwelle = 45; try { schwelle = +localStorage.getItem("lt-leise-schwelle") || 45; } catch (x) {}
         const reihe = (meer ? MEER_TIERE : WALD_TIERE).slice();
         const liste = [...reihe.slice(0, 4), ...mischen(reihe.slice(4))].slice(0, n);   // abwechslungsreicher Start: laufen, fliegen, hüpfen …
@@ -403,9 +412,17 @@ W.leise = {
                <div class="lw-boden"></div>
                ${[12, 38, 66, 88].map((x, i) => `<div class="lw-blatt" style="left:${x}%;--t:${7 + i * 2}s;animation-delay:${-i * 2.5}s">🍂</div>`).join("")}
                <div class="lw-busch" style="left:4%">🌿</div><div class="lw-busch" style="left:31%">🌱</div><div class="lw-busch" style="left:57%">🌿</div><div class="lw-busch" style="left:83%">🌱</div>`;
-        el.innerHTML = `<div class="lw-szene${meer ? " lw-meer" : ""}">${deko}<div class="lw-tiere"></div><div class="lw-blase" hidden></div></div>
+        const ziel = meer ? "am Leuchtturm" : "im Wald";
+        const ruheText = { ende: `🤫 Arbeitet leise – am Ende wartet eine Überraschung ${ziel}!`, melden: "🤫 Jetzt wird leise gearbeitet.", sterne: "🤫 Jede leise Minute bringt einen Stern ins Glas." }[modus] || "";
+        const ruhe = ruhigerModus ? `<div class="lw-ruhe ${modus}${meer ? " meer" : ""}">
+            <div class="lw-r-uhr">${Math.floor(dauer / 60)}:00</div>
+            <div class="lw-r-text">${ruheText}</div>
+            ${modus === "sterne" ? `<div class="lw-glas"><div class="lw-glas-sterne"></div></div><div class="lw-r-zahl">⭐ <b>0</b></div>` : ""}
+            <div class="lw-r-pssst" hidden><span>🦉</span><b>Pssst!</b><small>Bitte leise arbeiten.</small></div>
+          </div>` : "";
+        el.innerHTML = `<div class="lw-szene${meer ? " lw-meer" : ""}">${deko}<div class="lw-tiere"></div><div class="lw-blase" hidden></div>${ruhe}</div>
         <div class="lw-anzeige">
-            <span class="lw-zahl"><b>0</b> / ${n} Tiere</span>
+            <span class="lw-zahl" ${ruhigerModus ? "hidden" : ""}><b>0</b> / ${n} Tiere</span>
             <div class="lw-messer"><div class="lw-pegel"></div><div class="lw-grenze"></div></div>
             <label class="lw-regler" title="Wie laut darf es sein, bevor die Tiere weglaufen?">streng <input type="range" min="15" max="85" value="${schwelle}"> locker</label>
         </div>
@@ -519,7 +536,7 @@ W.leise = {
             const quelle = ctx.createMediaStreamSource(stream);
             analyser = ctx.createAnalyser(); analyser.fftSize = 1024; puffer = new Float32Array(analyser.fftSize);
             quelle.connect(analyser);
-            laeuft = true; hinweis.textContent = meer ? "Psst … wer kommt wohl als Erstes zum Leuchtturm geschwommen?" : "Psst … wer kommt wohl als Erstes in den Wald?";
+            laeuft = true; hinweis.textContent = ruhigerModus ? "" : meer ? "Psst … wer kommt wohl als Erstes zum Leuchtturm geschwommen?" : "Psst … wer kommt wohl als Erstes in den Wald?";
             api.weiterText("🔄 Neu starten");
         };
         api.aufraeumen(() => { cancelAnimationFrame(raf); if (stream) stream.getTracks().forEach(t => t.stop()); if (ctx) ctx.close(); });
@@ -534,6 +551,7 @@ W.leise = {
             pegel.style.width = glatt + "%";
             pegel.classList.toggle("laut", glatt > schwelle);
             if (fertig) return;
+            if (ruhigerModus) { ruhigMessen(glatt > schwelle); return; }
             if (glatt > schwelle) {
                 laut += .1; ruhig = Math.max(0, ruhig - .3);
                 if (laut >= .6 && Date.now() > sperre && sichtbar > 0) {
@@ -553,8 +571,59 @@ W.leise = {
                 }
             }
         }, 100);
+        /* ---------- Ruhige Modi: der Bildschirm bleibt während der Arbeit ruhig ---------- */
+        const ruheEl = el.querySelector(".lw-ruhe");
+        let zeit = 0, stillZeit = 0, lautAm = 0, pssstN = 0, sterne = 0, minLaut = 0, minZeit = 0, pssstSperre = 0;
+        const uhrEl = ruheEl && ruheEl.querySelector(".lw-r-uhr"), pssstEl = ruheEl && ruheEl.querySelector(".lw-r-pssst");
+        const mmss = sek => Math.floor(sek / 60) + ":" + String(Math.floor(sek % 60)).padStart(2, "0");
+        function pssst(){
+            pssstN++; pssstSperre = Date.now() + 5000;
+            pssstEl.hidden = false; pssstEl.classList.remove("an"); void pssstEl.offsetWidth; pssstEl.classList.add("an");
+            api.klang(330, .3, "sine"); setTimeout(() => api.klang(262, .4, "sine"), 260);
+            setTimeout(() => { pssstEl.hidden = true; }, 2200);
+        }
+        function sternDazu(){
+            sterne++; ruheEl.querySelector(".lw-r-zahl b").textContent = sterne;
+            const st = document.createElement("i"); st.textContent = "⭐";
+            st.style.left = (12 + Math.random() * 70) + "%"; st.style.setProperty("--y", (Math.floor((sterne - 1) / 6) * 16) + "%");
+            ruheEl.querySelector(".lw-glas-sterne").appendChild(st); api.klang(880, .15);
+        }
+        function ruhigMessen(istLaut){
+            zeit += .1; minZeit += .1;
+            if (istLaut) { lautAm += .1; minLaut += .1; } else { stillZeit += .1; lautAm = Math.max(0, lautAm - .05); }
+            if (lautAm >= .8 && Date.now() > pssstSperre && modus !== "ende") { pssst(); lautAm = 0; }
+            if (lautAm >= 1.5 && Date.now() > pssstSperre && modus === "ende") { pssst(); lautAm = 0; }
+            if (modus === "sterne" && minZeit >= 60) { if (minLaut < 4) sternDazu(); minZeit = 0; minLaut = 0; }
+            if (uhrEl) uhrEl.textContent = mmss(Math.max(0, dauer - zeit));
+            if (zeit >= dauer) ruhigFertig();
+        }
+        function ruhigFertig(){
+            fertig = true; api.gong();
+            const anteil = zeit ? stillZeit / zeit : 0;
+            if (modus === "ende") {
+                const k = Math.max(anteil > .25 ? 1 : 0, Math.min(n, Math.round(n * anteil / .9)));
+                ruheEl.classList.add("weg");
+                hinweis.textContent = "Ihr habt " + Math.round(anteil * 100) + " % der Zeit leise gearbeitet …";
+                kopf.parentNode.hidden = false;
+                for (let i = 0; i < k; i++) setTimeout(() => { kommen(tiere[sichtbar]); sichtbar++; anzahlZeigen();
+                    if (sichtbar === k) { hinweis.textContent = k === n ? `Geschafft! Alle ${n} Tiere sind ${ziel} – ihr wart super leise! 🎉` : `${k} von ${n} Tieren sind ${ziel}! Nächstes Mal schafft ihr noch mehr. 🌱`; if (k === n) jubeln(true); } }, 900 + i * 700);
+                if (!k) hinweis.textContent = `Heute hat sich kein Tier ${ziel} getraut – es war zu laut. Nächstes Mal klappt's! 🍀`;
+            } else if (modus === "sterne") {
+                uhrEl.textContent = "Fertig!"; ruheEl.querySelector(".lw-r-text").textContent = sterne === 1 ? "Ihr habt 1 Stern gesammelt! ⭐" : `Ihr habt ${sterne} Sterne gesammelt! 🎉`;
+            } else {
+                uhrEl.textContent = "Fertig! 🎉"; ruheEl.querySelector(".lw-r-text").textContent = pssstN === 0 ? "Super – kein einziges Mal „Pssst“! 🌟" : pssstN === 1 ? "Nur 1-mal „Pssst“ – gut gemacht!" : `${pssstN}-mal „Pssst“ – nächstes Mal schafft ihr weniger!`;
+            }
+        }
+        if (ruhigerModus) hinweis.textContent = "Tippe auf „Start“, erlaube das Mikrofon – dann wird " + Math.round(dauer / 60) + " Minuten leise gearbeitet.";
         api.weiter = () => {
             if (!laeuft) { starten(); return; }
+            if (ruhigerModus) {   // neue Runde
+                zeit = stillZeit = lautAm = pssstN = sterne = minLaut = minZeit = 0; fertig = false; jubeln(false);
+                tiere.forEach(t => { if (t.zust !== "weg") fliehen(t); }); sichtbar = 0; anzahlZeigen(); kopf.parentNode.hidden = true;
+                ruheEl.classList.remove("weg"); ruheEl.querySelector(".lw-r-text").textContent = ruheText;
+                if (modus === "sterne") { ruheEl.querySelector(".lw-glas-sterne").innerHTML = ""; ruheEl.querySelector(".lw-r-zahl b").textContent = "0"; }
+                hinweis.textContent = "Neue Runde – leise arbeiten!"; return;
+            }
             tiere.forEach(t => { if (t.zust !== "weg") fliehen(t); });
             sichtbar = 0; ruhig = 0; laut = 0; fertig = false; jubeln(false); anzahlZeigen();
             hinweis.textContent = "Neue Runde – wer schafft es, ganz leise zu sein?";
@@ -764,6 +833,23 @@ const CSS = `
 .lw-strahl{ position:absolute; right:calc(5% + clamp(18px,2.5vw,35px)); top:calc(40% - clamp(60px,8.6vw,120px)); width:60vw; height:30px; transform-origin:100% 50%; background:linear-gradient(270deg, rgba(255,240,190,.8), transparent); clip-path:polygon(0 0, 100% 45%, 100% 55%, 0 100%); animation:lwStrahl 6s ease-in-out infinite; z-index:1; }
 @keyframes lwStrahl{ 0%,100%{ transform:rotate(-6deg); } 50%{ transform:rotate(8deg); } }
 /* Anzeige */
+.lw-ruhe{ position:absolute; inset:0; z-index:20; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2vh; background:linear-gradient(160deg,#eaf3e6,#dcebd3); color:#1d4634; text-align:center; transition:opacity 1.2s; }
+.lw-ruhe.meer{ background:linear-gradient(160deg,#e3f1f8,#cfe5f1); color:#16324a; }
+.lw-ruhe.weg{ opacity:0; pointer-events:none; }
+.lw-r-uhr{ font:900 clamp(60px,min(12vw,20vh),220px)/1 "Nunito",sans-serif; font-variant-numeric:tabular-nums; opacity:.85; }
+.lw-r-text{ font:400 clamp(22px,min(2.8vw,5vh),48px) "Patrick Hand","Andika",sans-serif; max-width:90%; }
+.lw-r-pssst{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(255,253,245,.94); z-index:3; }
+.lw-r-pssst span{ font-size:clamp(90px,min(16vw,26vh),280px); line-height:1; }
+.lw-r-pssst b{ font:900 clamp(50px,min(8vw,13vh),140px) "Nunito",sans-serif; color:#c0392b; }
+.lw-r-pssst small{ font:800 clamp(20px,min(2.4vw,4vh),40px) "Nunito",sans-serif; color:#1d4634; }
+.lw-r-pssst.an span{ animation:lwPssst .35s 3; }
+@keyframes lwPssst{ 50%{ transform:rotate(6deg) scale(1.08); } }
+.lw-r-pssst[hidden], .lw-zahl[hidden]{ display:none; }
+.lw-glas{ position:relative; width:clamp(120px,14vw,240px); height:clamp(140px,22vh,260px); border:6px solid rgba(29,70,52,.35); border-top:0; border-radius:0 0 40px 40px; background:rgba(255,255,255,.55); overflow:hidden; }
+.lw-glas-sterne i{ position:absolute; bottom:var(--y); font-style:normal; font-size:clamp(22px,2.6vw,44px); animation:lwStern 1.6s ease-in both; }
+@keyframes lwStern{ from{ transform:translateY(-260px) rotate(-90deg); opacity:0; } 30%{ opacity:1; } to{ transform:none; } }
+.lw-r-zahl{ font:900 clamp(26px,3vw,52px) "Nunito",sans-serif; }
+.lw-ruhe.ende .lw-r-uhr, .lw-ruhe.melden .lw-r-uhr{ font-size:clamp(70px,min(14vw,24vh),260px); }
 .lw-anzeige{ display:flex; align-items:center; gap:2vw; flex-wrap:wrap; justify-content:center; width:min(94vw,1400px); }
 .lw-zahl{ font:400 clamp(24px,3vw,44px) "Patrick Hand","Andika",sans-serif; color:#ffe066; }
 .lw-messer{ position:relative; flex:1 1 260px; height:22px; border-radius:11px; background:rgba(255,255,255,.12); overflow:hidden; border:2px solid rgba(255,255,255,.4); }
@@ -801,7 +887,7 @@ let offen = null;
 function starten(id, einstellung = {}){
     const w = W[id]; if (!w) return;
     cssLaden(); schliessen();
-    const e = Object.assign({}, w.std, einstellung);
+    const e = Object.assign({}, w.std, w.gemerkt ? w.gemerkt() : {}, einstellung);
     const el = document.createElement("div");
     el.className = "lt-voll" + (e.thema === "meer" ? " lt-meer" : "");
     const kopf = e.thema === "meer" && id === "leise" ? "🌊 Leise-Meer" : w.emoji + " " + w.titel;

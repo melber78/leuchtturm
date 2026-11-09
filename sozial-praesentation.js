@@ -826,7 +826,7 @@ function leistenKlick(ev){
     else if (a === "vollbild") vollbild();
     else if (a === "schale") klangschale();
     else if (a === "ruhe") ruheSignal();
-    else if (a === "leise" && window.lernTafel) window.lernTafel.starten("leise", LERN() ? {} : { thema: "meer" });
+    else if (a === "leise" && window.lernTafel) window.lernTafel.starten("leise", Object.assign(LERN() ? {} : { thema: "meer" }, b.dataset.min ? { arbeitszeit: +b.dataset.min } : {}));
     else if (a === "silben") {
         zustand.silben = !zustand.silben;
         b.classList.toggle("an", zustand.silben);
@@ -981,7 +981,7 @@ function folieHtml(f, e){
         if (f.typ === "arbeitsblatt") return `${KRITZEL()}<div class="l-stempel">ARBEITSPHASE · 11 MINUTEN</div><h2>✏️ Jetzt bist du dran!</h2>
             <div class="l-check klein"><div><b>1</b> Name schreiben</div><div><b>2</b> Aufgabe genau lesen</div><div><b>3</b> Los geht’s!</div><div><b>✓</b> Fertig? Kontrollieren!</div></div>
             <div class="l-duell">${eule(true)}<div>Feststecken? <b>Hilfe-Treppe:</b> 👀 nochmal lesen · 🧰 Hilfsmittel · 🤫 Nachbarn fragen · 🙋 Hand heben<br>Je leiser ihr arbeitet, desto mehr Tiere kommen in den Leise-Wald!</div></div>
-            <div class="p-reihe"><button class="p-knopf" data-start="${Math.max(3, lernMin(11))}">⏱ ${Math.max(3, lernMin(11))} Minuten</button>${window.lernTafel ? '<button class="p-knopf gold" data-p="leise">🌳 Leise-Wald an</button>' : ""}<button class="p-knopf hell" data-p="ruhe">🤫 Leise-Signal</button></div>`;
+            <div class="p-reihe"><button class="p-knopf" data-start="${Math.max(3, lernMin(11))}">⏱ ${Math.max(3, lernMin(11))} Minuten</button>${window.lernTafel ? `<button class="p-knopf gold" data-p="leise" data-min="${Math.max(3, lernMin(11))}">🌳 Leise-Wald an</button>` : ""}<button class="p-knopf hell" data-p="ruhe">🤫 Leise-Signal</button></div>`;
         if (f.typ === "abschluss") {
             const gr = gruppeAktuell(), G = glas(gr.id), P = zustand.punkte, gespielt = P.klasse + P.eule > 0;
             const sieg = P.klasse > P.eule ? "Ihr habt Eule Ella geschlagen! 🎉 Bonus-Stern!" : P.klasse === P.eule ? "Unentschieden – stark!" : "Diesmal gewinnt Ella – nächstes Mal schlagt ihr sie!";
