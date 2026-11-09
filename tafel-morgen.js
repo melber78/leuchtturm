@@ -56,7 +56,10 @@ const TAGE = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freita
 const TAGE_FARBE = ["#e2574c", "#3d7ea6", "#e67e22", "#3f9a5a", "#8e44ad", "#d4a017", "#e2574c"];
 const MONATE = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 const JAHRESZEIT = m => m <= 1 || m === 11 ? ["⛄", "Winter"] : m <= 4 ? ["🌷", "Frühling"] : m <= 7 ? ["🌻", "Sommer"] : ["🍂", "Herbst"];
-const ZEITEN = [["07:45", "08:30"], ["08:35", "09:20"], ["09:40", "10:25"], ["10:30", "11:15"], ["11:35", "12:20"], ["12:25", "13:10"]];
+// Unterrichtszeiten der Schule (Vorgabe für neue Klassen)
+const ZEITEN = [["07:30", "08:10"], ["08:25", "09:05"], ["09:10", "09:50"], ["10:10", "10:50"], ["10:55", "11:35"], ["", ""]];
+const PAUSEN = [{ nach: 1, name: "Frühstück", e: "🍎" }, { nach: 3, name: "Hofpause", e: "🛝" }, { nach: 5, name: "Hofpause / Mittag", e: "🍽️" }];
+const ALT_ZEITEN = '[["07:45","08:30"],["08:35","09:20"],["09:40","10:25"],["10:30","11:15"],["11:35","12:20"],["12:25","13:10"]]';
 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const neueId = () => Math.random().toString(36).slice(2, 9);
@@ -65,7 +68,7 @@ function kw(d){ const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.get
 
 function neueKlasse(name, stufe){
     return { id: neueId(), name: name || "1a", stufe: stufe || "12", lehrkraft: "", gruss: "", ort: { name: "Weißenfels", lat: 51.2, lon: 11.97 },
-        zeiten: ZEITEN.map(z => z.slice()), pausen: [{ nach: 2, name: "Frühstück & Hofpause", e: "🍎" }, { nach: 4, name: "Hofpause", e: "🛝" }],
+        zeiten: ZEITEN.map(z => z.slice()), pausen: PAUSEN.map(p => Object.assign({}, p)),
         plan: { 1: [], 2: [], 3: [], 4: [], 5: [] }, material: {}, extra: {}, hinweise: [] };
 }
 let D = window.TAFEL_DATEN && window.TAFEL_DATEN.morgen;
@@ -75,6 +78,8 @@ if (!D || !Array.isArray(D.klassen) || !D.klassen.length) {
 if (!D || !Array.isArray(D.klassen) || !D.klassen.length) { const k = neueKlasse("1a", "12"); k.beispiel = true;
     k.plan = { 1: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "sachunterricht", l: "" }, { f: "sport", l: "" }], 2: [{ f: "mathe", l: "" }, { f: "deutsch", l: "" }, { f: "kunst", l: "" }, { f: "kunst", l: "" }], 3: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "musik", l: "" }, { f: "lernangebot", l: "" }], 4: [{ f: "mathe", l: "" }, { f: "deutsch", l: "" }, { f: "englisch", l: "" }, { f: "sport", l: "" }], 5: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "religion", l: "" }] };
     D = { klassen: [k], aktiv: k.id }; }
+// Klassen mit den alten Vorgabezeiten auf die Schulzeiten umstellen
+D.klassen.forEach(k => { if (JSON.stringify(k.zeiten) === ALT_ZEITEN) { k.zeiten = ZEITEN.map(z => z.slice()); k.pausen = PAUSEN.map(p => Object.assign({}, p)); } });
 let tagVersatz = 0, wetterLive = null, abgehakt = {};
 const klasse = () => D.klassen.find(k => k.id === D.aktiv) || D.klassen[0];
 const tag = () => { const d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() + tagVersatz); return d; };
@@ -195,13 +200,13 @@ function zeichnen(){
         <h2>${klein ? "Unser Tag" : "Stundenplan"}</h2>
         ${wochenende ? `<div class="mg-leer">🎈 Heute ist keine Schule.<br>Schönes Wochenende!</div>` : !st.length ? `<div class="mg-leer">Für ${TAGE[wt]} ist noch kein Stundenplan eingetragen.<br><button class="mg-k" data-bearbeiten="plan">✏️ Stundenplan eintragen</button></div>` :
           `<ol class="mg-stunden">${st.map((s, i) => { const f = FAECHER[s.f] || { n: s.f, e: "📌", f: "#888" };
-            const pause = pausen.find(p => +p.nach === s.nr && st.some(x => x.nr > s.nr));
+            const pause = pausen.find(p => +p.nach === s.nr && (st.some(x => x.nr > s.nr) || /mittag/i.test(p.name)));
             return `<li class="${s.nr === jetzt ? "jetzt" : ""} ${istHeute && jetzt && s.nr < jetzt ? "vorbei" : ""}" style="--ff:${f.f}">
               <span class="mg-nr">${s.nr}</span><span class="mg-fe">${f.e}</span>
               <span class="mg-fach"><b>${esc(s.n || f.n)}</b>${s.l ? `<small>${esc(s.l)}</small>` : ""}</span>
               ${!klein && s.von ? `<span class="mg-zeit">${esc(s.von)}–${esc(s.bis)}</span>` : ""}
               ${s.nr === jetzt ? `<span class="mg-jetzt">${klein ? "👉" : "jetzt"}</span>` : ""}</li>` +
-              (pause ? `<li class="mg-pause"><span>${esc(pause.e || "🛝")}</span> ${esc(pause.name)}${!klein && k.zeiten[s.nr - 1] && k.zeiten[s.nr] ? ` <small>${esc(k.zeiten[s.nr - 1][1])}–${esc(k.zeiten[s.nr][0])}</small>` : ""}</li>` : ""); }).join("")}</ol>`}
+              (pause ? `<li class="mg-pause"><span>${esc(pause.e || "🛝")}</span> ${esc(pause.name)}${!klein && k.zeiten[s.nr - 1] && k.zeiten[s.nr] && k.zeiten[s.nr][0] ? ` <small>${esc(k.zeiten[s.nr - 1][1])}–${esc(k.zeiten[s.nr][0])}</small>` : !klein && k.zeiten[s.nr - 1] && k.zeiten[s.nr - 1][1] ? ` <small>ab ${esc(k.zeiten[s.nr - 1][1])}</small>` : ""}</li>` : ""); }).join("")}</ol>`}
       </section>
       <div class="mg-spalte">
         <section class="mg-karte mg-pack">
