@@ -154,6 +154,25 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .mg-aendern tr.fokus td{ background:#fff8e1; }
 .mg-ausfall{ display:flex; gap:6px; align-items:center; font-weight:800; color:#a3261c; white-space:nowrap; }
 .mg-dialog{ max-height:92vh; overflow:auto; }
+.mg-sdw{ display:flex; align-items:center; gap:.6vw; background:linear-gradient(135deg,#fff3c4,#ffe08a); border-radius:22px; padding:.4em 1em .4em .6em; box-shadow:0 6px 18px rgba(200,140,0,.18); }
+.mg-sdw span{ font-size:clamp(26px,min(3vw,5vh),54px); animation:mgSonne 8s linear infinite; display:inline-block; }
+.mg-sdw small{ display:block; font:800 clamp(11px,min(1vw,1.7vh),18px) "Nunito",sans-serif; color:#8a5a00; text-transform:uppercase; letter-spacing:.05em; }
+.mg-sdw b{ display:block; font:900 clamp(20px,min(2.4vw,4vh),44px)/1.05 "Nunito",sans-serif; color:#16324a; }
+.mg-schluss{ margin-top:1vh; border-top:2px dashed #eee6d6; padding-top:.8vh; display:flex; flex-direction:column; gap:.6vh; }
+.mg-schluss h3{ margin:0; font:900 clamp(13px,min(1.2vw,2vh),22px) "Nunito",sans-serif; text-transform:uppercase; letter-spacing:.05em; color:#c0392b; }
+.mg-check{ display:flex; align-items:center; gap:.6vw; text-align:left; border:3px solid #f0ebe0; background:#fffdf8; border-radius:14px; padding:.5vh .7vw; font:800 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#16324a; cursor:pointer; }
+.mg-check span{ font-size:1.4em; }
+.mg-check.ok{ border-color:#2e9e5b; background:#e9f7ee; text-decoration:line-through; color:#5d7a68; }
+.mg-dienste{ flex:1 !important; }
+.mg-dliste{ display:grid; grid-template-columns:1fr 1fr; gap:.6vh .8vw; align-content:start; }
+.mg-dienst{ display:flex; align-items:center; gap:.5vw; background:#f8f6f1; border-radius:14px; padding:.4vh .6vw; min-width:0; }
+.mg-dienst span{ font-size:clamp(20px,min(2.2vw,3.6vh),40px); }
+.mg-dienst small{ display:block; font:800 clamp(10px,min(.95vw,1.6vh),17px) "Nunito",sans-serif; color:#8a7a60; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.mg-dienst b{ display:block; font:900 clamp(13px,min(1.35vw,2.3vh),25px) "Nunito",sans-serif; color:#16324a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.mg-dienst div{ min-width:0; }
+.mg-achtung.weg{ display:none; }
+.mg-schalter{ display:flex !important; align-items:center; gap:8px; text-transform:none !important; letter-spacing:0 !important; font-size:15px !important; color:#16324a !important; cursor:pointer; }
+.mg-schalter input{ width:20px !important; height:20px; }
 .mg-heute{ margin:1vh auto 0; border:0; background:#fff1c2; border-radius:999px; padding:6px 14px; font:800 14px "Nunito",sans-serif; cursor:pointer; }
 /* Wetter */
 .mg-wetter{ text-align:center; cursor:pointer; align-items:center; justify-content:center; }

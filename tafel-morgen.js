@@ -27,14 +27,17 @@ const DEF_FAECHER = {
     frei:      { n: "frei", e: "🏠", f: "#9aa5ad", m: [] },
 };
 const DEF_MATERIAL = {
-    federmappe: { e: "✏️", n: "Federmappe" }, hausaufgabenheft: { e: "📔", n: "Hausaufgabenheft" }, postmappe: { e: "📨", n: "Postmappe" },
+    verhaltenshefter: { e: "🚦", n: "Verhaltenshefter" }, federmappe: { e: "✏️", n: "Federmappe" }, hausaufgabenheft: { e: "📔", n: "Hausaufgabenheft" }, postmappe: { e: "📨", n: "Postmappe" },
     ordner_gelb: { e: "📁", n: "Gelber Ordner", farbe: "#f4c430" }, ordner_rot: { e: "📁", n: "Roter Ordner", farbe: "#d63b30" }, ordner_schwarz: { e: "📁", n: "Schwarzer Ordner", farbe: "#2d2d2d" },
     lernpfad: { e: "🗺️", n: "Lernpfad" }, heft: { e: "📒", n: "Heft" }, fibel: { e: "📗", n: "Fibel" }, lesebuch: { e: "📖", n: "Lesebuch" }, mathebuch: { e: "📘", n: "Mathebuch" },
     arbeitsheft: { e: "📓", n: "Arbeitsheft" }, lineal: { e: "📏", n: "Lineal" }, schere: { e: "✂️", n: "Schere" }, kleber: { e: "🧴", n: "Kleber" }, malkasten: { e: "🎨", n: "Malkasten" },
     buntstifte: { e: "🖍️", n: "Buntstifte" }, sportbeutel: { e: "🎽", n: "Sportbeutel" }, trinkflasche: { e: "🥤", n: "Trinkflasche" }, fruehstueck: { e: "🍎", n: "Frühstück" },
     tablet: { e: "📱", n: "Tablet" }, woerterbuch: { e: "📕", n: "Wörterbuch" },
 };
-const DEF_IMMER = ["federmappe", "hausaufgabenheft"];
+const DEF_IMMER = ["verhaltenshefter", "federmappe", "hausaufgabenheft"];
+// In der letzten Stunde (abhakbar, bearbeitbar)
+const DEF_ENDE = [{ e: "🚦", t: "Verhaltenshefter schreiben" }, { e: "✍️", t: "Verhaltenshefter von der Lehrkraft unterschreiben lassen" }, { e: "🧹", t: "Klassendienste erledigen" }];
+const DEF_DIENSTE = [{ e: "🧽", n: "Tafeldienst" }, { e: "🧹", n: "Ordnungsdienst" }, { e: "🪴", n: "Blumendienst" }, { e: "📄", n: "Austeildienst" }, { e: "♻️", n: "Müll & Papier" }, { e: "🪟", n: "Fenster & Licht" }];
 // Namen früherer Vorgabe-Fächer (falls sie noch im Stundenplan stehen)
 const ALT_FAECHER = { sport: ["Sport", "⚽"], ethik: ["Ethik", "🤝"], werken: ["Werken", "🔨"], schwimmen: ["Schwimmen", "🏊"], klassenrat: ["Klassenrat", "🗣️"], wochenplan: ["Lernpfad", "🗺️"] };
 let FAECHER = {}, MATERIAL = {};
@@ -91,10 +94,14 @@ if (!D.katalog || typeof D.katalog !== "object") D.katalog = {};
 if (!D.katalog.faecher || Array.isArray(D.katalog.faecher)) D.katalog.faecher = kopie(DEF_FAECHER);
 if (!D.katalog.material || Array.isArray(D.katalog.material)) D.katalog.material = kopie(DEF_MATERIAL);
 FAECHER = D.katalog.faecher; MATERIAL = D.katalog.material;
+if (!D.katalog.v2) { if (!MATERIAL.verhaltenshefter) MATERIAL.verhaltenshefter = kopie(DEF_MATERIAL.verhaltenshefter); D.katalog.v2 = true; }
 // Frühere Namen umstellen (Federtasche → Federmappe, Wochenplan → Lernpfad, Lesezeit → Lernangebot)
 const UMBENANNT = { federtasche: "federmappe", wochenplan: "lernpfad" };
 D.klassen.forEach(k => {
     if (!Array.isArray(k.immer) || k.immer.join() === "federmappe,hausaufgabenheft,postmappe") k.immer = DEF_IMMER.slice();
+    if (!k.v2) { if (!k.immer.includes("verhaltenshefter")) k.immer.unshift("verhaltenshefter"); k.v2 = true; }
+    if (!Array.isArray(k.ende)) k.ende = DEF_ENDE.map(x => Object.assign({ id: neueId() }, x));
+    if (!Array.isArray(k.dienste)) k.dienste = [];
     if (!k.aenderungen || Array.isArray(k.aenderungen)) k.aenderungen = Object.assign({}, k.aenderungen || {});
     const um = l => [...new Set((l || []).map(m => UMBENANNT[m] || m))].filter(m => MATERIAL[m]);
     if (k.material && !Array.isArray(k.material)) Object.keys(k.material).forEach(f => { k.material[f] = um(k.material[f]).filter(m => !k.immer.includes(m)); });
@@ -111,6 +118,21 @@ D.klassen.forEach(k => {
     // 6. und 7. Stunde ergänzen, wenn sie noch fehlen
     else if (JSON.stringify(k.zeiten.slice(0, 5)) === JSON.stringify(ZEITEN.slice(0, 5))) for (let i = 5; i < ZEITEN.length; i++) if (!k.zeiten[i] || !k.zeiten[i][0]) k.zeiten[i] = ZEITEN[i].slice();
 });
+// Klassendienste: Namen rücken einen Dienst weiter (von Hand oder automatisch jeden Montag)
+function diensteRuecken(k, schritte){
+    const d = k.dienste || []; if (d.length < 2) return;
+    const namen = d.map(x => x.kind || "");
+    d.forEach((x, i) => { x.kind = namen[((i - schritte) % d.length + d.length) % d.length]; });
+}
+function wocheNr(d){ return d.getFullYear() * 100 + kw(d); }
+let autoGerueckt = false;
+D.klassen.forEach(k => {
+    if (!k.dienstAuto || !(k.dienste || []).length) return;
+    const jetzt = wocheNr(new Date());
+    if (k.dienstWoche && jetzt > k.dienstWoche) { const diff = Math.round((new Date() - montagVon(k.dienstWoche)) / (7 * 864e5)); if (diff > 0) { diensteRuecken(k, diff); autoGerueckt = true; } }
+    if (k.dienstWoche !== jetzt) { k.dienstWoche = jetzt; autoGerueckt = true; }
+});
+function montagVon(wn){ const j = Math.floor(wn / 100), w = wn % 100; const d = new Date(j, 0, 4); const tag = d.getDay() || 7; d.setDate(d.getDate() - tag + 1 + (w - 1) * 7); return d; }
 let tagVersatz = 0, wetterLive = null, abgehakt = {};
 const klasse = () => D.klassen.find(k => k.id === D.aktiv) || D.klassen[0];
 const tag = () => { const d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() + tagVersatz); return d; };
@@ -216,9 +238,10 @@ function materialJetzt(k, d){
     const vereint = (...l) => [...new Set(l.flat())];
     if (tagVersatz !== 0 || !stunden.length) return { titel: null, liste: vereint(immer, extra, ...stunden.map(s => fachMaterial(k, s.f))), ganzerTag: true };
     const bezug = stunden.find(s => s.status === "jetzt") || stunden.find(s => s.status === "gleich");
-    if (!bezug) return { titel: "Schulschluss", e: "🎒", liste: vereint(immer, MATERIAL.postmappe ? ["postmappe"] : []), schluss: true };
+    if (!bezug) return { titel: "Schulschluss", e: "🎒", liste: vereint(immer, MATERIAL.postmappe ? ["postmappe"] : []), schluss: true, letzte: true };
+    const letzte = bezug === stunden[stunden.length - 1] && stunden.length > 1;
     if (bezug === stunden[0]) return { titel: "Zum Tagesbeginn", e: "🌅", liste: vereint(immer, extra, fachMaterial(k, bezug.f)), stunde: bezug };
-    return { titel: fachInfo(bezug.f).n, e: fachInfo(bezug.f).e, liste: fachMaterial(k, bezug.f), stunde: bezug };
+    return { titel: fachInfo(bezug.f).n, e: fachInfo(bezug.f).e, liste: vereint(fachMaterial(k, bezug.f), letzte && MATERIAL.verhaltenshefter ? ["verhaltenshefter"] : []), stunde: bezug, letzte };
 }
 function hinweiseHeute(k, d){
     const t = iso(d), wt = String(d.getDay());
@@ -245,7 +268,7 @@ function zeichnen(){
     const istHeute = tagVersatz === 0;
     document.getElementById("mgInhalt").innerHTML = `
     <div class="mg-warnung" id="mgWarnung" ${speicherFehler ? "" : "hidden"}>${speicherFehler ? "⚠ Nicht im Leuchtturm gespeichert: " + esc(speicherFehler) : ""}</div>
-    <div class="mg-gruss"><span class="mg-sonne ${tageszeit()[1] === "☀️" ? "dreht" : ""}">${wochenende ? "🎈" : tageszeit()[1]}</span><h1>${esc(gruss(k))}</h1><div class="mg-uhr" id="mgUhr"></div></div>
+    <div class="mg-gruss"><span class="mg-sonne ${tageszeit()[1] === "☀️" ? "dreht" : ""}">${wochenende ? "🎈" : tageszeit()[1]}</span><h1>${esc(gruss(k))}</h1>${k.sdw ? `<div class="mg-sdw" title="${esc(k.sdwTitel || "Schüler der Woche")}"><span>⭐</span><div><small>${esc(k.sdwTitel || "Schüler der Woche")}</small><b>${esc(k.sdw)}</b></div></div>` : ""}<div class="mg-uhr" id="mgUhr"></div></div>
     <div class="mg-raster">
       <div class="mg-spalte">
         <section class="mg-karte mg-datum" style="--tf:${TAGE_FARBE[wt]}">
@@ -288,8 +311,10 @@ function zeichnen(){
           ${mj.titel ? `<div class="mg-fuer" style="--ff:${mj.stunde ? fachInfo(mj.stunde.f).f : "#8a7a60"}"><span>${mj.e || ""}</span>${mj.stunde && mj.titel !== "Zum Tagesbeginn" ? (klein ? "Für " : "Für die " + mj.stunde.nr + ". Stunde: ") + esc(mj.titel) : esc(mj.titel)}</div>` : ""}
           ${mat.length ? `<div class="mg-dinge ${mat.length > 9 ? "sehr-viele" : mat.length > 6 ? "viele" : ""}">${mat.map(m => { const key = m + "|" + (mj.stunde ? mj.stunde.nr : "t"); return `<button class="mg-ding ${abgehakt[key] ? "ok" : ""}" data-ding="${key}"><span>${dingBild(m)}</span><b>${esc(MATERIAL[m].n)}</b></button>`; }).join("")}</div>`
             : `<div class="mg-leer klein">${mj.stunde ? "Nichts Besonderes – Federmappe reicht 🙂" : "–"}</div>`}
+          ${mj.letzte && (k.ende || []).length ? `<div class="mg-schluss"><h3>${mj.schluss ? "Vor dem Nachhausegehen" : "In der letzten Stunde"}</h3>${k.ende.map(x => { const key = "ende|" + x.id; return `<button class="mg-check ${abgehakt[key] ? "ok" : ""}" data-ding="${key}"><span>${esc(x.e)}</span>${esc(x.t)}</button>`; }).join("")}</div>` : ""}
         </section>
-        <section class="mg-karte mg-achtung">
+        ${k.diensteZeigen && (k.dienste || []).length ? `<section class="mg-karte mg-dienste"><h2>Klassendienste</h2><div class="mg-dliste">${k.dienste.map(x => `<div class="mg-dienst"><span>${esc(x.e)}</span><div><small>${esc(x.n)}</small><b>${esc(x.kind || "–")}</b></div></div>`).join("")}</div></section>` : ""}
+        <section class="mg-karte mg-achtung ${!hin.length && k.diensteZeigen && (k.dienste || []).length ? "weg" : ""}">
           <h2>${klein ? "Denk daran!" : "Heute beachten"}</h2>
           ${hin.length ? `<ul class="mg-hinweise">${hin.map(h => `<li><span>${esc(h.e || "📢")}</span>${esc(h.t)}</li>`).join("")}</ul>` : `<div class="mg-leer klein">Heute nichts Besonderes 🙂</div>`}
         </section>
@@ -372,7 +397,7 @@ function bearbeiten(r){
     if (r) reiter = r;
     const p = document.getElementById("mgEditor"); p.classList.add("an");
     const k = klasse();
-    const R = { klasse: "🏫 Klasse", plan: "🗓️ Stundenplan", material: "🎒 Auspacken", faecher: "📚 Fächer", hinweise: "📢 Hinweise" };
+    const R = { klasse: "🏫 Klasse", plan: "🗓️ Stundenplan", material: "🎒 Auspacken", dienste: "🧹 Dienste & Schüler der Woche", faecher: "📚 Fächer", hinweise: "📢 Hinweise" };
     const fachOpt = sel => `<option value="">–</option>` + Object.entries(FAECHER).map(([key, f]) => `<option value="${key}" ${key === sel ? "selected" : ""}>${f.e} ${esc(f.n)}</option>`).join("");
     let html = `<div class="mg-ed-kopf"><div class="mg-reiter">${Object.entries(R).map(([key, n]) => `<button class="${key === reiter ? "an" : ""}" data-reiter="${key}">${n}</button>`).join("")}</div>
         <span id="mgStatus" class="mg-status">${speicherFehler ? "⚠ " + esc(speicherFehler) : ungesichert ? "" : "✓ gespeichert"}</span><button class="mg-k" data-schliessen>✓ Fertig</button></div><div class="mg-ed-inhalt">`;
@@ -407,6 +432,9 @@ function bearbeiten(r){
             return `<div class="mg-mat"><b>${esc(f.e)} ${esc(f.n)}${imPlan.includes(fk) ? "" : ' <small class="mg-hilfe">(nicht im Stundenplan)</small>'}</b><div class="mg-chips">${chips(an, m => `data-mat="${fk}|${m}"`)}</div></div>`; }).join("")}</div>
         <label>Zusätzlich an bestimmten Tagen</label>
         <div class="mg-matliste">${[1, 2, 3, 4, 5].map(t => `<div class="mg-mat"><b>${TAGE[t]}</b><div class="mg-chips">${chips(k.extra[t] || [], m => `data-extra="${t}|${m}"`)}</div></div>`).join("")}</div>
+        <label>In der letzten Stunde (zum Abhaken auf der Tafel)</label>
+        <div class="mg-liste">${(k.ende || []).map((x, i) => `<div class="mg-reihe mg-eintrag"><input data-ee="${i}" value="${esc(x.e)}" maxlength="4" style="width:64px"><input data-et="${i}" value="${esc(x.t)}" maxlength="80" style="flex:1"><button class="mg-k hell" data-eweg="${i}">✕</button></div>`).join("")}</div>
+        <button class="mg-k hell" data-eplus style="margin-top:8px">+ Punkt</button>
         <label>Material-Liste bearbeiten (für alle Klassen)</label>
         <div class="mg-liste">${Object.entries(MATERIAL).map(([m, x]) => `<div class="mg-reihe mg-eintrag"><span class="mg-vorschau">${dingBild(m)}</span>
             <input data-mname="${m}" value="${esc(x.n)}" maxlength="30" style="flex:1">
@@ -415,6 +443,20 @@ function bearbeiten(r){
             ${x.farbe ? `<input type="color" data-mfarbe="${m}" value="${esc(x.farbe)}">` : ""}
             <button class="mg-k hell" data-mweg="${m}" title="entfernen">✕</button></div>`).join("")}
         </div><button class="mg-k hell" data-mplus style="margin-top:8px">+ Neues Material</button>`;
+    } else if (reiter === "dienste") {
+        html += `<label>Schüler der Woche</label>
+        <div class="mg-felder"><div><small class="mg-hilfe">Name (nur Vorname) – leer = nicht anzeigen</small><input data-feld="sdw" value="${esc(k.sdw || "")}" maxlength="30" placeholder="z. B. Mia"></div>
+          <div><small class="mg-hilfe">Überschrift</small><input data-feld="sdwTitel" value="${esc(k.sdwTitel || "")}" maxlength="30" placeholder="Schüler der Woche"></div></div>
+        <label>Klassendienste</label>
+        <label class="mg-schalter"><input type="checkbox" data-dzeigen ${k.diensteZeigen ? "checked" : ""}> Klassendienste auf der Tafel anzeigen</label>
+        ${(k.dienste || []).length ? "" : `<button class="mg-k hell" data-dvorlage>Vorschlag übernehmen: ${DEF_DIENSTE.map(x => x.e + " " + esc(x.n)).join(", ")}</button>`}
+        <div class="mg-liste" style="margin-top:8px">${(k.dienste || []).map((x, i) => `<div class="mg-reihe mg-eintrag">
+            <input data-de="${i}" value="${esc(x.e)}" maxlength="4" style="width:64px" title="Bild (Emoji)">
+            <input data-dn="${i}" value="${esc(x.n)}" maxlength="30" style="flex:1" placeholder="Dienst">
+            <input data-dk="${i}" value="${esc(x.kind || "")}" maxlength="40" style="flex:1" placeholder="Kind(er), z. B. Ben & Lea">
+            <button class="mg-k hell" data-dweg="${i}" title="entfernen">✕</button></div>`).join("")}</div>
+        <div class="mg-reihe" style="margin-top:8px"><button class="mg-k hell" data-dplus>+ Dienst</button>${(k.dienste || []).length > 1 ? `<button class="mg-k hell" data-drueck>↻ Namen einen Dienst weiterrücken</button>` : ""}</div>
+        <label class="mg-schalter" style="margin-top:10px"><input type="checkbox" data-dauto ${k.dienstAuto ? "checked" : ""}> Jeden Montag automatisch weiterrücken</label>`;
     } else if (reiter === "faecher") {
         html += `<div class="mg-info-box">📚 Eure Fächer – Name, Bild und Farbe ändern, Fächer löschen oder neue anlegen. Gilt für alle Klassen und den Stundenplan.</div>
         <div class="mg-liste">${Object.entries(FAECHER).map(([fk, f]) => `<div class="mg-reihe mg-eintrag" style="border-left:8px solid ${esc(f.f)}">
@@ -442,6 +484,16 @@ function editorAktivieren(p, k){
     const nb = p.querySelector("[data-neu]"); if (nb) nb.addEventListener("click", () => { const name = prompt("Name der neuen Klasse (z. B. 2b):"); if (!name) return; const x = neueKlasse(name.trim().slice(0, 20), klasse().stufe); x.ort = Object.assign({}, klasse().ort); x.zeiten = klasse().zeiten.map(z => z.slice()); D.klassen.push(x); D.aktiv = x.id; neu(); });
     const lb = p.querySelector("[data-loeschen]"); if (lb) lb.addEventListener("click", () => { if (!confirm(`Klasse ${k.name} mit Stundenplan und Hinweisen löschen?`)) return; D.klassen = D.klassen.filter(x => x.id !== k.id); D.aktiv = D.klassen[0].id; neu(); });
     p.querySelectorAll("[data-feld]").forEach(i => i.addEventListener("change", () => { k[i.dataset.feld] = i.dataset.feld === "buchstabe" ? i.value.trim().toLowerCase() : i.value.trim(); delete k.beispiel; speichern(); zeichnen(); }));
+    p.querySelectorAll("[data-ee],[data-et]").forEach(i => i.addEventListener("change", () => { const n = +(i.dataset.ee ?? i.dataset.et); k.ende[n][i.dataset.ee !== undefined ? "e" : "t"] = i.value.trim(); speichern(); zeichnen(); }));
+    p.querySelectorAll("[data-eweg]").forEach(b => b.addEventListener("click", () => { k.ende.splice(+b.dataset.eweg, 1); neu(); }));
+    const ep = p.querySelector("[data-eplus]"); if (ep) ep.addEventListener("click", () => { k.ende.push({ id: neueId(), e: "✅", t: "" }); neu(); });
+    const dz = p.querySelector("[data-dzeigen]"); if (dz) dz.addEventListener("change", () => { k.diensteZeigen = dz.checked; if (dz.checked && !k.dienste.length) k.dienste = DEF_DIENSTE.map(x => Object.assign({ kind: "" }, x)); neu(); });
+    const dv = p.querySelector("[data-dvorlage]"); if (dv) dv.addEventListener("click", () => { k.dienste = DEF_DIENSTE.map(x => Object.assign({ kind: "" }, x)); k.diensteZeigen = true; neu(); });
+    p.querySelectorAll("[data-de],[data-dn],[data-dk]").forEach(i => i.addEventListener("change", () => { const feld = i.dataset.de !== undefined ? "e" : i.dataset.dn !== undefined ? "n" : "kind"; k.dienste[+(i.dataset.de ?? i.dataset.dn ?? i.dataset.dk)][feld] = i.value.trim(); speichern(); zeichnen(); }));
+    p.querySelectorAll("[data-dweg]").forEach(b => b.addEventListener("click", () => { k.dienste.splice(+b.dataset.dweg, 1); neu(); }));
+    const dp = p.querySelector("[data-dplus]"); if (dp) dp.addEventListener("click", () => { k.dienste.push({ e: "⭐", n: "", kind: "" }); neu(); });
+    const dr = p.querySelector("[data-drueck]"); if (dr) dr.addEventListener("click", () => { diensteRuecken(k, 1); neu(); });
+    const da = p.querySelector("[data-dauto]"); if (da) da.addEventListener("change", () => { k.dienstAuto = da.checked; k.dienstWoche = wocheNr(new Date()); speichern(); });
     const ak = p.querySelector("[data-ausKurs]"); if (ak) ak.addEventListener("click", () => { k.buchstabe = kursBuchstabe(); p.querySelector('[data-feld="buchstabe"]').value = k.buchstabe; speichern(); zeichnen(); });
     const os = p.querySelector("[data-ortsuche]");
     if (os) os.addEventListener("click", async () => {
@@ -499,6 +551,7 @@ function oeffnen(){
     w.classList.add("an"); document.getElementById("uebersicht").style.display = "none";
     history.replaceState(null, "", "#morgen");
     D.klassen.forEach(aufraeumen);
+    if (autoGerueckt) { autoGerueckt = false; speichern(); }
     zeichnen(); wetterLaden();
     if (klasse().beispiel) setTimeout(() => bearbeiten("klasse"), 400);
 }
