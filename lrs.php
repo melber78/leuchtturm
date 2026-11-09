@@ -7101,7 +7101,8 @@ function std_auswahlAufbauen(){
     document.getElementById("std-funktion").innerHTML = STD_FUNKTIONEN.map(k => `<option value="${k}">${ws_esc(FS_SERIEN[k].label)}</option>`).join("") + `<option value="">– ohne Funktionsblatt –</option>`;
     document.getElementById("std-symptom").innerHTML =
         `<optgroup label="Rechtschreibung (ab Kl. 3/4)">${Object.entries(RS_SCHWERPUNKTE).map(([k, sp]) => `<option value="rs:${k}">${ws_esc(sp.name)}</option>`).join("")}</optgroup>` +
-        `<option value="lesen">Lesetraining (Lesetext + Aufgabe, passend zur Klasse)</option>` +
+        `<optgroup label="Lesetraining nach Leistungsstand (kleinschrittig)">${Object.entries(LE_STUFEN).map(([k, st]) => `<option value="le:${k}">Lesestufe ${st.nr} · ${ws_esc(st.name)} – ${ws_esc(st.unter)}</option>`).join("")}</optgroup>` +
+        `<optgroup label="Lesetext + Aufgabe"><option value="lesen">Lesetext passend zur Klassenstufe</option>${[1, 2, 3, 4, 5, 6].map(k => `<option value="lesen:${k}">Lesetext auf Niveau Kl. ${k}</option>`).join("")}</optgroup>` +
         `<option value="diktat">Diktat (Übungs-, Lücken- oder Testdiktat)</option>` +
         `<option value="kartei">Eigene Fehlerwörter aus der Förderkartei</option>` +
         `<option value="ws">Worterarbeitung (Lernwörter aus dem Reiter Symptomtraining)</option>` +
@@ -7117,7 +7118,7 @@ function std_auswahlAufbauen(){
     document.getElementById("std-kind").addEventListener("change", () => {
         std_klasseAusKuerzel();
         std_ausAkte(lt_wert("std-kind"));
-        if (lt_wert("std-kind") && kt_woerter(lt_wert("std-kind")).length) document.getElementById("std-symptom").value = "kartei";
+        if (!lt_wert("std-symptom").startsWith("le:") && lt_wert("std-kind") && kt_woerter(lt_wert("std-kind")).length) document.getElementById("std-symptom").value = "kartei";
         std_blattListen();
         std_heftZeigen();
         std_weiterZeigen();
@@ -7134,7 +7135,8 @@ function std_blattListen(){
     if (sy.startsWith("rs:")) liste = FS_SERIEN.rechtschreibung.blaetter;
     else if (sy === "kartei") liste = KT_BLAETTER;
     else if (sy === "ws") liste = WS_BLAETTER;
-    else if (sy === "lesen") liste = LT_AUFGABEN.map(a => ({ nr: a.key, name: "Lesetext + " + a.name }));
+    else if (sy === "lesen" || sy.startsWith("lesen:")) liste = LT_AUFGABEN.map(a => ({ nr: a.key, name: "Lesetext + " + a.name }));
+    else if (sy.startsWith("le:")) liste = (LE_BLAETTER[sy.slice(3)] || []).map((b, i) => ({ nr: String(i), name: b.name }));
     else if (sy === "diktat") liste = STD_DIKTAT.map(d => ({ nr: d.key, name: d.name }));
     sb.innerHTML = liste.length ? liste.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("") : `<option value="">–</option>`;
     if (sy.startsWith("rs:")) sb.value = "2";
@@ -7145,6 +7147,8 @@ function std_blattListen(){
     const hinweis = document.getElementById("std-hinweis");
     if (sy === "kartei") hinweis.textContent = lt_wert("std-kind") ? `Fehlerwörter von ${lt_wert("std-kind")}: ${kt_woerter(lt_wert("std-kind")).length} offen.` : "Bitte oben ein Kürzel wählen – die Wörter kommen aus seiner Förderkartei.";
     else if (sy === "lesen") hinweis.textContent = "Ein Lesetext passend zu Klassenstufe und Schwierigkeit wird zufällig gewählt (Kl. 1–4 mit farbigen Silben).";
+    else if (sy.startsWith("lesen:")) hinweis.textContent = `Ein Lesetext auf dem Niveau von Klasse ${sy.slice(6)} wird gewählt – unabhängig von der Klasse des Kindes (bis Kl. 4 mit farbigen Silben).`;
+    else if (sy.startsWith("le:")){ const st = LE_STUFEN[sy.slice(3)], lb = (LRS_AKTEN[lt_wert("std-kind")] || {}).lb; hinweis.textContent = `Lesestufe ${st.nr} ${st.name}: ${st.ziel}. Die Blätter bauen aufeinander auf – bei mehreren Blättern kommen die nächsten der Reihe.` + (lb ? ` Bekannte Buchstaben aus dem Förderplan: ${lb}` : ""); }
     else if (sy === "diktat") hinweis.textContent = "Ein Diktattext passend zu Klassenstufe und Schwierigkeit wird zufällig gewählt (gekürzte Fassung für die Stunde).";
     else if (sy === "ws") hinweis.textContent = "Es werden die Lernwörter aus dem Reiter Symptomtraining → Worterarbeitung verwendet: " + (lt_wert("ws-woerter") || "–");
     else hinweis.textContent = "";
@@ -7209,8 +7213,8 @@ const STD_DIKTAT = [
     { key: "test", name: "Testdiktat mit Auswertungsbogen", blaetter: ["lehrkraft", "schueler", "auswertung"] },
 ];
 function std_stufe(){ return { leicht: "l", mittel: "m", schwer: "s" }[lt_wert("g-schwierigkeit")] || "m"; }
-function std_lesetext(){
-    const k = lt_klasse(), st = std_stufe();
+function std_lesetext(niveau){
+    const k = niveau || lt_klasse(), st = std_stufe();
     const passend = LT_TEXTE.filter(t => t.k === k && t.s === st);
     const text = zufallsElement(passend.length ? passend : LT_TEXTE.filter(t => t.k === k));
     return { text, klasse: k, stufe: text.s, umfang: 0, art: k <= 4 ? "farbig" : "normal", saetze: lt_saetze(text.x), reif: k >= 5 };
@@ -7276,8 +7280,11 @@ function std_rezeptAusFormular(){
     if (sy.startsWith("rs:")){
         const liste = FS_SERIEN.rechtschreibung.blaetter;
         std_mehrere(liste, liste.find(x => x.nr === sb) || liste[0], n).forEach(x => neu({ p: "Symptomtraining", t: "rs", k: sy.slice(3), nr: x.nr }));
-    } else if (sy === "lesen"){
-        r.lesetext = std_lesetext().text.t;
+    } else if (sy.startsWith("le:")){
+        const st = sy.slice(3), liste = LE_BLAETTER[st] || [], i0 = Math.max(0, parseInt(sb, 10) || 0);
+        for (let i = 0; i < n && liste.length; i++) neu({ p: "Symptomtraining", t: "le", st, i: Math.min(liste.length - 1, i0 + i) });
+    } else if (sy === "lesen" || sy.startsWith("lesen:")){
+        r.lesetext = std_lesetext(parseInt(sy.slice(6), 10) || 0).text.t;
         std_mehrere(LT_AUFGABEN, LT_AUFGABEN.find(x => x.key === sb) || LT_AUFGABEN[0], n).forEach(x => neu({ p: "Symptomtraining", t: "lesen", a: x.key }));
     } else if (sy === "diktat"){
         r.diktat = std_diktat().text.t;
@@ -8025,7 +8032,11 @@ function std_ausAkte(code){
     const f = akte.f.find(k => STD_FUNKTIONEN.includes(k));
     if (f) document.getElementById("std-funktion").value = f;
     const r = akte.r.find(k => RS_SCHWERPUNKTE[k]);
-    if (r && !(lt_wert("std-kind") && kt_woerter(code).length)) document.getElementById("std-symptom").value = "rs:" + r;
+    // Lesestufen aus dem Förderplan: Kann das Kind noch keine Texte lesen, geht das Lesetraining auf seiner Stufe vor
+    const le = Object.keys(LE_STUFEN).find(k => (akte.l || []).includes(k));
+    if (le && le !== "texte") document.getElementById("std-symptom").value = "le:" + le;
+    else if (r && !(lt_wert("std-kind") && kt_woerter(code).length)) document.getElementById("std-symptom").value = "rs:" + r;
+    else if (le) document.getElementById("std-symptom").value = "le:" + le;
 }
 
 function erstelleExtras(){}
