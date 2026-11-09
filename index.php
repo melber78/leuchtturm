@@ -97,6 +97,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-09", "Tafelbilder: Buchstabenkurs", "Buchstaben in der Lineatur an der digitalen Tafel vorschreiben, nachspuren und selbst schreiben – Druck- oder Grundschrift.", "tafelbilder.php#buchstabenkurs"],
     ["2026-11-09", "Gast-Zugänge für Kolleginnen", "Kolleginnen testen Sozialtraining, Lernangebot und Vertretung mit eigenem Code – getrennt von deinen Daten.", "zugaenge.php"],
     ["2026-11-08", "Leise-Meer im Sozialtraining", "In jeder Präsentation unten: 🌊 Leise-Meer – je leiser, desto mehr Meerestiere tauchen am Leuchtturm auf.", "sozial-stunden.php"],
     ["2026-11-08", "Leise-Wald", "Neue Tafel-Übung: Je leiser die Klasse, desto mehr Tiere kommen aus dem Wald (Mikrofon, es wird nichts aufgenommen).", "sozial-stunden.php?bereich=lernangebot#tafel"],
@@ -171,6 +172,23 @@ $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strt
 <i class="fa-solid fa-lightbulb"></i>
 <h2>Sozialtraining-Generator</h2>
 <p>Methodenpool &amp; Vorlagen</p>
+</a>
+
+</section>
+
+<h2 class="gruppe"><i class="fa-solid fa-chalkboard"></i> Tafelbilder</h2>
+<section class="portal-grid">
+
+<a href="tafelbilder.php#buchstabenkurs" class="portal-card haupt">
+<i class="fa-solid fa-pen-fancy"></i>
+<h2>Buchstabenkurs</h2>
+<p>Buchstaben in der Lineatur nachspuren und schreiben – Druck- oder Grundschrift, direkt mit dem Tafelstift</p>
+</a>
+
+<a href="tafelbilder.php" class="portal-card">
+<i class="fa-solid fa-chalkboard"></i>
+<h2>Alle Tafelbilder</h2>
+<p>Für die digitale Tafel – öffnen, Vollbild an, hineinschreiben</p>
 </a>
 
 </section>

@@ -1,0 +1,495 @@
+<?php $LT_GAST_BEREICH = "lernangebot"; require __DIR__ . "/gast-zugang.php"; ?>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tafelbilder · Leuchtturm</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<!--
+  Leuchtturm – Tafelbilder für die digitale Tafel
+  Erstes Tafelbild: Buchstabenkurs – Buchstaben in der Lineatur (Klasse 1)
+  vorschreiben, nachspuren und frei schreiben. Druckschrift oder Grundschrift.
+  Die Buchstaben sind als Schreibwege gezeichnet (Strich für Strich, in
+  Schreibrichtung) – so lässt sich auch zeigen, wie ein Buchstabe geschrieben wird.
+  Mit dem Tafelstift wird direkt auf der Seite geschrieben (eigene Zeichenebene).
+-->
+<style>
+:root{ --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4; --text:#1f2d36; --grau:#7c8a85; --schatten:0 6px 24px rgba(22,50,74,.1); }
+*{ box-sizing:border-box; }
+body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; }
+/* Übersicht */
+.uebersicht{ width:min(900px,94%); margin:34px auto 60px; }
+.uebersicht a.zurueck{ color:var(--meer); font-weight:800; text-decoration:none; }
+.uebersicht h1{ font-size:30px; font-weight:900; margin:12px 0 4px; }
+.uebersicht .unter{ color:var(--grau); font-weight:700; margin:0 0 24px; }
+.kacheln{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:18px; }
+.kachel{ background:white; border-radius:22px; box-shadow:var(--schatten); padding:24px 22px; text-decoration:none; color:var(--text); transition:.2s; cursor:pointer; border:0; text-align:left; font:inherit; }
+.kachel:hover{ transform:translateY(-4px); }
+.kachel .bild{ height:86px; border-radius:14px; background:#fff; border:2px solid #e6ebef; margin-bottom:14px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.kachel h2{ margin:0 0 6px; font-size:19px; font-weight:900; }
+.kachel p{ margin:0; color:var(--grau); font-weight:700; font-size:14px; }
+.kachel.bald{ opacity:.55; cursor:default; } .kachel.bald:hover{ transform:none; }
+
+/* Tafel-Ansicht (Vollbild) */
+#tafel{ position:fixed; inset:0; display:none; flex-direction:column; background:#fdfdfb; z-index:10; user-select:none; -webkit-user-select:none; }
+#tafel.an{ display:flex; }
+#tafel.gruen{ background:#24503d; }
+.tb-leiste{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; padding:8px 12px; background:#16324a; color:white; }
+.tb-leiste .titel{ font-weight:900; font-size:18px; margin-right:6px; white-space:nowrap; }
+.tb-k{ font:800 15px "Nunito",sans-serif; border:0; border-radius:12px; padding:9px 13px; background:rgba(255,255,255,.12); color:white; cursor:pointer; display:inline-flex; gap:7px; align-items:center; white-space:nowrap; min-height:44px; }
+.tb-k:hover{ background:rgba(255,255,255,.22); }
+.tb-k.an{ background:var(--gold); color:#16324a; }
+.tb-k.gross{ font-size:26px; min-width:64px; justify-content:center; font-weight:900; }
+.tb-luft{ flex:1; }
+.tb-farbe{ width:44px; height:44px; border-radius:50%; border:3px solid rgba(255,255,255,.35); cursor:pointer; padding:0; }
+.tb-farbe.an{ border-color:white; box-shadow:0 0 0 3px var(--gold); }
+#buehne{ position:relative; flex:1; overflow:hidden; }
+#zeilen{ position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-evenly; padding:1vh 1.5vw; }
+#zeilen svg{ display:block; width:100%; flex:none; }
+#malen{ position:absolute; left:0; top:0; width:100%; height:100%; touch-action:none; cursor:crosshair; }
+#malen.aus{ pointer-events:none; }
+.vorlage{ cursor:pointer; }
+/* Einstellungen */
+#einstellungen{ position:absolute; top:0; left:0; right:0; max-height:100%; overflow:auto; background:white; color:var(--text); padding:16px 22px 22px; box-shadow:0 14px 40px rgba(0,0,0,.25); z-index:5; display:none; border-radius:0 0 22px 22px; }
+#einstellungen.an{ display:block; }
+#einstellungen h3{ margin:14px 0 8px; font-size:14px; text-transform:uppercase; letter-spacing:.05em; color:var(--grau); }
+#einstellungen h3:first-child{ margin-top:0; }
+.wahl{ display:flex; flex-wrap:wrap; gap:8px; }
+.wahl button{ font:800 16px "Nunito",sans-serif; border:2px solid #d6dde3; background:white; border-radius:12px; padding:8px 14px; cursor:pointer; min-height:44px; }
+.wahl button.an{ background:var(--nacht); border-color:var(--nacht); color:white; }
+.buchst button{ min-width:52px; font-size:22px; padding:4px 8px; }
+.buchst.gelernt button.an{ background:#2e8b57; border-color:#2e8b57; }
+.buchst.gelernt button.aktuell{ outline:3px solid var(--gold); outline-offset:2px; }
+.hilfe{ color:var(--grau); font-weight:700; font-size:14px; margin:6px 0 0; }
+.zu{ position:sticky; top:0; float:right; }
+</style>
+</head>
+<body>
+
+<div class="uebersicht" id="uebersicht">
+    <a class="zurueck" href="<?= $LT_GAST ? "gast.php" : "index.php" ?>"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
+    <h1><i class="fa-solid fa-chalkboard"></i> Tafelbilder</h1>
+    <p class="unter">Für die digitale Tafel: öffnen, Vollbild an, mit dem Tafelstift direkt hineinschreiben.</p>
+    <div class="kacheln">
+        <button class="kachel" type="button" onclick="kursOeffnen()">
+            <div class="bild" id="kachelBild"></div>
+            <h2>Buchstabenkurs</h2>
+            <p>Buchstaben in der Lineatur vorschreiben, nachspuren und selbst schreiben – groß und klein, Druck- oder Grundschrift.</p>
+        </button>
+    </div>
+</div>
+
+<div id="tafel">
+    <div class="tb-leiste">
+        <button class="tb-k" onclick="kursSchliessen()" title="Zurück zur Übersicht"><i class="fa-solid fa-arrow-left"></i></button>
+        <span class="titel">Buchstabenkurs</span>
+        <button class="tb-k gross" id="kBuchstabe" onclick="einstellungen()" title="Buchstabe wählen"></button>
+        <button class="tb-k" onclick="buchstabeSchritt(-1)" title="voriger Buchstabe"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="tb-k" onclick="buchstabeSchritt(1)" title="nächster gelernter Buchstabe"><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="tb-k" id="kAnsicht" onclick="einstellungen()"></button>
+        <button class="tb-k" onclick="vormachen()" title="Schreibweg der Vorlage zeigen"><i class="fa-solid fa-play"></i> Schreibweg</button>
+        <button class="tb-k" onclick="neuMischen()" title="andere Wörter / neu mischen"><i class="fa-solid fa-shuffle"></i></button>
+        <span class="tb-luft"></span>
+        <button class="tb-farbe an" style="background:#1d5fbf" data-farbe="#1d5fbf" title="Blau"></button>
+        <button class="tb-farbe" style="background:#d1342b" data-farbe="#d1342b" title="Rot"></button>
+        <button class="tb-farbe" style="background:#1f8a4c" data-farbe="#1f8a4c" title="Grün"></button>
+        <button class="tb-farbe" style="background:#222" data-farbe="#222222" title="Schwarz"></button>
+        <button class="tb-k" id="kDicke" onclick="dickeWechseln()" title="Stiftdicke"><i class="fa-solid fa-pen"></i> dick</button>
+        <button class="tb-k" id="kRadierer" onclick="radierer()" title="Radierer"><i class="fa-solid fa-eraser"></i></button>
+        <button class="tb-k" id="kHand" onclick="stiftAus()" title="Stift aus – Vorlagen antippen"><i class="fa-solid fa-hand-pointer"></i></button>
+        <button class="tb-k" onclick="rueckgaengig()" title="Rückgängig"><i class="fa-solid fa-rotate-left"></i></button>
+        <button class="tb-k" onclick="wischen()" title="Alles wegwischen"><i class="fa-solid fa-broom"></i> Wischen</button>
+        <button class="tb-k" onclick="einstellungen()" title="Einstellungen"><i class="fa-solid fa-sliders"></i></button>
+        <button class="tb-k" onclick="vollbild()" title="Vollbild"><i class="fa-solid fa-expand"></i></button>
+    </div>
+    <div id="buehne">
+        <div id="zeilen"></div>
+        <canvas id="malen"></canvas>
+        <div id="einstellungen">
+            <button class="tb-k zu" style="background:var(--nacht)" onclick="einstellungen(false)"><i class="fa-solid fa-check"></i> Fertig</button>
+            <h3>Schrift</h3>
+            <div class="wahl" data-wahl="schrift"><button data-wert="druck">Druckschrift</button><button data-wert="grund">Grundschrift</button></div>
+            <h3>Was soll an die Tafel?</h3>
+            <div class="wahl" data-wahl="ansicht"><button data-wert="buchstabe">Neuer Buchstabe</button><button data-wert="wiederholung">Alle gelernten Buchstaben</button><button data-wert="woerter">Wörter</button><button data-wert="leer">Leere Lineatur</button></div>
+            <h3>Buchstabe der Stunde</h3>
+            <div class="wahl buchst" id="wahlAktuell"></div>
+            <h3>Schon gelernt <span style="text-transform:none;letter-spacing:0">(antippen = an/aus · für Wiederholung und Wörter)</span></h3>
+            <div class="wahl buchst gelernt" id="wahlGelernt"></div>
+            <div class="wahl" style="margin-top:8px"><button onclick="gelerntBisAktuell()">bis zum Buchstaben der Stunde</button><button onclick="gelerntAlle(true)">alle</button><button onclick="gelerntAlle(false)">keine</button></div>
+            <h3>Zeilen</h3>
+            <div class="wahl" data-wahl="zeilen"><button data-wert="2">2 – ganz groß</button><button data-wert="3">3</button><button data-wert="4">4</button><button data-wert="5">5</button></div>
+            <h3>Nachspuren</h3>
+            <div class="wahl" data-wahl="spur"><button data-wert="punkte">gepunktet</button><button data-wert="grau">hellgrau</button></div>
+            <div class="wahl" data-wahl="start" style="margin-top:8px"><button data-wert="ja">Startpunkte und Reihenfolge zeigen</button><button data-wert="nein">ohne Startpunkte</button></div>
+            <h3>Hintergrund</h3>
+            <div class="wahl" data-wahl="hg"><button data-wert="weiss">weiß</button><button data-wert="gruen">Kreidetafel grün</button></div>
+            <p class="hilfe"><i class="fa-solid fa-circle-info"></i> Mit dem Tafelstift direkt auf die Lineatur schreiben. „Schreibweg“ zeigt Strich für Strich, wie der Buchstabe geschrieben wird – bei ausgeschaltetem Stift (<i class="fa-solid fa-hand-pointer"></i>) auch durch Antippen der Vorlage.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+"use strict";
+/* ---------- Buchstaben als Schreibwege ----------
+   Einheit: 1 = Höhe eines Bandes der Lineatur.
+   y: 0 = Oberlinie, 1 = Mittellinie, 2 = Grundlinie, 3 = Unterlinie.
+   Jede Zeichenkette ist ein Strich in Schreibrichtung; Reihenfolge = Schreibreihenfolge.
+   „.“ am Anfang = Punkt (i-Punkt, Umlaut-Punkte). */
+const KREIS = (cx, cy, rx, ry) => `M${cx + rx},${cy} A${rx},${ry} 0 0 0 ${cx - rx},${cy} A${rx},${ry} 0 0 0 ${cx + rx},${cy}`;  // gegen den Uhrzeigersinn, Start rechts
+const OVAL_OBEN = (cx, cy, rx, ry) => `M${cx},${cy - ry} A${rx},${ry} 0 0 0 ${cx},${cy + ry} A${rx},${ry} 0 0 0 ${cx},${cy - ry}`;
+const BAUCH_R = (x, cy, rx, ry) => `M${x},${cy} A${rx},${ry} 0 0 1 ${x + 2 * rx},${cy} A${rx},${ry} 0 0 1 ${x},${cy}`;   // im Uhrzeigersinn (b, p)
+const PUNKT = (x, y) => `.${x},${y}`;
+const DRUCK = {
+    a: { w: 1.0, s: [KREIS(0.5, 1.5, 0.45, 0.5), "M0.95,1 L0.95,2"] },
+    b: { w: 1.0, s: ["M0.05,0 L0.05,2", BAUCH_R(0.05, 1.5, 0.45, 0.5)] },
+    c: { w: 0.9, s: ["M0.85,1.17 A0.45,0.5 0 1 0 0.85,1.83"] },
+    d: { w: 1.0, s: [KREIS(0.5, 1.5, 0.45, 0.5), "M0.95,0 L0.95,2"] },
+    e: { w: 0.95, s: ["M0.06,1.5 L0.94,1.5 A0.45,0.5 0 1 0 0.83,1.84"] },
+    f: { w: 0.8, s: ["M0.78,0.18 C0.66,-0.04 0.3,-0.06 0.3,0.38 L0.3,2", "M0.02,1 L0.68,1"] },
+    g: { w: 1.0, s: [KREIS(0.5, 1.5, 0.45, 0.5), "M0.95,1 L0.95,2.55 Q0.95,3 0.5,3 Q0.2,3 0.08,2.82"] },
+    h: { w: 1.0, s: ["M0.05,0 L0.05,2", "M0.05,1.45 Q0.05,1 0.5,1 Q0.95,1 0.95,1.45 L0.95,2"] },
+    i: { w: 0.25, s: ["M0.12,1 L0.12,2", PUNKT(0.12, 0.5)] },
+    j: { w: 0.7, s: ["M0.55,1 L0.55,2.6 Q0.55,3 0.25,3 Q0.1,3 0.02,2.88", PUNKT(0.55, 0.5)] },
+    k: { w: 0.9, s: ["M0.05,0 L0.05,2", "M0.82,1 L0.05,1.6", "M0.32,1.38 L0.88,2"] },
+    l: { w: 0.25, s: ["M0.12,0 L0.12,2"] },
+    m: { w: 1.45, s: ["M0.05,1 L0.05,2", "M0.05,1.4 Q0.05,1 0.4,1 Q0.72,1 0.72,1.4 L0.72,2", "M0.72,1.4 Q0.72,1 1.07,1 Q1.4,1 1.4,1.4 L1.4,2"] },
+    n: { w: 0.95, s: ["M0.05,1 L0.05,2", "M0.05,1.45 Q0.05,1 0.48,1 Q0.9,1 0.9,1.45 L0.9,2"] },
+    o: { w: 1.0, s: [OVAL_OBEN(0.5, 1.5, 0.45, 0.5)] },
+    p: { w: 1.0, s: ["M0.05,1 L0.05,3", BAUCH_R(0.05, 1.5, 0.45, 0.5)] },
+    q: { w: 1.0, s: [KREIS(0.5, 1.5, 0.45, 0.5), "M0.95,1 L0.95,3"] },
+    r: { w: 0.75, s: ["M0.05,1 L0.05,2", "M0.05,1.45 Q0.1,1 0.52,1 Q0.66,1 0.74,1.08"] },
+    s: { w: 0.85, s: ["M0.8,1.15 Q0.66,1 0.44,1 Q0.1,1 0.1,1.25 Q0.1,1.46 0.44,1.5 Q0.82,1.55 0.82,1.76 Q0.82,2 0.42,2 Q0.15,2 0.04,1.84"] },
+    t: { w: 0.75, s: ["M0.35,0.3 L0.35,2", "M0.04,1 L0.7,1"] },
+    u: { w: 0.95, s: ["M0.05,1 L0.05,1.55 Q0.05,2 0.48,2 Q0.9,2 0.9,1.55", "M0.9,1 L0.9,2"] },
+    v: { w: 1.0, s: ["M0.05,1 L0.5,2 L0.95,1"] },
+    w: { w: 1.4, s: ["M0.05,1 L0.38,2 L0.7,1.1 L1.02,2 L1.35,1"] },
+    x: { w: 0.9, s: ["M0.05,1 L0.85,2", "M0.85,1 L0.05,2"] },
+    y: { w: 1.0, s: ["M0.05,1 L0.5,2", "M0.95,1 L0.25,3"] },
+    z: { w: 0.9, s: ["M0.08,1 L0.84,1 L0.06,2 L0.88,2"] },
+    "ß": { w: 1.0, s: ["M0.06,2 L0.06,0.5 Q0.06,0 0.45,0 Q0.84,0 0.84,0.45 Q0.84,0.86 0.42,0.98 Q0.96,1.08 0.96,1.5 Q0.96,2 0.48,2 L0.36,2"] },
+    A: { w: 1.25, s: ["M0.05,2 L0.62,0 L1.2,2", "M0.3,1.25 L0.95,1.25"] },
+    B: { w: 1.1, s: ["M0.1,0 L0.1,2", "M0.1,0 L0.55,0 Q0.95,0 0.95,0.5 Q0.95,1 0.55,1 L0.1,1", "M0.1,1 L0.6,1 Q1.05,1 1.05,1.5 Q1.05,2 0.6,2 L0.1,2"] },
+    C: { w: 1.25, s: ["M1.18,0.4 A0.62,1 0 1 0 1.18,1.6"] },
+    D: { w: 1.25, s: ["M0.1,0 L0.1,2", "M0.1,0 L0.45,0 Q1.18,0 1.18,1 Q1.18,2 0.45,2 L0.1,2"] },
+    E: { w: 0.95, s: ["M0.1,0 L0.1,2", "M0.1,0 L0.9,0", "M0.1,1 L0.76,1", "M0.1,2 L0.9,2"] },
+    F: { w: 0.9, s: ["M0.1,0 L0.1,2", "M0.1,0 L0.88,0", "M0.1,1 L0.74,1"] },
+    G: { w: 1.3, s: ["M1.18,0.4 A0.62,1 0 1 0 1.24,1.45", "M0.78,1.1 L1.24,1.1 L1.24,2"] },
+    H: { w: 1.2, s: ["M0.1,0 L0.1,2", "M1.1,0 L1.1,2", "M0.1,1 L1.1,1"] },
+    I: { w: 0.3, s: ["M0.15,0 L0.15,2"] },
+    J: { w: 0.95, s: ["M0.88,0 L0.88,1.48 Q0.88,2 0.46,2 Q0.12,2 0.04,1.64"] },
+    K: { w: 1.1, s: ["M0.1,0 L0.1,2", "M1.0,0 L0.1,1.18", "M0.44,0.76 L1.06,2"] },
+    L: { w: 0.9, s: ["M0.1,0 L0.1,2 L0.88,2"] },
+    M: { w: 1.45, s: ["M0.1,2 L0.1,0 L0.72,1.25 L1.35,0 L1.35,2"] },
+    N: { w: 1.2, s: ["M0.1,2 L0.1,0 L1.08,2 L1.08,0"] },
+    O: { w: 1.35, s: [OVAL_OBEN(0.67, 1, 0.62, 1)] },
+    P: { w: 1.05, s: ["M0.1,0 L0.1,2", "M0.1,0 L0.55,0 Q1.0,0 1.0,0.55 Q1.0,1.1 0.55,1.1 L0.1,1.1"] },
+    Q: { w: 1.4, s: [OVAL_OBEN(0.67, 1, 0.62, 1), "M0.82,1.48 L1.34,2.12"] },
+    R: { w: 1.1, s: ["M0.1,0 L0.1,2", "M0.1,0 L0.55,0 Q1.0,0 1.0,0.55 Q1.0,1.1 0.55,1.1 L0.1,1.1", "M0.5,1.1 L1.06,2"] },
+    S: { w: 1.1, s: ["M1.0,0.3 Q0.86,0 0.55,0 Q0.12,0 0.12,0.48 Q0.12,0.9 0.6,1 Q1.08,1.1 1.08,1.52 Q1.08,2 0.55,2 Q0.2,2 0.04,1.7"] },
+    T: { w: 1.2, s: ["M0.05,0 L1.15,0", "M0.6,0 L0.6,2"] },
+    U: { w: 1.2, s: ["M0.1,0 L0.1,1.4 Q0.1,2 0.6,2 Q1.1,2 1.1,1.4 L1.1,0"] },
+    V: { w: 1.25, s: ["M0.05,0 L0.62,2 L1.2,0"] },
+    W: { w: 1.65, s: ["M0.05,0 L0.42,2 L0.82,0.15 L1.22,2 L1.6,0"] },
+    X: { w: 1.15, s: ["M0.06,0 L1.08,2", "M1.08,0 L0.06,2"] },
+    Y: { w: 1.2, s: ["M0.05,0 L0.6,1", "M1.15,0 L0.6,1 L0.6,2"] },
+    Z: { w: 1.1, s: ["M0.1,0 L1.04,0 L0.06,2 L1.06,2"] },
+};
+// Umlaute
+const umlaut = (b, y, x1, x2) => ({ w: DRUCK[b].w, s: DRUCK[b].s.concat([PUNKT(x1, y), PUNKT(x2, y)]) });
+DRUCK["ä"] = umlaut("a", 0.55, 0.3, 0.7); DRUCK["ö"] = umlaut("o", 0.55, 0.3, 0.7); DRUCK["ü"] = umlaut("u", 0.55, 0.28, 0.68);
+DRUCK["Ä"] = umlaut("A", -0.32, 0.4, 0.85); DRUCK["Ö"] = umlaut("O", -0.32, 0.45, 0.9); DRUCK["Ü"] = umlaut("U", -0.32, 0.4, 0.8);
+
+/* Grundschrift: wie Druckschrift, aber die Kleinbuchstaben enden an der Grundlinie
+   mit einem kleinen Bogen nach rechts (Anschwung zum nächsten Buchstaben). */
+const BOGEN = x => `L${x},1.78 Q${x},2 ${x + 0.24},2`;
+const GRUND = Object.assign({}, DRUCK, {
+    a: { w: 1.2, s: [KREIS(0.5, 1.5, 0.45, 0.5), "M0.95,1 " + BOGEN(0.95)] },
+    d: { w: 1.2, s: [KREIS(0.5, 1.5, 0.45, 0.5), "M0.95,0 " + BOGEN(0.95)] },
+    h: { w: 1.2, s: ["M0.05,0 L0.05,2", "M0.05,1.45 Q0.05,1 0.5,1 Q0.95,1 0.95,1.45 " + BOGEN(0.95)] },
+    i: { w: 0.42, s: ["M0.12,1 " + BOGEN(0.12), PUNKT(0.12, 0.5)] },
+    k: { w: 1.0, s: ["M0.05,0 L0.05,2", "M0.82,1 L0.05,1.6", "M0.32,1.38 L0.7,1.86 Q0.8,2 0.98,1.97"] },
+    l: { w: 0.42, s: ["M0.12,0 " + BOGEN(0.12)] },
+    m: { w: 1.65, s: ["M0.05,1 L0.05,2", "M0.05,1.4 Q0.05,1 0.4,1 Q0.72,1 0.72,1.4 L0.72,2", "M0.72,1.4 Q0.72,1 1.07,1 Q1.4,1 1.4,1.4 " + BOGEN(1.4)] },
+    n: { w: 1.15, s: ["M0.05,1 L0.05,2", "M0.05,1.45 Q0.05,1 0.48,1 Q0.9,1 0.9,1.45 " + BOGEN(0.9)] },
+    t: { w: 0.85, s: ["M0.35,0.3 " + BOGEN(0.35), "M0.04,1 L0.7,1"] },
+    u: { w: 1.15, s: ["M0.05,1 L0.05,1.55 Q0.05,2 0.48,2 Q0.9,2 0.9,1.55", "M0.9,1 " + BOGEN(0.9)] },
+    q: { w: 1.1, s: [KREIS(0.5, 1.5, 0.45, 0.5), "M0.95,1 L0.95,2.8 Q0.95,3 1.1,2.9"] },
+});
+GRUND["ä"] = { w: GRUND.a.w, s: GRUND.a.s.concat([PUNKT(0.3, 0.55), PUNKT(0.7, 0.55)]) };
+GRUND["ü"] = { w: GRUND.u.w, s: GRUND.u.s.concat([PUNKT(0.28, 0.55), PUNKT(0.68, 0.55)]) };
+
+const ALLE = "abcdefghijklmnopqrstuvwxyzäöüß".split("");
+const ABSTAND_WORT = 0.24;   // zwischen Buchstaben im Wort
+const ABSTAND = 0.9;         // zwischen Einzelbuchstaben
+const RAND_OBEN = 0.5, RAND_UNTEN = 0.25, ZEILE = RAND_OBEN + 3 + RAND_UNTEN;
+
+/* Wörter für die ersten Klassen (Fibel-Wortschatz) */
+const WOERTER = ("Mama Papa Oma Opa Mia Lea Leo Ali Tim Tom Ina Uli Ole Emma Mila Lina Nele Toni Timo Udo Ella Lola Mimi Lama Limo Mole Mut Mal Maus Mais Mehl Milch Mond Mund Mus Mütze Möwe Melone Maler Mantel Mann " +
+    "Ast Arm Ameise Apfel Auto Affe Esel Ente Ei Eis Eimer Eule Igel Insel Indianer Ofen Ohr Oma Uhr Ufer Ubu " +
+    "Lama Laus Lampe Leiter Lied Limo Linie Los Löwe Lupe Lineal Rose Rosen Rasen Rad Rabe Rakete Regen Reis Ring Rock Ruder Raum Sofa Salami Salat Sand Saft Seil Seife Sonne Socke Sessel See Sofa Sieb " +
+    "Tomate Tomaten Tal Tee Teller Tisch Tasse Tante Tor Turm Taxi Tür Nase Name Nadel Nest Note Nudel Nuss Nil Nina Dose Dach Dino Delfin Dorf Daumen Hose Haus Hase Hut Hund Hand Hemd Huhn Heft Honig Hexe " +
+    "Ball Baum Banane Bus Bär Biene Boot Bett Brot Buch Kuh Kind Kino Katze Kamel Kerze Kiste Koffer Käse Kuchen Wal Wolke Wurm Wasser Wald Wind Wolf Wiese Fisch Fuchs Feder Fee Fahne Füße Fenster " +
+    "Gabel Garten Gans Geld Giraffe Glas Gurke Junge Jacke Jo Pinsel Puppe Pirat Pilz Pony Palme Zelt Zug Zebra Zaun Zahn Zange Ziege Zitrone Vogel Vase Vater Säge Öl Ölkanne Möhre Mäuse Läuse " +
+    "Esel Igel Rosa Toto Lotto Molli Susi Sami Lisa Lilo Moni Rita Rudi Resi Nils Lars Malte Ole Tilo Lotte Lilli Anna Nino Alina Elisa Emil Lukas Ida Ute Otto").split(" ");
+
+/* ---------- Einstellungen ---------- */
+const STANDARD = { schrift: "druck", ansicht: "buchstabe", aktuell: "m", gelernt: ["m", "a", "l", "i", "o"], zeilen: "3", spur: "punkte", start: "ja", hg: "weiss" };
+let E = Object.assign({}, STANDARD);
+try { Object.assign(E, JSON.parse(localStorage.getItem("tb_buchstabenkurs") || "{}")); } catch (x) {}
+function merken(){ try { localStorage.setItem("tb_buchstabenkurs", JSON.stringify(E)); } catch (x) {} }
+let mischung = 0;
+
+function glyphe(z){ const G = E.schrift === "grund" ? GRUND : DRUCK; return G[z] || null; }
+const gross = z => z === "ß" ? null : z.toUpperCase();
+
+/* ---------- Zeichnen der Lineatur und der Buchstaben ---------- */
+const NS = "http://www.w3.org/2000/svg";
+function farben(){
+    return E.hg === "gruen"
+        ? { linie: "rgba(255,255,255,.55)", grund: "rgba(255,255,255,.9)", band: "rgba(255,255,255,.07)", vorlage: "#ffffff", spur: "rgba(255,255,255,.55)", grau: "rgba(255,255,255,.22)", start: "#7ee2a8", nr: "#16324a" }
+        : { linie: "#8fa3b5", grund: "#3d5a73", band: "#fff4cc", vorlage: "#1f2d36", spur: "#7f8c96", grau: "#d3d9de", start: "#1f8a4c", nr: "#ffffff" };
+}
+function wegeVon(g){ return g.s; }
+// Ein Buchstabe als <g> – art: "vorlage" | "spur"
+function buchstabeSvg(z, x, art){
+    const g = glyphe(z), F = farben();
+    const gr = document.createElementNS(NS, "g");
+    gr.setAttribute("transform", `translate(${x},${RAND_OBEN})`);
+    if (art === "vorlage") { gr.classList.add("vorlage"); gr.dataset.z = z; }
+    const breite = art === "vorlage" ? 0.13 : (E.spur === "grau" ? 0.13 : 0.075);
+    const farbe = art === "vorlage" ? F.vorlage : (E.spur === "grau" ? F.grau : F.spur);
+    g.s.forEach((d, i) => {
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", d[0] === "." ? `M${d.slice(1)} l0,0.001` : d);
+        p.setAttribute("fill", "none"); p.setAttribute("stroke", farbe);
+        p.setAttribute("stroke-linecap", "round"); p.setAttribute("stroke-linejoin", "round");
+        p.setAttribute("stroke-width", d[0] === "." ? (art === "vorlage" ? 0.2 : 0.16) : breite);
+        if (art === "spur" && E.spur === "punkte" && d[0] !== ".") p.setAttribute("stroke-dasharray", "0 0.17");
+        gr.appendChild(p);
+    });
+    // Startpunkte mit Reihenfolge (nur an der Vorlage)
+    if (art === "vorlage" && E.start === "ja") {
+        g.s.forEach((d, i) => {
+            if (d[0] === ".") return;
+            const m = d.match(/M\s*(-?[\d.]+)[ ,](-?[\d.]+)/); if (!m) return;
+            const c = document.createElementNS(NS, "circle");
+            c.setAttribute("cx", m[1]); c.setAttribute("cy", m[2]); c.setAttribute("r", 0.15); c.setAttribute("fill", F.start);
+            const t = document.createElementNS(NS, "text");
+            t.setAttribute("x", m[1]); t.setAttribute("y", +m[2] + 0.075); t.setAttribute("text-anchor", "middle");
+            t.setAttribute("font-size", 0.21); t.setAttribute("font-weight", 900); t.setAttribute("fill", F.nr); t.setAttribute("font-family", "Nunito, sans-serif");
+            t.textContent = i + 1;
+            gr.appendChild(c); gr.appendChild(t);
+        });
+    }
+    return gr;
+}
+function wortBreite(w){ return [...w].reduce((s, z, i) => s + (glyphe(z) ? glyphe(z).w : 0.5) + (i ? ABSTAND_WORT : 0), 0); }
+// Inhalt einer Zeile: Liste von { text, art, wort }
+function zeileSvg(inhalt, breiteE){
+    const F = farben();
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", `0 0 ${breiteE} ${ZEILE}`);
+    const lin = (y, dick, farbe) => { const l = document.createElementNS(NS, "line"); l.setAttribute("x1", 0); l.setAttribute("x2", breiteE); l.setAttribute("y1", y + RAND_OBEN); l.setAttribute("y2", y + RAND_OBEN); l.setAttribute("stroke", farbe); l.setAttribute("stroke-width", dick); svg.appendChild(l); };
+    const band = document.createElementNS(NS, "rect");
+    band.setAttribute("x", 0); band.setAttribute("y", 1 + RAND_OBEN); band.setAttribute("width", breiteE); band.setAttribute("height", 1); band.setAttribute("fill", F.band);
+    svg.appendChild(band);
+    lin(0, 0.025, F.linie); lin(1, 0.025, F.linie); lin(2, 0.045, F.grund); lin(3, 0.025, F.linie);
+    let x = 0.5;
+    inhalt.forEach(t => {
+        [...t.text].forEach((z, i) => {
+            if (!glyphe(z)) { x += 0.5; return; }
+            svg.appendChild(buchstabeSvg(z, x, t.art));
+            x += glyphe(z).w + (t.wort ? ABSTAND_WORT : 0);
+        });
+        x += t.wort ? ABSTAND * 1.4 - ABSTAND_WORT : ABSTAND;
+    });
+    return svg;
+}
+// Füllt eine Zeile bis etwa „anteil“ der Breite mit Kopien
+function fuellen(text, art, breiteE, anteil, wort){
+    const b = (wort ? wortBreite(text) : glyphe(text[0]) ? glyphe(text[0]).w : 1) + (wort ? ABSTAND * 1.4 : ABSTAND);
+    const n = Math.max(1, Math.floor((breiteE * anteil - 0.5) / b));
+    return Array.from({ length: n }, () => ({ text, art, wort }));
+}
+function mischen(a, s){ const r = a.slice(); let z = s * 9301 + 49297; for (let i = r.length - 1; i > 0; i--) { z = (z * 9301 + 49297) % 233280; const j = Math.floor(z / 233280 * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; }
+function passendeWoerter(muss){
+    const ok = new Set(E.gelernt.concat(muss ? [muss] : []));
+    const liste = [...new Set(WOERTER)].filter(w => [...w.toLowerCase()].every(z => ok.has(z)) && (!muss || w.toLowerCase().includes(muss)));
+    return mischen(liste, mischung + 1);
+}
+
+function zeichnen(){
+    const tafel = document.getElementById("tafel");
+    tafel.classList.toggle("gruen", E.hg === "gruen");
+    const box = document.getElementById("zeilen"), r = box.getBoundingClientRect();
+    const n = +E.zeilen, platzH = r.height - 16, platzB = r.width - 0.03 * window.innerWidth;
+    const bandPx = Math.min(platzH / (n * ZEILE) * 0.96, platzB / 12);
+    const breiteE = platzB / bandPx;
+    box.innerHTML = "";
+    const z = E.aktuell, Z = gross(z);
+    const zeilen = [];
+    if (E.ansicht === "buchstabe") {
+        if (Z) zeilen.push([{ text: Z, art: "vorlage" }, ...fuellen(Z, "spur", breiteE, 0.62)]);
+        zeilen.push([{ text: z, art: "vorlage" }, ...fuellen(z, "spur", breiteE, 0.62)]);
+        const w = passendeWoerter(z);
+        while (zeilen.length < n) {
+            const k = zeilen.length - (Z ? 2 : 1);
+            if (w.length && k % 2 === 0) { const wort = w[(k / 2) % w.length]; zeilen.push(fuellen(wort, "spur", breiteE, 0.92, true).slice(0, 3).concat([])); }
+            else if (Z) zeilen.push(fuellen(Z + z, "spur", breiteE, 0.8, true));
+            else zeilen.push(fuellen(z, "spur", breiteE, 0.8));
+        }
+    } else if (E.ansicht === "wiederholung") {
+        const pool = mischen(E.gelernt.flatMap(b => gross(b) ? [gross(b), b] : [b]), mischung + 3);
+        let i = 0;
+        for (let k = 0; k < n; k++) {
+            const reihe = []; let b = 0.5;
+            while (pool.length && b < breiteE - 1.6) { const t = pool[i++ % pool.length]; reihe.push({ text: t, art: "spur" }); b += glyphe(t).w + ABSTAND; }
+            zeilen.push(reihe);
+        }
+    } else if (E.ansicht === "woerter") {
+        const w = passendeWoerter(null);
+        let i = 0;
+        for (let k = 0; k < n; k++) {
+            const reihe = []; let b = 0.5;
+            while (w.length && i < w.length * 3) { const t = w[i % w.length]; const bb = wortBreite(t) + ABSTAND * 1.4; if (b + bb > breiteE * 0.9) break; reihe.push({ text: t, art: "spur", wort: true }); b += bb; i++; }
+            if (!reihe.length && w.length) { reihe.push({ text: w[i++ % w.length], art: "spur", wort: true }); }
+            zeilen.push(reihe);
+        }
+    }
+    while (zeilen.length < n) zeilen.push([]);
+    zeilen.slice(0, n).forEach(inh => { const s = zeileSvg(inh, breiteE); s.style.height = (bandPx * ZEILE) + "px"; s.style.width = platzB + "px"; box.appendChild(s); });
+    box.querySelectorAll(".vorlage").forEach(g => g.addEventListener("click", () => schreibweg(g)));
+    kopfZeigen();
+    malenGroesse();
+}
+function kopfZeigen(){
+    document.getElementById("kBuchstabe").textContent = E.ansicht === "buchstabe" ? (gross(E.aktuell) ? gross(E.aktuell) + E.aktuell : E.aktuell) : "Aa";
+    document.getElementById("kAnsicht").innerHTML = { buchstabe: '<i class="fa-solid fa-a"></i> Neuer Buchstabe', wiederholung: '<i class="fa-solid fa-repeat"></i> Wiederholung', woerter: '<i class="fa-solid fa-font"></i> Wörter', leer: '<i class="fa-solid fa-grip-lines"></i> Leere Lineatur' }[E.ansicht] + " · " + (E.schrift === "grund" ? "Grundschrift" : "Druckschrift");
+}
+
+/* ---------- Schreibweg vormachen ---------- */
+function schreibweg(g){
+    const F = farben();
+    const pfade = [...g.querySelectorAll("path")];
+    let verz = 0;
+    pfade.forEach(p => {
+        const k = p.cloneNode(); k.setAttribute("stroke", "#e8590c"); k.setAttribute("stroke-width", p.getAttribute("stroke-width") * 1.15); k.removeAttribute("stroke-dasharray");
+        g.appendChild(k);
+        const punkt = /l0,0\.001$/.test(p.getAttribute("d"));
+        const L = punkt ? 0.01 : k.getTotalLength();
+        const dauer = punkt ? 250 : Math.max(500, L * 380);
+        k.style.strokeDasharray = L + " " + (L + 1); k.style.strokeDashoffset = L; k.style.opacity = punkt ? 0 : 1;
+        setTimeout(() => { k.style.transition = punkt ? "opacity .25s" : `stroke-dashoffset ${dauer}ms linear`; k.style.strokeDashoffset = 0; k.style.opacity = 1; }, verz + 30);
+        verz += dauer + 250;
+        setTimeout(() => k.remove(), verz + 1800);
+    });
+    return verz;
+}
+function vormachen(){
+    const v = [...document.querySelectorAll("#zeilen .vorlage")];
+    if (!v.length) { // ohne Vorlage: erste Spur-Buchstaben der ersten Zeile vormachen
+        alert("Schreibweg gibt es bei „Neuer Buchstabe“ – dort wird die Vorlage vorne in der Zeile vorgemacht."); return;
+    }
+    let t = 0; v.forEach(g => { setTimeout(() => schreibweg(g), t); t += 2600; });
+}
+
+/* ---------- Mit dem Tafelstift schreiben ---------- */
+const lein = document.getElementById("malen"), ctx = lein.getContext("2d");
+let striche = [], aktiv = null, farbe = "#1d5fbf", dick = true, modus = "stift";
+function malenGroesse(){
+    const r = lein.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+    lein.width = Math.round(r.width * d); lein.height = Math.round(r.height * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+    alleMalen();
+}
+function strichMalen(s){
+    const r = lein.getBoundingClientRect();
+    ctx.globalCompositeOperation = s.radierer ? "destination-out" : "source-over";
+    ctx.strokeStyle = s.farbe; ctx.lineWidth = s.breite * Math.min(r.width, r.height) / 1000; ctx.lineCap = "round"; ctx.lineJoin = "round";
+    ctx.beginPath();
+    s.p.forEach(([x, y], i) => i ? ctx.lineTo(x * r.width, y * r.height) : ctx.moveTo(x * r.width, y * r.height));
+    if (s.p.length === 1) ctx.lineTo(s.p[0][0] * r.width + .1, s.p[0][1] * r.height);
+    ctx.stroke();
+    ctx.globalCompositeOperation = "source-over";
+}
+function alleMalen(){ const r = lein.getBoundingClientRect(); ctx.clearRect(0, 0, r.width, r.height); striche.forEach(strichMalen); }
+lein.addEventListener("pointerdown", ev => {
+    if (modus === "aus") return;
+    lein.setPointerCapture(ev.pointerId);
+    const r = lein.getBoundingClientRect();
+    aktiv = { farbe, breite: modus === "radierer" ? 40 : (dick ? 9 : 5), radierer: modus === "radierer", p: [[(ev.clientX - r.left) / r.width, (ev.clientY - r.top) / r.height]] };
+    striche.push(aktiv); strichMalen(aktiv);
+});
+lein.addEventListener("pointermove", ev => {
+    if (!aktiv) return;
+    const r = lein.getBoundingClientRect();
+    const pts = ev.getCoalescedEvents ? ev.getCoalescedEvents() : [ev];
+    pts.forEach(e => aktiv.p.push([(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]));
+    const s = aktiv, n = s.p.length;
+    const teil = { ...s, p: s.p.slice(Math.max(0, n - pts.length - 1)) };
+    strichMalen(teil);
+});
+const ende = () => { aktiv = null; };
+lein.addEventListener("pointerup", ende); lein.addEventListener("pointercancel", ende); lein.addEventListener("pointerleave", ende);
+function rueckgaengig(){ striche.pop(); alleMalen(); }
+function wischen(){ striche = []; alleMalen(); }
+function knoepfeModus(){
+    document.getElementById("kRadierer").classList.toggle("an", modus === "radierer");
+    document.getElementById("kHand").classList.toggle("an", modus === "aus");
+    lein.classList.toggle("aus", modus === "aus");
+    document.querySelectorAll(".tb-farbe").forEach(b => b.classList.toggle("an", modus === "stift" && b.dataset.farbe === farbe));
+}
+document.querySelectorAll(".tb-farbe").forEach(b => b.addEventListener("click", () => { farbe = b.dataset.farbe; modus = "stift"; knoepfeModus(); }));
+function radierer(){ modus = modus === "radierer" ? "stift" : "radierer"; knoepfeModus(); }
+function stiftAus(){ modus = modus === "aus" ? "stift" : "aus"; knoepfeModus(); }
+function dickeWechseln(){ dick = !dick; document.getElementById("kDicke").innerHTML = `<i class="fa-solid fa-pen"></i> ${dick ? "dick" : "dünn"}`; }
+
+/* ---------- Bedienung ---------- */
+function einstellungen(an){
+    const el = document.getElementById("einstellungen");
+    el.classList.toggle("an", an === undefined ? !el.classList.contains("an") : an);
+    if (el.classList.contains("an")) einstellungenZeigen();
+}
+function einstellungenZeigen(){
+    document.querySelectorAll("[data-wahl]").forEach(w => w.querySelectorAll("button").forEach(b => b.classList.toggle("an", String(E[w.dataset.wahl]) === b.dataset.wert)));
+    document.getElementById("wahlAktuell").innerHTML = ALLE.map(z => `<button data-z="${z}" class="${z === E.aktuell ? "an" : ""}">${gross(z) ? gross(z) + z : z}</button>`).join("");
+    document.getElementById("wahlGelernt").innerHTML = ALLE.map(z => `<button data-z="${z}" class="${E.gelernt.includes(z) ? "an" : ""} ${z === E.aktuell ? "aktuell" : ""}">${z}</button>`).join("");
+    document.querySelectorAll("#wahlAktuell button").forEach(b => b.addEventListener("click", () => { E.aktuell = b.dataset.z; E.ansicht = "buchstabe"; if (!E.gelernt.includes(E.aktuell)) E.gelernt.push(E.aktuell); geaendert(); }));
+    document.querySelectorAll("#wahlGelernt button").forEach(b => b.addEventListener("click", () => { const z = b.dataset.z; E.gelernt = E.gelernt.includes(z) ? E.gelernt.filter(x => x !== z) : E.gelernt.concat(z); geaendert(); }));
+}
+document.querySelectorAll("[data-wahl]").forEach(w => w.addEventListener("click", ev => { const b = ev.target.closest("button[data-wert]"); if (!b) return; E[w.dataset.wahl] = b.dataset.wert; geaendert(); }));
+function geaendert(){ merken(); einstellungenZeigen(); wischen(); zeichnen(); }
+function gelerntBisAktuell(){ const i = ALLE.indexOf(E.aktuell); E.gelernt = [...new Set(E.gelernt.concat(ALLE.slice(0, i + 1)))]; geaendert(); }
+function gelerntAlle(an){ E.gelernt = an ? ALLE.slice() : [E.aktuell]; geaendert(); }
+// Pfeile: durch die gelernten Buchstaben blättern (Reihenfolge, in der sie gelernt wurden)
+function buchstabeSchritt(d){
+    const liste = E.gelernt.length ? E.gelernt : ALLE;
+    let i = liste.indexOf(E.aktuell); i = (i + d + liste.length) % liste.length;
+    E.aktuell = liste[i]; E.ansicht = "buchstabe"; merken(); wischen(); zeichnen();
+}
+function neuMischen(){ mischung++; wischen(); zeichnen(); }
+function vollbild(){ try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); } catch (x) {} }
+function kursOeffnen(){ document.getElementById("tafel").classList.add("an"); document.getElementById("uebersicht").style.display = "none"; history.replaceState(null, "", "#buchstabenkurs"); requestAnimationFrame(zeichnen); }
+function kursSchliessen(){ document.getElementById("tafel").classList.remove("an"); document.getElementById("uebersicht").style.display = ""; history.replaceState(null, "", location.pathname); }
+window.addEventListener("resize", () => { if (document.getElementById("tafel").classList.contains("an")) zeichnen(); });
+document.addEventListener("keydown", ev => {
+    if (!document.getElementById("tafel").classList.contains("an")) return;
+    if (ev.key === "ArrowRight") buchstabeSchritt(1); else if (ev.key === "ArrowLeft") buchstabeSchritt(-1);
+    else if (ev.key === "Escape") einstellungen(false);
+    else if ((ev.ctrlKey || ev.metaKey) && ev.key === "z") rueckgaengig();
+});
+knoepfeModus();
+// Vorschau auf der Kachel
+(function(){
+    const s = zeileSvg([{ text: "A", art: "vorlage" }, { text: "a", art: "vorlage" }, { text: "a", art: "spur" }, { text: "a", art: "spur" }], 8.5);
+    s.style.width = "100%"; s.style.height = "100%";
+    s.querySelectorAll("circle, text").forEach(x => x.remove());
+    document.getElementById("kachelBild").appendChild(s);
+})();
+if (location.hash === "#buchstabenkurs") kursOeffnen();
+window.addEventListener("hashchange", () => { if (location.hash === "#buchstabenkurs") kursOeffnen(); });
+</script>
+</body>
+</html>
