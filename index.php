@@ -97,6 +97,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-09", "Tafelbild „Guten Morgen!“", "Zum Stundenanfang: Begrüßung, Datum, Wetter, Stundenplan mit Lehrkräften, was auspacken, was beachten – für Kl. 1/2 oder 3/4.", "tafelbilder.php#morgen"],
     ["2026-11-09", "Tafelbilder: Buchstabenkurs", "Buchstaben in der Lineatur an der digitalen Tafel vorschreiben, nachspuren und selbst schreiben – Druck- oder Grundschrift.", "tafelbilder.php#buchstabenkurs"],
     ["2026-11-09", "Gast-Zugänge für Kolleginnen", "Kolleginnen testen Sozialtraining, Lernangebot und Vertretung mit eigenem Code – getrennt von deinen Daten.", "zugaenge.php"],
     ["2026-11-08", "Leise-Meer im Sozialtraining", "In jeder Präsentation unten: 🌊 Leise-Meer – je leiser, desto mehr Meerestiere tauchen am Leuchtturm auf.", "sozial-stunden.php"],
@@ -183,6 +184,12 @@ $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strt
 <i class="fa-solid fa-pen-fancy"></i>
 <h2>Buchstabenkurs</h2>
 <p>Buchstaben in der Lineatur nachspuren und schreiben – Druck- oder Grundschrift, direkt mit dem Tafelstift</p>
+</a>
+
+<a href="tafelbilder.php#morgen" class="portal-card haupt">
+<i class="fa-solid fa-sun"></i>
+<h2>Guten Morgen!</h2>
+<p>Tagesstart an der Tafel: Datum, Wetter, Stundenplan, Auspacken, Hinweise</p>
 </a>
 
 <a href="tafelbilder.php" class="portal-card">

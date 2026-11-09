@@ -1,4 +1,12 @@
 <?php $LT_GAST_BEREICH = "lernangebot"; require __DIR__ . "/gast-zugang.php"; ?>
+<?php
+if (empty($_SESSION["tafel_csrf"])) $_SESSION["tafel_csrf"] = bin2hex(random_bytes(16));
+// Gespeicherte Tafelbild-Einstellungen (Morgentafel …) – Gäste haben eigene Daten
+$tbDatei = ($LT_GAST ? lt_gastOrdner($LT_GAST) : __DIR__ . "/material-daten") . "/tafelbilder.json";
+$tbDaten = file_exists($tbDatei) ? json_decode((string)file_get_contents($tbDatei), true) : [];
+if (!is_array($tbDaten)) $tbDaten = [];
+$JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE;
+?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -80,6 +88,120 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .buchst.gelernt button.aktuell{ outline:3px solid var(--gold); outline-offset:2px; }
 .hilfe{ color:var(--grau); font-weight:700; font-size:14px; margin:6px 0 0; }
 .zu{ position:sticky; top:0; float:right; }
+
+/* ---------- Guten Morgen! (Tagesstart) ---------- */
+#morgen{ position:fixed; inset:0; display:none; flex-direction:column; z-index:10; background:linear-gradient(160deg,#fff8e8 0%,#eef6fb 100%); color:#1f2d36; font-family:"Nunito",sans-serif; user-select:none; }
+#morgen.an{ display:flex; }
+.mg-leiste{ display:flex; gap:8px; align-items:center; padding:8px 16px; }
+.mg-titel{ font-weight:900; color:#7c6a4f; font-size:17px; }
+#mgInhalt{ flex:1; display:flex; flex-direction:column; padding:0 1.6vw 1.6vh; min-height:0; }
+.mg-gruss{ display:flex; align-items:center; gap:1.2vw; margin:0 0 1.4vh; }
+.mg-gruss h1{ flex:1; margin:0; font:900 clamp(26px,min(4.2vw,7vh),76px)/1.1 "Nunito",sans-serif; color:#16324a; }
+.mg-sonne{ font-size:clamp(34px,min(5vw,8vh),90px); animation:mgSonne 12s linear infinite; display:inline-block; }
+@keyframes mgSonne{ to{ transform:rotate(360deg); } }
+.mg-uhr{ font:900 clamp(24px,min(3.2vw,5.5vh),58px) "Nunito",sans-serif; color:#16324a; background:white; border-radius:20px; padding:.15em .6em; box-shadow:0 6px 18px rgba(22,50,74,.1); font-variant-numeric:tabular-nums; }
+.mg-raster{ flex:1; display:grid; grid-template-columns:27fr 40fr 33fr; gap:1.4vw; min-height:0; }
+.mg-spalte{ display:flex; flex-direction:column; gap:1.4vw; min-height:0; }
+.mg-karte{ background:white; border-radius:26px; box-shadow:0 10px 28px rgba(22,50,74,.09); padding:1.6vh 1.3vw; display:flex; flex-direction:column; min-height:0; overflow:hidden; position:relative; }
+.mg-karte h2{ margin:0 0 .8vh; font:900 clamp(15px,min(1.5vw,2.6vh),28px) "Nunito",sans-serif; text-transform:uppercase; letter-spacing:.05em; color:#8a7a60; }
+.mg-spalte .mg-karte{ flex:1; }
+/* Datum */
+.mg-datum{ text-align:center; border-top:10px solid var(--tf); }
+.mg-kopfzeile{ display:flex; align-items:center; justify-content:space-between; }
+.mg-pfeil{ border:0; background:#f3efe6; border-radius:50%; width:44px; height:44px; font:900 26px/1 "Nunito",sans-serif; color:#8a7a60; cursor:pointer; }
+.mg-wtag{ font:900 clamp(30px,min(4.4vw,7.4vh),84px)/1.05 "Nunito",sans-serif; color:var(--tf); }
+.mg-tagzahl{ font:800 clamp(18px,min(2.2vw,3.8vh),42px) "Nunito",sans-serif; color:#16324a; margin-top:.6vh; }
+.mg-tagzahl b{ font-size:1.5em; }
+.mg-info{ margin-top:.8vh; font-weight:800; color:#7c8a85; font-size:clamp(13px,min(1.2vw,2vh),22px); }
+.mg-woche{ display:flex; justify-content:center; gap:.4vw; margin-top:1vh; }
+.mg-woche span{ font:900 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; padding:.25em .45em; border-radius:10px; color:#9aa5ad; background:#f3f5f7; }
+.mg-woche span.an{ background:var(--tf); color:white; transform:scale(1.15); }
+.mg-jz{ margin-top:1.4vh; font:800 clamp(15px,min(1.6vw,2.7vh),30px) "Nunito",sans-serif; color:#8a7a60; display:flex; align-items:center; justify-content:center; gap:.4em; }
+.mg-jz span{ font-size:1.8em; }
+.mg-heute{ margin:1vh auto 0; border:0; background:#fff1c2; border-radius:999px; padding:6px 14px; font:800 14px "Nunito",sans-serif; cursor:pointer; }
+/* Wetter */
+.mg-wetter{ text-align:center; cursor:pointer; align-items:center; justify-content:center; }
+.mg-wetter h2{ align-self:stretch; text-align:left; }
+.mg-wbild{ font-size:clamp(46px,min(6.5vw,11vh),130px); line-height:1.1; }
+.mg-wtext{ font:900 clamp(18px,min(2vw,3.4vh),38px) "Nunito",sans-serif; color:#16324a; }
+.mg-temp{ font:800 clamp(15px,min(1.5vw,2.6vh),28px) "Nunito",sans-serif; color:#3d7ea6; margin-top:.4vh; }
+.mg-kleidung{ margin-top:.8vh; background:#eef6fb; border-radius:999px; padding:.3em .9em; font:800 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#16324a; }
+.mg-tipp{ color:#9aa5ad; font-weight:700; font-size:14px; }
+/* Stundenplan */
+.mg-stunden{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.9vh; flex:1; min-height:0; justify-content:flex-start; }
+.mg-stunden li{ display:flex; align-items:center; gap:.9vw; background:#f8f6f1; border-radius:18px; padding:.7vh .9vw; border-left:10px solid var(--ff); flex:0 1 auto; min-height:0; }
+.mg-nr{ font:900 clamp(15px,min(1.5vw,2.6vh),28px) "Nunito",sans-serif; color:#9aa5ad; width:1.4em; text-align:center; }
+.mg-fe{ font-size:clamp(26px,min(3vw,5vh),56px); line-height:1; }
+.mg-fach{ flex:1; display:flex; flex-direction:column; }
+.mg-fach b{ font:900 clamp(18px,min(2.1vw,3.6vh),40px)/1.1 "Nunito",sans-serif; color:#16324a; }
+.mg-fach small{ font:700 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#7c8a85; }
+.mg-zeit{ font:800 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#7c8a85; font-variant-numeric:tabular-nums; }
+.mg-stunden li.jetzt{ background:white; box-shadow:0 0 0 4px var(--ff), 0 8px 20px rgba(0,0,0,.12); transform:scale(1.02); }
+.mg-stunden li.vorbei{ opacity:.45; }
+.mg-jetzt{ background:var(--ff); color:white; border-radius:999px; padding:.15em .7em; font:900 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; }
+.mg-pause{ background:transparent !important; border-left:0 !important; justify-content:center; font:800 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#9a8a6a; padding:0 !important; gap:.5vw !important; }
+.mg-pause small{ color:#b0a58f; }
+#morgen.klein .mg-fach b{ font-size:clamp(20px,min(2.4vw,4.2vh),46px); }
+#morgen.klein .mg-fe{ font-size:clamp(30px,min(3.6vw,6vh),66px); }
+/* Auspacken */
+.mg-dinge{ display:grid; grid-template-columns:repeat(auto-fill,minmax(clamp(80px,8.5vw,160px),1fr)); gap:.8vw; align-content:start; }
+.mg-ding{ border:3px solid #f0ebe0; background:#fffdf8; border-radius:18px; padding:.6vh .3vw; display:flex; flex-direction:column; align-items:center; gap:.2vh; cursor:pointer; font-family:"Nunito",sans-serif; position:relative; }
+.mg-ding span{ font-size:clamp(28px,min(3.2vw,5.4vh),60px); line-height:1.15; }
+.mg-ding b{ font:800 clamp(12px,min(1.15vw,2vh),22px) "Nunito",sans-serif; color:#16324a; }
+.mg-ding.ok{ border-color:#2e9e5b; background:#e9f7ee; }
+.mg-ding.ok::after{ content:"✓"; position:absolute; top:-8px; right:-6px; background:#2e9e5b; color:white; border-radius:50%; width:28px; height:28px; font:900 18px/28px "Nunito",sans-serif; }
+/* Beachten */
+.mg-achtung{ background:#fff8e1; }
+.mg-spalte .mg-pack{ flex:1.5; }
+.mg-dinge.viele{ grid-template-columns:repeat(4,1fr); gap:.5vw; } .mg-dinge.viele .mg-ding span{ font-size:clamp(22px,min(2.4vw,4vh),46px); } .mg-dinge.viele .mg-ding b{ font-size:clamp(11px,min(.95vw,1.7vh),18px); }
+.mg-dinge.sehr-viele{ grid-template-columns:repeat(5,1fr); gap:.4vw; } .mg-dinge.sehr-viele .mg-ding span{ font-size:clamp(18px,min(2vw,3.3vh),40px); } .mg-dinge.sehr-viele .mg-ding b{ font-size:clamp(10px,min(.85vw,1.5vh),16px); }
+.mg-hinweise{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.9vh; }
+.mg-hinweise li{ display:flex; gap:.7vw; align-items:center; background:white; border-radius:16px; padding:.7vh .8vw; font:800 clamp(15px,min(1.6vw,2.7vh),30px)/1.2 "Nunito",sans-serif; color:#16324a; }
+.mg-hinweise li span{ font-size:1.5em; }
+.mg-leer{ margin:auto; text-align:center; font:800 clamp(16px,min(1.6vw,2.7vh),30px)/1.4 "Nunito",sans-serif; color:#9aa5ad; }
+.mg-leer.klein{ font-size:clamp(14px,min(1.3vw,2.2vh),24px); }
+/* Dialoge und Editor */
+.mg-k{ font:800 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:9px 16px; background:#16324a; color:white; cursor:pointer; min-height:42px; }
+.mg-k.hell{ background:#f1ece2; color:#16324a; } .mg-k.rot{ background:#fdecea; color:#a3261c; margin-top:16px; }
+.mg-overlay{ position:absolute; inset:0; background:rgba(22,50,74,.45); display:flex; align-items:center; justify-content:center; z-index:20; }
+.mg-dialog{ background:white; border-radius:26px; padding:24px 28px; max-width:min(900px,94vw); box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.mg-dialog h2{ margin:0 0 14px; font:900 28px "Nunito",sans-serif; color:#16324a; }
+.mg-wwahl{ display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:14px; }
+.mg-wwahl button{ border:3px solid #eef1f4; background:#fafcfd; border-radius:18px; padding:10px 6px; font:800 16px "Nunito",sans-serif; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px; }
+.mg-wwahl button span{ font-size:48px; }
+.mg-reihe{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+#mgEditor{ position:absolute; inset:0; background:#fbfaf6; z-index:15; display:none; flex-direction:column; user-select:text; }
+#mgEditor.an{ display:flex; }
+.mg-ed-kopf{ display:flex; gap:10px; align-items:center; padding:12px 18px; background:white; box-shadow:0 4px 14px rgba(0,0,0,.06); flex-wrap:wrap; }
+.mg-reiter{ display:flex; gap:6px; flex-wrap:wrap; flex:1; }
+.mg-reiter button{ border:0; background:#f1ece2; border-radius:999px; padding:10px 16px; font:800 15px "Nunito",sans-serif; cursor:pointer; }
+.mg-reiter button.an{ background:#16324a; color:white; }
+.mg-status{ font-weight:800; color:#2e9e5b; font-size:14px; }
+.mg-ed-inhalt{ flex:1; overflow:auto; padding:18px 22px 40px; max-width:1300px; width:100%; margin:0 auto; }
+.mg-ed-inhalt label{ display:block; font-weight:900; font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:#8a7a60; margin:16px 0 6px; }
+.mg-ed-inhalt input, .mg-ed-inhalt select{ font:700 15px "Nunito",sans-serif; padding:8px 10px; border:2px solid #e2ddd2; border-radius:10px; background:white; width:100%; }
+.mg-felder{ display:grid; grid-template-columns:1fr 1fr; gap:4px 18px; }
+.mg-chip{ border:2px solid #e2ddd2; background:white; border-radius:999px; padding:8px 16px; font:800 15px "Nunito",sans-serif; cursor:pointer; }
+.mg-chip.an{ background:#16324a; color:white; border-color:#16324a; }
+.mg-hilfe{ color:#7c8a85; font-weight:700; font-size:14px; }
+.mg-tabelle{ overflow-x:auto; }
+.mg-tabelle table{ border-collapse:separate; border-spacing:6px; width:100%; }
+.mg-tabelle th{ font-size:13px; color:#8a7a60; text-align:left; }
+.mg-tabelle td{ vertical-align:top; min-width:150px; }
+.mg-tabelle td:first-child{ min-width:30px; } .mg-tabelle td.mg-zeiten{ min-width:90px; }
+.mg-tabelle td select, .mg-tabelle td input{ margin-bottom:4px; font-size:14px; padding:6px 8px; }
+.mg-pausen .mg-reihe{ margin-bottom:6px; } .mg-pausen select{ width:auto !important; } .mg-pausen input{ width:auto; }
+.mg-matliste{ display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:10px; }
+.mg-mat{ background:white; border-radius:14px; padding:10px 12px; box-shadow:0 2px 8px rgba(0,0,0,.04); }
+.mg-mat b{ display:block; margin-bottom:6px; }
+.mg-mini{ border:2px solid #eee; background:white; border-radius:10px; font-size:22px; width:42px; height:42px; margin:2px; cursor:pointer; opacity:.45; }
+.mg-mini.an{ opacity:1; border-color:#2e9e5b; background:#e9f7ee; }
+.mg-neuhinweis{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:white; padding:12px; border-radius:14px; }
+.mg-neuhinweis select{ width:auto !important; } .mg-neuhinweis input{ flex:1 1 260px; width:auto !important; }
+.mg-hliste{ list-style:none; padding:0; display:flex; flex-direction:column; gap:6px; }
+.mg-hliste li{ display:flex; gap:10px; align-items:center; background:white; border-radius:12px; padding:8px 12px; }
+.mg-hliste li span{ font-size:24px; } .mg-hliste li b{ flex:1; } .mg-hliste li small{ color:#7c8a85; font-weight:700; }
+@media (max-width:900px){ .mg-raster{ grid-template-columns:1fr; overflow:auto; } #mgInhalt{ overflow:auto; } .mg-felder{ grid-template-columns:1fr; } .mg-wwahl{ grid-template-columns:repeat(3,1fr); } }
 </style>
 </head>
 <body>
@@ -94,7 +216,24 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
             <h2>Buchstabenkurs</h2>
             <p>Buchstaben in der Lineatur vorschreiben, nachspuren und selbst schreiben – groß und klein, Druck- oder Grundschrift.</p>
         </button>
+        <button class="kachel" type="button" onclick="tafelMorgen.oeffnen()">
+            <div class="bild" style="font-size:44px;gap:10px;background:linear-gradient(135deg,#fff7df,#e8f4fb)">☀️<span style="font:900 20px Nunito,sans-serif;color:#16324a">Guten Morgen!</span></div>
+            <h2>Guten Morgen! – Tagesstart</h2>
+            <p>Zum Stundenanfang: Begrüßung, Datum, Wetter, Stundenplan mit Lehrkräften, was auspacken, was beachten – passend für Kl. 1/2 oder 3/4.</p>
+        </button>
     </div>
+</div>
+
+<div id="morgen">
+    <div class="mg-leiste">
+        <button class="tb-k rund" onclick="tafelMorgen.schliessen()" title="Zurück zur Übersicht"><i class="fa-solid fa-arrow-left"></i></button>
+        <span class="mg-titel">Guten Morgen!</span>
+        <span class="tb-luft"></span>
+        <button class="tb-k" onclick="tafelMorgen.bearbeiten()" title="Klasse, Stundenplan, Material, Hinweise"><i class="fa-solid fa-pen"></i> Bearbeiten</button>
+        <button class="tb-k rund" onclick="vollbild()" title="Vollbild"><i class="fa-solid fa-expand"></i></button>
+    </div>
+    <div id="mgInhalt"></div>
+    <div id="mgEditor"></div>
 </div>
 
 <div id="tafel">
@@ -150,6 +289,11 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
     </div>
 </div>
 
+<script>
+window.TAFEL_DATEN = <?= json_encode((object)$tbDaten, $JSON) ?>;
+window.TAFEL_CSRF = <?= json_encode($_SESSION["tafel_csrf"]) ?>;
+</script>
+<script src="tafel-morgen.js?v=<?= @filemtime(__DIR__ . "/tafel-morgen.js") ?>"></script>
 <script>
 "use strict";
 /* ---------- Buchstaben als Schreibwege ----------
