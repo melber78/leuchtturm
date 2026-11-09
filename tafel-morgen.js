@@ -67,7 +67,7 @@ const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")
 function kw(d){ const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); const tag = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - tag); const j = new Date(Date.UTC(t.getUTCFullYear(), 0, 1)); return Math.ceil(((t - j) / 864e5 + 1) / 7); }
 
 function neueKlasse(name, stufe){
-    return { id: neueId(), name: name || "1a", stufe: stufe || "12", lehrkraft: "", gruss: "", ort: { name: "Weißenfels", lat: 51.2, lon: 11.97 },
+    return { id: neueId(), name: name || "1a", stufe: stufe || "12", lehrkraft: "", anrede: "", ort: { name: "Weißenfels", lat: 51.2, lon: 11.97 },
         zeiten: ZEITEN.map(z => z.slice()), pausen: PAUSEN.map(p => Object.assign({}, p)),
         plan: { 1: [], 2: [], 3: [], 4: [], 5: [] }, material: {}, extra: {}, hinweise: [] };
 }
@@ -78,6 +78,10 @@ if (!D || !Array.isArray(D.klassen) || !D.klassen.length) {
 if (!D || !Array.isArray(D.klassen) || !D.klassen.length) { const k = neueKlasse("1a", "12"); k.beispiel = true;
     k.plan = { 1: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "sachunterricht", l: "" }, { f: "sport", l: "" }], 2: [{ f: "mathe", l: "" }, { f: "deutsch", l: "" }, { f: "kunst", l: "" }, { f: "kunst", l: "" }], 3: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "musik", l: "" }, { f: "lernangebot", l: "" }], 4: [{ f: "mathe", l: "" }, { f: "deutsch", l: "" }, { f: "englisch", l: "" }, { f: "sport", l: "" }], 5: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "religion", l: "" }] };
     D = { klassen: [k], aktiv: k.id }; }
+// Ältere Speicherungen: leere Objekte kamen als [] zurück – wieder zu Objekten machen
+D.klassen.forEach(k => ["plan", "material", "extra", "wetterManuell"].forEach(f => { if (!k[f] || Array.isArray(k[f])) k[f] = Object.assign({}, k[f] || {}); }));
+// Begrüßung: früher ganzer Satz, jetzt nur die Anrede (die Tageszeit kommt automatisch)
+D.klassen.forEach(k => { if (k.gruss && !k.anrede) { k.anrede = k.gruss.replace(/^\s*(guten\s+(morgen|tag|abend)|hallo|moin)[,!\s]*/i, "").trim(); } delete k.gruss; });
 // Klassen mit den alten Vorgabezeiten auf die Schulzeiten umstellen
 D.klassen.forEach(k => {
     if (JSON.stringify(k.zeiten) === ALT_ZEITEN) { k.zeiten = ZEITEN.map(z => z.slice()); k.pausen = PAUSEN.map(p => Object.assign({}, p)); }
@@ -89,19 +93,29 @@ const klasse = () => D.klassen.find(k => k.id === D.aktiv) || D.klassen[0];
 const tag = () => { const d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() + tagVersatz); return d; };
 
 /* ---------- Speichern ---------- */
-let speicherTimer = null;
-function speichern(){
-    try { localStorage.setItem("tb_morgen", JSON.stringify(D)); } catch (x) {}
-    clearTimeout(speicherTimer);
-    speicherTimer = setTimeout(async () => {
-        const st = document.getElementById("mgStatus");
-        try {
-            const r = await fetch("tafelbilder-speichern.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json", "X-CSRF": window.TAFEL_CSRF || "" }, body: JSON.stringify({ bild: "morgen", daten: D }) });
-            const j = await r.json();
-            if (st) st.textContent = j.ok ? "✓ gespeichert" : "⚠ " + (j.fehler || "nicht gespeichert");
-        } catch (x) { if (st) st.textContent = "⚠ offline – nur auf diesem Gerät gespeichert"; }
-    }, 600);
+let speicherTimer = null, ungesichert = false, speicherFehler = "";
+function statusZeigen(text, gut){
+    const st = document.getElementById("mgStatus"); if (st) { st.textContent = text; st.style.color = gut ? "#2e9e5b" : "#c0392b"; }
+    const w = document.getElementById("mgWarnung"); if (w) { w.hidden = gut; w.textContent = gut ? "" : text; }
 }
+async function senden(keepalive){
+    clearTimeout(speicherTimer); speicherTimer = null;
+    try {
+        const r = await fetch("tafelbilder-speichern.php", { method: "POST", credentials: "same-origin", keepalive: !!keepalive, headers: { "Content-Type": "application/json", "X-CSRF": window.TAFEL_CSRF || "" }, body: JSON.stringify({ bild: "morgen", daten: D }) });
+        const j = await r.json();
+        if (j.ok) { ungesichert = false; speicherFehler = ""; statusZeigen("✓ im Leuchtturm gespeichert " + (j.zeit ? "(" + j.zeit + " Uhr)" : ""), true); }
+        else { speicherFehler = j.fehler || "nicht gespeichert"; statusZeigen("⚠ " + speicherFehler, false); }
+    } catch (x) { speicherFehler = "offline"; statusZeigen("⚠ Nicht im Leuchtturm gespeichert (keine Verbindung) – nur auf diesem Gerät", false); }
+}
+function speichern(sofort){
+    try { localStorage.setItem("tb_morgen", JSON.stringify(D)); } catch (x) {}
+    ungesichert = true; statusZeigen("… speichert", true);
+    clearTimeout(speicherTimer);
+    if (sofort) return senden();
+    speicherTimer = setTimeout(senden, 500);
+}
+// Beim Verlassen der Seite noch ausstehende Änderungen sichern
+window.addEventListener("pagehide", () => { if (ungesichert) senden(true); });
 
 /* ---------- Wetter (Open-Meteo, ohne Anmeldung) ---------- */
 function wetterAusCode(c){
@@ -160,11 +174,15 @@ function hinweiseHeute(k, d){
     const t = iso(d), wt = String(d.getDay());
     return (k.hinweise || []).filter(h => h.wann === "immer" || h.wann === t || h.wann === "wt" + wt);
 }
-function gruss(k){
-    if (k.gruss) return k.gruss;
-    const h = new Date().getHours();
-    return (tagVersatz !== 0 || h < 11 ? "Guten Morgen" : h < 17 ? "Hallo" : "Guten Abend") + ", liebe Klasse " + k.name + "!";
+// Begrüßung je nach Uhrzeit: bis 10 Uhr „Guten Morgen“, bis 17 Uhr „Guten Tag“, danach „Guten Abend“
+function tageszeit(){
+    const n = new Date(), m = n.getHours() * 60 + n.getMinutes();
+    if (tagVersatz !== 0 || m < 10 * 60) return ["Guten Morgen", "🌅"];
+    if (m < 17 * 60) return ["Guten Tag", "☀️"];
+    return ["Guten Abend", "🌙"];
 }
+function anrede(k){ return k.anrede || "liebe Klasse " + k.name; }
+function gruss(k){ const a = anrede(k).replace(/[!.]+$/, ""); return tageszeit()[0] + ", " + a + "!"; }
 
 function zeichnen(){
     const wurzel = document.getElementById("morgen"); if (!wurzel || !wurzel.classList.contains("an")) return;
@@ -176,7 +194,8 @@ function zeichnen(){
     const wochenende = wt === 0 || wt === 6;
     const istHeute = tagVersatz === 0;
     document.getElementById("mgInhalt").innerHTML = `
-    <div class="mg-gruss"><span class="mg-sonne">${wochenende ? "🎈" : "☀️"}</span><h1>${esc(gruss(k))}</h1><div class="mg-uhr" id="mgUhr"></div></div>
+    <div class="mg-warnung" id="mgWarnung" ${speicherFehler ? "" : "hidden"}>${speicherFehler ? "⚠ Nicht im Leuchtturm gespeichert: " + esc(speicherFehler) : ""}</div>
+    <div class="mg-gruss"><span class="mg-sonne ${tageszeit()[1] === "☀️" ? "dreht" : ""}">${wochenende ? "🎈" : tageszeit()[1]}</span><h1>${esc(gruss(k))}</h1><div class="mg-uhr" id="mgUhr"></div></div>
     <div class="mg-raster">
       <div class="mg-spalte">
         <section class="mg-karte mg-datum" style="--tf:${TAGE_FARBE[wt]}">
@@ -268,19 +287,20 @@ function bearbeiten(r){
     const R = { klasse: "🏫 Klasse", plan: "🗓️ Stundenplan", material: "🎒 Auspacken", hinweise: "📢 Hinweise" };
     const fachOpt = sel => `<option value="">–</option>` + Object.entries(FAECHER).map(([key, f]) => `<option value="${key}" ${key === sel ? "selected" : ""}>${f.e} ${esc(f.n)}</option>`).join("");
     let html = `<div class="mg-ed-kopf"><div class="mg-reiter">${Object.entries(R).map(([key, n]) => `<button class="${key === reiter ? "an" : ""}" data-reiter="${key}">${n}</button>`).join("")}</div>
-        <span id="mgStatus" class="mg-status"></span><button class="mg-k" data-schliessen>✓ Fertig</button></div><div class="mg-ed-inhalt">`;
+        <span id="mgStatus" class="mg-status">${speicherFehler ? "⚠ " + esc(speicherFehler) : ungesichert ? "" : "✓ gespeichert"}</span><button class="mg-k" data-schliessen>✓ Fertig</button></div><div class="mg-ed-inhalt">`;
     if (reiter === "klasse") {
         html += `<label>Klasse</label><div class="mg-reihe">${D.klassen.map(x => `<button class="mg-chip ${x.id === k.id ? "an" : ""}" data-klasse="${x.id}">${esc(x.name)}</button>`).join("")}<button class="mg-chip" data-neu>+ neue Klasse</button></div>
         <div class="mg-felder">
           <div><label>Name der Klasse</label><input data-feld="name" value="${esc(k.name)}" maxlength="20"></div>
           <div><label>Klassenstufe (Darstellung)</label><select data-feld="stufe"><option value="12" ${k.stufe === "12" ? "selected" : ""}>Klasse 1/2 – große Bilder, wenig Text</option><option value="34" ${k.stufe === "34" ? "selected" : ""}>Klasse 3/4 – mit Uhrzeiten und Temperaturen</option></select></div>
-          <div style="grid-column:1/-1"><label>Begrüßung (leer = automatisch „Guten Morgen, liebe Klasse ${esc(k.name)}!“)</label><input data-feld="gruss" value="${esc(k.gruss)}" maxlength="80" placeholder="Guten Morgen, liebe Klasse ${esc(k.name)}!"></div>
+          <div style="grid-column:1/-1"><label>Anrede in der Begrüßung</label><input data-feld="anrede" value="${esc(k.anrede || "")}" maxlength="60" placeholder="liebe Klasse ${esc(k.name)}"><small class="mg-hilfe">Die Begrüßung passt sich der Uhrzeit an: bis 10 Uhr „Guten Morgen, …“, bis 17 Uhr „Guten Tag, …“, danach „Guten Abend, …“. Leer = „liebe Klasse ${esc(k.name)}“. Beispiel: „ihr Füchse“.</small></div>
           <div><label>Buchstabe der Woche (leer = Feld ausblenden)</label><div class="mg-reihe"><input data-feld="buchstabe" value="${esc(k.buchstabe || "")}" maxlength="3" placeholder="z. B. m, ei, sch" style="flex:1">${kursBuchstabe() ? `<button class="mg-k hell" data-ausKurs>aus dem Buchstabenkurs: ${esc(kursBuchstabe())}</button>` : ""}</div><small class="mg-hilfe">Auch Laute wie au, ei, sch. Antippen auf der Tafel öffnet den Buchstabenkurs.</small></div>
           <div><label>Ort fürs Wetter</label><div class="mg-reihe"><input data-ort value="${esc((k.ort || {}).name || "")}" style="flex:1"><button class="mg-k hell" data-ortsuche>suchen</button></div><small class="mg-hilfe" id="mgOrt">${k.ort && k.ort.lat ? `📍 ${esc(k.ort.name)} (${(+k.ort.lat).toFixed(2)}, ${(+k.ort.lon).toFixed(2)})` : ""}</small></div>
         </div>
         ${D.klassen.length > 1 ? `<button class="mg-k rot" data-loeschen>🗑 Klasse ${esc(k.name)} löschen</button>` : ""}`;
     } else if (reiter === "plan") {
-        html += `<p class="mg-hilfe">Fach und Lehrkraft je Stunde. Leere Stunden werden nicht angezeigt. Die aktuelle Stunde wird nach der Uhrzeit hervorgehoben.</p>
+        html += `<div class="mg-info-box">🗓️ <b>Das ist euer Wochen-Stundenplan.</b> Einmal ausfüllen – er wird im Leuchtturm gespeichert und gilt jede Woche. Die Tafel zeigt automatisch den Plan des heutigen Wochentags.</div>
+        <p class="mg-hilfe">Fach und Lehrkraft je Stunde. Leere Stunden werden nicht angezeigt. Die aktuelle Stunde wird nach der Uhrzeit hervorgehoben.</p>
         <div class="mg-tabelle"><table><tr><th>Std.</th><th>Zeit</th>${[1, 2, 3, 4, 5].map(i => `<th>${TAGE[i]}</th>`).join("")}</tr>
         ${[0, 1, 2, 3, 4, 5, 6, 7].map(i => `<tr><td><b>${i + 1}.</b></td><td class="mg-zeiten"><input data-zeit="${i}|0" value="${esc((k.zeiten[i] || [])[0] || "")}" placeholder="08:00"><input data-zeit="${i}|1" value="${esc((k.zeiten[i] || [])[1] || "")}" placeholder="08:45"></td>
             ${[1, 2, 3, 4, 5].map(t => { const s = (k.plan[t] || [])[i] || {}; return `<td><select data-plan="${t}|${i}|f">${fachOpt(s.f)}</select><input data-plan="${t}|${i}|l" value="${esc(s.l || "")}" placeholder="Lehrkraft" maxlength="30"></td>`; }).join("")}</tr>`).join("")}
@@ -308,7 +328,7 @@ function bearbeiten(r){
 function editorAktivieren(p, k){
     const neu = () => { speichern(); bearbeiten(); zeichnen(); };
     p.querySelectorAll("[data-reiter]").forEach(b => b.addEventListener("click", () => bearbeiten(b.dataset.reiter)));
-    p.querySelector("[data-schliessen]").addEventListener("click", () => { p.classList.remove("an"); zeichnen(); });
+    p.querySelector("[data-schliessen]").addEventListener("click", () => { if (ungesichert) senden(); p.classList.remove("an"); zeichnen(); });
     p.querySelectorAll("[data-klasse]").forEach(b => b.addEventListener("click", () => { D.aktiv = b.dataset.klasse; abgehakt = {}; wetterLive = null; neu(); wetterLaden(); }));
     const nb = p.querySelector("[data-neu]"); if (nb) nb.addEventListener("click", () => { const name = prompt("Name der neuen Klasse (z. B. 2b):"); if (!name) return; const x = neueKlasse(name.trim().slice(0, 20), klasse().stufe); x.ort = Object.assign({}, klasse().ort); x.zeiten = klasse().zeiten.map(z => z.slice()); D.klassen.push(x); D.aktiv = x.id; neu(); });
     const lb = p.querySelector("[data-loeschen]"); if (lb) lb.addEventListener("click", () => { if (!confirm(`Klasse ${k.name} mit Stundenplan und Hinweisen löschen?`)) return; D.klassen = D.klassen.filter(x => x.id !== k.id); D.aktiv = D.klassen[0].id; neu(); });

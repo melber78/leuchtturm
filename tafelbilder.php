@@ -3,8 +3,8 @@
 if (empty($_SESSION["tafel_csrf"])) $_SESSION["tafel_csrf"] = bin2hex(random_bytes(16));
 // Gespeicherte Tafelbild-Einstellungen (Morgentafel …) – Gäste haben eigene Daten
 $tbDatei = ($LT_GAST ? lt_gastOrdner($LT_GAST) : __DIR__ . "/material-daten") . "/tafelbilder.json";
-$tbDaten = file_exists($tbDatei) ? json_decode((string)file_get_contents($tbDatei), true) : [];
-if (!is_array($tbDaten)) $tbDaten = [];
+$tbDaten = file_exists($tbDatei) ? json_decode((string)file_get_contents($tbDatei)) : null;
+if (!is_object($tbDaten)) $tbDaten = new stdClass();
 $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE;
 ?>
 <!DOCTYPE html>
@@ -97,7 +97,10 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 #mgInhalt{ flex:1; display:flex; flex-direction:column; padding:0 1.6vw 1.6vh; min-height:0; }
 .mg-gruss{ display:flex; align-items:center; gap:1.2vw; margin:0 0 1.4vh; }
 .mg-gruss h1{ flex:1; margin:0; font:900 clamp(26px,min(4.2vw,7vh),76px)/1.1 "Nunito",sans-serif; color:#16324a; }
-.mg-sonne{ font-size:clamp(34px,min(5vw,8vh),90px); animation:mgSonne 12s linear infinite; display:inline-block; }
+.mg-sonne{ font-size:clamp(34px,min(5vw,8vh),90px); display:inline-block; }
+.mg-sonne.dreht{ animation:mgSonne 12s linear infinite; }
+.mg-warnung{ background:#fdecea; color:#a3261c; font-weight:900; border-radius:14px; padding:8px 14px; margin-bottom:8px; }
+.mg-info-box{ background:#e9f7ee; color:#1d5c38; border-radius:14px; padding:12px 16px; font-weight:700; margin-bottom:8px; }
 @keyframes mgSonne{ to{ transform:rotate(360deg); } }
 .mg-uhr{ font:900 clamp(24px,min(3.2vw,5.5vh),58px) "Nunito",sans-serif; color:#16324a; background:white; border-radius:20px; padding:.15em .6em; box-shadow:0 6px 18px rgba(22,50,74,.1); font-variant-numeric:tabular-nums; }
 .mg-raster{ flex:1; display:grid; grid-template-columns:27fr 40fr 33fr; gap:1.4vw; min-height:0; }
@@ -304,7 +307,7 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 </div>
 
 <script>
-window.TAFEL_DATEN = <?= json_encode((object)$tbDaten, $JSON) ?>;
+window.TAFEL_DATEN = <?= json_encode($tbDaten, $JSON) ?>;
 window.TAFEL_CSRF = <?= json_encode($_SESSION["tafel_csrf"]) ?>;
 </script>
 <script src="tafel-morgen.js?v=<?= @filemtime(__DIR__ . "/tafel-morgen.js") ?>"></script>
