@@ -57,7 +57,7 @@ const TAGE_FARBE = ["#e2574c", "#3d7ea6", "#e67e22", "#3f9a5a", "#8e44ad", "#d4a
 const MONATE = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 const JAHRESZEIT = m => m <= 1 || m === 11 ? ["⛄", "Winter"] : m <= 4 ? ["🌷", "Frühling"] : m <= 7 ? ["🌻", "Sommer"] : ["🍂", "Herbst"];
 // Unterrichtszeiten der Schule (Vorgabe für neue Klassen)
-const ZEITEN = [["07:30", "08:10"], ["08:25", "09:05"], ["09:10", "09:50"], ["10:10", "10:50"], ["10:55", "11:35"], ["", ""]];
+const ZEITEN = [["07:30", "08:10"], ["08:25", "09:05"], ["09:10", "09:50"], ["10:10", "10:50"], ["10:55", "11:35"], ["11:55", "12:35"], ["12:40", "13:20"]];
 const PAUSEN = [{ nach: 1, name: "Frühstück", e: "🍎" }, { nach: 3, name: "Hofpause", e: "🛝" }, { nach: 5, name: "Hofpause / Mittag", e: "🍽️" }];
 const ALT_ZEITEN = '[["07:45","08:30"],["08:35","09:20"],["09:40","10:25"],["10:30","11:15"],["11:35","12:20"],["12:25","13:10"]]';
 
@@ -79,7 +79,11 @@ if (!D || !Array.isArray(D.klassen) || !D.klassen.length) { const k = neueKlasse
     k.plan = { 1: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "sachunterricht", l: "" }, { f: "sport", l: "" }], 2: [{ f: "mathe", l: "" }, { f: "deutsch", l: "" }, { f: "kunst", l: "" }, { f: "kunst", l: "" }], 3: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "musik", l: "" }, { f: "lernangebot", l: "" }], 4: [{ f: "mathe", l: "" }, { f: "deutsch", l: "" }, { f: "englisch", l: "" }, { f: "sport", l: "" }], 5: [{ f: "deutsch", l: "" }, { f: "mathe", l: "" }, { f: "religion", l: "" }] };
     D = { klassen: [k], aktiv: k.id }; }
 // Klassen mit den alten Vorgabezeiten auf die Schulzeiten umstellen
-D.klassen.forEach(k => { if (JSON.stringify(k.zeiten) === ALT_ZEITEN) { k.zeiten = ZEITEN.map(z => z.slice()); k.pausen = PAUSEN.map(p => Object.assign({}, p)); } });
+D.klassen.forEach(k => {
+    if (JSON.stringify(k.zeiten) === ALT_ZEITEN) { k.zeiten = ZEITEN.map(z => z.slice()); k.pausen = PAUSEN.map(p => Object.assign({}, p)); }
+    // 6. und 7. Stunde ergänzen, wenn sie noch fehlen
+    else if (JSON.stringify(k.zeiten.slice(0, 5)) === JSON.stringify(ZEITEN.slice(0, 5))) for (let i = 5; i < ZEITEN.length; i++) if (!k.zeiten[i] || !k.zeiten[i][0]) k.zeiten[i] = ZEITEN[i].slice();
+});
 let tagVersatz = 0, wetterLive = null, abgehakt = {};
 const klasse = () => D.klassen.find(k => k.id === D.aktiv) || D.klassen[0];
 const tag = () => { const d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() + tagVersatz); return d; };
