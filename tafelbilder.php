@@ -33,24 +33,40 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .kachel.bald{ opacity:.55; cursor:default; } .kachel.bald:hover{ transform:none; }
 
 /* Tafel-Ansicht (Vollbild) */
-#tafel{ position:fixed; inset:0; display:none; flex-direction:column; background:#fdfdfb; z-index:10; user-select:none; -webkit-user-select:none; }
+#tafel{ position:fixed; inset:0; display:none; flex-direction:column; background:radial-gradient(circle at 20% 0%, #fbf7ee, #efe8da); z-index:10; user-select:none; -webkit-user-select:none; }
 #tafel.an{ display:flex; }
-#tafel.gruen{ background:#24503d; }
-.tb-leiste{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; padding:8px 12px; background:#16324a; color:white; }
-.tb-leiste .titel{ font-weight:900; font-size:18px; margin-right:6px; white-space:nowrap; }
-.tb-k{ font:800 15px "Nunito",sans-serif; border:0; border-radius:12px; padding:9px 13px; background:rgba(255,255,255,.12); color:white; cursor:pointer; display:inline-flex; gap:7px; align-items:center; white-space:nowrap; min-height:44px; }
-.tb-k:hover{ background:rgba(255,255,255,.22); }
-.tb-k.an{ background:var(--gold); color:#16324a; }
-.tb-k.gross{ font-size:26px; min-width:64px; justify-content:center; font-weight:900; }
+#tafel.gruen{ background:#6b4423; }
+.tb-leiste{ display:flex; gap:8px; align-items:center; padding:10px 16px; background:rgba(255,255,255,.85); box-shadow:0 4px 18px rgba(60,40,10,.08); color:var(--nacht); position:relative; z-index:4; }
+#tafel.gruen .tb-leiste{ background:#5a381b; color:#fff7e6; box-shadow:none; }
+.tb-leiste .titel{ font-weight:900; font-size:17px; margin:0 6px 0 2px; white-space:nowrap; color:#7c6a4f; }
+#tafel.gruen .tb-leiste .titel{ color:#f4d9a6; }
+.tb-k{ font:800 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:9px 15px; background:#f1ece2; color:var(--nacht); cursor:pointer; display:inline-flex; gap:7px; align-items:center; white-space:nowrap; min-height:46px; transition:.15s; }
+.tb-k:hover{ background:#e7dfcf; }
+#tafel.gruen .tb-k{ background:rgba(255,255,255,.12); color:#fff7e6; }
+.tb-k.an{ background:var(--gold) !important; color:#16324a !important; }
+.tb-k.rund{ width:46px; padding:0; justify-content:center; }
+.tb-buchstabe{ font:900 30px "Nunito",sans-serif; min-width:86px; height:56px; border-radius:18px; border:0; cursor:pointer; color:white; background:linear-gradient(135deg,#3d7ea6,#16324a); box-shadow:0 6px 16px rgba(22,50,74,.25); letter-spacing:.04em; }
 .tb-luft{ flex:1; }
-.tb-farbe{ width:44px; height:44px; border-radius:50%; border:3px solid rgba(255,255,255,.35); cursor:pointer; padding:0; }
-.tb-farbe.an{ border-color:white; box-shadow:0 0 0 3px var(--gold); }
 #buehne{ position:relative; flex:1; overflow:hidden; }
-#zeilen{ position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-evenly; padding:1vh 1.5vw; }
-#zeilen svg{ display:block; width:100%; flex:none; }
+#blatt{ position:absolute; left:18px; right:18px; top:14px; bottom:96px; background:#fffdf8; border-radius:22px; box-shadow:0 10px 30px rgba(80,60,20,.12), 0 0 0 1px rgba(80,60,20,.06); overflow:hidden; }
+#tafel.gruen #blatt{ background:radial-gradient(circle at 30% 20%, #2f6a50, #1f4a37); box-shadow:inset 0 0 60px rgba(0,0,0,.35), 0 0 0 10px #8a5a2e, 0 0 0 14px #5a381b; left:30px; right:30px; top:24px; bottom:104px; border-radius:10px; }
+#zeilen{ position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-evenly; padding:1vh 1.4vw 1vh .6vw; }
+.tb-zeile{ display:flex; align-items:center; gap:.6vw; }
+.tb-zeile svg{ display:block; flex:none; }
+.tb-marke{ flex:none; width:64px; display:flex; flex-direction:column; align-items:center; gap:4px; font:800 12px "Nunito",sans-serif; color:#8a7a60; text-align:center; line-height:1.1; }
+.tb-marke span{ width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; background:#fff1c2; box-shadow:0 3px 0 rgba(0,0,0,.06); }
+.tb-marke.allein span{ background:#d9f2e3; }
+.tb-marke.vorlage span{ background:#dceaf7; }
+#tafel.gruen .tb-marke{ color:#d9ead1; } #tafel.gruen .tb-marke span{ background:rgba(255,255,255,.14); }
 #malen{ position:absolute; left:0; top:0; width:100%; height:100%; touch-action:none; cursor:crosshair; }
 #malen.aus{ pointer-events:none; }
 .vorlage{ cursor:pointer; }
+/* Stift-Palette unten (für die Kinder gut erreichbar) */
+.tb-palette{ position:absolute; left:50%; bottom:14px; transform:translateX(-50%); z-index:3; display:flex; gap:10px; align-items:center; background:rgba(255,255,255,.95); border-radius:999px; padding:8px 14px; box-shadow:0 8px 24px rgba(60,40,10,.18); }
+#tafel.gruen .tb-palette{ background:#5a381b; }
+.tb-farbe{ width:52px; height:52px; border-radius:50%; border:4px solid white; cursor:pointer; padding:0; box-shadow:0 0 0 2px rgba(0,0,0,.12); transition:.15s; }
+.tb-farbe.an{ transform:scale(1.12); box-shadow:0 0 0 4px var(--gold); }
+.tb-trenn{ width:2px; height:36px; background:rgba(0,0,0,.08); border-radius:2px; }
 /* Einstellungen */
 #einstellungen{ position:absolute; top:0; left:0; right:0; max-height:100%; overflow:auto; background:white; color:var(--text); padding:16px 22px 22px; box-shadow:0 14px 40px rgba(0,0,0,.25); z-index:5; display:none; border-radius:0 0 22px 22px; }
 #einstellungen.an{ display:block; }
@@ -83,30 +99,34 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 
 <div id="tafel">
     <div class="tb-leiste">
-        <button class="tb-k" onclick="kursSchliessen()" title="Zurück zur Übersicht"><i class="fa-solid fa-arrow-left"></i></button>
+        <button class="tb-k rund" onclick="kursSchliessen()" title="Zurück zur Übersicht"><i class="fa-solid fa-arrow-left"></i></button>
         <span class="titel">Buchstabenkurs</span>
-        <button class="tb-k gross" id="kBuchstabe" onclick="einstellungen()" title="Buchstabe wählen"></button>
-        <button class="tb-k" onclick="buchstabeSchritt(-1)" title="voriger Buchstabe"><i class="fa-solid fa-chevron-left"></i></button>
-        <button class="tb-k" onclick="buchstabeSchritt(1)" title="nächster gelernter Buchstabe"><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="tb-k rund" onclick="buchstabeSchritt(-1)" title="voriger Buchstabe"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="tb-buchstabe" id="kBuchstabe" onclick="einstellungen()" title="Buchstabe wählen"></button>
+        <button class="tb-k rund" onclick="buchstabeSchritt(1)" title="nächster gelernter Buchstabe"><i class="fa-solid fa-chevron-right"></i></button>
         <button class="tb-k" id="kAnsicht" onclick="einstellungen()"></button>
-        <button class="tb-k" onclick="vormachen()" title="Schreibweg der Vorlage zeigen"><i class="fa-solid fa-play"></i> Schreibweg</button>
-        <button class="tb-k" onclick="neuMischen()" title="andere Wörter / neu mischen"><i class="fa-solid fa-shuffle"></i></button>
         <span class="tb-luft"></span>
-        <button class="tb-farbe an" style="background:#1d5fbf" data-farbe="#1d5fbf" title="Blau"></button>
-        <button class="tb-farbe" style="background:#d1342b" data-farbe="#d1342b" title="Rot"></button>
-        <button class="tb-farbe" style="background:#1f8a4c" data-farbe="#1f8a4c" title="Grün"></button>
-        <button class="tb-farbe" style="background:#222" data-farbe="#222222" title="Schwarz"></button>
-        <button class="tb-k" id="kDicke" onclick="dickeWechseln()" title="Stiftdicke"><i class="fa-solid fa-pen"></i> dick</button>
-        <button class="tb-k" id="kRadierer" onclick="radierer()" title="Radierer"><i class="fa-solid fa-eraser"></i></button>
-        <button class="tb-k" id="kHand" onclick="stiftAus()" title="Stift aus – Vorlagen antippen"><i class="fa-solid fa-hand-pointer"></i></button>
-        <button class="tb-k" onclick="rueckgaengig()" title="Rückgängig"><i class="fa-solid fa-rotate-left"></i></button>
-        <button class="tb-k" onclick="wischen()" title="Alles wegwischen"><i class="fa-solid fa-broom"></i> Wischen</button>
-        <button class="tb-k" onclick="einstellungen()" title="Einstellungen"><i class="fa-solid fa-sliders"></i></button>
-        <button class="tb-k" onclick="vollbild()" title="Vollbild"><i class="fa-solid fa-expand"></i></button>
+        <button class="tb-k" onclick="vormachen()" title="Schreibweg der Vorlage zeigen"><i class="fa-solid fa-play"></i> Schreibweg</button>
+        <button class="tb-k rund" onclick="neuMischen()" title="andere Wörter / neu mischen"><i class="fa-solid fa-shuffle"></i></button>
+        <button class="tb-k rund" onclick="einstellungen()" title="Einstellungen"><i class="fa-solid fa-sliders"></i></button>
+        <button class="tb-k rund" onclick="vollbild()" title="Vollbild"><i class="fa-solid fa-expand"></i></button>
     </div>
     <div id="buehne">
-        <div id="zeilen"></div>
+        <div id="blatt"><div id="zeilen"></div></div>
         <canvas id="malen"></canvas>
+        <div class="tb-palette">
+            <button class="tb-farbe an" style="background:#1d5fbf" data-farbe="#1d5fbf" title="Blau"></button>
+            <button class="tb-farbe" style="background:#d1342b" data-farbe="#d1342b" title="Rot"></button>
+            <button class="tb-farbe" style="background:#1f8a4c" data-farbe="#1f8a4c" title="Grün"></button>
+            <button class="tb-farbe" style="background:#f2a93b" data-farbe="#f2a93b" title="Orange"></button>
+            <button class="tb-farbe" style="background:#222" data-farbe="#222222" title="Schwarz"></button>
+            <span class="tb-trenn"></span>
+            <button class="tb-k" id="kDicke" onclick="dickeWechseln()" title="Stiftdicke"><i class="fa-solid fa-pen"></i> dick</button>
+            <button class="tb-k rund" id="kRadierer" onclick="radierer()" title="Radierer"><i class="fa-solid fa-eraser"></i></button>
+            <button class="tb-k rund" id="kHand" onclick="stiftAus()" title="Stift aus – Vorlagen antippen"><i class="fa-solid fa-hand-pointer"></i></button>
+            <button class="tb-k rund" onclick="rueckgaengig()" title="Rückgängig"><i class="fa-solid fa-rotate-left"></i></button>
+            <button class="tb-k" onclick="wischen()" title="Alles wegwischen"><i class="fa-solid fa-broom"></i> Wischen</button>
+        </div>
         <div id="einstellungen">
             <button class="tb-k zu" style="background:var(--nacht)" onclick="einstellungen(false)"><i class="fa-solid fa-check"></i> Fertig</button>
             <h3>Schrift</h3>
@@ -118,7 +138,7 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
             <h3>Schon gelernt <span style="text-transform:none;letter-spacing:0">(antippen = an/aus · für Wiederholung und Wörter)</span></h3>
             <div class="wahl buchst gelernt" id="wahlGelernt"></div>
             <div class="wahl" style="margin-top:8px"><button onclick="gelerntBisAktuell()">bis zum Buchstaben der Stunde</button><button onclick="gelerntAlle(true)">alle</button><button onclick="gelerntAlle(false)">keine</button></div>
-            <h3>Zeilen</h3>
+            <h3>Zeilen <span style="text-transform:none;letter-spacing:0">(bei Wiederholung, Wörtern und leerer Lineatur – „Neuer Buchstabe“ hat immer: groß nachspuren · groß allein · klein nachspuren · klein allein)</span></h3>
             <div class="wahl" data-wahl="zeilen"><button data-wert="2">2 – ganz groß</button><button data-wert="3">3</button><button data-wert="4">4</button><button data-wert="5">5</button></div>
             <h3>Nachspuren</h3>
             <div class="wahl" data-wahl="spur"><button data-wert="punkte">gepunktet</button><button data-wert="grau">hellgrau</button></div>
@@ -248,8 +268,8 @@ const gross = z => z === "ß" ? null : z.toUpperCase();
 const NS = "http://www.w3.org/2000/svg";
 function farben(){
     return E.hg === "gruen"
-        ? { linie: "rgba(255,255,255,.55)", grund: "rgba(255,255,255,.9)", band: "rgba(255,255,255,.07)", vorlage: "#ffffff", spur: "rgba(255,255,255,.55)", grau: "rgba(255,255,255,.22)", start: "#7ee2a8", nr: "#16324a" }
-        : { linie: "#8fa3b5", grund: "#3d5a73", band: "#fff4cc", vorlage: "#1f2d36", spur: "#7f8c96", grau: "#d3d9de", start: "#1f8a4c", nr: "#ffffff" };
+        ? { linie: "rgba(255,255,255,.45)", grund: "rgba(255,255,255,.85)", oben: "rgba(255,255,255,0)", band: "rgba(255,255,255,.08)", unten: "rgba(255,255,255,0)", vorlage: "#ffffff", spur: "rgba(255,255,255,.6)", grau: "rgba(255,255,255,.22)", start: "#7ee2a8", nr: "#16324a" }
+        : { linie: "#a9bccd", grund: "#2f5d86", oben: "#f1f7fd", band: "#fff3c4", unten: "#eef6e8", vorlage: "#1e4f8c", spur: "#8ea3b8", grau: "#d6dee6", start: "#2e9e5b", nr: "#ffffff" };
 }
 function wegeVon(g){ return g.s; }
 // Ein Buchstabe als <g> – art: "vorlage" | "spur"
@@ -292,10 +312,10 @@ function zeileSvg(inhalt, breiteE){
     const svg = document.createElementNS(NS, "svg");
     svg.setAttribute("viewBox", `0 0 ${breiteE} ${ZEILE}`);
     const lin = (y, dick, farbe) => { const l = document.createElementNS(NS, "line"); l.setAttribute("x1", 0); l.setAttribute("x2", breiteE); l.setAttribute("y1", y + RAND_OBEN); l.setAttribute("y2", y + RAND_OBEN); l.setAttribute("stroke", farbe); l.setAttribute("stroke-width", dick); svg.appendChild(l); };
-    const band = document.createElementNS(NS, "rect");
-    band.setAttribute("x", 0); band.setAttribute("y", 1 + RAND_OBEN); band.setAttribute("width", breiteE); band.setAttribute("height", 1); band.setAttribute("fill", F.band);
-    svg.appendChild(band);
-    lin(0, 0.025, F.linie); lin(1, 0.025, F.linie); lin(2, 0.045, F.grund); lin(3, 0.025, F.linie);
+    [[0, F.oben], [1, F.band], [2, F.unten]].forEach(([y, f]) => { const band = document.createElementNS(NS, "rect");
+        band.setAttribute("x", 0); band.setAttribute("y", y + RAND_OBEN); band.setAttribute("width", breiteE); band.setAttribute("height", 1); band.setAttribute("fill", f); band.setAttribute("rx", 0);
+        svg.appendChild(band); });
+    lin(0, 0.03, F.linie); lin(1, 0.025, F.linie); lin(2, 0.055, F.grund); lin(3, 0.03, F.linie);
     let x = 0.5;
     inhalt.forEach(t => {
         [...t.text].forEach((z, i) => {
@@ -324,22 +344,20 @@ function zeichnen(){
     const tafel = document.getElementById("tafel");
     tafel.classList.toggle("gruen", E.hg === "gruen");
     const box = document.getElementById("zeilen"), r = box.getBoundingClientRect();
-    const n = +E.zeilen, platzH = r.height - 16, platzB = r.width - 0.03 * window.innerWidth;
-    const bandPx = Math.min(platzH / (n * ZEILE) * 0.96, platzB / 12);
+    const z = E.aktuell, Z = gross(z);
+    // Neuer Buchstabe: je Groß- und Kleinbuchstabe eine Zeile zum Nachspuren und eine leere Zeile zum allein Schreiben
+    const n = E.ansicht === "buchstabe" ? (Z ? 4 : 2) : +E.zeilen;
+    const MARKE = 76, platzH = r.height - 2 * 0.01 * window.innerHeight, platzB = r.width - 0.02 * window.innerWidth - MARKE;
+    const bandPx = Math.min(platzH / (n * ZEILE) * 0.97, platzB / 12);
     const breiteE = platzB / bandPx;
     box.innerHTML = "";
-    const z = E.aktuell, Z = gross(z);
-    const zeilen = [];
+    const zeilen = [], marken = [];
+    const SPUR = ["✏️", "nach&shy;spuren", "spur"], ALLEIN = ["⭐", "allein", "allein"];
     if (E.ansicht === "buchstabe") {
-        if (Z) zeilen.push([{ text: Z, art: "vorlage" }, ...fuellen(Z, "spur", breiteE, 0.62)]);
-        zeilen.push([{ text: z, art: "vorlage" }, ...fuellen(z, "spur", breiteE, 0.62)]);
-        const w = passendeWoerter(z);
-        while (zeilen.length < n) {
-            const k = zeilen.length - (Z ? 2 : 1);
-            if (w.length && k % 2 === 0) { const wort = w[(k / 2) % w.length]; zeilen.push(fuellen(wort, "spur", breiteE, 0.92, true).slice(0, 3).concat([])); }
-            else if (Z) zeilen.push(fuellen(Z + z, "spur", breiteE, 0.8, true));
-            else zeilen.push(fuellen(z, "spur", breiteE, 0.8));
-        }
+        [Z, z].filter(Boolean).forEach(b => {
+            zeilen.push([{ text: b, art: "vorlage" }, ...fuellen(b, "spur", breiteE, 0.6)]); marken.push(SPUR);
+            zeilen.push([]); marken.push(ALLEIN);
+        });
     } else if (E.ansicht === "wiederholung") {
         const pool = mischen(E.gelernt.flatMap(b => gross(b) ? [gross(b), b] : [b]), mischung + 3);
         let i = 0;
@@ -359,13 +377,19 @@ function zeichnen(){
         }
     }
     while (zeilen.length < n) zeilen.push([]);
-    zeilen.slice(0, n).forEach(inh => { const s = zeileSvg(inh, breiteE); s.style.height = (bandPx * ZEILE) + "px"; s.style.width = platzB + "px"; box.appendChild(s); });
+    zeilen.slice(0, n).forEach((inh, k) => {
+        const m = marken[k] || (E.ansicht === "leer" || !inh.length ? ALLEIN : SPUR);
+        const reihe = document.createElement("div"); reihe.className = "tb-zeile";
+        reihe.innerHTML = `<div class="tb-marke ${m[2]}"><span>${m[0]}</span>${m[1]}</div>`;
+        const s = zeileSvg(inh, breiteE); s.style.height = (bandPx * ZEILE) + "px"; s.style.width = platzB + "px";
+        reihe.appendChild(s); box.appendChild(reihe);
+    });
     box.querySelectorAll(".vorlage").forEach(g => g.addEventListener("click", () => schreibweg(g)));
     kopfZeigen();
     malenGroesse();
 }
 function kopfZeigen(){
-    document.getElementById("kBuchstabe").textContent = E.ansicht === "buchstabe" ? (gross(E.aktuell) ? gross(E.aktuell) + E.aktuell : E.aktuell) : "Aa";
+    document.getElementById("kBuchstabe").textContent = E.ansicht === "buchstabe" ? (gross(E.aktuell) ? gross(E.aktuell) + " " + E.aktuell : E.aktuell) : "Aa";
     document.getElementById("kAnsicht").innerHTML = { buchstabe: '<i class="fa-solid fa-a"></i> Neuer Buchstabe', wiederholung: '<i class="fa-solid fa-repeat"></i> Wiederholung', woerter: '<i class="fa-solid fa-font"></i> Wörter', leer: '<i class="fa-solid fa-grip-lines"></i> Leere Lineatur' }[E.ansicht] + " · " + (E.schrift === "grund" ? "Grundschrift" : "Druckschrift");
 }
 
