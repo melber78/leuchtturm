@@ -185,7 +185,7 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .mg-achtung.weg{ display:none; }
 .mg-schalter{ display:flex !important; align-items:center; gap:8px; text-transform:none !important; letter-spacing:0 !important; font-size:15px !important; color:#16324a !important; cursor:pointer; }
 .mg-schalter input{ width:20px !important; height:20px; }
-#morgen.vollbild .mg-leiste{ display:none; }
+#morgen.vollbild .mg-leiste, #morgen.vollbild [data-aendern]{ display:none; }
 #morgen.vollbild #mgInhalt{ padding-top:1.6vh; }
 .mg-ecke{ display:none; position:absolute; right:10px; bottom:10px; gap:6px; z-index:12; opacity:.18; transition:opacity .2s; }
 .mg-ecke:hover, .mg-ecke:focus-within{ opacity:1; }
