@@ -185,6 +185,12 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .mg-achtung.weg{ display:none; }
 .mg-schalter{ display:flex !important; align-items:center; gap:8px; text-transform:none !important; letter-spacing:0 !important; font-size:15px !important; color:#16324a !important; cursor:pointer; }
 .mg-schalter input{ width:20px !important; height:20px; }
+#morgen.vollbild .mg-leiste{ display:none; }
+#morgen.vollbild #mgInhalt{ padding-top:1.6vh; }
+.mg-ecke{ display:none; position:absolute; right:10px; bottom:10px; gap:6px; z-index:12; opacity:.18; transition:opacity .2s; }
+.mg-ecke:hover, .mg-ecke:focus-within{ opacity:1; }
+#morgen.vollbild .mg-ecke{ display:flex; }
+.mg-ecke button{ width:40px; height:40px; border-radius:50%; border:0; background:white; box-shadow:0 3px 10px rgba(0,0,0,.15); font-size:18px; cursor:pointer; }
 .mg-heute{ margin:1vh auto 0; border:0; background:#fff1c2; border-radius:999px; padding:6px 14px; font:800 14px "Nunito",sans-serif; cursor:pointer; }
 /* Wetter */
 .mg-wetter{ text-align:center; cursor:pointer; align-items:center; justify-content:center; }
@@ -312,6 +318,7 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
         <button class="tb-k rund" onclick="vollbild()" title="Vollbild"><i class="fa-solid fa-expand"></i></button>
     </div>
     <div id="mgInhalt"></div>
+    <div class="mg-ecke" title="Vollbild beenden oder bearbeiten"><button onclick="tafelMorgen.bearbeiten()" title="Bearbeiten">✏️</button><button onclick="vollbild()" title="Vollbild beenden">⤢</button></div>
     <div id="mgEditor"></div>
 </div>
 
@@ -717,6 +724,8 @@ function buchstabeSchritt(d){
     E.aktuell = liste[i]; E.ansicht = "buchstabe"; merken(); wischen(); zeichnen();
 }
 function neuMischen(){ mischung++; wischen(); zeichnen(); }
+// Im Vollbild: obere Leiste ausblenden (nur noch zwei dezente Knöpfe in der Ecke)
+document.addEventListener("fullscreenchange", () => { const v = !!document.fullscreenElement; document.getElementById("morgen").classList.toggle("vollbild", v); document.getElementById("tafel").classList.toggle("vollbild", v); window.dispatchEvent(new Event("resize")); });
 function vollbild(){ try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); } catch (x) {} }
 // Aus „Guten Morgen!“: Buchstabe der Woche im Buchstabenkurs öffnen
 function kursMitBuchstabe(b){
