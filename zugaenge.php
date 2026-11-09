@@ -48,14 +48,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 $basisUrl = (( !empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off") ? "https" : "http") . "://" . ($_SERVER["HTTP_HOST"] ?? "") . rtrim(str_replace("\\", "/", dirname($_SERVER["SCRIPT_NAME"] ?? "/")), "/") . "/gast.php";
 // Checkboxen je Gruppe (Grundschule, Tafelbilder, LRS-Förderung)
-function bereichAuswahl($an){
+function bereichAuswahl($an, $name = ""){
     $html = "";
     foreach (LT_GAST_GRUPPEN as $gruppe => $liste) {
         $html .= '<div class="gruppe"><b>' . h($gruppe) . '</b><div class="checks">';
         foreach ($liste as $k => $n) $html .= '<label><input type="checkbox" name="bereiche[]" value="' . h($k) . '"' . (in_array($k, $an, true) ? " checked" : "") . '> ' . h($n) . '</label>';
         $html .= '</div></div>';
     }
-    return $html . '<p class="hilfe" style="margin-top:4px"><i class="fa-solid fa-lock"></i> In jedem Bereich arbeitet der Gast mit eigenen, leeren Daten – deine Kinder-Akten, Materialien, Stundenpläne usw. sieht er nicht.</p>';
+    $wer = $name !== "" ? h($name) : "die Lehrkraft";
+    return $html . '<p class="hilfe" style="margin-top:4px"><i class="fa-solid fa-lock"></i> In jedem Bereich arbeitet ' . $wer . ' mit eigenen, leeren Daten – deine Kinder-Akten, Materialien, Stundenpläne usw. sind für ' . $wer . ' nicht sichtbar.</p>';
 }
 // Freigaben inkl. älterer Zugänge (Lernangebot schloss die Tafelbilder ein)
 function lt_gastBereiche($g){ $b = $g["bereiche"] ?? []; if (empty($g["v2"]) && in_array("lernangebot", $b, true)) $b = array_values(array_unique(array_merge($b, ["morgen", "buchstabenkurs"]))); return $b; }
@@ -137,7 +138,7 @@ textarea{ width:100%; font:600 14px/1.5 "Nunito",sans-serif; border:2px solid #d
     <h2><i class="fa-solid fa-plus"></i> Neuen Zugang anlegen</h2>
     <input type="hidden" name="csrf" value="<?= h($CSRF) ?>"><input type="hidden" name="aktion" value="anlegen">
     <div class="reihe">
-        <div><label class="feld">Für wen? (nur zur Übersicht, z. B. „Frau Schulz“)</label><input type="text" name="name" maxlength="40" placeholder="Kollegin"></div>
+        <div><label class="feld">Name der Lehrkraft (z. B. „Frau Schulz“)</label><input type="text" name="name" maxlength="40" placeholder="Frau Schulz"></div>
         <div style="flex:0 1 200px"><label class="feld">Gültig bis</label><input type="date" name="bis" value="<?= date("Y-m-d", strtotime("+30 days")) ?>" min="<?= date("Y-m-d") ?>"></div>
     </div>
     <div>
@@ -161,7 +162,7 @@ textarea{ width:100%; font:600 14px/1.5 "Nunito",sans-serif; border:2px solid #d
     </div>
     <details class="aendern"><summary>Freigaben ändern</summary>
         <form method="post"><input type="hidden" name="csrf" value="<?= h($CSRF) ?>"><input type="hidden" name="aktion" value="bereiche"><input type="hidden" name="id" value="<?= h($g["id"]) ?>">
-        <?= bereichAuswahl(lt_gastBereiche($g)) ?><button class="btn klein" type="submit"><i class="fa-solid fa-check"></i> Freigaben speichern</button></form>
+        <?= bereichAuswahl(lt_gastBereiche($g), $g["name"] ?? "") ?><button class="btn klein" type="submit"><i class="fa-solid fa-check"></i> Freigaben speichern</button></form>
     </details>
     <?php endforeach; ?>
     <p class="hilfe"><i class="fa-solid fa-shield-halved"></i> Gäste kommen nur in die angekreuzten Bereiche – und dort nur an ihre eigenen Daten. Updates und die Gast-Verwaltung bleiben immer gesperrt. Anmeldeseite für Gäste: <a href="gast.php"><?= h($basisUrl) ?></a></p>
