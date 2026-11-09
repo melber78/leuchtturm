@@ -135,6 +135,25 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .mg-bdw-bild b{ font:800 clamp(15px,min(1.6vw,2.7vh),30px) "Nunito",sans-serif; color:#16324a; }
 .mg-bdw-bild em{ font-style:normal; color:#e2574c; text-decoration:underline; text-decoration-thickness:3px; text-underline-offset:3px; }
 .mg-spalte .mg-datum{ flex:0 1 auto; }
+.mg-stunden li{ cursor:pointer; }
+.mg-stunden li.vorbei{ opacity:.38; filter:saturate(.4); }
+.mg-stunden li.gleich{ box-shadow:0 0 0 3px var(--ff); background:white; }
+.mg-stunden li.ausfall{ opacity:.55; } .mg-stunden li.ausfall .mg-fach b{ text-decoration:line-through; text-decoration-thickness:3px; }
+.mg-marke{ background:#fff1c2; color:#8a5a00; border-radius:999px; padding:.15em .6em; font:900 clamp(11px,min(1.05vw,1.8vh),20px) "Nunito",sans-serif; white-space:nowrap; }
+.mg-marke.rot{ background:#fdecea; color:#a3261c; }
+.mg-jetzt.gleich{ background:white; color:var(--ff); box-shadow:inset 0 0 0 2px var(--ff); }
+.mg-jetzt.klein{ font-size:.85em; padding:.1em .6em; margin-left:.4em; background:#e09a2c; }
+.mg-pause.jetzt{ background:#fff3c4 !important; border-radius:14px; padding:.5vh .6vw !important; color:#8a5a00; font-size:clamp(15px,min(1.6vw,2.7vh),30px) !important; }
+.mg-pause.vorbei{ opacity:.38; }
+.mg-h2-knopf{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.mg-k.klein{ min-height:34px; padding:5px 12px; font-size:13px; text-transform:none; letter-spacing:0; }
+.mg-fuer{ display:flex; align-items:center; gap:.5vw; font:900 clamp(16px,min(1.8vw,3vh),34px) "Nunito",sans-serif; color:var(--ff); margin:-.2vh 0 1vh; }
+.mg-fuer span{ font-size:1.3em; }
+.mg-aendern table{ border-spacing:6px 4px; } .mg-aendern td{ min-width:0 !important; vertical-align:middle; }
+.mg-aendern select, .mg-aendern input[data-al]{ font:700 15px "Nunito",sans-serif; padding:6px 8px; border:2px solid #e2ddd2; border-radius:10px; margin:2px; }
+.mg-aendern tr.fokus td{ background:#fff8e1; }
+.mg-ausfall{ display:flex; gap:6px; align-items:center; font-weight:800; color:#a3261c; white-space:nowrap; }
+.mg-dialog{ max-height:92vh; overflow:auto; }
 .mg-heute{ margin:1vh auto 0; border:0; background:#fff1c2; border-radius:999px; padding:6px 14px; font:800 14px "Nunito",sans-serif; cursor:pointer; }
 /* Wetter */
 .mg-wetter{ text-align:center; cursor:pointer; align-items:center; justify-content:center; }

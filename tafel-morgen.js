@@ -34,7 +34,7 @@ const DEF_MATERIAL = {
     buntstifte: { e: "🖍️", n: "Buntstifte" }, sportbeutel: { e: "🎽", n: "Sportbeutel" }, trinkflasche: { e: "🥤", n: "Trinkflasche" }, fruehstueck: { e: "🍎", n: "Frühstück" },
     tablet: { e: "📱", n: "Tablet" }, woerterbuch: { e: "📕", n: "Wörterbuch" },
 };
-const DEF_IMMER = ["federmappe", "hausaufgabenheft", "postmappe"];
+const DEF_IMMER = ["federmappe", "hausaufgabenheft"];
 // Namen früherer Vorgabe-Fächer (falls sie noch im Stundenplan stehen)
 const ALT_FAECHER = { sport: ["Sport", "⚽"], ethik: ["Ethik", "🤝"], werken: ["Werken", "🔨"], schwimmen: ["Schwimmen", "🏊"], klassenrat: ["Klassenrat", "🗣️"], wochenplan: ["Lernpfad", "🗺️"] };
 let FAECHER = {}, MATERIAL = {};
@@ -94,7 +94,8 @@ FAECHER = D.katalog.faecher; MATERIAL = D.katalog.material;
 // Frühere Namen umstellen (Federtasche → Federmappe, Wochenplan → Lernpfad, Lesezeit → Lernangebot)
 const UMBENANNT = { federtasche: "federmappe", wochenplan: "lernpfad" };
 D.klassen.forEach(k => {
-    if (!Array.isArray(k.immer)) k.immer = DEF_IMMER.slice();
+    if (!Array.isArray(k.immer) || k.immer.join() === "federmappe,hausaufgabenheft,postmappe") k.immer = DEF_IMMER.slice();
+    if (!k.aenderungen || Array.isArray(k.aenderungen)) k.aenderungen = Object.assign({}, k.aenderungen || {});
     const um = l => [...new Set((l || []).map(m => UMBENANNT[m] || m))].filter(m => MATERIAL[m]);
     if (k.material && !Array.isArray(k.material)) Object.keys(k.material).forEach(f => { k.material[f] = um(k.material[f]).filter(m => !k.immer.includes(m)); });
     if (k.extra && !Array.isArray(k.extra)) Object.keys(k.extra).forEach(t => { k.extra[t] = um(k.extra[t]); });
@@ -175,22 +176,49 @@ function kleidung(w){
 }
 
 /* ---------- Anzeige ---------- */
+// Stunden des Tages: Wochenplan + Änderungen nur für diesen Tag (Vertretung, Ausfall, zusätzliche Stunde)
+function basisStunde(k, wt, i){ return ((k.plan[wt] || [])[i]) || { f: "", l: "" }; }
 function stundenHeute(k, d){
     const wt = d.getDay(); if (wt === 0 || wt === 6) return [];
-    return (k.plan[wt] || []).map((s, i) => Object.assign({ nr: i + 1, von: (k.zeiten[i] || [])[0] || "", bis: (k.zeiten[i] || [])[1] || "" }, s)).filter(s => s.f);
+    const aend = (k.aenderungen || {})[iso(d)] || {};
+    const n = Math.max((k.plan[wt] || []).length, ...Object.keys(aend).map(Number), 0);
+    const liste = [];
+    for (let i = 0; i < n; i++) {
+        const b = basisStunde(k, wt, i), a = aend[i + 1];
+        const s = Object.assign({ nr: i + 1, von: (k.zeiten[i] || [])[0] || "", bis: (k.zeiten[i] || [])[1] || "" }, b);
+        if (a) { if (a.ausfall) s.ausfall = true; else { s.f = a.f; s.l = a.l; s.geaendert = a.f !== b.f ? "geändert" : "Vertretung"; } }
+        if (s.f) liste.push(s);
+    }
+    return liste;
 }
-function jetztNr(k, d){
-    if (tagVersatz !== 0) return 0;
-    const n = new Date(), hm = String(n.getHours()).padStart(2, "0") + ":" + String(n.getMinutes()).padStart(2, "0");
-    const st = stundenHeute(k, d);
-    const s = st.find(x => x.von && x.bis && hm >= x.von && hm <= x.bis) || st.find(x => x.von && hm < x.von);
-    return s ? s.nr : 0;
+const minuten = hm => { const m = /^(\d{1,2}):(\d{2})$/.exec(hm || ""); return m ? +m[1] * 60 + +m[2] : null; };
+// Ablauf des Tages mit Uhrzeiten: Stunden und Pausen, jeweils vorbei / jetzt / kommt noch
+function ablauf(k, d){
+    const st = stundenHeute(k, d), pausen = k.pausen || [], liste = [];
+    st.forEach((s, i) => {
+        liste.push(Object.assign({ art: "stunde" }, s, { v: minuten(s.von), b: minuten(s.bis) }));
+        const p = pausen.find(x => +x.nach === s.nr && (st.some(y => y.nr > s.nr) || /mittag/i.test(x.name)));
+        if (p) { const v = minuten(s.bis), naechste = k.zeiten[s.nr] && minuten(k.zeiten[s.nr][0]);
+            liste.push({ art: "pause", name: p.name, e: p.e, v, b: naechste && naechste > v ? naechste : (v != null ? v + 20 : null), von: s.bis, bis: naechste && naechste > v ? k.zeiten[s.nr][0] : "" }); }
+    });
+    const n = new Date(), jetzt = n.getHours() * 60 + n.getMinutes();
+    if (tagVersatz === 0) liste.forEach(x => { x.status = x.v == null ? "" : jetzt >= x.b ? "vorbei" : jetzt >= x.v ? "jetzt" : ""; });
+    // während einer Pause / vor Schulbeginn: die nächste Stunde ist „gleich dran“
+    if (tagVersatz === 0 && !liste.some(x => x.status === "jetzt")) { const g = liste.find(x => x.art === "stunde" && !x.ausfall && x.status === ""); if (g) g.status = "gleich"; }
+    else if (tagVersatz === 0) { const j = liste.find(x => x.status === "jetzt"); if (j && j.art === "pause") { const g = liste.find(x => x.art === "stunde" && !x.ausfall && x.v >= j.v && x.status === ""); if (g) g.status = "gleich"; } }
+    return liste;
 }
-function materialHeute(k, d){
-    const set = (k.immer || []).slice();
-    stundenHeute(k, d).forEach(s => { const liste = k.material[s.f] || fachInfo(s.f).m || []; liste.forEach(m => { if (!set.includes(m)) set.push(m); }); });
-    (k.extra[d.getDay()] || []).forEach(m => { if (!set.includes(m)) set.push(m); });
-    return set.filter(m => MATERIAL[m]);
+function fachMaterial(k, f){ return (k.material[f] || fachInfo(f).m || []).filter(m => MATERIAL[m]); }
+// Was gerade auf den Tisch gehört: zum Tagesbeginn das Tägliche (+ 1. Stunde), danach das Material der aktuellen bzw. nächsten Stunde
+function materialJetzt(k, d){
+    const ab = ablauf(k, d), stunden = ab.filter(x => x.art === "stunde" && !x.ausfall), immer = (k.immer || []).filter(m => MATERIAL[m]);
+    const extra = (k.extra[d.getDay()] || []).filter(m => MATERIAL[m]);
+    const vereint = (...l) => [...new Set(l.flat())];
+    if (tagVersatz !== 0 || !stunden.length) return { titel: null, liste: vereint(immer, extra, ...stunden.map(s => fachMaterial(k, s.f))), ganzerTag: true };
+    const bezug = stunden.find(s => s.status === "jetzt") || stunden.find(s => s.status === "gleich");
+    if (!bezug) return { titel: "Schulschluss", e: "🎒", liste: vereint(immer, MATERIAL.postmappe ? ["postmappe"] : []), schluss: true };
+    if (bezug === stunden[0]) return { titel: "Zum Tagesbeginn", e: "🌅", liste: vereint(immer, extra, fachMaterial(k, bezug.f)), stunde: bezug };
+    return { titel: fachInfo(bezug.f).n, e: fachInfo(bezug.f).e, liste: fachMaterial(k, bezug.f), stunde: bezug };
 }
 function hinweiseHeute(k, d){
     const t = iso(d), wt = String(d.getDay());
@@ -210,7 +238,7 @@ function zeichnen(){
     const wurzel = document.getElementById("morgen"); if (!wurzel || !wurzel.classList.contains("an")) return;
     const k = klasse(), d = tag(), klein = k.stufe === "12", wt = d.getDay();
     wurzel.classList.toggle("klein", klein);
-    const st = stundenHeute(k, d), jetzt = jetztNr(k, d), mat = materialHeute(k, d), hin = hinweiseHeute(k, d);
+    const st = stundenHeute(k, d), ab = ablauf(k, d), mj = materialJetzt(k, d), mat = mj.liste, hin = hinweiseHeute(k, d);
     const w = wetterHeute(), wi = w ? WETTER[w.art] : null, kl = kleidung(w), jz = JAHRESZEIT(d.getMonth());
     const pausen = k.pausen || [];
     const wochenende = wt === 0 || wt === 6;
@@ -242,21 +270,24 @@ function zeichnen(){
         </section>
       </div>
       <section class="mg-karte mg-plan">
-        <h2>${klein ? "Unser Tag" : "Stundenplan"}</h2>
+        <h2 class="mg-h2-knopf">${klein ? "Unser Tag" : "Stundenplan"}${!wochenende ? `<button class="mg-k hell klein" data-aendern="0" title="Vertretung, Ausfall oder zusätzliche Stunde – nur für ${istHeute ? "heute" : "diesen Tag"}">✏️ ${istHeute ? "Heute" : "Tag"} ändern</button>` : ""}</h2>
         ${wochenende ? `<div class="mg-leer">🎈 Heute ist keine Schule.<br>Schönes Wochenende!</div>` : !st.length ? `<div class="mg-leer">Für ${TAGE[wt]} ist noch kein Stundenplan eingetragen.<br><button class="mg-k" data-bearbeiten="plan">✏️ Stundenplan eintragen</button></div>` :
-          `<ol class="mg-stunden">${st.map((s, i) => { const f = fachInfo(s.f);
-            const pause = pausen.find(p => +p.nach === s.nr && (st.some(x => x.nr > s.nr) || /mittag/i.test(p.name)));
-            return `<li class="${s.nr === jetzt ? "jetzt" : ""} ${istHeute && jetzt && s.nr < jetzt ? "vorbei" : ""}" style="--ff:${f.f}">
-              <span class="mg-nr">${s.nr}</span><span class="mg-fe">${f.e}</span>
-              <span class="mg-fach"><b>${esc(s.n || f.n)}</b>${s.l ? `<small>${esc(s.l)}</small>` : ""}</span>
-              ${!klein && s.von ? `<span class="mg-zeit">${esc(s.von)}–${esc(s.bis)}</span>` : ""}
-              ${s.nr === jetzt ? `<span class="mg-jetzt">${klein ? "👉" : "jetzt"}</span>` : ""}</li>` +
-              (pause ? `<li class="mg-pause"><span>${esc(pause.e || "🛝")}</span> ${esc(pause.name)}${!klein && k.zeiten[s.nr - 1] && k.zeiten[s.nr] && k.zeiten[s.nr][0] ? ` <small>${esc(k.zeiten[s.nr - 1][1])}–${esc(k.zeiten[s.nr][0])}</small>` : !klein && k.zeiten[s.nr - 1] && k.zeiten[s.nr - 1][1] ? ` <small>ab ${esc(k.zeiten[s.nr - 1][1])}</small>` : ""}</li>` : ""); }).join("")}</ol>`}
+          `<ol class="mg-stunden">${ab.map(x => {
+            if (x.art === "pause") return `<li class="mg-pause ${x.status}"><span>${esc(x.e || "🛝")}</span> ${esc(x.name)}${!klein && x.von ? ` <small>${x.bis ? esc(x.von) + "–" + esc(x.bis) : "ab " + esc(x.von)}</small>` : ""}${x.status === "jetzt" ? ` <b class="mg-jetzt klein">jetzt</b>` : ""}</li>`;
+            const f = fachInfo(x.f);
+            return `<li class="${x.status} ${x.ausfall ? "ausfall" : ""}" style="--ff:${f.f}" data-stunde="${x.nr}">
+              <span class="mg-nr">${x.nr}</span><span class="mg-fe">${f.e}</span>
+              <span class="mg-fach"><b>${esc(f.n)}</b>${x.l ? `<small>${esc(x.l)}</small>` : ""}</span>
+              ${x.ausfall ? `<span class="mg-marke rot">fällt aus</span>` : x.geaendert ? `<span class="mg-marke">${x.geaendert}</span>` : ""}
+              ${!klein && x.von ? `<span class="mg-zeit">${esc(x.von)}–${esc(x.bis)}</span>` : ""}
+              ${x.status === "jetzt" ? `<span class="mg-jetzt">${klein ? "👉 jetzt" : "jetzt"}</span>` : x.status === "gleich" ? `<span class="mg-jetzt gleich">gleich</span>` : ""}</li>`; }).join("")}</ol>`}
       </section>
       <div class="mg-spalte">
         <section class="mg-karte mg-pack">
-          <h2>${klein ? "Das brauche ich heute" : "Bitte auspacken"}</h2>
-          ${mat.length ? `<div class="mg-dinge ${mat.length > 9 ? "sehr-viele" : mat.length > 6 ? "viele" : ""}">${mat.map(m => `<button class="mg-ding ${abgehakt[m] ? "ok" : ""}" data-ding="${m}"><span>${dingBild(m)}</span><b>${esc(MATERIAL[m].n)}</b></button>`).join("")}</div>` : `<div class="mg-leer klein">–</div>`}
+          <h2>${mj.ganzerTag ? (klein ? "Das brauche ich" : "Bitte mitbringen") : mj.schluss ? (klein ? "Einpacken!" : "Bitte einpacken") : (klein ? "Das brauche ich jetzt" : "Bitte auspacken")}</h2>
+          ${mj.titel ? `<div class="mg-fuer" style="--ff:${mj.stunde ? fachInfo(mj.stunde.f).f : "#8a7a60"}"><span>${mj.e || ""}</span>${mj.stunde && mj.titel !== "Zum Tagesbeginn" ? (klein ? "Für " : "Für die " + mj.stunde.nr + ". Stunde: ") + esc(mj.titel) : esc(mj.titel)}</div>` : ""}
+          ${mat.length ? `<div class="mg-dinge ${mat.length > 9 ? "sehr-viele" : mat.length > 6 ? "viele" : ""}">${mat.map(m => { const key = m + "|" + (mj.stunde ? mj.stunde.nr : "t"); return `<button class="mg-ding ${abgehakt[key] ? "ok" : ""}" data-ding="${key}"><span>${dingBild(m)}</span><b>${esc(MATERIAL[m].n)}</b></button>`; }).join("")}</div>`
+            : `<div class="mg-leer klein">${mj.stunde ? "Nichts Besonderes – Federmappe reicht 🙂" : "–"}</div>`}
         </section>
         <section class="mg-karte mg-achtung">
           <h2>${klein ? "Denk daran!" : "Heute beachten"}</h2>
@@ -274,12 +305,47 @@ function uhr(){
 
 /* ---------- Bedienung auf der Tafel ---------- */
 function klick(ev){
-    const t = ev.target.closest("[data-tag],[data-wetter],[data-ding],[data-bearbeiten],[data-bdw]"); if (!t) return;
+    const t = ev.target.closest("[data-tag],[data-wetter],[data-ding],[data-bearbeiten],[data-bdw],[data-aendern],[data-stunde]"); if (!t) return;
+    if (t.dataset.aendern !== undefined || t.dataset.stunde) { tagAendern(+(t.dataset.stunde || 0)); return; }
     if (t.dataset.bdw) { if (window.kursMitBuchstabe) window.kursMitBuchstabe(t.dataset.bdw); return; }
     if (t.dataset.tag !== undefined) { tagVersatz = t.dataset.tag === "0" ? 0 : tagVersatz + +t.dataset.tag; abgehakt = {}; wetterLive = null; zeichnen(); wetterLaden(); return; }
     if (t.dataset.ding) { abgehakt[t.dataset.ding] = !abgehakt[t.dataset.ding]; t.classList.toggle("ok"); return; }
     if (t.dataset.bearbeiten) { bearbeiten(t.dataset.bearbeiten); return; }
     if (t.hasAttribute("data-wetter")) wetterWahl();
+}
+// Stundenplan nur für einen Tag ändern (Vertretung, Ausfall, zusätzliche Stunde) – der Wochenplan bleibt
+function tagAendern(fokus){
+    const k = klasse(), d = tag(), wt = d.getDay(), t = iso(d);
+    const aend = (k.aenderungen || {})[t] || {};
+    const n = Math.max((k.plan[wt] || []).length + 1, ...Object.keys(aend).map(Number), 1);
+    const opt = sel => `<option value="">– keine Stunde –</option>` + Object.entries(FAECHER).map(([key, f]) => `<option value="${key}" ${key === sel ? "selected" : ""}>${f.e} ${esc(f.n)}</option>`).join("") + (sel && !FAECHER[sel] ? `<option value="${esc(sel)}" selected>${esc(fachInfo(sel).n)}</option>` : "");
+    const zeilen = [];
+    for (let i = 0; i < Math.min(n, Math.max(k.zeiten.length, n)); i++) {
+        const b = basisStunde(k, wt, i), a = aend[i + 1], f = a && !a.ausfall ? a.f : b.f, l = a && !a.ausfall ? a.l : b.l;
+        zeilen.push(`<tr class="${fokus === i + 1 ? "fokus" : ""}"><td><b>${i + 1}.</b><br><small>${esc((k.zeiten[i] || [])[0] || "")}</small></td>
+            <td><select data-af="${i + 1}">${opt(f)}</select><input data-al="${i + 1}" value="${esc(l || "")}" placeholder="Lehrkraft"></td>
+            <td><label class="mg-ausfall"><input type="checkbox" data-aa="${i + 1}" ${a && a.ausfall ? "checked" : ""}> fällt aus</label>
+            ${b.f ? `<small class="mg-hilfe">sonst: ${esc(fachInfo(b.f).n)}${b.l ? ", " + esc(b.l) : ""}</small>` : `<small class="mg-hilfe">sonst frei</small>`}</td></tr>`);
+    }
+    const o = overlay(`<h2>✏️ ${TAGE[wt]}, ${d.toLocaleDateString("de-DE")} ändern</h2>
+        <p class="mg-hilfe" style="margin-top:-6px">Nur für diesen Tag – der Wochen-Stundenplan bleibt, wie er ist. Geänderte Stunden sind an der Tafel markiert.</p>
+        <div class="mg-tabelle mg-aendern"><table>${zeilen.join("")}</table></div>
+        <div class="mg-reihe" style="margin-top:12px"><button class="mg-k" data-aspeichern>✓ Für diesen Tag speichern</button>${Object.keys(aend).length ? `<button class="mg-k hell" data-azurueck>↺ wieder wie im Stundenplan</button>` : ""}<button class="mg-k hell" data-zu>Abbrechen</button></div>`);
+    const fk = o.querySelector("tr.fokus select"); if (fk) fk.focus();
+    o.querySelectorAll("[data-af]").forEach(sel => sel.addEventListener("change", () => {   // Lehrkraft beim gleichen Fach vorschlagen
+        const li = o.querySelector(`[data-al="${sel.dataset.af}"]`); const g = Object.values(k.plan).flat().find(s => s && s.f === sel.value && s.l); if (g && !li.dataset.getippt) li.value = g.l; }));
+    o.querySelectorAll("[data-al]").forEach(i => i.addEventListener("input", () => i.dataset.getippt = "1"));
+    o.querySelector("[data-aspeichern]").addEventListener("click", () => {
+        const neu = {};
+        o.querySelectorAll("[data-af]").forEach(sel => { const nr = +sel.dataset.af, b = basisStunde(k, wt, nr - 1);
+            const f = sel.value, l = o.querySelector(`[data-al="${nr}"]`).value.trim(), aus = o.querySelector(`[data-aa="${nr}"]`).checked;
+            if (aus && b.f) neu[nr] = { ausfall: true };
+            else if (f !== (b.f || "") || (f && l !== (b.l || ""))) neu[nr] = { f, l }; });
+        k.aenderungen = k.aenderungen || {};
+        if (Object.keys(neu).length) k.aenderungen[t] = neu; else delete k.aenderungen[t];
+        aufraeumen(k); speichern(true); o.remove(); zeichnen();
+    });
+    const az = o.querySelector("[data-azurueck]"); if (az) az.addEventListener("click", () => { delete k.aenderungen[t]; speichern(true); o.remove(); zeichnen(); });
 }
 function wetterWahl(){
     const k = klasse(), heute = iso(tag());
@@ -424,7 +490,8 @@ function editorAktivieren(p, k){
 // Buchstabe der Stunde aus dem Buchstabenkurs (auf diesem Gerät)
 function kursBuchstabe(){ try { return (JSON.parse(localStorage.getItem("tb_buchstabenkurs") || "{}").aktuell) || ""; } catch (x) { return ""; } }
 // Alte Tages-Hinweise (älter als 2 Wochen) entfernen
-function aufraeumen(k){ const grenze = iso(new Date(Date.now() - 14 * 864e5)); k.hinweise = (k.hinweise || []).filter(h => !/^\d{4}-/.test(h.wann) || h.wann >= grenze); }
+function aufraeumen(k){ const grenze = iso(new Date(Date.now() - 14 * 864e5)); k.hinweise = (k.hinweise || []).filter(h => !/^\d{4}-/.test(h.wann) || h.wann >= grenze);
+    Object.keys(k.aenderungen || {}).forEach(t => { if (t < grenze) delete k.aenderungen[t]; }); }
 
 /* ---------- Öffnen / Schließen ---------- */
 function oeffnen(){
@@ -439,7 +506,8 @@ function schliessen(){ document.getElementById("morgen").classList.remove("an");
 document.addEventListener("DOMContentLoaded", () => {
     const w = document.getElementById("morgen"); if (!w) return;
     w.addEventListener("click", klick);
-    setInterval(() => { if (w.classList.contains("an")) { uhr(); const n = new Date(); if (n.getSeconds() < 1 || n.getMinutes() % 5 === 0 && n.getSeconds() < 1) zeichnen(); } }, 1000);
+    let letzteMinute = -1;   // jede Minute neu zeichnen: Stundenwechsel, blasse Stunden, Material der Stunde
+    setInterval(() => { if (!w.classList.contains("an")) return; uhr(); const m = new Date().getMinutes(); if (m !== letzteMinute) { if (letzteMinute >= 0) zeichnen(); letzteMinute = m; } }, 1000);
     setInterval(() => { if (w.classList.contains("an")) wetterLaden(); }, 30 * 60 * 1000);
     if (location.hash === "#morgen") oeffnen();
     window.addEventListener("hashchange", () => { if (location.hash === "#morgen") oeffnen(); });
