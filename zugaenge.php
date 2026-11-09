@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             else {
                 $code = lt_neuerCode();
                 $g = ["id" => bin2hex(random_bytes(6)), "name" => mb_substr(trim((string)($_POST["name"] ?? "")), 0, 40), "bereiche" => $bereiche, "bis" => $bis,
-                      "codeHash" => lt_codeHash($code), "erstellt" => date("Y-m-d H:i"), "zuletzt" => "", "gesperrt" => false];
+                      "codeHash" => lt_codeHash($code), "erstellt" => date("Y-m-d H:i"), "zuletzt" => "", "gesperrt" => false, "v2" => true];
                 $liste[] = $g; lt_gaesteSchreiben($liste);
                 $neu = ["g" => $g, "code" => $code];
             }
@@ -40,13 +40,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($aktion === "code") { $code = lt_neuerCode(); $liste[$idx]["codeHash"] = lt_codeHash($code); $neu = ["g" => $liste[$idx], "code" => $code]; }
             elseif ($aktion === "verlaengern") { $basis = max(time(), strtotime(($liste[$idx]["bis"] ?: date("Y-m-d")) . " 12:00")); $liste[$idx]["bis"] = date("Y-m-d", strtotime("+30 days", $basis)); $liste[$idx]["gesperrt"] = false; $meldung = "Verlängert bis " . date("d.m.Y", strtotime($liste[$idx]["bis"])) . "."; }
             elseif ($aktion === "sperren") { $liste[$idx]["gesperrt"] = empty($liste[$idx]["gesperrt"]); $meldung = $liste[$idx]["gesperrt"] ? "Zugang gesperrt." : "Zugang wieder aktiv."; }
-            elseif ($aktion === "loeschen") { ordnerLoeschen(lt_gastOrdner($liste[$idx])); array_splice($liste, $idx, 1); $meldung = "Zugang und seine gespeicherten Daten gelöscht."; }
+            elseif ($aktion === "bereiche") { $b = array_values(array_intersect(array_keys(LT_GAST_BEREICHE), (array)($_POST["bereiche"] ?? []))); if ($b) { $liste[$idx]["bereiche"] = $b; $liste[$idx]["v2"] = true; $meldung = "Freigaben gespeichert."; } else $meldung = "Bitte mindestens einen Bereich ankreuzen."; }
+            elseif ($aktion === "loeschen") { ordnerLoeschen(lt_gastOrdner($liste[$idx])); ordnerLoeschen(__DIR__ . "/material-dateien/gaeste/" . $liste[$idx]["id"]); array_splice($liste, $idx, 1); $meldung = "Zugang und seine gespeicherten Daten gelöscht."; }
             lt_gaesteSchreiben($liste);
         }
     }
 }
 $basisUrl = (( !empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off") ? "https" : "http") . "://" . ($_SERVER["HTTP_HOST"] ?? "") . rtrim(str_replace("\\", "/", dirname($_SERVER["SCRIPT_NAME"] ?? "/")), "/") . "/gast.php";
-function bereichNamen($g){ return implode(", ", array_map(fn($b) => LT_GAST_BEREICHE[$b] ?? $b, $g["bereiche"] ?? [])); }
+// Checkboxen je Gruppe (Grundschule, Tafelbilder, LRS-Förderung)
+function bereichAuswahl($an){
+    $html = "";
+    foreach (LT_GAST_GRUPPEN as $gruppe => $liste) {
+        $html .= '<div class="gruppe"><b>' . h($gruppe) . '</b><div class="checks">';
+        foreach ($liste as $k => $n) $html .= '<label><input type="checkbox" name="bereiche[]" value="' . h($k) . '"' . (in_array($k, $an, true) ? " checked" : "") . '> ' . h($n) . '</label>';
+        $html .= '</div></div>';
+    }
+    return $html . '<p class="hilfe" style="margin-top:4px"><i class="fa-solid fa-lock"></i> In jedem Bereich arbeitet der Gast mit eigenen, leeren Daten – deine Kinder-Akten, Materialien, Stundenpläne usw. sieht er nicht.</p>';
+}
+// Freigaben inkl. älterer Zugänge (Lernangebot schloss die Tafelbilder ein)
+function lt_gastBereiche($g){ $b = $g["bereiche"] ?? []; if (empty($g["v2"]) && in_array("lernangebot", $b, true)) $b = array_values(array_unique(array_merge($b, ["morgen", "buchstabenkurs"]))); return $b; }
+function bereichNamen($g){ return implode(", ", array_map(fn($b) => preg_replace('/ \(.*\)$/', "", LT_GAST_BEREICHE[$b] ?? $b), lt_gastBereiche($g))); }
 function status($g){
     if (!empty($g["gesperrt"])) return ["gesperrt", "rot"];
     if (!empty($g["bis"]) && strtotime($g["bis"] . " 23:59:59") < time()) return ["abgelaufen", "rot"];
@@ -75,7 +88,9 @@ label.feld{ display:block; font-weight:800; font-size:13px; color:#4a5866; margi
 input[type=text], input[type=date]{ font:700 16px "Nunito",sans-serif; padding:10px 12px; border:2px solid #d6dde3; border-radius:12px; width:100%; }
 .reihe{ display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; }
 .reihe > div{ flex:1 1 200px; }
-.checks{ display:flex; gap:10px; flex-wrap:wrap; margin:14px 0; }
+.checks{ display:flex; gap:8px; flex-wrap:wrap; margin:6px 0 10px; }
+.gruppe b{ display:block; font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:var(--grau); margin-top:12px; }
+details.aendern{ margin:-6px 0 10px; padding:0 0 10px; } details.aendern summary{ cursor:pointer; font-weight:800; color:var(--meer); font-size:14px; }
 .checks label{ background:var(--schaum); border-radius:12px; padding:8px 14px; font-weight:800; display:flex; gap:8px; align-items:center; cursor:pointer; }
 .btn{ font:900 15px "Nunito",sans-serif; background:var(--nacht); color:white; border:0; border-radius:12px; padding:10px 18px; cursor:pointer; display:inline-flex; gap:8px; align-items:center; }
 .btn.klein{ font-size:13px; padding:7px 12px; background:#e9eef2; color:var(--nacht); }
@@ -100,7 +115,7 @@ textarea{ width:100%; font:600 14px/1.5 "Nunito",sans-serif; border:2px solid #d
 <main class="seite">
 <a class="zurueck" href="index.php"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
 <h1><i class="fa-solid fa-user-clock"></i> Gast-Zugänge</h1>
-<p class="unter">Kolleginnen testen Sozialtraining, Lernangebot und Vertretung – mit eigenem Code und eigenen Daten. Deine Kinder-Akten, LRS-Seiten und deine Planung sehen sie nicht.</p>
+<p class="unter">Kolleginnen testen die Bereiche, die du freigibst – mit eigenem Code und eigenen, getrennten Daten. Deine Kinder-Akten, Materialien und Planungen sehen sie nie.</p>
 
 <?php if ($meldung): ?><div class="meldung"><?= h($meldung) ?></div><?php endif; ?>
 
@@ -125,8 +140,8 @@ textarea{ width:100%; font:600 14px/1.5 "Nunito",sans-serif; border:2px solid #d
         <div><label class="feld">Für wen? (nur zur Übersicht, z. B. „Frau Schulz“)</label><input type="text" name="name" maxlength="40" placeholder="Kollegin"></div>
         <div style="flex:0 1 200px"><label class="feld">Gültig bis</label><input type="date" name="bis" value="<?= date("Y-m-d", strtotime("+30 days")) ?>" min="<?= date("Y-m-d") ?>"></div>
     </div>
-    <div class="checks">
-        <?php foreach (LT_GAST_BEREICHE as $k => $n): ?><label><input type="checkbox" name="bereiche[]" value="<?= $k ?>" checked> <?= h($n) ?></label><?php endforeach; ?>
+    <div>
+        <?= bereichAuswahl(["sozial", "lernangebot", "vertretung", "morgen", "buchstabenkurs"]) ?>
     </div>
     <button class="btn" type="submit"><i class="fa-solid fa-key"></i> Zugang erstellen</button>
 </form>
@@ -144,8 +159,12 @@ textarea{ width:100%; font:600 14px/1.5 "Nunito",sans-serif; border:2px solid #d
             <?php endforeach; ?>
         </div>
     </div>
+    <details class="aendern"><summary>Freigaben ändern</summary>
+        <form method="post"><input type="hidden" name="csrf" value="<?= h($CSRF) ?>"><input type="hidden" name="aktion" value="bereiche"><input type="hidden" name="id" value="<?= h($g["id"]) ?>">
+        <?= bereichAuswahl(lt_gastBereiche($g)) ?><button class="btn klein" type="submit"><i class="fa-solid fa-check"></i> Freigaben speichern</button></form>
+    </details>
     <?php endforeach; ?>
-    <p class="hilfe"><i class="fa-solid fa-shield-halved"></i> Gäste kommen nur in die angekreuzten Bereiche. Kinder-Akten, Gutachten, LRS-Generator, Materialien und Updates bleiben gesperrt. Anmeldeseite für Gäste: <a href="gast.php"><?= h($basisUrl) ?></a></p>
+    <p class="hilfe"><i class="fa-solid fa-shield-halved"></i> Gäste kommen nur in die angekreuzten Bereiche – und dort nur an ihre eigenen Daten. Updates und die Gast-Verwaltung bleiben immer gesperrt. Anmeldeseite für Gäste: <a href="gast.php"><?= h($basisUrl) ?></a></p>
 </div>
 </main>
 <script>

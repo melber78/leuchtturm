@@ -6,10 +6,11 @@
 // ---------------------------------------------------------------
 
 session_start();
+require_once __DIR__ . "/gast-zugang-pruefen.php";
 header("Content-Type: application/json; charset=utf-8");
 
-$aktenDatei  = __DIR__ . "/material-daten/akten.json";
-$kinderDatei = __DIR__ . "/material-daten/kinder.json";
+$aktenDatei  = lt_daten("akten.json");
+$kinderDatei = lt_daten("kinder.json");
 if (!is_dir(dirname($aktenDatei))) mkdir(dirname($aktenDatei), 0775, true);
 if (!file_exists($aktenDatei)) file_put_contents($aktenDatei, "{}");
 
@@ -17,7 +18,7 @@ $antwort = function ($ok, $daten = []) {
     echo json_encode(array_merge(["ok" => $ok], $daten), JSON_UNESCAPED_UNICODE);
     exit;
 };
-if (empty($_SESSION["leuchtturm_eingeloggt"])) {
+if (!lt_apiErlaubt(["akten", "lrs"])) {
     http_response_code(401);
     $antwort(false, ["fehler" => "Du bist nicht mehr eingeloggt. Bitte in einem neuen Tab neu einloggen."]);
 }

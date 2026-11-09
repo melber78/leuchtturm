@@ -20,7 +20,7 @@ if (empty($_SESSION["leuchtturm_eingeloggt"])) {
     if (!$LT_GAST) {
         if (!empty($_SESSION["leuchtturm_gast"])) { unset($_SESSION["leuchtturm_gast"]); header("Location: gast.php?abgelaufen=1"); exit; }
         require __DIR__ . "/auth.php";
-    } elseif (isset($LT_GAST_BEREICH) && !lt_gastDarf($LT_GAST, $LT_GAST_BEREICH)) {
+    } elseif (isset($LT_GAST_BEREICH) && !lt_gastDarfEinen($LT_GAST, $LT_GAST_BEREICH)) {
         header("Location: gast.php"); exit;
     }
 } else {

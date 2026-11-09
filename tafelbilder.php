@@ -1,4 +1,4 @@
-<?php $LT_GAST_BEREICH = "lernangebot"; require __DIR__ . "/gast-zugang.php"; ?>
+<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs"]; require __DIR__ . "/gast-zugang.php"; ?>
 <?php
 if (empty($_SESSION["tafel_csrf"])) $_SESSION["tafel_csrf"] = bin2hex(random_bytes(16));
 // Gespeicherte Tafelbild-Einstellungen (Morgentafel …) – Gäste haben eigene Daten
@@ -309,16 +309,20 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
     <h1><i class="fa-solid fa-chalkboard"></i> Tafelbilder</h1>
     <p class="unter">Für die digitale Tafel: öffnen, Vollbild an, mit dem Tafelstift direkt hineinschreiben.</p>
     <div class="kacheln">
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs")): ?>
         <button class="kachel" type="button" onclick="kursOeffnen()">
             <div class="bild" id="kachelBild"></div>
             <h2>Buchstabenkurs</h2>
             <p>Buchstaben in der Lineatur vorschreiben, nachspuren und selbst schreiben – groß und klein, Druck- oder Grundschrift.</p>
         </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
         <button class="kachel" type="button" onclick="tafelMorgen.oeffnen()">
             <div class="bild" style="font-size:44px;gap:10px;background:linear-gradient(135deg,#fff7df,#e8f4fb)">☀️<span style="font:900 20px Nunito,sans-serif;color:#16324a">Guten Morgen!</span></div>
             <h2>Guten Morgen! – Tagesstart</h2>
             <p>Zum Stundenanfang: Begrüßung, Datum, Wetter, Stundenplan mit Lehrkräften, was auspacken, was beachten – passend für Kl. 1/2 oder 3/4.</p>
         </button>
+<?php endif; ?>
     </div>
 </div>
 
@@ -391,6 +395,7 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 <script>
 window.TAFEL_DATEN = <?= json_encode($tbDaten, $JSON) ?>;
 window.TAFEL_CSRF = <?= json_encode($_SESSION["tafel_csrf"]) ?>;
+window.TB_ERLAUBT = <?= json_encode(["buchstabenkurs" => !$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs"), "morgen" => !$LT_GAST || lt_gastDarf($LT_GAST, "morgen")]) ?>;
 </script>
 <script src="tafel-morgen.js?v=<?= @filemtime(__DIR__ . "/tafel-morgen.js") ?>"></script>
 <script>
@@ -742,10 +747,12 @@ document.addEventListener("fullscreenchange", () => { const v = !!document.fulls
 function vollbild(){ try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); } catch (x) {} }
 // Aus „Guten Morgen!“: Buchstabe der Woche im Buchstabenkurs öffnen
 function kursMitBuchstabe(b){
+    if (window.TB_ERLAUBT && !TB_ERLAUBT.buchstabenkurs) return;
     if (ALLE.includes(b)) { E.aktuell = b; E.ansicht = "buchstabe"; if (!E.gelernt.includes(b)) E.gelernt.push(b); merken(); }
     tafelMorgen.schliessen(); kursOeffnen();
 }
-function kursOeffnen(){ document.getElementById("tafel").classList.add("an"); document.getElementById("uebersicht").style.display = "none"; history.replaceState(null, "", "#buchstabenkurs"); requestAnimationFrame(zeichnen); }
+function kursOeffnen(){
+    if (window.TB_ERLAUBT && !TB_ERLAUBT.buchstabenkurs) return; document.getElementById("tafel").classList.add("an"); document.getElementById("uebersicht").style.display = "none"; history.replaceState(null, "", "#buchstabenkurs"); requestAnimationFrame(zeichnen); }
 function kursSchliessen(){ document.getElementById("tafel").classList.remove("an"); document.getElementById("uebersicht").style.display = ""; history.replaceState(null, "", location.pathname); }
 window.addEventListener("resize", () => { if (document.getElementById("tafel").classList.contains("an")) zeichnen(); });
 document.addEventListener("keydown", ev => {
@@ -760,7 +767,7 @@ knoepfeModus();
     const s = zeileSvg([{ text: "A", art: "vorlage" }, { text: "a", art: "vorlage" }, { text: "a", art: "spur" }, { text: "a", art: "spur" }], 8.5);
     s.style.width = "100%"; s.style.height = "100%";
     s.querySelectorAll("circle, text").forEach(x => x.remove());
-    document.getElementById("kachelBild").appendChild(s);
+    const kb = document.getElementById("kachelBild"); if (kb) kb.appendChild(s);
 })();
 if (location.hash === "#buchstabenkurs") kursOeffnen();
 window.addEventListener("hashchange", () => { if (location.hash === "#buchstabenkurs") kursOeffnen(); });

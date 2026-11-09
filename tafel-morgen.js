@@ -562,6 +562,7 @@ function aufraeumen(k){ const grenze = iso(new Date(Date.now() - 14 * 864e5)); k
 
 /* ---------- Öffnen / Schließen ---------- */
 function oeffnen(){
+    if (window.TB_ERLAUBT && !window.TB_ERLAUBT.morgen) return;
     const w = document.getElementById("morgen");
     w.classList.add("an"); document.getElementById("uebersicht").style.display = "none";
     history.replaceState(null, "", "#morgen");

@@ -1,12 +1,12 @@
-<?php require __DIR__ . "/auth.php"; ?>
+<?php $LT_GAST_BEREICH = "materialien"; require __DIR__ . "/gast-zugang.php"; ?>
 <?php
 
 // ---------------------------
 // Speicherorte
 // ---------------------------
 
-$datenDatei = __DIR__ . "/material-daten/materialien.json";
-$uploadOrdner = __DIR__ . "/material-dateien";
+$datenDatei = lt_daten("materialien.json");
+$uploadOrdner = lt_dateienOrdner();
 
 if (!is_dir(dirname($datenDatei))) mkdir(dirname($datenDatei), 0775, true);
 if (!is_dir($uploadOrdner)) mkdir($uploadOrdner, 0775, true);
@@ -451,9 +451,9 @@ textarea{ min-height:60px; resize:vertical; font-weight:400; }
                     <input type="checkbox" class="material-checkbox" value="<?= htmlspecialchars($m["id"]) ?>" onchange="checkboxGeaendert()" style="width:18px; height:18px; flex:none;">
                     <div class="material-thumb"
                          data-typ="<?= in_array($endung, $bildTypen, true) ? "bild" : ($endung === "pdf" ? "pdf" : "sonstiges") ?>"
-                         data-datei="material-dateien/<?= htmlspecialchars($m["gespeichert_als"]) ?>">
+                         data-datei="<?= lt_dateienUrl() ?>/<?= htmlspecialchars($m["gespeichert_als"]) ?>">
                         <?php if (in_array($endung, $bildTypen, true)): ?>
-                            <img src="material-dateien/<?= htmlspecialchars($m["gespeichert_als"]) ?>" alt="">
+                            <img src="<?= lt_dateienUrl() ?>/<?= htmlspecialchars($m["gespeichert_als"]) ?>" alt="">
                         <?php elseif ($endung === "pdf"): ?>
                             <i class="fa-solid fa-file-pdf" style="color:#c0392b;"></i>
                         <?php else: ?>
@@ -487,7 +487,7 @@ textarea{ min-height:60px; resize:vertical; font-weight:400; }
                         <input type="text" name="neuer_ordner_name" placeholder="Name eingeben..." style="display:none;">
                         <button type="submit" class="btn klein" title="In diesen Ordner verschieben"><i class="fa-solid fa-folder-open"></i></button>
                     </form>
-                    <a href="material-dateien/<?= htmlspecialchars($m["gespeichert_als"]) ?>" target="_blank"><i class="fa-solid fa-download"></i> Öffnen</a>
+                    <a href="<?= lt_dateienUrl() ?>/<?= htmlspecialchars($m["gespeichert_als"]) ?>" target="_blank"><i class="fa-solid fa-download"></i> Öffnen</a>
                     <a href="?loeschen=<?= urlencode($m["id"]) ?>" class="loeschen" onclick="return confirm('Material wirklich löschen?')"><i class="fa-solid fa-trash"></i></a>
                 </div>
             </div>

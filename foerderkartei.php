@@ -7,9 +7,10 @@
 // ---------------------------------------------------------------
 
 session_start();
+require_once __DIR__ . "/gast-zugang-pruefen.php";
 
-$karteiDatei = __DIR__ . "/material-daten/foerderkartei.json";
-$kinderDatei = __DIR__ . "/material-daten/kinder.json";
+$karteiDatei = lt_daten("foerderkartei.json");
+$kinderDatei = lt_daten("kinder.json");
 
 if (!is_dir(dirname($karteiDatei))) mkdir(dirname($karteiDatei), 0775, true);
 if (!file_exists($karteiDatei)) file_put_contents($karteiDatei, "{}");
@@ -32,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode(array_merge(["ok" => $ok], $daten), JSON_UNESCAPED_UNICODE);
         exit;
     };
-    if (empty($_SESSION["leuchtturm_eingeloggt"])) {
+    if (!lt_apiErlaubt(["akten", "lrs"])) {
         http_response_code(401);
         $antwort(false, ["fehler" => "Du bist nicht mehr eingeloggt. Bitte in einem neuen Tab neu einloggen."]);
     }
@@ -189,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 // ===============================================================
 // Seite
 // ===============================================================
-require __DIR__ . "/auth.php";
+$LT_GAST_BEREICH = ["akten", "lrs"]; require __DIR__ . "/gast-zugang.php";
 $kinderCodes = array_map(fn($k) => $k["code"], fkJsonLesen($kinderDatei));
 $startKind = in_array($_GET["kind"] ?? "", $kinderCodes, true) ? $_GET["kind"] : ($kinderCodes[0] ?? "");
 ?>

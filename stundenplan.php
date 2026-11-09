@@ -1,4 +1,4 @@
-<?php require __DIR__ . "/auth.php"; ?>
+<?php $LT_GAST_BEREICH = "stundenplan"; require __DIR__ . "/gast-zugang.php"; ?>
 <!DOCTYPE html>
 <html lang="de">
 <head>

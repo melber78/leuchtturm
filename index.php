@@ -1,4 +1,4 @@
-<?php require __DIR__ . "/auth.php"; ?>
+<?php require_once __DIR__ . "/gast-zugang-pruefen.php"; if (empty($_SESSION["leuchtturm_eingeloggt"]) && lt_gast()) { header("Location: gast.php"); exit; } require __DIR__ . "/auth.php"; ?>
 <!DOCTYPE html>
 <html lang="de">
 <head>

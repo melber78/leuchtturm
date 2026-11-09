@@ -12,7 +12,7 @@ function antwort($ok, $daten = []){ echo json_encode(array_merge(["ok" => $ok], 
 
 require_once __DIR__ . "/gast-zugang-pruefen.php";
 $gast = empty($_SESSION["leuchtturm_eingeloggt"]) ? lt_gast() : null;
-if ($gast && !lt_gastDarf($gast, "lernangebot")) { http_response_code(403); antwort(false, ["fehler" => "Nicht freigegeben."]); }
+if ($gast && !lt_gastDarf($gast, "morgen")) { http_response_code(403); antwort(false, ["fehler" => "Nicht freigegeben."]); }
 if (empty($_SESSION["leuchtturm_eingeloggt"]) && !$gast) { http_response_code(401); antwort(false, ["fehler" => "Du bist nicht mehr eingeloggt. Bitte neu einloggen."]); }
 if ($_SERVER["REQUEST_METHOD"] !== "POST") { http_response_code(405); antwort(false, ["fehler" => "Nur POST erlaubt."]); }
 if (empty($_SESSION["tafel_csrf"]) || !hash_equals($_SESSION["tafel_csrf"], $_SERVER["HTTP_X_CSRF"] ?? "")) { http_response_code(403); antwort(false, ["fehler" => "Sitzung abgelaufen – bitte die Seite neu laden."]); }

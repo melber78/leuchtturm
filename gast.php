@@ -37,6 +37,14 @@ $INFO = [
     "sozial"      => ["sozial-stunden.php", "fa-people-group", "Sozialtraining-Stunden", "Fertige Stunden, Jahresplan, Präsentation &amp; Material – Kl. 1/2 und 3/4"],
     "lernangebot" => ["sozial-stunden.php?bereich=lernangebot", "fa-seedling", "Lernangebot", "40-Minuten-Stunden Deutsch, Mathe &amp; Lernen lernen – Planer, Tafel &amp; Arbeitsblätter"],
     "vertretung"  => ["sozial-stunden.php?bereich=vertretung", "fa-shuffle", "Vertretungsstunden", "Fertige Stunden für Kl. 1–4 mit Zufallsauswahl"],
+    "morgen"      => ["tafelbilder.php#morgen", "fa-sun", "Guten Morgen!", "Tagesstart an der Tafel: Datum, Wetter, Stundenplan, Auspacken, Hinweise"],
+    "buchstabenkurs" => ["tafelbilder.php#buchstabenkurs", "fa-pen-fancy", "Buchstabenkurs", "Buchstaben in der Lineatur nachspuren und schreiben – an der digitalen Tafel"],
+    "lrs"         => ["lrs.php", "fa-wand-magic-sparkles", "Material-Generator", "Arbeitsblätter nach AFS – Aufmerksamkeit, Funktion, Lesen, Rechtschreiben"],
+    "akten"       => ["trainingshefte.php", "fa-user-graduate", "Kinder-Akten", "Förderplan, Förderpaket, Trainingsheft, Lernbox &amp; Stunden (nur Kürzel)"],
+    "gutachten"   => ["gutachten.php", "fa-file-signature", "Gutachten", "Förderdiagnostik-Gutachten erstellen (wird nicht gespeichert)"],
+    "materialien" => ["materialien.php", "fa-folder-open", "Materialien", "Eigene Blätter hochladen &amp; einordnen"],
+    "timer"       => ["lrs-timer.php", "fa-stopwatch", "Stunden-Timer", "Phasen der LRS-Stunde mit Zeit im Blick"],
+    "stundenplan" => ["stundenplan.php", "fa-calendar-days", "Stundenplan", "Stundenplan für die LRS-Kinder"],
 ];
 ?>
 <!DOCTYPE html>
@@ -83,7 +91,7 @@ button{ margin-top:14px; width:100%; font:900 17px "Nunito",sans-serif; backgrou
         <p>Leuchtturm · Gast-Zugang<?= !empty($gast["bis"]) ? " · gültig bis " . date("d.m.Y", strtotime($gast["bis"])) : "" ?></p></div>
     <div class="hinweis"><i class="fa-solid fa-circle-info"></i> Probier alles in Ruhe aus: Stunden ansehen, präsentieren, drucken, eigene Stunden anlegen, Jahresplan füllen. Was du speicherst, gehört nur zu deinem Zugang – du kannst nichts kaputt machen.</div>
     <div class="grid">
-    <?php foreach ($gast["bereiche"] ?? [] as $b): if (!isset($INFO[$b])) continue; [$url, $icon, $titel, $text] = $INFO[$b]; ?>
+    <?php foreach (array_keys($INFO) as $b): if (!lt_gastDarf($gast, $b)) continue; [$url, $icon, $titel, $text] = $INFO[$b]; ?>
         <a href="<?= h($url) ?>"><i class="fa-solid <?= $icon ?>"></i><h2><?= h($titel) ?></h2><p><?= $text ?></p></a>
     <?php endforeach; ?>
     </div>

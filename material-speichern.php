@@ -7,6 +7,7 @@
 // ---------------------------------------------------------------
 
 session_start();
+require_once __DIR__ . "/gast-zugang-pruefen.php";
 header("Content-Type: application/json; charset=utf-8");
 
 function antwort($ok, $daten = []){
@@ -16,7 +17,7 @@ function antwort($ok, $daten = []){
 
 // Eigene Login-Prüfung statt auth.php: eine Weiterleitung auf login.php
 // würde der Generator nicht verstehen, eine klare Meldung schon.
-if (empty($_SESSION["leuchtturm_eingeloggt"])) {
+if (!lt_apiErlaubt(["lrs", "akten", "materialien"])) {
     http_response_code(401);
     antwort(false, ["fehler" => "Du bist nicht mehr eingeloggt. Bitte in einem neuen Tab neu einloggen und dann noch einmal speichern."]);
 }
@@ -30,9 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 // Speicherorte (wie materialien.php / trainingshefte.php)
 // ---------------------------
 
-$materialDatei = __DIR__ . "/material-daten/materialien.json";
-$kinderDatei   = __DIR__ . "/material-daten/kinder.json";
-$uploadOrdner  = __DIR__ . "/material-dateien";
+$materialDatei = lt_daten("materialien.json");
+$kinderDatei   = lt_daten("kinder.json");
+$uploadOrdner  = lt_dateienOrdner();
 
 if (!is_dir(dirname($materialDatei))) mkdir(dirname($materialDatei), 0775, true);
 if (!is_dir($uploadOrdner)) mkdir($uploadOrdner, 0775, true);

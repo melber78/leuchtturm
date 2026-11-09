@@ -1,14 +1,14 @@
-<?php require __DIR__ . "/auth.php"; ?>
+<?php $LT_GAST_BEREICH = "akten"; require __DIR__ . "/gast-zugang.php"; ?>
 <?php
 
 // ---------------------------
 // Speicherorte
 // ---------------------------
 
-$materialDatei = __DIR__ . "/material-daten/materialien.json";
-$kinderDatei = __DIR__ . "/material-daten/kinder.json";
-$aktenDatei = __DIR__ . "/material-daten/akten.json";
-$karteiDatei = __DIR__ . "/material-daten/foerderkartei.json";
+$materialDatei = lt_daten("materialien.json");
+$kinderDatei = lt_daten("kinder.json");
+$aktenDatei = lt_daten("akten.json");
+$karteiDatei = lt_daten("foerderkartei.json");
 
 if (!is_dir(dirname($kinderDatei))) mkdir(dirname($kinderDatei), 0775, true);
 if (!file_exists($materialDatei)) file_put_contents($materialDatei, json_encode([]));
@@ -187,7 +187,7 @@ $DATEI_ICONS = [
 
 function renderMatThumb($m, $BILD_TYPEN, $DATEI_ICONS){
     $endung = strtolower(pathinfo($m["gespeichert_als"], PATHINFO_EXTENSION));
-    $pfad = "material-dateien/" . htmlspecialchars($m["gespeichert_als"]);
+    $pfad = lt_dateienUrl() . "/" . htmlspecialchars($m["gespeichert_als"]);
 
     if (in_array($endung, $BILD_TYPEN, true)) {
         return '<div class="mat-thumb" data-typ="bild" data-datei="' . $pfad . '"><img src="' . $pfad . '" alt=""></div>';
@@ -913,7 +913,7 @@ const HEFT_MATERIALIEN = <?php
     $heftDaten = [];
     foreach ($kindDaten["hefte"] ?? [] as $hh) {
         $m = $materialById[$hh["material_id"]] ?? null;
-        if ($m) $heftDaten[] = ["titel" => $m["titel"], "bereich" => $BEREICHE[$m["bereich"]] ?? $m["bereich"], "pfad" => "material-dateien/" . $m["gespeichert_als"], "dateiname" => $m["dateiname"], "endung" => strtolower(pathinfo($m["gespeichert_als"], PATHINFO_EXTENSION))];
+        if ($m) $heftDaten[] = ["titel" => $m["titel"], "bereich" => $BEREICHE[$m["bereich"]] ?? $m["bereich"], "pfad" => lt_dateienUrl() . "/" . $m["gespeichert_als"], "dateiname" => $m["dateiname"], "endung" => strtolower(pathinfo($m["gespeichert_als"], PATHINFO_EXTENSION))];
     }
     echo json_encode($heftDaten, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG);
 ?>;

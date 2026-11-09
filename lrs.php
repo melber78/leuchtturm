@@ -1,4 +1,4 @@
-<?php require __DIR__ . "/auth.php"; ?>
+<?php $LT_GAST_BEREICH = "lrs"; require __DIR__ . "/gast-zugang.php"; ?>
 <?php
 // Für "In Materialien speichern": vorhandene Ordner und Trainingshefte (nur lesen)
 function lrsJsonLesen($datei){
@@ -6,21 +6,21 @@ function lrsJsonLesen($datei){
     $daten = json_decode((string)file_get_contents($datei), true);
     return is_array($daten) ? $daten : [];
 }
-$lrsOrdner = array_values(array_unique(array_map(fn($m) => $m["ordner"] ?? "Allgemein", lrsJsonLesen(__DIR__ . "/material-daten/materialien.json"))));
+$lrsOrdner = array_values(array_unique(array_map(fn($m) => $m["ordner"] ?? "Allgemein", lrsJsonLesen(lt_daten("materialien.json")))));
 sort($lrsOrdner);
-$lrsKinder = array_map(fn($k) => $k["code"], lrsJsonLesen(__DIR__ . "/material-daten/kinder.json"));
+$lrsKinder = array_map(fn($k) => $k["code"], lrsJsonLesen(lt_daten("kinder.json")));
 // Kinder-Akten: gespeicherte Förderplan-Schwerpunkte und Klasse je Kürzel
 $lrsAkten = [];
-foreach (lrsJsonLesen(__DIR__ . "/material-daten/akten.json") as $code => $a) {
+foreach (lrsJsonLesen(lt_daten("akten.json")) as $code => $a) {
     if (!in_array((string)$code, $lrsKinder, true) || !is_array($a)) continue;
     $lrsAkten[(string)$code] = ["klasse" => (string)($a["klasse"] ?? ""), "f" => $a["plan"]["f"] ?? [], "r" => $a["plan"]["r"] ?? [], "l" => $a["plan"]["l"] ?? [], "lb" => (string)($a["plan"]["lb"] ?? ""), "ziele" => count($a["plan"]["ziele"] ?? [])];
 }
 // Trainingshefte: zugewiesene Materialien je Kürzel (für „Aus dem Trainingsheft“ in der Stunde)
 $lrsHefte = [];
 $lrsMatById = [];
-foreach (lrsJsonLesen(__DIR__ . "/material-daten/materialien.json") as $m) if (isset($m["id"])) $lrsMatById[$m["id"]] = $m;
-$lrsAktenRoh = lrsJsonLesen(__DIR__ . "/material-daten/akten.json");
-foreach (lrsJsonLesen(__DIR__ . "/material-daten/kinder.json") as $k) {
+foreach (lrsJsonLesen(lt_daten("materialien.json")) as $m) if (isset($m["id"])) $lrsMatById[$m["id"]] = $m;
+$lrsAktenRoh = lrsJsonLesen(lt_daten("akten.json"));
+foreach (lrsJsonLesen(lt_daten("kinder.json")) as $k) {
     $code = (string)($k["code"] ?? "");
     if ($code === "") continue;
     $erl = (array)($lrsAktenRoh[$code]["erledigt"] ?? []);
@@ -28,7 +28,7 @@ foreach (lrsJsonLesen(__DIR__ . "/material-daten/kinder.json") as $k) {
         $m = $lrsMatById[$h["material_id"] ?? ""] ?? null;
         if (!$m || empty($m["gespeichert_als"])) continue;
         $lrsHefte[$code][] = ["id" => (string)$m["id"], "titel" => (string)($m["titel"] ?? $m["dateiname"] ?? "Material"), "bereich" => (string)($m["bereich"] ?? ""),
-            "pfad" => "material-dateien/" . $m["gespeichert_als"], "endung" => strtolower(pathinfo($m["gespeichert_als"], PATHINFO_EXTENSION)), "erledigt" => isset($erl[$m["id"]])];
+            "pfad" => lt_dateienUrl() . "/" . $m["gespeichert_als"], "endung" => strtolower(pathinfo($m["gespeichert_als"], PATHINFO_EXTENSION)), "erledigt" => isset($erl[$m["id"]])];
     }
 }
 // Stunden aus den Akten (zum Wieder-Öffnen und Bearbeiten im Generator)
@@ -40,7 +40,7 @@ foreach ($lrsAktenRoh as $code => $a) {
 }
 // Förderkartei: Fehlerwörter je Kürzel (für Blätter mit den eigenen Wörtern eines Kindes)
 $lrsKartei = [];
-foreach (lrsJsonLesen(__DIR__ . "/material-daten/foerderkartei.json") as $code => $d) {
+foreach (lrsJsonLesen(lt_daten("foerderkartei.json")) as $code => $d) {
     if (!in_array((string)$code, $lrsKinder, true) || !is_array($d)) continue;
     $lrsKartei[(string)$code] = array_map(fn($w) => [
         "w" => (string)($w["wort"] ?? ""), "sp" => $w["sp"] ?? ["sonstige"], "f" => (int)($w["fach"] ?? 1), "x" => $w["falschschreibungen"] ?? [],
