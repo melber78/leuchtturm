@@ -96,7 +96,7 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .mg-titel{ font-weight:900; color:#7c6a4f; font-size:17px; }
 #mgInhalt{ flex:1; display:flex; flex-direction:column; padding:0 1.6vw 1.6vh; min-height:0; }
 .mg-gruss{ display:flex; align-items:center; gap:1.2vw; margin:0 0 1.4vh; }
-.mg-gruss h1{ flex:1; margin:0; font:900 clamp(26px,min(4.2vw,7vh),76px)/1.1 "Nunito",sans-serif; color:#16324a; }
+.mg-gruss h1{ flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:0; font:900 clamp(26px,min(4.2vw,7vh),76px)/1.1 "Nunito",sans-serif; color:#16324a; }
 .mg-sonne{ font-size:clamp(34px,min(5vw,8vh),90px); display:inline-block; }
 .mg-sonne.dreht{ animation:mgSonne 12s linear infinite; }
 .mg-warnung{ background:#fdecea; color:#a3261c; font-weight:900; border-radius:14px; padding:8px 14px; margin-bottom:8px; }
@@ -191,6 +191,19 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .mg-ecke:hover, .mg-ecke:focus-within{ opacity:1; }
 #morgen.vollbild .mg-ecke{ display:flex; }
 .mg-ecke button{ width:40px; height:40px; border-radius:50%; border:0; background:white; box-shadow:0 3px 10px rgba(0,0,0,.15); font-size:18px; cursor:pointer; }
+/* Karte zu voll: alles etwas kleiner */
+.mg-karte.eng .mg-dinge{ grid-template-columns:repeat(4,1fr); gap:.4vw; }
+.mg-karte.eng .mg-ding span{ font-size:clamp(20px,min(2.2vw,3.6vh),42px); }
+.mg-karte.eng .mg-ding b{ font-size:clamp(10px,min(.9vw,1.6vh),17px); }
+.mg-karte.eng .mg-fuer{ margin-bottom:.4vh; font-size:clamp(14px,min(1.5vw,2.5vh),28px); }
+.mg-karte.eng .mg-schluss{ margin-top:.5vh; padding-top:.4vh; gap:.3vh; }
+.mg-karte.eng .mg-check{ padding:.2vh .5vw; font-size:clamp(11px,min(1.1vw,1.9vh),20px); border-width:2px; }
+.mg-karte.eng .mg-dliste{ gap:.3vh .5vw; } .mg-karte.eng .mg-dienst{ padding:.2vh .4vw; }
+.mg-karte.eng .mg-hinweise li{ font-size:clamp(13px,min(1.3vw,2.2vh),24px); padding:.4vh .6vw; }
+.mg-karte.sehr-eng .mg-dinge{ grid-template-columns:repeat(5,1fr); }
+.mg-karte.sehr-eng .mg-ding b{ display:none; }
+.mg-karte.sehr-eng .mg-ding span{ font-size:clamp(18px,min(1.9vw,3.2vh),36px); }
+.mg-karte.sehr-eng h2{ margin-bottom:.3vh; }
 .mg-heute{ margin:1vh auto 0; border:0; background:#fff1c2; border-radius:999px; padding:6px 14px; font:800 14px "Nunito",sans-serif; cursor:pointer; }
 /* Wetter */
 .mg-wetter{ text-align:center; cursor:pointer; align-items:center; justify-content:center; }
