@@ -138,3 +138,56 @@ window.lernEinstiegName = NAME;
     }
 });
 })();
+
+/* ---------- Dauer der Stunde (Lernangebot) ----------
+   Manchmal sind es nur 20 oder 30 Minuten: Die gewählte Dauer wird gemerkt,
+   der Stundenverlauf wird anteilig umgerechnet, die Präsentation kürzt mit. */
+(function () {
+    const DAUERN = [15, 20, 25, 30, 35, 40, 45, 50, 60];
+    window.LERN_DAUERN = DAUERN;
+    window.lernDauer = function () {
+        let d = 0; try { d = parseInt(localStorage.getItem("lern_dauer"), 10); } catch (x) {}
+        return d >= 10 && d <= 90 ? d : 40;
+    };
+    window.lernDauerSetzen = function (d) {
+        d = Math.max(10, Math.min(90, parseInt(d, 10) || 40));
+        try { localStorage.setItem("lern_dauer", String(d)); } catch (x) {}
+        document.dispatchEvent(new CustomEvent("lerndauer", { detail: d }));
+        return d;
+    };
+    const grenzen = v => { const m = String(v.zeit || "").match(/(\d+)\s*[–-]\s*(\d+)/); return m ? [+m[1], +m[2]] : null; };
+    // Planungsbasis der Vorlage (Ende der letzten Phase, meist 40)
+    window.lernBasis = function (e) {
+        const g = (e.verlauf || []).map(grenzen).filter(Boolean);
+        return g.length ? Math.max(...g.map(x => x[1])) : (+e.dauer || 40);
+    };
+    // Verlauf auf die gewählte Dauer umrechnen (jede Phase mind. 1–2 Minuten)
+    window.lernVerlauf = function (e, dauer) {
+        dauer = dauer || window.lernDauer();
+        const vl = e.verlauf || [], basis = window.lernBasis(e);
+        if (dauer === basis || !vl.every(grenzen)) return vl;
+        const laengen = vl.map(v => { const [a, b] = grenzen(v); return b - a; });
+        const roh = laengen.map(l => Math.max(1, l * dauer / basis));
+        let ganz = roh.map(Math.floor), rest = dauer - ganz.reduce((a, b) => a + b, 0);
+        const folge = roh.map((r, i) => [r - Math.floor(r), i]).sort((a, b) => b[0] - a[0]).map(x => x[1]);
+        for (let k = 0; rest > 0; k++, rest--) ganz[folge[k % folge.length]]++;
+        while (rest < 0) { const i = ganz.indexOf(Math.max(...ganz)); if (ganz[i] <= 1) break; ganz[i]--; rest++; }
+        let t = 0;
+        const kurz = dauer <= 30;
+        return vl.map((v, i) => {
+            const n = Object.assign({}, v, { zeit: t + "–" + (t + ganz[i]) }); t += ganz[i];
+            if (kurz && /Übung|Challenge/i.test(v.phase)) { const z = dauer <= 20 ? " – heute kurz: nur 2 Challenges, ohne Bonus" : " – heute kurz: ohne Bonus-Level"; n.k12 = (v.k12 || "") + z; n.k34 = (v.k34 || "") + z; }
+            return n;
+        });
+    };
+    // Minuten einer Aktivität passend zur Dauer umrechnen
+    window.lernMinuten = function (min, e) {
+        const f = window.lernDauer() / (e ? window.lernBasis(e) : 40);
+        return Math.max(1, Math.round(min * f));
+    };
+    // Auswahl-Feld (für die Stunden-Ansicht)
+    window.lernDauerWahl = function (klasse) {
+        const d = window.lernDauer(), liste = DAUERN.includes(d) ? DAUERN : DAUERN.concat(d).sort((a, b) => a - b);
+        return `<label class="${klasse || ""}" style="display:inline-flex;align-items:center;gap:8px;font-weight:800">⏱ Meine Zeit heute: <select data-lerndauer style="width:auto">${liste.map(m => `<option value="${m}" ${m === d ? "selected" : ""}>${m} Minuten</option>`).join("")}</select></label>`;
+    };
+})();

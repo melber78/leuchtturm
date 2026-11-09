@@ -263,6 +263,8 @@ function uebungL(e, st){
     if (!p) return null;
     p.zweck = "Gemeinsam üben – erst zusammen, dann allein. Möglichst viele Kinder sollen dabei aktiv sein, nicht nur eins.";
     p.tipp = "Alle sind gleichzeitig dran: Antworten mit den Fingern zeigen, mit der grünen/roten Karte, mit den Zahlenkarten 1–4 oder auf dem Schmierzettel – so weißt du sofort, wer es schon kann. Fürs Drankommen hilft das Glücksrad in der Präsentation.";
+    const d = +e.dauer || 40;
+    if (d <= 30) p.tipp = (d <= 20 ? "<b>Heute nur " + d + " Minuten:</b> zwei Challenges reichen, Bonus-Level weglassen – die Präsentation kürzt automatisch. " : "<b>Heute nur " + d + " Minuten:</b> Bonus-Level weglassen – die Präsentation kürzt automatisch. ") + p.tipp;
     return p;
 }
 function abL(e, st){

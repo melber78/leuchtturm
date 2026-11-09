@@ -952,7 +952,11 @@ function materialListe(text){
     const z = String(text || "").split("\n").map(s => s.trim()).filter(Boolean);
     return z.length ? "<ul>" + z.map(s => "<li>" + inline(s) + "</li>").join("") + "</ul>" : "<p>–</p>";
 }
+// Lernangebot: Verlauf passend zur gewählten Dauer (20, 30 … Minuten)
+const LERN_D = () => window.BEREICH && window.BEREICH.key === "lernangebot" && window.lernVerlauf;
+function mitDauer(e){ return LERN_D() ? Object.assign({}, e, { verlauf: window.lernVerlauf(e), dauer: window.lernDauer() }) : e; }
 function verlaufTabelle(e, klasse, st){
+    e = mitDauer(e);
     if (st) return `<table class="${klasse}"><tr><th style="width:14%">Min</th><th style="width:20%">Phase</th><th>Ablauf</th></tr>` +
         (e.verlauf || []).map(v => `<tr><td>${esc(v.zeit)}</td><td>${esc(v.phase)}</td><td>${inline(st === "12" ? v.k12 : v.k34)}</td></tr>`).join("") + "</table>";
     return `<table class="${klasse}"><tr><th>Min</th><th>Phase</th><th>Kl. 1/2</th><th>Kl. 3/4</th></tr>` +
@@ -977,7 +981,7 @@ function lehrerHtml(e, st){
     const kl = st === "12" ? "1/2" : st === "34" ? "3/4" : "";
     const zeig12 = !e.nur34 && st !== "34", zeig34 = st !== "12";
     return `<div class="lehrer-druck">
-        <div class="ld-kopf"><div class="ld-meta">${esc(window.BEREICH.name)} · ${esc(e.kategorie)} · ${esc(e.dauer || 40)} Minuten · ${kl ? "Klasse " + kl : "Klasse 1/2 und 3/4"}</div><h1>${esc(e.titel)}</h1></div>
+        <div class="ld-kopf"><div class="ld-meta">${esc(window.BEREICH.name)} · ${esc(e.kategorie)} · ${esc(mitDauer(e).dauer || 40)} Minuten · ${kl ? "Klasse " + kl : "Klasse 1/2 und 3/4"}</div><h1>${esc(e.titel)}</h1></div>
         ${kl ? `<table><tr><th>Ziel</th></tr><tr><td>${inline(st === "12" ? e.ziel12 : e.ziel34)}</td></tr></table>` : `<table><tr><th style="width:50%">Ziel Kl. 1/2</th><th>Ziel Kl. 3/4</th></tr><tr><td>${inline(e.ziel12)}</td><td>${inline(e.ziel34)}</td></tr></table>`}
         <h2>Material</h2>${materialListe(e.material)}
         ${zeig12 ? (gemeinsam12() ? `<p style="font-size:9pt;color:#55636a"><strong>Arbeitsblatt Kl. 1/2 (ein Blatt für alle):</strong> Jede Aufgabe und jede Zeile vorlesen – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Die Kinder malen, kreuzen Bilder an oder kreisen 👍/👎 bzw. ein Gesicht ein.</p>` : `<p style="font-size:9pt;color:#55636a"><strong>Arbeitsblatt Kl. 1:</strong> Aufgaben und Antworten vorlesen – die Farbsymbole zeigen die Zeile („Beim roten Kreis steht …“). Schreibaufgaben gibt es nur auf dem Blatt für Kl. 2.</p>`) : ""}
@@ -1013,7 +1017,7 @@ async function drucken(e, was){
         for (let k = 1; k < anzahl; k++) ziel.appendChild(erstes.cloneNode(true));
     } else if (was === "regie12" || was === "regie34") {
         const st = was.slice(5);
-        ziel.innerHTML = `<div class="lehrer-druck"><div class="ld-kopf"><div class="ld-meta">${esc(window.BEREICH.name)} · ${esc(e.kategorie)} · ${esc(e.dauer || 40)} Minuten · Klasse ${st === "12" ? "1/2" : "3/4"}</div><h1>${esc(e.titel)} – Schritt für Schritt</h1></div>${window.sozialRegie.bauen(e, st)}</div>`;
+        ziel.innerHTML = `<div class="lehrer-druck"><div class="ld-kopf"><div class="ld-meta">${esc(window.BEREICH.name)} · ${esc(e.kategorie)} · ${esc(mitDauer(e).dauer || 40)} Minuten · Klasse ${st === "12" ? "1/2" : "3/4"}</div><h1>${esc(e.titel)} – Schritt für Schritt</h1></div>${window.sozialRegie.bauen(mitDauer(e), st)}</div>`;
     } else if (was === "rituale") {
         ziel.innerHTML = `<div class="lehrer-druck"><div class="ld-kopf"><div class="ld-meta">Sozialtraining · gilt für jede Stunde</div><h1>Feste Rituale</h1></div><div class="md">${md(rituale())}</div></div>`;
     } else {
@@ -1306,7 +1310,7 @@ function zeigeStunde(id){
             <h3>Material</h3>${materialListe(e.material).replace("<ul>", '<ul class="material-liste">')}
         </div>
 
-        <div class="karte"><div class="detail-kopf" style="margin:0 0 12px"><div class="titel"><h2 style="margin:0">Stundenverlauf (${esc(e.dauer || 40)} Min)</h2>
+        <div class="karte"><div class="detail-kopf" style="margin:0 0 12px"><div class="titel"><h2 style="margin:0">Stundenverlauf (<span id="verlaufDauer">${esc(mitDauer(e).dauer || 40)}</span> Min)</h2>${LERN_D() ? `<div style="margin-top:6px">${window.lernDauerWahl()}</div>` : ""}
             ${window.sozialRegie ? `<p class="ed-hilfe" style="margin:4px 0 0">„Schritt für Schritt“ erklärt dir jede Phase: was du tust, was du sagst und worauf du achtest.</p>` : ""}</div>
             ${window.sozialRegie ? `<div class="knopfleiste" id="verlaufWahl"><button class="btn nacht" data-va="tabelle">Überblick</button><button class="btn" data-va="12"><i class="fa-solid fa-list-ol"></i> Schritt für Schritt Kl. 1/2</button><button class="btn" data-va="34"><i class="fa-solid fa-list-ol"></i> Schritt für Schritt Kl. 3/4</button></div>` : ""}</div>
             <div id="verlaufInhalt" style="overflow-x:auto">${verlaufTabelle(e, "verlauf")}</div></div>
@@ -1343,10 +1347,14 @@ function zeigeStunde(id){
     if (verlaufWahl) {
         const zeigen = art => {
             verlaufWahl.querySelectorAll("[data-va]").forEach(b => b.classList.toggle("nacht", b.dataset.va === art));
-            document.getElementById("verlaufInhalt").innerHTML = art === "tabelle" ? verlaufTabelle(e, "verlauf") : window.sozialRegie.bauen(e, art);
+            document.getElementById("verlaufInhalt").innerHTML = art === "tabelle" ? verlaufTabelle(e, "verlauf") : window.sozialRegie.bauen(mitDauer(e), art);
+            aktuelleArt = art;
             try { localStorage.setItem("sozialVerlaufAnsicht", art); } catch (err) {}
         };
+        let aktuelleArt = "tabelle";
         verlaufWahl.querySelectorAll("[data-va]").forEach(b => b.addEventListener("click", () => zeigen(b.dataset.va)));
+        const dw = inhalt.querySelector("[data-lerndauer]");
+        if (dw) dw.addEventListener("change", () => { window.lernDauerSetzen(dw.value); document.getElementById("verlaufDauer").textContent = window.lernDauer(); zeigen(aktuelleArt); });
         let gemerkt = "tabelle";
         try { gemerkt = localStorage.getItem("sozialVerlaufAnsicht") || "tabelle"; } catch (err) {}
         if (gemerkt === "12" && e.nur34) gemerkt = "34";
