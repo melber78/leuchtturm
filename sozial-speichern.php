@@ -14,7 +14,12 @@ function antwort($ok, $daten = []){
     exit;
 }
 
-if (empty($_SESSION["leuchtturm_eingeloggt"])) {
+// Gast-Zugang (Kollegin testet): nur freigegebene Bereiche, eigene Daten
+require_once __DIR__ . "/gast-zugang-pruefen.php";
+$gast = empty($_SESSION["leuchtturm_eingeloggt"]) ? lt_gast() : null;
+$bereichKey = in_array($_GET["bereich"] ?? "", ["vertretung", "lernangebot"], true) ? $_GET["bereich"] : "sozial";
+if ($gast && !lt_gastDarf($gast, $bereichKey)) { http_response_code(403); antwort(false, ["fehler" => "Dieser Bereich ist für deinen Gast-Zugang nicht freigegeben."]); }
+if (empty($_SESSION["leuchtturm_eingeloggt"]) && !$gast) {
     http_response_code(401);
     antwort(false, ["fehler" => "Du bist nicht mehr eingeloggt. Bitte in einem neuen Tab neu einloggen und dann noch einmal speichern – deine Eingaben hier bleiben erhalten."]);
 }
@@ -33,7 +38,7 @@ $anfrage = json_decode($roh, true);
 if (!is_array($anfrage)) antwort(false, ["fehler" => "Ungültige Anfrage."]);
 
 $DATEIEN = ["vertretung" => "vertretung.json", "lernangebot" => "lernangebot.json"];
-$datei = __DIR__ . "/material-daten/" . ($DATEIEN[$_GET["bereich"] ?? ""] ?? "sozialtraining.json");
+$datei = ($gast ? lt_gastOrdner($gast) : __DIR__ . "/material-daten") . "/" . ($DATEIEN[$_GET["bereich"] ?? ""] ?? "sozialtraining.json");
 if (!is_dir(dirname($datei))) mkdir(dirname($datei), 0775, true);
 if (!file_exists($datei)) file_put_contents($datei, json_encode(["einheiten" => [], "jahresplan" => null, "rituale" => null]));
 

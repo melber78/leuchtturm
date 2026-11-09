@@ -97,6 +97,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-09", "Gast-Zugänge für Kolleginnen", "Kolleginnen testen Sozialtraining, Lernangebot und Vertretung mit eigenem Code – getrennt von deinen Daten.", "zugaenge.php"],
     ["2026-11-08", "Leise-Meer im Sozialtraining", "In jeder Präsentation unten: 🌊 Leise-Meer – je leiser, desto mehr Meerestiere tauchen am Leuchtturm auf.", "sozial-stunden.php"],
     ["2026-11-08", "Leise-Wald", "Neue Tafel-Übung: Je leiser die Klasse, desto mehr Tiere kommen aus dem Wald (Mikrofon, es wird nichts aufgenommen).", "sozial-stunden.php?bereich=lernangebot#tafel"],
     ["2026-11-08", "Lernzeit mit Eule Ella", "Lernangebot: eigene Tafel-Welt (grüne Kreidetafel, Lernpfad, Sternenglas) und 8 neue Stunden „Lernen lernen“.", "sozial-stunden.php?bereich=lernangebot"],
@@ -175,7 +176,7 @@ $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strt
 </section>
 
 <div class="portal-footer">
-<a href="update.php"><i class="fa-solid fa-cloud-arrow-down"></i> Updates</a> &nbsp;·&nbsp; <a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i> Abmelden</a>
+<a href="update.php"><i class="fa-solid fa-cloud-arrow-down"></i> Updates</a> &nbsp;·&nbsp; <a href="zugaenge.php"><i class="fa-solid fa-user-clock"></i> Gast-Zugänge</a> &nbsp;·&nbsp; <a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i> Abmelden</a>
 </div>
 
 </div>

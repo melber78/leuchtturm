@@ -1,4 +1,4 @@
-<?php require __DIR__ . "/auth.php"; ?>
+<?php $LT_GAST_BEREICH = in_array($_GET["bereich"] ?? "", ["vertretung", "lernangebot"], true) ? $_GET["bereich"] : "sozial"; require __DIR__ . "/gast-zugang.php"; ?>
 <?php
 /* ============================================================
    Leuchtturm – Sozialtraining-Stunden
@@ -20,7 +20,8 @@ $BEREICHE = [
 ];
 $BEREICH = isset($BEREICHE[$_GET["bereich"] ?? ""]) ? $_GET["bereich"] : "sozial";
 $B_INFO = $BEREICHE[$BEREICH];
-$datei = __DIR__ . "/material-daten/" . $B_INFO["datei"];
+// Gast-Zugang (Kollegin testet): eigene Daten in material-daten/gaeste/<id>/
+$datei = ($LT_GAST ? lt_gastOrdner($LT_GAST) : __DIR__ . "/material-daten") . "/" . $B_INFO["datei"];
 $dateiKaputt = false;
 $daten = [];
 if (file_exists($datei)) {
@@ -384,7 +385,7 @@ table.ab-tab td .lz{ min-height:0; }
 <header class="kopf">
     <div class="kopf-innen">
         <div class="kopf-zeile">
-            <a class="zurueck" href="index.php"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
+            <a class="zurueck" href="<?= $LT_GAST ? "gast.php" : "index.php" ?>"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
             <h1><i class="fa-solid <?= $B_INFO["icon"] ?>"></i> <?= htmlspecialchars($B_INFO["titel"]) ?></h1>
         </div>
         <nav class="reiter">
@@ -400,13 +401,18 @@ table.ab-tab td .lz{ min-height:0; }
             <a href="#rituale" data-reiter="rituale"><i class="fa-solid fa-box-archive"></i> Material</a>
 <?php else: ?>
             <a href="#rituale" data-reiter="rituale"><i class="fa-solid fa-box-archive"></i> Material</a>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "sozial")): ?>
             <a href="sozial-stunden.php" style="margin-left:auto"><i class="fa-solid fa-people-group"></i> Zum Sozialtraining</a>
+<?php endif; ?>
 <?php endif; ?>
         </nav>
     </div>
 </header>
 
 <main class="seite">
+    <?php if ($LT_GAST): ?>
+    <div class="hinweis"><i class="fa-solid fa-user-clock"></i> <b>Gast-Zugang<?= !empty($LT_GAST["name"]) ? " · " . htmlspecialchars($LT_GAST["name"]) : "" ?>:</b> Alles darf ausprobiert werden. Eigene Stunden, Jahresplan und Sterne werden nur für deinen Zugang gespeichert.<?= !empty($LT_GAST["bis"]) ? " Gültig bis " . date("d.m.Y", strtotime($LT_GAST["bis"])) . "." : "" ?> <a href="gast.php?abmelden=1">Abmelden</a></div>
+    <?php endif; ?>
     <?php if ($dateiKaputt): ?>
     <div class="hinweis rot"><i class="fa-solid fa-triangle-exclamation"></i> Die Datei material-daten/<?= htmlspecialchars($B_INFO["datei"]) ?> ist beschädigt. Deine eigenen Stunden werden deshalb gerade nicht angezeigt, und Speichern ist gesperrt, damit nichts verloren geht. Eine Sicherung findest du unter update-backup/.</div>
     <?php endif; ?>

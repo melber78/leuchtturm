@@ -9,6 +9,8 @@ Vertretungsstunden: `sozial-stunden.php?bereich=vertretung` (gleiche Seite, eige
 Lernangebot (Grundschule, 40 Min, Deutsch/Mathe/Lernen lernen): `sozial-stunden.php?bereich=lernangebot` (Stunden, Jahresplan GS1–GS4, Methoden & Planer, Tafel, Material), fertige Stunden in `lernangebot-einheiten*.js`, eigene Stunden in `material-daten/lernangebot.json`. Methodenpool + Stundenplaner: `lernangebot-methoden.js`, Tafel-Übungen: `lernangebot-tafel.js`, Material: `lernangebot-material.js`, Wörter/Bilder-Daten: `lernangebot-woerter.js`, Arbeitsblatt-Generator Deutsch/Mathe Kl. 1–4: `lernangebot-generator.php`.
 Tafel-Präsentation und PowerPoint-Export: `sozial-praesentation.js` (PowerPoint über `pptxgen.bundle.js`, PptxGenJS, MIT-Lizenz). Filme zu den Stunden: `sozial-medien.js`. Arbeitsmaterial (Karten, Plakate, Urkunden): `sozial-material.js`.
 
+Gast-Zugänge für Kolleginnen: `zugaenge.php` (anlegen, Code/Link, sperren, löschen), Anmeldung für Gäste: `gast.php`. Gäste sehen nur die freigegebenen Bereiche (Sozialtraining, Lernangebot, Vertretung) und speichern in `material-daten/gaeste/<id>/` – getrennt von den eigenen Daten.
+
 Daten (`material-daten/`, `material-dateien/`) und `auth.php` liegen nur auf dem Server und werden nie überschrieben.
 
 Bilder in `bilder.js`: Microsoft Fluent Emoji (MIT-Lizenz, Hinweis in der Datei).
