@@ -1,4 +1,4 @@
-<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs"]; require __DIR__ . "/gast-zugang.php"; ?>
+<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs", "leise"]; require __DIR__ . "/gast-zugang.php"; ?>
 <?php
 if (empty($_SESSION["tafel_csrf"])) $_SESSION["tafel_csrf"] = bin2hex(random_bytes(16));
 // Gespeicherte Tafelbild-Einstellungen (Morgentafel …) – Gäste haben eigene Daten
@@ -323,6 +323,20 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
             <p>Zum Stundenanfang: Begrüßung, Datum, Wetter, Stundenplan mit Lehrkräften, was auspacken, was beachten – passend für Kl. 1/2 oder 3/4.</p>
         </button>
 <?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
+<?php foreach ([
+    ["ende", "🌳🎁", "#e9f5e1", "Leise-Wald: Überraschung am Ende", "Für die Arbeitsphase: Während der Arbeit nur eine ruhige Uhr – am Ende kommen so viele Tiere, wie die Klasse leise war."],
+    ["melden", "🦉🤫", "#fff3d6", "Leise-Wald: Nur melden, wenn's laut wird", "Der Bildschirm bleibt ruhig. Wird es zu laut, erscheint die Eule mit „Pssst!“ und ein leiser Ton."],
+    ["sterne", "⭐🫙", "#eef3fb", "Leise-Wald: Stille-Sterne", "Jede leise Minute bringt still einen Stern ins Glas – am Ende zählt die Klasse die Sterne."],
+    ["zuschauen", "🦊🐰", "#e3f2fb", "Leise-Wald: Tiere kommen live", "Für kurze Ruhephasen ohne Arbeitsauftrag: Je leiser, desto mehr Tiere kommen in den Wald – bei Lärm laufen sie weg."],
+] as [$m, $bild, $farbe, $titel, $text]): ?>
+        <button class="kachel" type="button" onclick="leiseStarten('<?= $m ?>')">
+            <div class="bild" style="font-size:46px;background:<?= $farbe ?>"><?= $bild ?></div>
+            <h2><?= htmlspecialchars($titel) ?></h2>
+            <p><?= htmlspecialchars($text) ?></p>
+        </button>
+<?php endforeach; ?>
+<?php endif; ?>
     </div>
 </div>
 
@@ -398,6 +412,13 @@ window.TAFEL_CSRF = <?= json_encode($_SESSION["tafel_csrf"]) ?>;
 window.TB_ERLAUBT = <?= json_encode(["buchstabenkurs" => !$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs"), "morgen" => !$LT_GAST || lt_gastDarf($LT_GAST, "morgen")]) ?>;
 </script>
 <script src="tafel-morgen.js?v=<?= @filemtime(__DIR__ . "/tafel-morgen.js") ?>"></script>
+<script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
+<script src="lernangebot-tafel.js?v=<?= @filemtime(__DIR__ . "/lernangebot-tafel.js") ?: 1 ?>"></script>
+<script>
+// Leise-Wald direkt aus den Tafelbildern (auch über tafelbilder.php#leise-ende usw.)
+function leiseStarten(modus){ if (window.lernTafel) window.lernTafel.starten("leise", { modus }); }
+document.addEventListener("DOMContentLoaded", () => { const m = /^#leise-(ende|melden|sterne|zuschauen)$/.exec(location.hash); if (m) leiseStarten(m[1]); });
+</script>
 <script>
 "use strict";
 /* ---------- Buchstaben als Schreibwege ----------

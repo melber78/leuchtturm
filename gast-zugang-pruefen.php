@@ -6,7 +6,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 // Alle Bereiche, die einzeln für Gäste freigegeben werden können (Gruppe => [Schlüssel => Name])
 const LT_GAST_GRUPPEN = [
     "Grundschule" => ["sozial" => "Sozialtraining", "lernangebot" => "Lernangebot (mit Arbeitsblatt-Generator)", "vertretung" => "Vertretungsstunden"],
-    "Tafelbilder" => ["morgen" => "Guten Morgen! (Tagesstart)", "buchstabenkurs" => "Buchstabenkurs"],
+    "Tafelbilder" => ["morgen" => "Guten Morgen! (Tagesstart)", "buchstabenkurs" => "Buchstabenkurs", "leise" => "Leise-Wald (alle 4 Arten)"],
     "LRS-Förderung" => ["lrs" => "Material-Generator", "akten" => "Kinder-Akten", "gutachten" => "Gutachten", "materialien" => "Materialien", "timer" => "Stunden-Timer", "stundenplan" => "Stundenplan"],
 ];
 define("LT_GAST_BEREICHE", array_merge(...array_values(LT_GAST_GRUPPEN)));
@@ -26,7 +26,7 @@ function lt_gast(){
         if (!empty($g["gesperrt"])) return null;
         if (!empty($g["bis"]) && strtotime($g["bis"] . " 23:59:59") < time()) return null;
         // ältere Zugänge: Lernangebot schloss die Tafelbilder mit ein
-        if (empty($g["v2"]) && in_array("lernangebot", $g["bereiche"] ?? [], true)) $g["bereiche"] = array_values(array_unique(array_merge($g["bereiche"], ["morgen", "buchstabenkurs"])));
+        if (empty($g["v2"]) && in_array("lernangebot", $g["bereiche"] ?? [], true)) $g["bereiche"] = array_values(array_unique(array_merge($g["bereiche"], ["morgen", "buchstabenkurs", "leise"])));
         return $g;
     }
     return null;

@@ -60,7 +60,7 @@ function bereichAuswahl($an, $name = ""){
     return $html . '<p class="hilfe" style="margin-top:4px"><i class="fa-solid fa-lock"></i> In jedem Bereich arbeitet ' . $wer . ' mit eigenen, leeren Daten – deine Kinder-Akten, Materialien, Stundenpläne usw. sind für ' . $wer . ' nicht sichtbar.</p>';
 }
 // Freigaben inkl. älterer Zugänge (Lernangebot schloss die Tafelbilder ein)
-function lt_gastBereiche($g){ $b = $g["bereiche"] ?? []; if (empty($g["v2"]) && in_array("lernangebot", $b, true)) $b = array_values(array_unique(array_merge($b, ["morgen", "buchstabenkurs"]))); return $b; }
+function lt_gastBereiche($g){ $b = $g["bereiche"] ?? []; if (empty($g["v2"]) && in_array("lernangebot", $b, true)) $b = array_values(array_unique(array_merge($b, ["morgen", "buchstabenkurs", "leise"]))); return $b; }
 function bereichNamen($g){ return implode(", ", array_map(fn($b) => preg_replace('/ \(.*\)$/', "", LT_GAST_BEREICHE[$b] ?? $b), lt_gastBereiche($g))); }
 function status($g){
     if (!empty($g["gesperrt"])) return ["gesperrt", "rot"];
@@ -143,7 +143,7 @@ textarea{ width:100%; font:600 14px/1.5 "Nunito",sans-serif; border:2px solid #d
         <div style="flex:0 1 200px"><label class="feld">Gültig bis</label><input type="date" name="bis" value="<?= date("Y-m-d", strtotime("+30 days")) ?>" min="<?= date("Y-m-d") ?>"><label style="display:flex;gap:6px;align-items:center;font-weight:800;margin-top:6px;font-size:14px"><input type="checkbox" name="dauerhaft" value="1" style="width:auto"> unbefristet</label></div>
     </div>
     <div>
-        <?= bereichAuswahl(["sozial", "lernangebot", "vertretung", "morgen", "buchstabenkurs"]) ?>
+        <?= bereichAuswahl(["sozial", "lernangebot", "vertretung", "morgen", "buchstabenkurs", "leise"]) ?>
     </div>
     <button class="btn" type="submit"><i class="fa-solid fa-key"></i> Zugang erstellen</button>
 </form>
