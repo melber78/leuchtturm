@@ -408,25 +408,35 @@ function WALD_SVG(){
     </svg>`;
 }
 W.leise = {
-    titel: "Leise-Wald", emoji: "🌳", gruppe: "Allgemein",
+    titel: "Leise-Wald", emoji: "🌳", gruppe: "Allgemein", vollKompakt: true,
     text: "Je leiser ihr seid, desto mehr Tiere kommen in den Wald und spielen dort. Wird es laut, laufen sie davon. (Mikrofon nötig – es wird nichts aufgenommen.)",
     optionen: [
         { k: "minuten", label: "Alle Tiere nach", zeigen: e => e.modus === "zuschauen", werte: [[1, "1 Min. Ruhe"], [2, "2 Min. Ruhe"], [3, "3 Min. Ruhe"], [5, "5 Min. Ruhe"], [10, "10 Min. Ruhe"]] },
-        { k: "tiere", label: "Tiere", zeigen: e => e.modus === "zuschauen" || e.modus === "ende", werte: [[6, "6 Tiere"], [9, "9 Tiere"], [12, "12 Tiere"]] },
-        { k: "modus", label: "Art", werte: [["ende", "Überraschung am Ende"], ["melden", "Nur melden, wenn's laut wird"], ["sterne", "Stille-Sterne sammeln"], ["zuschauen", "Tiere kommen live (zum Zuschauen)"]] },
+        { k: "tiere", label: "Tiere", zeigen: e => e.modus === "zuschauen", werte: [[6, "6 Tiere"], [9, "9 Tiere"], [12, "12 Tiere"]] },
+        { k: "modus", label: "Art", werte: [["ende", "Überraschung am Ende"], ["melden", "Pssst-Eule"], ["sterne", "Stille-Sterne sammeln"], ["zuschauen", "Tiere kommen live (zum Zuschauen)"]] },
+        { k: "ueberraschung", label: "Überraschung", zeigen: e => e.modus === "ende", werte: [["tiere", "🦊 Tiere kommen"], ["konfetti", "🎉 Konfetti-Party"], ["ballons", "🎈 Luftballons"], ["pokal", "🏆 Pokal"], ["zufall", "🎲 Zufall"]] },
         { k: "arbeitszeit", label: "Arbeitszeit", zeigen: e => e.modus !== "zuschauen", werte: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 20, 25, 30].map(m => [m, m + " Min."]) }
     ],
-    std: { minuten: 3, tiere: 9, modus: "ende", arbeitszeit: 10 },
+    std: { minuten: 3, tiere: 9, modus: "ende", arbeitszeit: 10, ueberraschung: "tiere" },
+    // kurze Erklärung je Art (steht vor dem Start unten)
+    erklaerung: {
+        ende: "Während der Arbeit bleibt der Bildschirm ruhig – nur die Uhr läuft. Am Ende kommt die Überraschung: je leiser ihr wart, desto größer.",
+        melden: "Während der Arbeit bleibt der Bildschirm ruhig. Nur wenn es zu laut wird, erscheint kurz die Eule und sagt „Pssst!“. Am Ende seht ihr, wie oft sie kommen musste.",
+        sterne: "Für jede leise Minute kommt heimlich ein Stern ins Glas – das Glas bleibt zugedeckt. Erst wenn die Zeit um ist, wird aufgedeckt, wie viele Sterne ihr gesammelt habt.",
+        zuschauen: "Je leiser ihr seid, desto mehr Tiere kommen live in den Wald. Wird es laut, laufen sie weg. (Lenkt eher ab – gut für Stillephasen ohne Arbeit.)"
+    },
     // zuletzt gewählte Art und Arbeitszeit merken (auf diesem Gerät)
     gemerkt(){ try { return JSON.parse(localStorage.getItem("lt-leise-wahl") || "{}"); } catch (x) { return {}; } },
     eigen(el, e, api){
         const meer = e.thema === "meer";
-        const n = +e.tiere || 9, proTier = (+e.minuten || 3) * 60 / n;
+        const n = e.modus === "ende" || e.modus === undefined ? 12 : (+e.tiere || 9), proTier = (+e.minuten || 3) * 60 / n;
         // Art: live zuschauen – oder ruhiger Bildschirm während der Arbeit (Überraschung am Ende, nur melden, Sterne)
         const modus = ["ende", "melden", "sterne", "zuschauen"].includes(e.modus) ? e.modus : "ende";
         const dauer = Math.max(60, (+e.arbeitszeit || 10) * 60);
         const ruhigerModus = modus !== "zuschauen";
-        try { localStorage.setItem("lt-leise-wahl", JSON.stringify({ modus, arbeitszeit: Math.round(dauer / 60), tiere: n, minuten: +e.minuten || 3 })); } catch (x) {}
+        const ueberArten = ["tiere", "konfetti", "ballons", "pokal"];
+        const ueberWahl = [...ueberArten, "zufall"].includes(e.ueberraschung) ? e.ueberraschung : "tiere";
+        try { localStorage.setItem("lt-leise-wahl", JSON.stringify({ modus, arbeitszeit: Math.round(dauer / 60), tiere: modus === "zuschauen" ? n : (+e.tiere || 9), minuten: +e.minuten || 3, ueberraschung: ueberWahl })); } catch (x) {}
         let schwelle = 45; try { schwelle = +localStorage.getItem("lt-leise-schwelle") || 45; } catch (x) {}
         const reihe = (meer ? MEER_TIERE : WALD_TIERE).slice();
         const liste = [...reihe.slice(0, 4), ...mischen(reihe.slice(4))].slice(0, n);   // abwechslungsreicher Start: laufen, fliegen, hüpfen …
@@ -438,13 +448,14 @@ W.leise = {
                ${Array.from({ length: 10 }, (_, i) => `<i class="lw-blase-luft" style="left:${5 + i * 9.5}%;--t:${5 + (i % 4) * 2}s;animation-delay:${-i * 1.3}s"></i>`).join("")}`
             : `${WALD_SVG()}${[[7, 80, 0, 1], [17, 120, -60, .8], [10, 150, -110, .6]].map(([y, t, d, g]) => `<div class="lw-wolke2" style="top:${y}%;--t:${t}s;animation-delay:${d}s;--g:${g}">${WOLKE}</div>`).join("")}`;
         const ziel = meer ? "am Leuchtturm" : "im Wald";
-        const ruheText = { ende: `🤫 Arbeitet leise – am Ende wartet eine Überraschung ${ziel}!`, melden: "🤫 Jetzt wird leise gearbeitet.", sterne: "🤫 Jede leise Minute bringt einen Stern ins Glas." }[modus] || "";
+        const ruheText = { ende: "🤫 Arbeitet leise – am Ende wartet eine Überraschung!", melden: "🤫 Jetzt wird leise gearbeitet.", sterne: "🤫 Jede leise Minute bringt heimlich einen Stern ins Glas. Am Ende wird aufgedeckt!" }[modus] || "";
         const ruhe = ruhigerModus ? `<div class="lw-ruhe ${modus}${meer ? " meer" : ""}">
             <div class="lw-r-karte">
-              ${modus === "sterne" ? `<div class="lw-r-reihe"><div class="lw-glas"><div class="lw-glas-sterne"></div></div><div><div class="lw-r-uhr">${Math.floor(dauer / 60)}:00</div><div class="lw-r-zahl">⭐ <b>0</b> Sterne</div></div></div>`
+              ${modus === "sterne" ? `<div class="lw-r-reihe"><div class="lw-glas zu"><div class="lw-glas-sterne"></div><div class="lw-tuch"><span>?</span></div></div><div><div class="lw-r-uhr">${Math.floor(dauer / 60)}:00</div><div class="lw-r-zahl" hidden>⭐ <b>0</b> Sterne</div></div></div>`
                 : `<div class="lw-r-symbol">${modus === "ende" ? "🎁" : "🦉"}</div><div class="lw-r-uhr">${Math.floor(dauer / 60)}:00</div>`}
               <div class="lw-r-text">${ruheText}</div>
             </div>
+            <div class="lw-fest" hidden></div>
             <div class="lw-r-pssst" hidden><div><span>🦉</span><b>Pssst!</b><small>Bitte leise arbeiten.</small></div></div>
           </div>` : "";
         el.innerHTML = `<div class="lw-szene${meer ? " lw-meer" : ""}">${deko}<div class="lw-tiere"></div><div class="lw-blase" hidden></div>${ruhe}</div>
@@ -611,10 +622,7 @@ W.leise = {
             setTimeout(() => { pssstEl.hidden = true; }, 2200);
         }
         function sternDazu(){
-            sterne++; ruheEl.querySelector(".lw-r-zahl b").textContent = sterne;
-            const st = document.createElement("i"); st.textContent = "⭐";
-            st.style.left = (12 + Math.random() * 70) + "%"; st.style.setProperty("--y", (Math.floor((sterne - 1) / 6) * 16) + "%");
-            ruheEl.querySelector(".lw-glas-sterne").appendChild(st); api.klang(880, .15);
+            sterne++;   // heimlich – erst am Ende aufdecken
         }
         function ruhigMessen(istLaut){
             zeit += .1; minZeit += .1;
@@ -625,10 +633,32 @@ W.leise = {
             if (uhrEl) uhrEl.textContent = mmss(Math.max(0, dauer - zeit));
             if (zeit >= dauer) ruhigFertig();
         }
+        /* ---------- Überraschungen am Ende (Konfetti, Luftballons, Pokal) ---------- */
+        function festZeigen(art, anteil){
+            const fest = ruheEl.querySelector(".lw-fest"); fest.hidden = false; fest.className = "lw-fest " + art;
+            const stufe = anteil >= .8 ? 3 : anteil >= .5 ? 2 : anteil >= .25 ? 1 : 0;
+            const farben = ["#ff6b6b", "#ffd93d", "#6bcB77", "#4d96ff", "#c77dff", "#ff9f43", "#f78fb3"];
+            const zufall = (a, b) => a + Math.random() * (b - a);
+            let teile = "";
+            if (art === "konfetti" && stufe) teile = Array.from({ length: [0, 50, 110, 180][stufe] }, (_, i) =>
+                `<i class="lw-konf" style="left:${zufall(0, 100)}%;background:${farben[i % farben.length]};--d:${zufall(2.5, 5.5)}s;--w:${zufall(-1, 0)}s;--r:${zufall(-720, 720)}deg;--x:${zufall(-12, 12)}vw;width:${zufall(8, 16)}px;height:${zufall(6, 22)}px;border-radius:${i % 3 ? 2 : 50}%"></i>`).join("");
+            if (art === "ballons" && stufe) teile = Array.from({ length: [0, 6, 12, 20][stufe] }, (_, i) =>
+                `<span class="lw-ballon" style="left:${4 + (i * 47) % 92}%;--f:${farben[i % farben.length]};--d:${zufall(7, 12)}s;--w:${-zufall(0, 6)}s;--s:${zufall(.75, 1.25)}"><svg viewBox="0 0 60 110"><path d="M30 72 Q24 88 32 96 T 28 110" stroke="#7b6b5a" stroke-width="1.5" fill="none"/><ellipse cx="30" cy="34" rx="25" ry="31" fill="var(--f)"/><path d="M26 64 L34 64 L30 71 Z" fill="var(--f)"/><ellipse cx="21" cy="22" rx="6" ry="10" fill="#fff" opacity=".45" transform="rotate(-20 21 22)"/></svg></span>`).join("");
+            const pokal = ["🍀", "🥉", "🥈", "🏆"][stufe];
+            const titel = { konfetti: ["Nächstes Mal klappt's!", "Gut gemacht!", "Super leise!", "Mega leise – Party! 🎉"], ballons: ["Nächstes Mal klappt's!", "Gut gemacht!", "Super leise!", "Mega leise!"], pokal: ["Nächstes Mal klappt's!", "Bronze!", "Silber!", "Gold!"] }[art][stufe];
+            const unter = stufe ? `Ihr habt ${Math.round(anteil * 100)} % der Zeit leise gearbeitet.` : "Heute war es noch zu laut – ihr schafft das!";
+            fest.innerHTML = `${teile}<div class="lw-fest-karte"><div class="lw-fest-bild">${art === "pokal" ? pokal : art === "ballons" ? "🎈" : stufe ? "🎉" : "🍀"}</div><b>${titel}</b><small>${unter}</small></div>`;
+            if (stufe) [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => api.klang(f, .25, "triangle"), 300 + i * 160));
+        }
         function ruhigFertig(){
             fertig = true; api.gong();
             const anteil = zeit ? stillZeit / zeit : 0;
-            if (modus === "ende") {
+            const art = modus === "ende" ? (ueberWahl === "zufall" ? ueberArten[Math.floor(Math.random() * ueberArten.length)] : ueberWahl) : "";
+            if (modus === "ende" && art !== "tiere") {
+                ruheEl.classList.add("fest"); szene.classList.remove("still");
+                hinweis.textContent = "Ihr habt " + Math.round(anteil * 100) + " % der Zeit leise gearbeitet.";
+                festZeigen(art, anteil);
+            } else if (modus === "ende") {
                 const k = Math.max(anteil > .25 ? 1 : 0, Math.min(n, Math.round(n * anteil / .9)));
                 ruheEl.classList.add("weg"); szene.classList.remove("still");
                 hinweis.textContent = "Ihr habt " + Math.round(anteil * 100) + " % der Zeit leise gearbeitet …";
@@ -637,19 +667,33 @@ W.leise = {
                     if (sichtbar === k) { hinweis.textContent = k === n ? `Geschafft! Alle ${n} Tiere sind ${ziel} – ihr wart super leise! 🎉` : `${k} von ${n} Tieren sind ${ziel}! Nächstes Mal schafft ihr noch mehr. 🌱`; if (k === n) jubeln(true); } }, 900 + i * 700);
                 if (!k) hinweis.textContent = `Heute hat sich kein Tier ${ziel} getraut – es war zu laut. Nächstes Mal klappt's! 🍀`;
             } else if (modus === "sterne") {
-                uhrEl.textContent = "Fertig!"; ruheEl.querySelector(".lw-r-text").textContent = sterne === 1 ? "Ihr habt 1 Stern gesammelt! ⭐" : `Ihr habt ${sterne} Sterne gesammelt! 🎉`;
+                uhrEl.textContent = "Fertig!"; const txt = ruheEl.querySelector(".lw-r-text"), zahl = ruheEl.querySelector(".lw-r-zahl"), glas = ruheEl.querySelector(".lw-glas"), topf = ruheEl.querySelector(".lw-glas-sterne");
+                txt.textContent = "Und jetzt … aufdecken! 🥁";
+                setTimeout(() => {
+                    glas.classList.remove("zu"); zahl.hidden = false; let i = 0;
+                    const fertigText = () => { txt.textContent = sterne === 0 ? "Diesmal kein Stern – nächstes Mal schafft ihr das! 🍀" : sterne === 1 ? "Ihr habt 1 Stern gesammelt! ⭐" : `Ihr habt ${sterne} Sterne gesammelt! 🎉`; };
+                    if (!sterne) { fertigText(); return; }
+                    const t = setInterval(() => {
+                        i++; zahl.querySelector("b").textContent = i;
+                        const st = document.createElement("i"); st.textContent = "⭐";
+                        st.style.left = (12 + Math.random() * 70) + "%"; st.style.setProperty("--y", (Math.floor((i - 1) / 6) * 16) + "%");
+                        topf.appendChild(st); api.klang(660 + i * 30, .15);
+                        if (i >= sterne) { clearInterval(t); fertigText(); }
+                    }, 550);
+                }, 1600);
             } else {
                 uhrEl.textContent = "Fertig! 🎉"; ruheEl.querySelector(".lw-r-text").textContent = pssstN === 0 ? "Super – kein einziges Mal „Pssst“! 🌟" : pssstN === 1 ? "Nur 1-mal „Pssst“ – gut gemacht!" : `${pssstN}-mal „Pssst“ – nächstes Mal schafft ihr weniger!`;
             }
         }
-        if (ruhigerModus) hinweis.textContent = "Tippe auf „Start“, erlaube das Mikrofon – dann wird " + Math.round(dauer / 60) + " Minuten leise gearbeitet.";
+        hinweis.textContent = W.leise.erklaerung[modus];
+        if (meer && modus === "zuschauen") hinweis.textContent = "Je leiser ihr seid, desto mehr Tiere kommen ans Meer. Wird es laut, schwimmen sie weg.";
         api.weiter = () => {
             if (!laeuft) { starten(); return; }
             if (ruhigerModus) {   // neue Runde
                 zeit = stillZeit = lautAm = pssstN = sterne = minLaut = minZeit = 0; fertig = false; jubeln(false);
                 tiere.forEach(t => { if (t.zust !== "weg") fliehen(t); }); sichtbar = 0; anzahlZeigen(); kopf.parentNode.hidden = true;
-                ruheEl.classList.remove("weg"); szene.classList.add("still"); ruheEl.querySelector(".lw-r-text").textContent = ruheText;
-                if (modus === "sterne") { ruheEl.querySelector(".lw-glas-sterne").innerHTML = ""; ruheEl.querySelector(".lw-r-zahl b").textContent = "0"; }
+                ruheEl.classList.remove("weg", "fest"); szene.classList.add("still"); const fe = ruheEl.querySelector(".lw-fest"); fe.hidden = true; fe.innerHTML = ""; ruheEl.querySelector(".lw-r-text").textContent = ruheText;
+                if (modus === "sterne") { ruheEl.querySelector(".lw-glas-sterne").innerHTML = ""; ruheEl.querySelector(".lw-r-zahl b").textContent = "0"; ruheEl.querySelector(".lw-r-zahl").hidden = true; ruheEl.querySelector(".lw-glas").classList.add("zu"); }
                 hinweis.textContent = "Neue Runde – leise arbeiten!"; return;
             }
             tiere.forEach(t => { if (t.zust !== "weg") fliehen(t); });
@@ -749,8 +793,20 @@ const CSS = `
   .lt-leiste label{ min-width:0; } .lt-leiste label select{ width:100%; font-size:13px; padding:7px 8px; }
   .lt-leiste label[data-optlabel="modus"]{ grid-column:1 / -1; }
   .lt-leiste .lt-x{ position:absolute; top:4px; } .lt-leiste [data-voll]{ right:58px; } .lt-leiste [data-zu]{ right:4px; }
+  .lt-leiste [data-einst]{ right:112px; } .lt-kompakt.ist-voll .lt-leiste h2{ padding-right:166px; }
+  .lw-hinweis{ font-size:17px !important; line-height:1.3; padding:0 6px; }
+  .lw-anzeige{ gap:6px 12px; } .lw-regler{ font-size:16px; } .lw-regler input{ width:120px; }
+  .lw-fest-karte{ padding:18px 22px 20px; }
   .lw-anzeige{ gap:8px; } .lw-regler{ font-size:14px; }
 }
+.lt-einst{ display:none; }
+.lt-kompakt.ist-voll .lt-einst{ display:inline-flex; align-items:center; justify-content:center; line-height:1; }
+.lt-kompakt.ist-voll .lt-leiste:not(.auf){ position:absolute; top:8px; right:10px; z-index:30; padding:0; display:flex; gap:8px; background:none; }
+.lt-kompakt.ist-voll .lt-leiste:not(.auf) > :not(.lt-x){ display:none !important; }
+.lt-kompakt.ist-voll .lt-leiste:not(.auf) .lt-x{ position:static; opacity:.45; transition:opacity .2s; }
+.lt-kompakt.ist-voll .lt-leiste:not(.auf) .lt-x:hover{ opacity:1; }
+.lt-kompakt.ist-voll .lt-leiste.auf{ position:absolute; top:0; left:0; right:0; z-index:30; background:rgba(107,68,35,.97); border-radius:0 0 16px 16px; box-shadow:0 8px 30px rgba(0,0,0,.3); }
+.lt-kompakt.ist-voll .lt-leiste.auf .lt-x{ opacity:1; }
 .lt-leiste select{ font:700 15px "Andika","Nunito",sans-serif; border-radius:10px; border:0; padding:8px 10px; background:#fff3dc; color:#4a2e15; }
 .lt-x{ border:0; background:#8a5a2e; color:#fff3dc; width:44px; height:44px; border-radius:12px; font-size:22px; cursor:pointer; box-shadow:inset 0 -3px 0 rgba(0,0,0,.25); }
 .lt-buehne{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.2vh; padding:2vh 3vw; text-align:center; min-height:0; overflow:hidden; position:relative; border-radius:14px;
@@ -882,6 +938,25 @@ const CSS = `
 .lw-ruhe.sterne::before{ content:""; position:absolute; inset:0; background-image:radial-gradient(2px 2px at 10% 20%,#fff,transparent),radial-gradient(1.5px 1.5px at 30% 70%,#fff,transparent),radial-gradient(2px 2px at 55% 15%,#fff,transparent),radial-gradient(1.5px 1.5px at 75% 45%,#fff,transparent),radial-gradient(2px 2px at 90% 25%,#fff,transparent),radial-gradient(1.5px 1.5px at 20% 85%,#fff,transparent),radial-gradient(1.5px 1.5px at 65% 85%,#fff,transparent),radial-gradient(2px 2px at 45% 40%,#fff,transparent); opacity:.7; }
 .lw-ruhe.sterne .lw-r-karte{ background:rgba(255,255,255,.07); box-shadow:none; color:#fff8dc; position:relative; border:1px solid rgba(255,255,255,.12); }
 .lw-ruhe.weg{ opacity:0; pointer-events:none; }
+.lw-ruhe.fest{ background:transparent; backdrop-filter:none; -webkit-backdrop-filter:none; }
+.lw-ruhe.fest .lw-r-karte{ display:none; }
+.lw-ruhe.fest.sterne::before{ display:none; }
+.lw-fest{ position:absolute; inset:0; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.lw-fest[hidden]{ display:none; }
+.lw-fest-karte{ position:relative; z-index:2; background:rgba(255,253,245,.94); border-radius:clamp(20px,3vw,40px); padding:2.5vh 4vw 3vh; display:flex; flex-direction:column; align-items:center; box-shadow:0 20px 60px rgba(0,0,0,.25); animation:lwFestRein .7s cubic-bezier(.2,1.4,.4,1) both; max-width:90%; }
+.lw-fest-bild{ font-size:clamp(70px,min(13vw,22vh),220px); line-height:1.1; animation:lwFestHuepf 1.4s ease-in-out .7s infinite; }
+.lw-fest-karte b{ font:900 clamp(34px,min(5.5vw,9vh),96px) "Nunito",sans-serif; color:#1d4634; line-height:1.1; text-align:center; }
+.lw-fest.pokal .lw-fest-karte b{ color:#b7791f; }
+.lw-fest-karte small{ font:800 clamp(17px,min(2.2vw,3.6vh),36px) "Nunito",sans-serif; color:#55636a; margin-top:.6vh; text-align:center; }
+.lw-konf{ position:absolute; top:-30px; z-index:1; animation:lwKonfetti var(--d) linear var(--w) infinite; }
+.lw-ballon{ position:absolute; bottom:-30%; z-index:1; width:calc(clamp(50px,6vw,110px) * var(--s)); animation:lwBallon var(--d) ease-in var(--w) infinite; }
+.lw-ballon svg{ width:100%; display:block; animation:lwSchaukel 2.4s ease-in-out infinite alternate; transform-origin:50% 0; }
+@keyframes lwFestRein{ from{ transform:scale(.3); opacity:0; } }
+@keyframes lwFestHuepf{ 0%,100%{ transform:translateY(0) rotate(0); } 50%{ transform:translateY(-8%) rotate(-4deg); } }
+@keyframes lwKonfetti{ to{ transform:translate(var(--x), 110vh) rotate(var(--r)); } }
+@keyframes lwBallon{ to{ transform:translateY(-160vh); } }
+@keyframes lwSchaukel{ from{ transform:rotate(-5deg); } to{ transform:rotate(5deg); } }
+@media (prefers-reduced-motion:reduce){ .lw-konf, .lw-ballon, .lw-fest-bild{ animation:none; } }
 .lw-r-uhr{ font:900 clamp(56px,min(10vw,17vh),190px)/1 "Nunito",sans-serif; font-variant-numeric:tabular-nums; letter-spacing:-.02em; }
 .lw-r-text{ font:400 clamp(22px,min(2.8vw,5vh),48px) "Patrick Hand","Andika",sans-serif; max-width:90%; }
 .lw-r-pssst{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(255,253,245,.55); backdrop-filter:blur(6px); z-index:3; }
@@ -895,6 +970,10 @@ const CSS = `
 .lw-glas{ position:relative; width:clamp(120px,13vw,220px); height:clamp(150px,24vh,270px); border:5px solid rgba(255,255,255,.75); border-radius:28px 28px 60px 60px / 22px 22px 70px 70px; background:linear-gradient(90deg, rgba(255,255,255,.22), rgba(255,255,255,.06) 40%, rgba(255,255,255,.16)); overflow:hidden; box-shadow:inset 0 -10px 30px rgba(255,224,102,.15); }
 .lw-glas::before{ content:""; position:absolute; left:12%; right:12%; top:-2px; height:16px; border-radius:6px; background:#c8963e; box-shadow:0 3px 0 #9c6f26; z-index:2; }
 .lw-glas::after{ content:""; position:absolute; left:14%; top:16%; width:10%; height:55%; border-radius:20px; background:rgba(255,255,255,.35); }
+.lw-tuch{ position:absolute; inset:-6px; z-index:3; background:repeating-linear-gradient(45deg,#7b4fb8 0 14px,#6a42a3 14px 28px); border-radius:inherit; display:flex; align-items:center; justify-content:center; transition:transform 1s cubic-bezier(.6,-.3,.4,1), opacity 1s; box-shadow:inset 0 -12px 20px rgba(0,0,0,.25); }
+.lw-tuch span{ font:900 clamp(50px,6vw,100px) "Nunito",sans-serif; color:#ffe066; text-shadow:0 3px 0 rgba(0,0,0,.25); }
+.lw-glas:not(.zu) .lw-tuch{ transform:translateY(-130%) rotate(-12deg); opacity:0; }
+.lw-r-zahl[hidden]{ display:none; }
 .lw-glas-sterne i{ position:absolute; bottom:var(--y); font-style:normal; font-size:clamp(22px,2.6vw,44px); animation:lwStern 1.6s ease-in both; }
 @keyframes lwStern{ from{ transform:translateY(-260px) rotate(-90deg); opacity:0; } 30%{ opacity:1; } to{ transform:none; } }
 .lw-r-zahl{ font:900 clamp(24px,2.8vw,48px) "Nunito",sans-serif; color:#ffe066; margin-top:1vh; }
@@ -941,7 +1020,7 @@ function starten(id, einstellung = {}){
     const kopf = e.thema === "meer" && id === "leise" ? "🌊 Leise-Meer" : w.emoji + " " + w.titel;
     el.innerHTML = `<div class="lt-leiste"><h2>${EULE_MINI}<span>${esc(kopf)}</span></h2>
         ${(w.optionen || []).map(o => `<label data-optlabel="${o.k}" ${o.zeigen && !o.zeigen(e) ? 'style="display:none"' : ""}><select data-opt="${o.k}" title="${esc(o.label)}">${o.werte.map(([v, l]) => `<option value="${esc(JSON.stringify(v))}" ${JSON.stringify(v) === JSON.stringify(e[o.k]) ? "selected" : ""}>${esc(o.label)}: ${esc(l)}</option>`).join("")}</select></label>`).join("")}
-        <button class="lt-x" data-voll title="Vollbild an/aus">⛶</button><button class="lt-x" data-zu title="Schließen (Esc)">✕</button></div>
+        ${w.vollKompakt ? '<button class="lt-x lt-einst" data-einst title="Einstellungen ein-/ausblenden">⚙</button>' : ""}<button class="lt-x" data-voll title="Vollbild an/aus">⛶</button><button class="lt-x" data-zu title="Schließen (Esc)">✕</button></div>
         <div class="lt-buehne"><div class="lt-inhalt"></div><div class="lt-antworten"></div><div class="lt-loesung"></div></div>
         <div class="lt-steuer"><span class="lt-zaehler"></span><button class="lt-knopf" data-loes>👁 Lösung</button><button class="lt-knopf" data-nochmal hidden>🔁 Nochmal zeigen</button><button class="lt-knopf gold" data-weiter>Nächste ▶</button></div>`;
     const schonVoll = !!document.fullscreenElement;
@@ -987,6 +1066,15 @@ function starten(id, einstellung = {}){
     const optSichtbar = () => (w.optionen || []).forEach(o => { const l = el.querySelector(`[data-optlabel="${o.k}"]`); if (l) l.style.display = o.zeigen && !o.zeigen(e) ? "none" : ""; });
     el.querySelectorAll("[data-opt]").forEach(s => s.addEventListener("change", () => { e[s.dataset.opt] = JSON.parse(s.value); nr = 0; optSichtbar(); neu(); }));
     el.querySelector("[data-zu]").addEventListener("click", schliessen);
+    // Leise-Wald: im Vollbild nur kleine Knöpfe oben rechts, Einstellungen über ⚙
+    if (w.vollKompakt) {
+        el.classList.add("lt-kompakt");
+        const leiste = el.querySelector(".lt-leiste");
+        const vollPruefen = () => { el.classList.toggle("ist-voll", !!document.fullscreenElement); if (!document.fullscreenElement) leiste.classList.remove("auf"); };
+        document.addEventListener("fullscreenchange", vollPruefen); api.aufraeumenDauer = () => document.removeEventListener("fullscreenchange", vollPruefen);
+        vollPruefen();
+        el.querySelector("[data-einst]").addEventListener("click", () => leiste.classList.toggle("auf"));
+    }
     el.querySelector("[data-voll]").addEventListener("click", () => { try { document.fullscreenElement ? document.exitFullscreen() : el.requestFullscreen(); } catch (x) {} });
     const tasten = ev => {
         if (ev.target.tagName === "SELECT") return;
@@ -996,14 +1084,14 @@ function starten(id, einstellung = {}){
         else if (/^[1-4]$/.test(ev.key)) { const b = antw.querySelectorAll(".lt-antwort")[+ev.key - 1]; if (b) b.click(); }
     };
     document.addEventListener("keydown", tasten);
-    offen = { el, stop, tasten, eigenesVoll: !schonVoll };
+    offen = { el, stop, tasten, eigenesVoll: !schonVoll, ende: api.aufraeumenDauer };
     if (!schonVoll) try { el.requestFullscreen && el.requestFullscreen().catch(() => {}); } catch (x) {}
     neu();
 }
 function schliessen(){
     if (!offen) return;
     const eigen = offen.eigenesVoll;
-    offen.stop(); document.removeEventListener("keydown", offen.tasten); offen.el.remove(); offen = null;
+    offen.stop(); if (offen.ende) offen.ende(); document.removeEventListener("keydown", offen.tasten); offen.el.remove(); offen = null;
     try { if (eigen && document.fullscreenElement) document.exitFullscreen(); } catch (x) {}
 }
 

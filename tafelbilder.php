@@ -343,6 +343,38 @@ body{ background:#f6f2ea; }
 .mg-hliste li{ display:flex; gap:10px; align-items:center; background:white; border-radius:12px; padding:8px 12px; }
 .mg-hliste li span{ font-size:24px; } .mg-hliste li b{ flex:1; } .mg-hliste li small{ color:#7c8a85; font-weight:700; }
 @media (max-width:900px){ .mg-raster{ grid-template-columns:1fr; overflow:auto; } #mgInhalt{ overflow:auto; } .mg-felder{ grid-template-columns:1fr; } .mg-wwahl{ grid-template-columns:repeat(3,1fr); } }
+/* Handy/Tablet hochkant: Karten untereinander in voller Höhe, die Seite scrollt */
+@media (max-width:900px){
+  #morgen{ overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  #mgInhalt{ flex:none; overflow:visible; padding:0 12px 20px; }
+  .mg-raster, .mg-spalte{ display:flex; flex-direction:column; flex:none; gap:12px; min-height:auto; overflow:visible; }
+  .mg-karte, .mg-spalte .mg-karte, .mg-bdw, .mg-dienste, .mg-spalte .mg-pack{ flex:none !important; min-height:auto; overflow:visible; padding:14px 16px; border-radius:20px; }
+  .mg-karte h2{ font-size:15px; margin-bottom:8px; }
+  .mg-gruss{ flex-wrap:wrap; gap:8px 10px; margin-bottom:12px; }
+  .mg-gruss h1{ flex:1 1 calc(100% - 60px); order:1; white-space:normal; font-size:30px !important; }
+  .mg-sonne{ order:0; font-size:40px; }
+  .mg-sdw{ order:2; flex:1 1 auto; } .mg-uhr{ order:3; font-size:26px; }
+  .mg-sdw span{ font-size:28px; } .mg-sdw b{ font-size:22px; } .mg-sdw small{ font-size:11px; }
+  .mg-wtag{ font-size:40px; } .mg-tagzahl{ font-size:20px; } .mg-woche span{ font-size:14px; }
+  .mg-bdw-reihe{ padding:6px 0; } .mg-bdw-b{ font-size:52px; } .mg-bdw.mehrere .mg-bdw-b, .mg-bdw.n2 .mg-bdw-b{ font-size:42px; } .mg-bdw-bild span{ font-size:34px; } .mg-bdw-bild b{ font-size:16px; }
+  .mg-wbild{ font-size:56px; } .mg-wtext{ font-size:22px; } .mg-temp, .mg-kleidung{ font-size:16px; }
+  .mg-stunden{ gap:8px; } .mg-stunden li{ padding:8px 10px; gap:10px; border-radius:14px; }
+  .mg-stunden li.jetzt{ transform:none; }
+  .mg-fe{ font-size:32px; } .mg-fach b{ font-size:22px !important; } .mg-fach small, .mg-zeit, .mg-nr{ font-size:14px; }
+  .mg-pause{ font-size:15px !important; padding:2px 0 !important; }
+  .mg-dinge{ grid-template-columns:repeat(auto-fill,minmax(76px,1fr)) !important; gap:8px; }
+  .mg-ding span{ font-size:32px !important; } .mg-ding b{ display:block !important; font-size:12px !important; }
+  .mg-fuer{ font-size:20px !important; margin:0 0 8px; }
+  .mg-check{ font-size:16px !important; padding:8px 10px !important; gap:8px; }
+  .mg-dliste{ gap:8px; } .mg-dienst{ padding:6px 8px !important; gap:8px; } .mg-dienst span{ font-size:26px; } .mg-dienst small{ font-size:12px; } .mg-dienst b{ font-size:16px; }
+  .mg-hinweise li{ font-size:17px !important; }
+  .mg-leiste{ padding:8px 12px; } .mg-titel{ font-size:16px; }
+  #mgEditor{ position:fixed; }
+  .mg-ed-kopf{ padding:8px 10px; gap:6px; justify-content:flex-end; }
+  .mg-reiter{ flex:1 1 100%; flex-wrap:nowrap; overflow-x:auto; padding-bottom:2px; }
+  .mg-reiter button{ flex:0 0 auto; white-space:nowrap; font-size:14px; padding:8px 12px; }
+  .mg-ed-inhalt{ padding:12px 14px 40px; }
+}
 </style>
 </head>
 <body>
@@ -378,9 +410,9 @@ body{ background:#f6f2ea; }
         <div class="lw-wahl-kopf"><div><h2>🌳 Leise-Wald</h2><small>Welche Art passt gerade?</small></div><button type="button" onclick="leiseWahl(false)" title="Schließen">✕</button></div>
         <div class="lw-arten">
 <?php foreach ([
-    ["ende", "a-ende", "🎁", '<small style="left:16px;bottom:10px">🌲</small><small style="right:18px;bottom:14px">🌳</small><small style="right:40px;top:14px">🦊</small>', "Arbeitsphase", "Überraschung am Ende", "Während der Arbeit nur eine ruhige Uhr. Am Ende kommen so viele Tiere, wie die Klasse leise war."],
+    ["ende", "a-ende", "🎁", '<small style="left:16px;bottom:10px">🌲</small><small style="right:18px;bottom:14px">🌳</small><small style="right:40px;top:14px">🦊</small>', "Arbeitsphase", "Überraschung am Ende", "Während der Arbeit nur eine ruhige Uhr. Am Ende die Überraschung – Tiere, Konfetti, Luftballons oder Pokal (oben wählbar)."],
     ["melden", "a-melden", "🦉", '<small style="right:22px;top:18px;font-size:18px;background:white;border-radius:12px;padding:2px 8px;font-weight:900;color:#c0392b">Pssst!</small>', "Arbeitsphase", "Pssst-Eule", "Der Bildschirm bleibt ruhig. Nur wenn es zu laut wird, kommt die Eule mit „Pssst!“."],
-    ["sterne", "a-sterne", "🫙", '<small style="left:22px;top:16px">⭐</small><small style="right:26px;top:30px;font-size:18px">✨</small><small style="left:44px;bottom:16px;font-size:18px">⭐</small>', "Arbeitsphase", "Stille-Sterne", "Jede leise Minute fällt still ein Stern ins Glas. Am Ende zählt die Klasse die Sterne."],
+    ["sterne", "a-sterne", "🫙", '<small style="left:22px;top:16px">⭐</small><small style="right:26px;top:30px;font-size:18px">✨</small><small style="left:44px;bottom:16px;font-size:18px">⭐</small>', "Arbeitsphase", "Stille-Sterne", "Jede leise Minute kommt heimlich ein Stern ins zugedeckte Glas. Erst am Ende wird aufgedeckt."],
     ["zuschauen", "a-live", "🦊", '<small style="left:22px;bottom:14px">🐰</small><small style="right:24px;bottom:12px">🦔</small><small style="right:30px;top:12px">🦉</small>', "kurze Ruhephase", "Tiere kommen live", "Je leiser, desto mehr Tiere kommen in den Wald – bei Lärm laufen sie weg. Zum Zuschauen."],
 ] as [$m, $klasse, $haupt, $deko, $wann, $titel, $text]): ?>
             <button class="lw-art <?= $klasse ?>" type="button" onclick="leiseWahl(false); leiseStarten('<?= $m ?>')">

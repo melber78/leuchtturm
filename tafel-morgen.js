@@ -326,6 +326,9 @@ function zeichnen(){
 }
 // Alles soll auf einen Bildschirm passen: Begrüßung in einer Zeile, Karten ohne abgeschnittenen Inhalt
 function einpassen(){
+    if (window.matchMedia("(max-width:900px)").matches) {   // Handy: Seite scrollt, nichts verkleinern
+        document.querySelectorAll("#mgInhalt .mg-karte").forEach(k => k.classList.remove("eng", "sehr-eng"));
+        const h = document.querySelector("#mgInhalt .mg-gruss h1"); if (h) h.style.fontSize = ""; return; }
     const h1 = document.querySelector("#mgInhalt .mg-gruss h1");
     if (h1) { h1.style.fontSize = ""; let g = parseFloat(getComputedStyle(h1).fontSize), n = 0;
         while (h1.scrollWidth > h1.clientWidth + 1 && g > 18 && n++ < 40) { g -= 2; h1.style.fontSize = g + "px"; } }
