@@ -187,6 +187,10 @@ table.plan tr.erledigt td .plan-wahl{ opacity:.65; }
 table.plan td.kw{ font-weight:900; white-space:nowrap; color:var(--meer); }
 table.plan td.datum{ white-space:nowrap; font-weight:700; }
 table.plan th.kl-th{ text-align:center; }
+table.plan th.kl-th.breit{ text-align:left; min-width:210px; } table.plan th.kl-th small{ font-weight:700; opacity:.7; }
+table.plan td.kl-thema{ min-width:200px; } table.plan .plan-notiz{ min-width:110px; } table.plan td.kl-thema .plan-wahl{ flex:1; min-width:0; }
+table.plan td.kl-thema.unpassend .plan-wahl{ border-color:var(--gold); }
+.plan-modus{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:12px; } .plan-modus span{ font-weight:900; }
 @media (max-width:760px){
     table.plan thead{ display:none; }
     table.plan, table.plan tbody{ display:block; }
@@ -1093,7 +1097,13 @@ function dieseWocheZeigen(dw){
     if (!ziel) return;
     const w = dw.eintrag, k = iso(dw.datum), klassen = planKlassen();
     const stufen = [...new Set(klassen.map(x => x.stufe))];
-    const zeilen = (stufen.length ? stufen : ["12", "34"]).map(st => {
+    const zeilen = jeKlasse() ? klassen.map(x => {   // je Klasse eigenes Thema
+        const y = klasseInWoche(w, x), e = y.einheit ? finde(y.einheit) : null, st2 = y.status;
+        return `<div class="dw-zeile"><span class="chip ${x.stufe === "34" ? "gold" : ""}">${esc(x.name)}</span>
+            <span class="dw-thema">${e ? (y.fortsetzung ? "↻ " : "") + esc(e.titel) : '<i style="color:var(--grau)">noch kein Thema</i>'}</span>
+            ${e ? `<a class="btn klein blau" href="#stunde/${encodeURIComponent(e.id)}">Öffnen</a>` : `<a class="btn klein" href="#jahresplan">Planen</a>`}
+            <span class="dw-klassen"><button class="kl-status ${st2 || "offen"}" data-dwkl="${esc(x.id)}" title="${esc(x.name)}: ${STATUS[st2].text} – tippen zum Ändern">${STATUS[st2].zeichen}</button></span></div>`;
+    }).join("") : (stufen.length ? stufen : ["12", "34"]).map(st => {
         const e = finde(stufenThema(w, st));
         const kl = klassen.filter(x => x.stufe === st);
         return `<div class="dw-zeile"><span class="chip ${st === "34" ? "gold" : ""}">Kl. ${st === "34" ? "3/4" : "1/2"}</span>
@@ -1304,7 +1314,7 @@ function zeigeStunde(id){
                     const w = DATEN.jahresplan?.wochen?.[iso(d)];
                     const belegt = w?.frei ? " – frei/Ferien" : (w && wochenThemen(w).length) ? " – belegt: " + wochenThemen(w).map(x => finde(x)?.titel || "?").join(" / ") : "";
                     return `<option value="${iso(d)}">KW ${kw(d)} · ${kurzDatum(d)}${esc(belegt)}</option>`; }).join("")}</select>
-                ${mitPlan() ? `<select id="planStufe" style="width:auto">${e.nur34 ? "" : '<option value="beide">für Kl. 1/2 und 3/4</option><option value="12">nur für Kl. 1/2</option>'}<option value="34">nur für Kl. 3/4</option></select>` : ""}
+                ${mitPlan() ? `<select id="planStufe" style="width:auto">${jeKlasse() ? "" : `${e.nur34 ? "" : '<option value="beide">für Kl. 1/2 und 3/4</option><option value="12">nur für Kl. 1/2</option>'}<option value="34">nur für Kl. 3/4</option>`}${planKlassen().length ? `<optgroup label="Für eine Klasse">${planKlassen().filter(k => !(e.nur34 && k.stufe === "12")).map(k => `<option value="kl:${esc(k.id)}">nur für ${esc(k.name)}</option>`).join("")}</optgroup>` : ""}${jeKlasse() ? `<optgroup label="Für mehrere"><option value="st:12">alle Kl.-1/2-Klassen</option><option value="st:34">alle Kl.-3/4-Klassen</option><option value="alle">alle Klassen</option></optgroup>` : ""}</select>` : ""}
                 <button class="btn gold" id="einplanen"><i class="fa-solid fa-check"></i> Eintragen</button>
             </div>
         </div>
@@ -1409,6 +1419,18 @@ function zeigeStunde(id){
         const p = plan();
         const alt = p.wochen[datum];
         const wahl = (document.getElementById("planStufe") || {}).value || "beide";
+        if (/^(kl:|st:|alle)/.test(wahl)) {   // je Klasse eintragen
+            const ziele = planKlassen().filter(k => wahl === "alle" ? !(e.nur34 && k.stufe === "12") : wahl.startsWith("kl:") ? k.id === wahl.slice(3) : k.stufe === wahl.slice(3));
+            const belegtK = alt && !alt.frei ? ziele.map(k => klasseInWoche(alt, k).einheit || (jeKlasse() ? "" : stufenThema(alt, k.stufe))).filter(Boolean) : [];
+            if (belegtK.length && !confirm("In dieser Woche ist dort schon „" + [...new Set(belegtK)].map(x => finde(x)?.titel || "eine Stunde").join(" / ") + "“ eingetragen. Ersetzen?")) return;
+            const w = p.wochen[datum] = { ...(alt || {}), frei: false };
+            if (!w.klassen) { w.klassen = {}; if (w.erledigt) planKlassen().forEach(x => w.klassen[x.id] = { status: "gehalten" }); }
+            ziele.forEach(k => { const x = w.klassen[k.id] = w.klassen[k.id] || {}; x.einheit = e.ersetzt || e.id; delete x.fortsetzung; });
+            planSpeichern();
+            toast("Eingetragen für " + ziele.map(k => k.name).join(", ") + " · KW " + kw(tag(datum)));
+            setTimeout(() => zeigeStunde(id), 50);
+            return;
+        }
         const stufen = wahl === "beide" ? ["12", "34"] : [wahl];
         const belegt = alt ? stufen.map(st => stufenThema(alt, st)).filter(Boolean) : [];
         if (belegt.length && !confirm("In dieser Woche ist schon „" + belegt.map(x => finde(x)?.titel || "eine Stunde").join(" / ") + "“ eingetragen. Ersetzen?")) return;
@@ -1793,13 +1815,27 @@ function fehltVorher(e, st, wocheIso){
     });
 }
 function stufenThema(w, st){ return (w && w.einheiten && Object.prototype.hasOwnProperty.call(w.einheiten, st)) ? (w.einheiten[st] || "") : ((w && w.einheit) || ""); }
-function wochenThemen(w){ return [...new Set([stufenThema(w, "12"), stufenThema(w, "34")].filter(Boolean))]; }
+function wochenThemen(w){ return [...new Set([...(jeKlasse() ? [] : [stufenThema(w, "12"), stufenThema(w, "34")]), ...Object.values((w && w.klassen) || {}).map(x => x && x.einheit)].filter(Boolean))]; }
+// Themen je Klasse planen (statt nur je Klassenstufe)
+function jeKlasse(){ return !!(DATEN.jahresplan && DATEN.jahresplan.jeKlasse) && planKlassen().length > 0; }
+function planModusSetzen(an){
+    const p = plan(), klassen = planKlassen();
+    Object.values(p.wochen).forEach(w => {
+        if (!w || w.frei) return;
+        klassen.forEach(k => {
+            const st = stufenThema(w, k.stufe);
+            if (an) { if (st) { w.klassen = w.klassen || {}; const x = w.klassen[k.id] = w.klassen[k.id] || {}; if (!x.einheit) x.einheit = st; } }
+            else { const x = w.klassen && w.klassen[k.id]; if (x && x.einheit && x.einheit === st && !x.fortsetzung) delete x.einheit; }
+        });
+    });
+    p.jeKlasse = !!an;
+}
 function stufenThemaSetzen(w, st, id){
     w.einheiten = w.einheiten || { "12": w.einheit || "", "34": w.einheit || "" };
     w.einheiten[st] = id;
     w.einheit = w.einheiten["34"] || w.einheiten["12"] || "";   // für ältere Stellen
 }
-function einheitFuer(w, k){ const x = klasseInWoche(w, k); return x.einheit || stufenThema(w, k.stufe) || ""; }
+function einheitFuer(w, k){ const x = klasseInWoche(w, k); return x.einheit || (jeKlasse() ? "" : stufenThema(w, k.stufe)) || ""; }
 // Auswertung je Klasse: gehalten · ausgefallen · nachzuholen (ausgefallen und später nicht gehalten)
 function klassenStand(){
     const p = plan(), wochen = planWochen();
@@ -1814,7 +1850,7 @@ function klassenStand(){
             if (x.status === "entfaellt") entfallen++;
             if (x.status === "angefangen") angefangen++;
             // Klasse hat in dieser Woche etwas anderes gemacht (z. B. nachgeholt) → das geplante Thema fehlt ihr noch
-            const geplant = stufenThema(w, k.stufe);
+            const geplant = jeKlasse() ? "" : stufenThema(w, k.stufe);
             if (x.status === "gehalten" && geplant && id !== geplant) ausgefallen.push({ d, id: geplant, verschoben: true });
         });
         const gehaltenIds = new Set(gehalten.map(g => finde(g.id)?.id || g.id));
@@ -1840,6 +1876,7 @@ function zeigeJahresplan(){
     const zweiStufen = klassen.some(k => k.stufe === "12") && klassen.some(k => k.stufe === "34");
     const stand = klassenStand();
     const stufeName = (st, kl) => kl ? "Klasse " + kl : st === "34" ? "Kl. 3/4" : "Kl. 1/2";
+    const jeKl = jeKlasse();
 
     inhalt.innerHTML = `
         <div class="karte"><h2>Schuljahr</h2>
@@ -1849,6 +1886,7 @@ function zeigeJahresplan(){
                 <div style="flex:1 1 200px"><span class="speicherstatus" id="planStatus"></span></div>
             </div>
             <p style="margin:12px 0 0;font-weight:700">${anzahl} von ${wochen.length} Wochen verplant</p>
+            ${klassen.length ? `<div class="plan-modus"><span>Themen planen:</span><button class="btn klein ${jeKl ? "" : "gold"}" data-modus="0">nach Klassenstufe (1/2 · 3/4)</button><button class="btn klein ${jeKl ? "gold" : ""}" data-modus="1">für jede Klasse einzeln</button></div>` : ""}
             ${klassen.length ? `<details class="ed-block" style="margin:14px 0 0"><summary style="font-weight:900;cursor:pointer">Meine Klassen (${klassen.map(k => esc(k.name)).join(", ")}) bearbeiten</summary>
                 <div id="klassenListe" style="display:flex;flex-direction:column;gap:8px;margin-top:10px">${klassen.map((k, i) => `<div class="kl-zeile" data-i="${i}">
                     <input type="text" class="kl-name" value="${esc(k.name)}" maxlength="12" style="max-width:140px">
@@ -1864,9 +1902,9 @@ function zeigeJahresplan(){
             </div>`).join("")}</div></div>` : ""}
         ${offen.length ? `<div class="karte"><h2>Noch nicht verplant</h2><div class="chips" style="display:flex;gap:8px;flex-wrap:wrap">${offen.map(e => `<a class="chip" style="text-decoration:none;font-size:13px" href="#stunde/${encodeURIComponent(e.id)}">${esc(e.titel)}</a>`).join("")}</div></div>` : ""}
         <div class="karte" style="padding:12px 14px">
-            ${klassen.length ? `<p class="ed-hilfe" style="margin:0 0 8px">Klick auf das Kästchen einer Klasse: ○ offen → ✓ gehalten → ◐ angefangen (dieselbe Stunde wird für diese Klasse automatisch in die nächste Woche übernommen) → ✗ ausgefallen (kommt auf die Nachhol-Liste) → – entfällt (z. B. Ausflug, kein Termin – wird nicht nachgeholt). Mit <i class="fa-solid fa-sliders"></i> kannst du für eine Klasse ein anderes Thema (z. B. Nachholstunde) und eine Notiz eintragen.</p>` : ""}
+            ${klassen.length ? `<p class="ed-hilfe" style="margin:0 0 8px">Klick auf das Kästchen einer Klasse: ○ offen → ✓ gehalten → ◐ angefangen (dieselbe Stunde wird für diese Klasse automatisch in die nächste Woche übernommen) → ✗ ausgefallen (kommt auf die Nachhol-Liste) → – entfällt (z. B. Ausflug, kein Termin – wird nicht nachgeholt). ${jeKl ? "Das Thema wählst du direkt bei jeder Klasse. Mit <i class=\"fa-solid fa-sliders\"></i> trägst du eine Notiz je Klasse ein." : "Mit <i class=\"fa-solid fa-sliders\"></i> kannst du für eine Klasse ein anderes Thema (z. B. Nachholstunde) und eine Notiz eintragen."}</p>` : ""}
             <div style="overflow-x:auto"><table class="plan">
-            <thead><tr><th>KW</th><th>Woche ab</th>${zweiStufen ? "<th>Thema Kl. 1/2</th><th>Thema Kl. 3/4</th>" : "<th>Stunde</th>"}${klassen.map(k => `<th class="kl-th" title="${stufeName(k.stufe, k.klasse)}">${esc(k.name)}</th>`).join("")}<th>Notiz</th>${klassen.length ? "" : `<th title="erledigt"><i class="fa-solid fa-check"></i></th>`}<th></th></tr></thead>
+            <thead><tr><th>KW</th><th>Woche ab</th>${jeKl ? "" : zweiStufen ? "<th>Thema Kl. 1/2</th><th>Thema Kl. 3/4</th>" : "<th>Stunde</th>"}${klassen.map(k => `<th class="kl-th${jeKl ? " breit" : ""}" title="${stufeName(k.stufe, k.klasse)}">${esc(k.name)}${jeKl ? ` <small>${stufeName(k.stufe, k.klasse)}</small>` : ""}</th>`).join("")}<th>Notiz</th>${klassen.length ? "" : `<th title="erledigt"><i class="fa-solid fa-check"></i></th>`}<th></th></tr></thead>
             <tbody>${wochen.map(d => {
                 const k = iso(d), w = p.wochen[k] || {};
                 const wahlZelle = (st, label) => {
@@ -1874,26 +1912,35 @@ function zeigeJahresplan(){
                     const fehlt = ee ? fehltVorher(ee, st, k) : [];
                     return `<td data-label="${label}"><div class="plan-wahl-zeile"><select class="plan-wahl" data-st="${st}">${optionen(wert)}${id && !w.frei && !ee ? `<option value="${esc(id)}" selected>(gelöschte Stunde)</option>` : ""}</select>${ee ? `<a class="btn klein plan-oeffnen" href="#stunde/${encodeURIComponent(ee.id)}" title="${esc(ee.titel)} öffnen"><i class="fa-solid fa-arrow-right"></i></a>` : ""}</div>${fehlt.length ? `<div class="plan-aufbau">🔗 Baut auf ${fehlt.map(f => `„${esc(finde(f).titel)}“`).join(" und ")} – am besten vorher einplanen</div>` : ""}</td>`;
                 };
-                const zellen = klassen.map(kl => {
+                const zellen = jeKl ? klassen.map(kl => {
+                    const x = klasseInWoche(w, kl), id = x.einheit, ee = id && !w.frei ? finde(id) : null;
+                    const fehlt = ee ? fehltVorher(ee, kl.stufe, k) : [];
+                    const unpassend = ee && ee.nur34 && kl.stufe === "12";
+                    return `<td class="kl-thema${unpassend ? " unpassend" : ""}" data-label="${esc(kl.name)} · ${stufeName(kl.stufe, kl.klasse)}"><div class="plan-wahl-zeile">
+                        <button class="kl-status ${x.status || "offen"}" data-kl="${esc(kl.id)}" ${w.frei ? "disabled" : ""} title="${esc(kl.name)}: ${STATUS[x.status].text}">${STATUS[x.status].zeichen}</button>
+                        <select class="plan-wahl" data-kl="${esc(kl.id)}">${optionen(w.frei ? "@frei" : id)}${id && !w.frei && !ee ? `<option value="${esc(id)}" selected>(gelöschte Stunde)</option>` : ""}</select>
+                        ${ee ? `<a class="btn klein plan-oeffnen" href="#stunde/${encodeURIComponent(ee.id)}" title="${esc(ee.titel)} öffnen"><i class="fa-solid fa-arrow-right"></i></a>` : ""}</div>
+                        ${x.fortsetzung && ee ? '<div class="plan-aufbau">↻ Fortsetzung der Vorwoche</div>' : ""}${unpassend ? '<div class="plan-aufbau">⚠️ Stunde ist für Kl. 3/4 gedacht</div>' : ""}${fehlt.length ? `<div class="plan-aufbau">🔗 Baut auf ${fehlt.map(f => `„${esc(finde(f).titel)}“`).join(" und ")} – am besten vorher</div>` : ""}</td>`;
+                }).join("") : klassen.map(kl => {
                     const x = klasseInWoche(w, kl);
                     const thema = stufenThema(w, kl.stufe), te = thema ? finde(thema) : null;
                     const anders = x.einheit && x.einheit !== thema ? finde(x.einheit) : null;
                     const unpassend = !anders && te && te.nur34 && kl.stufe === "12";
                     return `<td class="kl-zelle${unpassend ? " unpassend" : ""}" data-label="${esc(kl.name)}"><button class="kl-status ${x.status || "offen"}" data-kl="${esc(kl.id)}" ${w.frei ? "disabled" : ""} title="${esc(kl.name)}: ${STATUS[x.status].text}${unpassend ? " · Achtung: Stunde nur für Kl. 3/4 – über die Schieberegler ein anderes Thema wählen" : ""}${anders ? (x.fortsetzung ? " · Fortsetzung: " : " · ") + esc(anders.titel) : ""}${x.notiz ? " · " + esc(x.notiz) : ""}">${STATUS[x.status].zeichen}</button>${x.fortsetzung && anders ? '<span class="kl-fort" title="Fortsetzung der Vorwoche">↻</span>' : anders || x.notiz ? '<span class="kl-punkt" title="eigenes Thema / Notiz"></span>' : ""}</td>`;
                 }).join("");
-                const details = klassen.length && !w.frei ? `<tr class="kl-details" data-fuer="${k}" hidden><td colspan="${5 + klassen.length + (zweiStufen ? 1 : 0)}"><div class="kl-detail-raster">${klassen.map(kl => {
+                const details = klassen.length && !w.frei ? `<tr class="kl-details" data-fuer="${k}" hidden><td colspan="${(jeKl ? 4 : 5 + (zweiStufen ? 1 : 0)) + klassen.length}"><div class="kl-detail-raster">${klassen.map(kl => {
                     const x = klasseInWoche(w, kl);
                     return `<div class="kl-detail" data-kl="${esc(kl.id)}"><b>${esc(kl.name)}</b>
                         <select class="kl-d-status">${STATUS_FOLGE.map(st => `<option value="${st}" ${x.status === st ? "selected" : ""}>${STATUS[st].zeichen} ${STATUS[st].text}</option>`).join("")}</select>
-                        <select class="kl-d-einheit">${optionen(x.einheit, "wie geplant", false)}</select>
+                        ${jeKl ? "" : `<select class="kl-d-einheit">${optionen(x.einheit, "wie geplant", false)}</select>`}
                         <input type="text" class="kl-d-notiz" value="${esc(x.notiz)}" placeholder="Notiz (z. B. Ausflug, Wandertag)"></div>`; }).join("")}</div></td></tr>` : "";
                 return `<tr data-woche="${k}" class="${+d === +heute ? "jetzt" : ""} ${w.frei ? "frei" : ""} ${w.erledigt ? "erledigt" : ""}">
                     <td class="kw">KW ${kw(d)}</td><td class="datum">${kurzDatum(d)}${+d === +heute ? ' <span class="chip gold">jetzt</span>' : ""}</td>
-                    ${zweiStufen ? wahlZelle("12", "Thema Kl. 1/2") + wahlZelle("34", "Thema Kl. 3/4") : wahlZelle(klassen.length ? klassen[0].stufe : "34", "Stunde")}
+                    ${jeKl ? "" : zweiStufen ? wahlZelle("12", "Thema Kl. 1/2") + wahlZelle("34", "Thema Kl. 3/4") : wahlZelle(klassen.length ? klassen[0].stufe : "34", "Stunde")}
                     ${zellen}
                     <td data-label="Notiz"><input type="text" class="plan-notiz" value="${esc(w.notiz || "")}" placeholder="Notiz"></td>
                     ${klassen.length ? "" : `<td><input type="checkbox" class="plan-erledigt" ${w.erledigt ? "checked" : ""} ${w.frei ? "disabled" : ""} title="erledigt"></td>`}
-                    <td style="white-space:nowrap">${klassen.length && !w.frei ? `<button class="btn klein kl-mehr" title="Je Klasse: anderes Thema, Notiz"><i class="fa-solid fa-sliders"></i></button> ` : ""}</td></tr>${details}`;
+                    <td style="white-space:nowrap">${klassen.length && !w.frei ? `<button class="btn klein kl-mehr" title="${jeKl ? "Je Klasse: Status, Notiz" : "Je Klasse: anderes Thema, Notiz"}"><i class="fa-solid fa-sliders"></i></button> ` : ""}</td></tr>${details}`;
             }).join("")}</tbody></table></div></div>`;
 
     const datumAendern = () => {
@@ -1903,6 +1950,11 @@ function zeigeJahresplan(){
         p.start = iso(montag(tag(s))); p.ende = en;
         planSpeichern(); zeigeJahresplan();
     };
+    inhalt.querySelectorAll("[data-modus]").forEach(b => b.addEventListener("click", () => {
+        const an = b.dataset.modus === "1"; if (an === jeKl) return;
+        planModusSetzen(an); planSpeichern(); zeigeJahresplanBehalten();
+        toast(an ? "Themen werden jetzt je Klasse geplant – bisherige Themen wurden übernommen." : "Themen werden wieder je Klassenstufe geplant.");
+    }));
     document.getElementById("planStart").addEventListener("change", datumAendern);
     document.getElementById("planEnde").addEventListener("change", datumAendern);
 
@@ -1932,6 +1984,11 @@ function zeigeJahresplan(){
         const klEintrag = id => { const w = eintrag(); if (!w.klassen) { w.klassen = {}; if (w.erledigt) planKlassen().forEach(x => w.klassen[x.id] = { status: "gehalten" }); } return (w.klassen[id] = w.klassen[id] || {}); };
         tr.querySelectorAll(".plan-wahl").forEach(sel => sel.addEventListener("change", ev => {
             const v = ev.target.value, w = eintrag();
+            if (sel.dataset.kl) {   // je Klasse
+                if (v === "@frei") { w.frei = true; w.erledigt = false; }
+                else { if (w.frei) w.frei = false; const x = klEintrag(sel.dataset.kl); if (v) x.einheit = v; else delete x.einheit; delete x.fortsetzung; }
+                planSpeichern(); zeigeJahresplanBehalten(); return;
+            }
             if (v === "@frei") { w.frei = true; w.einheit = ""; w.einheiten = { "12": "", "34": "" }; w.erledigt = false; }
             else {
                 if (w.frei) { w.frei = false; w.einheiten = { "12": "", "34": "" }; }
@@ -1954,7 +2011,7 @@ function zeigeJahresplan(){
             det.querySelectorAll(".kl-detail").forEach(box => {
                 const id = box.dataset.kl;
                 box.querySelector(".kl-d-status").addEventListener("change", ev => { klEintrag(id); klassenStatusSetzen(k, id, ev.target.value); planSpeichern(); });
-                box.querySelector(".kl-d-einheit").addEventListener("change", ev => { klEintrag(id).einheit = ev.target.value; planSpeichern(); });
+                const kde = box.querySelector(".kl-d-einheit"); if (kde) kde.addEventListener("change", ev => { klEintrag(id).einheit = ev.target.value; planSpeichern(); });
                 box.querySelector(".kl-d-notiz").addEventListener("input", ev => { klEintrag(id).notiz = ev.target.value.slice(0, 200); planSpeichern(); });
                 // Zeile neu zeichnen, wenn die Details zugeklappt werden
             });
