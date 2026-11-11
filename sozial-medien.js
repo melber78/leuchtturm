@@ -35,6 +35,11 @@
         peinlichkeit:  ps("knietzsche-und-die-peinlichkeit", "Knietzsche und die Peinlichkeit"),
         freiheit:      ps("knietzsche-und-die-freiheit", "Knietzsche und die Freiheit", "Passt zum Gedanken „Mit Regeln fühle ich mich freier“."),
         gewissen:      ps("knietzsche-und-das-gewissen", "Knietzsche und das Gewissen", "Die innere Stimme: Was ist richtig?"),
+        geduld:        ps("knietzsche-und-die-geduld", "Knietzsche und die Geduld", "Warten können, ohne zu explodieren."),
+        wahrheit:      ps("knietzsche-und-die-wahrheit", "Knietzsche und die Wahrheit", "Wahrheit ist meist gut – kann aber auch wehtun."),
+        entscheidung:  ps("knietzsche-und-die-entscheidung", "Knietzsche und die Entscheidung"),
+        privatsphaere: ps("knietzsche-und-die-privatsphaere", "Knietzsche und die Privatsphäre"),
+        sprache:       ps("knietzsche-und-die-sprache", "Knietzsche und die Sprache", "Was Wörter mit uns machen."),
         glueck:        { titel: "Knietzsche – Hallo Glück!", url: P + "knietzsche-hallo-glueck-film-100.html", quelle: "Planet Schule (SWR/WDR) · Knietzsche", hinweis: "Darin auch „Das geteilte Glück“." },
         miteinander:   yt("vCh-hn4oOJ8", "Knietzsche und das Miteinander", "YouTube · offizieller Knietzsche-Kanal"),
         inklusion:     yt("DXUfs3IXIYw", "Knietzsche und die Inklusion", "YouTube · offizieller Knietzsche-Kanal"),
@@ -46,65 +51,52 @@
         srfGefuehle:   { titel: "Meine Gefühle (6 kurze Folgen)", url: "https://www.srf.ch/sendungen/school/freude-wut-oder-angst-meine-gefuehle", quelle: "SRF school", hinweis: "Ab 5 Jahren. Schweizer Angebot – vorher testen, ob es in Deutschland abspielbar ist." }
     };
 
+    // Jeder Film kommt nur in EINER Stunde vor – die Kinder merken Wiederholungen sofort.
+    // Stunden ohne passenden eigenen Film haben keinen (spart Zeit).
     window.SOZIAL_MEDIEN = {
-        "v-gefuehle-erkennen":  [F.gefuehle, F.srfGefuehle],
+        "v-gefuehle-erkennen":  [F.gefuehle],
+        "v-empathie":           [F.srfGefuehle],
         "v-streit-loesen":      [Object.assign({}, F.wut, { hinweis: "Passt zu „Es kocht in mir“: Was passiert bei Wut – und was hilft?" })],
+        "v-wut-werkzeugkasten": [F.stress],
+        "v-ruhig-werden":       [F.geduld],
         "v-freundschaft":       [F.freundschaft],
         "v-regeln-miteinander": [F.freiheit],
-        "v-wut-werkzeugkasten": [F.wut],
         "v-traurig-troesten":   [F.traurigkeit],
         "v-angst-okay":         [F.angst],
-        "v-empathie":           [F.gefuehle],
         "v-petzen-hilfe":       [F.gewissen],
         "v-entschuldigen":      [F.entschuldigung],
         "v-kompromisse":        [F.miteinander],
-        "v-nein-sagen":         [F.stoppLied, F.selbstbewusst],
+        "v-nein-sagen":         [F.stoppLied],
         "v-mitspielen-lassen":  [F.spielen],
         "v-teilen":             [F.glueck],
-        "v-neue-freunde":       [F.freundschaft],
         "v-hoeflichkeit":       [F.hoeflichkeit],
         "v-verantwortung":      [F.verantwortung],
-        "v-pause-fair":         [F.spielen],
         "v-meine-staerken":     [F.ich],
         "v-mutig-sein":         [F.mut],
-        "v-fehler-lernhelfer":  [F.lernen, F.peinlichkeit],
+        "v-fehler-lernhelfer":  [F.lernen],
         "v-stolz-auf-mich":     [F.selbstbewusst],
         "v-um-hilfe-bitten":    [F.vertrauen],
         "v-gemeinsam":          [F.solidaritaet],
-        "v-jeder-ist-wichtig":  [F.miteinander],
-        "v-ruhig-werden":       [F.stress],
         "v-dankbarkeit":        [F.dankbarkeit],
         "v-alle-verschieden":   [F.inklusion],
-        "v-auslachen":          [F.mobbing, F.logoMobbing],
-        "v-hilfsbereitschaft":  [F.solidaritaet],
-        "v-gerecht":            [F.gerechtigkeit, F.inklusion],
+        "v-auslachen":          [Object.assign({}, F.peinlichkeit, { hinweis: "Wie fühlt es sich an, wenn man ausgelacht wird?" })],
+        "v-gerecht":            [F.gerechtigkeit],
         // Klartext (Kl. 3/4)
-        "k-respekt":            [F.respekt, F.elliRespekt],
-        "k-sprueche":           [F.respekt, F.mobbing],
-        "k-eskalation":         [F.wut, F.miteinander],
-        "k-wut-frueh":          [F.wut, F.stress],
-        "k-gruppendruck":       [F.gewissen, F.selbstbewusst],
-        "k-handyvideo":         [F.elliCyber, F.elliRespekt],
-        "k-provokation":        [F.respekt, F.selbstbewusst],
-        "k-mist-gebaut":        [F.verantwortung, F.entschuldigung],
-        "k-stark":              [F.mut, F.selbstbewusst],
-        "k-koerpergrenzen":     [F.selbstbewusst],
-        "k-laestern":           [F.elliRespekt, F.mobbing],
-        "k-gaming":             [F.wut],
-        "k-luegen":             [F.vertrauen],
-        "k-erwachsene":         [F.gerechtigkeit],
-        "k-ausgrenzung":        [F.mobbing, F.inklusion],
-        "k-wut-eisberg":        [F.wut, F.gefuehle],
-        "k-rache":              [F.entschuldigung, F.gerechtigkeit],
-        "k-freunde-echt":       [F.freundschaft],
-        "k-konsequenzen":       [F.freiheit, F.gerechtigkeit],
-        "k-gefuehle-zeigen":    [F.gefuehle, F.traurigkeit],
-        "k-neid":               [F.glueck],
-        "k-verpetzen":          [F.gewissen, F.logoMobbing],
-        "k-schlichten":         [],
-        "k-ruf":                [F.ich],
-        "k-mutter":             [F.respekt],
-        "k-schimpfwoerter":     [F.respekt, F.elliCyber],
-        "k-sprachregel":        [F.respekt, F.freiheit]
+        "k-respekt":            [F.respekt],
+        "k-handyvideo":         [F.elliCyber],
+        "k-laestern":           [F.elliRespekt],
+        "k-ausgrenzung":        [F.mobbing],
+        "k-verpetzen":          [F.logoMobbing],
+        "k-luegen":             [F.wahrheit],
+        "k-gruppendruck":       [F.entscheidung],
+        "k-koerpergrenzen":     [F.privatsphaere],
+        "k-schimpfwoerter":     [F.sprache]
     };
+    // Sicherheitsnetz: falls doch ein Film doppelt eingetragen ist, behält ihn nur die erste Stunde
+    (function () {
+        const gesehen = new Set();
+        Object.keys(window.SOZIAL_MEDIEN).forEach(id => {
+            window.SOZIAL_MEDIEN[id] = window.SOZIAL_MEDIEN[id].filter(m => { if (!m || gesehen.has(m.url)) return false; gesehen.add(m.url); return true; });
+        });
+    })();
 })();
