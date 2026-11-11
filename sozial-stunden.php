@@ -2089,7 +2089,7 @@ function zeigeRituale(bearbeiten = false){
 route();
 </script>
 <?php $zusaetze = ["sozial-medien.js", "sozial-praesentation.js", "sozial-material.js", "sozial-regie.js"];
-if ($BEREICH === "lernangebot") array_push($zusaetze, "lernangebot-einstiege.js", "lernangebot-woerter.js", "lernangebot-material.js", "lernangebot-tafel.js", "lernangebot-methoden.js");
+if ($BEREICH === "lernangebot") array_push($zusaetze, "lernangebot-einstiege.js", "lernangebot-woerter.js", "lernangebot-material.js", "lernangebot-tafel.js", "lernangebot-methoden.js", "lernangebot-duelle.js");
 else $zusaetze[] = "lernangebot-tafel.js";   // für Leise-Meer in der Präsentation
 foreach ($zusaetze as $zusatz): if (file_exists(__DIR__ . "/" . $zusatz)): ?>
 <script src="<?= $zusatz ?>?v=<?= @filemtime(__DIR__ . "/" . $zusatz) ?: 1 ?>"></script>

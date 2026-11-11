@@ -58,7 +58,8 @@ Lina rechnet: „Drei Hunderter, vier Zehner, sieben Einer. Das sind 347!“
           emoji: "🔎", warum: "Jede Ziffer hat ihren Platz und ihren Wert." },
         { titel: "Nachbarzahlen", fuer: "alle", dauer: "4 Min",
           text: "Du nennst eine Zahl. Ein Kind nennt den Vorgänger (eins weniger), ein anderes den Nachfolger (eins mehr). Kl. 1/2 im Zahlenraum bis 20, Kl. 3/4 bis 1000 (auch Nachbarzehner und -hunderter).",
-          folie: "Wer wohnt **links** und **rechts** neben der Zahl? 🏠 🏠 🏠", emoji: "🏠" }
+          folie: "Wer wohnt **links** und **rechts** neben der Zahl? 🏠 🏠 🏠\n\n___ **7** ___ · ___ **13** ___ · ___ **19** ___",
+          folie34: "Wer wohnt **links** und **rechts** daneben? 🏠 🏠 🏠\n\n___ **456** ___ · Nachbarzehner: ___ **372** ___ · Nachbarhunderter: ___ **538** ___", emoji: "🏠" }
     ],
     ab12: { titel: "Im Zahlenland", aufgaben: [
         { typ: "zuordnen", text: "Verbinde die Punkte mit der Zahl.", nur: "1", links: ["●●●", "●●●●● ●", "●●●●● ●●●●", "●●"], rechts: ["9", "2", "6", "3"] },
@@ -455,7 +456,7 @@ SOZIAL_EINHEIT({
     kategorie: "Mathe: Formen, Größen & Knobeln",
     ziel12: "Kl. 1: Tagesablauf ordnen (morgens, mittags, abends) · Kl. 2: volle und halbe Stunden lesen",
     ziel34: "Uhrzeiten minutengenau lesen und Zeitspannen berechnen",
-    material: "Zahlenkarten 1–4 (Universal-Set), evtl. Lernuhr",
+    material: "Zahlenkarten 1–4 (Universal-Set)\nLernuhr zum Basteln (unter Arbeitsmaterial) – eine pro Kind oder eine große für die Tafel",
     ohneVorbereitung: true,
     warmup12: "Was machst du, wenn …? (morgens – mittags – abends) Kinder zeigen pantomimisch",
     warmup34: "Uhr-Blitz an der Tafel",
@@ -515,7 +516,7 @@ SOZIAL_EINHEIT({
     kategorie: "Mathe: Formen, Größen & Knobeln",
     ziel12: "Münzen und Scheine erkennen und kleine Beträge legen (Kl. 1 bis 10 €, Kl. 2 bis 20 €)",
     ziel34: "Mit Euro und Cent rechnen und Wechselgeld bestimmen",
-    material: "Spielgeld (falls vorhanden) – sonst reicht die Tafel\nZahlenkarten 1–4 (Universal-Set)",
+    material: "Spielgeld (unter Arbeitsmaterial zum Ausdrucken)\nZahlenkarten 1–4 (Universal-Set)",
     warmup12: "Geld-Blitz an der Tafel: Wie viel Geld ist das?",
     warmup34: "Geld-Blitz mit Cent",
     tafel: [

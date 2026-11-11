@@ -272,7 +272,7 @@ SOZIAL_EINHEIT({
     kategorie: "Lernen lernen",
     ziel12: "Erfahren, dass öfter kurz üben besser hilft als einmal lange",
     ziel34: "Mit Lernkärtchen und Wiederholen in Portionen üben – die Lernbox-Methode",
-    material: "Kleine Zettel oder Karteikarten (pro Kind ca. 6)\nTimer an der Tafel",
+    material: "Übe-Kärtchen und Stapel-Schilder (unter Arbeitsmaterial) – pro Kind 6 Kärtchen\nTimer an der Tafel",
     warmup12: "Blitzlesen: Wörter von letzter Woche – was sitzt schon?",
     warmup34: "Einmaleins-Blitz: welche Aufgaben sind „Problem-Aufgaben“?",
     tafel: [

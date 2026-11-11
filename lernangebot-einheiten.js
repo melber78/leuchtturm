@@ -533,7 +533,8 @@ Mira liest ihre Nachricht noch einmal. Kein Großbuchstabe, kein Satzzeichen –
     uebungen: [
         { titel: "Lebende Sätze", fuer: "alle", dauer: "8 Min", kern: ["12", "34"],
           text: "Drei bis fünf Kinder bekommen je eine Wortkarte und stellen sich vorn in eine Reihe – erst durcheinander. Die anderen sagen, wer mit wem tauschen muss, bis der Satz stimmt. Kl. 3/4: Danach den Satz umstellen (Der Hund bellt laut. → Laut bellt der Hund.). Wer nicht nach vorn möchte, ist Bauleiter und sagt vom Platz aus, wer tauscht.",
-          folie: "Die Wörter sind durcheinander! 🧱\n\nWer muss mit wem **tauschen**, damit der Satz stimmt?",
+          folie: "Die Wörter sind durcheinander! 🧱\n\n**Ball.** · **Tom** · **spielt**\n\n**schläft.** · **Katze** · **Die**\n\nWer muss mit wem **tauschen**, damit der Satz stimmt?",
+          folie34: "Die Wörter sind durcheinander! 🧱\n\n**ein** · **liest** · **Buch.** · **Mama**\n\nDanach umstellen: **Der Hund bellt laut.** → Wie geht es noch?",
           emoji: "🧱", warum: "Jedes Wort braucht seinen Platz im Satz." },
         { titel: "Welches Zeichen?", fuer: "34", dauer: "5 Min",
           text: "Du liest Sätze ohne Satzzeichen vor – mit passender Betonung. Die Kinder zeigen die Zahlenkarte: 1 = Punkt, 2 = Fragezeichen, 3 = Ausrufezeichen.\n- Kommst du mit ins Kino\n- Pass auf, da kommt ein Auto\n- Heute ist Mittwoch\n- Wie spät ist es",

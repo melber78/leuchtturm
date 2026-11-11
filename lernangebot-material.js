@@ -57,6 +57,34 @@ const NEU = {
         items: Array.from({ length: 4 }, () => ({ text: "Ich übe: …… · So oft: …… · Geschafft? ☐", linien: 3 })),
         hinweis: "Eine Karte pro Kind; nächste Woche gemeinsam nachschauen.", wozu: "Zur Stunde „Mein Ziel für diese Woche“." }
 };
+/* Lernuhr zum Basteln: Zifferblatt + Zeiger (Musterbeutelklammer in die Mitte) */
+const ZIFFERBLATT = (() => {
+    let t = "";
+    for (let i = 0; i < 60; i++) { const w = i * 6 * Math.PI / 180, r1 = i % 5 ? 88 : 82, x1 = 100 + Math.sin(w) * r1, y1 = 100 - Math.cos(w) * r1, x2 = 100 + Math.sin(w) * 94, y2 = 100 - Math.cos(w) * 94; t += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#16324a" stroke-width="${i % 5 ? 1 : 2.4}"/>`; }
+    for (let h = 1; h <= 12; h++) { const w = h * 30 * Math.PI / 180; t += `<text x="${(100 + Math.sin(w) * 68).toFixed(1)}" y="${(100 - Math.cos(w) * 68 + 7).toFixed(1)}" font-family="Nunito,Arial" font-weight="900" font-size="20" text-anchor="middle" fill="#16324a">${h}</text>`;
+        const m = (h * 5) % 60; t += `<text x="${(100 + Math.sin(w) * 108).toFixed(1)}" y="${(100 - Math.cos(w) * 108 + 4).toFixed(1)}" font-family="Nunito,Arial" font-size="9" text-anchor="middle" fill="#7c8a85">${m}</text>`; }
+    return `<svg viewBox="-20 -20 240 240" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="100" r="96" fill="#fff" stroke="#16324a" stroke-width="4"/>${t}<circle cx="100" cy="100" r="4" fill="#16324a"/></svg>`;
+})();
+const ZEIGER = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">${[0, 1].map(k => `<g transform="translate(${30 + k * 90} 10)">
+    <path d="M18 0 L30 22 L23 22 L23 120 Q18 128 13 120 L13 22 L6 22 Z" fill="none" stroke="#16324a" stroke-width="2"/><circle cx="18" cy="112" r="3" fill="#16324a"/><text x="18" y="145" font-size="10" text-anchor="middle" font-family="Nunito,Arial">langer Zeiger</text>
+    <path d="M58 40 L70 60 L63 60 L63 120 Q58 128 53 120 L53 60 L46 60 Z" fill="none" stroke="#16324a" stroke-width="2"/><circle cx="58" cy="112" r="3" fill="#16324a"/><text x="58" y="160" font-size="10" text-anchor="middle" font-family="Nunito,Arial">kurzer Zeiger</text></g>`).join("")}</svg>`;
+const MUENZE = (w, farbe) => `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="46" fill="${farbe}" stroke="#7a5a1a" stroke-width="3"/><circle cx="50" cy="50" r="38" fill="none" stroke="#7a5a1a" stroke-width="1.5" stroke-dasharray="3 3"/><text x="50" y="${/ct/.test(w) ? 58 : 60}" font-family="Nunito,Arial" font-weight="900" font-size="${/ct/.test(w) ? 22 : 30}" text-anchor="middle" fill="#3b2a08">${w}</text></svg>`;
+const SCHEIN = (w, farbe) => `<svg viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="154" height="84" rx="8" fill="${farbe}" stroke="#16324a" stroke-width="3"/><rect x="12" y="12" width="136" height="66" rx="5" fill="none" stroke="#16324a" stroke-width="1" stroke-dasharray="4 3"/><text x="80" y="58" font-family="Nunito,Arial" font-weight="900" font-size="34" text-anchor="middle" fill="#16324a">${w}</text><text x="80" y="76" font-family="Nunito,Arial" font-size="9" text-anchor="middle" fill="#16324a">SPIELGELD</text></svg>`;
+Object.assign(NEU, {
+    "lern-lernuhr": { titel: "Lernuhr zum Basteln", gruppe: "Lernangebot", art: "karten", proSeite: 1, sym: 165,
+        items: [{ svg: ZIFFERBLATT, klein: "Ausschneiden, auf Pappe kleben, Zeiger mit einer Musterbeutelklammer in der Mitte befestigen." }, { svg: ZEIGER, klein: "Zwei Zeiger-Paare: ausschneiden und am Punkt lochen." }],
+        hinweis: "Eine Uhr pro Kind – oder eine große Uhr für die Tafel.", wozu: "Zur Stunde „Wie spät ist es?“: Uhrzeiten selbst einstellen und ablesen." },
+    "lern-spielgeld": { titel: "Spielgeld: Münzen und Scheine", gruppe: "Lernangebot", art: "karten", proSeite: 12, sym: 40,
+        items: [["1 ct", "#e8b07a"], ["2 ct", "#e8b07a"], ["5 ct", "#e8b07a"], ["10 ct", "#f2d27a"], ["20 ct", "#f2d27a"], ["50 ct", "#f2d27a"], ["1 €", "#f2e2a0"], ["2 €", "#f2e2a0"], ["1 €", "#f2e2a0"], ["2 €", "#f2e2a0"], ["50 ct", "#f2d27a"], ["10 ct", "#f2d27a"]].map(([w, f]) => ({ svg: MUENZE(w, f) }))
+            .concat([["5 €", "#d9dde0"], ["10 €", "#f4c6c0"], ["20 €", "#c6dcf4"], ["50 €", "#f6dcb4"], ["5 €", "#d9dde0"], ["10 €", "#f4c6c0"], ["20 €", "#c6dcf4"], ["5 €", "#d9dde0"], ["10 €", "#f4c6c0"], ["5 €", "#d9dde0"], ["10 €", "#f4c6c0"], ["20 €", "#c6dcf4"]].map(([w, f]) => ({ svg: SCHEIN(w, f) }))),
+        hinweis: "Seite 1 = Münzen, Seite 2 = Scheine. Mehrfach drucken für mehr Geld.", wozu: "Zur Stunde „Einkaufen mit Geld“: Beträge legen, bezahlen, Rückgeld." },
+    "lern-uebekarten": { titel: "Übe-Kärtchen (vorne Aufgabe, hinten Lösung)", gruppe: "Lernangebot", art: "karten", proSeite: 8, kopf: "🃏 Übe-Karte",
+        items: Array.from({ length: 8 }, () => ({ klein: "Vorne: Aufgabe · Hinten: Lösung", linien: 2 })),
+        hinweis: "6 Karten pro Kind. Für das Zwei-Stapel-Training: „kann ich“ und „übe ich noch“.", wozu: "Zur Stunde „Üben in kleinen Portionen“." },
+    "lern-stapelkarten": { titel: "Stapel-Schilder „kann ich“ / „übe ich noch“", gruppe: "Lernangebot", art: "karten", proSeite: 4,
+        items: [{ emoji: "✅", text: "kann ich" }, { emoji: "🔁", text: "übe ich noch" }, { emoji: "✅", text: "kann ich" }, { emoji: "🔁", text: "übe ich noch" }],
+        hinweis: "Ein Paar pro Tisch.", wozu: "Zur Stunde „Üben in kleinen Portionen“: Karten auf zwei Stapel sortieren." }
+});
 Object.assign(B, NEU);
 Object.assign(SM.zuordnung || {}, {
     "l-konzentration": ["lern-plakat-konzentration"],
@@ -68,6 +96,10 @@ Object.assign(SM.zuordnung || {}, {
     "l-hilfe-holen": ["lern-plakat-hilfe"],
     "l-pausen": ["lern-plakat-pausen"],
     "l-dranbleiben": ["lern-plakat-mut"],
-    "l-ziele": ["lern-zielkarten"]
+    "l-ziele": ["lern-zielkarten"],
+    "l-uhr": ["lern-lernuhr"],
+    "l-geld": ["lern-spielgeld"],
+    "l-ueben-portionen": ["lern-uebekarten", "lern-stapelkarten"],
+    "l-lesen-malen": ["lern-anlaut-karten"]
 });
 })();
