@@ -175,6 +175,8 @@ input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--meer
 .sp-ab{ grid-column:2 / -1; display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:#eef6fb; border-radius:10px; padding:6px 10px; font-weight:800; font-size:14px; }
 .sp-ab select{ width:auto; min-width:120px; }
 .ab-leiste{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:14px; background:#eef6fb; border-radius:12px; padding:10px 12px; font-size:14px; font-weight:700; color:var(--nacht); }
+.sp-pause{ grid-template-columns:86px 210px 1fr 150px; }
+.aufsicht-check{ background:#fbf4e3; border-radius:10px; padding:8px 10px; color:#7a5a12; }
 .zweit-check{ display:flex; align-items:center; gap:6px; font-size:13px; font-weight:800; color:var(--nacht); cursor:pointer; line-height:1.15; }
 .zweit-check input{ width:18px; height:18px; accent-color:var(--meer); flex:none; }
 .sp-zeile:last-child{ border-bottom:0; }
@@ -230,6 +232,8 @@ table.ue tr.pause td{ background:#fafbfa; color:var(--grau); font-style:italic; 
     .sp-zeile{ grid-template-columns:1fr 1fr; }
     .sp-titelzeile{ display:none; }
     .sp-ab{ grid-column:1 / -1; }
+    .sp-pause{ grid-template-columns:1fr 1fr; }
+    .sp-pause .aufsicht-check{ grid-column:1 / -1; }
     .checks{ grid-column:1 / -1; flex-direction:row; gap:16px; }
     .sp-zeile .z{ grid-column:1/-1; }
     .tag-chips .kurz-tag{ display:inline; } .tag-chips .lang-tag{ display:none; }
@@ -462,12 +466,14 @@ function stundeLink(e){ return BEREICHE[e.b].url + "#stunde/" + encodeURICompone
 // Alles, was an einem Tag in einer Zeile des Stundenplans steht (Stundenplan + Änderungen des Tages + Jahresplan)
 function slotInfo(datum, zid){
     const wt = wochentag(datum);
-    const def = spEintrag(wt, zid, false);
+    const defRoh = spEintrag(wt, zid, false);
+    let def = defRoh;
+    if (defRoh.nurWoche) { const w = abWoche(datum); if (w && w !== defRoh.nurWoche) def = {}; }
     const t = DATEN.tage[datum];
     const ov = (t && t.slots && t.slots[zid]) || {};
     const geaendert = ov.art !== undefined;
     const art = geaendert ? ov.art : (def.art || "");
-    const abW = !geaendert && def.ab ? (abWoche(datum) || "?") : "";
+    const abW = !geaendert && (def.ab || def.nurWoche) ? (abWoche(datum) || "?") : "";
     const klasse = geaendert ? (ov.klasse || "") : (abW === "B" ? (def.klasseB || "") : (def.klasse || ""));
     const titel = geaendert ? (ov.titel || "") : (def.titel || "");
     const raum = geaendert && ov.raum !== undefined ? ov.raum : (def.raum || "");
@@ -497,7 +503,7 @@ function abWoche(datum){
     const w = Math.round((tagVon(montag(datum)) - tagVon(montag(st))) / (7 * 864e5));
     return ((w % 2) + 2) % 2 === 0 ? "A" : "B";
 }
-function abHatEtwas(){ return Object.values(sp().tage).some(t => t && Object.values(t).some(x => x && x.ab)); }
+function abHatEtwas(){ return Object.values(sp().tage).some(t => t && Object.values(t).some(x => x && (x.ab || x.nurWoche))); }
 function abText(datum){ const a = abWoche(datum); return a ? " · " + a + "-Woche" : ""; }
 function zeitText(z){ return z.von ? z.von + (z.bis ? "–" + z.bis : "") : ""; }
 
@@ -573,7 +579,7 @@ function zeigeTag(){
             <div class="slot-zeit"><span class="nr">${pause ? '<i class="fa-solid fa-mug-hot" style="font-size:15px"></i>' : esc(z.name)}</span><small>${esc(zeitText(z)).replace("–", "<br>")}</small></div>
             <div class="slot-inhalt">
                 <div class="slot-kopf">
-                    <span class="slot-art"><i class="fa-solid ${a.icon}"></i> ${info.art ? a.name : (pause ? esc(z.name || "Pause") : "frei")}</span>
+                    <span class="slot-art"><i class="fa-solid ${a.icon}"></i> ${info.art === "aufsicht" && pause ? "Hofpausenaufsicht" : info.art ? a.name : (pause ? esc(z.name || "Pause") : "frei")}</span>
                     ${werText(info) ? `<span class="slot-wer">${esc(werText(info))}</span>` : ""}
                     ${info.raum ? `<span class="slot-raum"><i class="fa-solid fa-door-open"></i> ${esc(info.raum)}</span>` : ""}
                     ${info.zweit ? ZWEIT_CHIP : ""}
@@ -768,6 +774,15 @@ function zeigeStundenplan(){
             ${s.zeiten.length ? s.zeiten.map(z => {
                 const e = spEintrag(wt, z.id, false), art = e.art || "";
                 const aus = art ? "" : "disabled";
+                if (z.typ === "pause") {
+                    const auf = art === "aufsicht";
+                    return `<div class="sp-zeile pause sp-pause" data-z="${esc(z.id)}">
+                        <div class="z">${esc(z.name || "Pause")}<small>${esc(zeitText(z)) || "&nbsp;"}</small></div>
+                        <label class="zweit-check aufsicht-check"><input type="checkbox" data-aufsicht ${auf ? "checked" : ""}> <i class="fa-solid fa-eye"></i> Hofpausen&shy;aufsicht</label>
+                        ${auf ? `<input type="text" data-f="titel" value="${esc(e.titel || "")}" placeholder="Wo? (z. B. Hof, Flur, Mensa)" maxlength="80" aria-label="Wo">
+                        <select data-f="nurWoche" aria-label="Welche Woche"><option value="">jede Woche</option><option value="A" ${e.nurWoche === "A" ? "selected" : ""}>nur A-Woche</option><option value="B" ${e.nurWoche === "B" ? "selected" : ""}>nur B-Woche</option></select>` : ""}
+                    </div>`;
+                }
                 return `<div class="sp-zeile ${z.typ === "pause" ? "pause" : ""}" data-z="${esc(z.id)}">
                     <div class="z">${z.typ === "pause" ? esc(z.name || "Pause") : esc(z.name) + ". Stunde"}<small>${esc(zeitText(z)) || "&nbsp;"}</small></div>
                     <select data-f="art" style="border-left:6px solid ${(ARTEN[art] || ARTEN.sonstiges).farbe}" aria-label="Art">${artOptionen(art)}</select>
@@ -821,6 +836,12 @@ function zeigeStundenplan(){
             if (f.tagName === "SELECT" || f.type === "checkbox") f.onchange = () => { aendern(); neuZeichnen(); };
             else { f.oninput = aendern; f.onchange = rasterAnzeigen; }
         });
+    });
+    inhalt.querySelectorAll("[data-aufsicht]").forEach(c => c.onchange = () => {
+        const zid = c.closest(".sp-zeile").dataset.z;
+        if (c.checked) { const e = spEintrag(wt, zid, true); e.art = "aufsicht"; if (!e.titel) e.titel = "Hof"; }
+        else if (sp().tage[wt]) delete sp().tage[wt][zid];
+        stundenplanSpeichern(); neuZeichnen();
     });
     inhalt.querySelectorAll("[data-abwoche]").forEach(b => b.onclick = () => {
         const mo = montag(heute());
