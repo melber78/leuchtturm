@@ -304,6 +304,7 @@ const ARTEN = {
     sozial:      { name: "Sozialtraining",    farbe: "#3d7ea6", icon: "fa-people-group", bereich: "sozial" },
     lernangebot: { name: "Lernangebot",       farbe: "#2e8b57", icon: "fa-seedling", bereich: "lernangebot" },
     lrs:         { name: "LRS-Förderung",     farbe: "#7b5cc4", icon: "fa-pen-nib" },
+    foerder:     { name: "Fördergruppe",      farbe: "#c05a96", icon: "fa-hands-holding-child" },
     vertretung:  { name: "Vertretung",        farbe: "#e07a2f", icon: "fa-shuffle", bereich: "vertretung" },
     unterricht:  { name: "Unterricht",        farbe: "#16324a", icon: "fa-chalkboard-user" },
     aufsicht:    { name: "Aufsicht",          farbe: "#b08a2e", icon: "fa-eye" },
@@ -551,7 +552,7 @@ function zeigeTag(){
                     ${info.geaendert ? `<span class="chip gold">heute geändert</span>` : ""}
                     ${info.aus ? `<span class="chip rot">fällt aus</span>` : ""}
                     <span class="slot-knoepfe">
-                        ${info.art === "lrs" ? `<a class="btn klein flach" href="lrs-timer.php" title="Stunden-Timer"><i class="fa-solid fa-stopwatch"></i></a><a class="btn klein flach" href="trainingshefte.php" title="Kinder-Akten"><i class="fa-solid fa-user-graduate"></i></a>` : ""}
+                        ${info.art === "lrs" || info.art === "foerder" ? `<a class="btn klein flach" href="lrs-timer.php" title="Stunden-Timer"><i class="fa-solid fa-stopwatch"></i></a><a class="btn klein flach" href="trainingshefte.php" title="Kinder-Akten"><i class="fa-solid fa-user-graduate"></i></a>` : ""}
                         <button class="btn klein flach" data-aendern title="Nur heute ändern (z. B. Vertretung)"><i class="fa-solid fa-pen"></i></button>
                         <button class="btn klein flach" data-aus title="${info.aus ? "Findet doch statt" : "Fällt heute aus"}"><i class="fa-solid ${info.aus ? "fa-rotate-left" : "fa-ban"}"></i></button>
                     </span>
@@ -742,7 +743,7 @@ function zeigeStundenplan(){
                     <div class="z">${z.typ === "pause" ? esc(z.name || "Pause") : esc(z.name) + ". Stunde"}<small>${esc(zeitText(z)) || "&nbsp;"}</small></div>
                     <select data-f="art" style="border-left:6px solid ${(ARTEN[art] || ARTEN.sonstiges).farbe}" aria-label="Art">${artOptionen(art)}</select>
                     <select data-f="klasse" aria-label="Klasse" ${aus}>${klasseOptionen(e.klasse || "")}</select>
-                    <input type="text" data-f="titel" value="${esc(e.titel || "")}" placeholder="${art === "lrs" ? "Gruppe / Kürzel" : art === "unterricht" ? "Fach" : art === "aufsicht" ? "Wo? (Hof, Flur …)" : "Was? (optional)"}" maxlength="80" aria-label="Was" ${aus}>
+                    <input type="text" data-f="titel" value="${esc(e.titel || "")}" placeholder="${art === "lrs" || art === "foerder" ? "Gruppe / Kürzel" : art === "unterricht" ? "Fach" : art === "aufsicht" ? "Wo? (Hof, Flur …)" : "Was? (optional)"}" maxlength="80" aria-label="Was" ${aus}>
                     <input type="text" data-f="raum" value="${esc(e.raum || "")}" placeholder="Raum" maxlength="40" aria-label="Raum" ${aus}>
                     <label class="zweit-check" title="Ich bin in dieser Stunde als Zweitbesetzung eingeteilt"><input type="checkbox" data-f="zweit" ${e.zweit ? "checked" : ""} ${aus}> Zweit&shy;besetzung</label>
                 </div>`;
