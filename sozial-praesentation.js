@@ -442,7 +442,7 @@ const KRITZEL = () => `<div class="l-kritzel">${[["1+2", 6, 12], ["ABC", 82, 10]
 /* Lernpfad: welche Stationen es gibt, ergibt sich aus den Folien – jede Stunde kann anders ablaufen */
 const STATION = { ankommen: ["😊", "Ankommen"], mission: ["🗺️", "Mission"], kopf: ["🧠", "Kopf-Start"], geschichte: ["📖", "Geschichte"], knobel: ["🧩", "Knobel-Rätsel"], erklaert: ["🦉", "Ella erklärt"], fehler: ["🔎", "Fehler-Detektiv"], challenge: ["🏆", "Challenges"], arbeiten: ["✏️", "Arbeiten"], ziel: ["⭐", "Ziel"] };
 const TYP_STATION = { barometer: "ankommen", mission: "mission", kopfstart: "kopf", fall: "geschichte", film: "geschichte", denkrunde: "geschichte", knobel: "knobel", erklaert: "erklaert", mitmachen: "erklaert", fehler: "fehler", arbeitsblatt: "arbeiten", abschluss: "ziel" };
-function stationVon(f){ return f.st || TYP_STATION[f.typ] || "challenge"; }
+function stationVon(f){ return f.st || (f.u && f.u.kopf ? "kopf" : "") || TYP_STATION[f.typ] || "challenge"; }
 function missionNr(){ return zustand ? Math.max(0, zustand.folien.findIndex(x => x.typ === "mission")) : 0; }
 function pfadVon(folien){ return [...new Set(folien.map(stationVon))]; }
 /* Eule Ella ruft „Hu-hu“, wenn sie einen Punkt bekommt */
@@ -602,17 +602,17 @@ function uebungStufe(e, u0, stufe){
 /* Kopf-Start: fertige Beispiele, damit niemand sich etwas ausdenken muss.
    Liefert { frage, liste: [{ t, l }] } – t = was du sagst/zeigst, l = Lösung (optional). */
 const KOPF_BEISPIELE = [
-    [/Stimmt das\?/i, () => ({ frage: "Stimmt das? 👍 oder 👎", liste: [
+    [/Stimmt das\?/i, () => ({ frage: "Stimmt das? 👍 oder 👎", opt: ["👍 Stimmt", "👎 Stimmt nicht"], liste: [
         ["Ein Fisch kann fliegen.", "👎"], ["Im Winter kann es schneien.", "👍"], ["Eine Kuh sagt „Muh“.", "👍"], ["Bananen sind blau.", "👎"],
         ["Ein Hund hat vier Beine.", "👍"], ["Nachts scheint die Sonne.", "👎"], ["Ein Auto hat Räder.", "👍"], ["Katzen können bellen.", "👎"],
-        ["Eis ist kalt.", "👍"], ["Ein Elefant ist kleiner als eine Maus.", "👎"]].map(([t, l]) => ({ t, l })) })],
-    [/Punkt, Fragezeichen oder Ausrufezeichen/i, () => ({ frage: "Punkt, Fragezeichen oder Ausrufezeichen? Mal es in die Luft!", liste: [
+        ["Eis ist kalt.", "👍"], ["Ein Elefant ist kleiner als eine Maus.", "👎"]].map(([t, l]) => ({ t, l, r: l === "👍" ? 0 : 1 })) })],
+    [/Punkt, Fragezeichen oder Ausrufezeichen/i, () => ({ frage: "Punkt, Fragezeichen oder Ausrufezeichen?", opt: ["⚫ Punkt .", "❓ Fragezeichen ?", "❗ Ausrufezeichen !"], liste: [
         ["Kommst du mit zum Spielplatz", "?"], ["Pass auf, ein Auto", "!"], ["Heute ist Mittwoch", "."], ["Wie spät ist es", "?"],
         ["Hör sofort auf", "!"], ["Der Hund schläft im Körbchen", "."], ["Hast du deine Hausaufgaben gemacht", "?"], ["Hurra, wir haben Ferien", "!"],
-        ["Mein Bruder ist acht Jahre alt", "."], ["Wo ist mein Schuh", "?"]].map(([t, l]) => ({ t: t + " …", l: "Zeichen: " + l })) })],
+        ["Mein Bruder ist acht Jahre alt", "."], ["Wo ist mein Schuh", "?"]].map(([t, l]) => ({ t: t + " …", l: "Zeichen: " + l, r: ".?!".indexOf(l) })) })],
     [/Reim-Ping-Pong/i, (st) => ({ frage: "Was reimt sich auf …?", liste: (st === "34" ? ["Bus", "Hand", "Nacht", "Stern", "Kopf", "Licht", "Wand", "Tag"] : ["Maus", "Ball", "Hose", "Hund", "Tisch", "Baum", "Kanne", "Bein"])
         .map(t => ({ t, l: { Maus: "Haus, Laus, raus", Ball: "Fall, Stall, Knall", Hose: "Rose, Dose", Hund: "bunt, rund, Mund", Tisch: "Fisch, frisch", Baum: "Traum, Schaum", Kanne: "Tanne, Panne, Wanne", Bein: "Schwein, klein, fein", Bus: "Kuss, Fluss, Nuss", Hand: "Sand, Wand, Land", Nacht: "lacht, Macht, acht", Stern: "fern, gern, Kern", Kopf: "Topf, Zopf, Knopf", Licht: "Gedicht, nicht, Sicht", Wand: "Hand, Sand, Strand", Tag: "mag, lag, Schlag" }[t] })) })],
-    [/Begleiter-Spiel/i, () => ({ frage: "der, die oder das?", liste: [["Tisch", "der"], ["Tafel", "die"], ["Fenster", "das"], ["Stuhl", "der"], ["Tür", "die"], ["Buch", "das"], ["Lampe", "die"], ["Mäppchen", "das"], ["Schrank", "der"], ["Uhr", "die"]].map(([t, l]) => ({ t, l })) })],
+    [/Begleiter-Spiel/i, () => ({ frage: "der, die oder das?", opt: ["der", "die", "das"], liste: [["Tisch", "der"], ["Tafel", "die"], ["Fenster", "das"], ["Stuhl", "der"], ["Tür", "die"], ["Buch", "das"], ["Lampe", "die"], ["Mäppchen", "das"], ["Schrank", "der"], ["Uhr", "die"]].map(([t, l]) => ({ t, l, r: ["der", "die", "das"].indexOf(l) })) })],
     [/Pantomime: Ein Kind macht ein Verb/i, () => ({ frage: "Flüstere einem Kind ein Verb ins Ohr – es macht es vor:", liste: ["schwimmen", "schlafen", "Zähne putzen", "lesen", "tanzen", "kochen", "Fahrrad fahren", "telefonieren", "malen", "springen"].map(t => ({ t })) })],
     [/Stille Post mit einer Zahlenreihe/i, () => ({ frage: "Flüstere dem ersten Kind diese Zahlen:", liste: ["3 – 7 – 1", "12 – 5 – 9", "8 – 8 – 2 – 6", "25 – 40 – 13", "4 – 9 – 16 – 25", "71 – 17 – 7"].map(t => ({ t })) })],
     [/Merk-Aufträge/i, () => ({ frage: "Drei Aufträge kurz lesen – dann aus dem Kopf ausführen:", liste: [
@@ -686,7 +686,14 @@ function folienBauenLern(e, stufe){
     const warmTafel = warmupTafel(warmup, stufe);
     // Passt der Kopf-Start zu einem Tafel-Spiel (z. B. Blitzrechnen), startet genau das – das eingeplante Tafel-Spiel wird dann zur Tafel-Challenge
     if (warmTafel && tafel[0] && tafel[0].werkzeug !== warmTafel.werkzeug) tafel.splice(1, 0, tafel[0]);
-    f.push({ typ: "kopfstart", warmup, tafel: warmTafel || tafel[0] || null, warm: !!warmTafel, bsp: warmTafel ? null : kopfBeispiele(warmup, stufe), bi: 0 });
+    const kbsp = warmTafel ? null : kopfBeispiele(warmup, stufe);
+    f.push({ typ: "kopfstart", warmup, tafel: warmTafel || tafel[0] || null, warm: !!warmTafel, bsp: kbsp && !kbsp.opt ? kbsp : null, bi: 0, wert: {}, fragen: kbsp && kbsp.opt ? Math.min(6, kbsp.liste.length) : 0 });
+    // Feste Antworten (Stimmt das?, Satzzeichen, der/die/das): Kinder tippen an der Tafel – richtig = Punkt für die Klasse, falsch = Punkt für Ella
+    if (kbsp && kbsp.opt) {
+        const ku = { titel: "Kopf-Start: " + kbsp.frage.replace(/\s*👍.*$/, ""), emoji: "🧠", kopf: true };
+        const n = lernD() <= 25 ? 4 : 6;
+        kbsp.liste.slice(0, n).forEach((x, i) => f.push({ typ: "quiz", u: ku, art: "duell", aussage: x.t, opt: kbsp.opt, nr: i + 1, von: Math.min(n, kbsp.liste.length), loesung: [x.r + 1] }));
+    }
     const ein = window.lernEinstieg ? window.lernEinstieg(e, stufe) : { art: "geschichte" };
     if (ein.art === "knobel") f.push({ typ: "knobel", d: ein });
     else if (ein.art === "erklaert") { f.push({ typ: "erklaert", d: ein }); if (ein.aufgabe) f.push({ typ: "mitmachen", d: ein }); }
@@ -987,10 +994,12 @@ function folieHtml(f, e){
         if (f.typ === "kopfstart") {
             const inf = f.tafel && window.lernTafel && window.lernTafel.info(f.tafel.werkzeug);
             return `<div class="l-stempel">KOPF-START · ${kopfMin()} MINUTEN</div><h2>🧠 Gehirn einschalten!</h2>
-                <div class="l-zettel${f.bsp ? " klein" : ""}">${inline(f.warmup || "Blitzrunde: Ich frage – ihr antwortet blitzschnell!")}</div>
+                <div class="l-zettel${f.bsp || f.fragen ? " klein" : ""}">${inline(f.warmup || "Blitzrunde: Ich frage – ihr antwortet blitzschnell!")}</div>
+                ${f.fragen ? `<div class="l-bsp-frage" style="margin-top:3vh">👉 Gleich kommen ${f.fragen} Fragen: Ein Kind tippt die Antwort an der Tafel an.<br>Richtig = Punkt für euch · falsch = Punkt für Ella 🦉</div><div class="p-reihe"><button class="p-knopf l-los" data-p="weiter">▶ Los geht’s!</button></div>` : ""}
                 ${f.bsp ? `<div class="l-bsp"><div class="l-bsp-frage">${esc(f.bsp.frage)}</div>
                     <div class="l-bsp-zeile"><button class="p-knopf hell" data-bsp="-1" aria-label="Zurück">◀</button><div class="l-bsp-text"></div><button class="p-knopf hell" data-bsp="1" aria-label="Weiter">▶</button></div>
-                    <div class="l-bsp-fuss"><span class="l-bsp-nr"></span><button class="p-knopf hell" data-bsploes hidden>💡 Lösung</button><span class="l-bsp-loes" hidden></span></div></div>` : ""}
+                    <div class="l-bsp-fuss"><span class="l-bsp-nr"></span><button class="p-knopf hell" data-bsploes hidden>💡 Lösung</button><span class="l-bsp-loes" hidden></span></div>
+                    <div class="p-reihe l-bsp-punkte"><button class="p-knopf l-pk" data-bsppunkt="klasse">🧒 Richtig – Punkt für euch</button><button class="p-knopf hell l-pk" data-bsppunkt="eule">🦉 Daneben – Punkt für Ella</button></div></div>` : ""}
                 <div class="p-reihe">${inf ? `<button class="p-knopf ${f.warm ? "l-los" : ""}" data-tafel="1">${inf.emoji || "▶"} ${esc(f.warm ? inf.titel + (tafelEinstellung(f.tafel).bis ? " bis " + tafelEinstellung(f.tafel).bis : "") + " starten" : (f.tafel.titel || inf.titel) + " an der Tafel")}</button>` : ""}<button class="p-knopf hell" data-start="${kopfMin()}">⏱ ${kopfMin()} Minuten</button></div>`;
         }
         if (f.typ === "fall") {
@@ -1243,7 +1252,17 @@ function folieAktivieren(el, f){
             box.querySelector(".l-bsp-nr").textContent = (f.bi + 1) + " / " + liste.length;
             const lb = box.querySelector("[data-bsploes]"), lt = box.querySelector(".l-bsp-loes");
             lb.hidden = !x.l; lt.hidden = true; lt.textContent = x.l || "";
+            box.querySelectorAll("[data-bsppunkt]").forEach(b => b.classList.toggle("gewaehlt", f.wert[f.bi] === b.dataset.bsppunkt));
         };
+        box.querySelectorAll("[data-bsppunkt]").forEach(b => b.addEventListener("click", ev => {
+            ev.stopPropagation();
+            const wer = b.dataset.bsppunkt, P = zustand.punkte, alt = f.wert[f.bi];
+            if (alt) P[alt] = Math.max(0, P[alt] - 1);
+            f.wert[f.bi] = alt === wer ? undefined : wer;
+            if (f.wert[f.bi]) { P[wer]++; if (wer === "klasse") { fanfare(); konfetti(zustand.buehne); } else euleRuf(); }
+            scoreZeichnen(true); zeigeBsp();
+            if (f.wert[f.bi] && f.bi < liste.length - 1) setTimeout(() => { f.bi++; zeigeBsp(); }, 1400);
+        }));
         box.querySelectorAll("[data-bsp]").forEach(b => b.addEventListener("click", ev => { ev.stopPropagation(); f.bi = (f.bi + +b.dataset.bsp + liste.length) % liste.length; zeigeBsp(); }));
         box.querySelector("[data-bsploes]").addEventListener("click", ev => { ev.stopPropagation(); ev.currentTarget.hidden = true; box.querySelector(".l-bsp-loes").hidden = false; });
         zeigeBsp();
