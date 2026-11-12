@@ -455,7 +455,7 @@ SOZIAL_EINHEIT({
     material: "–",
     ohneVorbereitung: true,
     warmup12: "Daumen-Runde: Ich kann schon gut lesen / rechnen / malen / zuhören …",
-    warmup34: "Blitz-Umfrage mit Zahlenkarten: Welcher Lern-Trick aus den letzten Stunden hilft dir am meisten?",
+    warmup34: "Blitz-Umfrage mit den Fingern: Welcher Lern-Trick aus den letzten Stunden hilft dir am meisten?",
     tafel: [{ werkzeug: "gluecksrad", titel: "Glücksrad: Wer erzählt?", fuer: "", einstellung: {} }],
     lerntext12: { titel: "Das Lern-Schatzkästchen", text:
 `Frau Sommer stellt eine kleine Kiste auf den Tisch. „Das ist ein Schatzkästchen“, sagt sie. „Aber darin liegt kein Gold. Darin liegen Lern-Schätze.“

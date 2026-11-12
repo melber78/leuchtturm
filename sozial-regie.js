@@ -223,7 +223,8 @@ function ankommenL(e, st){
     return { zweck: "Ankommen, Kopf einschalten – immer gleich, damit die Kinder wissen, was kommt.", schritte: [
         li("Die Kinder setzen sich an ihren Platz. Ruhezeichen (Hand hoch) und warten, bis es still ist."),
         li("<b>Begrüßung</b> – kurz und freundlich.", sag("Schön, dass ihr da seid! Heute im Lernangebot …")),
-        li("<b>Kopf-Start (2 Min):</b> " + (warm ? inline(warm) : "eine kurze Blitzrunde – z. B. Blitzrechnen oder Blitzlesen an der Tafel (Reiter „Tafel“). Alle antworten leise mit den Fingern oder rufen nur, wenn sie drankommen.")),
+        li("<b>Kopf-Start (2 Min):</b> " + (warm ? inline(warm) : "eine kurze Blitzrunde – z. B. Blitzrechnen oder Blitzlesen an der Tafel (Reiter „Tafel“). Alle antworten leise mit den Fingern oder rufen nur, wenn sie drankommen.")
+            + ((b => b ? `<br><i>${esc(b.frage)}</i> ` + b.liste.map(x => esc(x.t) + (x.l ? ` <b>(${esc(x.l)})</b>` : "")).join(" · ") : "")(window.kopfBeispiele && window.kopfBeispiele(warm, st)))),
         li("<b>Ziel nennen</b> und an die Tafel zeigen.", sag(`Heute üben wir: ${ziel}. Am Ende der Stunde schauen wir, ob es geklappt hat.`)),
     ], tipp: "Unruhige Gruppe? Den Kopf-Start lieber im Stehen machen (aufstehen, wer die Lösung weiß) – Bewegung hilft beim Ankommen." };
 }

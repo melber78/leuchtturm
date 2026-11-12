@@ -297,6 +297,13 @@ const CSS = `
 #praes .l-duell b{ color:#ffe066; font-weight:400; font-size:1.2em; }
 #praes .l-duell .l-eule{ width:clamp(56px,9vh,110px); }
 #praes .p-knopf.l-los{ font-size:clamp(22px,2.6vw,40px); padding:.5em 1.2em; animation:lPuls 1.6s ease-in-out infinite; border-color:#ffe066; }
+#praes .l-zettel.klein{ font-size:clamp(18px,2.2vw,34px); margin-top:1vh; }
+#praes .l-bsp{ margin-top:2.2vh; width:min(86vw,1200px); text-align:center; }
+#praes .l-bsp-frage{ color:#ffe27a; font:400 clamp(18px,2.2vw,34px)/1.2 "Patrick Hand","Andika",sans-serif; margin-bottom:1vh; }
+#praes .l-bsp-zeile{ display:flex; align-items:center; gap:1.5vw; }
+#praes .l-bsp-text{ flex:1; background:#fffdf5; color:#1d4634; border-radius:14px; padding:.4em .8em; font:400 clamp(26px,4vw,64px)/1.2 "Patrick Hand","Andika",sans-serif; box-shadow:0 8px 0 rgba(0,0,0,.18); min-height:1.6em; }
+#praes .l-bsp-fuss{ display:flex; align-items:center; justify-content:center; gap:1.2vw; margin-top:1.4vh; color:#d8eadf; font:700 clamp(14px,1.4vw,22px) "Nunito",sans-serif; }
+#praes .l-bsp-loes{ background:#ffe27a; color:#1d4634; border-radius:10px; padding:.2em .7em; font:400 clamp(22px,2.8vw,44px) "Patrick Hand","Andika",sans-serif; }
 #praes .l-zettel{ background:#fffdf5; color:#1d4634; font:400 clamp(24px,3.6vw,58px)/1.25 "Patrick Hand","Andika",sans-serif; padding:.6em 1.1em; border-radius:4px; max-width:min(82vw,1200px); transform:rotate(1deg); box-shadow:0 10px 0 rgba(0,0,0,.18); margin-top:2vh; background-image:repeating-linear-gradient(transparent 0 1.24em, rgba(47,107,80,.15) 1.24em 1.3em); }
 #praes .l-akte{ position:relative; background:#fdf8ec; color:#2a1f14; border-radius:4px 14px 10px 10px; padding:2vh 2.4vw 1.6vh; margin-top:4vh; max-width:min(80vw,1250px); width:100%; text-align:left; box-shadow:0 12px 0 rgba(0,0,0,.2); transform:rotate(-.5deg); }
 #praes .l-akte-reiter{ position:absolute; top:-3.2vh; left:2vw; background:#fdf8ec; color:#7a4a1c; font:400 clamp(16px,1.8vw,28px) "Patrick Hand","Andika",sans-serif; padding:.1em .9em; border-radius:10px 10px 0 0; letter-spacing:.08em; }
@@ -592,6 +599,42 @@ window.sozialMedien = medienFuer;
 function uebungStufe(e, u0, stufe){
     return Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, antworten: u0["antworten" + stufe] || u0.antworten, folie: u0["folie" + stufe] || u0.folie || "", warum: u0["warum" + stufe] || u0.warum || "", zusatz: !!(window.istZusatz && window.istZusatz(e, u0, stufe)) });
 }
+/* Kopf-Start: fertige Beispiele, damit niemand sich etwas ausdenken muss.
+   Liefert { frage, liste: [{ t, l }] } – t = was du sagst/zeigst, l = Lösung (optional). */
+const KOPF_BEISPIELE = [
+    [/Stimmt das\?/i, () => ({ frage: "Stimmt das? 👍 oder 👎", liste: [
+        ["Ein Fisch kann fliegen.", "👎"], ["Im Winter kann es schneien.", "👍"], ["Eine Kuh sagt „Muh“.", "👍"], ["Bananen sind blau.", "👎"],
+        ["Ein Hund hat vier Beine.", "👍"], ["Nachts scheint die Sonne.", "👎"], ["Ein Auto hat Räder.", "👍"], ["Katzen können bellen.", "👎"],
+        ["Eis ist kalt.", "👍"], ["Ein Elefant ist kleiner als eine Maus.", "👎"]].map(([t, l]) => ({ t, l })) })],
+    [/Punkt, Fragezeichen oder Ausrufezeichen/i, () => ({ frage: "Punkt, Fragezeichen oder Ausrufezeichen? Mal es in die Luft!", liste: [
+        ["Kommst du mit zum Spielplatz", "?"], ["Pass auf, ein Auto", "!"], ["Heute ist Mittwoch", "."], ["Wie spät ist es", "?"],
+        ["Hör sofort auf", "!"], ["Der Hund schläft im Körbchen", "."], ["Hast du deine Hausaufgaben gemacht", "?"], ["Hurra, wir haben Ferien", "!"],
+        ["Mein Bruder ist acht Jahre alt", "."], ["Wo ist mein Schuh", "?"]].map(([t, l]) => ({ t: t + " …", l: "Zeichen: " + l })) })],
+    [/Reim-Ping-Pong/i, (st) => ({ frage: "Was reimt sich auf …?", liste: (st === "34" ? ["Bus", "Hand", "Nacht", "Stern", "Kopf", "Licht", "Wand", "Tag"] : ["Maus", "Ball", "Hose", "Hund", "Tisch", "Baum", "Kanne", "Bein"])
+        .map(t => ({ t, l: { Maus: "Haus, Laus, raus", Ball: "Fall, Stall, Knall", Hose: "Rose, Dose", Hund: "bunt, rund, Mund", Tisch: "Fisch, frisch", Baum: "Traum, Schaum", Kanne: "Tanne, Panne, Wanne", Bein: "Schwein, klein, fein", Bus: "Kuss, Fluss, Nuss", Hand: "Sand, Wand, Land", Nacht: "lacht, Macht, acht", Stern: "fern, gern, Kern", Kopf: "Topf, Zopf, Knopf", Licht: "Gedicht, nicht, Sicht", Wand: "Hand, Sand, Strand", Tag: "mag, lag, Schlag" }[t] })) })],
+    [/Begleiter-Spiel/i, () => ({ frage: "der, die oder das?", liste: [["Tisch", "der"], ["Tafel", "die"], ["Fenster", "das"], ["Stuhl", "der"], ["Tür", "die"], ["Buch", "das"], ["Lampe", "die"], ["Mäppchen", "das"], ["Schrank", "der"], ["Uhr", "die"]].map(([t, l]) => ({ t, l })) })],
+    [/Pantomime: Ein Kind macht ein Verb/i, () => ({ frage: "Flüstere einem Kind ein Verb ins Ohr – es macht es vor:", liste: ["schwimmen", "schlafen", "Zähne putzen", "lesen", "tanzen", "kochen", "Fahrrad fahren", "telefonieren", "malen", "springen"].map(t => ({ t })) })],
+    [/Stille Post mit einer Zahlenreihe/i, () => ({ frage: "Flüstere dem ersten Kind diese Zahlen:", liste: ["3 – 7 – 1", "12 – 5 – 9", "8 – 8 – 2 – 6", "25 – 40 – 13", "4 – 9 – 16 – 25", "71 – 17 – 7"].map(t => ({ t })) })],
+    [/Merk-Aufträge/i, () => ({ frage: "Drei Aufträge kurz lesen – dann aus dem Kopf ausführen:", liste: [
+        "1. Steh auf.  2. Dreh dich einmal um.  3. Setz dich.", "1. Klatsch dreimal.  2. Fass an deine Nase.  3. Zeig zum Fenster.",
+        "1. Heb den rechten Arm.  2. Stampf zweimal.  3. Sag leise „Fertig“.", "1. Schließ die Augen.  2. Zähl bis 5.  3. Winke deinem Nachbarn.",
+        "1. Leg die Hände auf den Kopf.  2. Steh auf.  3. Hüpf einmal.", "1. Zeig zur Tür.  2. Klatsch auf die Knie.  3. Lächle."].map(t => ({ t })) })],
+    [/Mach-mit-Auftrag/i, () => ({ frage: "Mach genau in dieser Reihenfolge:", liste: [
+        "Steh auf, klatsch zweimal, setz dich.", "Fass an die Nase, dann an die Ohren, dann auf den Tisch.", "Steh auf, dreh dich um, setz dich.",
+        "Stampf einmal, klatsch einmal, schnipse.", "Arme hoch, Arme zur Seite, Arme runter.", "Zeig zur Tafel, zum Fenster, zur Tür."].map(t => ({ t })) })],
+    [/Fehler-Blitz/i, () => ({ frage: "Schreib das Wort an die Tafel – wer findet den Fehler?", liste: [["Fahrad", "Fahrrad"], ["Schuhle", "Schule"], ["Hunt", "Hund"], ["Mudter", "Mutter"], ["Kaze", "Katze"], ["Bal", "Ball"], ["Ferien", "richtig – kein Fehler!"], ["Sone", "Sonne"], ["Fenstr", "Fenster"], ["Krokodiel", "Krokodil"]].map(([t, l]) => ({ t, l })) })],
+    [/Formen in der Luft/i, () => ({ frage: "Mal mit dem Finger in die Luft:", liste: ["einen großen Kreis", "ein Dreieck", "ein Quadrat", "ein Herz", "einen Stern", "eine Schlangenlinie", "ein Rechteck", "eine Spirale"].map(t => ({ t })) })],
+    [/Was machst du, wenn/i, () => ({ frage: "Zeig es pantomimisch:", liste: ["morgens: aufstehen und Zähne putzen", "morgens: frühstücken", "mittags: Mittag essen", "mittags: Hausaufgaben machen", "nachmittags: draußen spielen", "abends: baden", "abends: ins Bett gehen", "nachts: schlafen"].map(t => ({ t })) })],
+    [/Daumen-Runde: Ich kann schon/i, () => ({ frage: "Daumen hoch, Mitte oder runter:", liste: ["Ich kann schon gut lesen.", "Ich kann schon gut rechnen.", "Ich kann schon gut malen.", "Ich kann schon gut zuhören.", "Ich kann schon meine Schuhe binden.", "Ich kann schon gut anderen helfen."].map(t => ({ t })) })],
+    [/Daumen-Runde: Wer hat heute schon/i, () => ({ frage: "Daumen hoch, wer …", liste: ["… heute schon jemandem geholfen hat.", "… heute Hilfe bekommen hat.", "… heute schon gelacht hat.", "… heute jemanden angelächelt hat.", "… heute schon „Danke“ gesagt hat."].map(t => ({ t })) })],
+    [/Ich sehe was, was du nicht siehst/i, (st) => ({ frage: "Ich sehe was, was du nicht siehst, und das …", liste: (st === "34" ? ["… ist rund.", "… hat vier Ecken.", "… ist aus Glas.", "… ist größer als ich.", "… kann man aufmachen.", "… ist grün."] : ["… fängt mit M an.", "… fängt mit T an.", "… fängt mit F an.", "… fängt mit S an.", "… fängt mit B an.", "… fängt mit L an."]).map(t => ({ t })) })],
+    [/Blitz-Umfrage/i, () => ({ frage: "Zeig mit den Fingern: Welcher Lern-Trick hilft dir am meisten?", liste: ["1 Finger: laut mitsprechen", "2 Finger: Silben schwingen", "3 Finger: Pausen machen", "4 Finger: jemanden fragen", "5 Finger: noch einmal lesen"].map(t => ({ t })) })]
+];
+function kopfBeispiele(text, stufe){
+    const t = String(text || ""), x = KOPF_BEISPIELE.find(([r]) => r.test(t));
+    return x ? x[1](stufe) : null;
+}
+window.kopfBeispiele = kopfBeispiele;
 function warmupTafel(text, stufe){
     const t = String(text || ""), zr = (t.match(/bis (10|20|100|1000)\b/) || [])[1];
     if (/Blitzrechnen|Einmaleins-Blitz/i.test(t)) {
@@ -643,7 +686,7 @@ function folienBauenLern(e, stufe){
     const warmTafel = warmupTafel(warmup, stufe);
     // Passt der Kopf-Start zu einem Tafel-Spiel (z. B. Blitzrechnen), startet genau das – das eingeplante Tafel-Spiel wird dann zur Tafel-Challenge
     if (warmTafel && tafel[0] && tafel[0].werkzeug !== warmTafel.werkzeug) tafel.splice(1, 0, tafel[0]);
-    f.push({ typ: "kopfstart", warmup, tafel: warmTafel || tafel[0] || null, warm: !!warmTafel });
+    f.push({ typ: "kopfstart", warmup, tafel: warmTafel || tafel[0] || null, warm: !!warmTafel, bsp: warmTafel ? null : kopfBeispiele(warmup, stufe), bi: 0 });
     const ein = window.lernEinstieg ? window.lernEinstieg(e, stufe) : { art: "geschichte" };
     if (ein.art === "knobel") f.push({ typ: "knobel", d: ein });
     else if (ein.art === "erklaert") { f.push({ typ: "erklaert", d: ein }); if (ein.aufgabe) f.push({ typ: "mitmachen", d: ein }); }
@@ -944,7 +987,10 @@ function folieHtml(f, e){
         if (f.typ === "kopfstart") {
             const inf = f.tafel && window.lernTafel && window.lernTafel.info(f.tafel.werkzeug);
             return `<div class="l-stempel">KOPF-START · ${kopfMin()} MINUTEN</div><h2>🧠 Gehirn einschalten!</h2>
-                <div class="l-zettel">${inline(f.warmup || "Blitzrunde: Ich frage – ihr antwortet blitzschnell!")}</div>
+                <div class="l-zettel${f.bsp ? " klein" : ""}">${inline(f.warmup || "Blitzrunde: Ich frage – ihr antwortet blitzschnell!")}</div>
+                ${f.bsp ? `<div class="l-bsp"><div class="l-bsp-frage">${esc(f.bsp.frage)}</div>
+                    <div class="l-bsp-zeile"><button class="p-knopf hell" data-bsp="-1" aria-label="Zurück">◀</button><div class="l-bsp-text"></div><button class="p-knopf hell" data-bsp="1" aria-label="Weiter">▶</button></div>
+                    <div class="l-bsp-fuss"><span class="l-bsp-nr"></span><button class="p-knopf hell" data-bsploes hidden>💡 Lösung</button><span class="l-bsp-loes" hidden></span></div></div>` : ""}
                 <div class="p-reihe">${inf ? `<button class="p-knopf ${f.warm ? "l-los" : ""}" data-tafel="1">${inf.emoji || "▶"} ${esc(f.warm ? inf.titel + (tafelEinstellung(f.tafel).bis ? " bis " + tafelEinstellung(f.tafel).bis : "") + " starten" : (f.tafel.titel || inf.titel) + " an der Tafel")}</button>` : ""}<button class="p-knopf hell" data-start="${kopfMin()}">⏱ ${kopfMin()} Minuten</button></div>`;
         }
         if (f.typ === "fall") {
@@ -1188,6 +1234,20 @@ function folieAktivieren(el, f){
     el.querySelectorAll("[data-welle]").forEach(b => b.addEventListener("click", () => applauswelle(el)));
     // Lernangebot: Tafel-Spiel, Denk-Runde, Countdown, Auflösen, Punkte
     el.querySelectorAll("[data-tafel]").forEach(b => b.addEventListener("click", () => tafelStarten(f)));
+    // Kopf-Start: Beispiele durchblättern, Lösung zeigen
+    if (f.typ === "kopfstart" && f.bsp && f.bsp.liste.length) {
+        const box = el.querySelector(".l-bsp"), liste = f.bsp.liste;
+        const zeigeBsp = () => {
+            const x = liste[f.bi];
+            box.querySelector(".l-bsp-text").textContent = x.t;
+            box.querySelector(".l-bsp-nr").textContent = (f.bi + 1) + " / " + liste.length;
+            const lb = box.querySelector("[data-bsploes]"), lt = box.querySelector(".l-bsp-loes");
+            lb.hidden = !x.l; lt.hidden = true; lt.textContent = x.l || "";
+        };
+        box.querySelectorAll("[data-bsp]").forEach(b => b.addEventListener("click", ev => { ev.stopPropagation(); f.bi = (f.bi + +b.dataset.bsp + liste.length) % liste.length; zeigeBsp(); }));
+        box.querySelector("[data-bsploes]").addEventListener("click", ev => { ev.stopPropagation(); ev.currentTarget.hidden = true; box.querySelector(".l-bsp-loes").hidden = false; });
+        zeigeBsp();
+    }
     el.querySelectorAll("[data-tps]").forEach(b => b.addEventListener("click", () => {
         const k = +b.dataset.tps, alle = [...el.querySelectorAll("[data-tps]")];
         if (zustand.mini) { clearInterval(zustand.mini); zustand.mini = null; }
@@ -1652,6 +1712,8 @@ async function pptxExport(e, stufe = "12"){
                 s.addText("KOPF-START · " + kopfMin() + " MINUTEN", { x: 0, y: .6, w: W, h: .5, align: "center", fontFace: FONT, fontSize: 18, color: MEER, bold: true });
                 s.addText("🧠 Gehirn einschalten!", { x: 0, y: 1.2, w: W, h: 1, align: "center", fontFace: FONT, fontSize: 46, bold: true, color: NACHT });
                 s.addText(laufText(ohneMarkdown(f.warmup || "Blitzrunde")), { x: 1.2, y: 2.6, w: W - 2.4, h: 2.8, align: "center", valign: "middle", fontFace: TEXT, fontSize: 32, color: "1F2D36", fill: { color: "FFFFFF" } });
+                if (f.bsp) s.addText(f.bsp.liste.slice(0, 6).map(x => x.t).join("   ·   "), { x: 1.2, y: 5.5, w: W - 2.4, h: 1.2, align: "center", valign: "middle", fontFace: TEXT, fontSize: 18, color: "1F2D36" });
+                if (f.bsp) s.addNotes(f.bsp.frage + "\n" + f.bsp.liste.map(x => x.t + (x.l ? "  → " + x.l : "")).join("\n"));
                 if (f.tafel) s.addNotes("Passendes Tafel-Spiel im Leuchtturm: " + (f.tafel.titel || f.tafel.werkzeug));
                 fuss(s);
                 break;
