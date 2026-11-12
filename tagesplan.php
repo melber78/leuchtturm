@@ -374,8 +374,18 @@ window.addEventListener("beforeunload", ev => { if (offen.size) { ev.preventDefa
 function sp(){
     if (!DATEN.stundenplan || typeof DATEN.stundenplan !== "object") DATEN.stundenplan = {};
     const s = DATEN.stundenplan;
-    if (!Array.isArray(s.zeiten)) s.zeiten = [1, 2, 3, 4, 5, 6].map(n => ({ id: "z" + n, typ: "stunde", name: String(n), von: "", bis: "" }));
+    if (!Array.isArray(s.zeiten)) { s.zeiten = [1, 2, 3, 4, 5, 6, 7].map(n => ({ id: "z" + n, typ: "stunde", name: String(n), von: "", bis: "" })); s.sieben = true; }
     if (!s.tage || Array.isArray(s.tage)) s.tage = {};
+    // Einmalig: ältere Stundenpläne mit weniger als 7 Stunden bekommen die 7. Stunde dazu
+    if (!s.sieben) {
+        s.sieben = true;
+        const stunden = s.zeiten.filter(z => z.typ !== "pause");
+        if (stunden.length < 7 && !s.zeiten.some(z => z.id === "z7")) {
+            const letzte = s.zeiten[s.zeiten.length - 1];
+            s.zeiten.push({ id: "z7", typ: "stunde", name: String(stunden.length + 1), von: letzte && letzte.bis ? letzte.bis : "", bis: "" });
+        }
+        setTimeout(stundenplanSpeichern, 0);
+    }
     return s;
 }
 function spEintrag(wt, zid, anlegen){
