@@ -171,6 +171,10 @@ input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--meer
 .tag-chips button.aktiv{ background:var(--nacht); color:white; border-color:var(--nacht); }
 .sp-zeile{ display:grid; grid-template-columns:86px 170px 120px 1fr 96px 118px; gap:8px; align-items:center; padding:8px 0; border-bottom:1px solid #eef1ef; }
 .sp-titelzeile{ padding:0 0 4px; font-size:12px; font-weight:800; color:var(--grau); text-transform:uppercase; letter-spacing:.04em; }
+.checks{ display:flex; flex-direction:column; gap:6px; }
+.sp-ab{ grid-column:2 / -1; display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:#eef6fb; border-radius:10px; padding:6px 10px; font-weight:800; font-size:14px; }
+.sp-ab select{ width:auto; min-width:120px; }
+.ab-leiste{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:14px; background:#eef6fb; border-radius:12px; padding:10px 12px; font-size:14px; font-weight:700; color:var(--nacht); }
 .zweit-check{ display:flex; align-items:center; gap:6px; font-size:13px; font-weight:800; color:var(--nacht); cursor:pointer; line-height:1.15; }
 .zweit-check input{ width:18px; height:18px; accent-color:var(--meer); flex:none; }
 .sp-zeile:last-child{ border-bottom:0; }
@@ -220,9 +224,13 @@ table.ue tr.pause td{ background:#fafbfa; color:var(--grau); font-style:italic; 
     .extra{ grid-template-columns:1fr 1fr auto; }
     .extra .ex-titel{ grid-column:1/-1; order:-1; }
     .raster-zeile{ grid-template-columns:20px 54px 1fr 1fr auto; gap:5px; }
-    .raster-zeile input[type=time]{ padding:7px 4px; }
+    .raster-zeile input[type=time]{ padding:7px 2px; min-width:0; }
+    .raster-zeile input{ min-width:0; }
+    .raster-zeile .btn.klein{ padding:6px 5px; }
     .sp-zeile{ grid-template-columns:1fr 1fr; }
     .sp-titelzeile{ display:none; }
+    .sp-ab{ grid-column:1 / -1; }
+    .checks{ grid-column:1 / -1; flex-direction:row; gap:16px; }
     .sp-zeile .z{ grid-column:1/-1; }
     .tag-chips .kurz-tag{ display:inline; } .tag-chips .lang-tag{ display:none; }
     .tag-chips button{ flex:1; padding:7px 0; }
@@ -459,7 +467,8 @@ function slotInfo(datum, zid){
     const ov = (t && t.slots && t.slots[zid]) || {};
     const geaendert = ov.art !== undefined;
     const art = geaendert ? ov.art : (def.art || "");
-    const klasse = geaendert ? (ov.klasse || "") : (def.klasse || "");
+    const abW = !geaendert && def.ab ? (abWoche(datum) || "?") : "";
+    const klasse = geaendert ? (ov.klasse || "") : (abW === "B" ? (def.klasseB || "") : (def.klasse || ""));
     const titel = geaendert ? (ov.titel || "") : (def.titel || "");
     const raum = geaendert && ov.raum !== undefined ? ov.raum : (def.raum || "");
     const zweit = geaendert && ov.zweit !== undefined ? !!ov.zweit : !!def.zweit;
@@ -475,12 +484,21 @@ function slotInfo(datum, zid){
             quelle = "plan";
         }
     }
-    return { def, ov, geaendert, art, klasse, titel, raum, zweit, einheit, quelle, plan, aus: !!ov.entfaellt };
+    return { def, ov, geaendert, art, klasse, titel, raum, zweit, abW, einheit, quelle, plan, aus: !!ov.entfaellt };
 }
 function werText(info){
     return [info.klasse ? klasseName(info.art, info.klasse) : "", info.titel || ""].filter(Boolean).join(" · ");
 }
 const ZWEIT_CHIP = `<span class="chip grau"><i class="fa-solid fa-user-group"></i> Zweitbesetzung</span>`;
+// A/B-Woche: abStart ist ein Montag einer A-Woche (unter „Mein Stundenplan“ festgelegt)
+function abWoche(datum){
+    const st = sp().abStart;
+    if (!gueltig(st)) return "";
+    const w = Math.round((tagVon(montag(datum)) - tagVon(montag(st))) / (7 * 864e5));
+    return ((w % 2) + 2) % 2 === 0 ? "A" : "B";
+}
+function abHatEtwas(){ return Object.values(sp().tage).some(t => t && Object.values(t).some(x => x && x.ab)); }
+function abText(datum){ const a = abWoche(datum); return a ? " · " + a + "-Woche" : ""; }
 function zeitText(z){ return z.von ? z.von + (z.bis ? "–" + z.bis : "") : ""; }
 
 /* ============================================================
@@ -559,6 +577,7 @@ function zeigeTag(){
                     ${werText(info) ? `<span class="slot-wer">${esc(werText(info))}</span>` : ""}
                     ${info.raum ? `<span class="slot-raum"><i class="fa-solid fa-door-open"></i> ${esc(info.raum)}</span>` : ""}
                     ${info.zweit ? ZWEIT_CHIP : ""}
+                    ${info.abW === "?" ? `<a class="chip rot" href="#stundenplan" title="Im Stundenplan festlegen, welche Woche A ist">A/B-Woche festlegen</a>` : info.abW ? `<span class="chip">${info.abW}-Woche</span>` : ""}
                     ${info.geaendert ? `<span class="chip gold">heute geändert</span>` : ""}
                     ${info.aus ? `<span class="chip rot">fällt aus</span>` : ""}
                     <span class="slot-knoepfe">
@@ -578,7 +597,7 @@ function zeigeTag(){
         ${window.TP_GESPERRT ? `<div class="hinweis rot"><i class="fa-solid fa-triangle-exclamation"></i> Die Datei tagesplan.json ist beschädigt – Speichern ist gesperrt, damit nichts verloren geht.</div>` : ""}
         <div class="datum-leiste">
             <button class="btn rund" data-tag="-1" title="Tag davor"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="datum">${esc(lang(d))}<small>KW ${kw(d)}${istHeute ? " · heute" : ""}</small></div>
+            <div class="datum">${esc(lang(d))}<small>KW ${kw(d)}${abText(d)}${istHeute ? " · heute" : ""}</small></div>
             <button class="btn rund" data-tag="1" title="Nächster Tag"><i class="fa-solid fa-chevron-right"></i></button>
             ${istHeute ? "" : `<button class="btn" data-heute><i class="fa-solid fa-sun"></i> Heute</button>`}
             <input type="date" id="datumWahl" value="${d}" aria-label="Datum wählen">
@@ -710,7 +729,7 @@ function zeigeWoche(){
     inhalt.innerHTML = `
         <div class="datum-leiste">
             <button class="btn rund" data-woche="-7" title="Woche davor"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="datum">KW ${kw(mo)}<small>${kurz(mo)} – ${kurz(plusTage(mo, 4))}${mo === montag(heute()) ? " · diese Woche" : ""}</small></div>
+            <div class="datum">KW ${kw(mo)}<small>${kurz(mo)} – ${kurz(plusTage(mo, 4))}${abText(mo)}${mo === montag(heute()) ? " · diese Woche" : ""}</small></div>
             <button class="btn rund" data-woche="7" title="Nächste Woche"><i class="fa-solid fa-chevron-right"></i></button>
             ${mo === montag(heute()) ? "" : `<button class="btn" data-diese><i class="fa-solid fa-sun"></i> Diese Woche</button>`}
             <button class="btn nacht" data-drucken><i class="fa-solid fa-print"></i> Woche drucken</button>
@@ -755,9 +774,18 @@ function zeigeStundenplan(){
                     <select data-f="klasse" aria-label="Klasse" ${aus}>${klasseOptionen(e.klasse || "")}</select>
                     <input type="text" data-f="titel" value="${esc(e.titel || "")}" placeholder="${art === "lrs" || art === "foerder" ? "Gruppe / Kürzel" : art === "unterricht" ? "Fach" : art === "aufsicht" ? "Wo? (Hof, Flur …)" : "Was? (optional)"}" maxlength="80" aria-label="Was" ${aus}>
                     <input type="text" data-f="raum" value="${esc(e.raum || "")}" placeholder="Raum" maxlength="40" aria-label="Raum" ${aus}>
-                    <label class="zweit-check" title="Ich bin in dieser Stunde als Zweitbesetzung eingeteilt"><input type="checkbox" data-f="zweit" ${e.zweit ? "checked" : ""} ${aus}> Zweit&shy;besetzung</label>
+                    <div class="checks">
+                        <label class="zweit-check" title="Ich bin in dieser Stunde als Zweitbesetzung eingeteilt"><input type="checkbox" data-f="zweit" ${e.zweit ? "checked" : ""} ${aus}> Zweit&shy;besetzung</label>
+                        <label class="zweit-check" title="In A- und B-Woche ist eine andere Klasse dran"><input type="checkbox" data-f="ab" ${e.ab ? "checked" : ""} ${aus}> A/B-Woche</label>
+                    </div>
+                    ${e.ab && art ? `<div class="sp-ab"><span class="chip">A-Woche</span> ${esc(e.klasse ? klasseName(art, e.klasse) : "Klasse oben wählen")}
+                        <span class="chip" style="margin-left:10px">B-Woche</span><select data-f="klasseB" aria-label="Klasse in der B-Woche">${klasseOptionen(e.klasseB || "")}</select></div>` : ""}
                 </div>`;
             }).join("") : `<div class="leer">Noch keine Zeiten – unten im Zeitraster anlegen.</div>`}
+            ${abHatEtwas() || gueltig(s.abStart) ? `<div class="ab-leiste"><i class="fa-solid fa-rotate"></i> <b>Diese Woche (KW ${kw(heute())}) ist:</b>
+                <button class="btn klein ${abWoche(heute()) === "A" ? "nacht" : ""}" data-abwoche="A">A-Woche</button>
+                <button class="btn klein ${abWoche(heute()) === "B" ? "nacht" : ""}" data-abwoche="B">B-Woche</button>
+                ${gueltig(s.abStart) ? "" : `<span style="color:var(--rot)">bitte wählen</span>`}</div>` : ""}
             <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px">
                 <span style="font-weight:800;color:var(--grau);font-size:13px">${TAGNAMEN[wt]} kopieren nach:</span>
                 ${[1, 2, 3, 4, 5].filter(i => i !== wt).map(i => `<button class="btn klein" data-kopie="${i}">${TAGKURZ[i]}</button>`).join("")}
@@ -793,6 +821,11 @@ function zeigeStundenplan(){
             if (f.tagName === "SELECT" || f.type === "checkbox") f.onchange = () => { aendern(); neuZeichnen(); };
             else { f.oninput = aendern; f.onchange = rasterAnzeigen; }
         });
+    });
+    inhalt.querySelectorAll("[data-abwoche]").forEach(b => b.onclick = () => {
+        const mo = montag(heute());
+        sp().abStart = b.dataset.abwoche === "A" ? mo : plusTage(mo, -7);
+        stundenplanSpeichern(); toast("Diese Woche ist eine " + b.dataset.abwoche + "-Woche"); neuZeichnen();
     });
     inhalt.querySelectorAll("[data-kopie]").forEach(b => b.onclick = () => {
         const ziel = +b.dataset.kopie;
@@ -830,7 +863,8 @@ function uebersichtHtml(){
     return `<table class="ue"><thead><tr><th></th>${[1, 2, 3, 4, 5].map(i => `<th>${TAGNAMEN[i]}</th>`).join("")}</tr></thead><tbody>
         ${s.zeiten.map(z => `<tr class="${z.typ === "pause" ? "pause" : ""}"><td class="z">${esc(z.typ === "pause" ? (z.name || "Pause") : z.name)}<small>${esc(zeitText(z))}</small></td>
             ${[1, 2, 3, 4, 5].map(wt => { const e = spEintrag(wt, z.id, false); if (!e.art) return "<td></td>"; const a = ARTEN[e.art] || ARTEN.sonstiges;
-                const wer = [e.klasse ? klasseName(e.art, e.klasse) : "", e.titel || ""].filter(Boolean).join(" · ");
+                const kl = e.ab ? "A: " + (e.klasse ? klasseName(e.art, e.klasse) : "–") + " / B: " + (e.klasseB ? klasseName(e.art, e.klasseB) : "–") : (e.klasse ? klasseName(e.art, e.klasse) : "");
+                const wer = [kl, e.titel || ""].filter(Boolean).join(" · ");
                 return `<td><div class="zelle" style="--f:${a.farbe}"><b>${esc(a.name)}</b>${esc(wer)}${e.zweit ? '<br><span style="color:var(--grau)"><i class="fa-solid fa-user-group"></i> Zweitbesetzung</span>' : ""}${e.raum ? `<br><span style="color:var(--grau)">${esc(e.raum)}</span>` : ""}</div></td>`; }).join("")}</tr>`).join("")}
     </tbody></table>`;
 }
@@ -862,7 +896,7 @@ function druckeTag(d){
         </div></div>`;
     }).join("");
     const extra = t.extra.filter(x => x.titel);
-    drucken(`<div class="dr-titel">${esc(lang(d))}</div><div class="dr-unter">KW ${kw(d)} · Mein Tag</div>
+    drucken(`<div class="dr-titel">${esc(lang(d))}</div><div class="dr-unter">KW ${kw(d)}${abText(d)} · Mein Tag</div>
         ${zeilen}
         ${extra.length ? `<div class="dr-block"><h3>Weitere Termine</h3>${extra.map(x => `<div>${esc(x.von || "")}${x.bis ? "–" + esc(x.bis) : ""} ${esc(x.titel)}</div>`).join("")}</div>` : ""}
         <div class="dr-block"><h3>To-dos</h3>${t.todos.map(x => `<div>${x.ok ? "☑" : "☐"} ${esc(x.t)}</div>`).join("")}<div class="dr-linien"><div></div><div></div></div></div>
@@ -870,7 +904,7 @@ function druckeTag(d){
 }
 function druckeWoche(mo){
     const s = sp(), tage = [0, 1, 2, 3, 4].map(i => plusTage(mo, i));
-    drucken(`<div class="dr-titel">Wochenplan KW ${kw(mo)}</div><div class="dr-unter">${kurz(mo)} – ${kurz(plusTage(mo, 4))}</div>
+    drucken(`<div class="dr-titel">Wochenplan KW ${kw(mo)}${abText(mo)}</div><div class="dr-unter">${kurz(mo)} – ${kurz(plusTage(mo, 4))}</div>
         <table class="dr-woche"><thead><tr><th></th>${tage.map(d => `<th>${TAGNAMEN[wochentag(d)]} ${kurz(d)}</th>`).join("")}</tr></thead><tbody>
         ${s.zeiten.map(z => `<tr><td class="z">${esc(z.typ === "pause" ? (z.name || "Pause") : z.name)}<br><span style="font-weight:700;font-size:7.5pt">${esc(zeitText(z))}</span></td>${tage.map(d => {
             const info = slotInfo(d, z.id), a = ARTEN[info.art] || ARTEN.sonstiges;
