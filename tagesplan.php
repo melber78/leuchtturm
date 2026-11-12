@@ -169,7 +169,10 @@ input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--meer
 .tag-chips button{ border:2px solid var(--linie); background:white; border-radius:99px; padding:7px 16px; font-weight:900; cursor:pointer; color:var(--nacht); }
 .tag-chips .kurz-tag{ display:none; }
 .tag-chips button.aktiv{ background:var(--nacht); color:white; border-color:var(--nacht); }
-.sp-zeile{ display:grid; grid-template-columns:90px 190px 1fr 120px; gap:8px; align-items:center; padding:8px 0; border-bottom:1px solid #eef1ef; }
+.sp-zeile{ display:grid; grid-template-columns:86px 170px 120px 1fr 96px 118px; gap:8px; align-items:center; padding:8px 0; border-bottom:1px solid #eef1ef; }
+.sp-titelzeile{ padding:0 0 4px; font-size:12px; font-weight:800; color:var(--grau); text-transform:uppercase; letter-spacing:.04em; }
+.zweit-check{ display:flex; align-items:center; gap:6px; font-size:13px; font-weight:800; color:var(--nacht); cursor:pointer; line-height:1.15; }
+.zweit-check input{ width:18px; height:18px; accent-color:var(--meer); flex:none; }
 .sp-zeile:last-child{ border-bottom:0; }
 .sp-zeile .z{ font-weight:900; color:var(--nacht); }
 .sp-zeile .z small{ display:block; color:var(--grau); font-size:12px; }
@@ -205,7 +208,7 @@ table.ue tr.pause td{ background:#fafbfa; color:var(--grau); font-style:italic; 
 #toast.fehler{ background:var(--rot); }
 
 /* ---------- Handy ---------- */
-@media (max-width:900px){ .woche{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
+@media (max-width:900px){ .woche{ grid-template-columns:repeat(2, minmax(0,1fr)); } .sp-zeile{ grid-template-columns:80px 1fr 1fr; } .sp-zeile .z{ grid-row:span 2; } .sp-titelzeile{ display:none; } }
 @media (max-width:640px){
     .kopf h1{ font-size:22px; }
     .woche{ grid-template-columns:1fr; }
@@ -219,6 +222,7 @@ table.ue tr.pause td{ background:#fafbfa; color:var(--grau); font-style:italic; 
     .raster-zeile{ grid-template-columns:20px 54px 1fr 1fr auto; gap:5px; }
     .raster-zeile input[type=time]{ padding:7px 4px; }
     .sp-zeile{ grid-template-columns:1fr 1fr; }
+    .sp-titelzeile{ display:none; }
     .sp-zeile .z{ grid-column:1/-1; }
     .tag-chips .kurz-tag{ display:inline; } .tag-chips .lang-tag{ display:none; }
     .tag-chips button{ flex:1; padding:7px 0; }
@@ -392,7 +396,20 @@ function tagDaten(datum, anlegen){
 function slotDaten(datum, zid){ const t = tagDaten(datum, true); if (!t.slots[zid] || Array.isArray(t.slots[zid])) t.slots[zid] = {}; return t.slots[zid]; }
 
 function klassenVon(b){ const p = PLAENE[b] && PLAENE[b].jahresplan; return (p && Array.isArray(p.klassen) && p.klassen.length) ? p.klassen : KLASSEN_STANDARD; }
-function klasseName(b, id){ const k = klassenVon(b).find(x => x.id === id); return k ? k.name : id; }
+// Klassen für die Spalte „Klasse“: GS1–GS4, SEK1–SEK7 und weitere Klassen aus den Jahresplänen
+const KLASSEN_ALLE = [...KLASSEN_STANDARD, ...[1, 2, 3, 4, 5, 6, 7].map(n => ({ id: "sek" + n, name: "SEK" + n }))];
+function klassenListe(){
+    const liste = KLASSEN_ALLE.map(k => ({ ...k }));
+    ["sozial", "lernangebot"].forEach(b => klassenVon(b).forEach(k => { if (!liste.some(x => x.id === k.id)) liste.push({ id: k.id, name: k.name }); }));
+    return liste;
+}
+function klasseName(b, id){ const k = klassenVon(b).find(x => x.id === id) || klassenListe().find(x => x.id === id); return k ? k.name : id; }
+function klasseOptionen(sel){
+    const l = klassenListe();
+    const gs = l.filter(k => !/^sek/.test(k.id)), sek = l.filter(k => /^sek/.test(k.id));
+    const opt = k => `<option value="${esc(k.id)}" ${k.id === sel ? "selected" : ""}>${esc(k.name)}</option>`;
+    return `<option value="">– Klasse –</option><optgroup label="Grundschule">${gs.map(opt).join("")}</optgroup><optgroup label="Sekundarstufe">${sek.map(opt).join("")}</optgroup>`;
+}
 function klasseStufe(b, id){ const k = klassenVon(b).find(x => x.id === id); return k ? k.stufe : ""; }
 
 // Was sagt der Jahresplan (Sozialtraining/Lernangebot) für diese Klasse an diesem Tag?
@@ -434,6 +451,7 @@ function slotInfo(datum, zid){
     const klasse = geaendert ? (ov.klasse || "") : (def.klasse || "");
     const titel = geaendert ? (ov.titel || "") : (def.titel || "");
     const raum = geaendert && ov.raum !== undefined ? ov.raum : (def.raum || "");
+    const zweit = geaendert && ov.zweit !== undefined ? !!ov.zweit : !!def.zweit;
     let einheit = null, quelle = "", plan = null;
     if (ov.einheit && ov.einheit.id) {
         einheit = einheitFinden(ov.einheit.b, ov.einheit.id) || { b: ov.einheit.b, id: ov.einheit.id, titel: ov.einheit.titel || "Stunde", fehlt: true };
@@ -446,12 +464,12 @@ function slotInfo(datum, zid){
             quelle = "plan";
         }
     }
-    return { def, ov, geaendert, art, klasse, titel, raum, einheit, quelle, plan, aus: !!ov.entfaellt };
+    return { def, ov, geaendert, art, klasse, titel, raum, zweit, einheit, quelle, plan, aus: !!ov.entfaellt };
 }
 function werText(info){
-    if ((info.art === "sozial" || info.art === "lernangebot") && info.klasse) return klasseName(info.art, info.klasse) + (info.titel ? " · " + info.titel : "");
-    return info.titel || "";
+    return [info.klasse ? klasseName(info.art, info.klasse) : "", info.titel || ""].filter(Boolean).join(" · ");
 }
+const ZWEIT_CHIP = `<span class="chip grau"><i class="fa-solid fa-user-group"></i> Zweitbesetzung</span>`;
 function zeitText(z){ return z.von ? z.von + (z.bis ? "–" + z.bis : "") : ""; }
 
 /* ============================================================
@@ -492,18 +510,18 @@ function stundeHtml(info){
             <button class="btn klein flach" data-stundeweg title="${info.quelle === "plan" ? "Heute nicht die Stunde aus dem Jahresplan" : "Stunde entfernen"}"><i class="fa-solid fa-xmark"></i></button></div>${mehr}`;
     }
     if (info.plan && info.plan.frei) return `<div class="slot-stunde leer-stunde"><div class="titel" style="color:#8a5a12">Laut Jahresplan: Ferien / fällt aus${info.plan.notiz ? " · " + esc(info.plan.notiz) : ""}</div><button class="btn klein" data-waehlen><i class="fa-solid fa-plus"></i> Stunde einfügen</button></div>`;
-    if (b || info.ov.ohnePlan) return `<div class="slot-stunde leer-stunde"><div class="titel" style="color:var(--grau);font-weight:800">${(info.art === "sozial" || info.art === "lernangebot") && info.klasse && !info.ov.ohnePlan ? "Im Jahresplan steht für diese Woche noch nichts" : "Noch keine Stunde geplant"}</div>
+    if (b || info.ov.ohnePlan) return `<div class="slot-stunde leer-stunde"><div class="titel" style="color:var(--grau);font-weight:800">${(info.art === "sozial" || info.art === "lernangebot") && info.klasse && !info.ov.ohnePlan && klassenVon(info.art).some(k => k.id === info.klasse) ? "Im Jahresplan steht für diese Woche noch nichts" : "Noch keine Stunde geplant"}</div>
         <button class="btn klein gold" data-waehlen><i class="fa-solid fa-plus"></i> Stunde einfügen</button>${info.ov.ohnePlan ? `<button class="btn klein flach" data-planzurueck title="Wieder die Stunde aus dem Jahresplan zeigen"><i class="fa-solid fa-rotate-left"></i> Jahresplan</button>` : ""}</div>`;
     return "";
 }
 function aendernHtml(info){
     const arten = Object.entries(ARTEN).map(([k, a]) => `<option value="${k}" ${k === info.art ? "selected" : ""}>${a.name}</option>`).join("");
-    const mitKlasse = info.art === "sozial" || info.art === "lernangebot";
     return `<div class="slot-aendern">
         <select data-aart>${arten}</select>
-        ${mitKlasse ? `<select data-aklasse><option value="">– Klasse –</option>${klassenVon(info.art).map(k => `<option value="${esc(k.id)}" ${k.id === info.klasse ? "selected" : ""}>${esc(k.name)}</option>`).join("")}</select>`
-                    : `<input type="text" data-atitel value="${esc(info.titel)}" placeholder="Klasse / Gruppe / Fach" maxlength="80">`}
+        <select data-aklasse>${klasseOptionen(info.klasse)}</select>
+        <input type="text" data-atitel value="${esc(info.titel)}" placeholder="Fach / Gruppe / Was?" maxlength="80">
         <input type="text" data-araum value="${esc(info.raum)}" placeholder="Raum" maxlength="40">
+        <label class="zweit-check voll"><input type="checkbox" data-azweit ${info.zweit ? "checked" : ""}> Ich bin Zweitbesetzung</label>
         <div class="voll"><button class="btn klein nacht" data-afertig><i class="fa-solid fa-check"></i> Fertig</button>
         ${info.geaendert ? `<button class="btn klein" data-azurueck><i class="fa-solid fa-rotate-left"></i> Wie im Stundenplan</button>` : ""}
         <span style="font-size:12px;color:var(--grau);font-weight:700;align-self:center">Gilt nur für diesen Tag.</span></div></div>`;
@@ -529,6 +547,7 @@ function zeigeTag(){
                     <span class="slot-art"><i class="fa-solid ${a.icon}"></i> ${info.art ? a.name : (pause ? esc(z.name || "Pause") : "frei")}</span>
                     ${werText(info) ? `<span class="slot-wer">${esc(werText(info))}</span>` : ""}
                     ${info.raum ? `<span class="slot-raum"><i class="fa-solid fa-door-open"></i> ${esc(info.raum)}</span>` : ""}
+                    ${info.zweit ? ZWEIT_CHIP : ""}
                     ${info.geaendert ? `<span class="chip gold">heute geändert</span>` : ""}
                     ${info.aus ? `<span class="chip rot">fällt aus</span>` : ""}
                     <span class="slot-knoepfe">
@@ -590,18 +609,18 @@ function tagEreignisse(d){
         if (aart) {
             const uebernehmen = () => {
                 const o = slotDaten(d, zid), info = slotInfo(d, zid);
-                if (!info.geaendert) { o.art = info.art; o.klasse = info.klasse; o.titel = info.titel; o.raum = info.raum; }
+                if (!info.geaendert) { o.art = info.art; o.klasse = info.klasse; o.titel = info.titel; o.raum = info.raum; o.zweit = info.zweit; }
                 o.art = aart.value;
                 const k = q("[data-aklasse]"), ti = q("[data-atitel]"), r = q("[data-araum]");
                 if (k) o.klasse = k.value; if (ti) o.titel = ti.value; if (r) o.raum = r.value;
-                if (!(o.art === "sozial" || o.art === "lernangebot")) o.klasse = "";
+                const zw = q("[data-azweit]"); if (zw) o.zweit = zw.checked;
                 tagSpeichern(d);
             };
             aart.onchange = () => { uebernehmen(); neuZeichnen(); };
-            ["[data-aklasse]", "[data-atitel]", "[data-araum]"].forEach(s => { const f = q(s); if (f) f[f.tagName === "SELECT" ? "onchange" : "oninput"] = () => { uebernehmen(); if (f.tagName === "SELECT") neuZeichnen(); }; });
+            ["[data-aklasse]", "[data-atitel]", "[data-araum]", "[data-azweit]"].forEach(s => { const f = q(s); if (f) f[f.tagName === "SELECT" || f.type === "checkbox" ? "onchange" : "oninput"] = () => { uebernehmen(); if (f.tagName === "SELECT" || f.type === "checkbox") neuZeichnen(); }; });
             q("[data-afertig]").onclick = () => { offenAendern = null; neuZeichnen(); };
             const zur = q("[data-azurueck]");
-            if (zur) zur.onclick = () => { const o = slotDaten(d, zid); ["art", "klasse", "titel", "raum"].forEach(x => delete o[x]); offenAendern = null; tagSpeichern(d); neuZeichnen(); };
+            if (zur) zur.onclick = () => { const o = slotDaten(d, zid); ["art", "klasse", "titel", "raum", "zweit"].forEach(x => delete o[x]); offenAendern = null; tagSpeichern(d); neuZeichnen(); };
         }
     });
     // To-dos (je Stunde und für den Tag)
@@ -693,7 +712,7 @@ function zeigeWoche(){
                 const info = slotInfo(d, z.id), a = ARTEN[info.art] || ARTEN.sonstiges;
                 if (z.typ === "pause" && !info.art) return "";
                 if (!info.art && !info.einheit && !(info.ov.notiz)) return "";
-                return `<a class="w-slot ${info.aus ? "aus" : ""}" href="#tag/${d}" style="--f:${a.farbe}"><b>${esc(z.typ === "pause" ? (z.name || "Pause") : z.name + ".")} ${esc(zeitText(z))} · ${esc(a.name)}</b><span class="t">${esc(werText(info) || "")}${info.einheit && !info.aus ? (werText(info) ? ": " : "") + esc(info.einheit.titel) : ""}${info.ov.notiz ? ' <i class="fa-regular fa-note-sticky" style="color:var(--grau)"></i>' : ""}</span></a>`;
+                return `<a class="w-slot ${info.aus ? "aus" : ""}" href="#tag/${d}" style="--f:${a.farbe}"><b>${esc(z.typ === "pause" ? (z.name || "Pause") : z.name + ".")} ${esc(zeitText(z))} · ${esc(a.name)}</b><span class="t">${info.zweit ? '<i class="fa-solid fa-user-group" title="Zweitbesetzung" style="color:var(--grau)"></i> ' : ""}${esc(werText(info) || "")}${info.einheit && !info.aus ? (werText(info) ? ": " : "") + esc(info.einheit.titel) : ""}${info.ov.notiz ? ' <i class="fa-regular fa-note-sticky" style="color:var(--grau)"></i>' : ""}</span></a>`;
             }).join("");
             const extra = t.extra.filter(x => x.titel).map(x => `<a class="w-slot" href="#tag/${d}" style="--f:#c0392b"><b>${esc(x.von || "")}${x.bis ? "–" + esc(x.bis) : ""} · Termin</b><span class="t">${esc(x.titel)}</span></a>`).join("");
             return `<div class="w-tag ${d === heute() ? "heute" : ""}"><a class="w-kopf" href="#tag/${d}">${TAGNAMEN[wochentag(d)]}<small>${kurz(d)}</small></a>
@@ -715,22 +734,24 @@ function zeigeStundenplan(){
         ${window.TP_GESPERRT ? `<div class="hinweis rot"><i class="fa-solid fa-triangle-exclamation"></i> Die Datei tagesplan.json ist beschädigt – Speichern ist gesperrt.</div>` : ""}
         <div class="karte"><h2><i class="fa-solid fa-calendar-days"></i> Meine Woche</h2>
             <div class="tag-chips">${[1, 2, 3, 4, 5].map(i => `<button data-sptag="${i}" class="${i === wt ? "aktiv" : ""}"><span class="kurz-tag">${TAGKURZ[i]}</span><span class="lang-tag">${TAGNAMEN[i]}</span></button>`).join("")}</div>
+            ${s.zeiten.length ? `<div class="sp-zeile sp-titelzeile"><span></span><span>Art</span><span>Klasse</span><span>Fach / Was</span><span>Raum</span><span></span></div>` : ""}
             ${s.zeiten.length ? s.zeiten.map(z => {
                 const e = spEintrag(wt, z.id, false), art = e.art || "";
-                const mitKlasse = art === "sozial" || art === "lernangebot";
+                const aus = art ? "" : "disabled";
                 return `<div class="sp-zeile ${z.typ === "pause" ? "pause" : ""}" data-z="${esc(z.id)}">
                     <div class="z">${z.typ === "pause" ? esc(z.name || "Pause") : esc(z.name) + ". Stunde"}<small>${esc(zeitText(z)) || "&nbsp;"}</small></div>
-                    <select data-f="art" style="border-left:6px solid ${(ARTEN[art] || ARTEN.sonstiges).farbe}">${artOptionen(art)}</select>
-                    ${mitKlasse ? `<select data-f="klasse"><option value="">– Klasse –</option>${klassenVon(art).map(k => `<option value="${esc(k.id)}" ${k.id === e.klasse ? "selected" : ""}>${esc(k.name)}</option>`).join("")}</select>`
-                                : `<input type="text" data-f="titel" value="${esc(e.titel || "")}" placeholder="${art === "lrs" ? "Gruppe / Kürzel" : art === "unterricht" ? "Fach · Klasse" : art === "aufsicht" ? "Wo? (Hof, Flur …)" : "Was / wer?"}" maxlength="80" ${art ? "" : "disabled"}>`}
-                    <input type="text" data-f="raum" value="${esc(e.raum || "")}" placeholder="Raum" maxlength="40" ${art ? "" : "disabled"}>
+                    <select data-f="art" style="border-left:6px solid ${(ARTEN[art] || ARTEN.sonstiges).farbe}" aria-label="Art">${artOptionen(art)}</select>
+                    <select data-f="klasse" aria-label="Klasse" ${aus}>${klasseOptionen(e.klasse || "")}</select>
+                    <input type="text" data-f="titel" value="${esc(e.titel || "")}" placeholder="${art === "lrs" ? "Gruppe / Kürzel" : art === "unterricht" ? "Fach" : art === "aufsicht" ? "Wo? (Hof, Flur …)" : "Was? (optional)"}" maxlength="80" aria-label="Was" ${aus}>
+                    <input type="text" data-f="raum" value="${esc(e.raum || "")}" placeholder="Raum" maxlength="40" aria-label="Raum" ${aus}>
+                    <label class="zweit-check" title="Ich bin in dieser Stunde als Zweitbesetzung eingeteilt"><input type="checkbox" data-f="zweit" ${e.zweit ? "checked" : ""} ${aus}> Zweit&shy;besetzung</label>
                 </div>`;
             }).join("") : `<div class="leer">Noch keine Zeiten – unten im Zeitraster anlegen.</div>`}
             <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px">
                 <span style="font-weight:800;color:var(--grau);font-size:13px">${TAGNAMEN[wt]} kopieren nach:</span>
                 ${[1, 2, 3, 4, 5].filter(i => i !== wt).map(i => `<button class="btn klein" data-kopie="${i}">${TAGKURZ[i]}</button>`).join("")}
             </div>
-            <p style="font-size:13px;color:var(--grau);font-weight:700;margin:12px 0 0"><i class="fa-solid fa-lightbulb"></i> Bei Sozialtraining und Lernangebot die Klasse wählen – dann steht im Tagesplan automatisch die Stunde aus dem Jahresplan.</p>
+            <p style="font-size:13px;color:var(--grau);font-weight:700;margin:12px 0 0"><i class="fa-solid fa-lightbulb"></i> Bei Sozialtraining und Lernangebot mit GS1–GS4 steht im Tagesplan automatisch die Stunde aus dem Jahresplan.</p>
         </div>
         <div class="karte"><h2><i class="fa-solid fa-table"></i> Überblick</h2><div class="uebersicht">${uebersichtHtml()}</div></div>
         <div class="karte"><h2><i class="fa-solid fa-clock"></i> Zeitraster</h2>
@@ -753,11 +774,12 @@ function zeigeStundenplan(){
         el.querySelectorAll("[data-f]").forEach(f => {
             const aendern = () => {
                 const e = spEintrag(wt, zid, true);
-                e[f.dataset.f] = f.value;
-                if (f.dataset.f === "art") { if (!(f.value === "sozial" || f.value === "lernangebot")) delete e.klasse; else delete e.titel; if (!f.value) { delete sp().tage[wt][zid]; } }
+                if (f.type === "checkbox") { if (f.checked) e[f.dataset.f] = true; else delete e[f.dataset.f]; }
+                else e[f.dataset.f] = f.value;
+                if (f.dataset.f === "art" && !f.value) delete sp().tage[wt][zid];
                 stundenplanSpeichern();
             };
-            if (f.tagName === "SELECT") f.onchange = () => { aendern(); neuZeichnen(); };
+            if (f.tagName === "SELECT" || f.type === "checkbox") f.onchange = () => { aendern(); neuZeichnen(); };
             else { f.oninput = aendern; f.onchange = rasterAnzeigen; }
         });
     });
@@ -797,8 +819,8 @@ function uebersichtHtml(){
     return `<table class="ue"><thead><tr><th></th>${[1, 2, 3, 4, 5].map(i => `<th>${TAGNAMEN[i]}</th>`).join("")}</tr></thead><tbody>
         ${s.zeiten.map(z => `<tr class="${z.typ === "pause" ? "pause" : ""}"><td class="z">${esc(z.typ === "pause" ? (z.name || "Pause") : z.name)}<small>${esc(zeitText(z))}</small></td>
             ${[1, 2, 3, 4, 5].map(wt => { const e = spEintrag(wt, z.id, false); if (!e.art) return "<td></td>"; const a = ARTEN[e.art] || ARTEN.sonstiges;
-                const wer = (e.art === "sozial" || e.art === "lernangebot") ? (e.klasse ? klasseName(e.art, e.klasse) : "") : (e.titel || "");
-                return `<td><div class="zelle" style="--f:${a.farbe}"><b>${esc(a.name)}</b>${esc(wer)}${e.raum ? `<br><span style="color:var(--grau)">${esc(e.raum)}</span>` : ""}</div></td>`; }).join("")}</tr>`).join("")}
+                const wer = [e.klasse ? klasseName(e.art, e.klasse) : "", e.titel || ""].filter(Boolean).join(" · ");
+                return `<td><div class="zelle" style="--f:${a.farbe}"><b>${esc(a.name)}</b>${esc(wer)}${e.zweit ? '<br><span style="color:var(--grau)"><i class="fa-solid fa-user-group"></i> Zweitbesetzung</span>' : ""}${e.raum ? `<br><span style="color:var(--grau)">${esc(e.raum)}</span>` : ""}</div></td>`; }).join("")}</tr>`).join("")}
     </tbody></table>`;
 }
 
@@ -822,7 +844,7 @@ function druckeTag(d){
         if (z.typ === "pause" && !info.art && !ov.notiz) return `<div class="dr-slot pause"><div class="z">${esc(zeitText(z))}</div><div class="i">${esc(z.name || "Pause")}</div></div>`;
         if (!info.art && !info.einheit && !ov.notiz && !todos.length) return `<div class="dr-slot" style="--f:${a.farbe}"><div class="z">${esc(z.name)}.<small>${esc(zeitText(z))}</small></div><div class="i" style="color:var(--grau)">frei</div></div>`;
         return `<div class="dr-slot" style="--f:${a.farbe}"><div class="z">${z.typ === "pause" ? esc(z.name || "Pause") : esc(z.name) + "."}<small>${esc(zeitText(z))}</small></div><div class="i">
-            <b>${esc(info.art ? a.name : "")}</b> ${esc(werText(info))}${info.raum ? " · " + esc(info.raum) : ""}${info.aus ? " · <b style='color:#c0392b'>fällt aus</b>" : ""}
+            <b>${esc(info.art ? a.name : "")}</b> ${esc(werText(info))}${info.raum ? " · " + esc(info.raum) : ""}${info.zweit ? " · Zweitbesetzung" : ""}${info.aus ? " · <b style='color:#c0392b'>fällt aus</b>" : ""}
             ${info.einheit && !info.aus ? `<div class="st">${esc(info.einheit.titel)}</div>${info.einheit.material ? `<div class="no">Material: ${esc(info.einheit.material.split("\n").filter(Boolean).join(" · "))}</div>` : ""}` : ""}
             ${ov.notiz ? `<div class="no">${esc(ov.notiz)}</div>` : ""}
             ${todos.length ? `<ul>${todos.map(x => `<li>${x.ok ? "☑" : "☐"} ${esc(x.t)}</li>`).join("")}</ul>` : ""}
@@ -842,7 +864,7 @@ function druckeWoche(mo){
         ${s.zeiten.map(z => `<tr><td class="z">${esc(z.typ === "pause" ? (z.name || "Pause") : z.name)}<br><span style="font-weight:700;font-size:7.5pt">${esc(zeitText(z))}</span></td>${tage.map(d => {
             const info = slotInfo(d, z.id), a = ARTEN[info.art] || ARTEN.sonstiges;
             if (!info.art && !info.einheit && !info.ov.notiz) return "<td></td>";
-            return `<td><div class="zelle" style="--f:${a.farbe}"><b>${esc(info.art ? a.name : "")}${info.aus ? " – fällt aus" : ""}</b>${esc(werText(info))}${info.einheit && !info.aus ? `<div style="font-weight:800">${esc(info.einheit.titel)}</div>` : ""}${info.ov.notiz ? `<div style="color:#55636b">${esc(info.ov.notiz)}</div>` : ""}</div></td>`;
+            return `<td><div class="zelle" style="--f:${a.farbe}"><b>${esc(info.art ? a.name : "")}${info.aus ? " – fällt aus" : ""}</b>${esc(werText(info))}${info.zweit ? " (Zweitbesetzung)" : ""}${info.einheit && !info.aus ? `<div style="font-weight:800">${esc(info.einheit.titel)}</div>` : ""}${info.ov.notiz ? `<div style="color:#55636b">${esc(info.ov.notiz)}</div>` : ""}</div></td>`;
         }).join("")}</tr>`).join("")}
         <tr><td class="z">Termine</td>${tage.map(d => `<td>${tagDaten(d, false).extra.filter(x => x.titel).map(x => esc((x.von ? x.von + " " : "") + x.titel)).join("<br>")}</td>`).join("")}</tr>
         </tbody></table>`, true, "Wochenplan KW " + kw(mo));

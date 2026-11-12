@@ -40,12 +40,12 @@ window.SOZIAL_VORLAGEN = [
 /* ============================== DEUTSCH ENTSPANNT ============================== */
 SOZIAL_EINHEIT({
     id: "w-geschichtenwuerfel",
-    titel: "Der Geschichten-Würfel",
+    titel: "Drei-Dinge-Geschichte",
     kategorie: "Deutsch entspannt",
-    ziel12: "Zu drei Bildern mündlich eine kleine Geschichte erzählen",
-    ziel34: "Aus drei Bildern eine Geschichte mit Anfang, Mitte und Schluss schreiben",
-    material: "Bildkarten für den Geschichten-Würfel (unter Arbeitsmaterial ausdrucken)",
-    materialIds: ["geschichten-bildkarten"],
+    ohneVorbereitung: true,
+    ziel12: "Zu drei Dingen mündlich eine kleine Geschichte erzählen und malen",
+    ziel34: "Aus drei Dingen eine Geschichte mit Anfang, Mitte und Schluss schreiben",
+    material: "Nur das Arbeitsblatt",
     lerntext12: { titel: "Das Einhorn und der Schlüssel", text:
 `Ein kleines Einhorn findet im Gras einen goldenen Schlüssel. „Wozu passt der wohl?“, fragt es sich.
 
@@ -59,7 +59,7 @@ Das Einhorn lädt alle seine Freunde ein. Und alle essen zusammen Kuchen.
 1. Was hat das Einhorn gefunden?
 2. Wo hat es den Schlüssel überall ausprobiert?
 3. Was war in der Kiste?
-4. Welche drei Dinge kamen in der Geschichte vor?` },
+4. Welche drei Dinge kamen in der Geschichte vor? (Einhorn, Schlüssel, Kuchen)` },
     lerntext34: { titel: "Die Rakete im Garten", text:
 `Als Lina am Samstagmorgen aus dem Fenster schaut, traut sie ihren Augen nicht: Mitten im Garten steht eine silberne Rakete. Die Tür geht auf, und heraus watschelt – ein Pinguin mit einer goldenen Krone auf dem Kopf.
 
@@ -73,28 +73,30 @@ Lina holt ihren Globus. Zusammen suchen sie den Weg. Zum Dank darf Lina eine Run
 3. Was macht eine Geschichte spannend?` },
     uebungen: [
         { titel: "Geschichten-Kette", fuer: "alle", dauer: "8 Min",
-          text: "Du ziehst drei Bildkarten und hängst sie an die Tafel. Die Kinder erzählen gemeinsam eine Geschichte: Jedes Kind sagt vom Platz aus einen Satz, der Reihe nach. Alle drei Bilder müssen vorkommen. Kl. 1/2 dürfen kurze Sätze sagen, Kl. 3/4 achten auf einen guten Schluss.",
-          folie: "An der Tafel hängen **drei Bilder**.\n\nWir erzählen zusammen eine Geschichte: Jeder sagt einen Satz. Alle drei Bilder müssen vorkommen!",
+          text: "Die Kinder rufen dir drei Dinge zu: **wer** (z. B. Drache), **wo** (z. B. Schwimmbad) und **was** (z. B. Regenschirm). Du schreibst die drei Wörter groß an die Tafel. Dann erzählt die Klasse gemeinsam eine Geschichte: Der Reihe nach sagt jedes Kind vom Platz aus einen Satz. Alle drei Dinge müssen vorkommen. Kl. 1/2 dürfen kurze Sätze sagen, Kl. 3/4 achten auf einen guten Schluss.",
+          folie: "**Wer?** · **Wo?** · **Was?**\n\nDie drei Wörter stehen an der Tafel. Jeder sagt einen Satz – alle drei Dinge müssen vorkommen!",
           kern: ["12", "34"],
           emoji: "📖",
           warum: "Wir erfinden zusammen eine Geschichte." },
-        { titel: "Meine drei Bilder", fuer: "alle", dauer: "4 Min",
-          text: "Jedes Kind (oder jedes Tischpaar) zieht verdeckt drei neue Bildkarten. Damit geht es aufs Arbeitsblatt. Kl. 1/2 erzählen ihre Geschichte erst dem Nachbarn, dann malen sie.",
-          folie: "Zieh drei Bildkarten. 🃏\n\nDaraus wird **deine** Geschichte.",
-          folie12: "Zieh drei Bildkarten. 🃏\n\nErzähl deinem Nachbarn deine Geschichte – dann malst du sie.",
-          emoji: "🃏",
+        { titel: "Meine drei Dinge", fuer: "alle", dauer: "4 Min",
+          text: "Oben auf dem Arbeitsblatt stehen drei Reihen mit Bildern (wer, wo, was). Jedes Kind kreuzt in jeder Reihe ein Bild an – das sind seine drei Dinge. Kl. 1/2 erzählen ihre Geschichte erst leise dem Nachbarn, dann malen sie.",
+          folie: "Kreuz auf deinem Blatt in **jeder Reihe ein Bild** an. ✏️\n\nDaraus wird **deine** Geschichte.",
+          folie12: "Kreuz in **jeder Reihe ein Bild** an. ✏️\n\nErzähl deinem Nachbarn deine Geschichte – dann malst du sie.",
+          emoji: "✏️",
           warum: "Jetzt erfindest du deine eigene Geschichte." }
     ],
-    ab12: { titel: "Meine Bilder-Geschichte", aufgaben: [
-        { typ: "malen", text: "Am Anfang …", bild: "" },
-        { typ: "malen", text: "Dann …", bild: "" },
-        { typ: "malen", text: "Am Ende …", bild: "" },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Meine Geschichte heißt: ___"] }
+    ab12: { titel: "Meine Drei-Dinge-Geschichte", aufgaben: [
+        { typ: "ankreuzen", text: "Wer? Kreuze ein Bild an.", nebeneinander: true, optionen: ["🐉 Drache", "🐱 Katze", "🤖 Roboter", "👧 Kind"] },
+        { typ: "ankreuzen", text: "Wo? Kreuze ein Bild an.", nebeneinander: true, optionen: ["🏰 Schloss", "🌲 Wald", "🌊 Meer", "🚀 Weltall"] },
+        { typ: "ankreuzen", text: "Was? Kreuze ein Bild an.", nebeneinander: true, optionen: ["🔑 Schlüssel", "🎂 Kuchen", "🎈 Ballon", "⚽ Ball"] },
+        { typ: "malen", text: "Male deine Geschichte.", bild: "" }
     ]},
-    ab34: { titel: "Meine Würfel-Geschichte", kontext: "Ziehe drei Bildkarten. Aus diesen drei Bildern wird deine Geschichte.", aufgaben: [
-        { typ: "luecken", text: "Meine drei Bilder:", nummern: false, saetze: ["1. ___   2. ___   3. ___"] },
+    ab34: { titel: "Meine Drei-Dinge-Geschichte", kontext: "Kreuze in jeder Reihe ein Ding an. Diese drei Dinge kommen in deiner Geschichte vor.", aufgaben: [
+        { typ: "ankreuzen", text: "Wer?", nebeneinander: true, optionen: ["🐉 Drache", "🐱 Katze", "🤖 Roboter", "👧 Kind"] },
+        { typ: "ankreuzen", text: "Wo?", nebeneinander: true, optionen: ["🏰 Schloss", "🌲 Wald", "🌊 Meer", "🚀 Weltall"] },
+        { typ: "ankreuzen", text: "Was?", nebeneinander: true, optionen: ["🔑 Schlüssel", "🎂 Kuchen", "🎈 Ballon", "🗺️ Schatzkarte"] },
         { typ: "luecken", text: "Überschrift:", nummern: false, saetze: ["___"] },
-        { typ: "schreiben", text: "Schreibe deine Geschichte. Denk an Anfang, Mitte und Schluss.", zeilen: 10 }
+        { typ: "schreiben", text: "Schreibe deine Geschichte. Denk an Anfang, Mitte und Schluss.", zeilen: 9 }
     ]}
 }),
 
@@ -134,7 +136,7 @@ Am Abend schreibt Ella mit der Maschine ein Gedicht für ihre Oma:
 **Fragen zum Gespräch:**
 1. Woran erkennst du, dass sich zwei Wörter reimen?
 2. Findest du Reime auf „Haus“, „Bein“ und „Hund“?
-3. Gibt es einen Reim auf „Orange“? (Probiert es!)` },
+3. Gibt es einen Reim auf „Orange“? (Probiert es – es ist fast unmöglich!)` },
     uebungen: [
         { titel: "Reim-Kette", fuer: "alle", dauer: "6 Min",
           text: "Du sagst ein Wort (Haus, Bein, Ball, Hund, Stern). Die Kinder melden sich und sagen vom Platz aus einen Reim. Wer keinen weiß, darf „Weiter!“ sagen. Auch Quatsch-Wörter zählen, wenn sie sich reimen (Haus – Maus – Klaus – Schmaus – Flaus).",
@@ -143,15 +145,15 @@ Am Abend schreibt Ella mit der Maschine ein Gedicht für ihre Oma:
           emoji: "👑",
           warum: "Wir suchen Reime – je verrückter, desto besser." },
         { titel: "Reimt sich das?", fuer: "12", dauer: "4 Min",
-          text: "Du sagst zwei Wörter. Reimen sie sich, zeigen die Kinder Daumen hoch, sonst runter:\n\n- Maus – Haus\n- Ball – Fisch\n- Hose – Rose\n- Sonne – Mond\n- Kerze – Herz",
+          text: "Du sagst zwei Wörter. Reimen sie sich, zeigen die Kinder Daumen hoch, sonst runter:\n\n- Maus – Haus\n- Ball – Fisch\n- Hose – Rose\n- Sonne – Mond\n- Katze – Tatze",
           antworten: ["👍 reimt sich", "👎 reimt sich nicht"],
           folie: "Reimt sich das?\n\n👍 ja · 👎 nein",
-          loesungen: ["1", "2", "1", "2", "2"],
+          loesungen: ["1", "2", "1", "2", "1"],
           emoji: "👂",
           warum: "Wir hören genau hin: Reimt sich das?" },
         { titel: "Reim-Gedicht der Klasse", fuer: "34", dauer: "5 Min",
-          text: "Gemeinsam dichtet ihr an der Tafel vier Zeilen über die Klasse oder das Wetter. Jede zweite Zeile muss sich reimen. Am Ende tragen alle das Gedicht vor.",
-          folie: "Wir dichten zusammen **vier Zeilen**. ✍️\n\nJede zweite Zeile muss sich reimen.",
+          text: "Gemeinsam dichtet ihr an der Tafel ein kleines Gedicht über das Wetter oder die Pause. Du gibst die erste Zeile vor, z. B. „Heute scheint die Sonne nicht,“ – die Kinder finden eine zweite Zeile, die sich darauf reimt („darum mach ich mir ein Licht“). Danach noch zwei Zeilen. Am Ende tragen alle das Gedicht vor.",
+          folie: "Wir dichten zusammen! ✍️\n\n**Heute scheint die Sonne nicht,**\n**darum …** (reimt sich auf *nicht*)",
           emoji: "✍️",
           warum: "Wir dichten zusammen ein Gedicht." }
     ],
@@ -164,7 +166,7 @@ Am Abend schreibt Ella mit der Maschine ein Gedicht für ihre Oma:
         { typ: "tabelle", text: "Finde zu jedem Wort zwei Reime.", spalten: ["Wort", "Reim 1", "Reim 2"],
           zeilen: [["Haus", "", ""], ["Bein", "", ""], ["Hund", "", ""], ["Kanne", "", ""], ["Stern", "", ""]] },
         { typ: "luecken", text: "Ergänze die Reime.", nummern: true,
-          saetze: ["Im Garten steht ein großer Baum, // ich liege drunter wie im ___.", "Die Katze läuft im Zimmer rum // und stößt die Vase: Bumm – wie ___!", "Der Hund, der bellt ganz laut: „Wau, wau!“ // Da kommt die nette alte ___."] },
+          saetze: ["Im Garten steht ein großer Baum,\nich liege drunter wie im ___.", "Die kleine Maus, die wohnt im ___,\nsie schaut zum Fenster gern hinaus.", "Der Hund, der bellt ganz laut: „Wau, wau!“\nDa kommt die nette alte ___."] },
         { typ: "luecken", text: "Dichte einen eigenen Zweizeiler:", nummern: false, saetze: ["___", "___"] }
     ]}
 }),
@@ -194,9 +196,9 @@ Fips sucht überall. Unter dem Bett. Im Schrank. Im Garten. Da – im Briefkaste
     lerntext34: { titel: "Das Wort-Versteck", text:
 `Detektivin Mira hat eine Spezialbrille. Wenn sie ein langes Wort ansieht, leuchten darin versteckte Wörter auf.
 
-Sie schaut auf das Wort SCHNEEMANN – und sieht darin „Schnee“, „Mann“ und sogar „See“! Sie schaut auf REGENBOGEN – und findet „Regen“, „Bogen“ und „Gen“.
+Sie schaut auf das Wort SCHNEEMANN – und sieht darin „Schnee“ und „Mann“. Sie schaut auf REGENBOGEN – und findet „Regen“ und „Bogen“.
 
-Ihr Assistent Tom staunt. „Und was ist mit FUSSBALLSPIEL?“ Mira grinst: „Fuß, Ball, Spiel – und wer genau hinschaut, findet sogar ‚all‘.“
+Ihr Assistent Tom staunt. „Und was ist mit FUSSBALLSPIEL?“ Mira grinst: „Da stecken sogar drei drin: Fuß, Ball und Spiel!“
 
 Am Ende des Tages haben die beiden 50 versteckte Wörter gefunden. Rekord!
 
@@ -233,8 +235,8 @@ Am Ende des Tages haben die beiden 50 versteckte Wörter gefunden. Rekord!
     ]},
     ab34: { titel: "Versteckte Wörter", aufgaben: [
         { typ: "luecken", text: "Welche Wörter sind versteckt?", nummern: false,
-          saetze: ["SCHNEEMANN: ___, ___, ___", "REGENBOGEN: ___, ___, ___", "FUSSBALLSPIEL: ___, ___, ___"] },
-        { typ: "tabelle", text: "Setze zusammen: Was ergibt das?", spalten: ["Wort 1", "Wort 2", "Neues Wort"],
+          saetze: ["SCHNEEMANN: ___ und ___", "HAUSTÜR: ___ und ___", "FUSSBALLSPIEL: ___, ___ und ___"] },
+        { typ: "tabelle", text: "Setze zwei Wörter zu einem neuen Wort zusammen.", spalten: ["Wort 1", "Wort 2", "Neues Wort"],
           zeilen: [["Haus", "Tür", ""], ["Schnee", "Ball", ""], ["Apfel", "Baum", ""], ["Sonne", "Brille", ""]] },
         { typ: "luecken", text: "Erfinde ein eigenes langes Wort (auch Quatsch ist erlaubt):", nummern: false, saetze: ["___"] }
     ]}
@@ -289,19 +291,19 @@ Am Ende gewinnt Jonas mit 35 Punkten. „Das spielen wir jetzt jeden Tag!“
           emoji: "🐘",
           warum: "Wir spielen Tiere vor – nach Buchstaben." },
         { titel: "Stadt-Land-Fluss für Kinder", fuer: "34", dauer: "8 Min",
-          text: "Die Kinder spielen auf dem Arbeitsblatt. Ein Kind sagt leise das ABC auf, ein anderes ruft „Stopp!“. Wer zuerst alle Spalten hat, ruft „Fertig!“ – dann zählt ihr: 10 Punkte für Wörter, die nur einer hat, 5 Punkte für gleiche Wörter.",
+          text: "Gespielt wird auf dem Arbeitsblatt, jeder für sich. Ein Kind sagt leise das ABC auf, ein anderes ruft „Stopp!“ – dieser Buchstabe gilt für alle. Jeder schreibt zu jeder Spalte ein Wort mit diesem Buchstaben. Wer zuerst alle Spalten hat, ruft „Fertig!“, dann legen alle den Stift hin. Die Tischnachbarn vergleichen: 10 Punkte für ein Wort, das nur einer hat, 5 Punkte, wenn beide dasselbe haben. Fehlt ein Wort, gibt es 0 Punkte.",
           folie: "Stadt – Land – Fluss! 🗺️\n\nEiner sagt leise das ABC, ein anderer ruft **„Stopp!“**. Wer alle Spalten hat, ruft **„Fertig!“**",
           kern: ["34"],
           emoji: "🗺️",
           warum: "Wir spielen Stadt-Land-Fluss." }
     ],
     ab12: { titel: "Mein ABC-Tier", aufgaben: [
-        { typ: "ankreuzen", text: "Welches Tier fängt mit E an? Kreuze an.", nebeneinander: true, optionen: ["Elefant", "Affe", "Ente", "Igel"] },
+        { typ: "ankreuzen", text: "Welche Tiere fangen mit E an? Kreuze alle an.", nebeneinander: true, optionen: ["🐘 Elefant", "🐒 Affe", "🦆 Ente", "🦔 Igel"] },
         { typ: "malen", text: "Male ein Tier, das so anfängt wie dein Name.", bild: "" },
         { typ: "luecken", text: "", nummern: false, saetze: ["Mein Tier heißt: ___"] }
     ]},
     ab34: { titel: "Stadt-Land-Fluss für Kinder", aufgaben: [
-        { typ: "tabelle", text: "Spielt mehrere Runden. 10 Punkte = nur du hast das Wort, 5 Punkte = jemand hat dasselbe.", spalten: ["Buchstabe", "Tier", "Essen", "Name", "Spielzeug", "Punkte"],
+        { typ: "tabelle", text: "Schreibe zu jeder Spalte ein Wort mit dem Buchstaben. Vergleiche mit deinem Nachbarn: 10 Punkte = nur du hast das Wort, 5 Punkte = er hat dasselbe.", spalten: ["Buchstabe", "Tier", "Essen", "Name", "Spielzeug", "Punkte"],
           zeilen: [["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""]] },
         { typ: "luecken", text: "Mein bestes Wort heute:", nummern: false, saetze: ["___"] }
     ]}
@@ -433,7 +435,7 @@ Max überlegt. 21? 2 + 1 = 3, passt nicht. 22? Ist gerade. 23? 2 + 3 = 5 – und
     ]},
     ab34: { titel: "Zahlen-Rätsel", aufgaben: [
         { typ: "luecken", text: "Wer bin ich?", nummern: true,
-          saetze: ["Ich bin größer als 20 und kleiner als 30. Meine Ziffern zusammen ergeben 5. // Ich bin ___.", "Ich bin das Doppelte von 15. // Ich bin ___.", "Wenn du mich halbierst, erhältst du 12. // Ich bin ___.", "Ich bin die größte zweistellige Zahl. // Ich bin ___."] },
+          saetze: ["Ich bin größer als 20 und kleiner als 30. Meine Ziffern zusammen ergeben 5. \nIch bin ___.", "Ich bin das Doppelte von 15. \nIch bin ___.", "Wenn du mich halbierst, erhältst du 12. \nIch bin ___.", "Ich bin die größte zweistellige Zahl. \nIch bin ___."] },
         { typ: "luecken", text: "Erfinde ein eigenes Zahlen-Rätsel:", nummern: false, saetze: ["___", "___", "Lösung: ___"] }
     ]}
 }),
@@ -473,8 +475,8 @@ Zum Schluss kommt die schwerste Reihe: 1 – 4 – 9 – 16 – ? Niemand weiß 
 3. Wo findet man Muster im Alltag? (Fliesen, Kleidung, Musik …)` },
     uebungen: [
         { titel: "Klatsch-Muster", fuer: "alle", dauer: "5 Min",
-          text: "An der Tafel steht ein Muster aus Zeichen: 👏 🦶 👏 🦶 … (klatschen – stampfen). Die Klasse macht es nach und setzt es fort. Dann ein schwereres Muster: 👏 👏 🫰 (klatschen – klatschen – schnipsen). Danach darf ein Kind ein eigenes Muster an die Tafel malen, die Klasse macht es nach. Du leitest nur an.",
-          folie: "Macht das Muster nach und setzt es fort:\n\n👏 🦶 👏 🦶 …\n\nSchwerer: 👏 👏 🫰 👏 👏 🫰 …",
+          text: "An der Tafel steht ein Muster aus Zeichen: 👏 🦶 👏 🦶 … (klatschen – stampfen). Die Klasse macht es nach und setzt es fort. Dann ein schwereres Muster: 👏 👏 🦶 (klatschen – klatschen – stampfen). Danach darf ein Kind ein eigenes Muster an die Tafel malen, die Klasse macht es nach. Du leitest nur an.",
+          folie: "Macht das Muster nach und setzt es fort:\n\n👏 🦶 👏 🦶 …\n\nSchwerer: 👏 👏 🦶 👏 👏 🦶 …",
           kern: ["12", "34"],
           emoji: "👏",
           warum: "Wir machen ein Muster nach und setzen es fort." },
@@ -505,7 +507,7 @@ SOZIAL_EINHEIT({
     ohneVorbereitung: true,
     ziel12: "Kreis, Dreieck und Quadrat erkennen und damit malen",
     ziel34: "Formen zählen, benennen und ein Formen-Bild planen",
-    material: "Nur das Arbeitsblatt (Lineal für Kl. 3/4)",
+    material: "Nur das Arbeitsblatt",
     lerntext12: { titel: "Im Formen-Land", text:
 `Im Formen-Land wohnen der Kreis, das Dreieck und das Quadrat. Sie streiten: „Ich bin die schönste Form!“
 
@@ -558,7 +560,8 @@ Als Nächstes plant Q7 eine Rakete. Doch dafür braucht er viel mehr Dreiecke �
     ab34: { titel: "Formen-Architekt", aufgaben: [
         { typ: "tabelle", text: "Plane dein Formen-Bild: Wie viele Formen nimmst du – und wofür?", spalten: ["Form", "Anzahl", "Wofür?"],
           zeilen: [["● Kreis", "", ""], ["▲ Dreieck", "", ""], ["■ Quadrat", "", ""], ["▬ Rechteck", "", ""]] },
-        { typ: "malen", text: "Zeichne dein Formen-Bild. Zusammen sind es ___ Formen.", bild: "" }
+        { typ: "malen", text: "Zeichne dein Formen-Bild. Zähle danach alle Formen zusammen.", bild: "" },
+        { typ: "luecken", text: "", nummern: false, saetze: ["Mein Bild hat zusammen ___ Formen."] }
     ]}
 }),
 
@@ -585,14 +588,14 @@ Beim Apfel sind es drei Striche. Bei der Banane zwei. Und bei der Erdbeere – f
 
 **Tipp für dich:** Danach macht ihr eine eigene Strichliste an der Tafel.` },
     lerntext34: { titel: "Die große Klassen-Umfrage", text:
-`Die 4b möchte wissen: Wer hat welches Haustier? Paul macht an der Tafel eine Strichliste. Für jedes Kind ein Strich. Nach fünf Strichen macht er einen Querstrich – so lässt es sich schneller zählen.
+`Die 4b möchte wissen: Wer hat welches Haustier? Paul macht an der Tafel eine Strichliste. Für jedes Kind ein Strich. Nach vier Strichen macht er den fünften quer darüber – so sieht man immer gleich ein Fünfer-Päckchen und kann schneller zählen.
 
 Das Ergebnis: 6 Kinder haben einen Hund, 4 eine Katze, 3 ein Meerschweinchen, 2 einen Fisch – und 7 Kinder haben gar kein Haustier.
 
 Mia zeichnet daraus ein Säulendiagramm: Für jedes Kind ein Kästchen nach oben. Jetzt sieht man auf einen Blick, dass „kein Haustier“ die höchste Säule hat.
 
 **Fragen zum Gespräch:**
-1. Warum macht man bei einer Strichliste nach vier Strichen einen Querstrich?
+1. Warum macht man bei einer Strichliste den fünften Strich quer?
 2. Was sieht man in einem Säulendiagramm schneller als in einer Liste?
 3. Was möchtet ihr über eure Klasse herausfinden?` },
     uebungen: [
@@ -609,14 +612,14 @@ Mia zeichnet daraus ein Säulendiagramm: Für jedes Kind ein Kästchen nach oben
           warum: "Wir machen eine Umfrage mit Strichliste." }
     ],
     ab12: { titel: "Unsere Strichliste", aufgaben: [
-        { typ: "tabelle", text: "Lieblingsobst: Mache für jedes Kind einen Strich. Wie viele sind es?", spalten: ["Obst", "Striche", "Anzahl"],
+        { typ: "tabelle", text: "Wir fragen die Klasse: Was ist dein Lieblingsobst? Hand hoch! Mach für jedes Kind einen Strich und zähle.", spalten: ["Obst", "Striche", "Anzahl"],
           zeilen: [["Apfel", "", ""], ["Banane", "", ""], ["Erdbeere", "", ""], ["Birne", "", ""]] },
         { typ: "malen", text: "Male das Lieblingsobst unserer Klasse.", bild: "" }
     ]},
     ab34: { titel: "Unsere Klassen-Umfrage", aufgaben: [
-        { typ: "luecken", text: "Unsere Frage:", nummern: false, saetze: ["___"] },
-        { typ: "tabelle", text: "Mach für jede Antwort einen Strich. Zähle am Ende und schreib die Anzahl dazu.", spalten: ["Antwort", "Striche", "Anzahl"], zeilen: [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]] },
-        { typ: "malen", text: "Zeichne ein Säulendiagramm: Für jedes Kind ein Kästchen nach oben.", bild: "" },
+        { typ: "luecken", text: "Denk dir eine Frage mit 3–4 Antworten aus (z. B. Lieblingsfarbe):", nummern: false, saetze: ["___"] },
+        { typ: "tabelle", text: "Frag 8 Kinder in deiner Nähe. Mach für jede Antwort einen Strich und zähle.", spalten: ["Antwort", "Striche", "Anzahl"], zeilen: [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]] },
+        { typ: "malen", text: "Zeichne ein Säulendiagramm: Für jede Antwort eine Säule – so hoch, wie Kinder sie gesagt haben (1 Kind = 1 Kästchen).", bild: "" },
         { typ: "luecken", text: "", nummern: false, saetze: ["Die meisten Kinder ___"] }
     ]}
 }),
@@ -628,7 +631,8 @@ SOZIAL_EINHEIT({
     ohneVorbereitung: true,
     ziel12: "Genau zuhören und kleine Rätsel lösen",
     ziel34: "Logikrätsel mit Hinweisen lösen und eigene erfinden",
-    material: "8 Gegenstände aus dem Klassenraum (für das Kim-Spiel), ein Tuch oder eine Jacke zum Abdecken",
+    material: "Nur das Arbeitsblatt",
+    ohneVorbereitung: true,
     lerntext12: { titel: "Wer hat den Kuchen genascht?", text:
 `Auf dem Tisch steht ein Schokoladenkuchen. Am Morgen fehlt ein großes Stück!
 
@@ -663,9 +667,9 @@ Emil geht zum Fußballplatz – und findet den Ball im Tor. Cara wird rot: „Ic
 2. Warum konnten Ali, Ben und Dana es nicht gewesen sein?
 3. Was braucht ein guter Detektiv?` },
     uebungen: [
-        { titel: "Kim-Spiel: Was fehlt?", fuer: "alle", dauer: "6 Min",
-          text: "Auf deinem Tisch liegen 8 Gegenstände. Die Kinder schauen 30 Sekunden genau hin. Dann deckst du alles ab und nimmst heimlich einen Gegenstand weg. Welcher fehlt? Kl. 3/4: Du nimmst zwei weg oder vertauschst die Reihenfolge.",
-          folie: "Schau **30 Sekunden** ganz genau hin. 👀\n\nDann wird etwas weggenommen. **Was fehlt?**",
+        { titel: "Tafel-Kim: Was fehlt?", fuer: "alle", dauer: "6 Min",
+          text: "Du malst 6 einfache Dinge an die Tafel (Sonne, Haus, Ball, Herz, Fisch, Baum). Die Kinder schauen 30 Sekunden genau hin. Dann drehen sich alle um oder legen den Kopf auf den Tisch, und du wischst ein Bild weg. Was fehlt? Wer es weiß, darf als Nächstes etwas wegwischen. Kl. 3/4: 8 Bilder, du wischst zwei weg.",
+          folie: "Schau dir die Bilder an der Tafel **30 Sekunden** ganz genau an. 👀\n\nDann Kopf auf den Tisch – ein Bild verschwindet. **Was fehlt?**",
           kern: ["12", "34"],
           emoji: "👀",
           warum: "Schau genau hin – was fehlt?" },
@@ -676,14 +680,14 @@ Emil geht zum Fußballplatz – und findet den Ball im Tor. Cara wird rot: „Ic
           warum: "Wir raten mit Ja-Nein-Fragen." }
     ],
     ab12: { titel: "Kleine Detektive", aufgaben: [
-        { typ: "ankreuzen", text: "Wer hat den Kuchen genascht? Kreuze an.", nebeneinander: true, optionen: ["Hase", "Bär", "Maus"] },
-        { typ: "ankreuzen", text: "Hör gut zu: Das Tier ist groß und grau und hat einen Rüssel.", nebeneinander: true, optionen: ["Elefant", "Giraffe", "Maus"] },
-        { typ: "ankreuzen", text: "Hör gut zu: Das Tier ist klein, hat Stacheln und schläft im Winter.", nebeneinander: true, optionen: ["Hase", "Igel", "Frosch"] },
+        { typ: "ankreuzen", text: "Wer hat den Kuchen genascht? Kreuze an.", nebeneinander: true, optionen: ["🐰 Hase", "🐻 Bär", "🐭 Maus"] },
+        { typ: "ankreuzen", text: "Das Tier ist groß und grau und hat einen Rüssel.", nebeneinander: true, optionen: ["🐘 Elefant", "🦒 Giraffe", "🐭 Maus"] },
+        { typ: "ankreuzen", text: "Das Tier ist klein, hat Stacheln und schläft im Winter.", nebeneinander: true, optionen: ["🐰 Hase", "🦔 Igel", "🐸 Frosch"] },
         { typ: "malen", text: "Male dich als Detektiv mit einer Lupe.", bild: "" }
     ]},
     ab34: { titel: "Detektiv-Akte", kontext: "Zum Fall: Nach der Pause ist der Klassenball weg. Ali hat Rost an den Händen, Ben nasse Schuhe, an Caras Schuhen klebt Sand vom Fußballplatz, Dana hat auf der Bank gelesen.", aufgaben: [
         { typ: "luecken", text: "Der Fall des verschwundenen Balls:", nummern: false, saetze: ["Der Ball war bei: ___", "Mein Beweis: ___"] },
-        { typ: "tabelle", text: "Wer isst was am liebsten? Apfel · Nudeln · Gummibärchen. Hinweise: Mia mag kein Obst. Tom isst gern Süßes. Lea liebt Äpfel.", spalten: ["Kind", "Lieblingsessen"],
+        { typ: "tabelle", text: "Jedes Kind isst etwas anderes am liebsten: Apfel, Nudeln oder Gummibärchen. Hinweise: Lea liebt Äpfel. Tom isst am liebsten Süßes. Was isst Mia?", spalten: ["Kind", "Lieblingsessen"],
           zeilen: [["Mia", ""], ["Tom", ""], ["Lea", ""]] },
         { typ: "luecken", text: "Erfinde ein eigenes Detektiv-Rätsel:", nummern: false, saetze: ["___", "___", "Lösung: ___"] }
     ]}

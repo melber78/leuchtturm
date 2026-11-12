@@ -5,12 +5,12 @@ window.SOZIAL_VORLAGEN.push(
 /* ============================== SACHUNTERRICHT ENTSPANNT ============================== */
 SOZIAL_EINHEIT({
     id: "w-jahreszeiten",
-    titel: "Jahreszeiten-Bingo",
+    titel: "Jahreszeiten-Rätsel",
     kategorie: "Sachunterricht entspannt",
     ohneVorbereitung: true,
     ziel12: "Die vier Jahreszeiten an typischen Dingen erkennen",
     ziel34: "Merkmale und Monate den Jahreszeiten zuordnen",
-    material: "Pro Kind ein leeres Blatt für das Bingo-Feld",
+    material: "Nur das Arbeitsblatt",
     lerntext12: { titel: "Der kleine Baum erzählt", text:
 `Ich bin ein kleiner Baum. Im **Frühling** wachsen an mir grüne Blätter und weiße Blüten. Die Bienen summen.
 
@@ -47,15 +47,16 @@ Brrr, der **Winter** schreibt: Bei mir ist es kalt und früh dunkel, der Igel h�
           kern: ["12", "34"],
           emoji: "🎭",
           warum: "Wir raten Jahreszeiten aus Pantomime." },
-        { titel: "Jahreszeiten-Bingo", fuer: "alle", dauer: "8 Min",
-          text: "An der Tafel stehen 12 Wörter (Schneemann, Eis, Drachen, Tulpe, Schlitten, Freibad, Kastanie, Ostern, Laterne, Sonnenbrille, Handschuhe, Regenschirm). Jedes Kind malt auf ein Blatt ein Feld mit 3 × 3 Kästchen und trägt 9 davon ein (Kl. 1/2 malen kleine Bilder). Du rufst die Wörter in zufälliger Reihenfolge – wer zuerst eine Reihe hat, ruft „Bingo!“",
-          folie: "Mal ein Feld mit **3 × 3** Kästchen. Trag 9 Wörter von der Tafel ein.\n\nWer zuerst eine Reihe hat, ruft **„Bingo!“** 🎉",
-          emoji: "🎉",
-          warum: "Wir spielen Jahreszeiten-Bingo." }
+        { titel: "Finger-Jahreszeiten", fuer: "alle", dauer: "8 Min",
+          text: "Abgemacht: 1 Finger = Frühling, 2 = Sommer, 3 = Herbst, 4 = Winter (steht auch an der Tafel). Du nennst ein Ding, alle zeigen gleichzeitig mit den Fingern, wann es das gibt. Bei manchen passt mehr als eine Jahreszeit – dann darf ein Kind erklären, warum.\n\n- Schneemann (4)\n- Freibad (2)\n- Laterne (3)\n- Osterhase (1)\n- Schlitten (4)\n- Kastanien (3)\n- Tulpen (1)\n- Sonnenbrille (2, oft auch 1)\n- Drachen steigen lassen (3)\n- Handschuhe (4, manchmal 3)\n- Erdbeeren (2)\n- Weihnachten (4)",
+          quiz: "keine",
+          folie: "Zeig mit den Fingern: **Wann gibt es das?**\n\n☝️ Frühling 🌷 · ✌️ Sommer ☀️ · 3 Herbst 🍂 · 4 Winter ❄️",
+          emoji: "✋",
+          warum: "Wir raten Jahreszeiten mit den Fingern." }
     ],
     ab12: { titel: "Wann ist das?", aufgaben: [
-        { typ: "ankreuzen", text: "Was passt zum Winter? Kreuze an.", nebeneinander: true, optionen: ["Schneemann", "Sonnenblume", "Schlitten", "Eis"] },
-        { typ: "zuordnen", nur: "2", text: "Wann ist das? Verbinde.", links: ["Schneemann", "Tulpe", "Sonne", "Herbstlaub"], rechts: ["Herbst", "Winter", "Sommer", "Frühling"] },
+        { typ: "ankreuzen", text: "Was passt zum Winter? Kreuze an.", nebeneinander: true, optionen: ["⛄ Schneemann", "🌻 Sonnenblume", "🛷 Schlitten", "🩳 kurze Hose"] },
+        { typ: "zuordnen", nur: "2", text: "Wann ist das? Verbinde.", links: ["⛄ Schneemann", "🌷 Tulpe", "🏊 Freibad", "🍂 Laub"], rechts: ["Herbst", "Winter", "Sommer", "Frühling"] },
         { typ: "malen", text: "Male deine Lieblings-Jahreszeit.", bild: "" }
     ]},
     ab34: { titel: "Das Jahr im Überblick", aufgaben: [
@@ -126,10 +127,10 @@ SOZIAL_EINHEIT({
     id: "w-tier-raten",
     titel: "Tier-Raten: Wer bin ich?",
     kategorie: "Sachunterricht entspannt",
+    ohneVorbereitung: true,
     ziel12: "Tiere an Merkmalen erkennen",
     ziel34: "Mit geschickten Ja-/Nein-Fragen Tiere herausfinden",
-    material: "Tierkarten für „Wer bin ich?“ (unter Arbeitsmaterial ausdrucken)",
-    materialIds: ["tier-karten"],
+    material: "Nur das Arbeitsblatt",
     lerntext12: { titel: "Rate mal, wer ich bin!", text:
 `Ich bin klein und rund. Auf meinem Rücken habe ich viele Stacheln. Im Winter schlafe ich unter einem Laubhaufen. Wer bin ich? – Ein **Igel**!
 
@@ -155,22 +156,23 @@ Jonas hat nur fünf Fragen gebraucht. Sein Trick: Erst große Gruppen ausschlie�
 3. Welche Fragen sind ungeschickt? (z. B. „Bin ich ein Hamster?“ ganz am Anfang)` },
     uebungen: [
         { titel: "Tier-Rätsel", fuer: "alle", dauer: "6 Min",
-          text: "Du liest Rätsel vor (Merkmale, Lebensraum, Nahrung). Die Kinder raten vom Platz. Wer richtig rät, bekommt die passende Tierkarte gezeigt. Kl. 3/4 dürfen danach eigene Rätsel stellen.",
+          text: "Du liest die Rätsel vor, die Kinder raten vom Platz. Kl. 3/4 dürfen danach eigene Rätsel stellen.\n\n- Ich habe ein schwarz-weiß gestreiftes Fell und sehe aus wie ein Pferd. (Zebra)\n- Ich trage mein Haus auf dem Rücken und hinterlasse eine Schleimspur. (Schnecke)\n- Ich bin der König der Tiere und habe eine große Mähne. (Löwe)\n- Ich hüpfe und trage mein Baby in einem Beutel am Bauch. (Känguru)\n- Ich gebe Milch und sage „Muh“. (Kuh)\n- Ich mache Honig und kann stechen. (Biene)",
+          quiz: "keine",
           folie: "Hör gut zu: **Welches Tier ist das?** 🐾",
           kern: ["12", "34"],
           emoji: "🐾",
           warum: "Hör gut zu und rate das Tier." },
         { titel: "Wer bin ich?", fuer: "alle", dauer: "8 Min",
-          text: "Ein Kind kommt nach vorn und zieht verdeckt eine Tierkarte. Kl. 1/2: Das Kind beschreibt das Tier, die anderen raten. Kl. 3/4: Ein zweites Kind hält die Karte hinter den Kopf des ersten, die Klasse sieht sie – das Kind stellt Ja-/Nein-Fragen, bis es das Tier errät.",
-          folie12: "Ein Kind zieht eine Tierkarte und **beschreibt** das Tier.\n\nDie anderen raten: **Wer bin ich?**",
-          folie34: "Ein Kind weiß nicht, welches Tier es ist – alle anderen sehen die Karte.\n\nEs fragt nur mit **Ja-/Nein-Fragen**: **Wer bin ich?**",
+          text: "Kl. 1/2: Ein Kind kommt nach vorn, du flüsterst ihm ein Tier ins Ohr (Katze, Hund, Frosch, Elefant, Huhn, Affe). Das Kind macht das Tier vor (Geräusch und Bewegung), die anderen raten.\n\nKl. 3/4: Ein Kind stellt sich mit dem Rücken zur Tafel. Du schreibst ein Tier groß an die Tafel – alle sehen es, nur das Kind nicht. Das Kind stellt Ja-/Nein-Fragen, die Klasse antwortet. Hat es das Tier erraten, wischst du es weg und das nächste Kind ist dran.",
+          folie12: "Ein Kind macht ein Tier vor – mit **Geräusch** und **Bewegung**. 🐸\n\nDie anderen raten: **Wer bin ich?**",
+          folie34: "Ein Kind steht mit dem Rücken zur Tafel. Alle anderen sehen das Tier.\n\nEs fragt nur mit **Ja-/Nein-Fragen**: **Wer bin ich?**",
           emoji: "❓",
           warum: "Ein Kind errät, welches Tier es ist." }
     ],
     ab12: { titel: "Welches Tier ist das?", aufgaben: [
-        { typ: "ankreuzen", text: "Hör gut zu: Ich habe einen sehr langen Hals.", nebeneinander: true, optionen: ["Giraffe", "Elefant", "Hase"] },
-        { typ: "ankreuzen", text: "Hör gut zu: Ich kann nachts besonders gut sehen.", nebeneinander: true, optionen: ["Eule", "Affe", "Pinguin"] },
-        { typ: "ankreuzen", text: "Hör gut zu: Ich habe einen Panzer und bin sehr langsam.", nebeneinander: true, optionen: ["Frosch", "Schildkröte", "Igel"] },
+        { typ: "ankreuzen", text: "Ich habe einen sehr langen Hals.", nebeneinander: true, optionen: ["🦒 Giraffe", "🐘 Elefant", "🐰 Hase"] },
+        { typ: "ankreuzen", text: "Ich kann nachts besonders gut sehen.", nebeneinander: true, optionen: ["🦉 Eule", "🐒 Affe", "🐧 Pinguin"] },
+        { typ: "ankreuzen", text: "Ich habe einen Panzer und bin sehr langsam.", nebeneinander: true, optionen: ["🐸 Frosch", "🐢 Schildkröte", "🦔 Igel"] },
         { typ: "malen", text: "Male dein Lieblingstier.", bild: "" }
     ]},
     ab34: { titel: "Tier-Detektive", aufgaben: [
@@ -246,7 +248,14 @@ SOZIAL_EINHEIT({
     ohneVorbereitung: true,
     ziel12: "Aus einem Zufallskritzel ein Fantasie-Monster gestalten",
     ziel34: "Ein Monster gestalten und ihm eine Geschichte geben",
-    material: "Pro Kind ein weißes A4-Blatt (oder das Arbeitsblatt), Bunt- und Filzstifte, ein schwarzer Stift",
+    material: "Nur das Arbeitsblatt (und Stifte aus dem Mäppchen)",
+    verlauf: [
+        { zeit: "0–5",   phase: "Ankommen",      k12: "Begrüßung, kurz erzählen, was heute passiert", k34: "Begrüßung, kurz erzählen, was heute passiert" },
+        { zeit: "5–12",  phase: "Einstieg",      k12: "„Das Monster im Kritzel“ vorlesen", k34: "„Das Monster-Museum“ vorlesen, Fragen besprechen" },
+        { zeit: "12–20", phase: "Spiel / Übung", k12: "Monster an der Tafel, Kritzeln und entdecken", k34: "Monster an der Tafel, Kritzeln und entdecken" },
+        { zeit: "20–33", phase: "Arbeitsblatt",  k12: "AB 1/2: Mein Kritzel-Monster fertig malen", k34: "AB 3/4: Monster gestalten, Steckbrief" },
+        { zeit: "33–40", phase: "Abschluss",     k12: "Monster-Show", k34: "Monster-Show" }
+    ],
     lerntext12: { titel: "Das Monster im Kritzel", text:
 `Luna kritzelt mit geschlossenen Augen auf ihr Blatt. Hin und her, rund und zackig.
 
@@ -279,7 +288,7 @@ Unter jedem Bild steht ein kleines Schild: Name, was das Monster mag und was es 
           emoji: "🖍️",
           warum: "In einem Kritzel versteckt sich ein Monster …" },
         { titel: "Kritzeln und entdecken", fuer: "alle", dauer: "5 Min",
-          text: "Alle kritzeln mit dem schwarzen Stift und geschlossenen Augen, während du langsam bis 5 zählst. Dann drehen sie ihr Blatt, bis sie „ihr“ Monster entdecken – danach geht es ans Gestalten auf dem Arbeitsblatt.",
+          text: "Alle kritzeln mit Bleistift und geschlossenen Augen in das große Feld auf dem Arbeitsblatt, während du langsam bis 5 zählst. Dann drehen sie ihr Blatt, bis sie „ihr“ Monster entdecken – Augen, Maul und Beine malen sie gleich danach dazu.",
           folie: "Augen zu – und **kritzeln**, bis 5 gezählt ist! 🖍️\n\nDann dreh dein Blatt, bis du **dein** Monster entdeckst.",
           kern: ["12", "34"],
           emoji: "👾",
@@ -291,12 +300,12 @@ Unter jedem Bild steht ein kleines Schild: Name, was das Monster mag und was es 
           warum: "Wir stellen unsere Monster vor." }
     ],
     ab12: { titel: "Mein Kritzel-Monster", aufgaben: [
-        { typ: "malen", text: "Kritzle mit geschlossenen Augen. Finde dein Monster und male es fertig.", bild: "" },
+        { typ: "malen", text: "Kritzle hier mit geschlossenen Augen. Dreh das Blatt, finde dein Monster und male es fertig.", bild: "" },
         { typ: "ankreuzen", text: "Mein Monster ist …", nebeneinander: true, optionen: ["lieb", "frech", "lustig", "müde"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Mein Monster heißt: ___"] }
     ]},
     ab34: { titel: "Mein Monster-Steckbrief", aufgaben: [
-        { typ: "malen", text: "Kritzle mit geschlossenen Augen. Finde dein Monster und gestalte es.", bild: "" },
+        { typ: "malen", text: "Kritzle hier mit geschlossenen Augen. Dreh das Blatt, finde dein Monster und gestalte es.", bild: "" },
         { typ: "luecken", text: "Monster-Steckbrief:", nummern: false, saetze: ["Name: ___", "Es mag: ___", "Es mag gar nicht: ___", "Seine Superkraft: ___"] }
     ]}
 }),
@@ -308,7 +317,7 @@ SOZIAL_EINHEIT({
     ohneVorbereitung: true,
     ziel12: "Ein Traum-Baumhaus mit vielen Ideen gestalten",
     ziel34: "Ein Baumhaus planen, gestalten und Regeln dafür aufstellen",
-    material: "Nur das Arbeitsblatt, Buntstifte",
+    material: "Nur das Arbeitsblatt",
     lerntext12: { titel: "Das Baumhaus von Tim und Ida", text:
 `Tim und Ida wünschen sich ein Baumhaus. Sie überlegen, was hinein soll.
 
@@ -427,10 +436,10 @@ SOZIAL_EINHEIT({
     id: "w-montagsmaler",
     titel: "Montagsmaler & Co.",
     kategorie: "Spiele & Bewegung",
+    ohneVorbereitung: true,
     ziel12: "Begriffe malen und erraten",
     ziel34: "Begriffe zeichnen, umschreiben und erraten",
-    material: "Begriffskarten für Montagsmaler (unter Arbeitsmaterial ausdrucken), Tafel und Kreide",
-    materialIds: ["montagsmaler-begriffe"],
+    material: "Nur die Tafel und das Arbeitsblatt",
     lerntext12: { titel: "Das Bilder-Rätsel", text:
 `Opa malt einen Kreis an die Tafel. Dann viele Striche rundherum.
 
@@ -438,13 +447,13 @@ SOZIAL_EINHEIT({
 
 Opa malt den Kreis gelb an. „Die Sonne!“, rufen beide gleichzeitig. Opa nickt.
 
-Jetzt ist Emma dran. Sie malt ein Viereck und ein Dreieck darauf …
+Jetzt ist Emma dran. Sie malt ein Viereck und obendrauf ein Dreieck – wie ein Dach …
 
 **Nach dem Vorlesen:**
 1. Was hat Opa zuerst an die Tafel gemalt?
 2. Was haben Emma und Ben geraten?
 3. Was war es am Ende?
-4. Was malt Emma wohl?` },
+4. Was malt Emma wohl? (ein Haus)` },
     lerntext34: { titel: "Die Spieleshow", text:
 `Willkommen bei der großen Spieleshow „Mal es, sag es, zeig es!“ Drei Runden warten auf die Teams.
 
@@ -462,13 +471,14 @@ Das Team mit den meisten Punkten gewinnt – aber am wichtigsten ist: Alle lache
 3. Wie bleibt so ein Spiel fair?` },
     uebungen: [
         { titel: "Montagsmaler", fuer: "alle", dauer: "10 Min",
-          text: "Ein Kind kommt nach vorn, zieht verdeckt eine Begriffskarte (das Bild hilft, wenn es noch nicht liest) und malt den Begriff an die Tafel – ohne Buchstaben. Die anderen raten vom Platz. Wer es errät, darf als Nächstes malen. Kl. 3/4 spielen in zwei Teams mit Punkten.",
-          folie: "Ein Kind zieht eine Karte und **malt** den Begriff an die Tafel – ohne Buchstaben. ✏️\n\nWer es errät, malt als Nächstes.",
+          text: "Ein Kind kommt nach vorn, du flüsterst ihm einen Begriff ins Ohr. Es malt ihn an die Tafel – ohne Buchstaben und ohne zu sprechen. Die anderen raten vom Platz. Wer es errät, darf als Nächstes malen. Kl. 3/4 spielen in zwei Teams mit Punkten.\n\nLeicht: Sonne, Haus, Baum, Fisch, Ball, Blume, Auto, Herz\nMittel: Schneemann, Brille, Regenschirm, Schnecke, Rakete, Eis, Zahnbürste\nSchwer: Brücke, Leuchtturm, Geburtstag, Feuerwehr, Zahnarzt",
+          quiz: "keine",
+          folie: "Ein Kind **malt** einen Begriff an die Tafel – ohne Buchstaben, ohne Sprechen. ✏️\n\nWer es errät, malt als Nächstes.",
           kern: ["12", "34"],
           emoji: "✏️",
           warum: "Wir malen und raten Begriffe." },
         { titel: "Begriffe erklären", fuer: "34", dauer: "5 Min",
-          text: "Ein Kind erklärt einen Begriff, ohne ihn zu sagen. Die anderen raten. Schwerer: Drei verbotene Wörter, die nicht vorkommen dürfen (bei „Schneemann“: Schnee, Winter, Möhre).",
+          text: "Du flüsterst einem Kind einen Begriff ins Ohr. Es erklärt ihn, ohne das Wort zu sagen. Die anderen raten. Schwerer: Drei Wörter sind verboten – du schreibst sie an die Tafel (bei „Schneemann“: Schnee, Winter, Möhre; bei „Pizza“: Käse, Italien, rund).",
           folie: "Erklär den Begriff – **ohne ihn zu sagen**! 🤐\n\nSchwerer: Drei Wörter sind verboten.",
           emoji: "🤐",
           warum: "Wir erklären Wörter – ohne sie zu sagen." }
@@ -489,23 +499,23 @@ SOZIAL_EINHEIT({
     id: "w-bewegung",
     titel: "Bewegungs-Würfel",
     kategorie: "Spiele & Bewegung",
+    ohneVorbereitung: true,
     ziel12: "Sich zwischendurch bewegen und Bewegungen nachmachen",
     ziel34: "Eine eigene Bewegungspause erfinden und anleiten",
-    material: "Bewegungskarten (unter Arbeitsmaterial ausdrucken), ein Würfel",
-    materialIds: ["bewegungs-karten"],
+    material: "Nur das Arbeitsblatt – gewürfelt wird mit den Fingern",
     lerntext12: { titel: "Die müde Klasse", text:
 `Es ist Montag. Die Klasse 2a ist sooo müde. Alle gähnen.
 
 Da kommt Herr Hopp in die Klasse. „Guten Morgen! Wir wecken jetzt unsere Körper auf!“
 
-Er würfelt eine 3. „Drei Mal hüpfen wie ein Frosch!“ Alle hüpfen. Er würfelt eine 5. „Fünf Sekunden auf einem Bein stehen!“ Alle wackeln und lachen.
+Er versteckt seine Hand hinter dem Rücken und zeigt plötzlich drei Finger. „Drei Mal hüpfen wie ein Frosch!“ Alle hüpfen. Dann zeigt er fünf Finger. „Fünf Sekunden auf einem Bein stehen!“ Alle wackeln und lachen.
 
 Danach sind alle wach. „Jetzt können wir lernen“, sagt Herr Hopp.
 
 **Nach dem Vorlesen:**
 1. Warum war die Klasse so müde?
-2. Was hat Herr Hopp mitgebracht?
-3. Was mussten die Kinder bei der 3 machen?
+2. Wie hat Herr Hopp die Klasse aufgeweckt?
+3. Was mussten die Kinder bei drei Fingern machen?
 4. Wie fühlt sich dein Körper an, wenn du lange sitzt?` },
     lerntext34: { titel: "Warum Bewegung schlau macht", text:
 `Wusstest du, dass dein Gehirn bei Bewegung besser arbeitet? Wenn du dich bewegst, schlägt dein Herz schneller. Es pumpt mehr Blut – und damit mehr Sauerstoff – auch in deinen Kopf.
@@ -520,9 +530,10 @@ Profi-Sportler machen das übrigens auch: Vor dem Spiel wärmen sie sich auf, da
 3. Was solltet ihr beachten, damit sich niemand wehtut?` },
     uebungen: [
         { titel: "Bewegungs-Würfel", fuer: "alle", dauer: "8 Min",
-          text: "Ein Kind würfelt, ein anderes zieht eine Bewegungskarte. Die Augenzahl sagt, wie oft die Bewegung gemacht wird (z. B. 4 × klatschen und stampfen). Alle machen am Platz mit. Achtet auf genug Platz zum Nachbarn.",
+          text: "Die sechs Bewegungen stehen auf der Folie bzw. an der Tafel. Ein Kind „würfelt“ mit der Hand: Es versteckt sie hinter dem Rücken und zeigt auf „Los!“ 1 bis 6 Finger – das ist die **Bewegung**. Ein zweites Kind würfelt genauso – das ist, **wie oft**. Alle machen am Platz mit. Achtet auf genug Platz zum Nachbarn.\n\n1. Hampelmann\n2. Frosch-Hüpfer am Platz\n3. auf einem Bein stehen (so viele Sekunden)\n4. Arme kreisen\n5. klatschen und stampfen\n6. strecken wie ein Baum",
           kern: ["12", "34"],
-          folie: "🎲 Die Zahl sagt, **wie oft**. Die Karte sagt, **was**.\n\nAlle machen am Platz mit!",
+          quiz: "keine",
+          folie: "✋ Erstes Kind zeigt Finger = **was**, zweites Kind = **wie oft**.\n\n1 Hampelmann · 2 Frosch-Hüpfer · 3 auf einem Bein · 4 Arme kreisen · 5 klatschen & stampfen · 6 strecken wie ein Baum",
           emoji: "🎲",
           warum: "Wir wecken unseren Körper auf." },
         { titel: "Spiegel-Spiel", fuer: "alle", dauer: "4 Min",
@@ -553,8 +564,8 @@ SOZIAL_EINHEIT({
     kategorie: "Spiele & Bewegung",
     ziel12: "Hinweise verstehen und gemeinsam einen Schatz finden",
     ziel34: "Rätsel-Hinweise lösen und eine eigene Schatzsuche planen",
-    material: "Hinweiskarten (unter Arbeitsmaterial ausdrucken, von Hand ausfüllen), ein kleiner „Schatz“ (z. B. Gummibärchen-Tüte, Sticker oder ein Stern aus Papier)",
-    materialIds: ["schatz-hinweise"],
+    ohneVorbereitung: true,
+    material: "Nur das Arbeitsblatt – der „Schatz“ ist ein Ding aus dem Raum (z. B. der Tafelschwamm)",
     lerntext12: { titel: "Die Schatzkarte von Kapitän Kralle", text:
 `Kapitän Kralle hat einen Schatz versteckt. Aber wo?
 
@@ -570,7 +581,7 @@ Im Bücherregal finden sie eine kleine Kiste. Darin: Sticker für alle!
     lerntext34: { titel: "Die Rätsel-Rallye", text:
 `Für die Rätsel-Rallye hat die Lehrerin fünf Hinweise versteckt. Jeder Hinweis ist ein kleines Rätsel.
 
-Hinweis 1: „Ich habe Zeiger, aber keine Hände.“ (Die Uhr.) Hinweis 2: „Ich bin voller Löcher und halte trotzdem Wasser fern.“ (Der Schirm? Nein – die Fußmatte an der Tür!) Hinweis 3: „Ich lasse Licht herein, aber keinen Regen.“ (Das Fenster.)
+Hinweis 1: „Ich habe Zeiger, aber keine Hände.“ (Die Uhr.) Hinweis 2: „Durch mich geht jeder hinein und hinaus.“ (Die Tür.) Hinweis 3: „Ich lasse Licht herein, aber keinen Regen.“ (Das Fenster.)
 
 Die Kinder müssen zusammenarbeiten: Nur wer gut überlegt und zuhört, kommt weiter.
 
@@ -579,24 +590,27 @@ Die Kinder müssen zusammenarbeiten: Nur wer gut überlegt und zuhört, kommt we
 2. Was macht ein gutes Rätsel aus?
 3. Welche Regeln braucht eine Schatzsuche im Klassenzimmer? (leise, nicht rennen, nichts kaputt machen)` },
     uebungen: [
-        { titel: "Schatzsuche", fuer: "alle", dauer: "10 Min",
-          text: "Vor der Stunde (oder während die Kinder die Augen schließen) versteckst du 4–6 Hinweiskarten und den Schatz im Raum. Ein Kind liest den ersten Hinweis vor (Kl. 1/2: du liest vor). Immer ein anderes Kind darf den nächsten Hinweis holen – die anderen bleiben am Platz und helfen beim Raten. Am Ende teilt die Klasse den Schatz.",
-          folie: "Im Raum ist ein **Schatz** versteckt! 🗝️\n\nLies den Hinweis – wo geht es weiter? Immer ein anderes Kind darf suchen.",
+        { titel: "Rätsel-Rallye", fuer: "alle", dauer: "5 Min",
+          text: "Du liest Rätsel vor. Die Kinder zeigen vom Platz aus auf das Ding im Raum.\n\n- Ich habe Zeiger, aber keine Hände. (Uhr)\n- Durch mich geht jeder hinein und hinaus. (Tür)\n- Ich lasse Licht herein, aber keinen Regen. (Fenster)\n- Ich fresse Papier, aber ich werde nie satt. (Papierkorb)\n- Auf mich schreibt man, und danach wischt man mich sauber. (Tafel)\n- Ich mache es hell, wenn man auf einen Knopf drückt. (Lampe/Lichtschalter)",
+          quiz: "keine",
+          folie: "Hör gut zu: **Welches Ding hier im Raum ist gemeint?** 🔎\n\nZeig darauf!",
           kern: ["12", "34"],
-          emoji: "🗝️",
-          warum: "Im Raum ist ein Schatz versteckt!" },
-        { titel: "Warm – kalt", fuer: "12", dauer: "4 Min",
-          text: "Ein Kind sucht einen kleinen versteckten Gegenstand. Die Klasse hilft nur mit „warm“, „wärmer“, „heiß“ oder „kalt“.",
-          folie: "Ein Kind sucht. Die anderen helfen nur mit:\n\n🥶 **kalt** · 🙂 **warm** · 😊 **wärmer** · 🔥 **heiß!**",
+          emoji: "🔎",
+          warum: "Wir lösen Rätsel über Dinge im Raum." },
+        { titel: "Schatzsuche: warm – kalt", fuer: "alle", dauer: "8 Min",
+          text: "Der „Schatz“ ist ein Ding aus dem Raum, z. B. der Tafelschwamm. Ein Kind geht kurz vor die Tür. Ein anderes Kind versteckt den Schatz (nicht in Schulranzen oder Taschen). Das Kind kommt herein und sucht. Die Klasse hilft nur mit Wörtern: „kalt“, „warm“, „wärmer“, „heiß!“ Kl. 3/4: Statt Wörtern klatschen die Kinder – je näher, desto lauter. Danach sind zwei neue Kinder dran.",
+          folie: "Ein Kind sucht den **Schatz**. Die anderen helfen nur mit:\n\n🥶 **kalt** · 🙂 **warm** · 😊 **wärmer** · 🔥 **heiß!**",
+          folie34: "Ein Kind sucht den **Schatz**. Die anderen helfen nur mit **Klatschen**:\n\nje näher, desto **lauter** 👏",
+          kern: ["12", "34"],
           emoji: "🔥",
           warum: "Wir helfen beim Suchen – mit warm und kalt." }
     ],
     ab12: { titel: "Meine Schatzkarte", aufgaben: [
         { typ: "malen", text: "Male eine Schatzkarte von unserem Klassenzimmer. Mach ein Kreuz, wo dein Schatz liegt.", bild: "" },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Mein Schatz ist versteckt: ___"] }
+        { typ: "luecken", text: "", nummern: false, saetze: ["Mein Schatz ist: ___"] }
     ]},
     ab34: { titel: "Meine eigene Schatzsuche", aufgaben: [
-        { typ: "luecken", text: "Schreibe drei Rätsel-Hinweise für Orte im Klassenzimmer.", nummern: true, saetze: ["___ (Lösung: ___)", "___ (Lösung: ___)", "___ (Lösung: ___)"] },
+        { typ: "luecken", text: "Schreibe drei Rätsel über Dinge im Klassenzimmer – wie in der Rätsel-Rallye.", nummern: true, saetze: ["___\n(Lösung: ___)", "___\n(Lösung: ___)", "___\n(Lösung: ___)"] },
         { typ: "malen", text: "Zeichne eine Schatzkarte vom Klassenzimmer mit dem Weg zum Schatz.", bild: "" }
     ]}
 }),
@@ -609,7 +623,7 @@ SOZIAL_EINHEIT({
     ohneVorbereitung: true,
     ziel12: "Zur Ruhe kommen, zuhören und Bilder im Kopf malen",
     ziel34: "Einer Fantasiereise folgen und Eindrücke gestalten und beschreiben",
-    material: "Nur das Arbeitsblatt, eventuell ruhige Musik",
+    material: "Nur das Arbeitsblatt",
     lerntext12: { titel: "Die Reise ins Meer", text:
 `Setz dich bequem hin. Leg deine Hände auf den Tisch. Wenn du magst, schließ die Augen. Atme ruhig ein … und aus.
 
@@ -719,10 +733,10 @@ Heute ist Olympiade: Wer schafft die Aufgaben ganz genau – nicht am schnellste
         { typ: "malen", text: "Male genau 5 Kreise, 3 Dreiecke und 2 Sterne.", bild: "" }
     ]},
     ab34: { titel: "Konzentrations-Olympiade", aufgaben: [
-        { typ: "luecken", text: "Disziplin 1 – Zähle, wie oft das „e“ vorkommt:", nummern: false, saetze: ["„Der kleine Elefant geht heute gerne Eis essen.“ → ___ mal"] },
+        { typ: "luecken", text: "Disziplin 1 – Zähle, wie oft „e“ oder „E“ vorkommt:", nummern: false, saetze: ["„Der kleine Elefant geht heute Eis essen.“ → ___ mal"] },
         { typ: "luecken", text: "Disziplin 2 – Welche Zahl fehlt?", nummern: false, saetze: ["3 · 6 · 9 · ___ · 15 · 18", "50 · 45 · ___ · 35 · 30"] },
-        { typ: "luecken", text: "Disziplin 3 – Lies rückwärts:", nummern: false, saetze: ["NEGNULUREDNÄWNOSSOREG = ___"] },
-        { typ: "luecken", text: "Disziplin 4 – Finde die drei Fehler im Satz:", nummern: false, saetze: ["„Im Wintre fält der schne vom Himmel.“ → ___"] },
+        { typ: "luecken", text: "Disziplin 3 – Lies rückwärts und schreibe richtig herum:", nummern: false, saetze: ["GAT RENÖHCS NIE TSI ETUEH = ___"] },
+        { typ: "luecken", text: "Disziplin 4 – Drei Wörter sind falsch geschrieben. Schreibe den Satz richtig:", nummern: false, saetze: ["„Im Wintre fält der schne vom Himmel.“\n___"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Das hilft mir, mich zu konzentrieren: ___"] }
     ]}
 })
