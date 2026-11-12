@@ -268,6 +268,11 @@ table.dr-woche th, table.dr-woche td{ border:0.3mm solid #c9d3d8; padding:1.5mm;
 table.dr-woche th{ background:#eef3f6; }
 table.dr-woche td.z{ width:18mm; font-weight:900; text-align:center; }
 table.dr-woche .zelle{ border-left:1.2mm solid var(--f); padding-left:1.5mm; }
+table.dr-sp{ font-size:10pt; }
+table.dr-sp td{ height:14mm; }
+table.dr-sp tr.pause td{ height:auto; background:#f6f8f7; font-style:italic; }
+.dr-legende{ display:flex; gap:5mm; flex-wrap:wrap; margin-top:4mm; font-size:9pt; font-weight:700; }
+.dr-legende span{ border-left:2mm solid var(--f); padding-left:1.5mm; }
 table.dr-woche .zelle b{ color:var(--f); display:block; font-size:8pt; }
 </style>
 <style id="druckSeite">@page{ size:A4 portrait; margin:12mm; }</style>
@@ -807,7 +812,7 @@ function zeigeStundenplan(){
             </div>
             <p style="font-size:13px;color:var(--grau);font-weight:700;margin:12px 0 0"><i class="fa-solid fa-lightbulb"></i> Bei Sozialtraining und Lernangebot mit GS1–GS4 steht im Tagesplan automatisch die Stunde aus dem Jahresplan.</p>
         </div>
-        <div class="karte"><h2><i class="fa-solid fa-table"></i> Überblick</h2><div class="uebersicht">${uebersichtHtml()}</div></div>
+        <div class="karte"><h2 style="justify-content:space-between;flex-wrap:wrap"><span><i class="fa-solid fa-table"></i> Überblick</span><button class="btn nacht klein" data-spdruck><i class="fa-solid fa-print"></i> Stundenplan drucken</button></h2><div class="uebersicht">${uebersichtHtml()}</div></div>
         <div class="karte"><h2><i class="fa-solid fa-clock"></i> Zeitraster</h2>
             ${s.zeiten.map((z, i) => `<div class="raster-zeile ${z.typ === "pause" ? "pause" : ""}" data-i="${i}">
                 <span class="griff">${z.typ === "pause" ? '<i class="fa-solid fa-mug-hot"></i>' : i + 1}</span>
@@ -837,6 +842,7 @@ function zeigeStundenplan(){
             else { f.oninput = aendern; f.onchange = rasterAnzeigen; }
         });
     });
+    inhalt.querySelector("[data-spdruck]").onclick = druckeStundenplan;
     inhalt.querySelectorAll("[data-aufsicht]").forEach(c => c.onchange = () => {
         const zid = c.closest(".sp-zeile").dataset.z;
         if (c.checked) { const e = spEintrag(wt, zid, true); e.art = "aufsicht"; if (!e.titel) e.titel = "Hof"; }
@@ -922,6 +928,25 @@ function druckeTag(d){
         ${extra.length ? `<div class="dr-block"><h3>Weitere Termine</h3>${extra.map(x => `<div>${esc(x.von || "")}${x.bis ? "–" + esc(x.bis) : ""} ${esc(x.titel)}</div>`).join("")}</div>` : ""}
         <div class="dr-block"><h3>To-dos</h3>${t.todos.map(x => `<div>${x.ok ? "☑" : "☐"} ${esc(x.t)}</div>`).join("")}<div class="dr-linien"><div></div><div></div></div></div>
         <div class="dr-block"><h3>Notizen</h3>${t.notiz ? `<div style="white-space:pre-line">${esc(t.notiz)}</div>` : ""}<div class="dr-linien"><div></div><div></div><div></div></div></div>`, false, "Tagesplan " + kurz(d));
+}
+// Eigener Stundenplan auf einer A4-Seite (quer)
+function druckeStundenplan(){
+    const s = sp(), tage = [1, 2, 3, 4, 5];
+    const zelle = (wt, z) => {
+        const e = spEintrag(wt, z.id, false);
+        if (!e.art) return "<td></td>";
+        const a = ARTEN[e.art] || ARTEN.sonstiges;
+        const name = e.art === "aufsicht" && z.typ === "pause" ? "Hofpausenaufsicht" : a.name;
+        const kl = e.ab ? "A: " + (e.klasse ? klasseName(e.art, e.klasse) : "–") + " / B: " + (e.klasseB ? klasseName(e.art, e.klasseB) : "–") : (e.klasse ? klasseName(e.art, e.klasse) : "");
+        const zeilen = [kl, e.titel || "", e.raum ? (/raum/i.test(e.raum) ? e.raum : "Raum " + e.raum) : "", e.nurWoche ? "nur " + e.nurWoche + "-Woche" : "", e.zweit ? "Zweitbesetzung" : ""].filter(Boolean);
+        return `<td><div class="zelle" style="--f:${a.farbe}"><b>${esc(name)}</b>${zeilen.map(esc).join("<br>")}</div></td>`;
+    };
+    const [j, m, t] = heute().split("-");
+    drucken(`<div class="dr-titel">Mein Stundenplan</div><div class="dr-unter">Stand: ${t}.${m}.${j}${gueltig(s.abStart) ? " · diese Woche ist " + abWoche(heute()) + "-Woche" : ""}</div>
+        <table class="dr-woche dr-sp"><thead><tr><th style="width:20mm"></th>${tage.map(wt => `<th>${TAGNAMEN[wt]}</th>`).join("")}</tr></thead><tbody>
+        ${s.zeiten.map(z => `<tr class="${z.typ === "pause" ? "pause" : ""}"><td class="z">${esc(z.typ === "pause" ? (z.name || "Pause") : z.name + ".")}<br><span style="font-weight:700;font-size:8pt">${esc(zeitText(z))}</span></td>${tage.map(wt => zelle(wt, z)).join("")}</tr>`).join("")}
+        </tbody></table>
+        <div class="dr-legende">${Object.entries(ARTEN).filter(([k]) => k && Object.values(s.tage).some(t => t && Object.values(t).some(x => x && x.art === k))).map(([, a]) => `<span style="--f:${a.farbe}">${esc(a.name)}</span>`).join("")}</div>`, true, "Mein Stundenplan");
 }
 function druckeWoche(mo){
     const s = sp(), tage = [0, 1, 2, 3, 4].map(i => plusTage(mo, i));
