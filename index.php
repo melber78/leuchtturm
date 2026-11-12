@@ -103,6 +103,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-12", "14 neue Vertretungsstunden", "Deutsch, Mathe, Gemischt und entspannte Stunden – alle ohne Zusatzmaterial, nur Arbeitsblatt und Tafel.", "sozial-stunden.php?bereich=vertretung"],
     ["2026-11-12", "Mein Tag: Stundenplan &amp; Tagesplan", "Deinen eigenen Stundenplan hinterlegen und jeden Tag planen – Sozialtraining und Lernangebot kommen automatisch aus dem Jahresplan, andere Stunden fügst du mit einem Tipp ein.", "tagesplan.php"],
     ["2026-11-09", "Stundenplan für LRS-Kinder", "Wochenraster mit den Namen der Kinder statt Fächern – lokal, es wird nichts gespeichert. Drucken oder als PDF.", "stundenplan.php"],
     ["2026-11-09", "Stunden-Timer für die LRS-Stunde", "Alle Phasen (Ankommen bis Abschluss) mit Countdown, Gong und Endzeit – auch direkt aus der Stundenplanung.", "lrs-timer.php"],
@@ -114,7 +115,7 @@ $NEU = [
     ["2026-11-08", "Lernzeit mit Eule Ella", "Lernangebot: eigene Tafel-Welt (grüne Kreidetafel, Lernpfad, Sternenglas) und 8 neue Stunden „Lernen lernen“.", "sozial-stunden.php?bereich=lernangebot"],
     ["2026-11-08", "Lernangebot Grundschule", "Fertige 40-Minuten-Stunden Deutsch, Mathe &amp; Lernen lernen, Methodenpool mit Stundenplaner, Tafel-Übungen und Arbeitsblatt-Generator.", "sozial-stunden.php?bereich=lernangebot"],
     ["2026-11-02", "Lesetraining von Buchstaben bis Text", "In der Kinder-Akte unter <b>Förderplan</b>: Lesestufen 1–5 und bekannte Buchstaben wählen – das Förderpaket nimmt sie mit.", "trainingshefte.php"],
-    ["2026-11-02", "Vertretungsstunden", "22 fertige 40-Minuten-Stunden für Kl. 1–4 mit Zufallsauswahl und Arbeitsblättern.", "sozial-stunden.php?bereich=vertretung"],
+    ["2026-11-02", "Vertretungsstunden", "Fertige 40-Minuten-Stunden für Kl. 1–4 mit Zufallsauswahl und Arbeitsblättern.", "sozial-stunden.php?bereich=vertretung"],
     ["2026-10-30", "Sozialtraining: Präsentation & Material", "Tafel-Präsentation, PowerPoint, Filme und Gefühlskarten zu jeder Stunde.", "sozial-stunden.php"],
 ];
 $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strtotime("-21 days")));
