@@ -44,6 +44,7 @@ $INFO = [
     "gutachten"   => ["gutachten.php", "fa-file-signature", "Gutachten", "Förderdiagnostik-Gutachten erstellen (wird nicht gespeichert)"],
     "materialien" => ["materialien.php", "fa-folder-open", "Materialien", "Eigene Blätter hochladen &amp; einordnen"],
     "timer"       => ["lrs-timer.php", "fa-stopwatch", "Stunden-Timer", "Phasen der LRS-Stunde mit Zeit im Blick"],
+    "tagesplan"   => ["tagesplan.php", "fa-calendar-day", "Mein Tag", "Eigener Stundenplan und Tagespläne – geplante Stunden direkt einfügen"],
     "stundenplan" => ["stundenplan.php", "fa-calendar-days", "Stundenplan", "Stundenplan für die LRS-Kinder"],
 ];
 ?>

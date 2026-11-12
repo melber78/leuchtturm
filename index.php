@@ -74,6 +74,12 @@ body{
 .portal-card h2{ font-size:17px !important; }
 .portal-card p{ font-size:13px !important; }
 .portal-card.haupt{ background:linear-gradient(135deg, #eef6fb, #fff); outline:2px solid #cfe2ef; }
+.heute-karte{ display:flex; align-items:center; gap:16px; text-decoration:none; color:white; background:linear-gradient(135deg, var(--nacht), var(--meer)); border-radius:22px; padding:18px 22px; box-shadow:var(--schatten); margin:18px 0 6px; transition:.2s; }
+.heute-karte:hover{ transform:translateY(-3px); }
+.heute-karte > i:first-child{ font-size:30px; color:var(--gold); }
+.heute-karte span{ flex:1; }
+.heute-karte b{ display:block; font-size:19px; font-weight:900; }
+.heute-karte small{ display:block; font-size:13px; opacity:.85; font-weight:700; }
 .neu{ background:#fff8e6; border:2px solid #f6dfa6; border-radius:20px; padding:14px 16px; margin-bottom:10px; }
 .neu-kopf{ display:flex; justify-content:space-between; align-items:center; font-weight:900; color:#8a5a00; margin-bottom:8px; }
 .neu-kopf button{ border:none; background:none; font-size:18px; color:#8a5a00; cursor:pointer; }
@@ -97,6 +103,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-12", "Mein Tag: Stundenplan &amp; Tagesplan", "Deinen eigenen Stundenplan hinterlegen und jeden Tag planen – Sozialtraining und Lernangebot kommen automatisch aus dem Jahresplan, andere Stunden fügst du mit einem Tipp ein.", "tagesplan.php"],
     ["2026-11-09", "Stundenplan für LRS-Kinder", "Wochenraster mit den Namen der Kinder statt Fächern – lokal, es wird nichts gespeichert. Drucken oder als PDF.", "stundenplan.php"],
     ["2026-11-09", "Stunden-Timer für die LRS-Stunde", "Alle Phasen (Ankommen bis Abschluss) mit Countdown, Gong und Endzeit – auch direkt aus der Stundenplanung.", "lrs-timer.php"],
     ["2026-11-09", "Tafelbild „Guten Morgen!“", "Zum Stundenanfang: Begrüßung, Datum, Wetter, Stundenplan mit Lehrkräften, was auspacken, was beachten – für Kl. 1/2 oder 3/4.", "tafelbilder.php#morgen"],
@@ -120,6 +127,12 @@ $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strt
     <?php endforeach; ?>
 </section>
 <?php endif; ?>
+
+<a href="tagesplan.php" class="heute-karte">
+<i class="fa-solid fa-calendar-day"></i>
+<span><b>Mein Tag</b><small>Stundenplan, Tagesplan &amp; Woche – mit den geplanten Stunden aus dem Jahresplan</small></span>
+<i class="fa-solid fa-arrow-right"></i>
+</a>
 
 <h2 class="gruppe"><i class="fa-solid fa-pen-nib"></i> LRS-Förderung</h2>
 <section class="portal-grid">
