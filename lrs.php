@@ -637,6 +637,60 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .rs-optionen span{ border:2px solid #C9D6E3; border-radius:8px; padding:0 10px; min-width:34px; text-align:center; }
 .rs-wortbank{ display:flex; flex-wrap:wrap; gap:8px 12px; border:2px dashed #8FA3B8; border-radius:14px; padding:12px 14px; font-size:19px; }
 .rs-tabelle{ width:100%; border-collapse:collapse; table-layout:fixed; }
+/* Rechtschreibung anwenden */
+.rsa-wahl{ display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:4px 14px; font-size:14px; margin-top:4px; }
+.rsa-wahl label{ display:flex; gap:6px; align-items:center; font-weight:600; margin:0; }
+.rsa-wahl small{ color:#7c8a85; }
+.rsa-werkzeuge{ display:grid; grid-template-columns:1fr 1fr; gap:12px; flex:1; }
+.rsa-wz{ display:flex; border:2.5px solid #2C4A6E; border-radius:14px; overflow:hidden; }
+.rsa-key{ width:58px; flex:none; background:#2C4A6E; color:#fff; font:800 38px "Atkinson Hyperlegible", sans-serif; display:flex; align-items:center; justify-content:center; }
+.rsa-wz-text{ padding:8px 12px; font-size:16px; line-height:1.35; display:flex; flex-direction:column; gap:3px; }
+.rsa-wz-name{ font-size:20px; }
+.rsa-wie{ color:#2C3E55; }
+.rsa-bsp{ background:#EEF2F7; border-radius:8px; padding:3px 8px; font-size:15px; margin-top:auto; }
+.rsa-routine{ border:3px solid #2C4A6E; border-radius:14px; padding:10px 12px; }
+.rsa-rt-titel{ font-weight:800; font-size:19px; margin-bottom:6px; }
+.rsa-schritte{ display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; font-size:15px; }
+.rsa-schritte > div{ border-left:2px solid #C9D6E3; padding-left:8px; display:flex; flex-direction:column; gap:2px; }
+.rsa-schritte small{ font-size:13px; color:#4A5866; }
+.rsa-snr{ display:inline-flex; width:24px; height:24px; border-radius:50%; background:#2C4A6E; color:#fff; font-weight:800; align-items:center; justify-content:center; font-size:14px; }
+.rsa-routine.klein{ padding:6px 10px; } .rsa-routine.klein .rsa-rt-titel{ font-size:16px; margin-bottom:4px; } .rsa-routine.klein small{ display:none; }
+.rsa-meine{ display:flex; flex-wrap:wrap; gap:6px 14px; font-size:15px; align-items:center; }
+.rsa-meine span{ background:#EEF2F7; border-radius:8px; padding:2px 8px; }
+.rsa-stolper{ display:grid; grid-template-columns:1fr 1fr; gap:22px; font-size:17px; }
+.rsa-stolper i{ display:block; border-bottom:2px solid #8FA3B8; height:34px; }
+.rsa-tab td{ height:46px; vertical-align:middle; }
+.rsa-tab .rsa-n{ text-align:center; color:#4A5866; font-size:15px; }
+.rsa-tab .rsa-wzz{ text-align:center; font-weight:800; }
+.rsa-tab .rsa-bsp-zeile td{ background:#F3F6F9; color:#4A5866; font-size:17px; }
+.rsa-tab .rs-optionen{ display:inline-flex; margin-left:6px; font-size:14px; vertical-align:middle; }
+.rsa-tab td{ overflow-wrap:anywhere; }
+.rsa-hoch{ line-height:2.35; font-size:20px; }
+.rsa-sig{ position:relative; }
+.rsa-k{ position:absolute; left:50%; top:-1.05em; transform:translateX(-50%); font-size:15px; }
+.ws-loesung .rsa-sig{ text-decoration:underline; text-decoration-color:#C0392B; text-decoration-thickness:3px; text-underline-offset:4px; }
+.rsa-anzahl{ flex:none; font-size:16px; color:#2C3E55; white-space:nowrap; }
+.rsa-det .rs-satz{ font-size:19px; }
+.rsa-det-zeile{ display:flex; align-items:center; gap:14px; margin-top:6px; font-size:16px; }
+.rsa-duell{ border:2.5px solid #2C4A6E; border-radius:14px; padding:10px 14px; flex:1; display:flex; flex-direction:column; }
+.rsa-duell-kopf{ display:flex; justify-content:space-between; align-items:baseline; border-bottom:1.5px solid #C9D6E3; padding-bottom:4px; margin-bottom:4px; }
+.rsa-duell-kopf b{ font-size:19px; } .rsa-duell-kopf span{ font-size:14px; color:#4A5866; }
+.rsa-duell ol{ margin:0; padding-left:26px; font-size:18px; line-height:2; flex:1; display:flex; flex-direction:column; justify-content:space-around; }
+.rsa-duell u{ text-decoration-thickness:2px; text-underline-offset:3px; }
+.rsa-punkte{ display:flex; align-items:center; gap:6px; font-size:15px; }
+.rsa-punkte i{ display:inline-block; width:30px; height:26px; border:2px solid #2C4A6E; border-radius:6px; }
+.rsa-schnitt{ text-align:center; color:#8FA3B8; white-space:nowrap; overflow:hidden; font-size:14px; }
+.rsa-textzeile{ display:flex; align-items:flex-end; gap:10px; }
+.rsa-linien{ flex:1; } .rsa-linien div{ border-bottom:2px solid #8FA3B8; height:40px; }
+.rsa-checks{ display:flex; gap:8px; font-size:15px; flex:none; padding-bottom:4px; }
+.rsa-checks .fs-kaestchen-klein{ width:24px; height:24px; }
+.rsa-fazit{ font-size:15px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.rsa-profil{ flex:1; }
+.rsa-profil td{ height:58px; font-size:15px; vertical-align:middle; }
+.rsa-profil th{ font-size:13px; text-align:center; }
+.rsa-profil small{ font-size:12px; color:#4A5866; }
+.rsa-key-zelle{ font:800 24px "Atkinson Hyperlegible", sans-serif; text-align:center; }
+.rsa-profil .rsa-summe td{ height:40px; background:#F3F6F9; }
 .rs-tabelle th{ font-size:15px; font-weight:700; color:#2C3E55; text-align:left; padding:8px 10px; background:#E8EDF3; border:2px solid #C9D6E3; }
 .rs-tabelle td{ height:40px; border-left:2px solid #C9D6E3; border-right:2px solid #C9D6E3; border-bottom:1.5px solid #8FA3B8; font-size:20px; padding:4px 10px; }
 .rs-linie{ display:inline-block; border-bottom:2px solid #1E2A36; min-width:160px; height:26px; }
@@ -5489,6 +5543,237 @@ function rsB_diktat(ctx){
         <div class="${sp.saetze ? "fs-reihen" : "fs-zweispaltig"} fs-fuell"></div>` };
 }
 
+/* ---------- Rechtschreibung anwenden statt nur wissen ----------
+   Für Kinder, die die Regeln kennen, sie beim Schreiben aber nicht anwenden:
+   eine feste Routine – Signalstelle wahrnehmen → Stopp → Werkzeug → Beweis –,
+   geübt mit gemischten Aufgaben aus mehreren Schwerpunkten (das Kind weiß vorher
+   nicht, welche Regel dran ist) und mit Transfer in eigene Texte. */
+const RSA_WERKZEUGE = {
+    V: { name: "Verlängern", wann: "Wortende unklar: <b>b/p · d/t · g/k</b>, -ig/-lich, h", wie: "Wort verlängern: Mehrzahl, Grundform, steigern.", bsp: "Berg → die Ber<u>g</u>e · er gi<u>b</u>t → ge<u>b</u>en" },
+    A: { name: "Ableiten", wann: "<b>ä oder e? äu oder eu?</b>", wie: "Gibt es ein verwandtes Wort mit <b>a</b> oder <b>au</b>?", bsp: "Bäume → B<u>au</u>m · erklären → kl<u>a</u>r" },
+    S: { name: "Schwingen & Vokal hören", wann: "<b>doppelt? ck/tz? ss/ß? ie/i?</b>", wie: "In Silben schwingen. Vokal <b>kurz</b> → zwei Konsonanten, ck, tz, ss. Vokal <b>lang</b> → einer, ß, ie.", bsp: "Stim-mung → i kurz → mm · Stra-ße → a lang → ß" },
+    G: { name: "Groß-Probe", wann: "<b>groß oder klein?</b>", wie: "Kann ein Artikel davor stehen – auch versteckt (beim, zum, im, alles, etwas, viel)?", bsp: "beim (bei dem) <u>L</u>esen · alles <u>G</u>ute" },
+    E: { name: "Ersatzprobe", wann: "<b>das oder dass?</b>", wie: "Passt <b>dieses</b> oder <b>welches</b>? → das. Sonst → dass.", bsp: "Das Rad, <u>das</u> (welches) dort steht · Ich hoffe, <u>dass</u> …" },
+    M: { name: "Merkwort", wann: "<b>Dehnungs-h, v, aa/ee/oo, Fremdwörter</b>", wie: "Keine Regel hilft → Wort merken: Karteikarte, Wortbild, mehrmals schreiben.", bsp: "fa<u>h</u>ren · <u>V</u>ater · M<u>ee</u>r · Fot<u>o</u>" }
+};
+// Welches Werkzeug gehört zu welchem Rechtschreib-Schwerpunkt?
+const RSA_WERKZEUG_VON = { schaerfung: "S", cktz: "S", ie: "S", sss: "S", spst: "S", auslaut: "V", iglich: "V", silbenh: "V", aeau: "A", grossklein: "G", dasdass: "E", dehnung: "M", vf: "M", doppelvokal: "M", chsx: "M" };
+const RSA_STANDARD = ["auslaut", "aeau", "schaerfung", "sss", "ie", "grossklein", "dasdass", "dehnung"];
+// Sätze mit Signalstellen: {richtig|falsch|Werkzeug|Beweis}
+const RSA_SAETZE = {
+    basis: [
+        "Mein {Freund|Freunt|V|die Freunde} {fährt|fehrt|A|fahren} jeden Tag mit dem {Rad|Rat|V|die Räder} zur Schule.",
+        "Im Winter {liegt|liekt|V|liegen} auf dem {Berg|Berk|V|die Berge} oft viel {Schnee|Schne|M|Merkwort (ee)}.",
+        "Wir {müssen|müsen|S|müs-sen: ü kurz} uns beeilen, denn der Bus {kommt|komt|S|kom-men: o kurz} gleich.",
+        "Er hat die {Straße|Strasse|S|Stra-ße: a lang} ganz {allein|alein|S|al-lein} überquert.",
+        "Die {Bäume|Beume|A|der Baum} im Garten verlieren ihre {Blätter|Bletter|A|das Blatt}.",
+        "Sie {weiß|weis|S|ei → ß}, {dass|das|E|welches passt nicht} sie heute {gewinnt|gewint|S|ge-win-nen: i kurz}.",
+        "Beim {Spielen|spielen|G|beim = bei dem} hat er sich am {Knie|Kni|S|i lang → ie} verletzt.",
+        "Das {Wasser|Waser|S|Was-ser: a kurz} im See ist noch {kalt|kald|V|kälter}.",
+        "Unser {Hund|Hunt|V|die Hunde} {schläft|schleft|A|schlafen} gern in seinem {Korb|Korp|V|die Körbe}.",
+        "Im Herbst {fallen|falen|S|fal-len: a kurz} bunte {Blätter|Bletter|A|das Blatt} von den {Bäumen|Beumen|A|der Baum}.",
+        "Am {Abend|Abent|V|die Abende} {essen|esen|S|es-sen: e kurz} wir {zusammen|zusamen|S|zu-sam-men}.",
+        "Der {Zug|Zuk|V|die Züge} {hält|helt|A|halten} am {Bahnhof|Banhof|M|Merkwort (h)}.",
+        "Das {Kind|Kint|V|die Kinder} {spielt|spilt|S|spie-len: i lang → ie} mit dem {Ball|Bal|S|die Bäl-le}.",
+        "Er {geht|get|V|ge-hen} {schnell|schnel|S|schnel-ler} zum {Bäcker|Becker|A|backen}.",
+        "Das {Pferd|Pfert|V|die Pferde} {frisst|frist|S|fres-sen: e kurz} frisches {Gras|Graß|V|die Gräser}.",
+        "Opa {erzählt|erzält|M|Merkwort (h)} eine {spannende|spanende|S|span-nen: a kurz} {Geschichte|geschichte|G|die Geschichte}.",
+        "{Das|Dass|E|dieses Buch → das} Buch {gefällt|gefellt|A|gefallen} mir {sehr|ser|M|Merkwort (h)}.",
+        "Wir {treffen|trefen|S|tref-fen: e kurz} uns nach der {Schule|Schulle|S|Schu-le: u lang}.",
+        "Der {Dieb|Diep|V|die Diebe} {rennt|rent|S|ren-nen: e kurz} {davon|dafon|M|Merkwort (v)}.",
+        "Im {Sommer|Somer|S|Som-mer: o kurz} gehen wir oft ins {Freibad|Freibat|V|die Bäder}.",
+        "Meine Schwester {liest|ließt|V|lesen} ein {dickes|dikes|S|di-cke: i kurz → ck} Buch.",
+        "Das {Essen|essen|G|das Essen} {schmeckt|schmekt|S|schme-cken: e kurz → ck} heute {lecker|leker|S|le-cker: e kurz → ck}."
+    ],
+    profi: [
+        "Obwohl er sich {beeilte|beilte|M|Merkwort (ee)}, {verpasste|verpaste|S|ver-pas-sen: a kurz} er den {Anschluss|Anschluß|S|u kurz → ss} am {Bahnhof|Banhof|M|Merkwort (h)}.",
+        "Beim {Aufräumen|aufräumen|G|beim = bei dem} fand sie das Geschenk, {das|dass|E|welches passt → das} sie lange gesucht hatte.",
+        "Der Trainer {erklärte|erklerte|A|klar}, {dass|das|E|welches passt nicht} das Training heute {ausfällt|ausfellt|A|fallen}.",
+        "Wir haben über das {Gute|gute|G|das Gute} und das {Schlechte|schlechte|G|das Schlechte} an der {Entscheidung|Entscheidunk|V|die Entscheidungen} gesprochen.",
+        "Das Ergebnis war {erstaunlich|erstaunlig|V|erstaunlicher}, denn niemand hatte mit einem {Sieg|Siek|V|die Siege} gerechnet.",
+        "Er {schließt|schliest|S|schlie-ßen: ie lang → ß} die Tür ab und {dreht|dret|V|dre-hen} den {Schlüssel|Schlüßel|S|Schlüs-sel: ü kurz} zweimal um.",
+        "Ihr {gefällt|gefellt|A|gefallen} die {Vorstellung|Forstellung|M|Merkwort (v)}, im Sommer am {Meer|Mer|M|Merkwort (ee)} zu {zelten|zälten|A|kein a → e}.",
+        "Die {Mannschaft|Manschaft|S|Mann – Män-ner} verlor {knapp|knap|S|knap-per}, obwohl sie das Spiel lange {bestimmt|bestimt|S|stim-men} hatte.",
+        "Nach dem {Essen|essen|G|das Essen} {räumten|reumten|A|der Raum} wir gemeinsam die {Küche|Küsche|M|Merkwort (ch)} auf.",
+        "Es ist {wichtig|wichtich|V|wichtiger}, {dass|das|E|welches passt nicht} man beim Radfahren einen Helm {trägt|tregt|A|tragen}.",
+        "{Plötzlich|Plözlich|S|plötz-lich: ö kurz → tz} {fiel|viel|M|von fallen (Merkwort)} der Strom im ganzen {Viertel|Firtel|M|Merkwort (v, ie)} aus.",
+        "Er {wusste|wuste|S|u kurz → ss} genau, {dass|das|E|welches passt nicht} er sich {entschuldigen|entschultigen|V|die Schuld → Schulden} musste.",
+        "Am {Ende|Ände|A|kein a → e} der Woche {präsentierten|presentierten|M|Merkwort (Fremdwort)} wir unsere {Ergebnisse|Ergebniße|S|Er-geb-nis-se}.",
+        "Die {Lehrerin|Lererin|M|Merkwort (h)} {lobte|lopte|V|loben} unser {Plakat|Plackat|M|Merkwort (Fremdwort)} über den {Wald|Walt|V|die Wälder}.",
+        "Er {bemerkte|bemärkte|A|kein a → e} den {Fehler|Feler|M|Merkwort (h)} erst beim {Korrigieren|korrigieren|G|beim = bei dem}.",
+        "Wir {schwammen|schwamen|S|schwam-men: a kurz} bis zur Insel und {ruhten|ruten|V|ru-hen} uns dort aus.",
+        "Das {Gelände|Gelende|A|das Land} war {riesig|riesich|V|riesiger}, deshalb {verliefen|ferliefen|M|ver- (Vorsilbe)} wir uns.",
+        "{Allmählich|Allmälich|M|Merkwort (h)} wurde es am {Strand|Strant|V|die Strände} immer {kälter|kelter|A|kalt}.",
+        "Die {Ärztin|Erztin|A|der Arzt} {gab|gap|V|geben} mir ein {Rezept|Rezebt|M|Merkwort (Fremdwort)} für die {Apotheke|Apoteke|M|Merkwort (th)}.",
+        "Sie {erinnerte|erinerte|S|er-in-nern: i kurz} sich an nichts {Besonderes|besonderes|G|nichts + Adjektiv → groß}.",
+        "Der Bus hatte {Verspätung|Ferspätung|M|Merkwort (v)}, weil die {Straße|Strasse|S|Stra-ße: a lang} {gesperrt|gespert|S|sper-ren: e kurz} war.",
+        "Im {Großen|großen|G|im = in dem} und {Ganzen|ganzen|G|im = in dem} war der {Ausflug|Ausfluk|V|die Ausflüge} ein {Erfolg|Erfolk|V|die Erfolge}."
+    ]
+};
+const RSA_THEMEN = ["Mein Wochenende", "Mein Lieblingsspiel", "Ein Tag ohne Handy", "Mein bester Freund oder meine beste Freundin", "Was ich gern einmal ausprobieren würde", "Ein Ausflug, den ich nie vergesse", "Mein Lieblingsessen – und wie man es macht", "Wenn ich einen Tag Lehrer wäre", "Mein Haustier oder mein Traumhaustier", "Was mich richtig ärgert"];
+
+function rsa_satz(roh){
+    const teile = [], re = /\{([^|}]+)\|([^|}]+)\|([VASGEM])\|([^}]*)\}/g;
+    let i = 0, m;
+    while ((m = re.exec(roh))){
+        if (m.index > i) teile.push({ t: roh.slice(i, m.index) });
+        teile.push({ w: m[1], f: m[2], k: m[3], b: m[4] });
+        i = m.index + m[0].length;
+    }
+    if (i < roh.length) teile.push({ t: roh.slice(i) });
+    return teile;
+}
+function rsa_niveau(ctx){ return (ctx.rsa && ctx.rsa.niveau) || (lt_klasse() >= 6 ? "profi" : "basis"); }
+function rsa_saetze(niveau){
+    const liste = niveau === "beide" ? [...RSA_SAETZE.basis, ...RSA_SAETZE.profi] : (RSA_SAETZE[niveau] || RSA_SAETZE.basis);
+    let vorrat = [];
+    return () => { if (!vorrat.length) vorrat = mische(liste); return rsa_satz(vorrat.pop()); };
+}
+function rsa_text(teile){ return teile.map(x => x.t != null ? x.t : x.w).join(""); }
+// Gemischte Lückenaufgabe aus allen gewählten Schwerpunkten (nie zweimal derselbe hintereinander)
+function rsa_mix(rsa){
+    const vorrat = {}; let letzter = null;
+    rsa.keys.forEach(k => vorrat[k] = rs_vorrat(rsa.sp[k], 0.6));
+    return () => {
+        for (let v = 0; v < 40; v++){
+            const k = zufallsElement(rsa.keys);
+            if (k === letzter && rsa.keys.length > 1) continue;
+            const sp = rsa.sp[k], x = vorrat[k](), lw = rs_lueckenwort(sp, x);
+            if (lw){ letzter = k; return { k, sp, x, lw, wz: RSA_WERKZEUG_VON[k] || "M" }; }
+        }
+        return null;
+    };
+}
+function rsa_beweis(it){
+    const h = rs_hilfe(it.x.e), wort = it.sp.saetze ? (rs_markiert(rs_roh(it.x.e)) || {}).wort || it.lw.w : it.lw.w;
+    if (it.wz === "V") return h && h !== "–" ? "→ " + h : "verlängern";
+    if (it.wz === "A") return h && h !== "–" ? "→ " + h : "kein a/au";
+    if (it.wz === "S") return silben_trennen(wort).join("-");
+    if (it.wz === "G") return it.x.t ? "Artikel → groß" : "kein Nomen";
+    if (it.wz === "E") return it.x.t ? "welches? nein" : "welches? ja";
+    return "Merkwort";
+}
+function rsa_wortRichtig(it){ return it.sp.saetze ? ((rs_markiert(rs_roh(it.x.e)) || {}).wort || it.lw.ziel || "") : it.lw.w; }
+const RSA_ROUTINE = [["✍️", "Schreiben", "Satz zu Ende schreiben."], ["✋", "Stopp", "Stift ablegen."], ["🔍", "Signalstellen suchen", "Wortende? kurz/lang? ä? Nomen? das?"], ["🧰", "Werkzeug + Beweis", "V · A · S · G · E · M"], ["✅", "Haken", "Erst dann weiter."]];
+function rsa_routineHtml(klein){
+    return `<div class="rsa-routine${klein ? " klein" : ""}"><div class="rsa-rt-titel">Meine Stopp-Routine – nach jedem Satz</div><div class="rsa-schritte">${RSA_ROUTINE.map(([em, t, x], i) => `<div><span class="rsa-snr">${i + 1}</span><b>${em} ${t}</b><small>${x}</small></div>`).join("")}</div></div>`;
+}
+
+/* Blatt 1: Werkzeugkasten (zum Laminieren) */
+function rsaB_werkzeugkasten(ctx){
+    const rsa = ctx.rsa, eigene = rsa.keys.map(k => `<span>${ws_esc(RS_SCHWERPUNKTE[k].name.split(" – ")[0])} → <b>${RSA_WERKZEUG_VON[k] || "M"}</b></span>`).join("");
+    return { titel: "Mein Rechtschreib-Werkzeugkasten", html: `
+        <div class="fs-ziel"><span>Regeln kennen reicht nicht – du musst merken, <b>wann</b> du sie brauchst.</span></div>
+        <div class="rsa-werkzeuge">${Object.entries(RSA_WERKZEUGE).map(([k, w]) => `<div class="rsa-wz"><div class="rsa-key">${k}</div><div class="rsa-wz-text"><b class="rsa-wz-name">${w.name}</b><div>${w.wann}</div><div class="rsa-wie">${w.wie}</div><div class="rsa-bsp">${w.bsp}</div></div></div>`).join("")}</div>
+        ${rsa_routineHtml()}
+        <div class="rsa-meine"><b>Unsere Schwerpunkte:</b>${eigene}</div>
+        <div class="rsa-stolper"><div><b>Mein Stolperstein 1:</b><i></i></div><div><b>Mein Stolperstein 2:</b><i></i></div></div>` };
+}
+
+/* Blatt 2: Signalstellen-Training (gemischt, mit Beweis) */
+function rsaB_training(ctx){
+    const naechstes = rsa_mix(ctx.rsa);
+    const zeile = i => {
+        const it = naechstes(); if (!it) return "";
+        const satz = it.sp.saetze;
+        return `<tr><td class="rsa-n">${i + 1}</td><td style="font-size:${satz ? 16 : 20}px;">${it.lw.html} ${rs_optionen(it.lw.st)}</td><td>${L(ws_esc(rsa_wortRichtig(it)), satz ? "font-size:15px;" : "")}</td><td class="rsa-wzz">${L(it.wz)}</td><td>${L(ws_esc(rsa_beweis(it)), "font-size:15px;")}</td></tr>`;
+    };
+    return { titel: "Stopp – Prüfen – Entscheiden", zeile, max: 40, html: `
+        ${ws_aufgabe(1, "Jede Zeile hat eine <b>Signalstelle</b> – aber jedes Mal eine andere Regel! Schreibe das Wort richtig, wähle das <b>Werkzeug</b> (V · A · S · G · E · M) und schreibe den <b>Beweis</b> auf. Ohne Beweis kein Punkt!")}
+        <table class="rs-tabelle rsa-tab"><thead><tr><th style="width:6%;">Nr.</th><th style="width:43%;">Aufgabe</th><th style="width:20%;">Wort richtig</th><th style="width:9%;" title="Werkzeug">🧰</th><th style="width:22%;">Beweis</th></tr>
+        <tr class="rsa-bsp-zeile"><td class="rsa-n">0</td><td style="font-size:20px;">Zwer<span class="rs-luecke"></span> <span class="rs-optionen"><span>g</span><span>k</span></span></td><td><i>Zwerg</i></td><td class="rsa-wzz"><i>V</i></td><td><i>die Zwerge</i></td></tr></thead>
+        <tbody class="fs-fuell"></tbody></table>` };
+}
+
+/* Blatt 3: Signalstellen finden (Wahrnehmung – Schritt 1 der Routine) */
+function rsaB_finden(ctx){
+    const niv = rsa_niveau(ctx), naechster = rsa_saetze(niv), zeigeAnzahl = niv === "basis";
+    const zeile = i => {
+        const teile = naechster(), n = teile.filter(x => x.w).length;
+        const html = teile.map(x => x.t != null ? ws_esc(x.t) : `<span class="rsa-sig">${ws_esc(x.w)}<span class="fs-loes rsa-k">${x.k}</span></span>`).join("");
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><span class="rs-satz rsa-hoch">${html}</span><span class="rsa-anzahl">${zeigeAnzahl ? `${n} Stellen` : `<span class="rs-linie" style="min-width:44px;">${L(String(n))}</span> Stellen`}</span></div>`;
+    };
+    return { titel: "Signalstellen finden", zeile, max: 30, html: `
+        ${ws_aufgabe(1, `Alle Sätze sind <b>richtig</b> geschrieben. Finde die Stellen, an denen man leicht einen Fehler machen kann: <b>Unterstreiche</b> jedes Wort mit einer Signalstelle und schreibe den <b>Werkzeug-Buchstaben</b> darüber (V · A · S · G · E · M).${zeigeAnzahl ? " Rechts steht, wie viele es sind." : " Schreibe rechts auf, wie viele du gefunden hast."}`)}
+        <div class="fs-ziel"><span>Das ist Schritt 3 der Stopp-Routine: <b>Signalstellen suchen</b>. Wer sie sieht, macht keinen Fehler.</span></div>
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Blatt 4: Fehlerdetektiv mit gemischten Fehlern (0, 1 oder 2 je Satz) */
+function rsaB_detektiv(ctx){
+    const niv = rsa_niveau(ctx), naechster = rsa_saetze(niv);
+    const zeile = i => {
+        const teile = naechster(), stellen = teile.filter(x => x.w);
+        const anzahl = Math.min(stellen.length, [0, 1, 1, 2, 2][zufallsZahl(0, 4)]);
+        const falsch = new Set(mische(stellen).slice(0, anzahl));
+        const satz = teile.map(x => x.t != null ? ws_esc(x.t) : (falsch.has(x) ? `<span class="fs-ls">${ws_esc(x.f)}</span>` : ws_esc(x.w))).join("");
+        const korr = [...falsch].map(x => `${x.w} (${x.k})`).join(", ") || "kein Fehler";
+        return `<div class="fs-karte rsa-det"><div class="fs-reihe-nr">${i + 1}</div><div style="flex:1;"><div class="rs-satz">${satz}</div><div class="rsa-det-zeile"><span class="fs-kreuz"><span>${fs_kreuzBox(anzahl === 0)} 0</span><span>${fs_kreuzBox(anzahl === 1)} 1</span><span>${fs_kreuzBox(anzahl === 2)} 2</span></span><span class="rs-linie" style="flex:1;">${L(ws_esc(korr), "font-size:15px;")}</span></div></div></div>`;
+    };
+    return { titel: "Fehlerdetektiv", zeile, max: 24, html: `
+        ${ws_aufgabe(1, "In jedem Satz stecken <b>0, 1 oder 2 Fehler</b>. Prüfe jede Signalstelle mit der Stopp-Routine. Kreuze die Anzahl an, streiche Fehler durch und schreibe das Wort richtig mit Werkzeug-Buchstaben auf die Linie – z. B. <i>Berg (V)</i>.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Blatt 5: Diktat-Duell (zwei Level, fair für zwei Kinder oder Kind + Trainerin) */
+function rsaB_duell(ctx){
+    const karte = (titel, unter, niveau) => {
+        const naechster = rsa_saetze(niveau), saetze = Array.from({ length: 6 }, () => naechster());
+        return `<div class="rsa-duell"><div class="rsa-duell-kopf"><b>${titel}</b><span>${unter}</span></div><ol>${saetze.map(t => `<li>${t.map(x => x.t != null ? ws_esc(x.t) : `<u>${ws_esc(x.w)}</u>`).join("")}</li>`).join("")}</ol>
+            <div class="rsa-punkte">Punkte: ${"<i></i>".repeat(6)} Summe: <span class="fs-kaestchen-klein" style="width:52px;"></span> / 12</div></div>`;
+    };
+    return { titel: "Diktat-Duell", html: `
+        ${ws_aufgabe(1, "Lies deinem Partner einen Satz <b>zweimal</b> vor. Er schreibt ihn ins Heft und macht danach <b>seine Stopp-Routine</b>. Erst wenn er „fertig“ sagt, vergleicht ihr. Die <u>unterstrichenen</u> Wörter sind die Signalstellen – nur du siehst sie.")}
+        <div class="fs-ziel" style="font-size:16px;"><span><b>2 Punkte</b> = alles richtig · <b>1 Punkt</b> = Fehler selbst gefunden, nachdem du gesagt hast „Da ist noch 1 Fehler“ · <b>0 Punkte</b> = sonst</span></div>
+        ${karte("Duell-Karte 1 · Level Basis", "diktiert dem Partner mit Level Basis", "basis")}
+        <div class="rsa-schnitt">✂ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</div>
+        ${karte("Duell-Karte 2 · Level Profi", "diktiert dem Partner mit Level Profi", "profi")}` };
+}
+
+/* Blatt 6: Eigener Text mit Stopp-Routine (Transfer) */
+function rsaB_text(ctx){
+    const thema = zufallsElement(RSA_THEMEN);
+    const zeile = i => `<div class="rsa-textzeile"><div class="fs-reihe-nr">${i + 1}</div><div class="rsa-linien"><div></div><div></div></div><div class="rsa-checks"><span>${fs_kreuzBox(false)} ✋</span><span>${fs_kreuzBox(false)} 🔍</span><span>${fs_kreuzBox(false)} 🧰</span></div></div>`;
+    return { titel: "Mein Text – mit Stopp-Routine", zeile, max: 12, html: `
+        ${ws_aufgabe(1, `Schreibe Satz für Satz einen kurzen Text zum Thema: <b>„${ws_esc(thema)}“</b> (oder ein eigenes Thema). Nach <b>jedem</b> Satz: Stift ablegen ✋, Signalstellen markieren 🔍, mit Werkzeug prüfen 🧰 – erst dann den nächsten Satz.`)}
+        ${rsa_routineHtml(true)}
+        <div class="fs-reihen fs-fuell"></div>
+        <div class="rsa-fazit">Signalstellen gefunden: <span class="fs-kaestchen-klein" style="width:52px;"></span> · selbst verbessert: <span class="fs-kaestchen-klein" style="width:52px;"></span> · Fehler, die die Trainerin noch findet: <span class="fs-kaestchen-klein" style="width:52px;"></span></div>` };
+}
+
+/* Blatt 7: Mein Fehlerprofil (Selbstbeobachtung) */
+function rsaB_profil(ctx){
+    const zeilen = [...Object.entries(RSA_WERKZEUGE).map(([k, w]) => [k, w.name, w.wann.replace(/<[^>]+>/g, "")]), ["?", "Sonstiges", "Buchstabe vergessen oder vertauscht"]];
+    const spalten = 6;
+    return { titel: "Mein Fehlerprofil", html: `
+        ${ws_aufgabe(1, "Nach jedem Diktat oder Text: Mach für jeden Fehler einen Strich beim passenden Werkzeug. So siehst du, wo du wirklich stehst – und ob du besser wirst.")}
+        <table class="rs-tabelle rsa-profil"><thead><tr><th style="width:6%;"></th><th style="width:30%;">Werkzeug</th>${'<th>Datum<div style="border-bottom:1.5px solid #8FA3B8;height:22px;margin:0 4px;"></div></th>'.repeat(spalten)}</tr></thead>
+        <tbody>${zeilen.map(([k, n, d]) => `<tr><td class="rsa-key-zelle">${k}</td><td><b>${n}</b><br><small>${ws_esc(d)}</small></td>${"<td></td>".repeat(spalten)}</tr>`).join("")}
+        <tr class="rsa-summe"><td></td><td><b>Fehler gesamt</b></td>${"<td></td>".repeat(spalten)}</tr>
+        <tr class="rsa-summe"><td></td><td><b>Wörter im Text</b></td>${"<td></td>".repeat(spalten)}</tr></tbody></table>
+        <div class="rsa-stolper"><div><b>Mein Ziel bis zu den Ferien:</b><i></i><i></i></div><div><b>Darauf achte ich ab jetzt besonders:</b><i></i><i></i></div></div>` };
+}
+
+const RSA_BLAETTER = [
+    { nr: "1", kurz: "Werkzeugkasten", name: "Werkzeugkasten & Stopp-Routine", bau: rsaB_werkzeugkasten },
+    { nr: "2", kurz: "Signalstellen-Training", name: "Signalstellen-Training (gemischt)", bau: rsaB_training },
+    { nr: "3", kurz: "Signalstellen finden", name: "Signalstellen finden", bau: rsaB_finden },
+    { nr: "4", kurz: "Fehlerdetektiv", name: "Fehlerdetektiv (0–2 Fehler je Satz)", bau: rsaB_detektiv },
+    { nr: "5", kurz: "Diktat-Duell", name: "Diktat-Duell (Basis & Profi)", bau: rsaB_duell },
+    { nr: "6", kurz: "Eigener Text", name: "Mein Text mit Stopp-Routine", bau: rsaB_text },
+    { nr: "7", kurz: "Fehlerprofil", name: "Mein Fehlerprofil", bau: rsaB_profil },
+];
+// Einstellungen für die Blätter (Generator) – bzw. Standard für Stunde/Förderpaket
+function rsa_ctx(code, keys, niveau){
+    keys = (keys && keys.length ? keys : RSA_STANDARD).filter(k => RS_SCHWERPUNKTE[k]);
+    return { keys, sp: Object.fromEntries(keys.map(k => [k, rs_mitKartei(RS_SCHWERPUNKTE[k], code || "")])), niveau: niveau || (lt_klasse() >= 6 ? "profi" : "basis"), code: code || "" };
+}
+function rsa_ausFormular(){
+    const keys = [...document.querySelectorAll(".rsa-sp:checked")].map(c => c.value);
+    const niv = lt_wert("rsa-niveau");
+    return rsa_ctx(lt_wert("rsa-kind"), keys, niv && niv !== "auto" ? niv : "");
+}
+
 /* ---------- Aufmerksamkeit ab Klasse 5 ---------- */
 
 // d2-artiges Zeichen: Buchstabe mit Strichen oben und unten
@@ -6379,6 +6664,20 @@ const FS_SERIEN = {
         { nr: "5", kurz: "Strategie-Check", name: "Strategie-Check", bau: rsB_strategie },
         { nr: "6", kurz: "Partnerdiktat", name: "Übungswörter & Partnerdiktat", bau: rsB_diktat },
     ]},
+    anwenden: { tab: "symptom", mat: "symptom", wert: "rs-anwenden", reif: true,
+        optionText: "Rechtschreibung anwenden statt nur wissen – gemischt, mit Stopp-Routine (ab Klasse 4/5)",
+        label: "Rechtschreibung anwenden", afs: "Symptomtraining: Rechtschreibstrategien anwenden", select: "#sy-typ", erstellen: "erstelleSymptom",
+        ordner: "Rechtschreibung",
+        tipp: "Für Kinder, die die Regeln kennen, sie beim Schreiben aber nicht anwenden. Die Aufgaben mischen alle angekreuzten Schwerpunkte – das Kind muss selbst erkennen, welche Regel dran ist.",
+        optionenHtml: `
+            <p class="beschreibung" style="margin:12px 0 6px;"><b>Idee:</b> Nicht mehr Regeln, sondern eine feste Routine, bis sie von selbst läuft: <b>Signalstelle wahrnehmen → Stopp → Werkzeug wählen → Beweis</b>. Es entstehen sieben Blätter: Werkzeugkasten · Signalstellen-Training · Signalstellen finden · Fehlerdetektiv · Diktat-Duell · eigener Text · Fehlerprofil.</p>
+            <label>Schwerpunkte, die gemischt werden (eigene Stolpersteine ankreuzen)</label>
+            <div class="rsa-wahl">${Object.entries(RS_SCHWERPUNKTE).map(([k, sp]) => `<label><input type="checkbox" class="rsa-sp" value="${k}"${RSA_STANDARD.includes(k) ? " checked" : ""}> ${sp.name} <small>(${RSA_WERKZEUG_VON[k] || "M"})</small></label>`).join("")}</div>
+            <label style="margin-top:10px;">Satz-Niveau (Signalstellen finden, Fehlerdetektiv)</label>
+            <select id="rsa-niveau"><option value="auto">passend zur Klassenstufe (bis Kl. 5 Basis, ab Kl. 6 Profi)</option><option value="basis">Basis</option><option value="profi">Profi</option><option value="beide">gemischt</option></select>`,
+        ctxExtra: () => ({ rsa: rsa_ausFormular() }),
+        speicherName: () => "Rechtschreibung anwenden",
+        blaetter: RSA_BLAETTER },
     optdiff: { label: "Optische Differenzierung", afs: "Funktionstraining: Optische Differenzierung", select: "#od-typ", erstellen: "erstelleOptDiff", blaetter: [
         { nr: "1", kurz: "Gleich/verschieden", name: "Gleich oder verschieden?", bau: fsO_gleich },
         { nr: "2", kurz: "Wer ist anders?", name: "Wer ist anders?", bau: fsO_fehlerreihe },
@@ -7101,6 +7400,7 @@ function std_auswahlAufbauen(){
         `<option value="">– ohne Aufmerksamkeitsblatt –</option>`;
     document.getElementById("std-funktion").innerHTML = STD_FUNKTIONEN.map(k => `<option value="${k}">${ws_esc(FS_SERIEN[k].label)}</option>`).join("") + `<option value="">– ohne Funktionsblatt –</option>`;
     document.getElementById("std-symptom").innerHTML =
+        `<optgroup label="Rechtschreibung anwenden statt nur wissen (gemischt)"><option value="rsa">Stopp-Routine: Signalstellen, Werkzeug, Beweis</option></optgroup>` +
         `<optgroup label="Rechtschreibung (ab Kl. 3/4)">${Object.entries(RS_SCHWERPUNKTE).map(([k, sp]) => `<option value="rs:${k}">${ws_esc(sp.name)}</option>`).join("")}</optgroup>` +
         `<optgroup label="Lesetraining nach Leistungsstand (kleinschrittig)">${Object.entries(LE_STUFEN).map(([k, st]) => `<option value="le:${k}">Lesestufe ${st.nr} · ${ws_esc(st.name)} – ${ws_esc(st.unter)}</option>`).join("")}</optgroup>` +
         `<optgroup label="Lesetext + Aufgabe"><option value="lesen">Lesetext passend zur Klassenstufe</option>${[1, 2, 3, 4, 5, 6].map(k => `<option value="lesen:${k}">Lesetext auf Niveau Kl. ${k}</option>`).join("")}</optgroup>` +
@@ -7134,6 +7434,7 @@ function std_blattListen(){
     fb.innerHTML = f ? `<option value="zufall">zufällig</option>` + FS_SERIEN[f].blaetter.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("") : `<option value="">–</option>`;
     let liste = [];
     if (sy.startsWith("rs:")) liste = FS_SERIEN.rechtschreibung.blaetter;
+    else if (sy === "rsa") liste = RSA_BLAETTER;
     else if (sy === "kartei") liste = KT_BLAETTER;
     else if (sy === "ws") liste = WS_BLAETTER;
     else if (sy === "lesen" || sy.startsWith("lesen:")) liste = LT_AUFGABEN.map(a => ({ nr: a.key, name: "Lesetext + " + a.name }));
@@ -7141,6 +7442,7 @@ function std_blattListen(){
     else if (sy === "diktat") liste = STD_DIKTAT.map(d => ({ nr: d.key, name: d.name }));
     sb.innerHTML = liste.length ? liste.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("") : `<option value="">–</option>`;
     if (sy.startsWith("rs:")) sb.value = "2";
+    if (sy === "rsa") sb.value = "2";
     const sa = document.getElementById("std-symptom-anzahl");
     sa.disabled = !sy || sy === "diktat"; if (sa.disabled) sa.value = "1";
     sa.title = sy === "diktat" ? "Beim Diktat gehören die Blätter fest zusammen" : "";
@@ -7152,6 +7454,7 @@ function std_blattListen(){
     else if (sy.startsWith("le:")){ const st = LE_STUFEN[sy.slice(3)], lb = (LRS_AKTEN[lt_wert("std-kind")] || {}).lb; hinweis.textContent = `Lesestufe ${st.nr} ${st.name}: ${st.ziel}. Die Blätter bauen aufeinander auf – bei mehreren Blättern kommen die nächsten der Reihe.` + (lb ? ` Bekannte Buchstaben aus dem Förderplan: ${lb}` : ""); }
     else if (sy === "diktat") hinweis.textContent = "Ein Diktattext passend zu Klassenstufe und Schwierigkeit wird zufällig gewählt (gekürzte Fassung für die Stunde).";
     else if (sy === "ws") hinweis.textContent = "Es werden die Lernwörter aus dem Reiter Symptomtraining → Worterarbeitung verwendet: " + (lt_wert("ws-woerter") || "–");
+    else if (sy === "rsa") hinweis.textContent = "Gemischte Aufgaben aus den häufigsten Schwerpunkten (Wortende, ä/e, Doppelkonsonant, s/ss/ß, ie, groß/klein, das/dass, Dehnungs-h) – mit Fehlerwörtern aus der Förderkartei, wenn oben ein Kürzel gewählt ist. Tipp: Blatt 1 (Werkzeugkasten) einmal laminieren.";
     else hinweis.textContent = "";
 }
 
@@ -7281,6 +7584,8 @@ function std_rezeptAusFormular(){
     if (sy.startsWith("rs:")){
         const liste = FS_SERIEN.rechtschreibung.blaetter;
         std_mehrere(liste, liste.find(x => x.nr === sb) || liste[0], n).forEach(x => neu({ p: "Symptomtraining", t: "rs", k: sy.slice(3), nr: x.nr }));
+    } else if (sy === "rsa"){
+        std_mehrere(RSA_BLAETTER, RSA_BLAETTER.find(x => x.nr === sb) || RSA_BLAETTER[1], n).forEach(x => neu({ p: "Symptomtraining", t: "rsa", nr: x.nr }));
     } else if (sy.startsWith("le:")){
         const st = sy.slice(3), liste = LE_BLAETTER[st] || [], i0 = Math.max(0, parseInt(sb, 10) || 0);
         for (let i = 0; i < n && liste.length; i++) neu({ p: "Symptomtraining", t: "le", st, i: Math.min(liste.length - 1, i0 + i) });
@@ -7354,6 +7659,7 @@ function std_alternativen(it, r){
         pool = (passt.length ? passt : k).map(b => ({ t: "fs", s: it.s, nr: b.nr }));
     }
     else if (it.t === "rs") pool = FS_SERIEN.rechtschreibung.blaetter.map(b => ({ t: "rs", k: it.k, nr: b.nr }));
+    else if (it.t === "rsa") pool = RSA_BLAETTER.map(b => ({ t: "rsa", nr: b.nr }));
     else if (it.t === "lesen") pool = LT_AUFGABEN.map(a => ({ t: "lesen", a: a.key }));
     else if (it.t === "le") pool = (LE_BLAETTER[it.st] || []).map((b, i) => ({ t: "le", st: it.st, i }));
     else if (it.t === "kartei") pool = KT_BLAETTER.map(b => ({ t: "kartei", nr: b.nr }));
@@ -7423,6 +7729,7 @@ function std_itemInfo(it, r){
     const code = r.kind;
     if (it.t === "fs"){ const s = FS_SERIEN[it.s], b = s && fs_katalog(it.s).find(x => x.nr === it.nr); return b ? { name: b.name, gruppe: s.label, ok: true } : { name: "?", ok: false }; }
     if (it.t === "rs"){ const b = FS_SERIEN.rechtschreibung.blaetter.find(x => x.nr === it.nr), sp = RS_SCHWERPUNKTE[it.k]; return b && sp ? { name: b.name, gruppe: sp.name, ok: true } : { name: "?", ok: false }; }
+    if (it.t === "rsa"){ const b = RSA_BLAETTER.find(x => x.nr === it.nr); return b ? { name: b.name, gruppe: "Rechtschreibung anwenden", ok: true } : { name: "?", ok: false }; }
     if (it.t === "lesen"){ const a = LT_AUFGABEN.find(x => x.key === it.a); return a ? { name: a.name, gruppe: "Lesetraining", ok: true } : { name: "?", ok: false }; }
     if (it.t === "diktat"){ const d = STD_DIKTAT.find(x => x.key === it.d); return d ? { name: d.name, gruppe: "Diktat", ok: true } : { name: "?", ok: false }; }
     if (it.t === "kartei"){ const b = KT_BLAETTER.find(x => x.nr === it.nr); return b ? { name: b.name, gruppe: "Meine Fehlerwörter", ok: true } : { name: "?", ok: false }; }
@@ -7486,6 +7793,7 @@ function std_ausRezept(r){
         const start = blaetter.length;
         if (it.t === "fs"){ const b = fs_katalog(it.s).find(x => x.nr === it.nr); blaetter.push(mitCache(fp_blattEintrag(it.s, b, 0), it.u)); geuebt.push(b.name); }
         else if (it.t === "rs"){ const b = FS_SERIEN.rechtschreibung.blaetter.find(x => x.nr === it.nr); blaetter.push(mitCache(fp_rsEintrag(it.k, b.bau, b.name, 0, code), it.u)); geuebt.push(`${RS_NAMEN[it.k] ? RS_NAMEN[it.k].kurz : it.k}: ${b.name}`); }
+        else if (it.t === "rsa"){ const b = RSA_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Anwenden: " + b.kurz, name: "Rechtschreibung anwenden – " + b.name, bau: c => b.bau({ ...c, rsa: rsa_ctx(code) }), extra: { label: "Rechtschreibung anwenden", afs: "Symptomtraining: Rechtschreibstrategien anwenden", reif: true }, quelle: { t: "rsa", nr: b.nr } }, it.u)); geuebt.push("Anwenden: " + b.name); } }
         else if (it.t === "lesen"){
             const lt = ctxLesen.lt, a = LT_AUFGABEN.find(x => x.key === it.a);
             const extra = { label: "Lesetraining", afs: "Symptomtraining: Lesen & Textverständnis", reif: lt.reif };
@@ -7685,6 +7993,7 @@ function std_optionen(ph, r){
     if (ph === "Aufmerksamkeit") ["aufmerksamkeit", "aufmerksamkeit5"].forEach(k => gruppen.push([FS_SERIEN[k].label, fs_katalog(k).map(b => opt({ t: "fs", s: k, nr: b.nr }, b.name))]));
     if (ph === "Funktionstraining") STD_FUNKTIONEN.forEach(k => gruppen.push([FS_SERIEN[k].label, FS_SERIEN[k].blaetter.map(b => opt({ t: "fs", s: k, nr: b.nr }, b.name))]));
     if (ph === "Symptomtraining"){
+        gruppen.push(["Rechtschreibung anwenden (gemischt)", RSA_BLAETTER.map(b => opt({ t: "rsa", nr: b.nr }, b.name))]);
         Object.entries(RS_SCHWERPUNKTE).forEach(([k, sp]) => gruppen.push(["Rechtschreibung: " + sp.name, FS_SERIEN.rechtschreibung.blaetter.map(b => opt({ t: "rs", k, nr: b.nr }, b.name))]));
         gruppen.push(["Lesetraining" + (r.lesetext ? ` („${r.lesetext}“)` : ""), LT_AUFGABEN.map(a => opt({ t: "lesen", a: a.key }, a.name))]);
         gruppen.push(["Diktat", STD_DIKTAT.map(d => opt({ t: "diktat", d: d.key }, d.name))]);
@@ -10071,6 +10380,11 @@ FS_SERIEN.rechtschreibung.optionenHtml += `
 FS_SERIEN.rechtschreibung.ctxExtra = () => ({ rs: rs_mitKartei(rs_schwerpunkt(), lt_wert("rs-kind")) });
 FS_SERIEN.rechtschreibung.speicherName = () => "Rechtschreibung – " + rs_schwerpunkt().name + (lt_wert("rs-kind") ? " (" + lt_wert("rs-kind") + ")" : "");
 FS_SERIEN.rechtschreibung.kind = () => lt_wert("rs-kind");
+FS_SERIEN.anwenden.optionenHtml += `
+    <label style="margin-top:10px;">Eigene Fehlerwörter einbeziehen (optional)</label>
+    <select id="rsa-kind">${kt_kindOptionen("— nur Übungswörter —")}</select>`;
+FS_SERIEN.anwenden.speicherName = () => "Rechtschreibung anwenden" + (lt_wert("rsa-kind") ? " (" + lt_wert("rsa-kind") + ")" : "");
+FS_SERIEN.anwenden.kind = () => lt_wert("rsa-kind");
 
 blatt_aufbauen();
 mat_bearbeitbarMachen();

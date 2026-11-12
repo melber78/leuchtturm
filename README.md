@@ -18,3 +18,5 @@ Bilder in `bilder.js`: Microsoft Fluent Emoji (MIT-Lizenz, Hinweis in der Datei)
 Stundenplan für LRS-Kinder und Fördergruppen: `stundenplan.php` (Namen statt Fächer, nur im Browser, es wird nichts gespeichert; Druck im Querformat ohne Fußzeile).
 
 Mein Tag (eigener Stundenplan + Tagespläne): `tagesplan.php` (Tag, Woche, Mein Stundenplan; Druck), gespeichert über `tagesplan-speichern.php` in `material-daten/tagesplan.json`. Sozialtraining/Lernangebot mit Klasse holen die Stunde automatisch aus dem jeweiligen Jahresplan, andere Stunden (auch Vertretung) werden pro Tag eingefügt.
+
+Rechtschreibung anwenden statt nur wissen: im LRS-Generator unter Symptomtraining (Serie `anwenden`, `RSA_*`/`rsaB_*` in `lrs.php`) und in der Stundenplanung (Symptom „rsa“). Satzvorrat mit Signalstellen in `RSA_SAETZE` – Schreibweise `{richtig|falsch|Werkzeug|Beweis}`.

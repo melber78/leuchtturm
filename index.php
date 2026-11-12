@@ -103,6 +103,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-12", "Rechtschreibung anwenden statt nur wissen", "Für Kinder, die die Regeln kennen, aber nicht anwenden: Stopp-Routine, Werkzeugkasten, gemischtes Signalstellen-Training, Fehlerdetektiv, Diktat-Duell, eigener Text, Fehlerprofil – auch in der Stundenplanung.", "lrs.php"],
     ["2026-11-12", "Anamnesebogen", "Elterngespräch strukturiert erfassen: am Handy ausfüllen oder leer drucken (mit/ohne Einrichtung), Ziele &amp; Wünsche, Übergabe ins Gutachten – nichts wird gespeichert.", "anamnese.php"],
     ["2026-11-12", "Signal „Pause vorbei!“", "Klingel, Checkliste zum Abhaken und Countdown – in jeder Präsentation unten (⏰) und bei den Tafelbildern.", "tafelbilder.php#pause"],
     ["2026-11-12", "14 neue Vertretungsstunden", "Deutsch, Mathe, Gemischt und entspannte Stunden – alle ohne Zusatzmaterial, nur Arbeitsblatt und Tafel.", "sozial-stunden.php?bereich=vertretung"],
