@@ -83,6 +83,10 @@ textarea{ min-height:90px; resize:vertical; font-weight:400; line-height:1.5; }
 Läuft komplett im Browser — nichts wird gespeichert oder irgendwohin geschickt. Nach dem Erstellen einfach die Seite neu laden, dann ist wieder alles leer.
 </div>
 
+<div class="hinweis" id="anamnese-hinweis" style="display:none; background:#e8f3ea; border-color:#4a9a5b; color:#1f5a2c;">
+    <i class="fa-solid fa-clipboard-user"></i>
+    <span>Aus dem Anamnesebogen übernommen: Name, Geburtsdatum und Anlass. Bitte prüfen und bei Bedarf anpassen.</span>
+</div>
 <div class="fehler" id="fehler-box">
 <i class="fa-solid fa-triangle-exclamation"></i>
 <span id="fehler-text"></span>
@@ -941,6 +945,17 @@ async function erstelleGutachten(){
     }
 }
 
+
+// Übergabe aus dem Anamnesebogen (anamnese.php) – nur einmalig, nur in diesem Tab
+(function(){
+    let d = null;
+    try { d = JSON.parse(sessionStorage.getItem("lt_anamnese_uebergabe") || "null"); sessionStorage.removeItem("lt_anamnese_uebergabe"); } catch (e) {}
+    if (!d) return;
+    if (d.name) document.getElementById("kind-name").value = d.name;
+    if (d.geb) document.getElementById("kind-geburtsdatum").value = d.geb;
+    if (d.anlass) document.getElementById("anlass").value = d.anlass;
+    document.getElementById("anamnese-hinweis").style.display = "flex";
+})();
 </script>
 
 </body>

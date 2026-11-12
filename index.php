@@ -103,6 +103,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-12", "Anamnesebogen", "Elterngespräch strukturiert erfassen: am Handy ausfüllen oder leer drucken (mit/ohne Einrichtung), Ziele &amp; Wünsche, Übergabe ins Gutachten – nichts wird gespeichert.", "anamnese.php"],
     ["2026-11-12", "Signal „Pause vorbei!“", "Klingel, Checkliste zum Abhaken und Countdown – in jeder Präsentation unten (⏰) und bei den Tafelbildern.", "tafelbilder.php#pause"],
     ["2026-11-12", "14 neue Vertretungsstunden", "Deutsch, Mathe, Gemischt und entspannte Stunden – alle ohne Zusatzmaterial, nur Arbeitsblatt und Tafel.", "sozial-stunden.php?bereich=vertretung"],
     ["2026-11-12", "Mein Tag: Stundenplan &amp; Tagesplan", "Deinen eigenen Stundenplan hinterlegen und jeden Tag planen – Sozialtraining und Lernangebot kommen automatisch aus dem Jahresplan, andere Stunden fügst du mit einem Tipp ein.", "tagesplan.php"],
@@ -149,6 +150,12 @@ $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strt
 <i class="fa-solid fa-wand-magic-sparkles"></i>
 <h2>Material-Generator</h2>
 <p>Arbeitsblätter nach AFS – Aufmerksamkeit, Funktion, Lesen, Rechtschreiben</p>
+</a>
+
+<a href="anamnese.php" class="portal-card">
+<i class="fa-solid fa-clipboard-user"></i>
+<h2>Anamnesebogen</h2>
+<p>Elterngespräch digital ausfüllen oder leer drucken – mit Übergabe ins Gutachten</p>
 </a>
 
 <a href="gutachten.php" class="portal-card">

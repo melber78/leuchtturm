@@ -7,7 +7,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 const LT_GAST_GRUPPEN = [
     "Grundschule" => ["sozial" => "Sozialtraining", "lernangebot" => "Lernangebot (mit Arbeitsblatt-Generator)", "vertretung" => "Vertretungsstunden"],
     "Tafelbilder" => ["morgen" => "Guten Morgen! (Tagesstart)", "buchstabenkurs" => "Buchstabenkurs", "leise" => "Leise-Wald (alle 4 Arten)"],
-    "LRS-Förderung" => ["lrs" => "Material-Generator", "akten" => "Kinder-Akten", "gutachten" => "Gutachten", "materialien" => "Materialien", "timer" => "Stunden-Timer", "stundenplan" => "Stundenplan"],
+    "LRS-Förderung" => ["lrs" => "Material-Generator", "akten" => "Kinder-Akten", "gutachten" => "Gutachten", "anamnese" => "Anamnesebogen", "materialien" => "Materialien", "timer" => "Stunden-Timer", "stundenplan" => "Stundenplan"],
     "Planung" => ["tagesplan" => "Mein Tag (eigener Stundenplan & Tagesplan)"],
 ];
 define("LT_GAST_BEREICHE", array_merge(...array_values(LT_GAST_GRUPPEN)));
