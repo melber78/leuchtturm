@@ -846,9 +846,60 @@ W.bewegung = {
     }
 };
 
+const PAUSE_VORBEI = [["🧸", "Spielsachen weg"], ["🍎", "Brotdose und Flasche weg"], ["🎒", "Ranzen zu"], ["✏️", "Mäppchen und Heft raus"], ["🪑", "Am Platz sitzen"], ["🤫", "Mund zu – Augen nach vorn"]];
+W.pausevorbei = {
+    titel: "Pause vorbei!", emoji: "⏰", gruppe: "Allgemein",
+    text: "Signal nach der Pause: Alles wegräumen, an den Platz – mit Klingel, Checkliste zum Abhaken und Countdown.",
+    optionen: [{ k: "minuten", label: "Zeit zum Aufräumen", werte: [[1, "1 Min."], [2, "2 Min."], [3, "3 Min."]] }],
+    std: { minuten: 2 },
+    eigen(el, e, api){
+        const gesamt = (+e.minuten || 2) * 60; let rest = gesamt, fertig = false;
+        const klingel = () => [0, 1, 2, 3, 4, 5].forEach(i => setTimeout(() => api.klang(i % 2 ? 660 : 880, .18, "triangle"), i * 190));
+        el.innerHTML = `<div class="lt-pv">
+            <div class="lt-pv-wecker">⏰</div>
+            <div class="lt-pv-titel">Die Pause ist vorbei!</div>
+            <div class="lt-pv-unter">Wir wollen anfangen – alles wegräumen!</div>
+            <div class="lt-pv-liste">${PAUSE_VORBEI.map(([em, t], i) => `<button class="lt-pv-punkt" data-pv="${i}"><span class="lt-pv-em">${em}</span><span>${esc(t)}</span><span class="lt-pv-haken">✓</span></button>`).join("")}</div>
+            <div class="lt-pv-balken"><i></i></div><div class="lt-pv-zeit"></div></div>`;
+        const balken = el.querySelector(".lt-pv-balken i"), zeit = el.querySelector(".lt-pv-zeit"), titel = el.querySelector(".lt-pv-titel"), unter = el.querySelector(".lt-pv-unter"), wecker = el.querySelector(".lt-pv-wecker");
+        const zeigen = () => { balken.style.width = (100 * rest / gesamt) + "%"; balken.style.background = rest <= 15 ? "#ff8fab" : "#ffe066"; zeit.textContent = fertig ? "" : "noch " + Math.floor(rest / 60) + ":" + String(rest % 60).padStart(2, "0"); };
+        const losGehts = text => {
+            if (fertig) return; fertig = true;
+            wecker.textContent = "🚀"; wecker.classList.add("still"); titel.textContent = text; unter.textContent = "Super – los geht’s!";
+            el.querySelectorAll(".lt-pv-punkt").forEach(b => b.classList.add("ok"));
+            api.gong(); zeigen(); api.weiterText("✕ Schließen"); api.weiter = () => { const x = document.querySelector(".lt-voll [data-zu]"); if (x) x.click(); };
+        };
+        el.querySelectorAll("[data-pv]").forEach(b => b.addEventListener("click", () => {
+            b.classList.toggle("ok"); api.klang(b.classList.contains("ok") ? 990 : 520, .12);
+            if (![...el.querySelectorAll(".lt-pv-punkt")].some(x => !x.classList.contains("ok"))) losGehts("Alle sind bereit!");
+        }));
+        klingel(); zeigen();
+        api.intervall(() => { if (fertig || rest <= 0) return; rest--; zeigen(); if (rest === 0) losGehts("Die Zeit ist um!"); }, 1000);
+        api.weiterText("✅ Alle sind bereit"); api.weiter = () => losGehts("Alle sind bereit!");
+        api.ohneLoesung();
+    }
+};
+
 /* ---------------- Vollbild-Ansicht ---------------- */
 /* Gleiche Welt wie die Lernzeit-Präsentation: grüne Kreidetafel im Holzrahmen, Kreideschrift, Eule Ella */
 const CSS = `
+.lt-pv{ display:flex; flex-direction:column; align-items:center; gap:1.4vh; text-align:center; width:100%; max-height:100%; overflow:auto; padding:1vh 0; box-sizing:border-box; }
+.lt-pv-wecker{ font-size:clamp(46px,9vh,130px); margin-top:1vh; line-height:1; animation:ltPvKlingel .5s ease-in-out 6; }
+.lt-pv-wecker.still{ animation:none; }
+@keyframes ltPvKlingel{ 0%,100%{ transform:rotate(0) } 25%{ transform:rotate(-14deg) } 75%{ transform:rotate(14deg) } }
+.lt-pv-titel{ font:400 clamp(40px,min(6.5vw,9vh),110px)/1.05 "Patrick Hand","Andika",sans-serif; color:#ffe066; }
+.lt-pv-unter{ font:400 clamp(24px,min(3.4vw,5vh),56px)/1.1 "Patrick Hand","Andika",sans-serif; }
+.lt-pv-liste{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:1.4vh 1.4vw; width:min(92vw,1300px); margin-top:1vh; }
+.lt-pv-punkt{ display:flex; align-items:center; gap:.5em; background:rgba(255,253,245,.1); border:3px solid rgba(255,253,245,.35); border-radius:18px; color:#fffdf5; padding:.45em .6em; font:400 clamp(20px,min(2.5vw,3.8vh),42px)/1.1 "Patrick Hand","Andika",sans-serif; cursor:pointer; text-align:left; }
+.lt-pv-punkt .lt-pv-em{ font-size:1.4em; }
+.lt-pv-punkt span:nth-child(2){ flex:1; }
+.lt-pv-haken{ width:1.3em; height:1.3em; border-radius:50%; border:3px solid rgba(255,253,245,.5); display:grid; place-items:center; color:transparent; font-weight:900; flex:none; }
+.lt-pv-punkt.ok{ background:rgba(181,228,140,.25); border-color:#b5e48c; }
+.lt-pv-punkt.ok .lt-pv-haken{ background:#b5e48c; border-color:#b5e48c; color:#1d4634; }
+.lt-pv-balken{ width:min(70vw,900px); height:14px; background:rgba(255,255,255,.15); border-radius:99px; overflow:hidden; margin-top:1vh; }
+.lt-pv-balken i{ display:block; height:100%; border-radius:99px; transition:width 1s linear; }
+.lt-pv-zeit{ font:700 clamp(16px,2.4vh,28px) "Nunito",sans-serif; opacity:.85; }
+@media (max-width:700px){ .lt-pv-liste{ grid-template-columns:1fr; width:100%; gap:8px; } .lt-pv-punkt{ font-size:20px; padding:.35em .6em; min-width:0; } .lt-pv-titel{ font-size:38px; } .lt-pv-unter{ font-size:22px; } .lt-pv-balken{ width:90%; } }
 .lt-voll{ position:fixed; inset:0; z-index:9999; background:#6b4423; color:#fffdf5; font-family:"Andika","Nunito",sans-serif; display:flex; flex-direction:column; user-select:none; padding:1vh 1vw 0; }
 .lt-leiste{ display:flex; align-items:center; gap:10px; padding:6px 10px 10px; flex-wrap:wrap; }
 .lt-leiste h2{ margin:0; font:400 clamp(22px,2.6vw,34px) "Patrick Hand","Andika",sans-serif; flex:1 1 200px; color:#ffe066; display:flex; align-items:center; gap:.4em; }

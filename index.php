@@ -103,6 +103,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-12", "Signal „Pause vorbei!“", "Klingel, Checkliste zum Abhaken und Countdown – in jeder Präsentation unten (⏰) und bei den Tafelbildern.", "tafelbilder.php#pause"],
     ["2026-11-12", "14 neue Vertretungsstunden", "Deutsch, Mathe, Gemischt und entspannte Stunden – alle ohne Zusatzmaterial, nur Arbeitsblatt und Tafel.", "sozial-stunden.php?bereich=vertretung"],
     ["2026-11-12", "Mein Tag: Stundenplan &amp; Tagesplan", "Deinen eigenen Stundenplan hinterlegen und jeden Tag planen – Sozialtraining und Lernangebot kommen automatisch aus dem Jahresplan, andere Stunden fügst du mit einem Tipp ein.", "tagesplan.php"],
     ["2026-11-09", "Stundenplan für LRS-Kinder", "Wochenraster mit den Namen der Kinder statt Fächern – lokal, es wird nichts gespeichert. Drucken oder als PDF.", "stundenplan.php"],
@@ -218,6 +219,12 @@ $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strt
 <i class="fa-solid fa-sun"></i>
 <h2>Guten Morgen!</h2>
 <p>Tagesstart an der Tafel: Datum, Wetter, Stundenplan, Auspacken, Hinweise</p>
+</a>
+
+<a href="tafelbilder.php#pause" class="portal-card">
+<i class="fa-solid fa-bell"></i>
+<h2>Pause vorbei!</h2>
+<p>Klingel und Checkliste: alles wegräumen, an den Platz – wir fangen an</p>
 </a>
 
 <a href="tafelbilder.php#leise" class="portal-card">

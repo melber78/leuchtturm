@@ -53,6 +53,11 @@ body{ background:#f6f2ea; }
 .k-morgen .mini-gruss{ font:900 22px "Nunito",sans-serif; color:#16324a; display:flex; align-items:center; gap:8px; }
 .k-morgen .mini-gruss span{ font-size:30px; }
 .k-morgen .mini-raster{ display:flex; gap:8px; }
+.k-pause{ background:linear-gradient(135deg,#fde8e8,#fff3d1); gap:10px; flex-direction:column; }
+.k-pause .mini-pause{ font:900 22px "Nunito",sans-serif; color:#16324a; display:flex; align-items:center; gap:8px; }
+.k-pause .mini-pause span{ font-size:30px; }
+.k-pause .mini-raster{ display:flex; gap:8px; }
+.k-pause .mini-raster i{ width:52px; height:46px; background:white; border-radius:10px; box-shadow:0 3px 8px rgba(22,50,74,.08); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:22px; }
 .k-morgen .mini-raster i{ width:62px; height:46px; background:white; border-radius:10px; box-shadow:0 3px 8px rgba(22,50,74,.08); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:22px; }
 .k-wald{ background:#9fd6f5; }
 .k-wald .mini-wald{ position:absolute; inset:0; width:100%; height:100%; }
@@ -387,6 +392,12 @@ body{ background:#f6f2ea; }
         <button class="kachel" type="button" onclick="tafelMorgen.oeffnen()">
             <div class="k-buehne k-morgen"><div class="mini-gruss"><span>☀️</span>Guten Morgen!</div><div class="mini-raster"><i>📅</i><i>🔢</i><i>🎒</i><i>⭐</i></div></div>
             <div class="k-text"><h2>Guten Morgen!</h2><p>Der Tagesstart auf einen Blick: Datum, Wetter, Stundenplan, was auspacken, was beachten.</p><div class="k-tags"><span>Stundenanfang</span><span>Kl. 1–4</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
+        <button class="kachel" type="button" onclick="window.lernTafel && lernTafel.starten('pausevorbei')">
+            <div class="k-buehne k-pause"><div class="mini-pause"><span>⏰</span>Pause vorbei!</div><div class="mini-raster"><i>🧸</i><i>🎒</i><i>🪑</i><i>🤫</i></div></div>
+            <div class="k-text"><h2>Pause vorbei!</h2><p>Klingel, Checkliste zum Abhaken und Countdown: alles wegräumen, an den Platz – wir fangen an.</p><div class="k-tags"><span>nach der Pause</span><span>Kl. 1–4</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs")): ?>
@@ -876,6 +887,7 @@ knoepfeModus();
     const kb = document.getElementById("kachelBild"); if (kb) kb.appendChild(s);
 })();
 if (location.hash === "#buchstabenkurs") kursOeffnen();
+if (location.hash === "#pause" && window.lernTafel) lernTafel.starten("pausevorbei");
 window.addEventListener("hashchange", () => { if (location.hash === "#buchstabenkurs") kursOeffnen(); });
 </script>
 </body>

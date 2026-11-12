@@ -809,6 +809,7 @@ function praesentationStarten(e, startStufe){
             <button data-p="timer" title="Timer">⏱<span class="p-wort"> Timer</span></button>
             <button data-p="silben" class="p-silbenknopf" title="Silbenfarben an/aus – zum Selbstlesen an der Tafel"><span class="p-s1">Sil</span><span class="p-s2">ben</span></button>
             <button data-p="ruhe" title="Ruhe-Signal: zu laut? (Taste R)">🤫<span class="p-wort"> Ruhe!</span></button>
+            ${window.lernTafel ? `<button data-p="pausevorbei" title="Pause vorbei: alles wegräumen, wir fangen an">⏰<span class="p-wort"> Pause vorbei</span></button>` : ""}
             ${window.lernTafel ? `<button data-p="leise" title="${LERN() ? "Leise-Wald" : "Leise-Meer"}: je leiser, desto mehr Tiere">${LERN() ? "🌳" : "🌊"}<span class="p-wort"> ${LERN() ? "Leise-Wald" : "Leise-Meer"}</span></button>` : ""}
             <button data-p="schale" title="Klangschale">🔔</button>
             <button data-p="vollbild" title="Vollbild (F)">⛶</button>
@@ -911,6 +912,7 @@ function leistenKlick(ev){
     else if (a === "vollbild") vollbild();
     else if (a === "schale") klangschale();
     else if (a === "ruhe") ruheSignal();
+    else if (a === "pausevorbei" && window.lernTafel) window.lernTafel.starten("pausevorbei");
     else if (a === "leise" && window.lernTafel) window.lernTafel.starten("leise", Object.assign(LERN() ? {} : { thema: "meer" }, b.dataset.min ? { arbeitszeit: +b.dataset.min } : {}));
     else if (a === "silben") {
         zustand.silben = !zustand.silben;
