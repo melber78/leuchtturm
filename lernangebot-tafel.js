@@ -1312,7 +1312,7 @@ function starten(id, einstellung = {}){
     cssLaden(); schliessen();
     const e = Object.assign({}, w.std, w.gemerkt ? w.gemerkt() : {}, einstellung);
     const el = document.createElement("div");
-    el.className = "lt-voll" + (e.thema === "meer" ? " lt-meer" : "");
+    el.className = "lt-voll" + (e.thema === "meer" ? " lt-meer" : "") + (w.klasse ? " " + w.klasse : "");
     const kopf = e.thema === "meer" && id === "leise" ? "🌊 Leise-Meer" : w.emoji + " " + w.titel;
     el.innerHTML = `<div class="lt-leiste"><h2>${EULE_MINI}<span>${esc(kopf)}</span></h2>
         ${(w.optionen || []).map(o => `<label data-optlabel="${o.k}" ${o.zeigen && !o.zeigen(e) ? 'style="display:none"' : ""}><select data-opt="${o.k}" title="${esc(o.label)}">${o.werte.map(([v, l]) => `<option value="${esc(JSON.stringify(v))}" ${JSON.stringify(v) === JSON.stringify(e[o.k]) ? "selected" : ""}>${esc(o.label)}: ${esc(l)}</option>`).join("")}</select></label>`).join("")}
@@ -1398,10 +1398,10 @@ function info(id){ const w = W[id]; return w ? { titel: w.titel, emoji: w.emoji,
 
 function uebersicht(ziel){
     cssLaden();
-    const gruppen = ["Mathe", "Deutsch", "Allgemein"];
+    const gruppen = ["Duell", "Mathe", "Deutsch", "Allgemein"];
     ziel.innerHTML = `<div class="karte"><h2 style="margin:0 0 6px"><i class="fa-solid fa-chalkboard"></i> Tafel-Übungen</h2>
         <p style="margin:0;color:#7c8a85;font-weight:700">Laptop mit der digitalen Tafel verbinden, Übung antippen – sie startet im Vollbild. Oben stellst du Zahlenraum, Stufe oder Zeit ein. Steuerung: <b>Leertaste</b> = erst Lösung, dann nächste Aufgabe · <b>1–4</b> = Antwort markieren (passt zu den Zahlenkarten) · <b>Esc</b> = schließen.</p></div>
-        <div class="lt-uebersicht">${gruppen.map(g => `<h3>${g === "Allgemein" ? "Für jede Stunde" : g}</h3><div class="lt-karten">${Object.entries(W).filter(([, w]) => w.gruppe === g).map(([id, w]) =>
+        <div class="lt-uebersicht">${gruppen.map(g => `<h3>${g === "Allgemein" ? "Für jede Stunde" : g === "Duell" ? "🏆 Quiz-Duelle: Klasse gegen Ella" : g}</h3><div class="lt-karten">${Object.entries(W).filter(([, w]) => w.gruppe === g).map(([id, w]) =>
             `<button class="lt-karte" data-start="${id}"><span class="em">${w.emoji}</span><b>${esc(w.titel)}</b><span>${esc(w.text)}</span></button>`).join("")}</div>`).join("")}</div>`;
     ziel.querySelectorAll("[data-start]").forEach(b => b.addEventListener("click", () => starten(b.dataset.start)));
 }

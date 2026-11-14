@@ -810,6 +810,7 @@ function praesentationStarten(e, startStufe){
             <button data-p="silben" class="p-silbenknopf" title="Silbenfarben an/aus – zum Selbstlesen an der Tafel"><span class="p-s1">Sil</span><span class="p-s2">ben</span></button>
             <button data-p="ruhe" title="Ruhe-Signal: zu laut? (Taste R)">🤫<span class="p-wort"> Ruhe!</span></button>
             ${window.lernTafel ? `<button data-p="pausevorbei" title="Pause vorbei: alles wegräumen, wir fangen an">⏰<span class="p-wort"> Pause vorbei</span></button>` : ""}
+            ${LERN() && window.lernTafel && window.lernTafel.werkzeuge && window.lernTafel.werkzeuge.duell ? `<button data-p="duell" title="Quiz-Duell: Klasse gegen Eule Ella – Thema wählen">🏆<span class="p-wort"> Duell</span></button>` : ""}
             ${window.lernTafel ? `<button data-p="leise" title="${LERN() ? "Leise-Wald" : "Leise-Meer"}: je leiser, desto mehr Tiere">${LERN() ? "🌳" : "🌊"}<span class="p-wort"> ${LERN() ? "Leise-Wald" : "Leise-Meer"}</span></button>` : ""}
             <button data-p="schale" title="Klangschale">🔔</button>
             <button data-p="vollbild" title="Vollbild (F)">⛶</button>
@@ -913,6 +914,7 @@ function leistenKlick(ev){
     else if (a === "schale") klangschale();
     else if (a === "ruhe") ruheSignal();
     else if (a === "pausevorbei" && window.lernTafel) window.lernTafel.starten("pausevorbei");
+    else if (a === "duell" && window.lernTafel) window.lernTafel.starten("duell", { stufe: zustand.stufe });
     else if (a === "leise" && window.lernTafel) window.lernTafel.starten("leise", Object.assign(LERN() ? {} : { thema: "meer" }, b.dataset.min ? { arbeitszeit: +b.dataset.min } : {}));
     else if (a === "silben") {
         zustand.silben = !zustand.silben;
