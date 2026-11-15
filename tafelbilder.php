@@ -380,6 +380,50 @@ body{ background:#f6f2ea; }
   .mg-reiter button{ flex:0 0 auto; white-space:nowrap; font-size:14px; padding:8px 12px; }
   .mg-ed-inhalt{ padding:12px 14px 40px; }
 }
+
+/* Startklar (vor dem Tag / vor der Stunde) */
+.mg-start{ background:#eefaf2; }
+.mg-start h2 > span:first-child{ min-width:0; }
+.mg-start-knoepfe{ display:flex; gap:6px; flex:none; }
+.mg-startliste{ display:grid; grid-template-columns:1fr 1fr; gap:.6vh .5vw; overflow:hidden; align-content:start; }
+.mg-startliste .mg-check{ padding:.4vh .5vw; font-size:clamp(12px,min(1.1vw,2vh),22px); line-height:1.15; }
+.mg-startliste .mg-leer{ grid-column:1/-1; }
+.mg-karte.eng .mg-startliste .mg-check{ padding:.2vh .5vw; font-size:clamp(11px,min(1.1vw,1.9vh),20px); border-width:2px; }
+.mg-dialog.gross{ max-width:min(1200px,96vw); width:96vw; }
+.mg-sg h2{ font-size:clamp(28px,4vw,56px) !important; text-align:center; }
+.mg-sg-liste{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; margin-bottom:16px; }
+.mg-sg-punkt{ display:flex; align-items:center; gap:14px; border:4px solid #e9eef2; background:#fff; border-radius:22px; padding:16px 18px; font:900 clamp(20px,2.3vw,36px) "Nunito",sans-serif; color:#16324a; cursor:pointer; text-align:left; }
+.mg-sg-punkt span{ font-size:1.6em; flex:none; }
+.mg-sg-punkt b{ flex:1; min-width:0; overflow-wrap:anywhere; hyphens:auto; }
+.mg-sg-punkt i{ flex:none; font-style:normal; width:1.3em; height:1.3em; border-radius:50%; border:3px solid #cfd8de; display:flex; align-items:center; justify-content:center; color:transparent; }
+.mg-sg-punkt.ok{ border-color:#2e9e5b; background:#e9f7ee; }
+.mg-sg-punkt.ok b{ text-decoration:line-through; color:#5d7a68; }
+.mg-sg-punkt.ok i{ background:#2e9e5b; border-color:#2e9e5b; color:white; }
+.mg-sg-fertig{ text-align:center; font:900 clamp(24px,3vw,44px) "Nunito",sans-serif; color:#2e9e5b; margin-bottom:12px; animation:mgHuepf .6s ease; }
+@keyframes mgHuepf{ 0%{ transform:scale(.7); opacity:0; } 70%{ transform:scale(1.08); } 100%{ transform:scale(1); opacity:1; } }
+/* Bild-Auswahl */
+.mg-iw[hidden], .mg-dialog input[hidden]{ display:none !important; }
+.mg-dialog > label{ display:block; font-weight:900; font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:#8a7a60; margin:16px 0 6px; }
+.mg-dialog .mg-felder label:not(.mg-farbwahl){ display:block; font-weight:900; font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:#8a7a60; margin:6px 0 6px; }
+.mg-dialog input[data-mnn]{ font:700 17px "Nunito",sans-serif; padding:10px 12px; border:2px solid #e2ddd2; border-radius:10px; width:100%; }
+.mg-dialog .mg-schalter{ display:inline-flex; align-items:center; gap:6px; font:700 15px "Nunito",sans-serif; margin:3px 10px 3px 0; }
+.mg-dialog .mg-farbwahl{ display:inline-flex; align-items:center; gap:6px; font:700 14px "Nunito",sans-serif; }
+
+.mg-iconbtn{ width:64px; height:52px; border:2px solid #e3e8ec; background:white; border-radius:14px; font-size:28px; cursor:pointer; flex:none; }
+.mg-iconbtn:hover{ border-color:#3d7ea6; }
+.mg-iw-reiter{ margin-bottom:10px; }
+.mg-iw{ display:grid; grid-template-columns:repeat(auto-fill,minmax(52px,1fr)); gap:6px; max-height:44vh; overflow:auto; }
+.mg-iw button{ font-size:30px; height:54px; border:2px solid transparent; background:#f7f8f9; border-radius:12px; cursor:pointer; }
+.mg-iw button:hover, .mg-iw button.an{ border-color:#3d7ea6; background:#e7f1fb; }
+.mg-mini-neu{ opacity:1 !important; border-style:dashed !important; color:#3d7ea6; }
+.mg-mini-neu span{ font-size:26px; font-weight:900; }
+.mg-wrap{ flex-wrap:wrap; }
+.k-start{ background:linear-gradient(135deg,#e6f7ec,#fff3d1); gap:10px; flex-direction:column; }
+.k-start .mini-pause{ font:900 22px "Nunito",sans-serif; color:#16324a; display:flex; align-items:center; gap:8px; }
+.k-start .mini-pause span{ font-size:30px; }
+.k-start .mini-raster{ display:flex; gap:8px; }
+.k-start .mini-raster i{ width:52px; height:46px; background:white; border-radius:10px; box-shadow:0 3px 8px rgba(22,50,74,.08); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:22px; }
+@media (max-width:900px){ .mg-sg-liste{ grid-template-columns:1fr; } .mg-iw{ grid-template-columns:repeat(auto-fill,minmax(46px,1fr)); } }
 </style>
 </head>
 <body>
@@ -392,6 +436,12 @@ body{ background:#f6f2ea; }
         <button class="kachel" type="button" onclick="tafelMorgen.oeffnen()">
             <div class="k-buehne k-morgen"><div class="mini-gruss"><span>☀️</span>Guten Morgen!</div><div class="mini-raster"><i>📅</i><i>🔢</i><i>🎒</i><i>⭐</i></div></div>
             <div class="k-text"><h2>Guten Morgen!</h2><p>Der Tagesstart auf einen Blick: Datum, Wetter, Stundenplan, was auspacken, was beachten.</p><div class="k-tags"><span>Stundenanfang</span><span>Kl. 1–4</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
+        <button class="kachel" type="button" onclick="tafelMorgen.startklar()">
+            <div class="k-buehne k-start"><div class="mini-pause"><span>✅</span>Startklar!</div><div class="mini-raster"><i>🧥</i><i>🎒</i><i>✏️</i><i>🤫</i></div></div>
+            <div class="k-text"><h2>Startklar!</h2><p>Groß an der Tafel zum Abhaken: was die Kinder vor dem Tag und vor jeder Stunde bereitlegen und beachten.</p><div class="k-tags"><span>Tagesbeginn</span><span>Stundenbeginn</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
@@ -888,6 +938,7 @@ knoepfeModus();
 })();
 if (location.hash === "#buchstabenkurs") kursOeffnen();
 if (location.hash === "#pause" && window.lernTafel) lernTafel.starten("pausevorbei");
+if (location.hash === "#startklar" && window.tafelMorgen) tafelMorgen.startklar();
 window.addEventListener("hashchange", () => { if (location.hash === "#buchstabenkurs") kursOeffnen(); });
 </script>
 </body>

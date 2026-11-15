@@ -103,6 +103,9 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-15", "Startklar! – Tagesbeginn & Stundenbeginn", "Auf der Guten-Morgen-Tafel und groß als eigene Kachel: was die Kinder vor dem Tag und vor jeder Stunde bereitlegen – zum Abhaken. Dazu Bilder per Auswahl und eigenes Material anlegen.", "tafelbilder.php#startklar"],
+    ["2026-11-15", "Lernangebot Deutsch neu", "Eine Strategie pro Stunde (Silben, Mitsprechen, Verlängern, Nachschlagen, Proben, Satzzeichen), echtes Lesen – und jede Antwort wird an der Tafel angetippt: Punkt für die Klasse oder Ella.", "sozial-stunden.php?bereich=lernangebot"],
+    ["2026-11-15", "Alles über die Tafel", "Sozialtraining, Vertretung und Lernangebot laufen ohne Extra-Material: keine doppelten Folien mehr, Abstimmen mit Daumen und Fingern, Lösungen zum Aufdecken. Material nur noch optional für die Mappen.", "sozial-stunden.php"],
     ["2026-11-12", "Rechtschreibung anwenden statt nur wissen", "Für Kinder, die die Regeln kennen, aber nicht anwenden: Stopp-Routine, Werkzeugkasten, gemischtes Signalstellen-Training, Fehlerdetektiv, Diktat-Duell, eigener Text, Fehlerprofil – auch in der Stundenplanung.", "lrs.php"],
     ["2026-11-12", "Anamnesebogen", "Elterngespräch strukturiert erfassen: am Handy ausfüllen oder leer drucken (mit/ohne Einrichtung), Ziele &amp; Wünsche, Übergabe ins Gutachten – nichts wird gespeichert.", "anamnese.php"],
     ["2026-11-12", "Signal „Pause vorbei!“", "Klingel, Checkliste zum Abhaken und Countdown – in jeder Präsentation unten (⏰) und bei den Tafelbildern.", "tafelbilder.php#pause"],
