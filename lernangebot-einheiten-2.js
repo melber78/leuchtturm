@@ -166,15 +166,15 @@ An der letzten Haltestelle steigen alle aus. Der Bus ist leer. Der Busfahrer ruf
 2. Wie viele sind es, als die Mäuse einsteigen?
 3. Was passiert an der zweiten Haltestelle? Rechne mit!` },
     lerntext34: { titel: "Der Highscore", text:
-`Elif und Paul spielen ein Computerspiel. Elif hat 465 Punkte. Paul hat 389.
+`Luisa und Paul spielen ein Computerspiel. Luisa hat 465 Punkte. Paul hat 389.
 
-„Wie viele Punkte hast du mehr?“, fragt Paul. Elif rechnet im Kopf: „Von 389 bis 400 sind es 11. Von 400 bis 465 sind es 65. Zusammen 76.“
+„Wie viele Punkte hast du mehr?“, fragt Paul. Luisa rechnet im Kopf: „Von 389 bis 400 sind es 11. Von 400 bis 465 sind es 65. Zusammen 76.“
 
 Paul ist beeindruckt. „Und wenn ich jetzt noch 80 Punkte schaffe?“ – „Dann hast du 469 und bist 4 vor mir.“
 
 **Fragen zum Gespräch:**
 1. Wer hat mehr Punkte, und wie viele mehr?
-2. Wie hat Elif gerechnet?
+2. Wie hat Luisa gerechnet?
 3. Welchen Rechentrick kennst du für schwierige Aufgaben?` },
     uebungen: [
         { titel: "Blitzrechnen", fuer: "alle", dauer: "6 Min", kern: ["12", "34"],
@@ -231,13 +231,13 @@ Dann teilt Lena ihre vier Bonbons mit ihrem Bruder. Jeder bekommt zwei. „Das i
 2. Wie viele Bonbons sind es mit dem Spiegelbild?
 3. Was bedeutet halbieren?` },
     lerntext34: { titel: "Die Pizza-Party", text:
-`Für die Klassenparty bestellt Frau Yilmaz Pizza. Für 12 Kinder braucht sie 6 Pizzen. Doch dann kommen noch die Kinder der Parallelklasse – doppelt so viele Kinder!
+`Für die Klassenparty bestellt Frau Fischer Pizza. Für 12 Kinder braucht sie 6 Pizzen. Doch dann kommen noch die Kinder der Parallelklasse – doppelt so viele Kinder!
 
-„Dann brauchen wir doppelt so viele Pizzen“, sagt Can. „Das Doppelte von 6 ist 12.“
+„Dann brauchen wir doppelt so viele Pizzen“, sagt Julian. „Das Doppelte von 6 ist 12.“
 
 Am Ende bleiben 8 Stücke übrig. Zwei Kinder teilen sie gerecht: Die Hälfte von 8 ist 4. Jeder bekommt 4 Stücke.
 
-„Verdoppeln und Halbieren – das braucht man ständig“, sagt Frau Yilmaz.
+„Verdoppeln und Halbieren – das braucht man ständig“, sagt Frau Fischer.
 
 **Fragen zum Gespräch:**
 1. Wie viele Pizzen werden am Ende gebraucht?
@@ -295,16 +295,16 @@ Mama staunt. „Du zählst ja in Zweier-Schritten. Das ist Einmaleins!“
 2. Wie hat Paula gezählt?
 3. Zählt alle zusammen in Zweierschritten bis 20!` },
     lerntext34: { titel: "Der Trainingsplan", text:
-`Deniz trainiert für das Fußballturnier: Jeden Tag macht er 7 Liegestütze. Nach 3 Tagen sind es 21. „3 mal 7“, sagt der Trainer.
+`Hannes trainiert für das Fußballturnier: Jeden Tag macht er 7 Liegestütze. Nach 3 Tagen sind es 21. „3 mal 7“, sagt der Trainer.
 
-„Und nach einer Woche?“ Deniz überlegt: „7 Tage mal 7 … 49!“
+„Und nach einer Woche?“ Hannes überlegt: „7 Tage mal 7 … 49!“
 
 Dann trainiert seine Schwester mit. Sie macht 3 Liegestütze an 7 Tagen. „Das sind ja auch 21!“, ruft sie. „7 mal 3 ist dasselbe wie 3 mal 7.“
 
 „Tauschaufgaben“, grinst der Trainer. „Damit musst du nur die Hälfte auswendig lernen.“
 
 **Fragen zum Gespräch:**
-1. Wie viele Liegestütze macht Deniz in einer Woche?
+1. Wie viele Liegestütze macht Hannes in einer Woche?
 2. Was ist eine Tauschaufgabe?
 3. Welche Einmaleins-Aufgabe findest du am schwersten?` },
     uebungen: [
@@ -479,16 +479,16 @@ Aber Theo dreht sich um. Als er aufwacht, steht der große Zeiger ganz unten. �
 2. Wo steht der große Zeiger bei einer vollen Stunde?
 3. Wann stehst du morgens auf?` },
     lerntext34: { titel: "Der Bus fährt ab", text:
-`Mert will mit dem Bus zum Training. Der Bus fährt um 14:47 Uhr. Jetzt ist es 14:25 Uhr.
+`Till will mit dem Bus zum Training. Der Bus fährt um 14:47 Uhr. Jetzt ist es 14:25 Uhr.
 
-„Wie viel Zeit habe ich noch?“, fragt Mert. Seine Schwester rechnet: „Von 14:25 bis 14:45 sind es 20 Minuten. Plus 2 – also 22 Minuten.“
+„Wie viel Zeit habe ich noch?“, fragt Till. Seine Schwester rechnet: „Von 14:25 bis 14:45 sind es 20 Minuten. Plus 2 – also 22 Minuten.“
 
-Mert braucht 10 Minuten zur Haltestelle. „Dann kann ich noch 12 Minuten zocken!“ – „Oder du packst endlich deine Sporttasche“, sagt die Schwester.
+Till braucht 10 Minuten zur Haltestelle. „Dann kann ich noch 12 Minuten zocken!“ – „Oder du packst endlich deine Sporttasche“, sagt die Schwester.
 
 **Fragen zum Gespräch:**
-1. Wie viel Zeit hat Mert bis zur Abfahrt?
+1. Wie viel Zeit hat Till bis zur Abfahrt?
 2. Wie hat die Schwester gerechnet?
-3. Wann muss Mert spätestens losgehen?` },
+3. Wann muss Till spätestens losgehen?` },
     uebungen: [
         { titel: "Uhr-Blitz", fuer: "alle", dauer: "8 Min", kern: ["12", "34"],
           text: "Starte das Tafel-Werkzeug „Uhr lesen“. Die Kinder flüstern die Uhrzeit ihrem Nachbarn, dann rufst du ein Kind auf. Kl. 1 zeigt pantomimisch: Ist das eher morgens, mittags oder abends? Kl. 3/4: Wie spät ist es in 20 Minuten?",
@@ -535,18 +535,18 @@ Im Laden gibt es einen Ball für 6 Euro und ein Puzzle für 9 Euro. Ella überle
 2. Wie viel Geld ist das zusammen?
 3. Warum kann Ella das Puzzle nicht kaufen?` },
     lerntext34: { titel: "Der Kiosk", text:
-`Sinan arbeitet in den Ferien am Kiosk seines Onkels. Eine Kundin kauft eine Zeitschrift für 3,40 € und ein Wasser für 1,25 €.
+`Oskar arbeitet in den Ferien am Kiosk seines Onkels. Eine Kundin kauft eine Zeitschrift für 3,40 € und ein Wasser für 1,25 €.
 
-„Das macht 4,65 €“, sagt Sinan. Die Kundin gibt ihm einen 10-Euro-Schein.
+„Das macht 4,65 €“, sagt Oskar. Die Kundin gibt ihm einen 10-Euro-Schein.
 
-Sinan zählt das Wechselgeld vom Preis aus hoch: „4,65 … plus 35 Cent sind 5 Euro. Plus 5 Euro sind 10.“ Er gibt ihr 5,35 €.
+Oskar zählt das Wechselgeld vom Preis aus hoch: „4,65 … plus 35 Cent sind 5 Euro. Plus 5 Euro sind 10.“ Er gibt ihr 5,35 €.
 
 Der Onkel nickt. „So macht man das – hochzählen statt abziehen.“
 
 **Fragen zum Gespräch:**
 1. Wie viel kostet der Einkauf?
 2. Wie viel Wechselgeld bekommt die Kundin?
-3. Wie zählt Sinan das Wechselgeld?` },
+3. Wie zählt Oskar das Wechselgeld?` },
     uebungen: [
         { titel: "Geld-Blitz", fuer: "alle", dauer: "6 Min", kern: ["12", "34"],
           text: "Starte an der Tafel den „Geld-Blitz“. Münzen und Scheine erscheinen. Die Kinder rechnen still und zeigen die Lösung (Finger oder Schmierzettel), dann auflösen.",

@@ -149,7 +149,7 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
           emoji: "🪞",
           warum: "Wir schauen genau hin: Wie sieht ein Gefühl im Gesicht aus?" },
         { titel: "Gefühlsdetektiv", fuer: "34", dauer: "7 Min",
-          text: "Du liest kurze Situationen vor. Die Kinder zeigen auf das Gefühl am Barometer und erklären: „Ich glaube, sie fühlt sich …, weil …“\n\n- Mats hat sein Lieblingsbild zerrissen zurückbekommen.\n- Aylin darf zum ersten Mal bei der Freundin übernachten.\n- Ben muss morgen vor der Klasse ein Gedicht aufsagen.\n- Emma wurde beim Spiel nicht gewählt.\n- Leo hat ein Tor geschossen und alle jubeln.",
+          text: "Du liest kurze Situationen vor. Die Kinder zeigen auf das Gefühl am Barometer und erklären: „Ich glaube, sie fühlt sich …, weil …“\n\n- Mats hat sein Lieblingsbild zerrissen zurückbekommen.\n- Greta darf zum ersten Mal bei der Freundin übernachten.\n- Ben muss morgen vor der Klasse ein Gedicht aufsagen.\n- Emma wurde beim Spiel nicht gewählt.\n- Leo hat ein Tor geschossen und alle jubeln.",
           folie: "Hör gut zu. Wie fühlt sich das Kind?\n\nZeig auf das Gefühl am Barometer und sag: **„Ich glaube, … fühlt sich …, weil …“**",
           kern: ["34"],
           emoji: "🔍",
@@ -250,7 +250,7 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
     },
     lerntext34: {
       "titel": "Kein Tor!",
-      "text": "In der großen Pause spielen Kenan und Sophie Fußball. Kenan schießt aufs Tor. Sophie ruft: „Kein Tor! Der war daneben!“ Kenan: „Spinnst du? Der war drin!“\n\nSophie schubst ihn. Ein paar Kinder rufen: „Lass dir das nicht gefallen, Kenan!“ Kenan spürt, wie sein Kopf heiß wird. Sein Kiefer ist fest, seine Fäuste auch. Er ist kurz vorm Explodieren.\n\nKenan weiß: Wenn er jetzt bleibt, gibt es eine Prügelei. Und dann ist er wieder der Schuldige. Er sagt nur: „Ich hab keinen Bock auf Stress.“ Dann dreht er sich um und geht zur Bank. Die anderen lachen. Es kostet ihn viel Kraft, nicht zurückzugehen.\n\nAn der Bank atmet Kenan tief durch. Er zählt die Autos auf dem Parkplatz. Langsam wird sein Kopf kühler. Dann geht er zur Pausenaufsicht: „Mit Sophie gab es Stress. Ich bin weggegangen.“\n\nNach der Pause setzen sich Kenan, Sophie und die Schulsozialarbeiterin zusammen. Jetzt können beide in Ruhe sagen, was sie geärgert hat. Sie verabreden: Beim nächsten Streit um ein Tor entscheidet die Aufsicht.\n\n**Fragen zum Gespräch:**\n1. Woran hat Kenan gemerkt, dass er kurz vorm Explodieren ist?\n2. Warum war es so schwer für ihn, wegzugehen?\n3. Was hat ihm an der Bank geholfen, ruhig zu werden?\n4. Warum klappt das Klären erst nach der Pause – und nicht mitten im Streit?\n\n**Tafelbild:** Streit-Ampel – 🟢 kleiner Ärger: „Stopp“ / nicht beachten · 🟡 es kocht: weggehen · 🔴 jemand tut weh oder droht: Erwachsenen holen · danach: später reden"
+      "text": "In der großen Pause spielen Konrad und Sophie Fußball. Konrad schießt aufs Tor. Sophie ruft: „Kein Tor! Der war daneben!“ Konrad: „Spinnst du? Der war drin!“\n\nSophie schubst ihn. Ein paar Kinder rufen: „Lass dir das nicht gefallen, Konrad!“ Konrad spürt, wie sein Kopf heiß wird. Sein Kiefer ist fest, seine Fäuste auch. Er ist kurz vorm Explodieren.\n\nKenan weiß: Wenn er jetzt bleibt, gibt es eine Prügelei. Und dann ist er wieder der Schuldige. Er sagt nur: „Ich hab keinen Bock auf Stress.“ Dann dreht er sich um und geht zur Bank. Die anderen lachen. Es kostet ihn viel Kraft, nicht zurückzugehen.\n\nAn der Bank atmet Konrad tief durch. Er zählt die Autos auf dem Parkplatz. Langsam wird sein Kopf kühler. Dann geht er zur Pausenaufsicht: „Mit Sophie gab es Stress. Ich bin weggegangen.“\n\nNach der Pause setzen sich Konrad, Sophie und die Schulsozialarbeiterin zusammen. Jetzt können beide in Ruhe sagen, was sie geärgert hat. Sie verabreden: Beim nächsten Streit um ein Tor entscheidet die Aufsicht.\n\n**Fragen zum Gespräch:**\n1. Woran hat Konrad gemerkt, dass er kurz vorm Explodieren ist?\n2. Warum war es so schwer für ihn, wegzugehen?\n3. Was hat ihm an der Bank geholfen, ruhig zu werden?\n4. Warum klappt das Klären erst nach der Pause – und nicht mitten im Streit?\n\n**Tafelbild:** Streit-Ampel – 🟢 kleiner Ärger: „Stopp“ / nicht beachten · 🟡 es kocht: weggehen · 🔴 jemand tut weh oder droht: Erwachsenen holen · danach: später reden"
     },
     uebungen: [
       {
@@ -559,7 +559,7 @@ Die Leute sagen: „Regeln sind gut. Sie passen auf uns auf.“
 
 Am dritten Tag sind die Kokosnüsse fast alle weg. Die Stärksten haben die meisten genommen. Das Feuer ist ausgegangen, weil niemand Holz gesammelt hat. Die Kinder streiten nur noch.
 
-Abends setzt sich Selin auf einen Stein. „So geht das nicht weiter. Wir brauchen Regeln – aber welche, die wir alle gut finden.“ Gemeinsam beschließen sie: Das Essen wird gerecht geteilt. Jeden Tag sammeln zwei Kinder Holz. Bei Streit wird abgestimmt.
+Abends setzt sich Marie auf einen Stein. „So geht das nicht weiter. Wir brauchen Regeln – aber welche, die wir alle gut finden.“ Gemeinsam beschließen sie: Das Essen wird gerecht geteilt. Jeden Tag sammeln zwei Kinder Holz. Bei Streit wird abgestimmt.
 
 Nach einer Woche klappt das Inselleben richtig gut. Moritz sagt: „Komisch – mit Regeln fühle ich mich freier als ohne.“
 

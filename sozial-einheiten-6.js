@@ -42,13 +42,13 @@ K({
     lerntext34: { titel: "Der Boss vom Schulhof", text:
 `Kai ist in der 4. Klasse und alle nennen ihn den Boss. Wenn er in der Pause kommt, machen die anderen Platz an der Tischtennisplatte. Wer nicht spurt, wird geschubst oder vor allen „Opfer“ genannt. Kai sagt: „Die haben Respekt vor mir.“
 
-Elif ist auch in der 4. Klasse. Sie ist nicht die Lauteste. Aber wenn es Streit gibt, holen die Jüngeren oft sie. Sie hört zu, sagt ehrlich ihre Meinung und hält, was sie verspricht. Als Elif einmal krank ist, fragen drei Kinder nach, wo sie bleibt.
+Luisa ist auch in der 4. Klasse. Sie ist nicht die Lauteste. Aber wenn es Streit gibt, holen die Jüngeren oft sie. Sie hört zu, sagt ehrlich ihre Meinung und hält, was sie verspricht. Als Luisa einmal krank ist, fragen drei Kinder nach, wo sie bleibt.
 
 Eines Tages bricht Kai sich den Arm und fehlt zwei Wochen. An der Tischtennisplatte ist es auf einmal entspannt. Keiner vermisst ihn.
 
 **Fragen zum Gespräch:**
 1. Haben die anderen wirklich Respekt vor Kai – oder etwas anderes?
-2. Woran merkt man, dass Elif respektiert wird?
+2. Woran merkt man, dass Luisa respektiert wird?
 3. Was ist der Unterschied zwischen „jemand hat Angst vor mir“ und „jemand respektiert mich“?
 4. Vor wem hast du echten Respekt – und warum? (freiwillig)` },
     uebungen: [
@@ -81,17 +81,17 @@ K({
     ziel34: "Merken, wann aus Spaß Ernst wird, und eigene Grenzen klar sagen",
     material: "Drei Schilder an der Tafel: „Spaß“ – „Grenze“ – „Zu weit“\nKarten mit Sprüchen (Situationskarten unter Arbeitsmaterial)",
     lerntext34: { titel: "Nur Spaß?", text:
-`Jamal und Deniz sind beste Kumpels. In der Pause machen sie ein „Battle“: Wer hat den besseren Spruch? Erst geht es um Fußball. „Dein Verein steigt ab!“ – „Und deiner spielt wie Oma!“ Beide lachen.
+`Lennart und Hannes sind beste Kumpels. In der Pause machen sie ein „Battle“: Wer hat den besseren Spruch? Erst geht es um Fußball. „Dein Verein steigt ab!“ – „Und deiner spielt wie Oma!“ Beide lachen.
 
-Dann wird es härter. Deniz macht einen Witz über Jamals Turnschuhe, die schon alt sind. Jamal lacht nicht mehr so laut. Die anderen stehen jetzt um sie herum und johlen. Deniz legt nach – diesmal über Jamals Mutter.
+Dann wird es härter. Hannes macht einen Witz über Lennarts Turnschuhe, die schon alt sind. Lennart lacht nicht mehr so laut. Die anderen stehen jetzt um sie herum und johlen. Hannes legt nach – diesmal über Lennarts Mutter.
 
-Jamal wird still. Dann schubst er Deniz so heftig, dass der hinfällt. „Bist du bescheuert? War doch nur Spaß!“, schreit Deniz.
+Lennart wird still. Dann schubst er Hannes so heftig, dass der hinfällt. „Bist du bescheuert? War doch nur Spaß!“, schreit Hannes.
 
 **Fragen zum Gespräch:**
-1. Ab wann war es für Jamal kein Spaß mehr? Woran konnte man das merken?
-2. Warum hat Deniz weitergemacht?
+1. Ab wann war es für Lennart kein Spaß mehr? Woran konnte man das merken?
+2. Warum hat Hannes weitergemacht?
 3. Welche Rolle spielen die Zuschauer?
-4. Was hätte Jamal statt Schubsen tun können?
+4. Was hätte Lennart statt Schubsen tun können?
 5. Wie merkst du bei dir selbst: Jetzt ist meine Grenze erreicht?` },
     uebungen: [
         { titel: "Spaß – Grenze – zu weit", dauer: "7 Min",
@@ -109,11 +109,11 @@ Jamal wird still. Dann schubst er Deniz so heftig, dass der hinfällt. „Bist d
           emoji: "✋",
           warum: "Wir üben, eine Grenze zu setzen – ohne zu beleidigen." }
     ],
-    ab34: { titel: "Wo ist meine Grenze?", kontext: "Zum Fall: Jamal und Deniz machen ein Spruch-Battle. Es wird immer härter – bis Deniz über Jamals Mutter redet und Jamal ihn schubst.", aufgaben: [
+    ab34: { titel: "Wo ist meine Grenze?", kontext: "Zum Fall: Lennart und Hannes machen ein Spruch-Battle. Es wird immer härter – bis Hannes über Lennarts Mutter redet und Lennart ihn schubst.", aufgaben: [
         { typ: "tabelle", text: "Schreib in jede Spalte ein Beispiel (einen Spruch oder eine Situation): Was ist noch Spaß, was ist an der Grenze, was geht zu weit?", spalten: ["Spaß", "Grenze", "Zu weit"], zeilen: [["", "", ""], ["", "", ""]] },
         { typ: "ankreuzen", text: "Woran merkst du, dass es für jemanden kein Spaß mehr ist?", optionen: ["Er lacht nicht mehr mit.", "Er wird still oder rot.", "Er geht weg.", "Er sagt „Stopp“.", "Er wird plötzlich wütend."] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Mein Satz, wenn mir jemand zu weit geht: ___", "Das mache ich, wenn er trotzdem weitermacht: ___"] },
-        { typ: "schreiben", text: "Was hättest du an Jamals Stelle gemacht, statt zu schubsen?", zeilen: 3 }
+        { typ: "schreiben", text: "Was hättest du an Lennarts Stelle gemacht, statt zu schubsen?", zeilen: 3 }
     ]}
 }),
 
@@ -165,16 +165,16 @@ K({
     material: "Tafel: Wut-Thermometer von 0 bis 10\nKarte „Kasten-Atmen“ (Arbeitsmaterial)",
     materialIds: ["kasten-atmen"],
     lerntext34: { titel: "Zehn Sekunden", text:
-`Emre hat einen Plan. Seit letzter Woche weiß er: Bei ihm fängt Wut im Bauch an. Erst wird es warm, dann ballt er die Fäuste, dann wird sein Gesicht heiß. Wenn er erst bei „Gesicht heiß“ ist, geht nichts mehr – dann haut er zu oder schmeißt Sachen.
+`Henri hat einen Plan. Seit letzter Woche weiß er: Bei ihm fängt Wut im Bauch an. Erst wird es warm, dann ballt er die Fäuste, dann wird sein Gesicht heiß. Wenn er erst bei „Gesicht heiß“ ist, geht nichts mehr – dann haut er zu oder schmeißt Sachen.
 
-Heute im Mathe-Unterricht sagt jemand hinter ihm: „Emre ist sowieso zu dumm dafür.“ Emre merkt das Warme im Bauch. Er denkt an seinen Plan: Fäuste auf, Füße fest auf den Boden, langsam ausatmen und bis zehn zählen. Dann hebt er die Hand und sagt zur Lehrerin: „Ich brauch kurz eine Pause.“ Er darf zwei Minuten an den Pausenplatz am Fenster.
+Heute im Mathe-Unterricht sagt jemand hinter ihm: „Henri ist sowieso zu dumm dafür.“ Henri merkt das Warme im Bauch. Er denkt an seinen Plan: Fäuste auf, Füße fest auf den Boden, langsam ausatmen und bis zehn zählen. Dann hebt er die Hand und sagt zur Lehrerin: „Ich brauch kurz eine Pause.“ Er darf zwei Minuten an den Pausenplatz am Fenster.
 
 Danach setzt er sich wieder hin. Er ist immer noch sauer – aber er hat niemanden verletzt und keinen Ärger bekommen. Zum ersten Mal seit Langem.
 
 **Fragen zum Gespräch:**
-1. Welche Signale hat Emre bei seiner Wut? In welcher Reihenfolge kommen sie?
+1. Welche Signale hat Henri bei seiner Wut? In welcher Reihenfolge kommen sie?
 2. Warum ist es wichtig, die Wut schon „im Bauch“ zu bemerken und nicht erst später?
-3. Was genau war Emres Plan?
+3. Was genau war Henris Plan?
 4. Wo spürst du Wut zuerst? (freiwillig)` },
     uebungen: [
         { titel: "Wut-Thermometer", dauer: "6 Min",
@@ -287,14 +287,14 @@ K({
     ziel34: "Durchschauen, was Provokateure wollen, und ruhig reagieren können",
     material: "Tafel: „Was will der Provokateur?“\nSituationskarten (Arbeitsmaterial)",
     lerntext34: { titel: "Der Knopf", text:
-`Yusuf weiß genau, welchen Knopf er bei Nico drücken muss. Er braucht nur zu sagen: „Na, hat dein Vater dich wieder nicht abgeholt?“ – und Nico explodiert. Jedes Mal. Nico brüllt, wirft den Stuhl um und landet im Trainingsraum. Yusuf sitzt grinsend auf seinem Platz.
+`Matti weiß genau, welchen Knopf er bei Nico drücken muss. Er braucht nur zu sagen: „Na, hat dein Vater dich wieder nicht abgeholt?“ – und Nico explodiert. Jedes Mal. Nico brüllt, wirft den Stuhl um und landet im Trainingsraum. Matti sitzt grinsend auf seinem Platz.
 
-Irgendwann erklärt Nicos Schulbegleiter ihm etwas: „Yusuf hat eine Fernbedienung für dich. Er drückt einen Knopf, und du machst genau das, was er will. Willst du ihm die Fernbedienung wirklich geben?“
+Irgendwann erklärt Nicos Schulbegleiter ihm etwas: „Matti hat eine Fernbedienung für dich. Er drückt einen Knopf, und du machst genau das, was er will. Willst du ihm die Fernbedienung wirklich geben?“
 
-Am nächsten Tag kommt der Spruch wieder. Nico atmet durch, schaut Yusuf an und sagt nur: „Langweilig.“ Dann dreht er sich weg. Yusuf versucht es noch zweimal. Dann gibt er auf.
+Am nächsten Tag kommt der Spruch wieder. Nico atmet durch, schaut Matti an und sagt nur: „Langweilig.“ Dann dreht er sich weg. Matti versucht es noch zweimal. Dann gibt er auf.
 
 **Fragen zum Gespräch:**
-1. Was wollte Yusuf mit seinem Spruch erreichen?
+1. Was wollte Matti mit seinem Spruch erreichen?
 2. Wer hatte am Ende die Macht – vorher und nachher?
 3. Was ist mit der „Fernbedienung“ gemeint?
 4. Warum war „Langweilig“ so wirksam?
@@ -369,17 +369,17 @@ K({
     material: "Tafel: Stärke-Skala von 1 bis 10\nrote und grüne Karten",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Zwei Arten von stark", text:
-`Mehmet ist der Stärkste in der Klasse. Er kann zwanzig Liegestütze und gewinnt jedes Armdrücken. Wenn ihn jemand schief anschaut, zeigt er ihm, wer der Chef ist.
+`Frederik ist der Stärkste in der Klasse. Er kann zwanzig Liegestütze und gewinnt jedes Armdrücken. Wenn ihn jemand schief anschaut, zeigt er ihm, wer der Chef ist.
 
-Beim Fußballturnier liegt ihre Schule hinten. Ein Spieler der anderen Mannschaft beleidigt Mehmet. Mehmet rastet aus, schubst ihn – rote Karte. Ohne ihn verliert die Mannschaft. Nach dem Spiel sitzt er allein in der Kabine.
+Beim Fußballturnier liegt ihre Schule hinten. Ein Spieler der anderen Mannschaft beleidigt Frederik. Frederik rastet aus, schubst ihn – rote Karte. Ohne ihn verliert die Mannschaft. Nach dem Spiel sitzt er allein in der Kabine.
 
-Dann kommt Jonas rein, der Torwart. Jonas ist klein und kann kaum zwei Liegestütze. Er setzt sich neben Mehmet und sagt: „Ich war auch sauer. Aber ich bin froh, dass du in unserer Mannschaft bist. Nächstes Mal schaffen wir das.“ Mehmet sagt lange nichts. Dann: „Sorry, Mann. Das war dumm von mir.“
+Dann kommt Jonas rein, der Torwart. Jonas ist klein und kann kaum zwei Liegestütze. Er setzt sich neben Frederik und sagt: „Ich war auch sauer. Aber ich bin froh, dass du in unserer Mannschaft bist. Nächstes Mal schaffen wir das.“ Frederik sagt lange nichts. Dann: „Sorry, Mann. Das war dumm von mir.“
 
 **Fragen zum Gespräch:**
 1. Wer war in dieser Szene stark – und auf welche Art?
-2. Was hat Mehmets Stärke im Spiel gebracht? Was hat sie gekostet?
+2. Was hat Frederiks Stärke im Spiel gebracht? Was hat sie gekostet?
 3. Was braucht es, um wie Jonas zu reagieren?
-4. Mehmet sagt am Ende „Sorry“. Ist das schwach oder stark?
+4. Frederik sagt am Ende „Sorry“. Ist das schwach oder stark?
 5. Welche Art von Stärke hast du?` },
     uebungen: [
         { titel: "Wie stark ist das?", dauer: "7 Min",

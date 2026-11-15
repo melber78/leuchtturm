@@ -134,13 +134,13 @@ Leon fragt: „Was ist denn mit dir?“ Finn zuckt mit den Schultern. Dann sagt 
 
 „Ach, das ist doch nur ein Kaninchen“, sagt Leon. „Du kriegst bestimmt ein neues.“ Finn dreht sich weg. Er fühlt sich noch schlechter.
 
-Aylin hat zugehört. Sie setzt sich zu Finn und sagt erst mal gar nichts. Dann fragt sie: „Willst du mir von Hoppel erzählen?“ Finn nickt. Er erzählt, wie Hoppel immer Löwenzahn aus seiner Hand gefressen hat. Dabei weint er ein bisschen – und lacht auch ein bisschen.
+Greta hat zugehört. Sie setzt sich zu Finn und sagt erst mal gar nichts. Dann fragt sie: „Willst du mir von Hoppel erzählen?“ Finn nickt. Er erzählt, wie Hoppel immer Löwenzahn aus seiner Hand gefressen hat. Dabei weint er ein bisschen – und lacht auch ein bisschen.
 
-Am Ende sagt Finn: „Danke, Aylin. Das hat gutgetan.“
+Am Ende sagt Finn: „Danke, Greta. Das hat gutgetan.“
 
 **Fragen zum Gespräch:**
 1. Warum hat Leons Satz Finn nicht geholfen, obwohl Leon es vielleicht gut gemeint hat?
-2. Was hat Aylin anders gemacht?
+2. Was hat Greta anders gemacht?
 3. Ist es in Ordnung, traurig zu sein und zu weinen – auch für Jungen?
 4. Was hilft dir, wenn du traurig bist?` },
     uebungen: [
@@ -200,7 +200,7 @@ Am Ende sagt Finn: „Danke, Aylin. Das hat gutgetan.“
         }
       ]
     },
-    ab34: { titel: "Trösten – aber wie?", kontext: "Zur Geschichte: Finns Kaninchen Hoppel ist gestorben. Leon sagt: „Ist doch nur ein Kaninchen.“ Aylin setzt sich zu Finn und hört ihm zu.", aufgaben: [
+    ab34: { titel: "Trösten – aber wie?", kontext: "Zur Geschichte: Finns Kaninchen Hoppel ist gestorben. Leon sagt: „Ist doch nur ein Kaninchen.“ Greta setzt sich zu Finn und hört ihm zu.", aufgaben: [
         { typ: "tabelle", text: "Hilft der Satz einem traurigen Kind? Schreibe ja oder nein und warum.", spalten: ["Satz", "Hilft das? Warum?"],
           zeilen: [["„Ist doch nicht so schlimm!“", ""], ["„Ich bin für dich da.“", ""], ["„Hör auf zu weinen!“", ""], ["„Willst du erzählen, was passiert ist?“", ""]] },
         { typ: "luecken", text: "Wenn ich traurig bin …", nummern: false,
@@ -536,19 +536,19 @@ Lea nickt. Zusammen malen sie einen neuen Regenbogen – mit noch mehr Farben.
 
 **Tipp für dich:** Mögliche Antworten: anschauen, sagen was passiert ist, wieder gutmachen.` },
     lerntext34: { titel: "Das verratene Geheimnis", text:
-`Merve hat Nora ein Geheimnis erzählt: Sie ist in Jonas verliebt. Zwei Tage später weiß es die halbe Klasse. Nora hatte es nur ihrer Freundin Paula erzählt – „aber nicht weitersagen!“. Paula hat es natürlich weitererzählt.
+`Charlotte hat Nora ein Geheimnis erzählt: Sie ist in Jonas verliebt. Zwei Tage später weiß es die halbe Klasse. Nora hatte es nur ihrer Freundin Paula erzählt – „aber nicht weitersagen!“. Paula hat es natürlich weitererzählt.
 
-Merve ist verletzt und wütend. Sie spricht nicht mehr mit Nora.
+Charlotte ist verletzt und wütend. Sie spricht nicht mehr mit Nora.
 
-Nora fühlt sich schrecklich. Sie überlegt, wie sie sich richtig entschuldigen kann. Dann geht sie zu Merve: „Ich habe dein Geheimnis weitererzählt. Das war falsch, du hast mir vertraut. Ich verstehe, dass du dich verraten fühlst und wütend bist. Ich werde nie wieder etwas weitersagen, und ich sage den anderen, dass sie dich in Ruhe lassen sollen.“
+Nora fühlt sich schrecklich. Sie überlegt, wie sie sich richtig entschuldigen kann. Dann geht sie zu Charlotte: „Ich habe dein Geheimnis weitererzählt. Das war falsch, du hast mir vertraut. Ich verstehe, dass du dich verraten fühlst und wütend bist. Ich werde nie wieder etwas weitersagen, und ich sage den anderen, dass sie dich in Ruhe lassen sollen.“
 
-Merve schaut sie lange an. „Ich weiß nicht, ob ich dir gleich verzeihen kann“, sagt sie. „Ich brauche ein bisschen Zeit.“ Nora nickt. „Okay. Ich warte.“
+Charlotte schaut sie lange an. „Ich weiß nicht, ob ich dir gleich verzeihen kann“, sagt sie. „Ich brauche ein bisschen Zeit.“ Nora nickt. „Okay. Ich warte.“
 
-Eine Woche später setzt Merve sich in der Pause wieder neben Nora.
+Eine Woche später setzt Charlotte sich in der Pause wieder neben Nora.
 
 **Fragen zum Gespräch:**
 1. Welche vier Teile hat Noras Entschuldigung? (Was ich getan habe – dass es falsch war – wie du dich fühlst – wie ich es gut mache)
-2. Warum hat Merve nicht sofort verziehen? Ist das in Ordnung?
+2. Warum hat Charlotte nicht sofort verziehen? Ist das in Ordnung?
 3. Muss man eine Entschuldigung immer annehmen?
 4. Was kann man tun, wenn man etwas nicht wieder gutmachen kann?` },
     uebungen: [
@@ -645,7 +645,7 @@ Tom schaukelt. Mia zählt laut: „… 18, 19, 20!“ Dann tauschen sie. So geht
 
 Frau Weber schreibt an die Tafel: **Kompromiss – jeder gibt ein bisschen nach, und alle bekommen etwas.** „Habt ihr eine Idee?“
 
-Erst ist es still. Dann meldet sich Can: „Der Zoo hat doch einen Wasserspielplatz. Wir könnten morgens die Tiere anschauen und nachmittags planschen.“ Ein paar finden das gut. „Aber das ist nicht dasselbe wie Schwimmbad“, sagt Jule. Jana schlägt vor: „Dann gehen wir diesmal in den Zoo, und im Sommer machen wir den Schwimmbad-Tag.“
+Erst ist es still. Dann meldet sich Julian: „Der Zoo hat doch einen Wasserspielplatz. Wir könnten morgens die Tiere anschauen und nachmittags planschen.“ Ein paar finden das gut. „Aber das ist nicht dasselbe wie Schwimmbad“, sagt Jule. Jana schlägt vor: „Dann gehen wir diesmal in den Zoo, und im Sommer machen wir den Schwimmbad-Tag.“
 
 Am Ende stimmen alle 22 Kinder dafür. Niemand hat alles bekommen, was er wollte – aber alle sind zufrieden.
 
@@ -737,14 +737,14 @@ Elias spürt ein Ziehen im Bauch. Frau Berger ist nett. Sie erschrickt bestimmt.
 
 Elias' Herz klopft. Er will dazugehören. Aber sein Bauch sagt klar: Nein. Er atmet durch und sagt: „Nein. Ich mach da nicht mit. Frau Berger hat euch nichts getan.“
 
-Kurz ist es still. Dann sagt Tarek, der auch dabei ist: „Ich auch nicht. Kommt, wir spielen lieber Basketball.“ Kai murrt – aber dann gehen alle zum Basketballkorb.
+Kurz ist es still. Dann sagt Carlo, der auch dabei ist: „Ich auch nicht. Kommt, wir spielen lieber Basketball.“ Kai murrt – aber dann gehen alle zum Basketballkorb.
 
 Elias merkt: Nein sagen war schwer. Aber hinterher fühlt er sich stark.
 
 **Fragen zum Gespräch:**
 1. Woran hat Elias gemerkt, dass er nicht mitmachen will?
 2. Warum war das Nein so schwer für ihn?
-3. Was hat Tarek gemacht? Warum war das wichtig?
+3. Was hat Carlo gemacht? Warum war das wichtig?
 4. Wie kann man Nein sagen und trotzdem freundlich bleiben?` },
     uebungen: [
         { titel: "Die Nein-Stimme", fuer: "alle", dauer: "4 Min",

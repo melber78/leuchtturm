@@ -76,17 +76,17 @@ K({
     ziel34: "Bei Ungerechtigkeit durch Erwachsene ruhig bleiben und sich trotzdem wirksam beschweren",
     material: "Tafel: „Was ich fühle“ – „Was ich tue“ – „Was dann passiert“",
     lerntext34: { titel: "Unfair!", text:
-`In der Hofpause gibt es Gerangel an der Tischtennisplatte. Die Aufsicht kommt dazu und sieht nur, wie Selin einen Jungen schubst. Dass er sie vorher zweimal geschubst hat, hat sie nicht gesehen. „Selin, du gehst sofort rein!“
+`In der Hofpause gibt es Gerangel an der Tischtennisplatte. Die Aufsicht kommt dazu und sieht nur, wie Marie einen Jungen schubst. Dass er sie vorher zweimal geschubst hat, hat sie nicht gesehen. „Marie, du gehst sofort rein!“
 
-Selin ist außer sich. „Das ist voll unfair! Sie haben ja gar keine Ahnung!“ Sie schreit, knallt die Tür und tritt gegen den Mülleimer. Jetzt gibt es einen Anruf bei ihren Eltern.
+Marie ist außer sich. „Das ist voll unfair! Sie haben ja gar keine Ahnung!“ Sie schreit, knallt die Tür und tritt gegen den Mülleimer. Jetzt gibt es einen Anruf bei ihren Eltern.
 
-Am nächsten Tag erzählt Selin alles ihrer Schulsozialarbeiterin. Die sagt: „Du hattest recht, dass es unfair war. Aber durch dein Ausrasten hat dir am Ende keiner mehr zugehört. Wie hättest du es schaffen können, dass man dir zuhört?“
+Am nächsten Tag erzählt Marie alles ihrer Schulsozialarbeiterin. Die sagt: „Du hattest recht, dass es unfair war. Aber durch dein Ausrasten hat dir am Ende keiner mehr zugehört. Wie hättest du es schaffen können, dass man dir zuhört?“
 
 **Fragen zum Gespräch:**
 1. War die Entscheidung der Aufsicht fair? Warum nicht?
-2. Was hat Selins Wut verständlich gemacht – und was hat sie ihr eingebracht?
+2. Was hat Maries Wut verständlich gemacht – und was hat sie ihr eingebracht?
 3. Warum hört man jemandem, der schreit, schlechter zu?
-4. Wie könnte Selin sich beschweren, ohne Ärger zu bekommen?
+4. Wie könnte Marie sich beschweren, ohne Ärger zu bekommen?
 5. Wann hast du dich von einem Erwachsenen ungerecht behandelt gefühlt? (freiwillig)` },
     uebungen: [
         { titel: "Erst runter, dann reden", dauer: "6 Min",
@@ -118,16 +118,16 @@ K({
     ziel34: "Ausgrenzung erkennen, nachfühlen, wie sie wirkt, und andere bewusst einbeziehen",
     material: "Tafel: „Wie man jemanden ausschließt“ / „Wie man jemanden reinholt“",
     lerntext34: { titel: "Die Gruppe", text:
-`In der 4b gibt es eine Clique: Lena, Merve, Sofia und Chantal. Sie sitzen zusammen, haben eine eigene Chatgruppe und tragen die gleichen Armbänder.
+`In der 4b gibt es eine Clique: Lena, Charlotte, Sofia und Chantal. Sie sitzen zusammen, haben eine eigene Chatgruppe und tragen die gleichen Armbänder.
 
 Dann zieht Anna in die Klasse. Sie fragt in der Pause, ob sie dazukommen kann. Lena sagt: „Hier ist kein Platz mehr.“ Die anderen kichern. Am nächsten Tag ist Annas Stuhl plötzlich am Rand. Im Sportunterricht wird sie als Letzte gewählt.
 
-Eine Woche später hat Merve Streit mit Lena. Plötzlich ist sie raus aus der Chatgruppe. Merve sitzt jetzt auch allein. Sie merkt zum ersten Mal, wie sich Anna gefühlt haben muss.
+Eine Woche später hat Charlotte Streit mit Lena. Plötzlich ist sie raus aus der Chatgruppe. Charlotte sitzt jetzt auch allein. Sie merkt zum ersten Mal, wie sich Anna gefühlt haben muss.
 
 **Fragen zum Gespräch:**
 1. Woran merkt Anna, dass sie nicht dazugehört? Zählt alles auf.
 2. Hat jemand Anna geschlagen oder beschimpft? Ist es trotzdem schlimm?
-3. Wie fühlt sich Merve, als sie selbst draußen ist?
+3. Wie fühlt sich Charlotte, als sie selbst draußen ist?
 4. Warum brauchen manche Gruppen jemanden, der draußen ist?
 5. Was könnte EINE Person in der Klasse für Anna tun?` },
     uebungen: [
@@ -203,9 +203,9 @@ K({
     ziel34: "Den Kreislauf von Rache durchschauen und Wege finden, ihn zu unterbrechen",
     material: "Tafel: Rache-Kreislauf (Kreis mit Pfeilen)\nSituationskarten (Arbeitsmaterial)",
     lerntext34: { titel: "Zurückzahlen", text:
-`Am Montag versteckt Ole die Mütze von Can. Am Dienstag kippt Can Wasser über Oles Heft. Am Mittwoch macht Ole ein peinliches Foto von Can und zeigt es herum. Am Donnerstag lauert Can Ole nach der Schule auf und schlägt ihn.
+`Am Montag versteckt Ole die Mütze von Julian. Am Dienstag kippt Julian Wasser über Oles Heft. Am Mittwoch macht Ole ein peinliches Foto von Julian und zeigt es herum. Am Donnerstag lauert Julian Ole nach der Schule auf und schlägt ihn.
 
-Am Freitag sitzen beide mit ihren Eltern bei der Schulleitung. Can sagt: „Er hat angefangen!“ Ole sagt: „Und du hast mich geschlagen!“ Keiner weiß mehr genau, worum es am Anfang ging.
+Am Freitag sitzen beide mit ihren Eltern bei der Schulleitung. Julian sagt: „Er hat angefangen!“ Ole sagt: „Und du hast mich geschlagen!“ Keiner weiß mehr genau, worum es am Anfang ging.
 
 Die Schulleiterin malt einen Kreis an die Tafel. „Jeder von euch hat gedacht, er macht es jetzt gerecht. Aber es wurde jeden Tag schlimmer. Wer von euch hätte den Kreis stoppen können?“
 
@@ -217,8 +217,8 @@ Die Schulleiterin malt einen Kreis an die Tafel. „Jeder von euch hat gedacht, 
 5. Ist Aussteigen dasselbe wie Verlieren?` },
     uebungen: [
         { titel: "Der Rache-Kreis", dauer: "6 Min",
-          text: "Male den Kreis an die Tafel und tragt die Tage aus dem Fall ein. Dann markiert ihr mit einer anderen Farbe Ausstiegs-Punkte: Was hätte Ole oder Can an diesem Tag stattdessen tun können? (reden, Erwachsene einschalten, ignorieren, Sorry sagen, Abstand nehmen …)",
-          folie: "Rache dreht sich im **Kreis** 🔄.\n\nWo hätten Ole oder Can aussteigen können?",
+          text: "Male den Kreis an die Tafel und tragt die Tage aus dem Fall ein. Dann markiert ihr mit einer anderen Farbe Ausstiegs-Punkte: Was hätte Ole oder Julian an diesem Tag stattdessen tun können? (reden, Erwachsene einschalten, ignorieren, Sorry sagen, Abstand nehmen …)",
+          folie: "Rache dreht sich im **Kreis** 🔄.\n\nWo hätten Ole oder Julian aussteigen können?",
           emoji: "🔄",
           warum: "Rache dreht sich im Kreis. Wir suchen den Ausgang." },
         { titel: "Rache oder Lösung?", dauer: "6 Min",
@@ -230,8 +230,8 @@ Die Schulleiterin malt einen Kreis an die Tafel. „Jeder von euch hat gedacht, 
           emoji: "⚖️",
           warum: "Was willst du tun – und was löst es wirklich?" }
     ],
-    ab34: { titel: "Den Kreis stoppen", kontext: "Zum Fall: Montag versteckt Ole Cans Mütze. Dienstag kippt Can Wasser über Oles Heft. Mittwoch zeigt Ole ein peinliches Foto von Can herum. Donnerstag schlägt Can Ole.", aufgaben: [
-        { typ: "luecken", text: "Ole und Can – trag die Tage ein:", nummern: false, saetze: ["Montag: ___", "Dienstag: ___", "Mittwoch: ___", "Donnerstag: ___"] },
+    ab34: { titel: "Den Kreis stoppen", kontext: "Zum Fall: Montag versteckt Ole Julians Mütze. Dienstag kippt Julian Wasser über Oles Heft. Mittwoch zeigt Ole ein peinliches Foto von Julian herum. Donnerstag schlägt Julian Ole.", aufgaben: [
+        { typ: "luecken", text: "Ole und Julian – trag die Tage ein:", nummern: false, saetze: ["Montag: ___", "Dienstag: ___", "Mittwoch: ___", "Donnerstag: ___"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Hier hätte man aussteigen können: ___", "So hätte man aussteigen können: ___"] },
         { typ: "ankreuzen", text: "Was passiert oft nach Rache?", optionen: ["Der andere rächt sich auch.", "Der Streit ist vorbei.", "Es wird schlimmer.", "Am Ende haben beide Ärger.", "Man fühlt sich lange gut."] }
     ]}
@@ -245,14 +245,14 @@ K({
     material: "Tafel: „Echter Freund“ / „Falscher Freund“\nrote und grüne Karten",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Kumpel", text:
-`Kevin ist seit den Sommerferien mit Tarek befreundet. Tarek ist zwei Jahre älter und cool. Er nimmt Kevin mit auf den Bolzplatz, zu den Großen.
+`Kevin ist seit den Sommerferien mit Carlo befreundet. Carlo ist zwei Jahre älter und cool. Er nimmt Kevin mit auf den Bolzplatz, zu den Großen.
 
-Aber Kevin fällt einiges auf: Wenn Tarek Geld braucht, soll Kevin ihm etwas leihen – zurück bekommt er nie etwas. Vor den anderen macht Tarek Witze über Kevin. Und neulich sollte Kevin für ihn im Kiosk Zigaretten holen – „Du bist doch mein Kumpel.“
+Aber Kevin fällt einiges auf: Wenn Carlo Geld braucht, soll Kevin ihm etwas leihen – zurück bekommt er nie etwas. Vor den anderen macht Carlo Witze über Kevin. Und neulich sollte Kevin für ihn im Kiosk Zigaretten holen – „Du bist doch mein Kumpel.“
 
 Kevins alter Freund Marc ist nicht so cool. Aber als Kevin krank war, hat Marc ihm die Hausaufgaben gebracht. Und als Kevin Ärger zu Hause hatte, hat Marc einfach zugehört.
 
 **Fragen zum Gespräch:**
-1. Woran merkt man, dass Tarek kein echter Freund ist?
+1. Woran merkt man, dass Carlo kein echter Freund ist?
 2. Warum bleibt Kevin trotzdem bei ihm?
 3. Was macht Marc zu einem echten Freund?
 4. Kann man aus einer falschen Freundschaft wieder rauskommen? Wie?
@@ -415,20 +415,20 @@ K({
     material: "Rote und grüne Karten\nPlakat „Die drei Hilfe-Fragen“ (Arbeitsmaterial)",
     materialIds: ["rot-gruen", "hilfe-fragen"],
     lerntext34: { titel: "Das Messer", text:
-`Auf dem Heimweg zeigt Yannick seinem Freund Sami etwas in seinem Rucksack: ein Taschenmesser. „Nur zur Sicherheit“, sagt Yannick. „Wenn die aus der 6 mich wieder abziehen wollen.“
+`Auf dem Heimweg zeigt Yannick seinem Freund Vincent etwas in seinem Rucksack: ein Taschenmesser. „Nur zur Sicherheit“, sagt Yannick. „Wenn die aus der 6 mich wieder abziehen wollen.“
 
-Sami hat ein ungutes Gefühl. Aber er sagt nichts. Petzen ist das Schlimmste, das hat er gelernt. Wer petzt, ist raus.
+Vincent hat ein ungutes Gefühl. Aber er sagt nichts. Petzen ist das Schlimmste, das hat er gelernt. Wer petzt, ist raus.
 
 Am nächsten Tag gibt es auf dem Schulhof Streit mit den Sechstklässlern. Yannick greift in seinen Rucksack. Zum Glück kommt in dem Moment ein Lehrer um die Ecke.
 
-Abends kann Sami nicht schlafen. Was, wenn der Lehrer nicht gekommen wäre?
+Abends kann Vincent nicht schlafen. Was, wenn der Lehrer nicht gekommen wäre?
 
 **Fragen zum Gespräch:**
-1. Warum hat Sami nichts gesagt?
+1. Warum hat Vincent nichts gesagt?
 2. Was hätte passieren können?
 3. Was ist der Unterschied zwischen Petzen und Hilfe holen?
-4. Hätte Sami Yannick verraten – oder ihn geschützt?
-5. Wem hätte Sami sich anvertrauen können?` },
+4. Hätte Vincent Yannick verraten – oder ihn geschützt?
+5. Wem hätte Vincent sich anvertrauen können?` },
     uebungen: [
         { titel: "Petzen oder Hilfe holen?", dauer: "7 Min",
           text: "Du liest Situationen vor. Rot = das würde ich für mich behalten, grün = da hole ich Hilfe. Danach die Regel an die Tafel: **Petzen will jemandem Ärger machen. Hilfe holen will jemanden schützen.**\n\n- Jemand hat abgeschrieben.\n- Ein Kind wird jeden Tag auf dem Heimweg abgezogen.\n- Jemand hat ein Messer dabei.\n- Jemand hat einen Kaugummi unter den Tisch geklebt.\n- Ein Freund erzählt, dass er zu Hause geschlagen wird.\n- Im Chat droht jemand, einem anderen „aufzulauern“.",
@@ -445,11 +445,11 @@ Abends kann Sami nicht schlafen. Was, wenn der Lehrer nicht gekommen wäre?
           emoji: "🤫",
           warum: "Wir überlegen, wem und wie man so etwas sagt." }
     ],
-    ab34: { titel: "Schützen statt schweigen", kontext: "Zum Fall: Yannick zeigt seinem Freund Sami ein Taschenmesser im Rucksack. Sami sagt niemandem etwas, weil er nicht petzen will.", aufgaben: [
+    ab34: { titel: "Schützen statt schweigen", kontext: "Zum Fall: Yannick zeigt seinem Freund Vincent ein Taschenmesser im Rucksack. Vincent sagt niemandem etwas, weil er nicht petzen will.", aufgaben: [
         { typ: "tabelle", text: "Petzen oder Hilfe holen? Schreib in jede Spalte zwei Beispiele.", spalten: ["Petzen (will Ärger machen)", "Hilfe holen (will schützen)"], zeilen: [["", ""], ["", ""]] },
         { typ: "ankreuzen", text: "Hier hole ich auf jeden Fall Hilfe:", optionen: ["Jemand wird bedroht.", "Jemand hat eine Waffe.", "Jemand wird zu Hause verletzt.", "Jemand hat seine Hausaufgaben vergessen.", "Jemand wird ständig gemobbt."] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Diesen Erwachsenen kann ich mich anvertrauen: ___", "Nummer gegen Kummer (kostenlos): 116 111"] },
-        { typ: "schreiben", text: "Was hätte Sami tun können?", zeilen: 2 }
+        { typ: "schreiben", text: "Was hätte Vincent tun können?", zeilen: 2 }
     ]}
 }),
 
@@ -465,7 +465,7 @@ K({
     ],
     lerntext34: {
       "titel": "Am nächsten Morgen",
-      "text": "In der Pause gab es Stress: Elias wollte den Ball nicht abgeben, Jonas hat ihn geschubst, Elias hat Jonas getreten. Die Aufsicht hat die beiden getrennt. Jonas saß im Klassenraum, Elias auf der Bank vor dem Büro. Beide waren noch lange wütend.\n\nErst am nächsten Morgen holt Frau Yilmaz, die Schulsozialarbeiterin, beide in ihr Zimmer. Jetzt sind sie ruhig. Frau Yilmaz sagt: „Hier gelten drei Regeln: Jeder darf ausreden. Keine Beleidigungen. Ich bin auf keiner Seite.“\n\nZuerst erzählt Jonas, Elias hört zu. Dann erzählt Elias. Frau Yilmaz fasst zusammen: „Jonas, du warst sauer, weil Elias den Ball nicht abgeben wollte. Elias, du hast dich bedrängt gefühlt, als Jonas dich geschubst hat.“ Beide nicken.\n\nDann fragt sie: „Was wünscht ihr euch vom anderen – und was könnt ihr wieder gutmachen?“ Elias sagt: „Das mit dem Treten tut mir leid.“ Jonas sagt: „Ich hätte nicht schubsen sollen.“ Sie verabreden: Ab jetzt nimmt jede Pause ein anderer den Ball mit.\n\n**Fragen zum Gespräch:**\n1. Warum haben Jonas und Elias den Streit nicht gleich in der Pause geklärt?\n2. Welche Regeln gelten bei Frau Yilmaz? Warum sind sie wichtig?\n3. Warum hilft es, wenn jemand zusammenfasst, was beide gesagt haben?\n4. Wer kann bei euch an der Schule so ein Gespräch mit euch führen?\n\n**Tafelbild:** Erst raus – dann ruhig werden – dann mit Hilfe klären"
+      "text": "In der Pause gab es Stress: Elias wollte den Ball nicht abgeben, Jonas hat ihn geschubst, Elias hat Jonas getreten. Die Aufsicht hat die beiden getrennt. Jonas saß im Klassenraum, Elias auf der Bank vor dem Büro. Beide waren noch lange wütend.\n\nErst am nächsten Morgen holt Frau Fischer, die Schulsozialarbeiterin, beide in ihr Zimmer. Jetzt sind sie ruhig. Frau Fischer sagt: „Hier gelten drei Regeln: Jeder darf ausreden. Keine Beleidigungen. Ich bin auf keiner Seite.“\n\nZuerst erzählt Jonas, Elias hört zu. Dann erzählt Elias. Frau Fischer fasst zusammen: „Jonas, du warst sauer, weil Elias den Ball nicht abgeben wollte. Elias, du hast dich bedrängt gefühlt, als Jonas dich geschubst hat.“ Beide nicken.\n\nDann fragt sie: „Was wünscht ihr euch vom anderen – und was könnt ihr wieder gutmachen?“ Elias sagt: „Das mit dem Treten tut mir leid.“ Jonas sagt: „Ich hätte nicht schubsen sollen.“ Sie verabreden: Ab jetzt nimmt jede Pause ein anderer den Ball mit.\n\n**Fragen zum Gespräch:**\n1. Warum haben Jonas und Elias den Streit nicht gleich in der Pause geklärt?\n2. Welche Regeln gelten bei Frau Fischer? Warum sind sie wichtig?\n3. Warum hilft es, wenn jemand zusammenfasst, was beide gesagt haben?\n4. Wer kann bei euch an der Schule so ein Gespräch mit euch führen?\n\n**Tafelbild:** Erst raus – dann ruhig werden – dann mit Hilfe klären"
     },
     uebungen: [
       {

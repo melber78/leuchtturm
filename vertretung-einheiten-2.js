@@ -205,7 +205,7 @@ Vorne hat es zwei Lampen wie Augen. Und hinten eine Rutsche, damit man aussteige
 3. Wohin wollen Oskar und seine Schwester fahren?
 4. Was soll dein Fahrzeug können?` },
     lerntext34: { titel: "Die Erfinder-Messe", text:
-`Bei der Erfinder-Messe in der Turnhalle stellen alle Kinder ihre Fahrzeug-Ideen vor. Ayse hat einen Schulbus mit Hausaufgaben-Tischen gezeichnet. Leon einen Roller, der mit Sonnenlicht fährt. Und Sophie ein U-Boot für Haustiere.
+`Bei der Erfinder-Messe in der Turnhalle stellen alle Kinder ihre Fahrzeug-Ideen vor. Johanna hat einen Schulbus mit Hausaufgaben-Tischen gezeichnet. Leon einen Roller, der mit Sonnenlicht fährt. Und Sophie ein U-Boot für Haustiere.
 
 Die Jury achtet auf drei Dinge: Ist der Bauplan gut beschriftet? Ist klar, wozu jedes Teil da ist? Und ist die Idee besonders?
 

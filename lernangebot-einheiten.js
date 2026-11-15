@@ -71,13 +71,13 @@ Mia probiert es aus: „Scho – ko – la – de!“ Vier Mal klatschen! Robo l
 2. Wie oft klatscht Robo bei „Banane“?
 3. Sprecht alle zusammen wie Robo: Ba – na – ne. Klatscht dazu!` },
     lerntext34: { titel: "Die Nachricht im Funkgerät", text:
-`Ben und Aylin spielen Agenten. Ihr Funkgerät rauscht – jedes Wort kommt nur in Stücken an: „Ge – heim – ver – steck … hin – ter … der … Turn – hal – le.“
+`Ben und Greta spielen Agenten. Ihr Funkgerät rauscht – jedes Wort kommt nur in Stücken an: „Ge – heim – ver – steck … hin – ter … der … Turn – hal – le.“
 
-„Das sind Silben!“, ruft Aylin. „Wir müssen sie nur zusammensetzen.“
+„Das sind Silben!“, ruft Greta. „Wir müssen sie nur zusammensetzen.“
 
 Ben schreibt mit. Jedes Stück bekommt einen Bogen unter dem Wort. „Geheimversteck hat vier Silben. Turnhalle hat drei.“
 
-Am Zeilenende reicht der Platz nicht. Aylin trennt das Wort einfach zwischen zwei Silben: „Turn-“ in die eine Zeile, „halle“ in die nächste. Passt!
+Am Zeilenende reicht der Platz nicht. Greta trennt das Wort einfach zwischen zwei Silben: „Turn-“ in die eine Zeile, „halle“ in die nächste. Passt!
 
 **Fragen zum Gespräch:**
 1. Wie viele Silben hat „Geheimversteck“?
@@ -307,7 +307,7 @@ Auf dem Aushang steht: „Morgen findet der Sporttag statt. Bitte Turnschuhe und
         { typ: "malen", text: "Male ein Unsinn-Bild (z. B. ein Fisch auf dem Fahrrad).", bild: "" }
     ]},
     ab34: { titel: "Lese-Detektive", kontext: "Lies den Text genau. Achtung: Zwei Sätze sind Unsinn!", aufgaben: [
-        { typ: "luecken", text: "Lies den Text. Unterstreiche die zwei Unsinn-Sätze.", nummern: false, saetze: ["Am Samstag fährt Familie Kaya an den See. Papa packt die Badesachen ein. Mama nimmt Wintermützen mit, weil es so heiß ist. Am See ist das Wasser warm und klar. Die Kinder bauen eine Sandburg. Am Abend geht die Sonne im Norden unter. Müde fahren alle nach Hause."] },
+        { typ: "luecken", text: "Lies den Text. Unterstreiche die zwei Unsinn-Sätze.", nummern: false, saetze: ["Am Samstag fährt Familie Vogel an den See. Papa packt die Badesachen ein. Mama nimmt Wintermützen mit, weil es so heiß ist. Am See ist das Wasser warm und klar. Die Kinder bauen eine Sandburg. Am Abend geht die Sonne im Norden unter. Müde fahren alle nach Hause."] },
         { typ: "luecken", text: "Beantworte die Fragen in ganzen Sätzen.", nummern: true, saetze: ["Wohin fährt die Familie? ___", "Was bauen die Kinder? ___", "Wie ist das Wasser? ___"] },
         { typ: "luecken", text: "Verbessere einen Unsinn-Satz.", nummern: false, saetze: ["___"] }
     ]}
@@ -339,13 +339,13 @@ Dann will Rosa eine Katze zaubern. „Hokus Pokus Baum – komm, Katze!“ Aber 
 2. Warum hat die Katze nicht geklappt?
 3. Was reimt sich auf Katze? (Tatze, Glatze, Matratze …)` },
     lerntext34: { titel: "Rap-Battle in der Pause", text:
-`Kemal und Jule machen einen Rap-Battle. Kemal beginnt: „Ich bin schnell wie der Wind – schneller als jedes Kind!“
+`Bastian und Jule machen einen Rap-Battle. Bastian beginnt: „Ich bin schnell wie der Wind – schneller als jedes Kind!“
 
 Jule kontert: „Du redest ganz schön viel – ich gewinne jedes Spiel!“
 
 Die anderen klatschen den Takt. „Das Geheimnis“, erklärt Jule, „ist der Reim am Zeilenende. Wind – Kind, viel – Spiel. Die letzten Laute müssen gleich klingen.“
 
-Kemal grinst: „Und wer keinen Reim findet, hat verloren!“
+Bastian grinst: „Und wer keinen Reim findet, hat verloren!“
 
 **Fragen zum Gespräch:**
 1. Welche Wörter haben sich gereimt?

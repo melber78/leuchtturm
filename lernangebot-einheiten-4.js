@@ -90,9 +90,9 @@ SOZIAL_EINHEIT({
     lerntext12: { titel: "Leo steckt fest", text:
 `Leo sitzt vor seiner Aufgabe. Er weiß nicht weiter. Er wird ganz rot und legt den Kopf auf den Tisch.
 
-Da flüstert seine Freundin Ayla: „Du kannst die Hilfe-Treppe hochgehen!“
+Da flüstert seine Freundin Svenja: „Du kannst die Hilfe-Treppe hochgehen!“
 
-Erste Stufe: Selbst noch mal schauen. Leo liest die Aufgabe noch einmal. Hmm. Zweite Stufe: Ein Hilfsmittel nehmen. Er schaut auf die Rechenkette. Schon besser! Dritte Stufe: Den Nachbarn fragen. „Ayla, wie geht das hier?“
+Erste Stufe: Selbst noch mal schauen. Leo liest die Aufgabe noch einmal. Hmm. Zweite Stufe: Ein Hilfsmittel nehmen. Er schaut auf die Rechenkette. Schon besser! Dritte Stufe: Den Nachbarn fragen. „Svenja, wie geht das hier?“
 
 Und wenn das auch nicht klappt? Dann die vierte Stufe: Hand heben – die Lehrerin kommt.
 
@@ -222,16 +222,16 @@ SOZIAL_EINHEIT({
         { werkzeug: "timer", titel: "Arbeits-Timer 5 Minuten", fuer: "", einstellung: { minuten: 5 } }
     ],
     lerntext12: { titel: "Der Kopf-Akku", text:
-`Sami lernt schon lange. Erst geht alles super. Doch dann rutschen die Buchstaben, und die Zahlen tanzen.
+`Vincent lernt schon lange. Erst geht alles super. Doch dann rutschen die Buchstaben, und die Zahlen tanzen.
 
-„Mein Kopf ist wie ein Handy-Akku“, sagt Sami. „Der ist jetzt fast leer.“
+„Mein Kopf ist wie ein Handy-Akku“, sagt Vincent. „Der ist jetzt fast leer.“
 
 Seine Mama lacht. „Dann musst du ihn aufladen! Aber nicht mit Fernsehen – mit Bewegung und frischer Luft.“
 
-Sami hüpft fünfmal wie ein Frosch, streckt sich wie eine Giraffe und trinkt ein Glas Wasser. Dann setzt er sich wieder hin. Und siehe da – die Buchstaben stehen wieder still!
+Vincent hüpft fünfmal wie ein Frosch, streckt sich wie eine Giraffe und trinkt ein Glas Wasser. Dann setzt er sich wieder hin. Und siehe da – die Buchstaben stehen wieder still!
 
 **Nach dem Vorlesen:**
-1. Woran hat Sami gemerkt, dass sein Kopf müde ist?
+1. Woran hat Vincent gemerkt, dass sein Kopf müde ist?
 2. Wie hat er seinen Kopf-Akku aufgeladen?
 3. Was machst du, wenn du müde wirst?` },
     lerntext34: { titel: "Drei Stunden am Stück", text:
@@ -293,17 +293,17 @@ Opa lacht. „Pflanzen mögen lieber jeden Tag ein bisschen Wasser. Dann wachsen
 2. Was mögen Pflanzen lieber?
 3. Was übst du jeden Tag ein bisschen?` },
     lerntext34: { titel: "Das Trainingsgeheimnis", text:
-`Emir will im Basketball besser werfen. Am Samstag übt er drei Stunden lang. Am Sonntag hat er Muskelkater – und trifft schlechter als vorher.
+`Linus will im Basketball besser werfen. Am Samstag übt er drei Stunden lang. Am Sonntag hat er Muskelkater – und trifft schlechter als vorher.
 
 Sein Trainer erklärt: „Profis üben jeden Tag ein bisschen. Und sie üben vor allem das, was noch nicht klappt.“
 
-Zu Hause probiert Emir es beim Einmaleins aus: Jede Aufgabe kommt auf ein Kärtchen. Was er kann, kommt in ein Fach „kann ich“. Was er nicht kann, bleibt vorne und kommt morgen wieder dran. Jeden Tag 10 Minuten.
+Zu Hause probiert Linus es beim Einmaleins aus: Jede Aufgabe kommt auf ein Kärtchen. Was er kann, kommt in ein Fach „kann ich“. Was er nicht kann, bleibt vorne und kommt morgen wieder dran. Jeden Tag 10 Minuten.
 
 Nach zwei Wochen ist der Stapel „kann ich noch nicht“ fast leer.
 
 **Fragen zum Gespräch:**
 1. Warum hat das lange Üben am Samstag nicht geholfen?
-2. Wie funktioniert Emirs Kärtchen-Trick?
+2. Wie funktioniert Linuss Kärtchen-Trick?
 3. Was könntest du mit Kärtchen üben?` },
     uebungen: [
         { titel: "Kärtchen basteln", fuer: "alle", dauer: "7 Min", kern: ["12", "34"],
@@ -352,16 +352,16 @@ Emma setzt den Helm wieder auf. Am Ende der Woche fährt sie einmal um den ganze
 2. Welches Wort hat sie vergessen?
 3. Was kannst du NOCH nicht – aber bald?` },
     lerntext34: { titel: "Level 37", text:
-`Seit einer Woche hängt Can bei Level 37 fest. 50 Versuche. Jedes Mal Game Over. Er hat den Controller schon zweimal in die Ecke geworfen.
+`Seit einer Woche hängt Julian bei Level 37 fest. 50 Versuche. Jedes Mal Game Over. Er hat den Controller schon zweimal in die Ecke geworfen.
 
 Dann macht er etwas anderes: Er schaut sich an, wo genau er scheitert. Er übt nur diese eine Stelle. Und als er wütend wird, macht er zehn Minuten Pause.
 
 Versuch 58: geschafft.
 
-Am nächsten Tag hängt Can bei einer schwierigen Textaufgabe. Er merkt, wie die Wut kommt. „Okay“, denkt er. „Wie bei Level 37: Wo genau hänge ich? Erst diese Stelle. Und wenn ich sauer werde: kurz Pause.“
+Am nächsten Tag hängt Julian bei einer schwierigen Textaufgabe. Er merkt, wie die Wut kommt. „Okay“, denkt er. „Wie bei Level 37: Wo genau hänge ich? Erst diese Stelle. Und wenn ich sauer werde: kurz Pause.“
 
 **Fragen zum Gespräch:**
-1. Was hat Can anders gemacht, um das Level zu schaffen?
+1. Was hat Julian anders gemacht, um das Level zu schaffen?
 2. Wie überträgt er das auf die Schule?
 3. Was hilft dir, wenn du wütend auf eine Aufgabe wirst?` },
     uebungen: [
@@ -473,12 +473,12 @@ Dann ein Ohr. „Gut zuhören.“ Dann eine Treppe. „Hilfe holen, Stufe für S
     lerntext34: { titel: "Der Brief an mich selbst", text:
 `Am Ende des Halbjahres bekommt die Klasse einen besonderen Auftrag: einen Brief an sich selbst – zu öffnen am letzten Schultag.
 
-Amir schreibt: „Lieber Amir, das kannst du schon gut: Kopfrechnen und Zuhören. Das hat dir geholfen: Kärtchen für das Einmaleins und Pausen alle 20 Minuten. Das willst du noch schaffen: weniger Fehler bei Wörtern mit ie. Dein Trick dafür: Silben mitsprechen. Du schaffst das!“
+Fabian schreibt: „Lieber Fabian, das kannst du schon gut: Kopfrechnen und Zuhören. Das hat dir geholfen: Kärtchen für das Einmaleins und Pausen alle 20 Minuten. Das willst du noch schaffen: weniger Fehler bei Wörtern mit ie. Dein Trick dafür: Silben mitsprechen. Du schaffst das!“
 
 Er faltet den Brief, klebt ihn zu und grinst. „Bin gespannt, was ich dann sage.“
 
 **Fragen zum Gespräch:**
-1. Was schreibt Amir in seinen Brief?
+1. Was schreibt Fabian in seinen Brief?
 2. Warum könnte so ein Brief helfen?
 3. Was würdest du dir selbst schreiben?` },
     uebungen: [

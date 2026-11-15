@@ -265,11 +265,11 @@ Und so läuft die Ziege ganz vorne. Die Kinder klatschen und jubeln.
 3. Warum war die Ziege traurig?
 4. Welches Tier fängt so an wie dein Name?` },
     lerntext34: { titel: "Das ABC-Rennen", text:
-`„Stadt-Land-Fluss ist langweilig“, mault Jonas. „Ich kenne keine Flüsse.“ Seine große Schwester Merve hat eine Idee: „Dann machen wir unsere eigenen Spalten!“
+`„Stadt-Land-Fluss ist langweilig“, mault Jonas. „Ich kenne keine Flüsse.“ Seine große Schwester Charlotte hat eine Idee: „Dann machen wir unsere eigenen Spalten!“
 
-Sie zeichnet eine Tabelle: Tier – Essen – Name – Spielzeug. Jonas sagt leise das ABC auf, Merve ruft „Stopp!“. Jonas war beim K.
+Sie zeichnet eine Tabelle: Tier – Essen – Name – Spielzeug. Jonas sagt leise das ABC auf, Charlotte ruft „Stopp!“. Jonas war beim K.
 
-„Katze!“ – „Käse!“ – „Kevin!“ – „Kreisel!“, schreibt Jonas. Merve hat „Koala, Kuchen, Klara, Kran“. Für jedes Wort, das nur einer hat, gibt es 10 Punkte, für gleiche Wörter 5.
+„Katze!“ – „Käse!“ – „Kevin!“ – „Kreisel!“, schreibt Jonas. Charlotte hat „Koala, Kuchen, Klara, Kran“. Für jedes Wort, das nur einer hat, gibt es 10 Punkte, für gleiche Wörter 5.
 
 Am Ende gewinnt Jonas mit 35 Punkten. „Das spielen wir jetzt jeden Tag!“
 
@@ -467,11 +467,11 @@ Lena holt eine blaue Perle aus der Dose. Die Kette ist wieder fertig. Und Moritz
 
 Dann schreibt Frau Klein: 1 – 2 – 4 – 8 – ? Jetzt wird es still. Leo flüstert: „Immer plus 1? Nein … 1, 2, 4 … es verdoppelt sich!“ Die Antwort ist 16.
 
-Zum Schluss kommt die schwerste Reihe: 1 – 4 – 9 – 16 – ? Niemand weiß es. Dann ruft Aylin: „Das sind 1 mal 1, 2 mal 2, 3 mal 3, 4 mal 4! Also 25!“
+Zum Schluss kommt die schwerste Reihe: 1 – 4 – 9 – 16 – ? Niemand weiß es. Dann ruft Greta: „Das sind 1 mal 1, 2 mal 2, 3 mal 3, 4 mal 4! Also 25!“
 
 **Fragen zum Gespräch:**
 1. Wie geht es nach 2 – 4 – 6 – 8 weiter? Und nach 1 – 2 – 4 – 8?
-2. Wie hat Aylin das letzte Muster entdeckt?
+2. Wie hat Greta das letzte Muster entdeckt?
 3. Wo findet man Muster im Alltag? (Fliesen, Kleidung, Musik …)` },
     uebungen: [
         { titel: "Klatsch-Muster", fuer: "alle", dauer: "5 Min",

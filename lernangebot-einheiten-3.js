@@ -32,16 +32,16 @@ Und dann – die Maus kommt heraus! Karlo hat sie genau im Blick. Die Maus ersch
 2. Was hat Karlo am zweiten Tag anders gemacht?
 3. Was lenkt dich beim Lernen ab?` },
     lerntext34: { titel: "Der Elfmeter", text:
-`Letzte Minute, Elfmeter. Aylin legt den Ball auf den Punkt. Die Fans schreien, der Torwart hüpft hin und her.
+`Letzte Minute, Elfmeter. Greta legt den Ball auf den Punkt. Die Fans schreien, der Torwart hüpft hin und her.
 
-Aylin atmet tief ein. Sie hört die Fans nicht mehr. Sie sieht nur noch den Ball und die linke Ecke. Ein, zwei Schritte – Tor!
+Greta atmet tief ein. Sie hört die Fans nicht mehr. Sie sieht nur noch den Ball und die linke Ecke. Ein, zwei Schritte – Tor!
 
-Nach dem Spiel fragt eine Reporterin: „Wie bleibst du so ruhig?“ Aylin zuckt mit den Schultern: „Ich mache mir einen Tunnel im Kopf. Nur ich und das Ziel. Alles andere ist egal.“
+Nach dem Spiel fragt eine Reporterin: „Wie bleibst du so ruhig?“ Greta zuckt mit den Schultern: „Ich mache mir einen Tunnel im Kopf. Nur ich und das Ziel. Alles andere ist egal.“
 
-Beim Mathe-Test denkt Aylin manchmal an diesen Tunnel.
+Beim Mathe-Test denkt Greta manchmal an diesen Tunnel.
 
 **Fragen zum Gespräch:**
-1. Wie schafft Aylin es, sich zu konzentrieren?
+1. Wie schafft Greta es, sich zu konzentrieren?
 2. Was ist dein „Tunnel“ beim Lernen?
 3. Was hilft dir, wenn es laut ist?` },
     uebungen: [
@@ -267,7 +267,7 @@ Alle Kinder rufen gleichzeitig: „Sechs!“ Professor Plapper flattert vor Freu
     lerntext34: { titel: "Quiz-Nacht", text:
 `Einmal im Monat gibt es im Jugendclub eine Quiz-Nacht. Teams treten gegeneinander an: Mathe, Wörter, Wissen.
 
-Das Team „Die Füchse“ gewinnt fast immer. Ihr Geheimnis? „Wir reden leise miteinander, bevor wir antworten“, sagt Emre. „Jeder weiß etwas anderes. Zusammen wissen wir fast alles.“
+Das Team „Die Füchse“ gewinnt fast immer. Ihr Geheimnis? „Wir reden leise miteinander, bevor wir antworten“, sagt Henri. „Jeder weiß etwas anderes. Zusammen wissen wir fast alles.“
 
 Und wenn sie etwas nicht wissen? „Dann raten wir klug. Welche Antwort kann gar nicht stimmen? Die streichen wir zuerst.“
 
@@ -325,7 +325,7 @@ Am Ende hat jedes Kind alle drei Buden geschafft. „Das war der beste Jahrmarkt
 
 „An jeder Station liegt eine Karte mit der Übung und eine Lösungskarte“, erklärt die Trainerin. „Ihr kontrolliert euch selbst. Ich komme rum und helfe.“
 
-Am Ende sagt Malik: „Ich habe heute mehr geschafft als in drei normalen Trainings.“
+Am Ende sagt Tobias: „Ich habe heute mehr geschafft als in drei normalen Trainings.“
 
 **Fragen zum Gespräch:**
 1. Wie funktioniert das Training an Stationen?

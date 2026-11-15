@@ -482,16 +482,16 @@ Max zieht Paulas Namen. „Paula, du hast mir gestern deinen Stift geliehen. Das
     lerntext34: { titel: "Mehr als „Du bist cool“", text:
 `Sophie hat Geburtstag. Den ganzen Tag hört sie: „Du bist cool.“ – „Du bist nett.“ – „Schönes T-Shirt.“ Sie freut sich, aber irgendwie rauscht das alles an ihr vorbei.
 
-Dann kommt Can. „Ich fand es richtig toll, wie du letzte Woche dem neuen Mädchen die ganze Schule gezeigt hast. Du hast sogar gewartet, bis sie ihren Spind gefunden hat. Das hätte nicht jeder gemacht.“
+Dann kommt Julian. „Ich fand es richtig toll, wie du letzte Woche dem neuen Mädchen die ganze Schule gezeigt hast. Du hast sogar gewartet, bis sie ihren Spind gefunden hat. Das hätte nicht jeder gemacht.“
 
 Sophie ist gerührt. Dieses Kompliment geht ihr den ganzen Tag nicht aus dem Kopf.
 
-Am Abend überlegt sie, warum. Cans Kompliment war **genau** – er hat etwas Bestimmtes gesehen. Es war **ehrlich** – man hat gemerkt, dass er es so meint. Und es ging um etwas, das sie **getan** hat, nicht nur um ihr Aussehen.
+Am Abend überlegt sie, warum. Julians Kompliment war **genau** – er hat etwas Bestimmtes gesehen. Es war **ehrlich** – man hat gemerkt, dass er es so meint. Und es ging um etwas, das sie **getan** hat, nicht nur um ihr Aussehen.
 
-Am nächsten Tag probiert Sophie es selbst aus. „Can, deine Idee mit dem Regenwasser-Experiment war echt clever.“ Can grinst. „Danke!“
+Am nächsten Tag probiert Sophie es selbst aus. „Julian, deine Idee mit dem Regenwasser-Experiment war echt clever.“ Julian grinst. „Danke!“
 
 **Fragen zum Gespräch:**
-1. Warum hat Cans Kompliment Sophie so berührt?
+1. Warum hat Julians Kompliment Sophie so berührt?
 2. Was macht ein gutes Kompliment aus?
 3. Wie kann man ein Kompliment annehmen, ohne es kleinzureden?
 4. Gibt es Komplimente, die nicht nett gemeint sind?` },
@@ -574,7 +574,7 @@ Mila sagt: „Bei Menschen ist es genauso! Wenn Opa die Schultern hängen lässt
     lerntext34: { titel: "Was der Körper verrät", text:
 `Lukas hat ein tolles Referat über Haie vorbereitet. Er weiß alles über Hammerhaie und Walhaie. Doch als er vorn steht, schaut er auf den Boden, hält die Hände vor dem Bauch und murmelt so leise, dass hinten keiner etwas versteht. Ein paar Kinder fangen an zu tuscheln.
 
-Frau Meier sagt: „Lukas, dein Inhalt ist super. Probier es noch einmal: Stell dich gerade hin, Füße fest auf den Boden, und such dir zwei Kinder, die du anschaust.“ Lukas atmet durch. Er stellt sich aufrecht hin und schaut zu Emma und Kerem. Seine Stimme wird lauter. Plötzlich hören alle gespannt zu.
+Frau Meier sagt: „Lukas, dein Inhalt ist super. Probier es noch einmal: Stell dich gerade hin, Füße fest auf den Boden, und such dir zwei Kinder, die du anschaust.“ Lukas atmet durch. Er stellt sich aufrecht hin und schaut zu Emma und Erik. Seine Stimme wird lauter. Plötzlich hören alle gespannt zu.
 
 In der Pause fragt Lukas seine Freundin Hanna, ob alles okay ist. „Mir geht's gut“, sagt Hanna. Aber ihre Arme sind verschränkt, sie schaut weg, und ihre Stimme klingt dünn. Lukas merkt: Ihr Körper sagt etwas anderes als ihr Mund. „Sicher? Du siehst traurig aus.“ Da erzählt Hanna, dass ihre Eltern sich gestritten haben.
 
@@ -659,14 +659,14 @@ Dann setzen sich beide auf das Sofa. Und Papa liest Ella das Buch vor.
 
 Eines Abends kommt seine Oma vorbei und findet ihn mit Tränen in den Augen über dem Heft. Sie setzt sich zu ihm. „Weißt du, wie Astronauten auf den Mond gekommen sind? Nicht allein. Hunderte Menschen haben sich gegenseitig geholfen. Um Hilfe zu bitten ist keine Schwäche – es ist klug.“
 
-Am nächsten Tag nimmt Tom allen Mut zusammen. Er fragt seine Tischnachbarin Elif: „Kannst du mir bitte zeigen, wie du die zweite Aufgabe gerechnet hast? Ich komme beim Teilen durch 7 nicht weiter.“ Elif erklärt es ihm. Nach der Stunde geht er auch noch zu Frau Yilmaz und sagt genau, wo er hängt.
+Am nächsten Tag nimmt Tom allen Mut zusammen. Er fragt seine Tischnachbarin Luisa: „Kannst du mir bitte zeigen, wie du die zweite Aufgabe gerechnet hast? Ich komme beim Teilen durch 7 nicht weiter.“ Luisa erklärt es ihm. Nach der Stunde geht er auch noch zu Frau Fischer und sagt genau, wo er hängt.
 
-Eine Woche später rechnet Tom die Aufgaben allein. Und als Elif bei Englisch nicht weiterweiß, hilft er ihr.
+Eine Woche später rechnet Tom die Aufgaben allein. Und als Luisa bei Englisch nicht weiterweiß, hilft er ihr.
 
 **Fragen zum Gespräch:**
 1. Warum hat Tom so lange nicht gefragt?
 2. Was hat Toms Oma gemeint?
-3. Was war gut an der Art, wie Tom Elif gefragt hat?
+3. Was war gut an der Art, wie Tom Luisa gefragt hat?
 4. Wer kann dir in der Schule und zu Hause helfen?` },
     uebungen: [
         { titel: "Hilfe-Sätze", fuer: "alle", dauer: "4 Min",

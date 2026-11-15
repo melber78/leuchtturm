@@ -617,7 +617,7 @@ const WOERTER = ("Mama Papa Oma Opa Mia Lea Leo Lisa Tim Tom Ina Uli Ole Emma Mi
     "Tomate Tomaten Tal Tee Teller Tisch Tasse Tante Tor Turm Taxi Tür Nase Name Nadel Nest Note Nudel Nuss Nil Nina Dose Dach Dino Delfin Dorf Daumen Hose Haus Hase Hut Hund Hand Hemd Huhn Heft Honig Hexe " +
     "Ball Baum Banane Bus Bär Biene Boot Bett Brot Buch Kuh Kind Kino Katze Kamel Kerze Kiste Koffer Käse Kuchen Wal Wolke Wurm Wasser Wald Wind Wolf Wiese Fisch Fuchs Feder Fee Fahne Füße Fenster " +
     "Gabel Garten Gans Geld Giraffe Glas Gurke Junge Jacke Jo Pinsel Puppe Pirat Pilz Pony Palme Zelt Zug Zebra Zaun Zahn Zange Ziege Zitrone Vogel Vase Vater Säge Öl Ölkanne Möhre Mäuse Läuse " +
-    "Esel Igel Rosa Toto Lotto Molli Susi Sami Lisa Lilo Moni Rita Rudi Resi Nils Lars Malte Ole Tilo Lotte Lilli Anna Nino Alina Elisa Emil Lukas Ida Ute Otto").split(" ");
+    "Esel Igel Rosa Toto Lotto Molli Susi Vincent Lisa Lilo Moni Rita Rudi Resi Nils Lars Malte Ole Tilo Lotte Lilli Anna Nino Alina Elisa Emil Lukas Ida Ute Otto").split(" ");
 
 /* ---------- Einstellungen ---------- */
 const STANDARD = { schrift: "druck", ansicht: "buchstabe", aktuell: "m", gelernt: ["m", "a", "l", "i", "o"], zeilen: "3", spur: "punkte", start: "ja", hg: "weiss" };

@@ -408,13 +408,13 @@ Tim gießt Fridolin. Er stellt ihn in die Sonne. Und er malt sich einen Erinneru
 3. Was hat Tim gemacht, als er es gemerkt hat?
 4. Welche Aufgabe hast du zu Hause oder in der Schule?` },
     lerntext34: { titel: "Die kaputte Scheibe", text:
-`Selma, Paul und Deniz spielen nach der Schule Fußball auf der Wiese hinter den Häusern. Deniz schießt mit voller Wucht – der Ball fliegt am Tor vorbei und **klirr!** – mitten in das Kellerfenster von Herrn Schulze.
+`Selma, Paul und Hannes spielen nach der Schule Fußball auf der Wiese hinter den Häusern. Hannes schießt mit voller Wucht – der Ball fliegt am Tor vorbei und **klirr!** – mitten in das Kellerfenster von Herrn Schulze.
 
 „Weg hier!“, ruft Paul, und alle drei rennen davon. Zu Hause kann Selma nicht stillsitzen. Es war zwar nicht ihr Schuss, aber sie hat mitgespielt. Und Herr Schulze ist immer nett zu ihnen.
 
-Sie ruft Deniz an. „Wir müssen das sagen.“ Deniz will erst nicht. „Dann muss ich das bezahlen!“ – „Wir haben zusammen gespielt“, sagt Selma. „Dann stehen wir auch zusammen dazu.“
+Sie ruft Hannes an. „Wir müssen das sagen.“ Hannes will erst nicht. „Dann muss ich das bezahlen!“ – „Wir haben zusammen gespielt“, sagt Selma. „Dann stehen wir auch zusammen dazu.“
 
-Am Abend klingeln Selma und Deniz bei Herrn Schulze. Deniz erklärt mit roten Ohren, was passiert ist. Herr Schulze ist erst ärgerlich. Dann sagt er: „Danke, dass ihr gekommen seid. Das ist mir mehr wert als die Scheibe.“ Die Kinder helfen ihm am Wochenende im Garten – und die Eltern teilen sich die Kosten.
+Am Abend klingeln Selma und Hannes bei Herrn Schulze. Hannes erklärt mit roten Ohren, was passiert ist. Herr Schulze ist erst ärgerlich. Dann sagt er: „Danke, dass ihr gekommen seid. Das ist mir mehr wert als die Scheibe.“ Die Kinder helfen ihm am Wochenende im Garten – und die Eltern teilen sich die Kosten.
 
 **Fragen zum Gespräch:**
 1. Warum sind die Kinder zuerst weggerannt?
@@ -465,7 +465,7 @@ Am Abend klingeln Selma und Deniz bei Herrn Schulze. Deniz erklärt mit roten Oh
         }
       ]
     },
-    ab34: { titel: "Ich stehe dazu", kontext: "Zur Geschichte: Beim Fußball schießt Deniz ein Kellerfenster kaputt, alle rennen weg. Selma überredet Deniz, es Herrn Schulze zu sagen – und geht mit.", aufgaben: [
+    ab34: { titel: "Ich stehe dazu", kontext: "Zur Geschichte: Beim Fußball schießt Hannes ein Kellerfenster kaputt, alle rennen weg. Selma überredet Hannes, es Herrn Schulze zu sagen – und geht mit.", aufgaben: [
         { typ: "luecken", text: "Was hat Selma getan? Was hätte sie noch tun können?", nummern: false,
           saetze: ["Selma hat ___", "Sie hätte auch ___"] },
         { typ: "tabelle", text: "Verantwortung übernehmen – aber wie?", spalten: ["Was ist passiert?", "Was tue ich?"],
@@ -500,7 +500,7 @@ Leo sagt: „So macht es viel mehr Spaß!“
     lerntext34: { titel: "Der Fußballplatz", text:
 `An der Grundschule Lindenhof gibt es einen kleinen Fußballplatz. Jeden Tag ist er von den Viertklässlern besetzt. Wenn die Dritt- oder Zweitklässler fragen, heißt es: „Ihr seid zu schlecht“ oder „Wir waren zuerst da.“
 
-Die 3b ist sauer. Ihre Klassensprecherin Amira bringt das Problem in den Schülerrat. Die Viertklässler protestieren: „Wir sind die Großen, wir dürfen das!“ Amira bleibt ruhig: „Der Platz gehört allen Kindern der Schule.“
+Die 3b ist sauer. Ihre Klassensprecherin Merle bringt das Problem in den Schülerrat. Die Viertklässler protestieren: „Wir sind die Großen, wir dürfen das!“ Merle bleibt ruhig: „Der Platz gehört allen Kindern der Schule.“
 
 Der Schülerrat macht einen Plan: Montag die 1. und 2. Klassen, Dienstag die 3. Klassen, Mittwoch die 4. Klassen, Donnerstag gemischte Teams, Freitag freies Spiel. Wer den Plan nicht einhält, muss eine Pause aussetzen.
 
@@ -508,7 +508,7 @@ Die Viertklässler murren erst. Aber am Donnerstag merken sie: In gemischten Tea
 
 **Fragen zum Gespräch:**
 1. Was war das Problem? Wer hatte darunter zu leiden?
-2. Wie hat Amira das Problem gelöst? Was war daran klug?
+2. Wie hat Merle das Problem gelöst? Was war daran klug?
 3. Ist der Plan fair? Würdest du etwas ändern?
 4. Gibt es bei euch auch Streit in der Pause? Worum?` },
     uebungen: [

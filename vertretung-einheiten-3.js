@@ -449,7 +449,7 @@ Dann kommt ihr Bruder Max. „Ich habe 5 Euro. Was kann ich dafür kaufen?“ Lo
     lerntext34: { titel: "Der Schulfest-Stand", text:
 `Beim Schulfest betreut die 3b den Waffelstand. Die Preise: Waffel 1,50 €, Waffel mit Puderzucker 1,80 €, Apfelschorle 0,90 €.
 
-Herr Yilmaz kauft zwei Waffeln und eine Schorle. Anna rechnet: 1,50 € + 1,50 € = 3,00 €, plus 0,90 € = 3,90 €. Herr Yilmaz bezahlt mit einem 5-Euro-Schein. „Sie bekommen 1,10 € zurück“, sagt Anna.
+Herr Fischer kauft zwei Waffeln und eine Schorle. Anna rechnet: 1,50 € + 1,50 € = 3,00 €, plus 0,90 € = 3,90 €. Herr Fischer bezahlt mit einem 5-Euro-Schein. „Sie bekommen 1,10 € zurück“, sagt Anna.
 
 Am Ende zählen die Kinder die Kasse: 86,40 €. Davon kaufen sie neue Bälle für die Pause.
 
@@ -804,18 +804,18 @@ Seitdem ist Herr Hansen nie mehr allein im Leuchtturm.
 3. Was hat das Licht dem Fischerboot gezeigt?
 4. Warum ist Herr Hansen am Ende nicht mehr allein?` },
     lerntext34: { titel: "Das Geheimnis der Bibliothek", text:
-`Jeden Dienstag geht Elif in die Stadtbibliothek. Sie mag den Geruch der Bücher und die Stille. Doch an diesem Dienstag ist etwas anders: Auf ihrem Lieblingsplatz am Fenster liegt ein Buch ohne Titel.
+`Jeden Dienstag geht Luisa in die Stadtbibliothek. Sie mag den Geruch der Bücher und die Stille. Doch an diesem Dienstag ist etwas anders: Auf ihrem Lieblingsplatz am Fenster liegt ein Buch ohne Titel.
 
-Elif schlägt es auf. Die erste Seite ist leer. Auf der zweiten steht in schöner Schrift: „Wer mich findet, bekommt eine Aufgabe.“ Auf der dritten: „Suche das Buch mit dem roten Drachen.“
+Luisa schlägt es auf. Die erste Seite ist leer. Auf der zweiten steht in schöner Schrift: „Wer mich findet, bekommt eine Aufgabe.“ Auf der dritten: „Suche das Buch mit dem roten Drachen.“
 
-Elif geht durch die Regale. Bei den Märchen findet sie es – ein dickes Buch mit einem Drachen auf dem Rücken. Darin steckt ein Zettel: „Gut gemacht! Jetzt suche das kleinste Buch der Bibliothek.“
+Luisa geht durch die Regale. Bei den Märchen findet sie es – ein dickes Buch mit einem Drachen auf dem Rücken. Darin steckt ein Zettel: „Gut gemacht! Jetzt suche das kleinste Buch der Bibliothek.“
 
 Es dauert lange. Ganz unten im Regal für Gedichte findet sie es, kaum größer als eine Streichholzschachtel. Auf der letzten Seite steht: „Du hast die Bibliothek erforscht wie niemand vorher. Komm am Dienstag wieder – dann beginnt das nächste Rätsel.“
 
-Elif lächelt. Hinter der Theke zwinkert ihr die Bibliothekarin zu.
+Luisa lächelt. Hinter der Theke zwinkert ihr die Bibliothekarin zu.
 
 **Fragen zum Gespräch:**
-1. Was fand Elif auf ihrem Lieblingsplatz?
+1. Was fand Luisa auf ihrem Lieblingsplatz?
 2. Welche zwei Bücher musste sie suchen?
 3. Wer hat das Rätsel wohl versteckt – und woran merkt man das?
 4. Wie könnte es am nächsten Dienstag weitergehen?` },
@@ -841,7 +841,7 @@ Elif lächelt. Hinter der Theke zwinkert ihr die Bibliothekarin zu.
     ab34: { titel: "Mein Filmplakat", kontext: "Das Geheimnis der Bibliothek", aufgaben: [
         { typ: "malen", text: "Gestalte ein Filmplakat zur Geschichte – mit Titel und der wichtigsten Szene.", bild: "" },
         { typ: "luecken", text: "Erzähle in drei Sätzen nach:", nummern: true, saetze: ["Am Anfang ___", "Dann ___", "Am Ende ___"] },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Am nächsten Dienstag findet Elif ___"] }
+        { typ: "luecken", text: "", nummern: false, saetze: ["Am nächsten Dienstag findet Luisa ___"] }
     ]}
 })
 

@@ -31,7 +31,7 @@ Da kommt eine kleine Maus. „Ich helfe mit!“ Die anderen lachen: „Du bist d
 
 In Gruppe A fängt jeder sofort an. Lars bindet Flaschen zusammen, Mia sucht Stöcke, Jonah will lieber ein Segel bauen. Keiner spricht sich ab. Nach einer halben Stunde liegen drei halbe Flöße auf der Wiese – und keines schwimmt.
 
-Gruppe B setzt sich zuerst zusammen. „Wer kann gut knoten?“, fragt Aylin. „Ich!“, sagt Tom. „Wer zeichnet einen Plan?“ – Lena. „Wer testet, ob es schwimmt?“ – Kemal. Sie hören sich gegenseitig zu, auch als Lena eine Idee hat, die erst komisch klingt: Die Flaschen mit dem Deckel nach unten. Es klappt!
+Gruppe B setzt sich zuerst zusammen. „Wer kann gut knoten?“, fragt Greta. „Ich!“, sagt Tom. „Wer zeichnet einen Plan?“ – Lena. „Wer testet, ob es schwimmt?“ – Bastian. Sie hören sich gegenseitig zu, auch als Lena eine Idee hat, die erst komisch klingt: Die Flaschen mit dem Deckel nach unten. Es klappt!
 
 Das Floß von Gruppe B trägt den Teddy sicher über den Teich. Gruppe A ist enttäuscht. Aber dann fragt Lars: „Zeigt ihr uns, wie ihr das gemacht habt?“ Am Ende schwimmen zwei Flöße.
 
@@ -115,16 +115,16 @@ In der dritten Runde gewinnt Mia. Jan sagt: „Glückwunsch!“ Und Mia sagt: �
     lerntext34: { titel: "Das Finale", text:
 `Beim Schulturnier steht die 4b im Finale gegen die 4a. Es ist knapp. Kurz vor Schluss schießt die 4a das 3:2. Abpfiff.
 
-Can wirft sich auf den Rasen. „Der Schiri war gegen uns! Das war Abseits!“ Er tritt gegen eine Trinkflasche. Ein paar aus seinem Team schimpfen mit. Lotta dagegen geht zur 4a und gibt jedem die Hand. „Glückwunsch. Ihr habt gut gespielt.“
+Julian wirft sich auf den Rasen. „Der Schiri war gegen uns! Das war Abseits!“ Er tritt gegen eine Trinkflasche. Ein paar aus seinem Team schimpfen mit. Lotta dagegen geht zur 4a und gibt jedem die Hand. „Glückwunsch. Ihr habt gut gespielt.“
 
-Bei der 4a jubeln alle. Ein paar Jungen tanzen vor der 4b herum und singen: „Verlierer, Verlierer!“ Da sagt ihre Kapitänin Sina: „Hört auf. Die waren genauso gut. Das hätte auch andersrum ausgehen können.“ Sie geht zu Can und sagt: „Euer zweites Tor war das schönste des ganzen Turniers.“
+Bei der 4a jubeln alle. Ein paar Jungen tanzen vor der 4b herum und singen: „Verlierer, Verlierer!“ Da sagt ihre Kapitänin Sina: „Hört auf. Die waren genauso gut. Das hätte auch andersrum ausgehen können.“ Sie geht zu Julian und sagt: „Euer zweites Tor war das schönste des ganzen Turniers.“
 
-Can schaut sie an. Langsam steht er auf. „Danke“, murmelt er. „Und … Glückwunsch.“
+Julian schaut sie an. Langsam steht er auf. „Danke“, murmelt er. „Und … Glückwunsch.“
 
 Am Ende bekommt nicht die Siegermannschaft den Fair-Play-Pokal, sondern Lotta und Sina.
 
 **Fragen zum Gespräch:**
-1. Wie haben Can und Lotta auf die Niederlage reagiert?
+1. Wie haben Julian und Lotta auf die Niederlage reagiert?
 2. Wie haben sich die Gewinner verhalten? Was hat Sina getan?
 3. Warum haben Lotta und Sina den Fair-Play-Pokal bekommen?
 4. Was hilft dir, wenn du nach dem Verlieren wütend oder traurig bist?` },
@@ -215,9 +215,9 @@ Alle klatschen. „Ohne die Maus hätte es nicht geklappt“, sagt der Elefant.
     lerntext34: { titel: "Die Schülerzeitung", text:
 `Die Klasse 4c soll eine Schülerzeitung machen. Finn ist nicht begeistert. „Ich kann doch nicht gut schreiben“, sagt er. „Ich mache so viele Fehler.“
 
-In der Gruppe sind außer Finn noch Nele, Ahmed und Paula. Nele schlägt vor: „Lasst uns erst überlegen, wer was gut kann.“ Paula schreibt gern und schnell. Ahmed zeichnet die besten Comics der Schule. Nele ist super im Organisieren. Und Finn? „Du hast doch die tolle Kamera vom Geburtstag!“, sagt Ahmed. „Und du siehst immer Sachen, die keinem auffallen.“
+In der Gruppe sind außer Finn noch Nele, Felix und Paula. Nele schlägt vor: „Lasst uns erst überlegen, wer was gut kann.“ Paula schreibt gern und schnell. Felix zeichnet die besten Comics der Schule. Nele ist super im Organisieren. Und Finn? „Du hast doch die tolle Kamera vom Geburtstag!“, sagt Felix. „Und du siehst immer Sachen, die keinem auffallen.“
 
-Finn wird der Fotograf. Er fotografiert den Hausmeister bei der Arbeit, den Schulgarten und die Hühner von Herrn Krüger. Paula schreibt die Texte dazu, Ahmed zeichnet einen Comic, und Nele behält den Überblick.
+Finn wird der Fotograf. Er fotografiert den Hausmeister bei der Arbeit, den Schulgarten und die Hühner von Herrn Krüger. Paula schreibt die Texte dazu, Felix zeichnet einen Comic, und Nele behält den Überblick.
 
 Am Ende ist ihre Zeitung die beliebteste der ganzen Schule. Die Rektorin sagt: „Die Fotos sind großartig – wer hat die gemacht?“ Finn wird rot und grinst.
 
@@ -389,18 +389,18 @@ Zu Hause trinken sie Kakao. „Und was **schmeckst** du?“, fragt Opa. „Süß
 3. Was hat Lukas gefühlt und geschmeckt?
 4. Zeig am Platz, mit welchem Körperteil du siehst, hörst, riechst, fühlst und schmeckst.` },
     lerntext34: { titel: "Die Rosinen-Übung", text:
-`„Heute essen wir eine Rosine“, sagt Frau Haas. Kerem verdreht die Augen. „Eine Rosine? Das dauert eine Sekunde.“
+`„Heute essen wir eine Rosine“, sagt Frau Haas. Erik verdreht die Augen. „Eine Rosine? Das dauert eine Sekunde.“
 
 „Diesmal nicht“, sagt Frau Haas. „Wir essen sie, als hätten wir noch nie eine Rosine gesehen.“
 
-Zuerst schauen alle die Rosine genau an. Kerem bemerkt die vielen kleinen Falten und dass sie im Licht fast rot glänzt. Dann fühlen sie: Sie ist klebrig und ein bisschen weich. Sie halten sie ans Ohr und drücken sie – sie knistert leise! Sie riechen daran: süß, ein bisschen wie Wein.
+Zuerst schauen alle die Rosine genau an. Erik bemerkt die vielen kleinen Falten und dass sie im Licht fast rot glänzt. Dann fühlen sie: Sie ist klebrig und ein bisschen weich. Sie halten sie ans Ohr und drücken sie – sie knistert leise! Sie riechen daran: süß, ein bisschen wie Wein.
 
-Dann legen alle die Rosine auf die Zunge, ohne zu kauen. Kerem spürt, wie sein Mund wässrig wird. Endlich darf er langsam kauen. Der Geschmack ist so stark, dass er staunt.
+Dann legen alle die Rosine auf die Zunge, ohne zu kauen. Erik spürt, wie sein Mund wässrig wird. Endlich darf er langsam kauen. Der Geschmack ist so stark, dass er staunt.
 
-„Das war die intensivste Rosine meines Lebens“, sagt Kerem. Frau Haas lacht. „Das nennt man achtsam sein: ganz bei einer Sache, genau jetzt. Wir machen das viel zu selten.“
+„Das war die intensivste Rosine meines Lebens“, sagt Erik. Frau Haas lacht. „Das nennt man achtsam sein: ganz bei einer Sache, genau jetzt. Wir machen das viel zu selten.“
 
 **Fragen zum Gespräch:**
-1. Was hat Kerem an der Rosine entdeckt, was ihm vorher nie aufgefallen ist?
+1. Was hat Erik an der Rosine entdeckt, was ihm vorher nie aufgefallen ist?
 2. Was bedeutet „achtsam sein“?
 3. Wobei bist du oft mit den Gedanken ganz woanders?
 4. Wann könnte Achtsamkeit dir im Alltag helfen?` },
@@ -476,20 +476,20 @@ Am Sonntag ist das Glas schon halb voll. Benni sagt: „Danke für diese schöne
 3. Was hat Benni gemacht, als er traurig war?
 4. Was würdest du heute in dein Glücksglas legen?` },
     lerntext34: { titel: "Der schlechteste Tag – oder?", text:
-`Selin ist sich sicher: Heute ist der schlechteste Tag der Welt. Morgens regnet es, ihr Schirm ist kaputt. In der Schule merkt sie, dass sie ihr Pausenbrot vergessen hat. Beim Sport fällt sie hin und schürft sich das Knie auf.
+`Marie ist sich sicher: Heute ist der schlechteste Tag der Welt. Morgens regnet es, ihr Schirm ist kaputt. In der Schule merkt sie, dass sie ihr Pausenbrot vergessen hat. Beim Sport fällt sie hin und schürft sich das Knie auf.
 
-Abends sitzt sie schlecht gelaunt in ihrem Zimmer. Ihr Vater klopft. „Lass uns etwas ausprobieren. Schreib drei Dinge auf, die heute trotzdem gut waren.“ – „Da war nichts Gutes“, brummt Selin.
+Abends sitzt sie schlecht gelaunt in ihrem Zimmer. Ihr Vater klopft. „Lass uns etwas ausprobieren. Schreib drei Dinge auf, die heute trotzdem gut waren.“ – „Da war nichts Gutes“, brummt Marie.
 
 Dann denkt sie nach. Ihre Freundin Ida hat ihr Brot mit ihr geteilt. Auf dem Heimweg war ein riesiger Regenbogen am Himmel. Und als sie mit dem aufgeschürften Knie heimkam, hat Papa ihr einen Kakao gemacht.
 
-Selin schaut auf ihren Zettel. „Eigentlich … war der Tag gar nicht so schlecht.“ Ihr Vater lächelt. „Das Schlechte sieht man sofort. Das Gute muss man manchmal suchen.“
+Marie schaut auf ihren Zettel. „Eigentlich … war der Tag gar nicht so schlecht.“ Ihr Vater lächelt. „Das Schlechte sieht man sofort. Das Gute muss man manchmal suchen.“
 
-Seitdem schreibt Selin jeden Abend drei gute Dinge in ein kleines Heft. Und am nächsten Tag bedankt sie sich bei Ida.
+Seitdem schreibt Marie jeden Abend drei gute Dinge in ein kleines Heft. Und am nächsten Tag bedankt sie sich bei Ida.
 
 **Fragen zum Gespräch:**
-1. Warum dachte Selin, der Tag sei nur schlecht gewesen?
+1. Warum dachte Marie, der Tag sei nur schlecht gewesen?
 2. Was hat sich verändert, als sie die drei guten Dinge aufgeschrieben hat?
-3. Was meint Selins Vater mit seinem letzten Satz?
+3. Was meint Maries Vater mit seinem letzten Satz?
 4. Wem könntest du heute Danke sagen?` },
     uebungen: [
         { titel: "Glücksmoment-Runde", fuer: "alle", dauer: "5 Min",
@@ -555,18 +555,18 @@ Die Stifte schauen sich an. „Zusammen sind wir am schönsten“, sagt der Blau
 3. Was war beim zweiten Bild anders?
 4. Was ist an uns Menschen verschieden – und was ist gleich?` },
     lerntext34: { titel: "Unsere Klasse – ein Obstsalat", text:
-`Frau Novak hat eine Idee: „Jeder bringt morgen etwas mit, das zeigt, was ihn ausmacht.“
+`Frau Lange hat eine Idee: „Jeder bringt morgen etwas mit, das zeigt, was ihn ausmacht.“
 
-Am nächsten Tag liegen viele Dinge auf dem Tisch. Yusuf hat ein Foto von seiner Familie in Syrien mitgebracht und erzählt, dass er Arabisch, Kurdisch und Deutsch spricht. Hanna zeigt ihre Schwimmmedaillen. Lea erzählt, dass sie zwei Mamas hat. Oleksandr hat ukrainische Süßigkeiten dabei. Ben hat einen selbstgebauten Roboter.
+Am nächsten Tag liegen viele Dinge auf dem Tisch. Matti hat ein Foto von seiner Familie in Syrien mitgebracht und erzählt, dass er Arabisch, Kurdisch und Deutsch spricht. Hanna zeigt ihre Schwimmmedaillen. Lea erzählt, dass sie zwei Mamas hat. Oleksandr hat ukrainische Süßigkeiten dabei. Ben hat einen selbstgebauten Roboter.
 
-Nur Mats sitzt stumm da. „Ich hab nichts Besonderes. Bei mir ist alles normal.“ Frau Novak fragt nach. Es stellt sich heraus: Mats' Familie hat einen Bauernhof mit 60 Kühen, und Mats kann schon Trecker fahren. Alle staunen. „Das ist doch total besonders!“
+Nur Mats sitzt stumm da. „Ich hab nichts Besonderes. Bei mir ist alles normal.“ Frau Lange fragt nach. Es stellt sich heraus: Mats' Familie hat einen Bauernhof mit 60 Kühen, und Mats kann schon Trecker fahren. Alle staunen. „Das ist doch total besonders!“
 
-Am Ende schreibt Frau Novak an die Tafel: „Unsere Klasse ist wie ein Obstsalat. Jede Frucht schmeckt anders – und gerade deshalb schmeckt er so gut.“
+Am Ende schreibt Frau Lange an die Tafel: „Unsere Klasse ist wie ein Obstsalat. Jede Frucht schmeckt anders – und gerade deshalb schmeckt er so gut.“
 
 **Fragen zum Gespräch:**
 1. Welche Unterschiede gab es in der Klasse? Welche Gemeinsamkeiten fallen dir ein?
 2. Warum dachte Mats, an ihm sei nichts besonders?
-3. Was meint Frau Novak mit dem Obstsalat?
+3. Was meint Frau Lange mit dem Obstsalat?
 4. Was macht dich besonders?` },
     uebungen: [
         { titel: "Gleich und verschieden", fuer: "alle", dauer: "6 Min",
@@ -645,16 +645,16 @@ Lina setzt ihre Brille wieder auf.
 
 Die meisten anderen Kinder machen nicht mit – aber sie lachen. Oder sie schauen weg. „Das ist doch nur Spaß“, sagt einer.
 
-Amira beobachtet das schon lange. Eines Tages sieht sie, wie Jonas auf der Toilette weint. Sie spricht mit Kerem und Lina. „Das ist kein Spaß mehr. Das ist Mobbing: immer wieder, gegen einen, und er kann sich nicht wehren.“
+Merle beobachtet das schon lange. Eines Tages sieht sie, wie Jonas auf der Toilette weint. Sie spricht mit Erik und Lina. „Das ist kein Spaß mehr. Das ist Mobbing: immer wieder, gegen einen, und er kann sich nicht wehren.“
 
-Die drei beschließen etwas. In der nächsten Pause stellen sie sich zu Jonas. Als der Erste „Flohmarkt“ ruft, sagt Kerem: „Lass das. Das ist nicht witzig.“ Und nach der Pause gehen sie gemeinsam zu ihrer Lehrerin.
+Die drei beschließen etwas. In der nächsten Pause stellen sie sich zu Jonas. Als der Erste „Flohmarkt“ ruft, sagt Erik: „Lass das. Das ist nicht witzig.“ Und nach der Pause gehen sie gemeinsam zu ihrer Lehrerin.
 
 Es dauert noch ein paar Wochen. Aber dann hört es auf. Jonas sagt später: „Das Schlimmste war nicht das Lachen. Das Schlimmste war, dass niemand etwas gesagt hat.“
 
 **Fragen zum Gespräch:**
 1. Warum ist das, was mit Jonas passiert, kein Spaß mehr?
 2. Woran erkennt man Mobbing?
-3. Was können Zuschauer tun? Was haben Amira, Kerem und Lina gemacht?
+3. Was können Zuschauer tun? Was haben Merle, Erik und Lina gemacht?
 4. Was meint Jonas mit seinem letzten Satz?` },
     uebungen: [
         { titel: "Mitlachen oder auslachen?", fuer: "alle", dauer: "4 Min",

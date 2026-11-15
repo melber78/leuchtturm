@@ -83,13 +83,13 @@ K({
     ziel34: "Erkennen, wen Schimpfwörter eigentlich treffen – auch die, die man „einfach so“ sagt – und andere Wörter für Wut finden",
     material: "Pro Kind ein kleiner Zettel (anonym)\nTafel: fünf Felder „Familie – Mädchen & Frauen – Behinderung – Herkunft – Aussehen“\nHinweis für dich: Die Zettel liest du NICHT vor und schreibst die Wörter nicht an. Du ordnest sie nur den Feldern zu und zählst.",
     lerntext34: { titel: "Was heißt das eigentlich?", text:
-`In der 4a sagen viele Jungs ständig das H-Wort. Beim Fußball, im Chat, sogar zu ihren besten Freunden. „Ist doch normal“, sagt Mert.
+`In der 4a sagen viele Jungs ständig das H-Wort. Beim Fußball, im Chat, sogar zu ihren besten Freunden. „Ist doch normal“, sagt Till.
 
-Eines Tages fragt die Lehrerin ganz ruhig: „Was bedeutet das Wort eigentlich?“ Es wird still. Keiner will es erklären. Mert grinst verlegen. Dann sagt Jule: „Das heißt, dass die Mutter von dem anderen eine Frau ist, die für Sex Geld bekommt. Man beleidigt damit gar nicht den Jungen – man beleidigt seine Mutter.“
+Eines Tages fragt die Lehrerin ganz ruhig: „Was bedeutet das Wort eigentlich?“ Es wird still. Keiner will es erklären. Till grinst verlegen. Dann sagt Jule: „Das heißt, dass die Mutter von dem anderen eine Frau ist, die für Sex Geld bekommt. Man beleidigt damit gar nicht den Jungen – man beleidigt seine Mutter.“
 
 Die Jungs schauen sich an. Jule sagt weiter: „Und wenn ihr das die ganze Zeit sagt, dann redet ihr über Mütter und Frauen, als wären sie Dreck. Auch über eure eigenen Schwestern und Mütter.“
 
-Mert sagt nichts mehr. Später im Chat schreibt er: „Hab nie drüber nachgedacht.“
+Till sagt nichts mehr. Später im Chat schreibt er: „Hab nie drüber nachgedacht.“
 
 **Fragen zum Gespräch:**
 1. Warum wollte niemand erklären, was das Wort bedeutet?
