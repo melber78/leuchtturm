@@ -818,6 +818,7 @@ function praesentationStarten(e, startStufe){
     document.body.appendChild(wurzel);
     let anzahl = 9;
     try { anzahl = Math.max(2, Math.min(30, parseInt(localStorage.getItem("sozial_anzahl"), 10) || 9)); } catch (err) {}
+    if (e && e.nur34) startStufe = "34";   // Stunden nur für Kl. 3/4 haben keine Fassung 1/2
     zustand = { e, stufe: startStufe || "12", wurzel, buehne: wurzel.querySelector(".p-buehne"), i: 0, folien: [], stimmen: {}, anzahl, timer: null, gelesen: new Set(), vorleser: {}, punkte: { klasse: 0, eule: 0 }, gewertet: {}, mini: null };
     try { zustand.silben = localStorage.getItem("sozial_silben_" + zustand.stufe) === "1"; } catch (err) { zustand.silben = false; }
     wurzel.querySelector(".p-silbenknopf").classList.toggle("an", zustand.silben);
@@ -990,7 +991,7 @@ function folieHtml(f, e){
                 <div class="l-auftragskarte"><small>Eure Mission:</small>${esc(zielText || e.titel)}</div>
                 <div class="l-karte">${orte.map(([sym, name], k) => (k ? '<span class="l-kpfeil"></span>' : "") + `<div class="l-ort"><span>${sym}</span><b>${esc(name)}</b></div>`).join("")}</div>
                 <div class="l-duell">${eule(true)}<div><b>Klasse gegen Eule Ella!</b><br>Richtig gelöst? Punkt für euch. Daneben? Punkt für Ella.</div></div>
-                <div class="p-wahl"><button class="p-knopf ${zustand.stufe === "12" ? "" : "hell"}" data-stufe="12">Klasse 1/2</button><button class="p-knopf ${zustand.stufe === "34" ? "" : "hell"}" data-stufe="34">Klasse 3/4</button></div>
+                <div class="p-wahl">${e.nur34 ? "" : `<button class="p-knopf ${zustand.stufe === "12" ? "" : "hell"}" data-stufe="12">Klasse 1/2</button>`}<button class="p-knopf ${zustand.stufe === "34" ? "" : "hell"}" data-stufe="34">Klasse 3/4</button></div>
                 ${(() => { const g = gruppenFuer(zustand.stufe), a = gruppeAktuell(); const kl = klasseAktuell(), ks = zustand.stufe === "34" ? ["3", "4"] : ["1", "2"];
                     return `<div class="l-wahlzeile">` + (g.length > 1 ? `<div class="l-gruppen"><span>Unsere Gruppe:</span>${g.map(x => `<button class="l-gr ${x.id === a.id ? "an" : ""}" data-gruppe="${esc(x.id)}">${esc(x.name)}</button>`).join("")}</div>` : "")
                         + (window.sozialKlasseSetzen && a && !/^kl(12|34)$/.test(a.id) ? `<div class="l-gruppen l-klassen"><span>Klasse:</span>${[...ks, ""].map(k => `<button class="l-gr ${kl === k ? "an" : ""}" data-klasse="${k}">${k ? "Kl. " + k : "gemischt"}</button>`).join("")}</div>` : "") + (window.lernDauerSetzen ? `<div class="l-gruppen l-klassen"><span>Zeit:</span>${[20, 30, 40, 45].concat([20, 30, 40, 45].includes(lernD()) ? [] : [lernD()]).sort((x, y) => x - y).map(m => `<button class="l-gr ${lernD() === m ? "an" : ""}" data-dauer="${m}">${m} Min</button>`).join("")}</div>` : "") + `</div>`; })()}`;
@@ -1104,7 +1105,7 @@ function folieHtml(f, e){
                 <div class="p-klein">${esc(String((window.BEREICH && window.BEREICH.name) || "Sozialtraining").toUpperCase())} · ${esc(String(e.kategorie || "").toUpperCase())}</div>
                 ${bilderHtml(k)}
                 <h1>${esc(e.titel)}</h1>
-                <div class="p-wahl"><button class="p-knopf ${zustand.stufe === "12" ? "an" : ""}" data-stufe="12">Geschichte Kl. 1/2</button><button class="p-knopf ${zustand.stufe === "34" ? "an" : ""}" data-stufe="34">Geschichte Kl. 3/4</button></div>`;
+                <div class="p-wahl">${e.nur34 ? "" : `<button class="p-knopf ${zustand.stufe === "12" ? "an" : ""}" data-stufe="12">Geschichte Kl. 1/2</button>`}<button class="p-knopf ${zustand.stufe === "34" ? "an" : ""}" data-stufe="34">Geschichte Kl. 3/4</button></div>`;
         }
         case "barometer":
             return `<h2>Wie geht es dir heute?</h2><div class="p-klein">Tippe auf dein Gefühl – oder komm nach vorn und zeig es.</div>${stimmenHtml("barometer", GEFUEHLE_OPT)}`;
@@ -1620,6 +1621,7 @@ function laufText(text){
     return teile;
 }
 async function pptxExport(e, stufe = "12"){
+    if (e && e.nur34) stufe = "34";
     await skriptLaden("pptxgen.bundle.js");
     const p = new window.PptxGenJS();
     p.layout = "LAYOUT_WIDE"; // 13,33 × 7,5 Zoll

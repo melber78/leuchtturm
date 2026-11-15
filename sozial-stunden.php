@@ -1295,9 +1295,9 @@ function zeigeStunde(id){
             <h2 style="color:white"><i class="fa-solid fa-display"></i> Einstieg für die Tafel</h2>
             <p style="margin:0 0 14px;font-weight:700;opacity:.85">Interaktive Präsentation im Vollbild: Gefühls-Abstimmung, Geschichte mit Bildern und Vorlesestimme, Fragen, Daumen-Abstimmungen, Übungen mit Timer, Glücksrad „Wer ist dran?“ und Applauswelle. Steuerung mit Tippen, Pfeiltasten oder Presenter.</p>
             <div class="knopfleiste">
-                <button class="btn gold" data-einstieg="12"><i class="fa-solid fa-play"></i> Starten (Geschichte Kl. 1/2)</button>
-                <button class="btn" data-einstieg="34"><i class="fa-solid fa-play"></i> Starten (Geschichte Kl. 3/4)</button>
-                <button class="btn" data-pptx="12"><i class="fa-solid fa-file-powerpoint"></i> PowerPoint Kl. 1/2</button>
+                ${e.nur34 ? "" : `<button class="btn gold" data-einstieg="12"><i class="fa-solid fa-play"></i> Starten (Geschichte Kl. 1/2)</button>`}
+                <button class="btn${e.nur34 ? " gold" : ""}" data-einstieg="34"><i class="fa-solid fa-play"></i> Starten (Geschichte Kl. 3/4)</button>
+                ${e.nur34 ? "" : `<button class="btn" data-pptx="12"><i class="fa-solid fa-file-powerpoint"></i> PowerPoint Kl. 1/2</button>`}
                 <button class="btn" data-pptx="34"><i class="fa-solid fa-file-powerpoint"></i> PowerPoint Kl. 3/4</button>
             </div></div>` : ""}
         ${window.lernTafel && Array.isArray(e.tafel) && e.tafel.length ? `<div class="karte"><h2><i class="fa-solid fa-chalkboard"></i> Passende Tafel-Übungen</h2>
