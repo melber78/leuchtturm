@@ -42,6 +42,19 @@ foreach (["sozial" => ["sozialtraining.json", "sozial-einheiten"], "lernangebot"
     usort($dateien, fn($x, $y) => (basename($x) === "$praefix.js" ? -1 : (basename($y) === "$praefix.js" ? 1 : strnatcmp($x, $y))));
     $VORLAGEN[$b] = array_map(fn($f) => basename($f) . "?v=" . (@filemtime($f) ?: 1), $dateien);
 }
+// Geplante LRS-Stunden aus den Kinder-Akten (nur Kürzel, Datum, Stand) – je Datum
+$LRS = [];
+[$kinderRoh] = tp_lesen("kinder.json");
+$kinderCodes = array_map(fn($k) => (string)($k["code"] ?? ""), is_array($kinderRoh) ? $kinderRoh : []);
+[$aktenRoh] = tp_lesen("akten.json");
+foreach ((array)$aktenRoh as $code => $a) {
+    if (!in_array((string)$code, $kinderCodes, true) || !is_array($a)) continue;
+    foreach ((array)($a["stunden"] ?? []) as $st) {
+        $d = (string)($st["datum"] ?? "");
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $d) || $d < date("Y-m-d", strtotime("-120 days"))) continue;
+        $LRS[$d][] = ["k" => (string)$code, "id" => (string)($st["id"] ?? ""), "s" => (string)($st["status"] ?? "offen"), "geplant" => !empty($st["rezept"])];
+    }
+}
 $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE;
 ?>
 <!DOCTYPE html>
@@ -159,6 +172,8 @@ input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--meer
 .w-slot .t{ font-weight:800; display:block; overflow-wrap:anywhere; }
 .w-slot.aus{ opacity:.5; text-decoration:line-through; }
 .w-slot.pause{ background:transparent; border-left-color:transparent; padding:2px 8px; color:var(--grau); }
+.w-lrs{ display:inline-block; background:#efeafb; color:#5b43a8; border-radius:8px; padding:1px 7px; font-weight:900; }
+.w-lrs.leer{ background:#fdecea; color:#c0392b; font-weight:800; }
 .w-slot.w-frei{ background:transparent; border:2px dashed #d3dbd8; border-left:5px solid #d3dbd8; color:var(--grau); }
 .w-slot.w-frei b{ color:var(--grau); }
 .w-slot.w-frei .t{ font-weight:700; font-style:italic; }
@@ -304,6 +319,8 @@ table.dr-woche .zelle b{ color:var(--f); display:block; font-size:8pt; }
 <script>
 window.TP_DATEN = <?= json_encode((object)$tagesplan, $JSON) ?>;
 window.TP_PLAENE = <?= json_encode($PLAENE, $JSON) ?>;
+window.TP_LRS = <?= json_encode((object)$LRS, $JSON) ?>;
+window.TP_KINDER = <?= json_encode(array_values(array_filter($kinderCodes)), $JSON) ?>;
 window.TP_VORLAGEN = <?= json_encode($VORLAGEN, $JSON) ?>;
 window.TP_CSRF = <?= json_encode($_SESSION["tagesplan_csrf"], $JSON) ?>;
 window.TP_GESPERRT = <?= $tpKaputt ? "true" : "false" ?>;
@@ -472,7 +489,23 @@ function alleEinheiten(b){
 function stundeLink(e){ return BEREICHE[e.b].url + "#stunde/" + encodeURIComponent(e.id); }
 
 // Alles, was an einem Tag in einer Zeile des Stundenplans steht (Stundenplan + Änderungen des Tages + Jahresplan)
-function slotInfo(datum, zid){
+// LRS-Stunden eines Tages auf die LRS-Zeilen verteilen: Kürzel im Feld „Gruppe/Kürzel“ zuerst, dann der Reihe nach;
+// übrige Stunden (z. B. zwei Kinder zugleich) kommen zur letzten LRS-Zeile
+const lrsCache = {};
+function lrsVerteilen(datum){
+    if (lrsCache[datum]) return lrsCache[datum];
+    const liste = [...((window.TP_LRS || {})[datum] || [])], erg = { slots: {}, rest: [] };
+    const zeilen = sp().zeiten.filter(z => z.typ !== "pause").map(z => ({ z, i: slotInfo(datum, z.id, true) })).filter(x => x.i.art === "lrs" && !x.i.aus);
+    zeilen.forEach(x => erg.slots[x.z.id] = []);
+    zeilen.forEach(x => { const t = String(x.i.titel || "").toLowerCase(); for (let k = liste.length - 1; k >= 0; k--) if (t && t.split(/[\s,;+\/&]+/).includes(liste[k].k.toLowerCase())) erg.slots[x.z.id].unshift(...liste.splice(k, 1)); });
+    zeilen.forEach(x => { if (!erg.slots[x.z.id].length && liste.length) erg.slots[x.z.id].push(liste.shift()); });
+    if (liste.length) { if (zeilen.length) erg.slots[zeilen[zeilen.length - 1].z.id].push(...liste); else erg.rest = liste; }
+    return lrsCache[datum] = erg;
+}
+const LRS_STAND = { offen: "○", angefangen: "◐", erledigt: "✓" };
+function lrsLink(x){ return "lrs.php?stunde=" + encodeURIComponent(x.k) + (x.id ? "&sid=" + encodeURIComponent(x.id) : ""); }
+function lrsPlanLink(info){ const t = String(info.titel || "").split(/[\s,;+\/&]+/).find(w => (window.TP_KINDER || []).includes(w)); return t ? "lrs.php?stunde=" + encodeURIComponent(t) : "trainingshefte.php"; }
+function slotInfo(datum, zid, ohneLrs){
     const wt = wochentag(datum);
     const defRoh = spEintrag(wt, zid, false);
     let def = defRoh;
@@ -498,7 +531,9 @@ function slotInfo(datum, zid){
             quelle = "plan";
         }
     }
-    return { def, ov, geaendert, art, klasse, titel, raum, zweit, abW, einheit, quelle, plan, aus: !!ov.entfaellt };
+    const erg = { def, ov, geaendert, art, klasse, titel, raum, zweit, abW, einheit, quelle, plan, aus: !!ov.entfaellt };
+    if (!ohneLrs && art === "lrs") erg.lrs = lrsVerteilen(datum).slots[zid] || [];
+    return erg;
 }
 function werText(info){
     return [info.klasse ? klasseName(info.art, info.klasse) : "", info.titel || ""].filter(Boolean).join(" · ");
@@ -539,6 +574,10 @@ function todoHtml(liste, wo){
         <div class="todo-neu"><input type="text" data-todoneu="${wo}" placeholder="${wo === "tag" ? "To-do für heute …" : "To-do (z. B. kopieren, mitbringen) …"}" maxlength="300"><button class="btn klein" data-todoplus="${wo}" title="Hinzufügen"><i class="fa-solid fa-plus"></i></button></div>`;
 }
 function stundeHtml(info){
+    if (info.art === "lrs" && info.lrs && !info.einheit) {
+        if (!info.lrs.length) return `<div class="slot-stunde leer-stunde"><div class="titel" style="color:var(--grau);font-weight:800">Noch keine LRS-Stunde geplant</div><a class="btn klein gold" href="${esc(lrsPlanLink(info))}"><i class="fa-solid fa-plus"></i> Stunde planen</a></div>`;
+        return info.lrs.map(x => `<div class="slot-stunde"><div class="titel">${esc(x.k)}<small>${x.s === "erledigt" ? "✓ gehalten" : x.s === "angefangen" ? "◐ angefangen" : "○ geplant"} · LRS-Stunde aus der Kinder-Akte</small></div><a class="btn klein blau" href="${esc(lrsLink(x))}"><i class="fa-solid fa-book-open"></i> Öffnen</a></div>`).join("");
+    }
     const e = info.einheit;
     const b = ARTEN[info.art] && ARTEN[info.art].bereich;
     if (e) {
@@ -759,8 +798,8 @@ function zeigeWoche(){
                 if (z.typ === "pause" && !info.art) return "";
                 if (!info.art && !info.einheit && !(info.ov.notiz) && (zi < erste || zi > letzte)) return "";
                 if (!info.art && !info.einheit && !(info.ov.notiz)) return `<a class="w-slot w-frei" href="#tag/${d}"><b>${esc(z.name + ".")} ${esc(zeitText(z))}</b><span class="t">Freistunde</span></a>`;
-                return `<a class="w-slot ${info.aus ? "aus" : ""}" href="#tag/${d}" style="--f:${a.farbe}"><b>${esc(z.typ === "pause" ? (z.name || "Pause") : z.name + ".")} ${esc(zeitText(z))} · ${esc(a.name)}</b><span class="t">${info.zweit ? '<i class="fa-solid fa-user-group" title="Zweitbesetzung" style="color:var(--grau)"></i> ' : ""}${esc(werText(info) || "")}${info.einheit && !info.aus ? (werText(info) ? ": " : "") + esc(info.einheit.titel) : ""}${info.ov.notiz ? ' <i class="fa-regular fa-note-sticky" style="color:var(--grau)"></i>' : ""}</span></a>`;
-            }).join("");
+                return `<a class="w-slot ${info.aus ? "aus" : ""}" href="#tag/${d}" style="--f:${a.farbe}"><b>${esc(z.typ === "pause" ? (z.name || "Pause") : z.name + ".")} ${esc(zeitText(z))} · ${esc(a.name)}</b><span class="t">${info.zweit ? '<i class="fa-solid fa-user-group" title="Zweitbesetzung" style="color:var(--grau)"></i> ' : ""}${esc(werText(info) || "")}${info.einheit && !info.aus ? (werText(info) ? ": " : "") + esc(info.einheit.titel) : ""}${info.lrs && !info.aus ? (info.lrs.length ? ` <span class="w-lrs">${info.lrs.map(x => (LRS_STAND[x.s] || "○") + " " + esc(x.k)).join(" · ")}</span>` : ` <span class="w-lrs leer">noch nicht geplant</span>`) : ""}${info.ov.notiz ? ' <i class="fa-regular fa-note-sticky" style="color:var(--grau)"></i>' : ""}</span></a>`;
+            }).join("") + lrsVerteilen(d).rest.map(x => `<a class="w-slot" href="${esc(lrsLink(x))}" style="--f:${ARTEN.lrs.farbe}"><b>LRS-Stunde (nicht im Stundenplan)</b><span class="t"><span class="w-lrs">${(LRS_STAND[x.s] || "○") + " " + esc(x.k)}</span></span></a>`).join("");
             const extra = t.extra.filter(x => x.titel).map(x => `<a class="w-slot" href="#tag/${d}" style="--f:#c0392b"><b>${esc(x.von || "")}${x.bis ? "–" + esc(x.bis) : ""} · Termin</b><span class="t">${esc(x.titel)}</span></a>`).join("");
             return `<div class="w-tag ${d === heute() ? "heute" : ""}"><a class="w-kopf" href="#tag/${d}">${TAGNAMEN[wochentag(d)]}<small>${kurz(d)}</small></a>
                 ${zeilen || extra ? zeilen + extra : `<div style="color:var(--grau);font-weight:700;font-size:13px">frei</div>`}
@@ -961,7 +1000,7 @@ function druckeWoche(mo){
         ${s.zeiten.map(z => `<tr><td class="z">${esc(z.typ === "pause" ? (z.name || "Pause") : z.name)}<br><span style="font-weight:700;font-size:7.5pt">${esc(zeitText(z))}</span></td>${tage.map(d => {
             const info = slotInfo(d, z.id), a = ARTEN[info.art] || ARTEN.sonstiges;
             if (!info.art && !info.einheit && !info.ov.notiz) return "<td></td>";
-            return `<td><div class="zelle" style="--f:${a.farbe}"><b>${esc(info.art ? a.name : "")}${info.aus ? " – fällt aus" : ""}</b>${esc(werText(info))}${info.zweit ? " (Zweitbesetzung)" : ""}${info.einheit && !info.aus ? `<div style="font-weight:800">${esc(info.einheit.titel)}</div>` : ""}${info.ov.notiz ? `<div style="color:#55636b">${esc(info.ov.notiz)}</div>` : ""}</div></td>`;
+            return `<td><div class="zelle" style="--f:${a.farbe}"><b>${esc(info.art ? a.name : "")}${info.aus ? " – fällt aus" : ""}</b>${esc(werText(info))}${info.zweit ? " (Zweitbesetzung)" : ""}${info.einheit && !info.aus ? `<div style="font-weight:800">${esc(info.einheit.titel)}</div>` : ""}${info.lrs && !info.aus ? `<div style="font-weight:800">${info.lrs.length ? info.lrs.map(x => esc(x.k)).join(", ") : "– noch nicht geplant –"}</div>` : ""}${info.ov.notiz ? `<div style="color:#55636b">${esc(info.ov.notiz)}</div>` : ""}</div></td>`;
         }).join("")}</tr>`).join("")}
         <tr><td class="z">Termine</td>${tage.map(d => `<td>${tagDaten(d, false).extra.filter(x => x.titel).map(x => esc((x.von ? x.von + " " : "") + x.titel)).join("<br>")}</td>`).join("")}</tr>
         </tbody></table>`, true, "Wochenplan KW " + kw(mo));
