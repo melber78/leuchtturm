@@ -158,9 +158,9 @@ Alle unterschrieben. Nach vier Wochen zählten sie: Statt fast jeden Tag gab es 
 5. Würde so eine Regel bei uns funktionieren? Was müsste anders sein?` },
     uebungen: [
         { titel: "Regel aushandeln", dauer: "8 Min",
-          text: "Jetzt macht ihr eure eigene Regel – du schreibst nur mit. Schritt für Schritt:\n\n- Was genau ist verboten? (Formulierung gemeinsam finden)\n- Was sagt man, wenn es doch passiert? (Stopp-Wort wie „Tabu!“)\n- Was passiert mit dem, der den Spruch gesagt hat?\n- Was passiert, wenn jemand zurückschlägt?\n\nAbstimmung mit roten und grünen Karten. Erst wenn alle grün zeigen (oder wenigstens keiner rot), kommt es aufs Plakat. Am Ende unterschreiben alle.",
+          text: "Jetzt macht ihr eure eigene Regel – du schreibst nur mit. Schritt für Schritt:\n\n- Was genau ist verboten? (Formulierung gemeinsam finden)\n- Was sagt man, wenn es doch passiert? (Stopp-Wort wie „Tabu!“)\n- Was passiert mit dem, der den Spruch gesagt hat?\n- Was passiert, wenn jemand zurückschlägt?\n\nAbstimmung mit dem Daumen. Erst wenn alle 👍 zeigen (oder wenigstens keiner 👎), gilt die Regel. Am Ende unterschreiben alle.",
           quiz: "keine",
-          folie: "Wir machen **unsere eigene Regel**. 📜\n\nZum Schluss: Halte die **rote oder grüne Karte** hoch. Erst wenn keiner Rot zeigt, kommt sie aufs Plakat.",
+          folie: "Wir machen **unsere eigene Regel**. 📜\n\nZum Schluss: Zeig es mit dem Daumen: 👍 = grün · 👎 = rot. Erst wenn keiner Rot zeigt, kommt sie aufs Plakat.",
           kern: ["34"],
           emoji: "📜",
           warum: "Wir machen gemeinsam unsere eigene Regel." },

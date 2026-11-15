@@ -56,7 +56,7 @@ Niklas merkt: Eine Lüge ist schnell erzählt. Vertrauen zurückzuholen dauert W
         { titel: "Lüge oder nicht?", dauer: "6 Min",
           text: "Du liest Situationen vor, die Kinder zeigen rot (= Lüge, die schadet) oder grün (= ehrlich bzw. harmlos). Diskutiert die schwierigen Fälle.\n\n- „Ich hab die Hausaufgaben vergessen“ – obwohl man keine Lust hatte.\n- Oma fragt, ob dir der Pullover gefällt. Du sagst ja, obwohl er hässlich ist.\n- Du sagst, du warst es nicht, obwohl du das Fenster kaputt gemacht hast.\n- Du verrätst nicht, wo dein Freund sein Geburtstagsgeschenk versteckt hat.\n- Du erzählst, du hättest ein neues Handy – stimmt aber nicht.\n- Du sagst der Lehrerin nicht, wer die Wand beschmiert hat.",
           antworten: ["🔴 Lüge, die schadet", "🟢 ehrlich / harmlos"],
-          folie: "Ist das eine **Lüge, die schadet** 🔴 – oder **ehrlich bzw. harmlos** 🟢?\n\nHalte die **rote oder grüne Karte** hoch.",
+          folie: "Ist das eine **Lüge, die schadet** 🔴 – oder **ehrlich bzw. harmlos** 🟢?\n\nZeig es mit dem Daumen: 👍 = grün · 👎 = rot.",
           kern: ["34"],
           emoji: "🤔",
           warum: "Nicht jede Unwahrheit ist gleich. Ihr entscheidet." }
@@ -261,7 +261,7 @@ Kevins alter Freund Marc ist nicht so cool. Aber als Kevin krank war, hat Marc i
         { titel: "Echt oder falsch?", dauer: "6 Min",
           text: "Du liest Verhaltensweisen vor, die Kinder zeigen grün (= echter Freund) oder rot (= falscher Freund).\n\n- Hält zu dir, auch wenn andere über dich lachen.\n- Will nur mit dir abhängen, wenn du etwas Neues hast.\n- Sagt dir ehrlich, wenn du Mist baust.\n- Erzählt deine Geheimnisse weiter.\n- Bringt dich dazu, Dinge zu tun, die du nicht willst.\n- Freut sich mit dir, wenn du etwas geschafft hast.",
           antworten: ["🟢 echter Freund", "🔴 falscher Freund"],
-          folie: "**Echter Freund** 🟢 oder **falscher Freund** 🔴?\n\nHalte die **rote oder grüne Karte** hoch.",
+          folie: "**Echter Freund** 🟢 oder **falscher Freund** 🔴?\n\nZeig es mit dem Daumen: 👍 = grün · 👎 = rot.",
           kern: ["34"],
           loesungen: ["1", "2", "1", "2", "2", "1"],
           emoji: "🤝",
@@ -434,7 +434,7 @@ Abends kann Vincent nicht schlafen. Was, wenn der Lehrer nicht gekommen wäre?
           text: "Du liest Situationen vor. Rot = das würde ich für mich behalten, grün = da hole ich Hilfe. Danach die Regel an die Tafel: **Petzen will jemandem Ärger machen. Hilfe holen will jemanden schützen.**\n\n- Jemand hat abgeschrieben.\n- Ein Kind wird jeden Tag auf dem Heimweg abgezogen.\n- Jemand hat ein Messer dabei.\n- Jemand hat einen Kaugummi unter den Tisch geklebt.\n- Ein Freund erzählt, dass er zu Hause geschlagen wird.\n- Im Chat droht jemand, einem anderen „aufzulauern“.",
           quiz: "ampel",
           antworten: ["🔴 für mich behalten", "🟢 Hilfe holen"],
-          folie: "🔴 **Das behalte ich für mich.**\n🟢 **Da hole ich Hilfe.**\n\nHalte die **rote oder grüne Karte** hoch.",
+          folie: "🔴 **Das behalte ich für mich.**\n🟢 **Da hole ich Hilfe.**\n\nZeig es mit dem Daumen: 👍 = grün · 👎 = rot.",
           kern: ["34"],
           loesungen: ["1", "2", "2", "1", "2", "2"],
           emoji: "🛡️",
@@ -490,8 +490,8 @@ K({
           "1",
           "1"
         ],
-        "text": "Du liest Sätze und Verhaltensweisen vor, wie sie in einem Klärungsgespräch vorkommen. Die Kinder halten die grüne Karte hoch (hilft beim Klären) oder die rote (macht es schlimmer). Danach kurz fragen: Warum?\n\n- „Der hat angefangen!“\n- „Ich war sauer, weil du den Ball nicht abgegeben hast.“\n- Augen verdrehen, während der andere erzählt.\n- Den anderen ausreden lassen.\n- „Du lügst doch!“\n- „Es tut mir leid, dass ich dich getreten habe.“\n- „Ich wünsche mir, dass du mich nicht mehr schubst.“",
-        "folie": "So ein Gespräch gibt es, **wenn alle wieder ruhig sind** – mit einem Erwachsenen.\n\nHilft das beim Klären 🟢 – oder macht es den Streit schlimmer 🔴?\n\nHalte die **rote oder grüne Karte** hoch."
+        "text": "Du liest Sätze und Verhaltensweisen vor, wie sie in einem Klärungsgespräch vorkommen. Die Kinder zeigen 👍 (hilft beim Klären) oder 👎 (macht es schlimmer). Danach kurz fragen: Warum?\n\n- „Der hat angefangen!“\n- „Ich war sauer, weil du den Ball nicht abgegeben hast.“\n- Augen verdrehen, während der andere erzählt.\n- Den anderen ausreden lassen.\n- „Du lügst doch!“\n- „Es tut mir leid, dass ich dich getreten habe.“\n- „Ich wünsche mir, dass du mich nicht mehr schubst.“",
+        "folie": "So ein Gespräch gibt es, **wenn alle wieder ruhig sind** – mit einem Erwachsenen.\n\nHilft das beim Klären 🟢 – oder macht es den Streit schlimmer 🔴?\n\nZeig es mit dem Daumen: 👍 = grün · 👎 = rot."
       },
       {
         "titel": "Wiedergutmachen – aber passend",

@@ -78,6 +78,9 @@ const CSS = `
 #praes .p-frage.aufgabe{ background:#fff7e6; }
 #praes .p-frage.aufgabe:not(.an):not(.war){ visibility:hidden; }
 #praes .p-chip.zusatz{ background:#eef1f3; color:#6b7880; }
+#praes .p-loes{ margin-top:1.4vh; background:#e9f7ee; color:#1d6b3a; border-radius:16px; padding:.4em 1em; font-weight:800; font-size:clamp(18px,min(2.4vw,4vh),38px); }
+#praes.lern .p-loes{ background:rgba(120,220,150,.15); color:#bff5cf; }
+#praes .p-liste .zu{ filter:blur(9px); opacity:.55; cursor:pointer; user-select:none; }
 #praes .p-liste{ display:flex; flex-wrap:wrap; gap:.5em .7em; justify-content:center; margin-top:2vh; max-width:min(1300px,94vw); }
 #praes .p-liste div{ background:white; border-radius:16px; padding:.35em .8em; box-shadow:0 4px 14px rgba(22,50,74,.1); font-family:"Andika","Nunito",sans-serif; font-size:clamp(17px,min(2.2vw,3.6vh),34px); }
 #praes .p-frage .nr{ font-family:"Nunito",sans-serif; font-weight:900; color:#f2a93b; }
@@ -724,10 +727,10 @@ function folienBauenLern(e, stufe){
         if (dauer <= 20 && !u.zusatz && nr >= 2) return; // sehr kurz: nur zwei Challenges
         const punkte = aufzaehlung(u.text).slice(0, 10).map(p => p.split(/\s+→\s+/)[0]);
         const art = u.quiz || quizArt(u.text);
-        if (art === "liste" && punkte.length) u.liste = punkte;
+        if (art === "liste" && punkte.length) u.liste = punkte; if (art === "aufdecken" && punkte.length) { u.liste = punkte; u.aufdecken = true; }
         f.push({ typ: "challenge", u, nr: u.zusatz ? 0 : ++nr, tafel: tafelFuerUebung(u.text, tafel) });
         if (punkte.length >= 2 && art === "karten") punkte.forEach((p, i) => f.push({ typ: "raetsel", u, aussage: p, nr: i + 1, von: punkte.length }));
-        else if (punkte.length >= 2 && !["frage", "keine", "liste", "karten"].includes(art)) {
+        else if (punkte.length >= 2 && !["frage", "keine", "liste", "karten", "aufdecken"].includes(art)) {
             const loes = u0["loesungen" + stufe] || u0.loesungen || [];
             punkte.forEach((p, i) => f.push({ typ: "quiz", u, art, aussage: p, nr: i + 1, von: punkte.length, loesung: loes[i] ? String(loes[i]).split(/[,\s]+/).map(Number).filter(Boolean) : [] }));
         }
@@ -769,10 +772,10 @@ function folienBauen(e, stufe){
         // liste = alle Punkte auf der Übungsfolie · keine = Punkte nur für die Lehrkraft
         const punkte = aufzaehlung(u.text).slice(0, 10).map(p => p.split(/\s+→\s+/)[0]);
         const art = u.quiz || quizArt(u.text);
-        if (art === "liste" && punkte.length) u.liste = punkte;
+        if (art === "liste" && punkte.length) u.liste = punkte; if (art === "aufdecken" && punkte.length) { u.liste = punkte; u.aufdecken = true; }
         f.push({ typ: "uebung", u });
         if (punkte.length >= 2 && art === "karten") punkte.forEach((p, i) => f.push({ typ: "karte", u, aussage: p, nr: i + 1, von: punkte.length }));
-        else if (punkte.length >= 2 && !["frage", "keine", "liste", "karten"].includes(art)) {
+        else if (punkte.length >= 2 && !["frage", "keine", "liste", "karten", "aufdecken"].includes(art)) {
             const loes = u0["loesungen" + stufe] || u0.loesungen || [];   // je Situation: richtige Antwort(en), z. B. "1" oder "2,3"
             punkte.forEach((p, i) => f.push({ typ: "abstimmung", u, art, aussage: p, nr: i + 1, von: punkte.length, loesung: loes[i] ? String(loes[i]).split(/[,\s]+/).map(Number).filter(Boolean) : [] }));
         }
@@ -967,6 +970,9 @@ function stimmenHtml(schluessel, optionen){
         <button class="p-minus" data-minus="1" title="Aus Versehen getippt? Eine Stimme zurücknehmen." style="visibility:${s[o.wert] ? "visible" : "hidden"}">↩ zurück</button></div>`).join("")}</div>`;
 }
 const GEFUEHLE_OPT = ["fröhlich", "traurig", "wütend", "ängstlich", "cool"].map(g => ({ wert: g, name: g, art: "gefuehl", zeichen: g }));
+// Karten: "Situation (Lösung/Idee)" → die Klammer bleibt verdeckt, bis man sie antippt
+function karteTeilen(t){ const m = /^(.*?)\s*\(([^()]+)\)\s*$/.exec(String(t || "")); return m ? { text: m[1], loes: m[2] } : { text: String(t || ""), loes: "" }; }
+function loesKnopf(u, loes){ return loes ? `<div class="p-reihe" style="margin-top:1.2vh"><button class="p-knopf hell" data-zeig="1">${esc(u.loesKnopf || "💡 Lösung zeigen")}</button></div><div class="p-loes" hidden>${inline(loes)}</div>` : ""; }
 function abstimmOptionen(art, u, f){
     if (f && Array.isArray(f.opt) && f.opt.length) return f.opt.map((a, k) => { const m = /^(\p{Extended_Pictographic}\S*)\s+(.*)$/u.exec(a); return { wert: "a" + k, name: m ? m[2] : a, art: "emoji", zeichen: m ? m[1] : "" }; });
     if (u && Array.isArray(u.antworten) && u.antworten.length) return u.antworten.map((a, k) => { const m = /^(\S+)\s+(.*)$/.exec(a) || [a, "", a]; return { wert: "a" + k, name: m[2], art: "emoji", zeichen: m[1] }; });
@@ -1027,7 +1033,7 @@ function folieHtml(f, e){
             const text = f.u.folie ? f.u.folie : aufzaehlung(f.u.text).length ? kurz.split("\n").filter(z => !/^\s*[-•]/.test(z)).join("\n") : f.u.text;
             return `<div class="l-level${f.u.zusatz ? " bonus" : ""}">${f.u.zusatz ? "BONUS-LEVEL" : "CHALLENGE " + f.nr}</div>
                 <div class="l-chall"><span class="l-chall-emoji">${f.u.emoji || "🎯"}</span><h2>${esc(f.u.titel)}</h2></div>
-                <div class="p-text" style="font-size:${groesse(text, 420, 260)}">${md(text)}</div>${f.u.liste ? `<div class="p-liste">${f.u.liste.map(x => `<div>${inline(x)}</div>`).join("")}</div>` : ""}
+                <div class="p-text" style="font-size:${groesse(text, 420, 260)}">${md(text)}</div>${f.u.liste ? `<div class="p-liste">${f.u.liste.map(x => `<div${f.u.aufdecken ? ' class="zu"' : ""}>${inline(x)}</div>`).join("")}</div>${f.u.aufdecken ? '<div class="p-klein" style="margin-top:1vh">Erst sammeln – dann antippen und aufdecken.</div>' : ""}` : ""}
                 <div class="p-reihe">${f.tafel && window.lernTafel && window.lernTafel.info(f.tafel.werkzeug) ? `<button class="p-knopf l-los" data-tafel="1">${window.lernTafel.info(f.tafel.werkzeug).emoji || "▶"} ${esc(f.tafel.titel || window.lernTafel.info(f.tafel.werkzeug).titel)} starten</button>` : ""}${min ? `<button class="p-knopf${f.tafel ? " hell" : ""}" data-start="${min}">⏱ ${min} Minuten</button>` : ""}<button class="p-knopf hell" data-p="rad">🎡 Wer fängt an?</button>${f.u.zusatz && f.weiter ? `<button class="p-knopf hell" data-springen="${f.weiter}">⏭ Überspringen</button>` : ""}</div>`;
         }
         if (f.typ === "quiz") {
@@ -1042,13 +1048,13 @@ function folieHtml(f, e){
                 <div class="l-ergebnis" hidden></div>
                 <div class="l-countdown" hidden></div>
                 ${tipp ? `<div class="p-reihe l-tippreihe"><button class="p-knopf hell" data-countdown="🙋 Wer tippt?">⏳ 10 Sekunden überlegen</button><button class="p-knopf hell" data-p="rad">🎡 Wer tippt an?</button><button class="p-knopf hell l-nochmal" data-nochmal="1" hidden>↩ Nochmal</button></div>
-                    <div class="p-klein l-tipphinweis">Erst überlegen (Zahlenkarte zeigen) – dann tippt ein Kind die Antwort an der Tafel an.</div>`
-                : `<div class="p-reihe"><button class="p-knopf gold" data-countdown="1">⏳ 3-2-1 … Karten hoch!</button></div>
+                    <div class="p-klein l-tipphinweis">Erst überlegen (mit den Fingern zeigen) – dann tippt ein Kind die Antwort an der Tafel an.</div>`
+                : `<div class="p-reihe"><button class="p-knopf gold" data-countdown="1">⏳ 3-2-1 … Finger hoch!</button></div>
                 <div class="p-reihe l-pkreihe">${punktKnoepfe}</div>`}`;
         }
-        if (f.typ === "raetsel") return `<div class="l-quizkopf"><span>${f.u.emoji || "🃏"} ${esc(f.u.titel)}</span><span>Karte ${f.nr} / ${f.von}</span></div>
-                <div class="l-raetselkarte"${f.aussage.length > 80 ? ' style="font-size:clamp(20px,min(2.8vw,4.6vh),44px)"' : ""}><span class="l-rk-ecke">?</span>${inline(f.aussage)}</div>${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${md(f.u.frage)}</div>` : ""}
-                <div class="p-reihe"><button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div><div class="p-reihe l-pkreihe">${punktKnoepfe}</div>`;
+        if (f.typ === "raetsel") { const kt = karteTeilen(f.aussage); return `<div class="l-quizkopf"><span>${f.u.emoji || "🃏"} ${esc(f.u.titel)}</span><span>Karte ${f.nr} / ${f.von}</span></div>
+                <div class="l-raetselkarte"${f.aussage.length > 80 ? ' style="font-size:clamp(20px,min(2.8vw,4.6vh),44px)"' : ""}><span class="l-rk-ecke">?</span>${inline(kt.text)}</div>${loesKnopf(f.u, kt.loes)}${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${md(f.u.frage)}</div>` : ""}
+                <div class="p-reihe"><button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div><div class="p-reihe l-pkreihe">${punktKnoepfe}</div>`; }
         if (f.typ === "knobel") { const d = f.d;
             return `<div class="l-level lila">KNOBEL-RÄTSEL</div>
                 <div class="l-raetselkarte l-knobel"${String(d.frage).length > 110 ? ' style="font-size:clamp(20px,min(2.8vw,4.6vh),44px)"' : ""}>${d.bild ? `<div class="l-kbild">${esc(d.bild)}</div>` : ""}${inline(d.frage)}</div>
@@ -1134,14 +1140,14 @@ function folieHtml(f, e){
             const kurz = String(f.u.text || "").split(/\n\s*\n/)[0];
             const reihe = zustand.folien.filter(x => x.typ === "uebung" && !x.u.zusatz), unr = reihe.findIndex(x => x.u === f.u) + 1;
             return `<div>${f.u.zusatz ? '<span class="p-chip zusatz">Zusatz – wenn noch Zeit ist</span>' : (reihe.length > 1 ? `<span class="p-chip">Übung ${unr} von ${reihe.length}</span>` : "") + fuerChip(f.u)}${f.u.dauer ? `<span class="p-chip">${esc(f.u.dauer)}</span>` : ""}</div><h2>${f.u.emoji ? esc(f.u.emoji) + " " : ""}${esc(f.u.titel)}</h2>
-                <div class="p-text" style="font-size:${String(f.u.text || "").length > 450 ? "clamp(14px,min(1.45vw,2.3vh),26px)" : String(f.u.text || "").length > 280 ? "clamp(17px,min(2.1vw,3.6vh),34px)" : "clamp(20px,min(2.6vw,4.6vh),40px)"}">${md(f.u.folie ? f.u.folie : aufzaehlung(f.u.text).length ? kurz.split("\n").filter(z => !/^\s*[-•]/.test(z)).join("\n") : f.u.text)}</div>${f.u.liste ? `<div class="p-liste">${f.u.liste.map(x => `<div>${inline(x)}</div>`).join("")}</div>` : ""}
+                <div class="p-text" style="font-size:${String(f.u.text || "").length > 450 ? "clamp(14px,min(1.45vw,2.3vh),26px)" : String(f.u.text || "").length > 280 ? "clamp(17px,min(2.1vw,3.6vh),34px)" : "clamp(20px,min(2.6vw,4.6vh),40px)"}">${md(f.u.folie ? f.u.folie : aufzaehlung(f.u.text).length ? kurz.split("\n").filter(z => !/^\s*[-•]/.test(z)).join("\n") : f.u.text)}</div>${f.u.liste ? `<div class="p-liste">${f.u.liste.map(x => `<div${f.u.aufdecken ? ' class="zu"' : ""}>${inline(x)}</div>`).join("")}</div>${f.u.aufdecken ? '<div class="p-klein" style="margin-top:1vh">Erst sammeln – dann antippen und aufdecken.</div>' : ""}` : ""}
                 <div class="p-reihe">${min ? `<button class="p-knopf gold" data-start="${min}">⏱ ${min} Minuten starten</button>` : ""}<button class="p-knopf hell" data-p="rad">🎡 Wer fängt an?</button>${f.u.zusatz ? `<button class="p-knopf hell" data-springen="${f.weiter}">⏭ Überspringen</button>` : ""}</div>`;
         }
-        case "abstimmung":
-            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage"${f.aussage.length > 70 ? ' style="font-size:clamp(20px,min(3vw,5vh),48px)"' : f.aussage.length > 32 ? ' style="font-size:clamp(22px,min(3.6vw,6vh),56px)"' : ""}>${inline(f.aussage)}</div>${stimmenHtml("q" + zustand.i + f.aussage, abstimmOptionen(f.art, f.u))}${f.loesung && f.loesung.length ? '<div class="p-reihe" style="margin-top:1.5vh"><button class="p-knopf hell" data-aufloesen="1">✅ Auflösen</button></div>' : ""}`;
-        case "karte":
-            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage">${inline(f.aussage)}</div>${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${md(f.u.frage)}</div>` : ""}
-                <div class="p-reihe" style="margin-top:2vh"><button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div>`;
+        case "abstimmung": { const kt = karteTeilen(f.aussage), a = kt.text;   // "(…)" am Ende = Erklärung, erscheint beim Auflösen
+            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage"${a.length > 70 ? ' style="font-size:clamp(20px,min(3vw,5vh),48px)"' : a.length > 32 ? ' style="font-size:clamp(22px,min(3.6vw,6vh),56px)"' : ""}>${inline(a)}</div>${stimmenHtml("q" + zustand.i + f.aussage, abstimmOptionen(f.art, f.u))}${f.loesung && f.loesung.length ? '<div class="p-reihe" style="margin-top:1.5vh"><button class="p-knopf hell" data-aufloesen="1">✅ Auflösen</button></div>' : ""}${kt.loes ? `<div class="p-loes" data-erkl="1" hidden>💬 ${inline(kt.loes)}</div>` : ""}`; }
+        case "karte": { const kt = karteTeilen(f.aussage);
+            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage">${inline(kt.text)}</div>${loesKnopf(f.u, kt.loes)}${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${md(f.u.frage)}</div>` : ""}
+                <div class="p-reihe" style="margin-top:2vh"><button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div>`; }
         case "arbeitsblatt":
             return `<div class="p-bilder">${ltBild("stift")}${ltBild("heft")}</div><h2>Bearbeite jetzt leise dein Arbeitsblatt.</h2>
                 <div class="p-text" style="font-size:clamp(20px,2.6vw,40px)">🤫 Wenn du fertig bist, drehst du dein Blatt um und wartest leise.</div>
@@ -1207,6 +1213,8 @@ function glasAktivieren(el){
     });
 }
 function folieAktivieren(el, f){
+    el.querySelectorAll(".p-liste .zu").forEach(d => d.addEventListener("click", () => d.classList.remove("zu")));
+    el.querySelectorAll("[data-zeig]").forEach(b => b.addEventListener("click", () => { const l = b.parentElement.nextElementSibling; if (l) { l.hidden = false; b.parentElement.remove(); } }));
     // Abstimmungen
     el.querySelectorAll(".p-stimmen").forEach(box => {
         const schl = box.dataset.schluessel;
@@ -1234,6 +1242,7 @@ function folieAktivieren(el, f){
         const richtig = f.loesung || [];
         el.querySelectorAll(".p-stimme").forEach((st, k) => st.classList.add(richtig.includes(k + 1) ? "richtig" : "falsch"));
         b.remove(); fanfare();
+        const erkl = el.querySelector("[data-erkl]"); if (erkl) erkl.hidden = false;
     }));
     el.querySelectorAll("[data-springen]").forEach(b => b.addEventListener("click", () => zeigen(+b.dataset.springen)));
     el.querySelectorAll("[data-vorlesen]").forEach(b => b.addEventListener("click", () => vorlesen(f.text, b)));
@@ -1289,7 +1298,7 @@ function folieAktivieren(el, f){
             if (rest <= 0) { clearInterval(zustand.mini); zustand.mini = null; sp.textContent = sp.dataset.alt; if (leise) leise.hidden = true; klangschale(.4); b.classList.remove("an"); b.classList.add("war"); plopp(1.3); if (alle[k + 1]) alle[k + 1].classList.add("bereit"); }
         }, 1000);
     }));
-    el.querySelectorAll("[data-countdown]").forEach(b => b.addEventListener("click", () => countdownStart(el, b.dataset.countdown.length > 2 ? b.dataset.countdown : "✋ Karten hoch!")));
+    el.querySelectorAll("[data-countdown]").forEach(b => b.addEventListener("click", () => countdownStart(el, b.dataset.countdown.length > 2 ? b.dataset.countdown : "✋ Finger hoch!")));
     // Klasse gegen Ella: Antwort antippen → richtig = Punkt für die Klasse, falsch = Punkt für Ella
     const wahlZeigen = (k, mitTon) => {
         const richtig = f.loesung || [], ok = richtig.includes(k);

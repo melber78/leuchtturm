@@ -242,7 +242,7 @@ SOZIAL_EINHEIT({
     kategorie: "Gemischt & spielerisch",
     ziel12: "Gelerntes aus Deutsch und Mathe spielerisch wiederholen",
     ziel34: "Wissen aus Deutsch, Mathe und Sachunterricht im Team-Quiz wiederholen",
-    material: "Zahlenkarten 1–4 (Universal-Set)",
+    material: "Fingern (Universal-Set)",
     ohneVorbereitung: true,
     warmup12: "Blitzrechnen bis 10",
     warmup34: "Blitzrechnen gemischt",

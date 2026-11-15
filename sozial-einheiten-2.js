@@ -458,11 +458,11 @@ Später fragt Lukas: „War ich jetzt eine Petze?“ Die Lehrerin schüttelt den
           folie12: "**1.** Ist jemand in Gefahr?\n**2.** Wird jemandem wehgetan?\n**3.** Kann ich es allein lösen?\n\nMerk dir: **„Gefahr oder Weh – dann Hilfe!“**",
           emoji: "❓",
           warum: "Drei Fragen helfen dir zu entscheiden: Hole ich Hilfe?" },
-        { titel: "Rote Karte – grüne Karte", fuer: "alle", dauer: "6 Min",
+        { titel: "Rot oder grün?", fuer: "alle", dauer: "6 Min",
           text: "Du liest Situationen vor. Rot = sofort Hilfe holen, Grün = selbst lösen oder geht mich nichts an. Kl. 3/4 begründen.\n\n- Ein Kind steht auf der Fensterbank.\n- Jemand hat seine Hausaufgaben vergessen.\n- Zwei Kinder prügeln sich.\n- Mein Nachbar malt außerhalb der Linien.\n- Ein Kind wird jeden Tag ausgelacht und weint.\n- Jemand drängelt sich vor.",
           quiz: "ampel",
           antworten: ["🔴 sofort Hilfe holen", "🟢 selbst lösen / geht mich nichts an"],
-          folie: "🔴 **Rot** = sofort Hilfe holen\n🟢 **Grün** = selbst lösen oder geht mich nichts an\n\nHalt die passende Karte hoch.",
+          folie: "🔴 **Rot** = sofort Hilfe holen\n🟢 **Grün** = selbst lösen oder geht mich nichts an\n\nZeig es mit dem Daumen: 👍 = grün · 👎 = rot.",
           kern: ["12", "34"],
           loesungen: ["1", "2", "1", "2", "1", "2"],
           emoji: "🚨",
@@ -515,8 +515,8 @@ SOZIAL_EINHEIT({
     titel: "Entschuldigen und verzeihen",
     kategorie: "Konflikte lösen",
     ziel12: "Sich ehrlich entschuldigen und etwas wieder gutmachen",
-    ziel34: "Eine gute Entschuldigung in vier Stufen formulieren und verstehen, dass Verzeihen Zeit braucht",
-    material: "Alles kommt über die Tafel.\nZum Ausdrucken (für die Mappen, optional): Plakat „Die Entschuldigungs-Treppe“",
+    ziel34: "Mit dem Sorry-Satz ehrlich um Entschuldigung bitten – ohne „aber“ – und verstehen, dass Verzeihen Zeit braucht",
+    material: "Alles kommt über die Tafel.\nZum Ausdrucken (optional, für die Mappen): Plakat „Mein Sorry-Satz“",
     lerntext12: { titel: "Das Malwasser", text:
 `Lea malt ein Bild mit einem großen Regenbogen. Es ist fast fertig.
 
@@ -547,35 +547,40 @@ Charlotte schaut sie lange an. „Ich weiß nicht, ob ich dir gleich verzeihen k
 Eine Woche später setzt Charlotte sich in der Pause wieder neben Nora.
 
 **Fragen zum Gespräch:**
-1. Welche vier Teile hat Noras Entschuldigung? (Was ich getan habe – dass es falsch war – wie du dich fühlst – wie ich es gut mache)
+1. Was genau sagt Nora? Was will sie wieder gutmachen?
 2. Warum hat Charlotte nicht sofort verziehen? Ist das in Ordnung?
 3. Muss man eine Entschuldigung immer annehmen?
 4. Was kann man tun, wenn man etwas nicht wieder gutmachen kann?` },
     uebungen: [
         { titel: "Echt oder unecht?", fuer: "alle", dauer: "4 Min",
-          text: "Du liest vor, wie sich jemand entschuldigt. Die Kinder zeigen Daumen hoch (echt) oder runter (unecht) und sagen, woran sie es merken.\n\n- Tim rollt mit den Augen und murmelt: „Jaja, sorry.“\n- Ben schaut Lea an und sagt ruhig: „Es tut mir leid, dass ich dein Bild zerknittert habe.“\n- Mia schaut auf den Boden und flüstert: „Tschuldigung.“\n- Anton sagt: „Sorry – aber du hast angefangen!“\n- Emma sagt: „Entschuldigung. Ich helfe dir, die Stifte aufzuheben.“",
+          text: "Du liest vor, wie sich jemand entschuldigt – gern mit passender Stimme und Körperhaltung. Die Kinder zeigen Daumen hoch (echt) oder runter (unecht), dann tippt ein Kind die Antwort an der Tafel an. Frag jedes Mal: **Woran hast du das gemerkt?** (Blick, Stimme, „aber“, Wiedergutmachen)\n\n- Tim rollt mit den Augen und murmelt: „Jaja, sorry.“\n- Ben schaut Lea an und sagt ruhig: „Sorry, dass ich dein Bild zerknittert habe.“\n- Mia schaut auf den Boden und flüstert: „Tschuldigung.“\n- Anton sagt: „Sorry – aber du hast angefangen!“\n- Emma sagt: „Sorry, dass ich deine Stifte runtergeworfen habe. Ich heb sie mit auf.“",
           antworten: ["👍 echt", "👎 unecht"],
-          folie: "Ist diese Entschuldigung **echt**? 👍\nOder **unecht**? 👎\n\nWoran merkst du das?",
+          folie: "Gleich hört ihr **5 Entschuldigungen**. 🙏\n\n👍 = **echt** · 👎 = **unecht**\n\nAlle zeigen gleichzeitig – und dann: **Woran hast du das gemerkt?**",
           loesungen: ["2", "1", "2", "2", "1"],
+          kern: ["12"],
           emoji: "🙏",
           warum: "Nicht jedes Sorry ist echt. Wir hören genau hin." },
-        { titel: "Die Entschuldigungs-Treppe", fuer: "alle", dauer: "6 Min",
-          text: "Die Treppe steht an der Tafel. Dann kommt je eine Situation an die Tafel. Per Glücksrad kommen zwei Kinder nach vorn: Eins hat etwas angestellt und entschuldigt sich – Stufe für Stufe. Das andere sagt danach, wie es sich angefühlt hat. Die Klasse zählt mit den Fingern mit: Waren alle Stufen dabei?\n\n- Du hast den Radiergummi von deinem Nachbarn kaputt gemacht.\n- Du hast jemanden in der Schlange geschubst.\n- Du hast über ein Bild gelacht.\n- Du hast beim Spiel geschummelt.\n- Du hast ein geliehenes Buch nass gemacht.",
-          text12: "Die Treppe steht an der Tafel (Kl. 1/2: zwei Stufen). Dann kommt je eine Situation an die Tafel. Per Glücksrad kommen zwei Kinder nach vorn: Eins entschuldigt sich: „Ich habe … – Ich mache es wieder gut, indem …“. Das andere sagt, wie es sich angefühlt hat. Die Klasse zeigt mit den Fingern: Waren beide Stufen dabei?\n\n- Du hast den Radiergummi von deinem Nachbarn kaputt gemacht.\n- Du hast jemanden in der Schlange geschubst.\n- Du hast über ein Bild gelacht.\n- Du hast beim Spiel geschummelt.\n- Du hast ein geliehenes Buch nass gemacht.",
-          text34: "Die Treppe steht an der Tafel. Dann kommt je eine Situation an die Tafel. Per Glücksrad kommen zwei Kinder nach vorn: Eins entschuldigt sich mit allen vier Stufen. Das andere sagt, wie es sich angefühlt hat. Die Klasse zählt mit den Fingern mit: Waren alle vier Stufen dabei?\n\n- Du hast den Radiergummi von deinem Nachbarn kaputt gemacht.\n- Du hast jemanden in der Schlange geschubst.\n- Du hast über ein Bild gelacht.\n- Du hast beim Spiel geschummelt.\n- Du hast ein geliehenes Buch nass gemacht.",
+        { titel: "Mein Sorry-Satz", fuer: "alle", dauer: "8 Min",
+          text: "Der Sorry-Satz steht an der Tafel – nur drei Schritte, die sich jedes Kind merken kann. **Die erste Situation machst du selbst vor** (ein Kind ist dein Gegenüber). Danach kommen per Glücksrad zwei Kinder nach vorn: Eins sagt den Sorry-Satz, das andere sagt, ob es sich echt angefühlt hat (👍/👎). Fällt keinem eine Wiedergutmachung ein, tippst du auf „💡 Idee“.\n\nWichtig: Es sind ausgedachte Situationen – niemand muss sich vor der Gruppe für etwas Echtes entschuldigen.\n\n- Du hast beim Fußball Tom umgerannt. Er liegt auf dem Boden. (Aufhelfen · „Tut's weh?“ · mit zur Aufsicht gehen)\n- Du warst wütend und hast Lea „Du Opfer!“ genannt. (Später hingehen: „Das war gemein. Es stimmt auch nicht.“)\n- Du hast Bens Federmappe vom Tisch gefegt. Alles liegt am Boden. (Alles mit aufheben)\n- Du hast in der Schlange gedrängelt und geschubst. („Alles okay?“ · ihn wieder vorlassen)\n- Du hast Mia beim Spielen nicht mitmachen lassen. (Sie jetzt einladen: „Willst du mitspielen?“)\n- Du hast über Paulas Bild gelacht. (Sagen, was dir an ihrem Bild gefällt)",
           quiz: "karten",
-          folie12: "So geht eine echte Entschuldigung:\n\n**1.** Ich sage, was ich getan habe.\n**2.** Ich mache es wieder gut.\n\nGleich kommt eine Situation. Zwei Kinder spielen sie vor – alle anderen zählen mit den Fingern: **Sind beide Stufen dabei?** ✌️",
-          folie34: "So geht eine echte Entschuldigung:\n\n**1.** Ich sage, was ich getan habe.\n**2.** Ich sage, dass es falsch war.\n**3.** Ich verstehe, wie du dich fühlst.\n**4.** Ich mache es wieder gut.\n\nGleich kommt eine Situation. Zwei Kinder spielen sie vor – alle anderen zählen mit den Fingern: **Sind alle 4 Stufen dabei?**",
-          frage12: "**1.** Was habe ich getan? · **2.** Wie mache ich es wieder gut?",
-          frage34: "**1.** Was habe ich getan? · **2.** Das war falsch. · **3.** Wie fühlst du dich? · **4.** Wie mache ich es wieder gut?",
+          loesKnopf: "💡 Idee: Wie mache ich es wieder gut?",
+          folie: "So geht ein echtes Sorry – **3 Schritte**:\n\n👀 **Hingehen** und anschauen.\n🗣️ „**Sorry, dass ich** … .“\n🤝 „**Kann ich** … ?“ – etwas wieder gutmachen.\n\nGleich kommen Situationen aus der Pause. Ich mache es einmal vor – dann seid ihr dran!",
+          folie34: "So geht ein echtes Sorry – **3 Schritte**:\n\n👀 **Hingehen** und anschauen.\n🗣️ „**Sorry, dass ich** … .“\n🤝 „**Kann ich** … ?“ – etwas wieder gutmachen.\n\n🚫 Kein **„aber …“** – sonst ist es kein Sorry.\n\nGleich kommen Situationen aus der Pause. Ich mache es einmal vor – dann seid ihr dran!",
+          frage: "👀 hingehen · 🗣️ „Sorry, dass ich …“ · 🤝 „Kann ich …?“",
           kern: ["12", "34"],
-          emoji: "🪜",
-          warum: "Wir üben, wie eine echte Entschuldigung geht – Stufe für Stufe." },
-        { titel: "Wiedergutmach-Ideen", fuer: "34", dauer: "2 Min",
-          text: "Sammelt an der Tafel, wie man etwas wieder gutmachen kann: helfen, ersetzen, etwas Nettes tun, den anderen verteidigen, eine Karte schreiben.",
-          folie: "Ein „Sorry“ ist gut – aber wie kann man es **wieder gutmachen**? 🔧\n\nSammelt Ideen.",
-          emoji: "🔧",
-          warum: "Ein Sorry ist der Anfang. Wir sammeln, wie man es wieder gutmacht." }
+          emoji: "🗣️",
+          warum: "Wir üben den Sorry-Satz – mit Situationen aus der Pause." },
+        { titel: "Stimmt das?", fuer: "alle", dauer: "5 Min",
+          text12: "Du liest die Sätze vor. Alle zeigen gleichzeitig 👍 (stimmt) oder 👎 (stimmt nicht), ein Kind tippt an der Tafel an. Nach dem Auflösen kurz erklären:\n\n- Sorry sagen ist peinlich. (Nein – wer Sorry sagt, traut sich was.)\n- Ich darf erst ruhig werden – und mich dann entschuldigen. (Ja! Ein Sorry zählt auch später noch.)\n- „Sorry, aber du warst schuld!“ ist ein echtes Sorry. (Nein – mit „aber“ nimmt man das Sorry gleich wieder weg.)\n- Ein Sorry ist stark. (Ja – Schwache schieben die Schuld auf andere.)",
+          text34: "Du liest die Sätze vor. Alle zeigen gleichzeitig 👍 (stimmt) oder 👎 (stimmt nicht), ein Kind tippt an der Tafel an. Nach dem Auflösen kurz besprechen – das sind genau die Gedanken, die eure Kinder vom Entschuldigen abhalten:\n\n- Wer sich entschuldigt, ist schwach. (Nein – dafür braucht man Mut. Ausreden sind leicht.)\n- Wenn ich noch total wütend bin, darf ich mich auch später entschuldigen – sogar am nächsten Tag. (Ja – erst runterkommen, dann reden. Wütend klappt das Sorry meistens nicht.)\n- „Sorry, aber du hast angefangen!“ ist eine echte Entschuldigung. (Nein – das „aber“ macht das Sorry kaputt.)\n- Wenn der andere nicht verzeiht, war meine Entschuldigung umsonst. (Nein – du hast deinen Teil gemacht. Verzeihen braucht manchmal Zeit.)\n- Auch wenn der andere auch Mist gebaut hat, kann ich mich für meinen Teil entschuldigen. (Ja – jeder kümmert sich um seinen Teil.)\n- Wer sich entschuldigt, zeigt: Ich stehe zu dem, was ich gemacht habe. (Ja – das nennt man Verantwortung.)",
+          quiz: "daumen",
+          antworten: ["👍 stimmt", "👎 stimmt nicht"],
+          loesungen12: ["2", "1", "2", "1"],
+          loesungen34: ["2", "1", "2", "2", "1", "1"],
+          folie: "Gleich kommen Sätze übers **Entschuldigen**.\n\n👍 **Daumen hoch** = stimmt · 👎 **Daumen runter** = stimmt nicht\n\nAlle zeigen gleichzeitig – dann lösen wir auf.",
+          kern: ["34"],
+          emoji: "🤔",
+          warum: "Was hält uns davon ab, Sorry zu sagen?" }
     ],
     ab12: {
       "titel": "Es tut mir leid",
@@ -608,9 +613,9 @@ Eine Woche später setzt Charlotte sich in der Pause wieder neben Nora.
         }
       ]
     },
-    ab34: { titel: "Die Entschuldigungs-Treppe", aufgaben: [
-        { typ: "luecken", text: "Du hast aus Versehen die Federmappe deines Tischnachbarn kaputt gemacht. Schreibe deine Entschuldigung in vier Stufen.", nummern: true,
-          saetze: ["Was ich getan habe: ___", "Dass es falsch war: ___", "Wie du dich fühlst: ___", "Wie ich es wieder gutmache: ___"] },
+    ab34: { titel: "Mein Sorry-Satz", aufgaben: [
+        { typ: "luecken", text: "Du hast aus Versehen die Federmappe deines Tischnachbarn kaputt gemacht. Schreib deinen Sorry-Satz.", nummern: true,
+          saetze: ["Sorry, dass ich ___", "Kann ich ___?"] },
         { typ: "tabelle", text: "Echt (E) oder unecht (U)? Kreuze die richtige Spalte an.", spalten: ["Entschuldigung", "E", "U"],
           zeilen: [["„Sorry, aber du hast angefangen!“", "", ""], ["„Es tut mir leid, dass ich dich geschubst habe.“", "", ""], ["„Ja, ja, ’tschuldigung.“", "", ""]] },
         { typ: "luecken", text: "Verzeihen …", nummern: false,

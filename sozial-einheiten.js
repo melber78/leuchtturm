@@ -45,10 +45,10 @@ Ein Plakat mit fünf Feldern (froh – traurig – wütend – ängstlich – ru
 2. Wir hören zu und lachen niemanden aus.
 3. Ich darf „Ich passe“ sagen.
 4. Was hier gesagt wird, bleibt hier.
-*Material: Plakat „Gesprächsregeln“, rote und grüne Karten*
+*Material: Plakat „Gesprächsregeln“*
 
 ### Abschluss (5 Min)
-Jedes Kind nennt einen Satz: „Heute habe ich gelernt …“ (Kl. 1/2 halten stattdessen eine Gesichter-Karte hoch: super – geht so – schwierig). Danach die **Applauswelle**: Du zeigst nacheinander auf jeden Platz, das Kind klatscht einmal – so läuft eine Welle durch den Raum, zum Schluss klatschen alle gemeinsam.
+Jedes Kind nennt einen Satz: „Heute habe ich gelernt …“ (Kl. 1/2 zeigen stattdessen mit dem Daumen: 👍 super – 👌 geht so – 👎 schwierig). Danach die **Applauswelle**: Du zeigst nacheinander auf jeden Platz, das Kind klatscht einmal – so läuft eine Welle durch den Raum, zum Schluss klatschen alle gemeinsam.
 *Material: Satzstreifen für die Abschlussrunde, Abschluss-Gesichter*
 
 ### Belohnung (optional)

@@ -584,7 +584,7 @@ Am Ende schreibt Frau Lange an die Tafel: „Unsere Klasse ist wie ein Obstsalat
           text: "Du liest Sätze vor, die Kinder entscheiden mit Daumen: Tatsache (hoch) oder Vorurteil (runter) – und sprechen darüber, warum Vorurteile unfair sind.\n\n- „Jungen weinen nicht.“\n- „Menschen haben verschiedene Hautfarben.“\n- „Mädchen können nicht gut Fußball spielen.“\n- „In Deutschland werden viele Sprachen gesprochen.“",
           quiz: "ampel",
           antworten: ["🟢 Tatsache", "🔴 Vorurteil"],
-          folie: "Ist das eine **Tatsache** 🟢 oder ein **Vorurteil** 🔴?\n\nHalte die rote oder grüne Karte hoch.",
+          folie: "Ist das eine **Tatsache** 🟢 oder ein **Vorurteil** 🔴?\n\nZeig es mit dem Daumen: 👍 = grün · 👎 = rot.",
           kern: ["34"],
           loesungen: ["2", "1", "2", "1"],
           emoji: "🤔",

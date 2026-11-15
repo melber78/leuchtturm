@@ -53,9 +53,9 @@ Eines Tages bricht Kai sich den Arm und fehlt zwei Wochen. An der Tischtennispla
 4. Vor wem hast du echten Respekt – und warum? (freiwillig)` },
     uebungen: [
         { titel: "Angst oder Respekt?", dauer: "7 Min",
-          text: "Du liest die Situationen vor. Die Kinder halten die rote Karte hoch (= Angst/Druck) oder die grüne (= echter Respekt). Danach kurz begründen lassen.\n\n- Alle lachen über Ömers Witz, weil sie sonst Ärger mit ihm bekommen.\n- Lea hört zu, wenn ein Jüngerer etwas erzählt, und nimmt ihn ernst.\n- Tim bekommt immer das beste Fahrrad, weil er sonst droht.\n- Der Trainer ist streng, aber fair – und hilft, wenn es jemandem schlecht geht.\n- Jonas gibt nach einem Streit als Erster die Hand.\n- Mia sagt: „Wenn du mich verpetzt, bist du dran.“",
+          text: "Du liest die Situationen vor. Die Kinder zeigen 👎 (= Angst/Druck) oder 👍 (= echter Respekt). Danach kurz begründen lassen.\n\n- Alle lachen über Ömers Witz, weil sie sonst Ärger mit ihm bekommen.\n- Lea hört zu, wenn ein Jüngerer etwas erzählt, und nimmt ihn ernst.\n- Tim bekommt immer das beste Fahrrad, weil er sonst droht.\n- Der Trainer ist streng, aber fair – und hilft, wenn es jemandem schlecht geht.\n- Jonas gibt nach einem Streit als Erster die Hand.\n- Mia sagt: „Wenn du mich verpetzt, bist du dran.“",
           antworten: ["🔴 Angst / Druck", "🟢 echter Respekt"],
-          folie: "Ist das **echter Respekt** 🟢 – oder **Angst und Druck** 🔴?\n\nHalte die **rote oder grüne Karte** hoch. Danach: Warum?",
+          folie: "Ist das **echter Respekt** 🟢 – oder **Angst und Druck** 🔴?\n\nZeig es mit dem Daumen: 👍 = grün · 👎 = rot. Danach: Warum?",
           kern: ["34"],
           loesungen: ["1", "2", "1", "2", "2", "1"],
           emoji: "⚖️",
@@ -219,7 +219,7 @@ Anton merkt, wie sein Herz klopft. Er will nicht der Außenseiter sein. Er will 
 5. Wann hast du schon mal etwas mitgemacht, was du eigentlich nicht wolltest? (freiwillig)` },
     uebungen: [
         { titel: "Was würdest du tun?", dauer: "7 Min",
-          text: "Du liest Situationen vor. Die Kinder zeigen: grüne Karte = ich mache mit, rote Karte = ich mache nicht mit. Ehrlich sein ist erlaubt – niemand wird ausgelacht. Danach jeweils eine Frage: Was macht es schwer, Nein zu sagen?\n\n- Alle in der Gruppe schreiben etwas Gemeines über ein Kind in den Chat.\n- Die anderen wollen im Laden etwas einstecken, ohne zu bezahlen.\n- Alle machen sich über die Aussprache eines Kindes lustig.\n- Die Gruppe will nach der Schule ohne Bescheid zu sagen in den Park.\n- Alle lachen, als ein Kind gestolpert ist.",
+          text: "Du liest Situationen vor. Die Kinder zeigen: 👍 = ich mache mit, 👎 = ich mache nicht mit. Ehrlich sein ist erlaubt – niemand wird ausgelacht. Danach jeweils eine Frage: Was macht es schwer, Nein zu sagen?\n\n- Alle in der Gruppe schreiben etwas Gemeines über ein Kind in den Chat.\n- Die anderen wollen im Laden etwas einstecken, ohne zu bezahlen.\n- Alle machen sich über die Aussprache eines Kindes lustig.\n- Die Gruppe will nach der Schule ohne Bescheid zu sagen in den Park.\n- Alle lachen, als ein Kind gestolpert ist.",
           antworten: ["🟢 ich mache mit", "🔴 ich mache nicht mit"],
           folie: "Alle machen mit. Und du?\n\n🟢 **Ich mache mit** · 🔴 **Ich mache nicht mit**\n\nEhrlich sein ist erlaubt – niemand wird ausgelacht.",
           kern: ["34"],

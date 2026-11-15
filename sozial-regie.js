@@ -190,7 +190,7 @@ function abschluss(e, st, vertretung){
     return { zweck: "Das Gelernte bündeln und die Stunde positiv beenden – die Kinder gehen mit einem guten Gefühl.", schritte: [
         li("Ruhezeichen, Stifte weg. Zeiger auf „Abschluss“."),
         st === "12"
-            ? li("<b>Abschlussrunde:</b> Jedes Kind hält eine Gesichter-Karte hoch (super – geht so – schwierig).", sag("Wie hat dir die Stunde heute gefallen? Zeig es mit deiner Karte."))
+            ? li("<b>Abschlussrunde:</b> Jedes Kind zeigt mit dem Daumen: 👍 super – 👌 geht so – 👎 schwierig.", sag("Wie hat dir die Stunde heute gefallen? Zeig es mit dem Daumen."))
             : li("<b>Abschlussrunde:</b> Der Redestein wandert, jedes Kind beendet einen Satz (Satzstreifen ziehen lassen).", sag("Heute habe ich gelernt …")),
         li("Fasse zusammen, was ihr geübt habt.", sag(`Das haben wir heute geübt: ${ziel}. Das könnt ihr ab jetzt auch in der Pause ausprobieren!`)),
         li("<b>Applauswelle:</b> Zeig nacheinander auf jeden Platz, jedes Kind klatscht einmal – zum Schluss klatschen alle zusammen."),
@@ -263,7 +263,7 @@ function uebungL(e, st){
     const p = uebung(e, st, false);
     if (!p) return null;
     p.zweck = "Gemeinsam üben – erst zusammen, dann allein. Möglichst viele Kinder sollen dabei aktiv sein, nicht nur eins.";
-    p.tipp = "Alle sind gleichzeitig dran: Antworten mit den Fingern zeigen, mit der grünen/roten Karte, mit den Zahlenkarten 1–4 oder auf dem Schmierzettel – so weißt du sofort, wer es schon kann. Fürs Drankommen hilft das Glücksrad in der Präsentation.";
+    p.tipp = "Alle sind gleichzeitig dran: Antworten mit den Fingern zeigen, mit dem Daumen (👍/👎) oder auf dem Schmierzettel – und ein Kind tippt die Antwort an der Tafel an – so weißt du sofort, wer es schon kann. Fürs Drankommen hilft das Glücksrad in der Präsentation.";
     const d = +e.dauer || 40;
     if (d <= 30) p.tipp = (d <= 20 ? "<b>Heute nur " + d + " Minuten:</b> zwei Challenges reichen, Bonus-Level weglassen – die Präsentation kürzt automatisch. " : "<b>Heute nur " + d + " Minuten:</b> Bonus-Level weglassen – die Präsentation kürzt automatisch. ") + p.tipp;
     return p;

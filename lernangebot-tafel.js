@@ -257,7 +257,7 @@ W.anlaute = {
 function silbenHtml(s){ const t = s.split("-"); return `<span class="lt-silben">${t.map(x => `<span class="lt-silbe">${esc(x)}</span>`).join("")}</span>`; }
 W.silben = {
     titel: "Silben zählen", emoji: "👏", gruppe: "Deutsch",
-    text: "Bild zeigen, Wort klatschen – wie viele Silben? Antwort mit Zahlenkarten 1–4.",
+    text: "Bild zeigen, Wort klatschen – wie viele Silben? Antwort mit den Fingern (1–4).",
     optionen: [{ k: "wort", label: "Wort zeigen", werte: [[false, "nur Bild"], [true, "Bild und Wort"]] }],
     std: { wort: false },
     aufgabe(e){
@@ -299,7 +299,7 @@ W.abc = {
 
 W.wortarten = {
     titel: "Wortarten-Sortiermaschine", emoji: "🎮", gruppe: "Deutsch",
-    text: "Nomen, Verb oder Adjektiv? Antwort mit Zahlenkarten 1–3.",
+    text: "Nomen, Verb oder Adjektiv? Antwort mit den Fingern (1–3).",
     optionen: [{ k: "satz", label: "Hilfe", werte: [[false, "ohne Hilfe"], [true, "mit Test-Frage"]] }],
     std: { satz: true },
     aufgabe(e){
@@ -312,7 +312,7 @@ W.wortarten = {
 
 W.begleiter = {
     titel: "der, die oder das?", emoji: "🏷️", gruppe: "Deutsch",
-    text: "Bild zeigen – welcher Begleiter passt? Antwort mit Zahlenkarten 1–3.",
+    text: "Bild zeigen – welcher Begleiter passt? Antwort mit den Fingern (1–3).",
     optionen: [{ k: "wort", label: "Wort zeigen", werte: [[true, "Bild und Wort"], [false, "nur Bild"]] }],
     std: { wort: true },
     aufgabe(e){
