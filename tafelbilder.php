@@ -611,7 +611,7 @@ const ABSTAND = 0.9;         // zwischen Einzelbuchstaben
 const RAND_OBEN = 0.5, RAND_UNTEN = 0.25, ZEILE = RAND_OBEN + 3 + RAND_UNTEN;
 
 /* Wörter für die ersten Klassen (Fibel-Wortschatz) */
-const WOERTER = ("Mama Papa Oma Opa Mia Lea Leo Ali Tim Tom Ina Uli Ole Emma Mila Lina Nele Toni Timo Udo Ella Lola Mimi Lama Limo Mole Mut Mal Maus Mais Mehl Milch Mond Mund Mus Mütze Möwe Melone Maler Mantel Mann " +
+const WOERTER = ("Mama Papa Oma Opa Mia Lea Leo Lisa Tim Tom Ina Uli Ole Emma Mila Lina Nele Toni Timo Udo Ella Lola Mimi Lama Limo Mole Mut Mal Maus Mais Mehl Milch Mond Mund Mus Mütze Möwe Melone Maler Mantel Mann " +
     "Ast Arm Ameise Apfel Auto Affe Esel Ente Ei Eis Eimer Eule Igel Insel Indianer Ofen Ohr Oma Uhr Ufer Ubu " +
     "Lama Laus Lampe Leiter Lied Limo Linie Los Löwe Lupe Lineal Rose Rosen Rasen Rad Rabe Rakete Regen Reis Ring Rock Ruder Raum Sofa Salami Salat Sand Saft Seil Seife Sonne Socke Sessel See Sofa Sieb " +
     "Tomate Tomaten Tal Tee Teller Tisch Tasse Tante Tor Turm Taxi Tür Nase Name Nadel Nest Note Nudel Nuss Nil Nina Dose Dach Dino Delfin Dorf Daumen Hose Haus Hase Hut Hund Hand Hemd Huhn Heft Honig Hexe " +

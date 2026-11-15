@@ -207,14 +207,14 @@ K({
     lerntext34: { titel: "Die Jacke", text:
 `Nach dem Sport. In der Umkleide hängt die neue Jacke von Paul. Paul ist neu in der Klasse und ziemlich still. Marvin grinst: „Los, wir schmeißen die Jacke in den Müll. Mal sehen, was er dann macht.“
 
-Drei Jungs lachen und sind sofort dabei. Ali steht daneben. Eigentlich findet er das fies. Aber Marvin sagt: „Was ist, Ali? Bist du jetzt sein Freund, oder was? Oder traust du dich nicht?“ Alle schauen Ali an.
+Drei Jungs lachen und sind sofort dabei. Anton steht daneben. Eigentlich findet er das fies. Aber Marvin sagt: „Was ist, Anton? Bist du jetzt sein Freund, oder was? Oder traust du dich nicht?“ Alle schauen Anton an.
 
-Ali merkt, wie sein Herz klopft. Er will nicht der Außenseiter sein. Er will aber auch nicht, dass Paul gleich vor dem Mülleimer steht und alle lachen.
+Anton merkt, wie sein Herz klopft. Er will nicht der Außenseiter sein. Er will aber auch nicht, dass Paul gleich vor dem Mülleimer steht und alle lachen.
 
 **Fragen zum Gespräch:**
-1. Warum fällt es Ali so schwer, Nein zu sagen?
+1. Warum fällt es Anton so schwer, Nein zu sagen?
 2. Was will Marvin mit dem Satz „Traust du dich nicht?“ erreichen?
-3. Welche Möglichkeiten hat Ali? Sammelt mindestens drei.
+3. Welche Möglichkeiten hat Anton? Sammelt mindestens drei.
 4. Was passiert, wenn EINER nicht mitmacht? Und wenn zwei nicht mitmachen?
 5. Wann hast du schon mal etwas mitgemacht, was du eigentlich nicht wolltest? (freiwillig)` },
     uebungen: [
@@ -232,9 +232,9 @@ Ali merkt, wie sein Herz klopft. Er will nicht der Außenseiter sein. Er will ab
           emoji: "🚪",
           warum: "Wir suchen Sätze, mit denen du cool aussteigst." }
     ],
-    ab34: { titel: "Ich bin raus", kontext: "Zum Fall: Marvin will die Jacke vom neuen Mitschüler Paul in den Müll werfen. Drei Jungs machen mit. Ali findet das fies – aber alle schauen ihn an.", aufgaben: [
+    ab34: { titel: "Ich bin raus", kontext: "Zum Fall: Marvin will die Jacke vom neuen Mitschüler Paul in den Müll werfen. Drei Jungs machen mit. Anton findet das fies – aber alle schauen ihn an.", aufgaben: [
         { typ: "ankreuzen", text: "Woran erkennst du Gruppendruck?", optionen: ["„Trau dich doch!“", "„Alle machen das.“", "„Sonst bist du nicht mehr dabei.“", "„Willst du mitmachen? Du musst nicht.“", "Alle schauen dich an und warten."] },
-        { typ: "luecken", text: "Ali in der Umkleide – schreib drei Möglichkeiten auf:", nummern: true, saetze: ["___", "___", "___"] },
+        { typ: "luecken", text: "Anton in der Umkleide – schreib drei Möglichkeiten auf:", nummern: true, saetze: ["___", "___", "___"] },
         { typ: "luecken", text: "", nummern: false, saetze: ["Mein Ausstiegs-Satz: ___", "Das macht es mir leichter, Nein zu sagen: ___"] }
     ]}
 }),

@@ -38,20 +38,20 @@ K({
     material: "Tafel: Eisberg „Warum trifft das?“\nPlakat „Familie ist tabu – meine Schutzsätze“ (Arbeitsmaterial)\nHinweis für dich: Die Wörter selbst werden nicht ausgesprochen und nicht angeschrieben – wir sagen „ein Spruch über die Mutter“ oder „das H-Wort“.",
     materialIds: ["schutzsaetze-familie"],
     lerntext34: { titel: "Der Spruch", text:
-`Mittwoch, Hofpause. Ali und Kevin streiten sich, wer beim Fußball dran ist. Kevin merkt, dass er verliert. Da sagt er einen Spruch über Alis Mutter – einen von der übelsten Sorte. Ein paar Jungs johlen.
+`Mittwoch, Hofpause. Anton und Kevin streiten sich, wer beim Fußball dran ist. Kevin merkt, dass er verliert. Da sagt er einen Spruch über Antons Mutter – einen von der übelsten Sorte. Ein paar Jungs johlen.
 
-Ali sieht rot. Er stürzt sich auf Kevin, schlägt zu, immer wieder. Zwei Lehrer müssen ihn wegziehen. Kevin hat Nasenbluten.
+Anton sieht rot. Er stürzt sich auf Kevin, schlägt zu, immer wieder. Zwei Lehrer müssen ihn wegziehen. Kevin hat Nasenbluten.
 
-Am nächsten Tag sitzt Alis Mutter im Büro der Schulleitung. Ali wird für drei Tage vom Unterricht ausgeschlossen. Als sie rausgehen, weint seine Mutter. „Ich musste mir heute freinehmen. Mein Chef war sauer. Und du sagst, du hast das für mich gemacht?“
+Am nächsten Tag sitzt Antons Mutter im Büro der Schulleitung. Anton wird für drei Tage vom Unterricht ausgeschlossen. Als sie rausgehen, weint seine Mutter. „Ich musste mir heute freinehmen. Mein Chef war sauer. Und du sagst, du hast das für mich gemacht?“
 
-Ali versteht die Welt nicht mehr. Er wollte seine Mutter verteidigen. Und jetzt ist sie es, die traurig ist.
+Anton versteht die Welt nicht mehr. Er wollte seine Mutter verteidigen. Und jetzt ist sie es, die traurig ist.
 
 Später sagt ihm sein Onkel: „Kevin kennt deine Mutter gar nicht. Der Spruch hat sie nicht getroffen. Aber was du danach gemacht hast – das hat sie getroffen.“
 
 **Fragen zum Gespräch:**
 1. Warum hat Kevin ausgerechnet einen Spruch über die Mutter gesagt?
 2. Was wollte Kevin damit erreichen? Hat es geklappt?
-3. Wen hat der Spruch wirklich getroffen – und wen hat Alis Reaktion getroffen?
+3. Wen hat der Spruch wirklich getroffen – und wen hat Antons Reaktion getroffen?
 4. Was meint der Onkel mit seinem Satz?
 5. Was würde deine Mutter (oder wer für dich wichtig ist) sich wünschen, wie du reagierst?` },
     uebungen: [

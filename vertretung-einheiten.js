@@ -652,10 +652,10 @@ Lilli lächelt. „Ich weiß, wer es war!“
 3. Was hat die Maus gemacht?
 4. Wer hat den Kuchen genascht – und woran hat Lilli es erkannt?` },
     lerntext34: { titel: "Der Fall des verschwundenen Balls", text:
-`Nach der Pause fehlt der Klassenball. Vier Kinder waren als Letzte draußen: Ali, Ben, Cara und Dana.
+`Nach der Pause fehlt der Klassenball. Vier Kinder waren als Letzte draußen: Anton, Ben, Cara und Dana.
 
 Detektiv Emil sammelt Hinweise:
-- Ali war am Klettergerüst. Seine Hände sind voller Rost.
+- Anton war am Klettergerüst. Seine Hände sind voller Rost.
 - Ben hat nasse Schuhe. Er war am Teich.
 - An Caras Schuhen klebt Sand – den gibt es nur am Fußballplatz.
 - Dana hat auf der Bank gelesen.
@@ -664,7 +664,7 @@ Emil geht zum Fußballplatz – und findet den Ball im Tor. Cara wird rot: „Ic
 
 **Fragen zum Gespräch:**
 1. Welcher Hinweis hat Emil auf die richtige Spur gebracht?
-2. Warum konnten Ali, Ben und Dana es nicht gewesen sein?
+2. Warum konnten Anton, Ben und Dana es nicht gewesen sein?
 3. Was braucht ein guter Detektiv?` },
     uebungen: [
         { titel: "Tafel-Kim: Was fehlt?", fuer: "alle", dauer: "6 Min",
@@ -685,7 +685,7 @@ Emil geht zum Fußballplatz – und findet den Ball im Tor. Cara wird rot: „Ic
         { typ: "ankreuzen", text: "Das Tier ist klein, hat Stacheln und schläft im Winter.", nebeneinander: true, optionen: ["🐰 Hase", "🦔 Igel", "🐸 Frosch"] },
         { typ: "malen", text: "Male dich als Detektiv mit einer Lupe.", bild: "" }
     ]},
-    ab34: { titel: "Detektiv-Akte", kontext: "Zum Fall: Nach der Pause ist der Klassenball weg. Ali hat Rost an den Händen, Ben nasse Schuhe, an Caras Schuhen klebt Sand vom Fußballplatz, Dana hat auf der Bank gelesen.", aufgaben: [
+    ab34: { titel: "Detektiv-Akte", kontext: "Zum Fall: Nach der Pause ist der Klassenball weg. Anton hat Rost an den Händen, Ben nasse Schuhe, an Caras Schuhen klebt Sand vom Fußballplatz, Dana hat auf der Bank gelesen.", aufgaben: [
         { typ: "luecken", text: "Der Fall des verschwundenen Balls:", nummern: false, saetze: ["Der Ball war bei: ___", "Mein Beweis: ___"] },
         { typ: "tabelle", text: "Jedes Kind isst etwas anderes am liebsten: Apfel, Nudeln oder Gummibärchen. Hinweise: Lea liebt Äpfel. Tom isst am liebsten Süßes. Was isst Mia?", spalten: ["Kind", "Lieblingsessen"],
           zeilen: [["Mia", ""], ["Tom", ""], ["Lea", ""]] },

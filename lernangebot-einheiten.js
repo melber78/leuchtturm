@@ -293,7 +293,7 @@ Auf dem Aushang steht: „Morgen findet der Sporttag statt. Bitte Turnschuhe und
     uebungen: [
         { titel: "Stimmt das?", fuer: "alle", dauer: "8 Min", kern: ["12", "34"],
           text: "Du zeigst Sätze. Die Kinder lesen (Kl. 1 hört zu) und heben grün, wenn der Satz stimmen kann, rot bei Unsinn.\n- Der Hund bellt.\n- Die Kuh fliegt.\n- Im Winter schneit es.\n- Ein Fisch fährt Fahrrad.\n- Die Sonne scheint am Tag.\n- Die Maus ist größer als der Elefant.",
-          text34: "Du zeigst Sätze. Die Kinder lesen leise und heben grün, wenn der Satz stimmen kann, rot bei Unsinn. Bei Rot: Wer kann den Satz richtig machen?\n- Im Sommer trägt Lea dicke Handschuhe gegen die Hitze.\n- Nach dem Regen sind die Straßen nass.\n- Der Bäcker backt in der Nacht frisches Brot.\n- Tom putzt sich die Zähne mit Senf.\n- Die Feuerwehr löscht den Brand mit Wasser.\n- Weil er müde war, ging Ali mittags um zwölf ins Kino schlafen.",
+          text34: "Du zeigst Sätze. Die Kinder lesen leise und heben grün, wenn der Satz stimmen kann, rot bei Unsinn. Bei Rot: Wer kann den Satz richtig machen?\n- Im Sommer trägt Lea dicke Handschuhe gegen die Hitze.\n- Nach dem Regen sind die Straßen nass.\n- Der Bäcker backt in der Nacht frisches Brot.\n- Tom putzt sich die Zähne mit Senf.\n- Die Feuerwehr löscht den Brand mit Wasser.\n- Weil er müde war, ging Anton mittags um zwölf ins Kino schlafen.",
           quiz: "ampel", loesungen12: ["1", "2", "1", "2", "1", "2"], loesungen34: ["2", "1", "1", "2", "1", "2"],
           folie: "Lies genau: **Stimmt** das – oder ist es **Unsinn**?\n\n🟢 stimmt · 🔴 Unsinn",
           emoji: "🕵️", warum: "Lese-Detektive merken sofort, wenn etwas nicht stimmt." },
@@ -404,7 +404,7 @@ Die Kinder singen das ABC-Lied. Und bei jedem Buchstaben rutscht ein Stück von 
     lerntext34: { titel: "Das Spielerverzeichnis", text:
 `Der Fußballtrainer braucht eine Liste aller Spieler – nach dem ABC sortiert. Denis soll helfen.
 
-„Ali, Ben, Can, Dana … easy!“ Doch dann kommen Mia, Max und Mika. Alle fangen mit M an!
+„Anton, Ben, Carl, Dana … easy!“ Doch dann kommen Mia, Max und Mika. Alle fangen mit M an!
 
 „Dann schaust du auf den zweiten Buchstaben“, sagt der Trainer. „Ma kommt vor Mi.“ Max kommt also vor Mia und Mika. „Und Mia oder Mika? Dann der dritte Buchstabe: a kommt vor k.“
 
@@ -548,7 +548,7 @@ Mira liest ihre Nachricht noch einmal. Kein Großbuchstabe, kein Satzzeichen –
     ]},
     ab34: { titel: "Satz-Baumeister", aufgaben: [
         { typ: "luecken", text: "Ordne die Wörter zu einem Satz.", nummern: true, saetze: ["spielen – Pause – in – wir – der – Fußball → ___", "Katze – die – Baum – auf – klettert – den → ___"] },
-        { typ: "luecken", text: "Stelle den Satz zweimal um.", nummern: false, saetze: ["Ali fährt morgen mit dem Bus zur Schule.", "→ ___", "→ ___"] },
+        { typ: "luecken", text: "Stelle den Satz zweimal um.", nummern: false, saetze: ["Anton fährt morgen mit dem Bus zur Schule.", "→ ___", "→ ___"] },
         { typ: "luecken", text: "Setze . ? oder ! ein.", nummern: false, saetze: ["Wo ist mein Turnbeutel ___   Ich habe Hunger ___   Vorsicht, heiß ___   Morgen ist Sporttag ___"] },
         { typ: "schreiben", text: "Schreibe eine Frage an deine Lehrerin.", zeilen: 1 }
     ]}

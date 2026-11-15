@@ -442,7 +442,7 @@ Ida schweigt kurz. Dann sagt sie: „Ich war richtig traurig. Aber ich finde gut
     },
     uebungen: [
         { titel: "Daumen-Spiel „Freundlich oder nicht?“", fuer: "alle", dauer: "4 Min",
-          text: "Du liest Situationen vor, die Kinder zeigen vom Platz aus Daumen hoch oder runter. Kl. 3/4 begründen einzelne Entscheidungen.\n\n- Lisa leiht Tom ihren Radiergummi.\n- Jan erzählt ein Geheimnis von Ali weiter.\n- Sara fragt das neue Kind, ob es mitspielt.\n- Ben lacht, als Mia hinfällt.\n- Emil tröstet Lea, weil sie traurig ist.",
+          text: "Du liest Situationen vor, die Kinder zeigen vom Platz aus Daumen hoch oder runter. Kl. 3/4 begründen einzelne Entscheidungen.\n\n- Lisa leiht Tom ihren Radiergummi.\n- Jan erzählt ein Geheimnis von Anton weiter.\n- Sara fragt das neue Kind, ob es mitspielt.\n- Ben lacht, als Mia hinfällt.\n- Emil tröstet Lea, weil sie traurig ist.",
           antworten: ["👍 freundlich", "👎 nicht freundlich"],
           folie: "Ist das **freundlich**? Dann Daumen hoch 👍\n\nIst das **nicht freundlich**? Dann Daumen runter 👎",
           folie34: "Ist das **freundlich**? Daumen hoch 👍 – **nicht freundlich**? Daumen runter 👎\n\nSag auch, warum.",

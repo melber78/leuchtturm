@@ -503,7 +503,7 @@ Später fragt Lukas: „War ich jetzt eine Petze?“ Die Lehrerin schüttelt den
     },
     ab34: { titel: "Petzen oder Hilfe holen?", aufgaben: [
         { typ: "tabelle", text: "Petzen (P) oder Hilfe holen (H)? Kreuze die richtige Spalte an.", spalten: ["Situation", "P", "H"],
-          zeilen: [["Ich erzähle, dass Ali beim Diktat abgeschrieben hat.", "", ""], ["Ich sage, dass ein Kind auf der Toilette eingesperrt ist.", "", ""], ["Ich melde, dass Lena ihr Pausenbrot nicht isst.", "", ""], ["Ich erzähle, dass ein Kind seit Wochen bedroht wird.", "", ""], ["Ich sage, dass Paul gerannt ist.", "", ""]] },
+          zeilen: [["Ich erzähle, dass Anton beim Diktat abgeschrieben hat.", "", ""], ["Ich sage, dass ein Kind auf der Toilette eingesperrt ist.", "", ""], ["Ich melde, dass Lena ihr Pausenbrot nicht isst.", "", ""], ["Ich erzähle, dass ein Kind seit Wochen bedroht wird.", "", ""], ["Ich sage, dass Paul gerannt ist.", "", ""]] },
         { typ: "luecken", text: "Erkläre den Unterschied mit eigenen Worten.", nummern: false,
           saetze: ["Petzen ist, wenn ___", "Hilfe holen ist, wenn ___"] },
         { typ: "luecken", text: "Jemand nennt dich „Petze“, weil du Hilfe geholt hast. Was antwortest du?", nummern: false, saetze: ["„___“"] }
@@ -553,7 +553,7 @@ Eine Woche später setzt Merve sich in der Pause wieder neben Nora.
 4. Was kann man tun, wenn man etwas nicht wieder gutmachen kann?` },
     uebungen: [
         { titel: "Echt oder unecht?", fuer: "alle", dauer: "4 Min",
-          text: "Du liest vor, wie sich jemand entschuldigt. Die Kinder zeigen Daumen hoch (echt) oder runter (unecht) und sagen, woran sie es merken.\n\n- Tim rollt mit den Augen und murmelt: „Jaja, sorry.“\n- Ben schaut Lea an und sagt ruhig: „Es tut mir leid, dass ich dein Bild zerknittert habe.“\n- Mia schaut auf den Boden und flüstert: „Tschuldigung.“\n- Ali sagt: „Sorry – aber du hast angefangen!“\n- Emma sagt: „Entschuldigung. Ich helfe dir, die Stifte aufzuheben.“",
+          text: "Du liest vor, wie sich jemand entschuldigt. Die Kinder zeigen Daumen hoch (echt) oder runter (unecht) und sagen, woran sie es merken.\n\n- Tim rollt mit den Augen und murmelt: „Jaja, sorry.“\n- Ben schaut Lea an und sagt ruhig: „Es tut mir leid, dass ich dein Bild zerknittert habe.“\n- Mia schaut auf den Boden und flüstert: „Tschuldigung.“\n- Anton sagt: „Sorry – aber du hast angefangen!“\n- Emma sagt: „Entschuldigung. Ich helfe dir, die Stifte aufzuheben.“",
           antworten: ["👍 echt", "👎 unecht"],
           folie: "Ist diese Entschuldigung **echt**? 👍\nOder **unecht**? 👎\n\nWoran merkst du das?",
           loesungen: ["2", "1", "2", "2", "1"],

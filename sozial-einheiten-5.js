@@ -706,7 +706,7 @@ Es dauert noch ein paar Wochen. Aber dann hört es auf. Jonas sagt später: „D
     },
     ab34: { titel: "Hinschauen statt mitlachen", aufgaben: [
         { typ: "tabelle", text: "Spaß (S) oder Hänseln (H)? Kreuze die richtige Spalte an.", spalten: ["Situation", "S", "H"],
-          zeilen: [["Alle lachen über einen Witz, den Tim erzählt.", "", ""], ["Jeden Tag wird Mara wegen ihrer Zähne nachgemacht.", "", ""], ["Ole lacht selbst am meisten über sein Missgeschick.", "", ""], ["Im Klassenchat werden Fotos von Ali verspottet.", "", ""]] },
+          zeilen: [["Alle lachen über einen Witz, den Tim erzählt.", "", ""], ["Jeden Tag wird Mara wegen ihrer Zähne nachgemacht.", "", ""], ["Ole lacht selbst am meisten über sein Missgeschick.", "", ""], ["Im Klassenchat werden Fotos von Anton verspottet.", "", ""]] },
         { typ: "luecken", text: "Was ist Mobbing? Erkläre mit eigenen Worten.", nummern: false, saetze: ["___"] },
         { typ: "luecken", text: "Das kann ich als Zuschauer tun:", nummern: true, saetze: ["___", "___", "___"] }
     ]}
