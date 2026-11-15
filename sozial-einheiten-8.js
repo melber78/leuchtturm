@@ -81,9 +81,9 @@ Später sagt ihm sein Onkel: „Kevin kennt deine Mutter gar nicht. Der Spruch h
         { titel: "Training mit dem Quatsch-Spruch", dauer: "6 Min",
           text: "Geübt wird **nie** mit einem echten Spruch – sondern mit einem Quatsch-Spruch, der niemandem wehtut. Du schreibst ihn an die Tafel, z. B. **„Deine Mutter trägt Socken!“** oder **„Deine Oma isst Nudeln!“**.\n\nEin Kind kommt nach vorn (freiwillig, per Glücksrad). **Du** sagst den Quatsch-Spruch – möglichst fies betont. Das Kind macht seinen Plan: Hände weg – ausatmen – Kurz-Antwort – Respekt-Abgang zur Tür. Die anderen achten auf **einen** Punkt: War der Körper ruhig?\n\nRunde 2 (für Mutige): Du legst nach („Hast du nicht gehört? Socken!“) – das Kind bleibt beim Plan und geht trotzdem. Applaus für jeden Abgang.\n\nZum Schluss: **Was war schwer?** Meist ist es der Moment, in dem die anderen johlen – genau das ist der Augenblick, in dem der Plan zählt.",
           quiz: "keine",
-          folie: "**Training mit dem Quatsch-Spruch** 🧦\n\n„Deine Mutter trägt Socken!“\n\nHände weg – ausatmen – kurz antworten – **Respekt-Abgang**.",
+          folie: "🎤 Ich sage den Spruch: **„Deine Mutter trägt Socken!“**\n\n🙋 Du machst deinen Plan: ✊ Hände weg · 🌬️ ausatmen · 😐 „Okay.“ · 🚶 **Respekt-Abgang**\n\n👀 Alle anderen schauen genau hin: **War der Körper ruhig?**",
           emoji: "🧦",
-          warum: "Wir üben den Plan – mit einem Spruch, der niemandem wehtut." }
+          warum: "Wer traut sich nach vorn? Der Spruch ist extra Quatsch – er tut niemandem weh." }
     ],
     ab34: { titel: "Meine Familie kriegst du nicht", aufgaben: [
         { typ: "ankreuzen", text: "Warum trifft ein Spruch über die Mutter so hart? Kreuze an, was für dich stimmt.", optionen: ["Sie ist mir am wichtigsten.", "Ich will sie beschützen.", "Es ist vor allen peinlich.", "Es geht um Ehre.", "Ich weiß nicht, was ich sagen soll."] },
