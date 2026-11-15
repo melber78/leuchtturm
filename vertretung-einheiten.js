@@ -423,7 +423,7 @@ Max überlegt. 21? 2 + 1 = 3, passt nicht. 22? Ist gerade. 23? 2 + 3 = 5 – und
         { titel: "Ich denke mir eine Zahl", fuer: "alle", dauer: "7 Min",
           text: "Du denkst dir eine Zahl (Kl. 1/2 bis 20, Kl. 3/4 bis 100). Die Kinder raten, du sagst nur „größer“ oder „kleiner“. Wie viele Versuche braucht die Klasse? Danach darf ein Kind sich eine Zahl ausdenken.",
           folie12: "Ich denke mir eine Zahl bis **20**. 🤔\n\nRate! Ich sage nur **größer** oder **kleiner**.",
-          folie34: "Ich denke mir eine Zahl bis **100**. 🤔\n\nRate! Ich sage nur **größer** oder **kleiner**.",
+          folie34: "Meine Zahl liegt zwischen **1 und 100**. 🤔\n\nRate! Ich sage nur **größer** oder **kleiner**.",
           kern: ["34"],
           emoji: "🤔",
           warum: "Wir raten eine Geheimzahl." }

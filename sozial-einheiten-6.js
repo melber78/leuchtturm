@@ -37,7 +37,7 @@ K({
     id: "k-respekt",
     titel: "Respekt – verdient oder erzwungen?",
     ziel34: "Unterscheiden, ob jemand respektiert oder gefürchtet wird – und wie man echten Respekt bekommt",
-    material: "Tafel: zwei Spalten „Angst“ und „Respekt“\nrote und grüne Karten",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Der Boss vom Schulhof", text:
 `Kai ist in der 4. Klasse und alle nennen ihn den Boss. Wenn er in der Pause kommt, machen die anderen Platz an der Tischtennisplatte. Wer nicht spurt, wird geschubst oder vor allen „Opfer“ genannt. Kai sagt: „Die haben Respekt vor mir.“
@@ -79,7 +79,7 @@ K({
     id: "k-sprueche",
     titel: "Sprüche, die treffen",
     ziel34: "Merken, wann aus Spaß Ernst wird, und eigene Grenzen klar sagen",
-    material: "Drei Schilder an der Tafel: „Spaß“ – „Grenze“ – „Zu weit“\nKarten mit Sprüchen (Situationskarten unter Arbeitsmaterial)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext34: { titel: "Nur Spaß?", text:
 `Lennart und Hannes sind beste Kumpels. In der Pause machen sie ein „Battle“: Wer hat den besseren Spruch? Erst geht es um Fußball. „Dein Verein steigt ab!“ – „Und deiner spielt wie Oma!“ Beide lachen.
 
@@ -122,7 +122,7 @@ K({
     id: "k-eskalation",
     titel: "Die Eskalationstreppe",
     ziel34: "Erkennen, wie ein Streit Stufe für Stufe hochkocht – und an welcher Stelle man aussteigen kann",
-    material: "Große Treppe mit 6 Stufen an der Tafel (gezeichnet)\nKarten mit den Stufen des Falls (Situationskarten unter Arbeitsmaterial)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext34: { titel: "Das Foul", text:
 `Freitag, letzte Pause, Fußball auf dem Kleinfeld. Leon grätscht Max von hinten um. Max steht auf und starrt Leon an.
 
@@ -139,7 +139,7 @@ Leon holt aus. In dem Moment pfeift die Pausenaufsicht. Beide müssen zur Schull
     uebungen: [
         { titel: "Treppe bauen", dauer: "6 Min",
           text: "Die Kinder bringen die Stufen des Falls in die richtige Reihenfolge – du schreibst sie auf die Treppe an der Tafel. Je höher die Stufe, desto schwerer ist das Aussteigen.\n\n- Foul\n- Böser Blick\n- „Was guckst du so?“\n- Beleidigung\n- Rempeln und Schubsen\n- Ausholen zum Schlag",
-          quiz: "keine",
+          quiz: "liste",
           folie: "Ein Streit wird Stufe für Stufe schlimmer. 🪜\n\nIn welcher Reihenfolge? Je höher die Stufe, desto schwerer ist das Aussteigen.",
           kern: ["34"],
           emoji: "🪜",
@@ -162,7 +162,7 @@ K({
     id: "k-wut-frueh",
     titel: "Wenn's in mir kocht",
     ziel34: "Die eigenen Wut-Signale früh erkennen und einen persönlichen Notfallplan haben",
-    material: "Tafel: Wut-Thermometer von 0 bis 10\nKarte „Kasten-Atmen“ (Arbeitsmaterial)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["kasten-atmen"],
     lerntext34: { titel: "Zehn Sekunden", text:
 `Henri hat einen Plan. Seit letzter Woche weiß er: Bei ihm fängt Wut im Bauch an. Erst wird es warm, dann ballt er die Fäuste, dann wird sein Gesicht heiß. Wenn er erst bei „Gesicht heiß“ ist, geht nichts mehr – dann haut er zu oder schmeißt Sachen.
@@ -179,7 +179,7 @@ Danach setzt er sich wieder hin. Er ist immer noch sauer – aber er hat niemand
     uebungen: [
         { titel: "Wut-Thermometer", dauer: "6 Min",
           text: "Male an der Tafel ein Thermometer von 0 bis 10. Gemeinsam sammeln: Was passiert im Körper bei 2? Bei 5? Bei 8? (z. B. 2 = genervt, Kiefer fest · 5 = heißer Kopf, laute Stimme · 8 = Fäuste, Tunnelblick). Wichtig: **Bis etwa 5 kann man noch gut bremsen** – danach wird es sehr schwer.",
-          folie: "Wut-Thermometer 🌡️ von 0 bis 10.\n\nWas passiert in deinem Körper bei **2**? Bei **5**? Bei **8**?\n\nBis etwa 5 kann man noch gut bremsen.",
+          folie: "🌡️ **0** = ganz ruhig · **10** = ich explodiere.\n\nWas passiert in deinem Körper bei **2**? Bei **5**? Bei **8**?\n\nBis etwa 5 kann man noch gut bremsen.",
           emoji: "🌡️",
           warum: "Wir lernen, die Wut früh zu merken – bevor es knallt." },
         { titel: "Notfall-Werkzeuge testen", dauer: "6 Min",
@@ -202,7 +202,7 @@ K({
     id: "k-gruppendruck",
     titel: "Alle machen mit – du auch?",
     ziel34: "Gruppendruck erkennen und Wege finden, nicht mitzumachen, ohne das Gesicht zu verlieren",
-    material: "rote und grüne Karten\nPlakat „So kann ich Nein sagen“ (Arbeitsmaterial)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["rot-gruen", "nein-saetze"],
     lerntext34: { titel: "Die Jacke", text:
 `Nach dem Sport. In der Umkleide hängt die neue Jacke von Paul. Paul ist neu in der Klasse und ziemlich still. Marvin grinst: „Los, wir schmeißen die Jacke in den Müll. Mal sehen, was er dann macht.“
@@ -244,7 +244,7 @@ K({
     id: "k-handyvideo",
     titel: "Filmen, teilen, weiterleiten?",
     ziel34: "Verstehen, was Videos und Nachrichten im Klassenchat anrichten können, und wissen, was man stattdessen tun kann",
-    material: "Tafel: vier Rollen „macht es“ – „macht mit“ – „schaut zu“ – „hilft“\nPlakat „Das können Zuschauer tun“ (Arbeitsmaterial)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["zuschauer-plakat"],
     lerntext34: { titel: "Das Video", text:
 `Auf dem Schulhof gibt es Streit. Tom liegt am Boden, Jannik hält ihn fest. Einige Kinder stehen drumherum. Lara holt ihr Handy raus und filmt. „Das wird legendär!“, ruft jemand.
@@ -267,7 +267,7 @@ Tom will nicht mehr in die Schule. Seine Mutter geht zur Polizei. Jetzt gibt es 
           warum: "Wir schauen: Wer hat welche Rolle im Fall?" },
         { titel: "Was tun, wenn's im Chat landet?", dauer: "6 Min",
           text: "Gemeinsam einen Plan in vier Schritten an die Tafel schreiben:\n\n- Nicht anschauen, nicht liken, nicht kommentieren.\n- Auf keinen Fall weiterleiten.\n- Einem Erwachsenen zeigen (Eltern, Lehrkraft) – das ist kein Petzen.\n- Dem betroffenen Kind schreiben: „Ich find das nicht okay. Kann ich helfen?“\n\nFrage zum Schluss: Was davon kostet am meisten Mut?",
-          quiz: "keine",
+          quiz: "aufdecken",
           folie: "Ein fieses Video landet im Chat. 📱\n\nWas machst du? Wir schreiben einen Plan in vier Schritten.",
           kern: ["34"],
           emoji: "📱",
@@ -285,7 +285,7 @@ K({
     id: "k-provokation",
     titel: "Provokation – nicht drauf einsteigen",
     ziel34: "Durchschauen, was Provokateure wollen, und ruhig reagieren können",
-    material: "Tafel: „Was will der Provokateur?“\nSituationskarten (Arbeitsmaterial)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext34: { titel: "Der Knopf", text:
 `Matti weiß genau, welchen Knopf er bei Nico drücken muss. Er braucht nur zu sagen: „Na, hat dein Vater dich wieder nicht abgeholt?“ – und Nico explodiert. Jedes Mal. Nico brüllt, wirft den Stuhl um und landet im Trainingsraum. Matti sitzt grinsend auf seinem Platz.
 
@@ -326,7 +326,7 @@ K({
     id: "k-mist-gebaut",
     titel: "Mist gebaut – und jetzt?",
     ziel34: "Ausreden von Verantwortung unterscheiden und Wiedergutmachung konkret planen",
-    material: "Tafel: zwei Spalten „Ausrede“ und „Verantwortung“\nSituationskarten (Arbeitsmaterial)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext34: { titel: "Das kaputte Tablet", text:
 `Im Klassenraum liegen die Schul-Tablets. Benni und Kevin albern herum, werfen sich ein Mäppchen zu. Benni verfehlt – das Mäppchen trifft ein Tablet, es fällt vom Tisch. Das Display hat einen langen Sprung.
 
@@ -366,7 +366,7 @@ K({
     id: "k-stark",
     titel: "Was ist eigentlich stark?",
     ziel34: "Körperliche Stärke von innerer Stärke unterscheiden und eigene Stärken entdecken",
-    material: "Tafel: Stärke-Skala von 1 bis 10\nrote und grüne Karten",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Zwei Arten von stark", text:
 `Frederik ist der Stärkste in der Klasse. Er kann zwanzig Liegestütze und gewinnt jedes Armdrücken. Wenn ihn jemand schief anschaut, zeigt er ihm, wer der Chef ist.
@@ -386,7 +386,7 @@ Dann kommt Jonas rein, der Torwart. Jonas ist klein und kann kaum zwei Liegestü
           text: "Du liest Situationen vor, die Kinder zeigen mit den Fingern eine Zahl von 1 bis 10: Wie stark ist das? Danach vergleichen und diskutieren – oft liegen die Meinungen weit auseinander.\n\n- Jemanden verprügeln, der dich beleidigt hat.\n- Weggehen, obwohl alle „Feigling“ rufen.\n- Zugeben, dass man etwas nicht kann.\n- Einen Jüngeren beschützen.\n- Sich entschuldigen, obwohl der andere auch Schuld hat.\n- Hilfe holen, wenn jemand geschlagen wird.\n- Bei einem Streit nicht mitmachen.",
           quiz: "karten",
           frage: "Wie stark ist das? Zeig mit den Fingern: 1 bis 10.",
-          folie: "Wie **stark** ist das? 💪\n\nZeig mit den Fingern eine Zahl von **1 bis 10**. Danach vergleichen wir.",
+          folie: "Gleich kommen Situationen. 💪\n\nZeig mit den Fingern eine Zahl von **1 bis 10**. Danach vergleichen wir.",
           kern: ["34"],
           emoji: "💪",
           warum: "Was ist eigentlich stark? Eure Meinung zählt." },
@@ -409,7 +409,7 @@ K({
     id: "k-koerpergrenzen",
     titel: "Stopp heißt Stopp",
     ziel34: "Körperliche Grenzen von sich und anderen ernst nehmen – auch beim Raufen und „Spaß“",
-    material: "Stopp-Schild (Arbeitsmaterial)\nPlakat „So kann ich Nein sagen“",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["stopp-schild", "nein-saetze"],
     lerntext34: { titel: "Schwitzkasten", text:
 `Robin und Finn raufen oft in der Pause. Meistens lachen beide dabei. Heute nimmt Robin Finn in den Schwitzkasten. Finn lacht erst noch, dann bekommt er schlecht Luft. „Stopp!“, ruft er. Robin lacht: „Ach komm, du Weichei!“ und drückt weiter.
@@ -432,7 +432,7 @@ Später redet die Lehrerin mit beiden. Robin sagt: „Ich hab nicht gemerkt, das
           warum: "Jeder braucht einen anderen Abstand. Wir probieren es aus." },
         { titel: "Rauf-Regeln", dauer: "6 Min",
           text: "Gemeinsam Regeln sammeln, damit Raufen fair bleibt – oder entscheiden, dass es bei euch gar nicht erlaubt ist. Beispiele an die Tafel:\n\n- Beide wollen es – vorher fragen.\n- „Stopp“ heißt SOFORT loslassen. Ohne Diskussion.\n- Nicht an Hals, Kopf, Bauch.\n- Wer nicht mehr mag, ist kein Weichei.\n- Wenn jemand weint oder schlecht Luft bekommt: sofort aufhören.",
-          quiz: "keine",
+          quiz: "aufdecken",
           folie: "Damit Raufen fair bleibt – welche **Regeln** braucht ihr?\n\nOder ist Raufen bei euch ganz verboten?",
           kern: ["34"],
           emoji: "📜",
@@ -450,7 +450,7 @@ K({
     id: "k-laestern",
     titel: "Lästern und Runtermachen",
     ziel34: "Verstehen, warum Menschen über andere lästern, und Lästern stoppen können",
-    material: "Tafel: „Hinter dem Spruch steckt …“\nSituationskarten (Arbeitsmaterial)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext34: { titel: "Die Schuhe", text:
 `Sara kommt mit neuen Turnschuhen in die Schule – keine Markenschuhe, sondern welche vom Discounter. In der Pause zeigt Jana auf die Schuhe. „Boah, wo hast du die denn her? Vom Wühltisch?“ Ein paar Mädchen lachen. In der Pause tuscheln sie, und Sara hört ihren Namen.
 
@@ -490,7 +490,7 @@ K({
     id: "k-gaming",
     titel: "Wenn das Zocken wütend macht",
     ziel34: "Rage beim Zocken und Verlieren erkennen und Strategien für Frust beim Spielen entwickeln",
-    material: "Tafel: „Rage-Momente“ und „Was hilft?“\nKarte „Kasten-Atmen“",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["kasten-atmen"],
     lerntext34: { titel: "Game over", text:
 `Luca zockt jeden Nachmittag. Heute läuft es schlecht. Drei Runden hintereinander wird er rausgekickt. Im Voice-Chat lacht einer: „Noob! Lösch das Spiel!“

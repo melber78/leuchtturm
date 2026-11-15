@@ -92,7 +92,7 @@ window.SOZIAL_VORLAGEN = [
     dauer: 40,
     ziel12: "Vier Grundgefühle benennen und im Gesicht erkennen",
     ziel34: "Gefühle fein unterscheiden, Körpersignale deuten, Gefühle anderer einschätzen",
-    material: "4 Gefühlskarten (froh, traurig, wütend, ängstlich), groß ausgedruckt\nHandspiegel (1–2 Stück)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     verlauf: [
         { zeit: "0–5",   phase: "Ankommen",     k12: "Begrüßung, Gefühlsbarometer (zeigen)", k34: "Begrüßung, Gefühlsbarometer (ein Satz)" },
         { zeit: "5–13",  phase: "Lerntext",     k12: "„Paul und der verlorene Ball“ hören, Gefühlskarten zuordnen", k34: "„Lena und der erste Tag“ hören, Fragen im Gespräch beantworten" },
@@ -136,10 +136,10 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
 4. Warst du schon einmal in einer ähnlichen Situation? (freiwillig)`
     },
     uebungen: [
-        { titel: "Gefühle-Pantomime", fuer: "alle", dauer: "5 Min",
-          text: "Ein Kind kommt nach vorn, zieht verdeckt eine Gefühlskarte und spielt das Gefühl nur mit Gesicht und Körper vor. Die anderen raten vom Platz aus (melden). Kl. 3/4 nennen zusätzlich, *woran* sie es erkannt haben (Augenbrauen, Mund, Schultern).",
-          folie: "Ein Kind zieht eine Gefühlskarte und zeigt das Gefühl – nur mit Gesicht und Körper, ohne Worte.\n\nDie anderen raten: **Welches Gefühl ist das?**",
-          folie34: "Ein Kind zieht eine Gefühlskarte und zeigt das Gefühl – nur mit Gesicht und Körper, ohne Worte.\n\nDie anderen raten: **Welches Gefühl ist das? Woran hast du es erkannt?**",
+        { titel: "Gefühle-Pantomime", frage: "🤫 Ich flüstere dir das Gefühl ins Ohr – zeig es ohne Worte!", loesKnopf: "✅ Auflösen", quiz: "karten", fuer: "alle", dauer: "5 Min",
+          text: "Ein Kind kommt nach vorn (Glücksrad). Du flüsterst ihm das Gefühl ins Ohr, das auf deiner Liste steht – an der Tafel bleibt es verdeckt. Das Kind spielt es nur mit Gesicht und Körper vor, die anderen raten vom Platz aus. Dann „✅ Auflösen“ antippen. Kl. 3/4 nennen zusätzlich, *woran* sie es erkannt haben (Augenbrauen, Mund, Schultern).\n\n- Gefühl 1 (😊 froh)\n- Gefühl 2 (😢 traurig)\n- Gefühl 3 (😠 wütend)\n- Gefühl 4 (😨 ängstlich)\n- Gefühl 5 (😲 überrascht)\n- Gefühl 6 (😎 stolz)",
+          folie: "Ich flüstere einem Kind ein **Gefühl** ins Ohr. 🤫\n\nEs zeigt das Gefühl – nur mit Gesicht und Körper, **ohne Worte**.\n\nDie anderen raten: **Welches Gefühl ist das?**",
+          folie34: "Ich flüstere einem Kind ein **Gefühl** ins Ohr. 🤫\n\nEs zeigt das Gefühl – nur mit Gesicht und Körper, **ohne Worte**.\n\nDie anderen raten: **Welches Gefühl ist das? Woran hast du es erkannt?**",
           kern: ["12"],
           emoji: "🎭",
           warum: "Gefühle sieht man im Gesicht. Wir raten Gefühle – ganz ohne Worte." },
@@ -211,7 +211,7 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
     dauer: 40,
     ziel12: "Im Streit aussteigen: weggehen und Hilfe holen statt hauen",
     ziel34: "Merken, wann es kocht, rechtzeitig aussteigen und den Streit später mit Hilfe klären",
-    material: "Plakat „Streit-Ampel“ (Arbeitsmaterial)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     verlauf: [
       {
         "zeit": "0–5",
@@ -392,7 +392,7 @@ Am Nachmittag erzählt Lena ihrer Mama: „Am Anfang war mein Bauch ganz komisch
     dauer: 40,
     ziel12: "Freundliche Handlungen erkennen und benennen",
     ziel34: "Eigenschaften eines guten Freundes begründen, mit Enttäuschung umgehen",
-    material: "Wollknäuel + Magnete (Freundschaftsnetz an der Tafel)\nKleine Zettel für Komplimente\nNamenszettel aller Kinder",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     verlauf: [
         { zeit: "0–5",   phase: "Ankommen",     k12: "Begrüßung, Gefühlsbarometer", k34: "Begrüßung, Gefühlsbarometer" },
         { zeit: "5–13",  phase: "Lerntext",     k12: "„Der kleine Igel sucht einen Freund“ hören", k34: "„Das geplatzte Versprechen“ hören, Fragen besprechen" },
@@ -451,16 +451,16 @@ Ida schweigt kurz. Dann sagt sie: „Ich war richtig traurig. Aber ich finde gut
           emoji: "👍",
           warum: "Was macht ein guter Freund? Wir prüfen: freundlich oder nicht?" },
         { titel: "Freundschaftsnetz", fuer: "34", dauer: "4 Min",
-          text: "An der Tafel stehen die Vornamen aller Kinder. Ein Kind kommt nach vorn, nennt eine nette Sache, die ein anderes Kind schon einmal getan hat, und spannt einen Wollfaden (mit Magneten) zwischen den beiden Namen. So entsteht Faden für Faden ein Netz. Kl. 1/2 dürfen das Kind nennen, die Großen spannen den Faden.",
-          folie: "An der Tafel stehen eure Namen.\n\nSag, was ein anderes Kind schon einmal **Nettes** getan hat – und spann einen Faden zwischen euren Namen. So wächst unser **Freundschaftsnetz**.",
-          emoji: "🕸️",
+          text: "Ein Kind kommt nach vorn und nennt eine nette Sache, die ein anderes Kind schon einmal getan hat. Dieses Kind kommt dazu und legt ihm die Hand auf die Schulter. Dann ist das zweite Kind dran und nennt das nächste – so entsteht Kind für Kind eine lange **Freundschaftskette** durch den Raum. Zum Schluss: Schaut, wie viele wir sind!",
+          folie: "Sag, was ein anderes Kind schon einmal **Nettes** getan hat. 💛\n\nDann kommt es zu dir und legt dir die Hand auf die Schulter – und ist als Nächstes dran.\n\nSo wächst unsere **Freundschaftskette**.",
+          emoji: "🤝",
           warum: "Wir zeigen, wie viel Nettes wir schon füreinander getan haben." },
         { titel: "Kompliment-Post", fuer: "alle", dauer: "4 Min",
-          text: "Jedes Kind zieht verdeckt einen Namenszettel. Kl. 1/2 malen für dieses Kind ein kleines Bild, Kl. 3/4 schreiben ein Kompliment („Ich finde toll, dass du …“). Du sammelst die Zettel ein und verteilst sie als „Postbote“ an die Plätze.",
-          folie12: "Zieh einen Namenszettel. Verrate den Namen nicht!\n\nMal für dieses Kind ein kleines Bild. 📬 Danach kommt die Post.",
-          folie34: "Zieh einen Namenszettel. Verrate den Namen nicht!\n\nSchreib diesem Kind ein Kompliment: **„Ich finde toll, dass du …“** 📬 Danach kommt die Post.",
+          text: "Jedes Kind macht für sein Nachbarkind (rechts) etwas Nettes auf ein Blatt: Kl. 1/2 malen ein kleines Bild, Kl. 3/4 schreiben ein Kompliment („Ich finde toll, dass du …“). Du sammelst die Blätter ein und verteilst sie als „Postbote“ an die Plätze.",
+          folie12: "Mal für dein Nachbarkind **rechts** ein kleines Bild. ✏️\n\nVerrat noch nichts! 📬 Danach kommt die Post.",
+          folie34: "Schreib deinem Nachbarkind **rechts** ein Kompliment: **„Ich finde toll, dass du …“** ✏️\n\nVerrat noch nichts! 📬 Danach kommt die Post.",
           emoji: "📬",
-          warum: "Wir schicken uns heimlich etwas Nettes – das macht froh." }
+          warum: "Wir schicken uns etwas Nettes – das macht froh." }
     ],
     ab12: {
       "titel": "Was macht ein guter Freund?",
@@ -522,7 +522,7 @@ Ida schweigt kurz. Dann sagt sie: „Ich war richtig traurig. Aber ich finde gut
     dauer: 40,
     ziel12: "Verstehen, wofür Regeln da sind, und 3 Gruppenregeln vereinbaren",
     ziel34: "Regeln begründen und faire Folgen bei Regelverstößen aushandeln",
-    material: "Plakat „Unsere Gruppenregeln“ (leer) + dicke Stifte\nWürfel (für das Regel-Chaos-Spiel)\nKleine Zettel für Regelvorschläge",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nEin großes Blatt (oder das leere Regelplakat) für eure Regeln\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     verlauf: [
         { zeit: "0–5",   phase: "Ankommen",     k12: "Begrüßung, Gefühlsbarometer", k34: "Begrüßung, Gefühlsbarometer" },
         { zeit: "5–10",  phase: "Einstieg",     k12: "Regel-Chaos-Spiel", k34: "Regel-Chaos-Spiel" },
@@ -571,8 +571,8 @@ Nach einer Woche klappt das Inselleben richtig gut. Moritz sagt: „Komisch – 
     },
     uebungen: [
         { titel: "Regel-Chaos-Spiel (Einstieg)", fuer: "alle", dauer: "5 Min",
-          text: "Ankündigung: „Wir spielen ein Würfelspiel. Wer gewinnt? Das sage ich nicht.“ Der Würfel wandert von Platz zu Platz. Jedes Kind würfelt, du vergibst Punkte völlig willkürlich (eine 6 bringt mal 10 Punkte, mal 0; ein Kind darf zweimal würfeln, ein anderes gar nicht). Nach zwei Minuten stoppst du.\n\nFrage: „Wie hat sich das Spiel angefühlt? Was hat gefehlt?“ – Ziel: Die Kinder merken selbst, dass ohne Regeln Unfairness und Ärger entstehen.",
-          folie: "Wir spielen ein Würfelspiel. 🎲\n\nWer gewinnt? Das wird nicht verraten …",
+          text: "Ankündigung: „Wir spielen ein Würfelspiel. Wer gewinnt? Das sage ich nicht.“ Gewürfelt wird mit den Fingern: Das Kind ruft „Würfel!“, du zeigst 1 bis 6 Finger. Du vergibst Punkte völlig willkürlich (eine 6 bringt mal 10 Punkte, mal 0; ein Kind darf zweimal würfeln, ein anderes gar nicht). Nach zwei Minuten stoppst du.\n\nFrage: „Wie hat sich das Spiel angefühlt? Was hat gefehlt?“ – Ziel: Die Kinder merken selbst, dass ohne Regeln Unfairness und Ärger entstehen.",
+          folie: "Wir spielen ein Würfelspiel. 🎲\n\nRuf **„Würfel!“** – ich zeige dir mit den Fingern deine Zahl.\n\nWer gewinnt? Das wird nicht verraten …",
           emoji: "🎲",
           warum: "Wir spielen ein Spiel – mal sehen, wie es ohne Regeln läuft …" },
         { titel: "Unser Regelplakat", fuer: "alle", dauer: "9 Min",

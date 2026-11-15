@@ -30,7 +30,7 @@ K({
     id: "k-luegen",
     titel: "Lügen und Vertrauen",
     ziel34: "Verstehen, wie Lügen Vertrauen kaputt machen – und wie man Vertrauen zurückgewinnt",
-    material: "Tafel: Vertrauens-Konto (Einzahlung / Abhebung)\nrote und grüne Karten",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Die Ausrede", text:
 `Niklas hat seiner Mutter erzählt, dass er nach der Schule bei Ben Hausaufgaben macht. In Wirklichkeit ist er mit älteren Jungs am Bahnhof. Seine Mutter ruft bei Bens Mutter an. Die Lüge fliegt auf.
@@ -74,7 +74,7 @@ K({
     id: "k-erwachsene",
     titel: "Ärger mit Erwachsenen",
     ziel34: "Bei Ungerechtigkeit durch Erwachsene ruhig bleiben und sich trotzdem wirksam beschweren",
-    material: "Tafel: „Was ich fühle“ – „Was ich tue“ – „Was dann passiert“",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext34: { titel: "Unfair!", text:
 `In der Hofpause gibt es Gerangel an der Tischtennisplatte. Die Aufsicht kommt dazu und sieht nur, wie Marie einen Jungen schubst. Dass er sie vorher zweimal geschubst hat, hat sie nicht gesehen. „Marie, du gehst sofort rein!“
 
@@ -91,7 +91,7 @@ Am nächsten Tag erzählt Marie alles ihrer Schulsozialarbeiterin. Die sagt: „
     uebungen: [
         { titel: "Erst runter, dann reden", dauer: "6 Min",
           text: "Gemeinsam einen Plan in drei Schritten an die Tafel schreiben:\n\n- **Runterkommen:** tief atmen, Mund zu, nicht widersprechen – ja, auch wenn es unfair ist.\n- **Später reden:** „Kann ich Ihnen nachher erklären, was passiert ist?“\n- **Hilfe holen:** Klassenlehrkraft, Schulsozialarbeit oder Eltern einschalten.\n\nFrage: Warum ist Schritt 1 der schwerste?",
-          quiz: "keine",
+          quiz: "aufdecken",
           folie: "Ärger mit einem Erwachsenen. 😤\n\nWas hilft wirklich? Wir schreiben einen Plan in drei Schritten.",
           emoji: "😤",
           warum: "Ärger mit Erwachsenen? Wir machen einen Plan, der wirklich hilft." },
@@ -116,7 +116,7 @@ K({
     id: "k-ausgrenzung",
     titel: "Drinnen oder draußen?",
     ziel34: "Ausgrenzung erkennen, nachfühlen, wie sie wirkt, und andere bewusst einbeziehen",
-    material: "Tafel: „Wie man jemanden ausschließt“ / „Wie man jemanden reinholt“",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext34: { titel: "Die Gruppe", text:
 `In der 4b gibt es eine Clique: Lena, Charlotte, Sofia und Chantal. Sie sitzen zusammen, haben eine eigene Chatgruppe und tragen die gleichen Armbänder.
 
@@ -158,7 +158,7 @@ K({
     id: "k-wut-eisberg",
     titel: "Was steckt hinter der Wut?",
     ziel34: "Erkennen, dass unter Wut oft andere Gefühle liegen (Angst, Scham, Traurigkeit)",
-    material: "Tafel: großer Eisberg (oben Wut, unter Wasser leer)\nGefühlskarten klein (Arbeitsmaterial)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["gefuehlskarten-klein"],
     lerntext34: { titel: "Der Eisberg", text:
 `Dennis ist bekannt dafür, dass er schnell explodiert. Heute in Mathe: Er soll an der Tafel rechnen. Er weiß die Lösung nicht. Jemand kichert. Dennis wirft die Kreide hin und brüllt: „Mathe ist sowieso scheiße!“
@@ -176,8 +176,8 @@ Der Sozialarbeiter nickt. „Wut ist oft ein Bodyguard für Gefühle, die wehtun
 4. Warum zeigt man lieber Wut als Scham oder Angst?
 5. Was hätte Dennis in der Situation geholfen?` },
     uebungen: [
-        { titel: "Der Eisberg an der Tafel", dauer: "6 Min",
-          text: "Oben in die Spitze schreibst du WUT. Gemeinsam sammeln die Kinder, was unter Wasser liegen kann: Angst, Scham, Traurigkeit, Enttäuschung, Eifersucht, sich ungerecht behandelt fühlen, Hunger, Müdigkeit, Stress zu Hause … Die Gefühlskarten können helfen.",
+        { titel: "Der Eisberg an der Tafel", quiz: "aufdecken", dauer: "6 Min",
+          text: "Oben auf der Folie steht die WUT. Gemeinsam sammeln die Kinder, was unter Wasser liegen kann. Erst sammeln – dann die Kärtchen an der Tafel antippen und aufdecken.\n\n- 😨 Angst\n- 😳 Scham\n- 😢 Traurigkeit\n- 😞 Enttäuschung\n- 😒 Eifersucht\n- ⚖️ ungerecht behandelt\n- 😴 Müdigkeit oder Hunger\n- 🏠 Stress zu Hause",
           folie: "Oben siehst du die **Wut**. 🧊\n\nWas kann **unter Wasser** liegen?",
           emoji: "🧊",
           warum: "Unter der Wut steckt oft mehr. Wir schauen unter Wasser." },
@@ -201,7 +201,7 @@ K({
     id: "k-rache",
     titel: "Rache – zahlt sich das aus?",
     ziel34: "Den Kreislauf von Rache durchschauen und Wege finden, ihn zu unterbrechen",
-    material: "Tafel: Rache-Kreislauf (Kreis mit Pfeilen)\nSituationskarten (Arbeitsmaterial)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext34: { titel: "Zurückzahlen", text:
 `Am Montag versteckt Ole die Mütze von Julian. Am Dienstag kippt Julian Wasser über Oles Heft. Am Mittwoch macht Ole ein peinliches Foto von Julian und zeigt es herum. Am Donnerstag lauert Julian Ole nach der Schule auf und schlägt ihn.
 
@@ -242,7 +242,7 @@ K({
     id: "k-freunde-echt",
     titel: "Echte und falsche Freunde",
     ziel34: "Merkmale echter Freundschaft erkennen und Freundschaften kritisch prüfen",
-    material: "Tafel: „Echter Freund“ / „Falscher Freund“\nrote und grüne Karten",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["rot-gruen"],
     lerntext34: { titel: "Kumpel", text:
 `Kevin ist seit den Sommerferien mit Carlo befreundet. Carlo ist zwei Jahre älter und cool. Er nimmt Kevin mit auf den Bolzplatz, zu den Großen.
@@ -284,7 +284,7 @@ K({
     id: "k-konsequenzen",
     titel: "Regeln, Strafen, Fairness",
     ziel34: "Den Sinn von Regeln und Konsequenzen verstehen und Strafe von Rache unterscheiden",
-    material: "Tafel: drei Spalten „Regel“ – „Warum?“ – „Was passiert ohne?“",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext34: { titel: "Ohne Regeln", text:
 `Die Klasse 4a darf einen Tag lang selbst bestimmen: keine Regeln. Am Anfang finden alle es super. Musik laut, Füße auf den Tisch, essen, wann man will.
 
@@ -325,7 +325,7 @@ K({
     id: "k-gefuehle-zeigen",
     titel: "Harte Schale – weicher Kern?",
     ziel34: "Merken, dass jeder Gefühle hat, und dass es Stärke braucht, sie zu zeigen",
-    material: "Tafel: Maske (außen / innen)\nGefühlskarten klein",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["gefuehlskarten-klein"],
     lerntext34: { titel: "Hinter der Maske", text:
 `Mo ist der Coolste in der Klasse. Ihm ist alles egal, sagt er. Wenn er eine Sechs bekommt, lacht er. Wenn jemand fies zu ihm ist, sagt er: „Juckt mich nicht.“
@@ -369,7 +369,7 @@ K({
     id: "k-neid",
     titel: "Neid und Vergleichen",
     ziel34: "Neid als Gefühl verstehen und Wege finden, mit Vergleichen (Marken, Handy, Zocken) umzugehen",
-    material: "Tafel: „Was ich sehe“ / „Was ich nicht sehe“",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext34: { titel: "Das neue Handy", text:
 `Leandro kommt mit dem neuesten Handy in die Schule. Alle stehen um ihn herum. Robin hat ein altes Handy mit kaputtem Display. Er spürt einen Stich im Bauch.
 
@@ -412,7 +412,7 @@ K({
     id: "k-verpetzen",
     titel: "Verpetzen oder Hilfe holen?",
     ziel34: "Unterscheiden, wann man Erwachsene einschalten muss – auch wenn es sich wie Verpetzen anfühlt",
-    material: "Rote und grüne Karten\nPlakat „Die drei Hilfe-Fragen“ (Arbeitsmaterial)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["rot-gruen", "hilfe-fragen"],
     lerntext34: { titel: "Das Messer", text:
 `Auf dem Heimweg zeigt Yannick seinem Freund Vincent etwas in seinem Rucksack: ein Taschenmesser. „Nur zur Sicherheit“, sagt Yannick. „Wenn die aus der 6 mich wieder abziehen wollen.“
@@ -458,7 +458,7 @@ K({
     id: "k-schlichten",
     titel: "Streit klären – wenn alle ruhig sind",
     ziel34: "Verstehen, dass ein Streit erst geklärt wird, wenn alle ruhig sind, und sich in einem Klärungsgespräch mit einem Erwachsenen fair verhalten",
-    material: "Plakat „Erst raus, dann reden“ (Arbeitsmaterial)\nrote und grüne Karten",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: [
       "erst-raus",
       "rot-gruen"
@@ -548,7 +548,7 @@ K({
     id: "k-ruf",
     titel: "Mein Ruf – und wer ich sein will",
     ziel34: "Darüber nachdenken, wie man wahrgenommen wird, und eigene Ziele für das eigene Verhalten setzen",
-    material: "Tafel: „So sehen mich andere“ / „So will ich sein“",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext34: { titel: "Der Neue Anfang", text:
 `Marlon hat einen Ruf: Er ist der, der immer Stress macht. Wenn irgendwo etwas kaputt ist, schauen alle zuerst ihn an. Manchmal war er es wirklich. Manchmal nicht.
 

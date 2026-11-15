@@ -9,7 +9,7 @@ SOZIAL_EINHEIT({
     kategorie: "Kooperation & Teamgeist",
     ziel12: "Erleben, dass man zusammen mehr schafft als allein",
     ziel34: "Zusammenarbeit planen: absprechen, Aufgaben verteilen, einander zuhören",
-    material: "Pro Tischpaar ein Blatt Papier und EIN Stift",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nPro Tischpaar ein Blatt Papier und EIN Stift\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Die Riesenrübe", text:
 `Der Großvater hat eine Rübe gepflanzt. Die Rübe wächst und wächst. Sie wird riesengroß!
 
@@ -95,7 +95,7 @@ SOZIAL_EINHEIT({
     kategorie: "Kooperation & Teamgeist",
     ziel12: "Verlieren aushalten und fair gewinnen",
     ziel34: "Fair Play: ein guter Gewinner und ein guter Verlierer sein",
-    material: "Tafel für die Fair-Play-Sätze",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Mias Memory", text:
 `Mia spielt mit Opa und ihrem Bruder Jan Memory. Jan findet ein Paar nach dem anderen. Mia findet fast keins.
 
@@ -193,7 +193,7 @@ SOZIAL_EINHEIT({
     kategorie: "Kooperation & Teamgeist",
     ziel12: "Erkennen, dass jeder in der Gruppe wichtig ist",
     ziel34: "Unterschiedliche Fähigkeiten in einer Gruppe klug einsetzen",
-    material: "Tafel",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Das Tier-Orchester", text:
 `Die Tiere wollen ein Konzert geben. Der Elefant tutet mit seinem Rüssel: „Törööö!“ Der Vogel pfeift: „Piep-piep!“ Der Frosch quakt: „Quaaak!“
 
@@ -276,7 +276,7 @@ SOZIAL_EINHEIT({
     kategorie: "Achtsamkeit & Ruhe",
     ziel12: "Einfache Atem- und Entspannungsübungen kennen",
     ziel34: "Merken, wann ich Ruhe brauche, und passende Übungen auswählen",
-    material: "Klangschale oder Glöckchen\nPro Kind ein Wattebausch oder eine Feder",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Tilda, die Schildkröte", text:
 `Tilda ist eine kleine Schildkröte. Manchmal ist es ihr zu viel: Die Affen kreischen, die Vögel streiten, und alle rennen durcheinander. Dann wird Tilda ganz zappelig.
 
@@ -309,7 +309,7 @@ Vor dem nächsten Test macht Nora das Kasten-Atmen ganz heimlich unter dem Tisch
 4. Was machst du, wenn dir alles zu viel wird?` },
     uebungen: [
         { titel: "Stille-Minute", fuer: "alle", dauer: "2 Min",
-          text: "Du schlägst die Klangschale an. Alle sitzen ganz still, bis der Ton verklungen ist. Wer mag, schließt die Augen.",
+          text: "Tipp unten in der Leiste auf die Glocke 🔔. Alle sitzen ganz still, bis der Ton verklungen ist. Wer mag, schließt die Augen.",
           folie: "🔔 Hör zu, bis der Ton ganz weg ist.\n\nSitz ganz still. Wenn du magst, schließ die Augen.",
           emoji: "🔔",
           warum: "Wir werden ganz still – eine Minute lang." },
@@ -320,10 +320,10 @@ Vor dem nächsten Test macht Nora das Kasten-Atmen ganz heimlich unter dem Tisch
           emoji: "🐢",
           warum: "Wir lernen Tildas Trick zum Ruhigwerden." },
         { titel: "Feder-Atmen", fuer: "12", dauer: "3 Min",
-          text: "Jedes Kind legt einen Wattebausch auf den Tisch und pustet ihn ganz langsam von einer Tischkante zur anderen – mit nur einem langen Atemzug. Wer schafft es am langsamsten?",
-          folie: "Puste den Wattebausch ganz **langsam** über den Tisch – mit nur einem langen Atemzug. 🌬️",
+          text: "Jedes Kind knüllt aus einem kleinen Papierschnipsel ein Kügelchen, legt es auf den Tisch und pustet es ganz langsam von einer Tischkante zur anderen – mit nur einem langen Atemzug. Wer schafft es am langsamsten?",
+          folie: "Knüll ein kleines **Papierkügelchen**.\n\nPuste es ganz **langsam** über den Tisch – mit nur einem langen Atemzug. 🌬️",
           emoji: "🌬️",
-          warum: "Wir atmen ganz langsam – mit einem Wattebausch." },
+          warum: "Wir atmen ganz langsam – mit einem Papierkügelchen." },
         { titel: "Kasten-Atmen", fuer: "34", dauer: "4 Min",
           text: "Alle malen mit dem Finger ein Quadrat in die Luft: Seite 1 = 4 Sekunden einatmen, Seite 2 = 4 Sekunden halten, Seite 3 = 4 Sekunden ausatmen, Seite 4 = 4 Sekunden halten. Du zählst leise mit. Viermal wiederholen.",
           folie: "Mal mit dem Finger ein Quadrat in die Luft ⬜:\n\n4 Sekunden **einatmen** · 4 **halten** · 4 **ausatmen** · 4 **halten**\n\nViermal.",
@@ -369,7 +369,7 @@ SOZIAL_EINHEIT({
     kategorie: "Achtsamkeit & Ruhe",
     ziel12: "Die fünf Sinne bewusst wahrnehmen",
     ziel34: "Achtsam wahrnehmen und genau beschreiben, was ich sehe, höre, fühle, rieche, schmecke",
-    material: "Fühlsäckchen mit 4–5 Gegenständen (Stein, Feder, Kastanie, Schwamm, Löffel)\nPro Kind eine Rosine oder ein Apfelstück (Allergien und Unverträglichkeiten vorher abfragen!)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nWenn du magst: pro Kind eine Rosine oder ein Apfelstück (Allergien vorher abfragen!)\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Ein Spaziergang mit Opa", text:
 `Lukas geht mit Opa spazieren. „Heute machen wir einen Sinne-Spaziergang“, sagt Opa.
 
@@ -406,17 +406,15 @@ Dann legen alle die Rosine auf die Zunge, ohne zu kauen. Erik spürt, wie sein M
 4. Wann könnte Achtsamkeit dir im Alltag helfen?` },
     uebungen: [
         { titel: "Fühl-Säckchen", fuer: "alle", dauer: "5 Min",
-          text: "Das Säckchen wandert von Platz zu Platz. Jedes Kind greift hinein, ohne zu schauen, und beschreibt einen Gegenstand: Kl. 1/2 mit einem Wort (weich, hart, rund), Kl. 3/4 mit drei Eigenschaften. Die anderen raten, was es ist. Erst am Ende wird ausgepackt.",
-          text12: "Das Säckchen wandert von Platz zu Platz. Jedes Kind greift hinein, ohne zu schauen, und beschreibt einen Gegenstand mit einem Wort (weich, hart, rund). Die anderen raten, was es ist. Erst am Ende wird ausgepackt.",
-          text34: "Das Säckchen wandert von Platz zu Platz. Jedes Kind greift hinein, ohne zu schauen, und beschreibt einen Gegenstand mit drei Eigenschaften. Die anderen raten, was es ist. Erst am Ende wird ausgepackt.",
-          folie12: "Greif in das Säckchen – **nicht schauen!** 👋\n\nSag ein Wort: Wie fühlt es sich an? Die anderen raten.",
-          folie34: "Greif in das Säckchen – **nicht schauen!** 👋\n\nBeschreib den Gegenstand mit **drei** Eigenschaften. Die anderen raten.",
+          text: "Ein Kind kommt nach vorn und schließt die Augen. Du legst ihm einen Gegenstand aus dem Raum in die Hände (Radiergummi, Schlüssel, Spitzer, Tafelschwamm …). Kl. 1/2 beschreiben ihn mit einem Wort (weich, hart, rund), Kl. 3/4 mit drei Eigenschaften. Die anderen raten.",
+          folie12: "Augen zu – **nicht schauen!** 👋\n\nIch lege dir etwas in die Hände. Sag ein Wort: Wie fühlt es sich an? Die anderen raten.",
+          folie34: "Augen zu – **nicht schauen!** 👋\n\nIch lege dir etwas in die Hände. Beschreib es mit **drei** Eigenschaften. Die anderen raten.",
           kern: ["12"],
           emoji: "👋",
           warum: "Wir fühlen, ohne zu schauen." },
         { titel: "Achtsam essen", fuer: "alle", dauer: "6 Min",
-          text: "Jedes Kind bekommt eine Rosine oder ein Apfelstück. Du leitest langsam an: anschauen – fühlen – ans Ohr halten – riechen – auf die Zunge legen, ohne zu kauen – ganz langsam kauen – schlucken. Danach erzählen die Kinder vom Platz aus, was sie bemerkt haben.",
-          folie: "Du bekommst etwas zum Essen. Ganz langsam:\n\n👀 anschauen · ✋ fühlen · 👂 ans Ohr halten · 👃 riechen · 👅 auf die Zunge · langsam kauen",
+          text: "Wenn du magst, bringst du für jedes Kind eine Rosine oder ein Apfelstück mit (Allergien vorher abfragen!) – sonst nehmen die Kinder etwas aus ihrer Brotdose. Du leitest langsam an: anschauen – fühlen – ans Ohr halten – riechen – auf die Zunge legen, ohne zu kauen – ganz langsam kauen – schlucken. Danach erzählen die Kinder vom Platz aus, was sie bemerkt haben.",
+          folie: "Nimm ein kleines Stück zu essen. Ganz langsam:\n\n👀 anschauen · ✋ fühlen · 👂 ans Ohr halten · 👃 riechen · 👅 auf die Zunge · langsam kauen",
           kern: ["34"],
           emoji: "🍎",
           warum: "Wir essen ganz langsam – mit allen Sinnen." }
@@ -458,7 +456,7 @@ SOZIAL_EINHEIT({
     kategorie: "Achtsamkeit & Ruhe",
     ziel12: "Schöne Dinge im Alltag bemerken und Danke sagen",
     ziel34: "Dankbarkeit als Haltung kennenlernen und ausdrücken",
-    material: "Ein leeres Glas und kleine Zettel (Glücksglas für die Gruppe)\nKarten für die Danke-Karten",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nWenn du magst: ein leeres Glas als Glücksglas\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Bennis Glücksglas", text:
 `Benni hat ein leeres Glas. „Was willst du damit?“, fragt seine Schwester.
 
@@ -499,12 +497,12 @@ Seitdem schreibt Marie jeden Abend drei gute Dinge in ein kleines Heft. Und am n
           emoji: "✨",
           warum: "Wir erzählen, was diese Woche schön war." },
         { titel: "Danke-Karte", fuer: "alle", dauer: "6 Min",
-          text: "Jedes Kind gestaltet eine Danke-Karte für einen Menschen an der Schule, an den man selten denkt: Hausmeister, Sekretärin, Küchenteam, Reinigungskraft, Busfahrer. Kl. 1/2 malen, Kl. 3/4 schreiben zwei Sätze. Die Karten werden gemeinsam überbracht.",
-          folie12: "Für wen an unserer Schule möchtest du eine **Danke-Karte** malen? 💌",
-          folie34: "Für wen an unserer Schule möchtest du eine **Danke-Karte** schreiben? 💌\n\nZwei Sätze reichen.",
+          text: "Jedes Kind gestaltet auf einem Blatt einen Danke-Brief für einen Menschen an der Schule, an den man selten denkt: Hausmeister, Sekretärin, Küchenteam, Reinigungskraft, Busfahrer. Kl. 1/2 malen, Kl. 3/4 schreiben zwei Sätze. Die Briefe werden gemeinsam überbracht.",
+          folie12: "Für wen an unserer Schule möchtest du einen **Danke-Brief** malen? 💌\n\nHausmeister · Sekretärin · Küche · Putzteam · Busfahrer",
+          folie34: "Für wen an unserer Schule möchtest du einen **Danke-Brief** schreiben? 💌\n\nHausmeister · Sekretärin · Küche · Putzteam · Busfahrer\n\nZwei Sätze reichen.",
           kern: ["34"],
           emoji: "💌",
-          warum: "Wir sagen Danke – mit einer Karte." }
+          warum: "Wir sagen Danke – mit einem Brief." }
     ],
     ab12: {
       "titel": "Danke!",
@@ -537,7 +535,7 @@ SOZIAL_EINHEIT({
     kategorie: "Vielfalt & Respekt",
     ziel12: "Unterschiede und Gemeinsamkeiten entdecken",
     ziel34: "Vielfalt als Bereicherung sehen und Vorurteile hinterfragen",
-    material: "Eine Schachtel Buntstifte (für den Lerntext 1/2)\nTafel",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Der Streit der Buntstifte", text:
 `In einer Federmappe wohnen viele Buntstifte. Eines Tages streiten sie.
 
@@ -621,7 +619,7 @@ SOZIAL_EINHEIT({
     kategorie: "Vielfalt & Respekt",
     ziel12: "Merken, dass Auslachen wehtut, und Mitlachen von Auslachen unterscheiden",
     ziel34: "Hänseln und Mobbing erkennen und wissen, was man als Zuschauer tun kann",
-    material: "Tafel\nHinweis: Gibt es in der Gruppe ein Kind, das aktuell gehänselt wird, die Geschichten vorher anpassen und das Kind nicht vorführen.",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial\nHinweis: Gibt es in der Gruppe ein Kind, das aktuell gehänselt wird, die Geschichten vorher anpassen und das Kind nicht vorführen.",
     lerntext12: { titel: "Linas Brille", text:
 `Lina hat eine neue Brille. Sie ist blau und hat kleine Sterne an der Seite. Lina findet sie schön.
 
@@ -718,7 +716,7 @@ SOZIAL_EINHEIT({
     kategorie: "Vielfalt & Respekt",
     ziel12: "Sehen, wo jemand Hilfe braucht, und helfen",
     ziel34: "Hilfe anbieten, ohne sich aufzudrängen, und ohne Gegenleistung helfen",
-    material: "Namenszettel aller Kinder (für die geheimen Helfer)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Die Äpfel", text:
 `Eine alte Frau kommt vom Einkaufen. Sie trägt eine schwere Tüte. Plötzlich reißt die Tüte. Die Äpfel fallen heraus und rollen über den Weg!
 
@@ -761,8 +759,8 @@ Am Freitag erzählen alle von ihren Erlebnissen. Die meisten sagen dasselbe: Hel
           emoji: "🤲",
           warum: "Wir schauen genau hin: Wo braucht jemand Hilfe?" },
         { titel: "Geheime Helfer", fuer: "alle", dauer: "4 Min",
-          text: "Jedes Kind zieht verdeckt einen Namen und behält ihn für sich. Bis zur nächsten Stunde soll es diesem Kind heimlich etwas Gutes tun (helfen, etwas Nettes sagen, etwas leihen). In der nächsten Stunde beim Ankommen wird geraten: Wer war mein geheimer Helfer?",
-          folie: "Zieh einen Namen – **psst, geheim!** 🤫\n\nTu diesem Kind bis zur nächsten Stunde heimlich etwas Gutes.",
+          text: "Du gehst herum und flüsterst jedem Kind einen Namen ins Ohr – das ist sein „geheimer Auftrag“. Bis zur nächsten Stunde soll es diesem Kind heimlich etwas Gutes tun (helfen, etwas Nettes sagen, etwas leihen). In der nächsten Stunde beim Ankommen wird geraten: Wer war mein geheimer Helfer?",
+          folie: "Ich flüstere dir einen Namen ins Ohr – **psst, geheim!** 🤫\n\nTu diesem Kind bis zur nächsten Stunde heimlich etwas Gutes.",
           emoji: "🤫",
           warum: "Wir tun heimlich etwas Gutes." },
         { titel: "Erst fragen", fuer: "34", dauer: "3 Min",
@@ -808,7 +806,7 @@ SOZIAL_EINHEIT({
     kategorie: "Vielfalt & Respekt",
     ziel12: "Verstehen, dass manche Kinder mehr Hilfe brauchen als andere",
     ziel34: "Gleichheit und Gerechtigkeit unterscheiden",
-    material: "Pflaster oder Pflaster aus Papier (für das Pflaster-Spiel)\nTafel: Zaun mit drei Kindern (groß, mittel, klein) und drei Kisten",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Drei Kinder am Zaun", text:
 `Hinter einem hohen Zaun spielen die Großen Fußball. Drei Kinder wollen zuschauen: Tim ist groß, Ella ist mittel und Ben ist klein.
 
@@ -842,14 +840,14 @@ Leon denkt nach. „Dann ist es wie bei Jakob mit der Brille. Der bekommt ja auc
 3. Was ist der Unterschied zwischen „gleich“ und „gerecht“?
 4. Fallen dir weitere Beispiele ein? (Brille, Rollstuhlrampe, Übersetzung …)` },
     uebungen: [
-        { titel: "Das Pflaster-Spiel", fuer: "alle", dauer: "5 Min",
-          text: "Frag: „Wer hat sich schon mal am Ellbogen wehgetan?“ Ein Kind erzählt. Dann klebst du allen Kindern ein (Papier-)Pflaster auf den Ellbogen – „damit alle gleich behandelt werden“. Die Kinder merken schnell, dass das komisch ist. Gespräch: Wer braucht wirklich ein Pflaster? Was ist gerecht?",
-          folie: "Wer hat sich schon mal wehgetan? 🩹",
+        { titel: "Das Pflaster-Spiel", loesKnopf: "💡 Was ist gerecht?", quiz: "karten", fuer: "alle", dauer: "5 Min",
+          text: "Frag: „Wer hat sich schon mal am Ellbogen wehgetan?“ Ein Kind erzählt. Dann „klebst“ du allen Kindern ein unsichtbares Pflaster auf den Ellbogen (mit dem Finger angedeutet) – „damit alle gleich behandelt werden“. Die Kinder merken schnell, dass das komisch ist. Dann „💡“ antippen und besprechen.\n\n- Paul hat sich am Ellbogen wehgetan. Ich gebe **allen** ein Pflaster auf den Ellbogen. Ist das gerecht? (Nein – nur Paul braucht eins. Gerecht heißt: Jeder bekommt, was er braucht.)",
+          folie: "Wer hat sich schon mal wehgetan? 🩹\n\nGleich bekommt **jeder** von mir ein Pflaster …",
           emoji: "🩹",
           warum: "Ein seltsames Spiel – mal sehen, ob es gerecht ist …" },
-        { titel: "Die Kisten am Zaun", fuer: "12", dauer: "4 Min",
-          text: "An der Tafel sind drei Kinder unterschiedlicher Größe hinter einem Zaun gemalt. Die Kinder kommen nacheinander nach vorn und malen Kisten so dazu, dass alle über den Zaun schauen können.",
-          folie: "Drei Kinder wollen über den Zaun schauen.\n\nMal Kisten dazu – so, dass **alle** etwas sehen können. 📦",
+        { titel: "Die Kisten am Zaun", loesKnopf: "💡 Auflösen", quiz: "karten", fuer: "12", dauer: "4 Min",
+          text: "Die Kinder überlegen, wie man drei Kisten verteilt, damit drei unterschiedlich große Kinder über den Zaun schauen können. Erst Finger zeigen lassen, dann „💡“ antippen.\n\n- 🧑 groß · 🧒 mittel · 👶 klein stehen hinter einem hohen Zaun. Jeder bekommt **eine** Kiste 📦. Kann jetzt jeder über den Zaun schauen? (Nein – der Kleine sieht immer noch nichts. Gleich ist nicht immer gerecht.)\n- Wir haben 3 Kisten 📦📦📦. Wie viele bekommt der Kleine, damit **alle** etwas sehen? Zeig es mit den Fingern! (Groß: 0 · Mittel: 1 · Klein: 2 – jeder bekommt, was er braucht.)",
+          folie: "Drei Kinder wollen über einen hohen Zaun schauen: 🧑 groß · 🧒 mittel · 👶 klein\n\nWie verteilen wir die Kisten 📦, damit **alle** etwas sehen?",
           kern: ["12"],
           emoji: "📦",
           warum: "Wie können alle über den Zaun schauen?" },

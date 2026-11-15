@@ -9,7 +9,7 @@ SOZIAL_EINHEIT({
     kategorie: "Freundschaft",
     ziel12: "Merken, wie es sich anfühlt, ausgeschlossen zu sein, und andere zum Mitspielen einladen",
     ziel34: "Ausgrenzung erkennen und Wege finden, andere einzubeziehen",
-    material: "Tafel für die Einladungs-Sätze und die Pausen-Ideen",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Der kleine Hase", text:
 `Auf der Wiese spielen die Tiere Ball. Der Fuchs, der Bär und das Reh werfen sich den Ball zu.
 
@@ -104,7 +104,7 @@ SOZIAL_EINHEIT({
     kategorie: "Freundschaft",
     ziel12: "Erleben, dass Teilen Freude machen kann",
     ziel34: "Gerecht teilen und erkennen, was man nicht teilen muss",
-    material: "Papierkreise als „Pizza“ (ein Kreis pro Kind) + Scheren\nTafel",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nPro Kind ein Blatt Papier (wird zur Blech-Pizza gefaltet)\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Mats und die Buntstifte", text:
 `Mats hat neue Buntstifte. Es sind ganz viele Farben. Mats ist stolz.
 
@@ -135,8 +135,8 @@ Am Nachmittag will Ben Miras Notizbuch anschauen. „Wir teilen doch alles!“, 
 4. Ist „gerecht“ immer „gleich viel für jeden“?` },
     uebungen: [
         { titel: "Pizza teilen", fuer: "alle", dauer: "5 Min",
-          text: "Jedes Kind bekommt einen Papierkreis als „Pizza“. Frage: „Du willst die Pizza mit deinem Tischnachbarn teilen – wie faltest du?“ Dann: „Jetzt kommen noch zwei Freunde!“ Kl. 1/2 falten halbe und viertel Pizzen. Kl. 3/4 überlegen zusätzlich: „Was, wenn drei Kinder kommen?“",
-          folie: "Du hast einen Papierkreis – deine **Pizza** 🍕.\n\nTeil sie mit deinem Nachbarn: Wie faltest du?\nUnd jetzt kommen noch zwei Freunde dazu!",
+          text: "Jedes Kind nimmt ein Blatt Papier – das ist seine „Blech-Pizza“. Frage: „Du willst die Pizza mit deinem Tischnachbarn teilen – wie faltest du?“ Dann: „Jetzt kommen noch zwei Freunde!“ Kl. 1/2 falten halbe und viertel Pizzen. Kl. 3/4 überlegen zusätzlich: „Was, wenn drei Kinder kommen?“",
+          folie: "Nimm ein Blatt Papier – das ist deine **Blech-Pizza** 🍕.\n\nTeil sie mit deinem Nachbarn: Wie faltest du?\nUnd jetzt kommen noch zwei Freunde dazu!",
           kern: ["12"],
           emoji: "🍕",
           warum: "Wir teilen eine Pizza – wie wird es gerecht?" },
@@ -199,7 +199,7 @@ SOZIAL_EINHEIT({
     kategorie: "Freundschaft",
     ziel12: "Mutig jemanden ansprechen und sich vorstellen",
     ziel34: "Gesprächsanfänge üben und Gemeinsamkeiten mit anderen entdecken",
-    material: "Tafel für die Gesprächsstarter",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Das neue Kind", text:
 `Heute ist ein neues Kind in der Klasse. Es heißt Noa. Noa sitzt ganz still auf seinem Platz. Er kennt niemanden.
 
@@ -295,7 +295,7 @@ SOZIAL_EINHEIT({
     kategorie: "Regeln & Miteinander",
     ziel12: "Die Zauberwörter kennen und im Alltag benutzen",
     ziel34: "Höflich in verschiedenen Situationen handeln und die Wirkung beschreiben",
-    material: "Ein Radiergummi oder ein kleiner Gegenstand für die Höflich-Kette",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nEin Radiergummi oder ein anderer kleiner Gegenstand für die Höflich-Kette\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Kobold Grummel", text:
 `Im Wald wohnt Kobold Grummel. Grummel ist nie freundlich.
 
@@ -390,7 +390,7 @@ SOZIAL_EINHEIT({
     kategorie: "Regeln & Miteinander",
     ziel12: "Eine kleine Aufgabe für die Gruppe übernehmen und zuverlässig erledigen",
     ziel34: "Verstehen, was Verantwortung heißt, und zu eigenen Fehlern stehen",
-    material: "Plakat „Unsere Dienste“ + Namensklammern\nEine Topfpflanze (für den Lerntext 1/2, falls vorhanden)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Die Klassenpflanze", text:
 `In der Klasse steht eine Pflanze. Sie heißt Fridolin. Diese Woche hat Tim den Gieß-Dienst.
 
@@ -422,9 +422,9 @@ Am Abend klingeln Selma und Hannes bei Herrn Schulze. Hannes erklärt mit roten 
 3. Was bedeutet „Verantwortung übernehmen“?
 4. Wofür bist du schon verantwortlich – zu Hause und in der Schule?` },
     uebungen: [
-        { titel: "Unsere Dienste", fuer: "alle", dauer: "7 Min",
-          text: "Gemeinsam überlegt ihr Dienste für das Sozialtraining: Redestein-Wächter, Barometer-Helfer, Tafel-Dienst, Austeil-Dienst, Fenster und Licht, Zeitwächter (zeigt die letzten 5 Minuten an). Jedes Kind wählt einen Dienst und steckt seine Klammer ans Plakat. Kl. 3/4 schreiben die Dienste aufs Plakat, Kl. 1/2 malen ein Symbol dazu. Die Dienste wechseln jeden Monat.",
-          folie: "Welche **Dienste** brauchen wir im Sozialtraining?\n\nSuch dir einen Dienst aus und steck deine Klammer ans Plakat.",
+        { titel: "Unsere Dienste", quiz: "liste", fuer: "alle", dauer: "7 Min",
+          text: "Die Dienste stehen an der Tafel. Jedes Kind sucht sich einen aus – du schreibst die Namen dazu (z. B. in deine Unterlagen). Kl. 3/4 erklären, warum der Dienst wichtig ist. Die Dienste wechseln jeden Monat.\n\n- 🪨 Redestein-Wächter\n- 🌡️ Barometer-Helfer\n- 🧽 Tafel-Dienst\n- 📄 Austeil-Dienst\n- 💡 Fenster und Licht\n- ⏰ Zeitwächter (zeigt die letzten 5 Minuten an)",
+          folie: "Welche **Dienste** brauchen wir im Sozialtraining? 🧹\n\nSuch dir einen Dienst aus – ich schreibe deinen Namen dazu.",
           kern: ["12"],
           emoji: "🧹",
           warum: "Jeder übernimmt eine Aufgabe für unsere Gruppe." },
@@ -480,7 +480,7 @@ SOZIAL_EINHEIT({
     kategorie: "Regeln & Miteinander",
     ziel12: "Einfache Pausenregeln kennen und fair mitspielen",
     ziel34: "Pausenkonflikte erkennen und faire Regeln für alle vorschlagen",
-    material: "Pro Kind eine rote und eine grüne Karte\nPlakat „Unsere Pausen-Ideen“",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Das Klettergerüst", text:
 `Auf dem Schulhof gibt es ein tolles Klettergerüst. Alle wollen hoch. Alle drängeln.
 

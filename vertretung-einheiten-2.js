@@ -49,7 +49,7 @@ Brrr, der **Winter** schreibt: Bei mir ist es kalt und früh dunkel, der Igel h�
           warum: "Wir raten Jahreszeiten aus Pantomime." },
         { titel: "Finger-Jahreszeiten", fuer: "alle", dauer: "8 Min",
           text: "Abgemacht: 1 Finger = Frühling, 2 = Sommer, 3 = Herbst, 4 = Winter (steht auch an der Tafel). Du nennst ein Ding, alle zeigen gleichzeitig mit den Fingern, wann es das gibt. Bei manchen passt mehr als eine Jahreszeit – dann darf ein Kind erklären, warum.\n\n- Schneemann (4)\n- Freibad (2)\n- Laterne (3)\n- Osterhase (1)\n- Schlitten (4)\n- Kastanien (3)\n- Tulpen (1)\n- Sonnenbrille (2, oft auch 1)\n- Drachen steigen lassen (3)\n- Handschuhe (4, manchmal 3)\n- Erdbeeren (2)\n- Weihnachten (4)",
-          quiz: "keine",
+          quiz: "karten",
           folie: "Zeig mit den Fingern: **Wann gibt es das?**\n\n☝️ Frühling 🌷 · ✌️ Sommer ☀️ · 3 Herbst 🍂 · 4 Winter ❄️",
           emoji: "✋",
           warum: "Wir raten Jahreszeiten mit den Fingern." }
@@ -157,7 +157,7 @@ Jonas hat nur fünf Fragen gebraucht. Sein Trick: Erst große Gruppen ausschlie�
     uebungen: [
         { titel: "Tier-Rätsel", fuer: "alle", dauer: "6 Min",
           text: "Du liest die Rätsel vor, die Kinder raten vom Platz. Kl. 3/4 dürfen danach eigene Rätsel stellen.\n\n- Ich habe ein schwarz-weiß gestreiftes Fell und sehe aus wie ein Pferd. (Zebra)\n- Ich trage mein Haus auf dem Rücken und hinterlasse eine Schleimspur. (Schnecke)\n- Ich bin der König der Tiere und habe eine große Mähne. (Löwe)\n- Ich hüpfe und trage mein Baby in einem Beutel am Bauch. (Känguru)\n- Ich gebe Milch und sage „Muh“. (Kuh)\n- Ich mache Honig und kann stechen. (Biene)",
-          quiz: "keine",
+          quiz: "karten",
           folie: "Hör gut zu: **Welches Tier ist das?** 🐾",
           kern: ["12", "34"],
           emoji: "🐾",
@@ -223,7 +223,7 @@ Leon gewinnt. Auf seinem Plan steht bei jedem Teil eine Erklärung: „Solarzell
           warum: "Wir raten Fahrzeuge am Geräusch." },
         { titel: "Was braucht ein Fahrzeug?", fuer: "alle", dauer: "5 Min",
           text: "Sammelt an der Tafel Fahrzeugteile: Räder, Lenkrad, Bremse, Motor, Licht, Sitz, Klingel, Hupe. Kl. 3/4 überlegen zu jedem Teil, wozu es da ist.",
-          folie: "Was braucht ein **Fahrzeug**? 🚗\n\nRäder, Lenkrad … was noch?",
+          folie: "Räder, Lenkrad … 🚗\n\nWas braucht ein Fahrzeug **noch**?",
           kern: ["12", "34"],
           emoji: "🚗",
           warum: "Wir sammeln, was ein Fahrzeug braucht." }
@@ -592,7 +592,7 @@ Die Kinder müssen zusammenarbeiten: Nur wer gut überlegt und zuhört, kommt we
     uebungen: [
         { titel: "Rätsel-Rallye", fuer: "alle", dauer: "5 Min",
           text: "Du liest Rätsel vor. Die Kinder zeigen vom Platz aus auf das Ding im Raum.\n\n- Ich habe Zeiger, aber keine Hände. (Uhr)\n- Durch mich geht jeder hinein und hinaus. (Tür)\n- Ich lasse Licht herein, aber keinen Regen. (Fenster)\n- Ich fresse Papier, aber ich werde nie satt. (Papierkorb)\n- Auf mich schreibt man, und danach wischt man mich sauber. (Tafel)\n- Ich mache es hell, wenn man auf einen Knopf drückt. (Lampe/Lichtschalter)",
-          quiz: "keine",
+          quiz: "karten",
           folie: "Hör gut zu: **Welches Ding hier im Raum ist gemeint?** 🔎\n\nZeig darauf!",
           kern: ["12", "34"],
           emoji: "🔎",
@@ -712,7 +712,7 @@ Heute ist Olympiade: Wer schafft die Aufgaben ganz genau – nicht am schnellste
     uebungen: [
         { titel: "Hör-Disziplin", fuer: "alle", dauer: "5 Min",
           text: "Du liest Wörter vor. Immer wenn ein Tier kommt, stehen alle kurz auf und setzen sich wieder. Kl. 3/4: Bei Tieren aufstehen, bei Obst klatschen.\n\n- Tisch\n- Hund\n- Ball\n- Apfel\n- Katze\n- Auto\n- Banane\n- Maus\n- Lampe\n- Igel",
-          quiz: "keine",
+          quiz: "karten",
           folie12: "Hör gut zu! 👂\n\nKommt ein **Tier**? Dann steh kurz auf! 🐶",
           folie34: "Hör gut zu! 👂\n\n🐶 **Tier** = aufstehen · 🍎 **Obst** = klatschen",
           kern: ["12", "34"],

@@ -339,8 +339,9 @@ Im Zoo teilen sich die Kinder in Gruppen zu je 4 Kindern auf. „Das sind 6 Grup
 3. Woran erkennt man in einer Geschichte, ob man plus, minus, mal oder geteilt rechnen muss?` },
     uebungen: [
         { titel: "Rechengeschichten im Kopf", fuer: "alle", dauer: "8 Min",
-          text: "Du erzählst kurze Geschichten, die Kinder rechnen im Kopf und melden sich. Ein Kind erklärt, wie es gerechnet hat.\n\nKl. 1/2:\n- Auf dem Baum sitzen 4 Vögel. 2 fliegen weg. (2)\n- Tom hat 3 Murmeln, Lea gibt ihm 4 dazu. (7)\n- Im Bus sitzen 6 Kinder, an der Haltestelle steigen 3 ein. (9)\n\nKl. 3/4:\n- 5 Kinder haben je 4 Sticker. (20)\n- 36 Bonbons werden auf 4 Kinder verteilt. (9)\n- Ein Buch hat 120 Seiten, Mia hat 75 gelesen. (45)",
-          quiz: "keine",
+          text12: "Die Geschichte steht an der Tafel – du liest sie vor. Die Kinder rechnen im Kopf und melden sich. Ein Kind erklärt, wie es gerechnet hat. Dann „💡 Lösung“ antippen.\n\n- Auf dem Baum sitzen 4 Vögel. 2 fliegen weg. Wie viele sitzen noch da? (2 Vögel)\n- Tom hat 3 Murmeln. Lea schenkt ihm 4 dazu. Wie viele hat Tom jetzt? (7 Murmeln)\n- Im Bus sitzen 6 Kinder. 3 steigen ein. Wie viele sind jetzt im Bus? (9 Kinder)\n- Mama kauft 10 Brötchen. 4 werden gegessen. Wie viele sind übrig? (6 Brötchen)\n- Auf dem Teller liegen 5 Kekse. Oma legt noch 5 dazu. Wie viele sind es? (10 Kekse)",
+          text34: "Die Geschichte steht an der Tafel – du liest sie vor. Die Kinder rechnen im Kopf und melden sich. Ein Kind erklärt, wie es gerechnet hat. Dann „💡 Lösung“ antippen.\n\n- 5 Kinder haben je 4 Sticker. Wie viele Sticker sind das zusammen? (20 Sticker)\n- 36 Bonbons werden gerecht auf 4 Kinder verteilt. Wie viele bekommt jedes Kind? (9 Bonbons)\n- Ein Buch hat 120 Seiten. Mia hat schon 75 gelesen. Wie viele fehlen noch? (45 Seiten)\n- Ein Eis kostet 2 €. Wie viel kosten 7 Eis? (14 €)\n- In der Klasse sind 24 Kinder. Die Hälfte geht zum Sport. Wie viele bleiben da? (12 Kinder)",
+          quiz: "karten",
           folie: "Hör gut zu und **rechne im Kopf**. 🧠\n\nWie hast du gerechnet?",
           kern: ["12", "34"],
           emoji: "🧠",

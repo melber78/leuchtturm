@@ -431,7 +431,7 @@ Am Freitag stoppt ihre Freundin die Zeit: 52 Sekunden. Ziel erreicht – und Leo
           quiz: "ampel", loesungen12: ["2", "1", "2", "1", "1"], loesungen34: ["2", "1", "2", "1", "2"],
           folie: "Ist das ein **gutes Ziel**?\n\n🟢 ja · 🔴 zu groß oder zu ungenau", emoji: "🎯", warum: "Kleine Ziele schafft man – und das macht Mut für die nächsten." },
         { titel: "Meine Ziel-Karte", fuer: "alle", dauer: "6 Min", kern: ["12", "34"],
-          text: "Jedes Kind füllt seine Ziel-Karte aus (Kl. 1 malt sein Ziel). Kl. 3/4: Ziel + wie oft ich übe + woran ich merke, dass ich es geschafft habe. Die Karten sammelst du ein – nächste Woche schauen alle nach: geschafft?",
+          text: "Jedes Kind schreibt sein Ziel auf ein Blatt oder ins Heft (Kl. 1 malt sein Ziel). Kl. 3/4: Ziel + wie oft ich übe + woran ich merke, dass ich es geschafft habe. Nächste Woche schauen alle nach: geschafft? (Optional: die Ziel-Karten aus dem Material ausdrucken.)",
           folie: "🎯 Mein Ziel bis nächste Woche:\n\n**Was** übe ich? **Wie oft**? **Woran** merke ich, dass ich es kann?", emoji: "🗒️" }
     ],
     ab12: { titel: "Mein Ziel", aufgaben: [

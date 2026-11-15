@@ -35,7 +35,7 @@ K({
     id: "k-mutter",
     titel: "Auf Mutter gehen – warum trifft das so hart?",
     ziel34: "Verstehen, warum Sprüche über die Familie so treffen, und mit einem eigenen Cool-bleiben-Plan reagieren (Körper bremsen – Kopf-Satz – kurz antworten – weggehen), ohne auszurasten",
-    material: "Plakat „Mein Cool-bleiben-Plan“ (Arbeitsmaterial)\nHinweis für dich: Die Wörter selbst werden nicht ausgesprochen und nicht angeschrieben – wir sagen „ein Spruch über die Mutter“ oder „das H-Wort“.",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial\nHinweis für dich: Die Wörter selbst werden nicht ausgesprochen und nicht angeschrieben – wir sagen „ein Spruch über die Mutter“ oder „das H-Wort“.",
     materialIds: ["schutzsaetze-familie"],
     lerntext34: { titel: "Der Spruch", text:
 `Mittwoch, Hofpause. Anton und Kevin streiten sich, wer beim Fußball dran ist. Kevin merkt, dass er verliert. Da sagt er einen Spruch über Antons Mutter – einen von der übelsten Sorte. Ein paar Jungs johlen.
@@ -98,7 +98,7 @@ K({
     id: "k-schimpfwoerter",
     titel: "Was Schimpfwörter wirklich sagen",
     ziel34: "Erkennen, wen Schimpfwörter eigentlich treffen – auch die, die man „einfach so“ sagt – und andere Wörter für Wut finden",
-    material: "Pro Kind ein kleiner Zettel (anonym)\nTafel: fünf Felder „Familie – Mädchen & Frauen – Behinderung – Herkunft – Aussehen“\nHinweis für dich: Die Zettel liest du NICHT vor und schreibst die Wörter nicht an. Du ordnest sie nur den Feldern zu und zählst.",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nPro Kind ein kleiner Zettel (anonym)\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial\nHinweis für dich: Die Zettel liest du NICHT vor und schreibst die Wörter nicht an. Du ordnest sie nur den Feldern zu und zählst.",
     lerntext34: { titel: "Was heißt das eigentlich?", text:
 `In der 4a sagen viele Jungs ständig das H-Wort. Beim Fußball, im Chat, sogar zu ihren besten Freunden. „Ist doch normal“, sagt Till.
 
@@ -123,7 +123,7 @@ Till sagt nichts mehr. Später im Chat schreibt er: „Hab nie drüber nachgedac
           warum: "Wir schauen, wen Schimpfwörter wirklich treffen." },
         { titel: "Andere Wörter für Wut", dauer: "5 Min",
           text: "Wut muss raus – aber es geht auch ohne jemanden zu beleidigen. Sammelt zwei Listen:\n\n- **Frust-Wörter**, die niemanden treffen: „Mann ey!“, „Das nervt!“, „Ich raste gleich aus!“, „Boah!“\n- **Fantasie-Schimpfwörter**, die eher zum Lachen bringen als zum Prügeln: „Du Gurkenkopf“, „Du Socken-Dieb“, „Du Wasserkocher“.\n\nAbstimmung: Welches Fantasie-Wort wird unser Gruppenwort?",
-          quiz: "keine",
+          quiz: "aufdecken",
           folie: "Wut muss raus – aber ohne jemanden zu beleidigen.\n\nWelche **Frust-Wörter** und **Fantasie-Schimpfwörter** fallen dir ein? 😄",
           emoji: "😄",
           warum: "Wut muss raus – wir finden andere Wörter dafür." }
@@ -141,7 +141,7 @@ K({
     id: "k-sprachregel",
     titel: "Unsere Sprach-Regel: Familie ist tabu",
     ziel34: "Gemeinsam eine verbindliche Sprach-Regel aufstellen und festlegen, was passiert, wenn sie gebrochen wird",
-    material: "Plakat „Unsere Gruppenregeln“ (leer, mit Unterschriften – Arbeitsmaterial)\nPlakat „Mein Cool-bleiben-Plan“\nrote und grüne Karten",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     materialIds: ["gruppenregeln-leer", "schutzsaetze-familie", "rot-gruen"],
     lerntext34: { titel: "Die 4b macht einen Deal", text:
 `In der 4b gab es fast jeden Tag Prügeleien. Fast immer fing es mit einem Spruch über die Familie an. Die Lehrerin schlug vor: „Macht ihr selbst eine Regel. Ich schreibe nur mit.“
@@ -159,7 +159,7 @@ Alle unterschrieben. Nach vier Wochen zählten sie: Statt fast jeden Tag gab es 
     uebungen: [
         { titel: "Regel aushandeln", dauer: "8 Min",
           text: "Jetzt macht ihr eure eigene Regel – du schreibst nur mit. Schritt für Schritt:\n\n- Was genau ist verboten? (Formulierung gemeinsam finden)\n- Was sagt man, wenn es doch passiert? (Stopp-Wort wie „Tabu!“)\n- Was passiert mit dem, der den Spruch gesagt hat?\n- Was passiert, wenn jemand zurückschlägt?\n\nAbstimmung mit dem Daumen. Erst wenn alle 👍 zeigen (oder wenigstens keiner 👎), gilt die Regel. Am Ende unterschreiben alle.",
-          quiz: "keine",
+          quiz: "liste",
           folie: "Wir machen **unsere eigene Regel**. 📜\n\nZum Schluss: Zeig es mit dem Daumen: 👍 = grün · 👎 = rot. Erst wenn keiner Rot zeigt, kommt sie aufs Plakat.",
           kern: ["34"],
           emoji: "📜",
@@ -183,7 +183,7 @@ K({
     id: "k-am-boden",
     titel: "Wer am Boden liegt – Schluss!",
     ziel34: "Begreifen, wie gefährlich Schläge und Tritte gegen den Kopf sind, die absolute Grenze kennen und als Zuschauer Hilfe holen",
-    material: "Plakat „Die absoluten Grenzen“ (Arbeitsmaterial)\nTafel: „Was passiert im Kopf?“\nHinweis für dich: Keine Kampfszenen nachspielen. Wenn Kinder von eigenen schweren Prügeleien erzählen, nicht vertiefen – nach der Stunde ansprechen und mit Schulleitung/Schulsozialarbeit abstimmen.",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial\nHinweis für dich: Keine Kampfszenen nachspielen. Wenn Kinder von eigenen schweren Prügeleien erzählen, nicht vertiefen – nach der Stunde ansprechen und mit Schulleitung/Schulsozialarbeit abstimmen.",
     materialIds: ["grenzen-gewalt"],
     materialien: { ohneAuto: true },
     lerntext34: { titel: "Ein Tritt zu viel", text:
@@ -207,7 +207,7 @@ Marco sagt später: „Ich wollte ihn nicht so schlimm verletzen. Ich war einfac
           warum: "Wir verstehen, warum Schläge gegen den Kopf so gefährlich sind." },
         { titel: "Die absoluten Grenzen", dauer: "7 Min",
           text: "Gemeinsam die Grenzen festlegen, die bei euch NIE überschritten werden, und aufs Plakat schreiben. Vorschlag:\n\n- Nie gegen den Kopf schlagen oder treten.\n- Wer am Boden liegt: sofort Schluss.\n- Keine Gegenstände, keine Waffen.\n- Nie zu mehreren auf einen.\n\nDann der Zuschauer-Plan: **Nicht filmen – laut „Stopp!“ rufen – sofort einen Erwachsenen holen – wenn jemand nicht mehr reagiert: 112.** Jedes Kind sagt einmal laut vom Platz, was es als Zuschauer tun würde.",
-          quiz: "keine",
+          quiz: "aufdecken",
           folie: "Welche Grenzen gelten bei uns **immer**? 🛑\n\nUnd was tust du als Zuschauer?",
           kern: ["34"],
           emoji: "🛑",

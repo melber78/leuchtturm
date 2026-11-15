@@ -185,7 +185,7 @@ Paul ist beeindruckt. „Und wenn ich jetzt noch 80 Punkte schaffe?“ – „Da
           text: "Du zeigst Aufgaben mit Lösung. Stimmt sie, heben die Kinder grün, sonst rot. Bei Rot: Wer weiß die richtige Lösung?\n- 4 + 3 = 7\n- 6 − 2 = 3\n- 8 + 2 = 10\n- 9 − 4 = 5\n- 7 + 6 = 12\n- 15 − 5 = 10",
           text34: "Du zeigst Aufgaben mit Lösung. Stimmt sie, heben die Kinder grün, sonst rot. Bei Rot: Wer weiß die richtige Lösung?\n- 47 + 25 = 72\n- 83 − 38 = 55\n- 250 + 370 = 620\n- 600 − 245 = 365\n- 99 + 99 = 198\n- 1000 − 1 = 990",
           quiz: "ampel", loesungen12: ["1", "2", "1", "1", "2", "1"], loesungen34: ["1", "2", "1", "2", "1", "2"],
-          folie: "Stimmt die Rechnung?\n\n🟢 richtig · 🔴 falsch", emoji: "✅" }
+          folie: "Rechne selbst nach – ganz genau! 🔍\n\n🟢 richtig · 🔴 falsch", emoji: "✅" }
     ],
     ab12: { titel: "Rechen-Profis", aufgaben: [
         { typ: "tabelle", text: "Rechne.", nur: "1", spalten: ["Aufgabe", "Ergebnis"], zeilen: [["●●● + ●● = ", ""], ["2 + 3 =", ""], ["4 + 4 =", ""], ["6 − 1 =", ""], ["5 − 3 =", ""], ["7 + 2 =", ""]] },
@@ -372,7 +372,7 @@ Ella nimmt einen Zettel: „Erst die Frage: Was kostet alles zusammen? Dann die 
           text34: "Du liest eine kurze Aufgabe vor. Die Kinder zeigen mit den Fingern, welche Rechnung passt.\n- 4 Tische mit je 6 Kindern\n- 60 Sticker, 15 werden verschenkt\n- 36 Kinder auf 4 Busse verteilt\n- 45 Jungen und 39 Mädchen",
           antworten: ["1️⃣ 3 + 2", "2️⃣ 5 − 1", "3️⃣ 6 − 4", "4️⃣ 2 + 3"], loesungen12: ["1", "2", "3", "4"],
           antworten34: ["1️⃣ 36 : 4", "2️⃣ 4 · 6", "3️⃣ 45 + 39", "4️⃣ 60 − 15"], loesungen34: ["2", "4", "1", "3"],
-          folie: "Welche **Rechnung** passt zur Geschichte? 📖", emoji: "📖", warum: "Mathe steckt überall im Alltag." },
+          folie: "Hör die Geschichte gut an. 📖\n\nWelche Rechnung passt dazu? Zeig die Antwort mit den **Fingern**! ✋", emoji: "📖", warum: "Mathe steckt überall im Alltag." },
         { titel: "Geschichten-Erfinder", fuer: "alle", dauer: "5 Min",
           text: "Du schreibst eine Aufgabe an die Tafel (Kl. 1/2: 4 + 3, Kl. 3/4: 5 · 8). Die Kinder erfinden mit ihrem Nachbarn eine passende Geschichte. Zwei bis drei Paare erzählen.",
           folie: "Erfinde eine **Geschichte** zur Aufgabe an der Tafel! 💭", emoji: "💭" }
@@ -555,7 +555,7 @@ Der Onkel nickt. „So macht man das – hochzählen statt abziehen.“
           text: "Du sagst, wie viel Geld jemand hat und was er kaufen möchte. Die Kinder heben grün (reicht) oder rot (reicht nicht).\n- 5 €, Ball für 4 €\n- 10 €, Buch für 12 €\n- 20 €, Puzzle für 15 € und Eis für 2 €\n- 3 €, zwei Brötchen für je 2 €",
           text34: "Du sagst, wie viel Geld jemand hat und was er kaufen möchte. Die Kinder heben grün (reicht) oder rot (reicht nicht).\n- 10 €: Pizza 7,50 € und Getränk 2,20 €\n- 5 €: drei Hefte für je 1,80 €\n- 20 €: Kinokarte 9,50 € und Popcorn 4,90 € und Cola 3,80 €\n- 2 €: vier Kaugummis für je 45 Cent",
           quiz: "ampel", loesungen12: ["1", "2", "1", "2"], loesungen34: ["1", "2", "1", "1"],
-          folie: "Reicht das Geld?\n\n🟢 ja · 🔴 nein", emoji: "🛒" }
+          folie: "Rechne im Kopf: Reicht das Geld für **alles**? 💶\n\n🟢 ja · 🔴 nein", emoji: "🛒" }
     ],
     ab12: { titel: "Einkaufen mit Geld", aufgaben: [
         { typ: "tabelle", text: "Wie viel Geld ist das? (Ich lese vor.)", nur: "", kreuz: [], spalten: ["Geld", "Euro"], zeilen: [["2 € + 1 €", ""], ["5 € + 2 € + 2 €", ""], ["10 € + 5 €", ""], ["1 € + 1 € + 1 € + 1 €", ""]] },
@@ -617,7 +617,7 @@ Im Tresor liegt … Schokolade. „Mathe lohnt sich“, grinst Maya.
           text34: "Du zeigst eine Zahlenfolge. Die Kinder zeigen mit den Fingern die nächste Zahl.\n- 5, 10, 15, 20, …\n- 100, 90, 80, 70, …\n- 1, 2, 4, 8, …\n- 3, 4, 6, 9, 13, …",
           antworten: ["1️⃣ 🔵", "2️⃣ 🌙", "3️⃣ 5", "4️⃣ 10"], loesungen12: ["1", "2", "3", "4"],
           antworten34: ["1️⃣ 25", "2️⃣ 60", "3️⃣ 16", "4️⃣ 18"], loesungen34: ["1", "2", "3", "4"],
-          folie: "Was kommt als **Nächstes**? Zeig die Antwort mit den **Fingern**! ✋ 🔁", emoji: "🔁", warum: "Wer Muster erkennt, kann vorausdenken." },
+          folie: "Schau dir die Reihe genau an. 🔁\n\nWelches Teil kommt dran? Zeig die Antwort mit den **Fingern**! ✋", emoji: "🔁", warum: "Wer Muster erkennt, kann vorausdenken." },
         { titel: "Muster-Erfinder", fuer: "alle", dauer: "5 Min",
           text: "Jedes Kind erfindet auf einem Zettel ein eigenes Muster (Kl. 1/2: mit Farben oder Formen, Kl. 3/4: Zahlenfolge mit Regel) und lässt den Nachbarn weitermachen.",
           folie: "Erfinde ein **eigenes Muster** – dein Nachbar macht weiter! ✏️", emoji: "✏️" }

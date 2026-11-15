@@ -106,7 +106,7 @@ Seine Banknachbarin Sophie hat schon drei Aufgaben geschafft. Sie hat vorher all
         { titel: "Mäppchen-Check", fuer: "alle", dauer: "6 Min", kern: ["12", "34"],
           text: "Du nennst Dinge, die ins Mäppchen gehören. Wer es hat und es funktioniert, hält es kurz hoch. Fehlt etwas, merkt sich das Kind es für zu Hause.\n- Bleistift (gespitzt)\n- Radiergummi\n- Spitzer\n- Buntstifte\n- Lineal\n- Kleber\n- Schere",
           quiz: "liste",
-          folie: "Mäppchen-Check! ✏️\n\nHalte hoch, was ich sage – wenn es da ist und funktioniert.", emoji: "🎒", warum: "Wer alles dabei hat, kann sofort loslegen." },
+          folie: "Ich sage ein Ding aus dem Mäppchen. ✏️\n\nHalte es hoch – wenn es da ist und funktioniert.", emoji: "🎒", warum: "Wer alles dabei hat, kann sofort loslegen." },
         { titel: "Startklar in 3 Schritten", fuer: "alle", dauer: "6 Min",
           text: "Gemeinsam an der Tafel: 1. Tisch frei (nur was ich brauche). 2. Material bereit. 3. Aufgabe lesen – Was soll ich tun? Dann üben: Alle räumen den Tisch leer, du sagst eine Aufgabe (z. B. „Wir malen gleich mit Buntstiften“), und mit dem 2-Minuten-Timer legen alle genau das Richtige bereit.",
           folie: "1️⃣ Tisch frei\n2️⃣ Material bereit\n3️⃣ Aufgabe lesen: Was soll ich tun?", emoji: "🚀" }
@@ -164,7 +164,7 @@ Nele probiert es mit ihren Vokabeln: „Dog“ – ein Hund sitzt auf ihrem Bett
           folie: "Schau dir die Bilder **genau** an. 🧠\n\nGleich verschwindet eins – welches?", emoji: "🧠", warum: "Mit Tricks merkst du dir viel mehr." },
         { titel: "Geschichten-Trick", fuer: "alle", dauer: "6 Min",
           text: "Du nennst 5 (Kl. 3/4: 8) Wörter. Die Kinder erfinden mit dem Nachbarn eine verrückte Geschichte, in der alle Wörter vorkommen. Nach zwei Minuten: Wer kann die Wörter in der richtigen Reihenfolge aufzählen?\n- Hund, Rakete, Eis, Schuh, Sonne\n- Kl. 3/4 zusätzlich: Gitarre, Pizza, Bus",
-          quiz: "keine",
+          quiz: "liste",
           folie: "Erfindet eine **verrückte Geschichte** mit allen Wörtern! 🚀🐶🍦", emoji: "🚀" }
     ],
     ab12: { titel: "Merk-Tricks", aufgaben: [

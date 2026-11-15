@@ -532,7 +532,7 @@ Mira liest ihre Nachricht noch einmal. Kein Großbuchstabe, kein Satzzeichen –
 3. Wann setzt man ein Fragezeichen, wann ein Ausrufezeichen?` },
     uebungen: [
         { titel: "Lebende Sätze", fuer: "alle", dauer: "8 Min", kern: ["12", "34"],
-          text: "Drei bis fünf Kinder bekommen je eine Wortkarte und stellen sich vorn in eine Reihe – erst durcheinander. Die anderen sagen, wer mit wem tauschen muss, bis der Satz stimmt. Kl. 3/4: Danach den Satz umstellen (Der Hund bellt laut. → Laut bellt der Hund.). Wer nicht nach vorn möchte, ist Bauleiter und sagt vom Platz aus, wer tauscht.",
+          text: "Die Wörter stehen durcheinander an der Tafel. Drei bis vier Kinder kommen nach vorn – jedes „ist“ ein Wort und sagt es laut. Erst stehen sie durcheinander. Die anderen sagen, wer mit wem tauschen muss, bis der Satz stimmt. Kl. 3/4: Danach den Satz umstellen (Der Hund bellt laut. → Laut bellt der Hund.). Wer nicht nach vorn möchte, ist Bauleiter und sagt vom Platz aus, wer tauscht.",
           folie: "Die Wörter sind durcheinander! 🧱\n\n**Ball.** · **Tom** · **spielt**\n\n**schläft.** · **Katze** · **Die**\n\nWer muss mit wem **tauschen**, damit der Satz stimmt?",
           folie34: "Die Wörter sind durcheinander! 🧱\n\n**ein** · **liest** · **Buch.** · **Mama**\n\nDanach umstellen: **Der Hund bellt laut.** → Wie geht es noch?",
           emoji: "🧱", warum: "Jedes Wort braucht seinen Platz im Satz." },

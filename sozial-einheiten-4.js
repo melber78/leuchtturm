@@ -9,7 +9,7 @@ SOZIAL_EINHEIT({
     kategorie: "Selbstwert & Stärken",
     ziel12: "Eigene Stärken entdecken und benennen",
     ziel34: "Stärken bei sich und anderen erkennen – nicht nur in der Schule",
-    material: "Kleine Karten für die Stärken-Dusche (eine pro Kind)\nHinweis: Die Stärken-Dusche schafft nicht alle Kinder in einer Stunde – die übrigen kommen in den nächsten Wochen beim Ankommen dran.",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial\nHinweis: Die Stärken-Dusche schafft nicht alle Kinder in einer Stunde – die übrigen kommen in den nächsten Wochen beim Ankommen dran.",
     lerntext12: { titel: "Erna, die Ente", text:
 `Erna ist eine Ente. Sie wäre gern so schnell wie der Hase. Aber mit ihren Watschelfüßen fällt sie immer hin.
 
@@ -52,7 +52,7 @@ Oskar klebt die Zettel zu Hause über seinen Schreibtisch.
           emoji: "⭐",
           warum: "Jeder kann etwas gut. Wir finden es heraus." },
         { titel: "Stärken-Dusche", fuer: "alle", dauer: "8 Min",
-          text: "Ein Kind bleibt an seinem Platz sitzen und schließt die Augen (wenn es mag). Die anderen „duschen“ es mit Stärken: „Du kannst …“ – „Ich finde toll, dass du …“ Du schreibst die Stärken auf eine Karte, die das Kind behalten darf. Pro Stunde schafft ihr etwa 3–4 Kinder. Regel: Nur ehrliche, nette Sätze – keine Witze.",
+          text: "Ein Kind bleibt an seinem Platz sitzen und schließt die Augen (wenn es mag). Die anderen „duschen“ es mit Stärken: „Du kannst …“ – „Ich finde toll, dass du …“ Du schreibst die Stärken auf ein Blatt, das das Kind behalten darf. Pro Stunde schafft ihr etwa 3–4 Kinder. Regel: Nur ehrliche, nette Sätze – keine Witze.",
           folie: "Ein Kind bekommt eine **Stärken-Dusche** 🚿.\n\nDie anderen sagen: **„Du kannst …“** oder **„Ich finde toll, dass du …“**\n\nNur ehrliche, nette Sätze!",
           kern: ["34"],
           emoji: "🚿",
@@ -97,7 +97,7 @@ SOZIAL_EINHEIT({
     kategorie: "Selbstwert & Stärken",
     ziel12: "Verschiedene Arten von Mut kennen und von eigenen mutigen Momenten erzählen",
     ziel34: "Mut und Leichtsinn unterscheiden und Mut zeigen, um für andere einzustehen",
-    material: "Tafel: „Mut hat viele Gesichter“",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Leo, der leise Löwe", text:
 `Leo ist ein Löwe. Aber Leo brüllt nie. Er ist ganz leise und ein bisschen schüchtern. Die anderen Löwen lachen: „Ein Löwe, der nicht brüllt? Du bist doch kein richtiger Löwe!“
 
@@ -186,7 +186,7 @@ SOZIAL_EINHEIT({
     kategorie: "Selbstwert & Stärken",
     ziel12: "Fehler als normal erleben und nicht gleich aufgeben",
     ziel34: "Aus Fehlern lernen und mit dem Wort „noch“ an sich glauben",
-    material: "Tafel: großes Wort „NOCH“",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Pia und das Fahrrad", text:
 `Pia hat ein Fahrrad bekommen. Ohne Stützräder! Pia steigt auf. Sie tritt in die Pedale – und **plumps!** – fällt sie um.
 
@@ -283,7 +283,7 @@ SOZIAL_EINHEIT({
     kategorie: "Selbstwert & Stärken",
     ziel12: "Sich über eigene Erfolge freuen und Lob annehmen",
     ziel34: "Stolz und Angeben unterscheiden und sich selbst wertschätzen",
-    material: "Tafel",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Junas Schleife", text:
 `Juna will ihre Schuhe allein zubinden. Aber die Schleife ist so schwer! Die Bänder rutschen immer wieder auseinander.
 
@@ -368,7 +368,7 @@ SOZIAL_EINHEIT({
     kategorie: "Kommunikation",
     ziel12: "Mit Augen, Ohren und ruhigem Körper zuhören",
     ziel34: "Aktiv zuhören: anschauen, nachfragen, mit eigenen Worten wiederholen",
-    material: "Klangschale oder Glöckchen (für die Geräusche-Detektive)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Olga, die Eule", text:
 `Im Wald wohnt Olga, die Eule. Alle Tiere erzählen ihr gern etwas. Weißt du, warum?
 
@@ -403,7 +403,7 @@ Am Nachmittag entschuldigt sich Lea. „Ich war heute Morgen total in Gedanken. 
 4. Wann fällt dir Zuhören schwer?` },
     uebungen: [
         { titel: "Geräusche-Detektive", fuer: "alle", dauer: "3 Min",
-          text: "Alle schließen am Platz die Augen. Du schlägst die Klangschale an. Bis der Ton ganz verklungen ist, lauschen alle. Danach: Welche Geräusche habt ihr noch gehört? (Uhr, Vogel, Heizung, Schritte auf dem Flur …)",
+          text: "Alle schließen am Platz die Augen. Du tippst unten in der Leiste auf die Glocke 🔔. Bis der Ton ganz verklungen ist, lauschen alle. Danach: Welche Geräusche habt ihr noch gehört? (Uhr, Vogel, Heizung, Schritte auf dem Flur …)",
           folie: "Schließ die Augen. 🔔\n\nHör zu, bis der Ton ganz weg ist. Welche Geräusche hörst du noch?",
           emoji: "👂",
           warum: "Wir hören ganz genau hin – was hörst du?" },
@@ -462,7 +462,7 @@ SOZIAL_EINHEIT({
     kategorie: "Kommunikation",
     ziel12: "Anderen etwas Nettes sagen und sich darüber freuen",
     ziel34: "Ehrliche, genaue Komplimente formulieren und annehmen",
-    material: "Eine kleine Schachtel als „Kompliment-Kiste“ mit Namenszetteln",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Die Kompliment-Kiste", text:
 `Frau Sonne hat eine Kiste mitgebracht. „Das ist unsere Kompliment-Kiste“, sagt sie. „Jeder zieht einen Namen und sagt diesem Kind etwas Nettes.“
 
@@ -554,7 +554,7 @@ SOZIAL_EINHEIT({
     kategorie: "Kommunikation",
     ziel12: "Gefühle an der Körperhaltung erkennen",
     ziel34: "Körpersprache deuten und bewusst einsetzen (Blick, Haltung, Stimme)",
-    material: "Optional: Bild eines Hundes (für den Lerntext 1/2)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Was Bello erzählt", text:
 `Bello ist ein Hund. Bello kann nicht sprechen. Aber Bello erzählt trotzdem ganz viel – mit seinem Körper.
 
@@ -637,7 +637,7 @@ SOZIAL_EINHEIT({
     kategorie: "Kommunikation",
     ziel12: "Sich trauen, um Hilfe zu bitten",
     ziel34: "Klar sagen, wobei man Hilfe braucht, und wissen, wer helfen kann",
-    material: "Tafel für die Hilfe-Sätze und die Helfer-Landkarte",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Ella und der hohe Schrank", text:
 `Ella möchte ihr Lieblingsbuch lesen. Aber das Buch liegt oben auf dem Schrank. Ganz hoch!
 
@@ -680,9 +680,9 @@ Eine Woche später rechnet Tom die Aufgaben allein. Und als Luisa bei Englisch n
           folie: "Auf der Tafel sind Inseln: 🏫 Schule · 🏠 Zuhause · ⚽ Pause · 👫 Freunde\n\n**Wer kann dir auf jeder Insel helfen?**",
           emoji: "🗺️",
           warum: "Wer kann dir helfen? Wir machen eine Landkarte." },
-        { titel: "Bitten üben", fuer: "34", dauer: "3 Min",
-          text: "Die Tischnachbarn bekommen eine Situation (z. B. Hausaufgabe nicht verstanden, Fahrradkette ab, jemand ärgert mich ständig) und üben eine genaue Bitte: Was brauche ich? Was habe ich schon versucht?",
-          folie: "Ihr bekommt eine Situation. Übt eine **genaue Bitte**:\n\n**Was brauche ich? Was habe ich schon versucht?**",
+        { titel: "Bitten üben", frage: "🗣️ **Was brauche ich?** · 🔧 **Was habe ich schon versucht?**", loesKnopf: "💡 Beispiel zeigen", quiz: "karten", fuer: "34", dauer: "3 Min",
+          text: "Die Situation steht an der Tafel. Zwei Kinder kommen nach vorn (Glücksrad): Eins bittet um Hilfe – genau: Was brauche ich? Was habe ich schon versucht? Das andere hilft. Wenn nötig „💡 Beispiel“ antippen.\n\n- Du hast die Hausaufgabe nicht verstanden. („Ich verstehe Aufgabe 3 nicht. Ich habe das Beispiel gelesen. Kannst du mir den ersten Schritt erklären?“)\n- Deine Fahrradkette ist abgesprungen. („Meine Kette ist ab. Ich hab's versucht, aber sie rutscht immer wieder runter. Kannst du sie mit mir festhalten?“)\n- Jemand ärgert dich jeden Tag in der Pause. („Leon ärgert mich jeden Tag. Ich habe schon Stopp gesagt. Können Sie mir helfen?“)",
+          folie: "Gleich kommt eine Situation. Übt eine **genaue Bitte**:\n\n🗣️ **Was brauche ich?**\n🔧 **Was habe ich schon versucht?**",
           kern: ["34"],
           emoji: "🗣️",
           warum: "Wir üben, genau zu sagen, was wir brauchen." }

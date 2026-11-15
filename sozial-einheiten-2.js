@@ -9,7 +9,7 @@ SOZIAL_EINHEIT({
     kategorie: "Gefühle",
     ziel12: "Merken, wann ich wütend werde, und zwei Beruhigungs-Tricks kennen",
     ziel34: "Warnsignale der Wut erkennen und eigene Wut-Werkzeuge auswählen",
-    material: "Bild eines Vulkans (Tafel)\nKärtchen mit Wut-Werkzeugen (atmen, zählen, weggehen, erzählen, Kissen drücken, malen, hauen, schreien) – je ein Satz pro Tischpaar",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Vulki, der kleine Vulkan", text:
 `Vulki ist ein kleiner Vulkan. Meistens ist er ganz friedlich.
 
@@ -55,9 +55,9 @@ Jonas merkt: Die Wut war trotzdem da. Aber diesmal hat er entschieden, was passi
           folie: "Wie **wütend** würde dich das machen?\n\nHand auf dem Tisch = gar nicht · Arm halb hoch = etwas · Arm ganz hoch = kochend heiß! 🌡️\n\nJeder darf anders wütend sein.",
           emoji: "🌡️",
           warum: "Nicht alles macht gleich wütend. Wir messen: Wie heiß wird es bei dir?" },
-        { titel: "Werkzeugkasten sortieren", fuer: "34", dauer: "5 Min",
-          text: "Die Tischnachbarn bekommen die Werkzeug-Kärtchen und legen zwei Häufchen: „Hilft mir und schadet keinem“ und „Macht es schlimmer“. Danach stellt jedes Paar ein Werkzeug vor, das es selbst ausprobieren will. Kl. 1/2 zeigen in derselben Zeit am Platz ihren Lieblings-Trick vor (z. B. Fäuste ganz fest drücken und wieder loslassen).",
-          folie: "Ihr bekommt Werkzeug-Kärtchen. Legt zwei Häufchen:\n\n✅ **Hilft mir und schadet keinem**\n❌ **Macht es schlimmer**\n\nWelches Werkzeug willst du ausprobieren?",
+        { titel: "Werkzeugkasten sortieren", loesungen: ["1", "2", "1", "2", "1", "1", "1"], antworten: ["👍 hilft", "👎 macht es schlimmer"], quiz: "daumen", fuer: "34", dauer: "5 Min",
+          text: "Du liest ein Werkzeug nach dem anderen vor. Alle zeigen gleichzeitig: 👍 = hilft mir und schadet keinem, 👎 = macht es schlimmer. Ein Kind tippt die Antwort an der Tafel an, dann auflösen. Zum Schluss sagt jedes Kind, welches Werkzeug es selbst ausprobieren will.\n\n- Tief atmen (Ja – der Körper wird ruhiger.)\n- Hauen (Nein – dann gibt es noch mehr Ärger.)\n- Langsam bis 10 zählen (Ja – so gewinnst du Zeit.)\n- Schreien und Sachen werfen (Nein – das macht alle wütend.)\n- Weggehen (Ja – Abstand hilft.)\n- Einem Erwachsenen erzählen (Ja – zusammen findet man eine Lösung.)\n- Fäuste fest drücken und wieder loslassen (Ja – die Wut geht in die Hände und wieder raus.)",
+          folie: "Was hilft gegen Wut? 🧰\n\n👍 **Hilft mir und schadet keinem**\n👎 **Macht es schlimmer**\n\nAlle zeigen gleichzeitig – dann lösen wir auf.",
           kern: ["34"],
           emoji: "🧰",
           warum: "Wir sortieren: Was hilft gegen Wut – und was macht es schlimmer?" }
@@ -110,7 +110,7 @@ SOZIAL_EINHEIT({
     kategorie: "Gefühle",
     ziel12: "Traurigkeit erkennen und wissen, wie man jemanden tröstet",
     ziel34: "Verstehen, dass Traurigkeit dazugehört, und passende Trostworte finden",
-    material: "Ein Kuscheltier als „trauriger Teddy“ auf deinem Tisch\nKleine Karten oder Zettel für die Trost-Post\nHinweis: Hat ein Kind gerade einen Verlust erlebt, vorher behutsam mit ihm sprechen.",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nWenn du magst: ein Kuscheltier als „trauriger Teddy“\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial\nHinweis: Hat ein Kind gerade einen Verlust erlebt, vorher behutsam mit ihm sprechen.",
     lerntext12: { titel: "Emmas Luftballon", text:
 `Emma hat auf dem Fest einen roten Luftballon bekommen. Sie hält ihn ganz fest.
 
@@ -159,14 +159,12 @@ Am Ende sagt Finn: „Danke, Greta. Das hat gutgetan.“
           emoji: "🤔",
           warum: "Nicht jeder Satz tröstet. Wir prüfen: Hilft das wirklich?" },
         { titel: "Trost-Post für den Teddy", fuer: "alle", dauer: "4 Min",
-          text: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind macht ihm an seinem Platz eine Trostkarte: Kl. 1/2 malen, Kl. 3/4 schreiben zwei Sätze. Die Karten werden vorn neben den Teddy gelegt.",
-          text12: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind malt ihm an seinem Platz eine Trostkarte. Die Karten werden vorn neben den Teddy gelegt.",
-          text34: "Auf deinem Tisch sitzt der „traurige Teddy“ – er hat seinen besten Freund verloren. Jedes Kind schreibt ihm an seinem Platz eine Trostkarte mit zwei Sätzen. Die Karten werden vorn neben den Teddy gelegt.",
-          folie12: "Der Teddy ist traurig. Er hat seinen besten Freund verloren. 🧸\n\nMal ihm eine **Trostkarte**.",
-          folie34: "Der Teddy ist traurig. Er hat seinen besten Freund verloren. 🧸\n\nSchreib ihm eine **Trostkarte** mit zwei Sätzen.",
+          text: "Der „traurige Teddy“ ist an der Tafel – er hat seinen besten Freund verloren. (Wenn du magst, setzt du zusätzlich ein Kuscheltier auf deinen Tisch.) Jedes Kind macht ihm an seinem Platz einen Trost-Brief: Kl. 1/2 malen, Kl. 3/4 schreiben zwei Sätze. Wer mag, liest seinen Brief vor.",
+          folie12: "Der Teddy ist traurig. Er hat seinen besten Freund verloren. 🧸\n\nMal ihm einen **Trost-Brief**.",
+          folie34: "Der Teddy ist traurig. Er hat seinen besten Freund verloren. 🧸\n\nSchreib ihm einen **Trost-Brief** mit zwei Sätzen.",
           kern: ["12"],
           emoji: "🧸",
-          warum: "Der Teddy ist traurig. Wir trösten ihn mit einer Karte." }
+          warum: "Der Teddy ist traurig. Wir trösten ihn mit einem Brief." }
     ],
     ab12: {
       "titel": "Ich kann trösten",
@@ -215,7 +213,7 @@ SOZIAL_EINHEIT({
     kategorie: "Gefühle",
     ziel12: "Angst als Gefühl kennen und sagen, was mir Mut macht",
     ziel34: "Unterscheiden, wann Angst schützt und wann sie bremst, und Mutmacher sammeln",
-    material: "Kleine Taschenlampe oder Nachtlicht (für den Lerntext 1/2)\nTafel für die Mutmacher-Sätze",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nWenn du magst: eine Taschenlampe für die Geschichte (Kl. 1/2)\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Bruno und die Nacht", text:
 `Bruno ist ein kleiner Bär. Am Abend liegt er in seinem Bett. Das Licht ist aus. Es ist ganz dunkel.
 
@@ -319,7 +317,7 @@ SOZIAL_EINHEIT({
     kategorie: "Gefühle",
     ziel12: "Gefühle anderer am Gesicht erkennen und freundlich reagieren",
     ziel34: "Sich in andere hineinversetzen und eine Situation aus zwei Blickwinkeln sehen",
-    material: "Eine „Perspektiv-Brille“ (alte Brille ohne Gläser oder aus Pappe)\nSituationskarten (siehe Übungen)",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Der Turm", text:
 `Lio baut einen Turm aus Bausteinen. Er ist schon ganz hoch. Lio ist **stolz**.
 
@@ -349,8 +347,8 @@ Am Nachmittag erzählt die Lehrerin der Klasse, dass Tims Opa krank ist. Lara wi
 3. Kennst du das: Jemand verhält sich komisch, und du weißt nicht, warum?
 4. Was bedeutet „sich in jemanden hineinversetzen“?` },
     uebungen: [
-        { titel: "Gesichter lesen", fuer: "alle", dauer: "4 Min",
-          text: "Ein Kind kommt nach vorn und zeigt verdeckt ein Gefühl (froh, traurig, wütend, ängstlich, überrascht). Die anderen raten vom Platz und überlegen: „Was könnte dieses Kind jetzt brauchen?“ (trösten, Ruhe, sich mitfreuen, Hilfe).",
+        { titel: "Gesichter lesen", frage: "Wie fühlt es sich? **Was könnte es jetzt brauchen?**", loesKnopf: "✅ Auflösen", quiz: "karten", fuer: "alle", dauer: "4 Min",
+          text: "Ein Kind kommt nach vorn (Glücksrad). Du flüsterst ihm ein Gefühl ins Ohr – an der Tafel bleibt es verdeckt. Das Kind zeigt es ohne Worte. Die anderen raten und überlegen: „Was könnte dieses Kind jetzt brauchen?“ (trösten, Ruhe, sich mitfreuen, Hilfe). Dann „✅ Auflösen“.\n\n- Gefühl 1 (😢 traurig – braucht vielleicht Trost)\n- Gefühl 2 (😠 wütend – braucht vielleicht Ruhe)\n- Gefühl 3 (😊 froh – freu dich mit!)\n- Gefühl 4 (😨 ängstlich – braucht vielleicht Hilfe)",
           folie: "Ein Kind zeigt ein Gefühl – ohne Worte.\n\nRate: **Wie fühlt es sich? Was könnte es jetzt brauchen?**",
           emoji: "👀",
           warum: "Wir schauen in Gesichter und überlegen: Was braucht der andere jetzt?" },
@@ -363,10 +361,10 @@ Am Nachmittag erzählt die Lehrerin der Klasse, dass Tims Opa krank ist. Lara wi
           emoji: "🤲",
           warum: "Wir überlegen: Trösten, mitfreuen, helfen – oder in Ruhe lassen?" },
         { titel: "Die Perspektiv-Brille", fuer: "34", dauer: "5 Min",
-          text: "Du liest eine Situation vor. Ein Kind setzt die Perspektiv-Brille auf und erzählt in der Ich-Form, was die andere Person fühlt und denkt. Danach gibt es die Brille weiter.\n\n- Ein neues Kind sitzt in der Pause allein auf der Bank.\n- Die Lehrerin schimpft, obwohl sie sonst nett ist.\n- Dein Freund hat beim Spiel verloren und knallt die Tür zu.",
+          text: "Du liest die Situation an der Tafel vor. Ein Kind macht mit den Händen eine „Brille“ vor den Augen (Daumen und Zeigefinger zu Kreisen) und erzählt in der Ich-Form, was die andere Person fühlt und denkt. Dann ist das nächste Kind dran (Glücksrad).\n\n- Ein neues Kind sitzt in der Pause allein auf der Bank.\n- Die Lehrerin schimpft, obwohl sie sonst nett ist.\n- Dein Freund hat beim Spiel verloren und knallt die Tür zu.",
           quiz: "karten",
-          frage: "Setz die Brille auf: Was fühlt und denkt die andere Person?",
-          folie: "Wer die **Perspektiv-Brille** 👓 aufsetzt, schlüpft in eine andere Person.\n\nErzähl in der Ich-Form: **„Ich fühle mich … Ich denke …“**",
+          frage: "👓 Mach mit den Händen eine Brille: Was fühlt und denkt die andere Person? **„Ich fühle mich … Ich denke …“**",
+          folie: "Mach mit den Händen eine **Brille** 👓 vor deinen Augen.\n\nJetzt schlüpfst du in eine andere Person. Erzähl in der Ich-Form: **„Ich fühle mich … Ich denke …“**",
           kern: ["34"],
           emoji: "👓",
           warum: "Wir schlüpfen in einen anderen und schauen mit seinen Augen." }
@@ -420,7 +418,7 @@ SOZIAL_EINHEIT({
     kategorie: "Konflikte lösen",
     ziel12: "Wissen, wann ich sofort Hilfe holen muss",
     ziel34: "Petzen und Hilfe holen sicher unterscheiden und begründen",
-    material: "Pro Kind eine rote und eine grüne Karte\nDie drei Hilfe-Fragen groß an der Tafel",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Die Klettergerüst-Geschichte", text:
 `In der Pause spielt Tom mit einem roten Stift. Mia sieht das. Sie läuft zur Lehrerin. „Frau Krause, Tom hat einen roten Stift!“ Frau Krause sagt: „Mia, das ist Toms Sache. Da passiert niemandem etwas.“
 
@@ -516,7 +514,7 @@ SOZIAL_EINHEIT({
     kategorie: "Konflikte lösen",
     ziel12: "Sich ehrlich entschuldigen und etwas wieder gutmachen",
     ziel34: "Mit dem Sorry-Satz ehrlich um Entschuldigung bitten – ohne „aber“ – und verstehen, dass Verzeihen Zeit braucht",
-    material: "Alles kommt über die Tafel.\nZum Ausdrucken (optional, für die Mappen): Plakat „Mein Sorry-Satz“",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Das Malwasser", text:
 `Lea malt ein Bild mit einem großen Regenbogen. Es ist fast fertig.
 
@@ -629,7 +627,7 @@ SOZIAL_EINHEIT({
     kategorie: "Konflikte lösen",
     ziel12: "Erkennen, dass bei einem Streit beide etwas bekommen können",
     ziel34: "Kompromisse aushandeln und prüfen, ob sie für beide fair sind",
-    material: "Ein Gegenstand zum Tauschen (z. B. Redestein, Kuscheltier, Ball)\nPlakat „So finden wir einen Kompromiss“",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Die rote Schaukel", text:
 `Große Pause. Auf dem Schulhof gibt es eine rote Schaukel. Mia rennt hin. Tom rennt auch hin.
 
@@ -664,10 +662,10 @@ Am Ende stimmen alle 22 Kinder dafür. Niemand hat alles bekommen, was er wollte
 4. Wann ist ein Kompromiss vielleicht nicht möglich?` },
     uebungen: [
         { titel: "Zählen und tauschen", fuer: "alle", dauer: "4 Min",
-          text: "**Material:** ein Gegenstand, den alle gern hätten (z. B. Redestein, Kuscheltier oder Ball).\n\nZwei Kinder kommen nach vorn – beide „wollen“ den Gegenstand. Eines hält ihn, die ganze Klasse zählt laut bis 10, dann wird getauscht – ohne Ziehen und Meckern. Danach kurz fragen: „War das fair? Wie hat sich das Warten angefühlt?“ Mehrere Paare sind dran (Glücksrad).",
-          text34: "**Material:** ein Gegenstand, den alle gern hätten (z. B. Redestein, Kuscheltier oder Ball).\n\nZwei Kinder kommen nach vorn – beide „wollen“ den Gegenstand. Sie handeln selbst eine Tauschregel aus (z. B. „bis 10 zählen“, „jeder eine Runde“) und sagen sie laut. Die Klasse zählt bzw. achtet darauf, dass die Regel eingehalten wird. Danach: „War das fair? Was war schwer am Warten?“ Mehrere Paare sind dran (Glücksrad).",
-          folie: "So üben wir **Abwechseln** – wie Mia und Tom an der Schaukel. 🔁\n\n1️⃣ Zwei Kinder kommen nach vorn.\n2️⃣ Ein Kind bekommt das Kuscheltier.\n3️⃣ **Alle zählen laut bis 10.**\n4️⃣ Dann gibt es das Kuscheltier ab – ohne Ziehen, ohne Meckern.",
-          folie34: "So üben wir **Abwechseln**. 🔁\n\n1️⃣ Zwei Kinder kommen nach vorn – beide wollen das Kuscheltier.\n2️⃣ Sie machen eine **Tauschregel** aus und sagen sie laut (z. B. „bis 10 zählen“).\n3️⃣ Die Klasse passt auf, dass die Regel eingehalten wird.",
+          text: "Nimm irgendeinen Gegenstand aus dem Raum, den beide „haben wollen“ (z. B. ein Mäppchen oder den Tafelschwamm).\n\nZwei Kinder kommen nach vorn – beide „wollen“ den Gegenstand. Eines hält ihn, die ganze Klasse zählt laut bis 10, dann wird getauscht – ohne Ziehen und Meckern. Danach kurz fragen: „War das fair? Wie hat sich das Warten angefühlt?“ Mehrere Paare sind dran (Glücksrad).",
+          text34: "Nimm irgendeinen Gegenstand aus dem Raum, den beide „haben wollen“ (z. B. ein Mäppchen oder den Tafelschwamm).\n\nZwei Kinder kommen nach vorn – beide „wollen“ den Gegenstand. Sie handeln selbst eine Tauschregel aus (z. B. „bis 10 zählen“, „jeder eine Runde“) und sagen sie laut. Die Klasse zählt bzw. achtet darauf, dass die Regel eingehalten wird. Danach: „War das fair? Was war schwer am Warten?“ Mehrere Paare sind dran (Glücksrad).",
+          folie: "So üben wir **Abwechseln** – wie Mia und Tom an der Schaukel. 🔁\n\n1️⃣ Zwei Kinder kommen nach vorn.\n2️⃣ Ein Kind bekommt das Ding.\n3️⃣ **Alle zählen laut bis 10.**\n4️⃣ Dann gibt es das Ding ab – ohne Ziehen, ohne Meckern.",
+          folie34: "So üben wir **Abwechseln**. 🔁\n\n1️⃣ Zwei Kinder kommen nach vorn – beide wollen dasselbe Ding.\n2️⃣ Sie machen eine **Tauschregel** aus und sagen sie laut (z. B. „bis 10 zählen“).\n3️⃣ Die Klasse passt auf, dass die Regel eingehalten wird.",
           emoji: "🔁",
           warum: "Wie bei Mia und Tom: Abwechseln klappt, wenn klar ist, wann getauscht wird.",
           warum34: "Abwechseln klappt, wenn vorher klar ist, wann getauscht wird." },
@@ -719,7 +717,7 @@ SOZIAL_EINHEIT({
     kategorie: "Konflikte lösen",
     ziel12: "Laut und deutlich Nein sagen, wenn ich etwas nicht will",
     ziel34: "Eigene Grenzen spüren und bestimmt Nein sagen – auch wenn die Gruppe drängt",
-    material: "Tafel für die Nein-Sätze",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
     lerntext12: { titel: "Lotte sagt Nein", text:
 `Lotte spielt mit Paul. Paul kitzelt sie. Erst ist es lustig. Lotte lacht.
 
