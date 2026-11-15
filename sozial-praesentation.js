@@ -699,7 +699,10 @@ function folienBauenLern(e, stufe){
     }
     const ein = window.lernEinstieg ? window.lernEinstieg(e, stufe) : { art: "geschichte" };
     if (ein.art === "knobel") f.push({ typ: "knobel", d: ein });
-    else if (ein.art === "erklaert") { f.push({ typ: "erklaert", d: ein }); if (ein.aufgabe) f.push({ typ: "mitmachen", d: ein }); }
+    else if (ein.art === "erklaert") { f.push({ typ: "erklaert", d: ein });
+        // Mitmach-Aufgabe mit Antworten (opt, richtige zuerst) → an der Tafel antippen, Punkt für Klasse oder Ella
+        if (ein.aufgabe && Array.isArray(ein.opt) && window.lernMischen) { const m = window.lernMischen(ein.aufgabe, ein.opt); f.push({ typ: "quiz", u: { titel: "Jetzt ihr!", emoji: "🖐️" }, art: "duell", aussage: ein.aufgabe, opt: m.a, nr: 1, von: 1, loesung: [m.r + 1] }); }
+        else if (ein.aufgabe) f.push({ typ: "mitmachen", d: ein }); }
     else if (ein.art !== "fehler") {
     const lt = stufe === "34" ? e.lerntext34 : e.lerntext12;
     const { erz, nach } = geschichteZerlegen(lt && lt.text);
@@ -729,6 +732,13 @@ function folienBauenLern(e, stufe){
         const art = u.quiz || quizArt(u.text);
         if (art === "liste" && punkte.length) u.liste = punkte; if (art === "aufdecken" && punkte.length) { u.liste = punkte; u.aufdecken = true; }
         f.push({ typ: "challenge", u, nr: u.zusatz ? 0 : ++nr, tafel: tafelFuerUebung(u.text, tafel) });
+        // fragen: ["Frage", ["richtig", "falsch", …], { h: Hörtext, b: Bild }] → antippen an der Tafel, Punkt für Klasse oder Ella
+        const fr = u0["fragen" + stufe] || u0.fragen;
+        if (Array.isArray(fr) && fr.length && window.lernMischen) {
+            const n = Math.min(fr.length, dauer <= 20 ? 4 : dauer <= 30 ? 5 : 8);
+            fr.slice(0, n).forEach(([fq, ant, x], i) => { const m = window.lernMischen(fq, ant); f.push({ typ: "quiz", u, art: "duell", aussage: fq, opt: m.a, hoeren: (x && x.h) || "", bild: (x && x.b) || "", nr: i + 1, von: n, loesung: [m.r + 1] }); });
+            return;
+        }
         if (punkte.length >= 2 && art === "karten") punkte.forEach((p, i) => f.push({ typ: "raetsel", u, aussage: p, nr: i + 1, von: punkte.length }));
         else if (punkte.length >= 2 && !["frage", "keine", "liste", "karten", "aufdecken"].includes(art)) {
             const loes = u0["loesungen" + stufe] || u0.loesungen || [];

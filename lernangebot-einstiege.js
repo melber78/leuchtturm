@@ -112,6 +112,32 @@ const L = window.LERN_EINSTIEG = {
 "l-lernweg": { art: "geschichte" }, "l-zuhoeren": { art: "geschichte" }
 };
 
+/* ---------------- Deutsch: eine Strategie pro Stunde (Ella erklärt + Mitmach-Aufgabe zum Antippen) ---------------- */
+Object.assign(L, {
+"l-silben-schwingen": { art: "erklaert",
+    "12": { merksatz: "In jeder Silbe steckt ein Selbstlaut: a, e, i, o, u – auch au, ei, eu, ä, ö, ü.", schritte: ["Sprich das Wort langsam und schwinge mit dem Arm: Ba – na – ne.", "Jeder Schwung ist eine Silbe.", "Lies Silbe für Silbe – dann schnell zusammen."], aufgabe: "Wie viele Silben hat **Tomate**?", opt: ["3", "2", "4"] },
+    "34": { merksatz: "Lange Wörter knackst du in Silben. Jede Silbe hat einen Selbstlaut-Kern – und getrennt wird zwischen den Silben.", schritte: ["Schwinge das Wort: Fuß – ball – spiel.", "Jede Silbe hat einen Selbstlaut (a, e, i, o, u, au, ei, eu …).", "Doppelte Mitlaute trennst du: Son-ne, Mut-ter.", "ck bleibt zusammen: Zu-cker."], aufgabe: "Wo trennst du **Wecker**?", opt: ["We-cker", "Wec-ker", "Weck-er"] } },
+"l-anlaut-detektive": { art: "erklaert",
+    "12": { merksatz: "Ich spreche das Wort langsam mit – jeden Laut, den ich höre, schreibe ich auf.", schritte: ["Sprich das Wort ganz langsam: Mmm – aaa – uuu – sss.", "Hör auf den ersten Laut: M.", "Hör weiter – bis zum letzten Laut."], aufgabe: "Mit welchem Laut beginnt **Igel**?", opt: ["I", "E", "L"] },
+    "34": { merksatz: "Mitsprechen: Ich schwinge das Wort in Silben und spreche jeden Laut deutlich mit. So vergesse ich keinen Buchstaben.", schritte: ["Schwinge das Wort in Silben.", "Sprich jede Silbe deutlich mit – Laut für Laut.", "Nach dem Schreiben noch einmal lesen: Fehlt ein Laut?"], aufgabe: "Welches Wort ist vollständig?", opt: ["Blume", "Bume", "Bulme"] } },
+"l-lesen-malen": { art: "erklaert",
+    "12": { merksatz: "Lesen heißt verstehen: Ich lese das ganze Wort – nicht nur den Anfang.", schritte: ["Lies Silbe für Silbe.", "Lies das Wort noch einmal schnell.", "Frag dich: Was ist das? Passt das Bild?"], aufgabe: "Lies: **Rakete**", opt: ["🚀", "🚗", "🚲"] },
+    "34": { merksatz: "Genau lesen heißt: auf jedes Wort achten – auch auf kleine Wörter wie nicht, kein, nur, unter.", schritte: ["Lies den Satz bis zum Punkt.", "Achte auf kleine Wörter: nicht, kein, nur, unter, hinter, vor.", "Frag dich: Was genau steht da?"], aufgabe: "**Mia hat keinen Hund, aber zwei Katzen.** Was hat Mia?", opt: ["zwei Katzen", "einen Hund", "einen Hund und zwei Katzen"] } },
+"l-lese-detektive": { art: "geschichte" },
+"l-reim-zauber": { art: "erklaert",
+    "12": { merksatz: "Wörter reimen sich, wenn sie hinten gleich klingen: Haus – Maus.", schritte: ["Sprich beide Wörter laut.", "Hör nur auf das Ende: H-aus, M-aus.", "Klingt es gleich? Dann reimt es sich!"], aufgabe: "Was reimt sich auf **Hand**?", opt: ["Sand", "Hund", "Wind"] },
+    "34": { merksatz: "Am Wortende hörst du b oder p, d oder t, g oder k nicht genau. Verlängere das Wort – dann hörst du es: Hund → Hun-de.", schritte: ["Am Wortende unsicher? Verlängern!", "Nomen → Mehrzahl (Korb → Kör-be). Verb → wir-Form (er lebt → wir le-ben). Adjektiv → mit Nomen (wild → der wil-de Bär).", "Jetzt hörst du den Laut deutlich – und schreibst ihn."], aufgabe: "Kor**_** – b oder p?", opt: ["b", "p"] } },
+"l-abc-training": { art: "erklaert",
+    "12": { merksatz: "Im ABC hat jeder Buchstabe seinen festen Platz.", schritte: ["Sag das ABC leise auf.", "Halte an, wenn du beim Buchstaben bist.", "Was kommt davor? Was kommt danach?"], aufgabe: "Was kommt **nach** K?", opt: ["L", "J", "M"] },
+    "34": { merksatz: "Im Wörterbuch suche ich nach dem 1., dann 2., dann 3. Buchstaben – und immer die Grundform.", schritte: ["Erster Buchstabe: Wo im Wörterbuch?", "Gleicher Anfang? Dann der 2. oder 3. Buchstabe.", "Wort verändert? Grundform suchen: lief → laufen, Häuser → Haus."], aufgabe: "Unter welchem Wort findest du **Häuser**?", opt: ["Haus", "Häuser", "Häuschen"] } },
+"l-wortarten": { art: "erklaert",
+    "12": { merksatz: "Kann ich der, die oder das davorsetzen, ist es ein Namenwort – und das schreibe ich groß.", schritte: ["Sag: der …? die …? das …?", "Passt einer? → groß.", "Passt keiner? → klein."], aufgabe: "Groß oder klein? **katze**", opt: ["groß: Katze", "klein: katze"] },
+    "34": { merksatz: "Proben statt Raten: der/die/das … → Nomen (groß) · ich … → Verb · ganz … → Adjektiv.", schritte: ["Begleiter-Probe: die Freude ✓ → Nomen.", "ich-Probe: ich schwimme ✓ → Verb.", "ganz-Probe: ganz mutig ✓ → Adjektiv.", "Nur Nomen und Satzanfänge schreibst du groß."], aufgabe: "Welche Wortart ist **Mut**?", opt: ["Nomen", "Verb", "Adjektiv"] } },
+"l-satz-baumeister": { art: "erklaert",
+    "12": { merksatz: "Ein Satz fängt groß an, hat eine sinnvolle Reihenfolge und am Ende einen Punkt.", schritte: ["Großer Anfang.", "Die Wörter in sinnvoller Reihenfolge.", "Am Ende ein Punkt."], aufgabe: "Welcher Satz stimmt?", opt: ["Die Sonne scheint.", "Scheint Sonne die.", "die Sonne scheint"] },
+    "34": { merksatz: "Das Satzzeichen zeigt, wie ein Satz gemeint ist: Aussage → . · Frage → ? · Ausruf oder Aufforderung → !", schritte: ["Lies den Satz mit Betonung.", "Erzählt er etwas? → Punkt.", "Fragt er? (Fragewort oder Verb vorn) → Fragezeichen.", "Ruft oder befiehlt er? → Ausrufezeichen."], aufgabe: "Welches Zeichen? **Hol bitte die Schere**", opt: ["!", "?", "."] } }
+});
+
 const NAME = { geschichte: "Geschichte", fehler: "Fehler-Detektiv", knobel: "Knobel-Rätsel", erklaert: "Ella erklärt" };
 /* Einstieg einer Stunde: angepasste Vorlagen behalten den Einstieg des Originals; eigene Stunden haben die Geschichte */
 window.lernEinstieg = function (e, st){

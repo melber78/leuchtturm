@@ -13,58 +13,6 @@ const D = {};
 const duell = (id, d) => { D[id] = d; };
 
 /* ---------------- Deutsch ---------------- */
-duell("l-lesen-malen", {
-    titel12: "Lies und tipp!", ersetzt12: ["Lies und zeig"],
-    "12": [
-        ["Lies: **Hund**", ["🐶", "🐱", "🐭"]],
-        ["Lies: **Auto**", ["🚗", "🚲", "🚌"]],
-        ["Lies: **Eis**", ["🍦", "🍎", "🍌"]],
-        ["Lies: **Ball**", ["⚽", "🧸", "🎈"]],
-        ["Lies: **Maus**", ["🐭", "🐘", "🐸"]],
-        ["Lies: **Sonne**", ["☀️", "🌙", "⭐"]]
-    ]
-});
-duell("l-abc-training", {
-    titel12: "ABC-Duell", titel34: "Wörterbuch-Duell", ersetzt12: ["Wer kommt vorher?"], ersetzt34: ["Wer kommt vorher?"],
-    "12": [
-        ["Was kommt **nach** E?", ["F", "D", "G"]],
-        ["Was kommt **vor** K?", ["J", "L", "I"]],
-        ["Was kommt **nach** R?", ["S", "Q", "T"]],
-        ["Was kommt **vor** H?", ["G", "I", "F"]],
-        ["Welcher Buchstabe fehlt? M, N, __, P", ["O", "Q", "L"]],
-        ["Welcher Buchstabe fehlt? A, B, __, D", ["C", "E", "F"]]
-    ],
-    "34": [
-        ["Welches Wort kommt im ABC **zuerst**? Hund – Affe – Maus", ["Affe", "Hund", "Maus"]],
-        ["Welches Wort kommt **zuerst**? Ball – Baum – Bad", ["Bad", "Ball", "Baum"]],
-        ["Welches Wort kommt **zuerst**? Katze – Kamel – Kuh", ["Kamel", "Katze", "Kuh"]],
-        ["Welches Wort kommt im ABC **zuletzt**? Zebra – Tiger – Wal", ["Zebra", "Tiger", "Wal"]],
-        ["Wo steht „Sonne“ im Wörterbuch?", ["zwischen „Rose“ und „Tiger“", "vor „Rose“", "nach „Tiger“"]],
-        ["Welcher Buchstabe kommt zwischen T und V?", ["U", "W", "S"]]
-    ]
-});
-duell("l-wortarten", {
-    titel12: "Groß oder klein?", ersetzt12: ["Groß oder klein?"],
-    "12": [
-        ["Welches Wort schreibt man **groß**?", ["Ball", "laufen", "lachen"]],
-        ["Welches Wort schreibt man **groß**?", ["Tisch", "springen", "singen"]],
-        ["Welches Wort schreibt man **groß**?", ["Mama", "malen", "essen"]],
-        ["Welches Wort schreibt man **klein**?", ["lachen", "Hund", "Auto"]],
-        ["Welcher Begleiter passt? ___ Sonne", ["die", "der", "das"]],
-        ["Welcher Begleiter passt? ___ Auto", ["das", "der", "die"]]
-    ]
-});
-duell("l-satz-baumeister", {
-    titel12: "Satz-Duell",
-    "12": [
-        ["Welcher Satz ist richtig gebaut?", ["Tom spielt Ball.", "spielt Ball Tom.", "Ball. Tom spielt"]],
-        ["Welcher Satz ist richtig gebaut?", ["Die Katze schläft.", "Katze die schläft.", "Die schläft Katze."]],
-        ["Was fehlt am Ende? „Mama liest ein Buch“", ["ein Punkt .", "nichts", "ein Komma ,"]],
-        ["Welcher Satz fängt richtig an?", ["Der Hund bellt.", "der Hund bellt.", "der hund bellt."]],
-        ["Welches Wort passt? „Der Hund ___ laut.“", ["bellt", "Ball", "blau"]],
-        ["Wie viele Wörter hat der Satz? „Ich esse ein Eis.“", ["4", "3", "5"]]
-    ]
-});
 
 /* ---------------- Mathe ---------------- */
 duell("l-zahlenland", {
@@ -270,6 +218,7 @@ function mischen(frage, ant){
     return { a: idx.map(k => String(ant[k]).trim()), r: idx.indexOf(0) };
 }
 window.LERN_DUELLE = D;
+window.lernMischen = mischen;
 window.lernDuell = function (e, st) {
     const d = e && (D[e.ersetzt || e.id] || D[e.id]);
     if (!d || !d[st]) return null;

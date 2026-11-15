@@ -42,516 +42,644 @@ window.SOZIAL_EINHEIT = function (o) {
 
 window.SOZIAL_VORLAGEN = [
 
-/* ============================== DEUTSCH: LESEN ============================== */
+/* ============================== DEUTSCH ==============================
+   Jede Stunde hat EINE Strategie: Ella erklärt sie, dann wird an der Tafel
+   geübt. Jede Aufgabe hat Antworten zum Antippen (fragen12 / fragen34):
+   ["Frage", ["richtig", "falsch", …]] – richtig = Punkt für die Klasse,
+   daneben = Punkt für Ella. Die richtige Antwort steht in den Daten zuerst.
+   ===================================================================== */
 SOZIAL_EINHEIT({
     id: "l-silben-schwingen",
-    titel: "Silben-Schwingen",
+    titel: "Silben lesen – lange Wörter knacken",
     kategorie: "Deutsch: Lesen",
-    ziel12: "Wörter in Silben klatschen und die Silben zählen",
-    ziel34: "Lange Wörter sicher in Silben zerlegen und richtig trennen",
-    material: "Rote und grüne Karten, Fingern (Universal-Set)\nBildkarten „Silben“ (unter Arbeitsmaterial)",
-    materialIds: ["lern-silben-bildkarten"],
-    warmup12: "Namen klatschen – jedes Kind klatscht seinen Vornamen in Silben, alle machen nach",
+    ziel12: "Wörter in Silben schwingen, Silben zählen und Silbe für Silbe lesen",
+    ziel34: "Lange Wörter in Silben zerlegen, lesen und am Zeilenende richtig trennen",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.",
+    warmup12: "Namen schwingen – jedes Kind schwingt seinen Vornamen in Silben, alle machen mit",
     warmup34: "Blitzlesen an der Tafel (lange Wörter)",
     tafel: [
         { werkzeug: "silben", titel: "Silben zählen mit Bildern", fuer: "12", einstellung: {} },
         { werkzeug: "blitzlesen", titel: "Blitzlesen: lange Wörter", fuer: "34", einstellung: { art: "woerter34" } }
     ],
-    lerntext12: { titel: "Der Silben-Roboter", text:
-`Im Klassenzimmer steht ein kleiner Roboter. Er heißt Robo. Robo kann sprechen – aber nur ganz langsam.
-
-Wenn Robo „Banane“ sagt, dann klingt das so: „Ba – na – ne.“ Bei jedem Stück klatscht er einmal in die Hände.
-
-„Warum sprichst du so komisch?“, fragt Mia. Robo blinkt. „Ich spreche in Silben! So kann ich jedes Wort genau hören.“
-
-Mia probiert es aus: „Scho – ko – la – de!“ Vier Mal klatschen! Robo leuchtet grün vor Freude.
-
-**Nach dem Vorlesen:**
-1. Wie spricht Robo?
-2. Wie oft klatscht Robo bei „Banane“?
-3. Sprecht alle zusammen wie Robo: Ba – na – ne. Klatscht dazu!` },
-    lerntext34: { titel: "Die Nachricht im Funkgerät", text:
-`Ben und Greta spielen Agenten. Ihr Funkgerät rauscht – jedes Wort kommt nur in Stücken an: „Ge – heim – ver – steck … hin – ter … der … Turn – hal – le.“
-
-„Das sind Silben!“, ruft Greta. „Wir müssen sie nur zusammensetzen.“
-
-Ben schreibt mit. Jedes Stück bekommt einen Bogen unter dem Wort. „Geheimversteck hat vier Silben. Turnhalle hat drei.“
-
-Am Zeilenende reicht der Platz nicht. Greta trennt das Wort einfach zwischen zwei Silben: „Turn-“ in die eine Zeile, „halle“ in die nächste. Passt!
-
-**Fragen zum Gespräch:**
-1. Wie viele Silben hat „Geheimversteck“?
-2. Wo darf man ein Wort am Zeilenende trennen?
-3. Welches lange Wort fällt dir ein? Klatsche es in Silben.` },
+    lerntext12: { titel: "Silben schwingen", text: "Ba – na – ne. Jeder Schwung ist eine Silbe." },
+    lerntext34: { titel: "Lange Wörter knacken", text: "Fuß – ball – spiel. Jede Silbe hat einen Selbstlaut-Kern." },
     uebungen: [
-        { titel: "Klatsch-Quiz", fuer: "alle", dauer: "8 Min", kern: ["12", "34"],
-          text: "Du zeigst ein Wort. Alle sprechen es in Silben und klatschen leise mit. Dann zeigt jedes Kind mit den Fingern, wie viele Silben es sind. Erst wenn alle Finger oben sind, löst du auf.\n- Sonne\n- Banane\n- Hund\n- Elefant\n- Tomate\n- Schokolade",
-          text12: "Du zeigst ein Bild und sagst das Wort. Alle sprechen es in Silben und klatschen leise mit. Dann zeigt jedes Kind mit den Fingern, wie viele Silben es sind. Erst wenn alle Finger oben sind, löst du auf.\n- Sonne\n- Banane\n- Hund\n- Elefant\n- Tomate\n- Maus",
-          text34: "Du zeigst ein Wort. Alle sprechen es in Silben und klatschen leise mit. Dann zeigt jedes Kind mit den Fingern, wie viele Silben es sind. Erst wenn alle Finger oben sind, löst du auf.\n- Schokolade\n- Klassenzimmer\n- Regenbogen\n- Fußball\n- Marienkäfer\n- Bushaltestelle",
-          quiz: "zahlen",
-          antworten: ["1️⃣ eine", "2️⃣ zwei", "3️⃣ drei", "4️⃣ vier"],
-          loesungen12: ["2", "3", "1", "3", "3", "1"],
-          loesungen34: ["4", "4", "4", "2", "4", "4"],
-          folie: "Sprich das Wort in **Silben** und klatsche mit. 👏\n\nWie viele Silben? Zeig die Antwort mit den **Fingern**! ✋",
-          emoji: "👏", warum: "Wir hören, aus wie vielen Stücken ein Wort besteht." },
-        { titel: "Silben-Roboter", fuer: "12", dauer: "5 Min",
-          text: "Ein Kind zieht verdeckt eine Bildkarte und spricht das Wort wie ein Roboter (in Silben, mit abgehackten Roboter-Bewegungen). Die anderen raten, was auf der Karte ist. Wer richtig rät, darf als Nächstes ziehen.",
-          folie: "🤖 Sprich wie ein Roboter: **Ba – na – ne**.\n\nDie anderen raten das Wort!",
-          emoji: "🤖", warum: "Wer gut zuhört, erkennt das Wort." },
-        { titel: "Trenn-Profis", fuer: "34", dauer: "5 Min",
-          text: "Du schreibst drei lange Wörter an die Tafel. Die Kinder schreiben sie auf einen Zettel und setzen Silbenbögen darunter. Dann kommt je ein Kind nach vorn und trennt ein Wort an der Tafel mit Strichen: Fahr|rad|helm. Tipp: Wenn zwei gleiche Buchstaben zusammenstehen, wird dazwischen getrennt (Son-ne, Mut-ter).",
-          folie: "Schreib die Wörter ab und zeichne **Silbenbögen** darunter. ⌒⌒⌒\n\nDoppelte Buchstaben? Dazwischen trennen: **Son-ne**",
+        { titel: "Silben zählen", fuer: "alle", dauer: "7 Min", kern: ["12", "34"],
+          text: "Das Wort steht an der Tafel. Alle schwingen es gemeinsam mit dem Arm in Silben (laut mitsprechen!). Dann zeigt jedes Kind mit den Fingern, wie viele Silben es sind – erst dann tippt ein Kind die Antwort an der Tafel an.",
+          folie: "Lies das Wort und **schwinge** es mit dem Arm. 👋\n\nJeder Schwung = eine Silbe. Wie viele sind es?",
+          fragen12: [
+            ["Wie viele Silben hat **Sonne**?", ["2", "1", "3"]],
+            ["Wie viele Silben hat **Hund**?", ["1", "2", "3"]],
+            ["Wie viele Silben hat **Banane**?", ["3", "2", "4"]],
+            ["Wie viele Silben hat **Auto**?", ["2", "1", "3"]],
+            ["Wie viele Silben hat **Tomate**?", ["3", "2", "4"]],
+            ["Wie viele Silben hat **Fisch**?", ["1", "2", "3"]],
+            ["Wie viele Silben hat **Schokolade**?", ["4", "3", "5"]],
+            ["Wie viele Silben hat **Elefant**?", ["3", "2", "4"]]
+          ],
+          fragen34: [
+            ["Wie viele Silben hat **Fußballspiel**?", ["3", "2", "4"]],
+            ["Wie viele Silben hat **Klassenzimmer**?", ["4", "3", "5"]],
+            ["Wie viele Silben hat **Schwimmbad**?", ["2", "1", "3"]],
+            ["Wie viele Silben hat **Feuerwehrauto**?", ["5", "4", "6"]],
+            ["Wie viele Silben hat **Hausaufgaben**?", ["4", "3", "5"]],
+            ["Wie viele Silben hat **Taschenlampe**?", ["4", "3", "5"]],
+            ["Wie viele Silben hat **Geburtstagsfeier**?", ["5", "4", "6"]],
+            ["Wie viele Silben hat **Strumpf**?", ["1", "2", "3"]]
+          ],
+          emoji: "👋", warum: "Wer Silben hört, kann lange Wörter lesen." },
+        { titel: "Silben-Lesen", fuer: "12", dauer: "6 Min", kern: ["12"],
+          text: "Die Silben stehen an der Tafel. Alle lesen sie gemeinsam – erst langsam Silbe für Silbe, dann schnell zusammen. Dann tippt ein Kind das passende Bild an.",
+          folie: "Lies die Silben – erst **langsam**, dann **schnell zusammen**. 🐢 ➜ 🐇\n\nWelches Bild passt?",
+          fragen12: [
+            ["Lies: **Ba – na – ne**", ["🍌", "🍎", "🍐"]],
+            ["Lies: **Ra – ke – te**", ["🚀", "🚗", "🚲"]],
+            ["Lies: **To – ma – te**", ["🍅", "🥕", "🥒"]],
+            ["Lies: **Zi – tro – ne**", ["🍋", "🍊", "🍇"]],
+            ["Lies: **Pa – pa – gei**", ["🦜", "🐧", "🦆"]],
+            ["Lies: **Me – lo – ne**", ["🍉", "🍓", "🍒"]]
+          ],
+          emoji: "🐢", warum: "Silbe für Silbe lesen – so klappt jedes Wort." },
+        { titel: "Welche Silbe fehlt?", fuer: "34", dauer: "6 Min", kern: ["34"],
+          text: "Ein langes Wort mit einer Lücke steht an der Tafel. Alle lesen es in Silben – mit „hmm“ an der Lücke. Welche Silbe fehlt? Ein Kind tippt an.",
+          folie: "Lies das Wort in Silben. 🔍\n\nAn einer Stelle fehlt ein Stück – **welche Silbe** gehört hinein?",
+          fragen34: [
+            ["Schmet – **?** – ling", ["ter", "ten", "tor"]],
+            ["Ta – schen – **?** – pe", ["lam", "lom", "lan"]],
+            ["Kin – der – **?** – ten", ["gar", "gor", "ger"]],
+            ["Feu – er – **?** – mann", ["wehr", "wer", "wär"]],
+            ["Ge – **?** – tag", ["burts", "burst", "buts"]],
+            ["Re – gen – **?** – gen", ["bo", "ba", "bu"]]
+          ],
+          emoji: "🧩", warum: "Wer in Silben liest, findet jedes fehlende Stück." },
+        { titel: "Trenn-Profis", fuer: "34", dauer: "6 Min", kern: ["34"],
+          text: "Am Zeilenende wird zwischen den Silben getrennt. Wichtig: Doppelte Mitlaute werden getrennt (Son-ne), ck bleibt zusammen (Zu-cker), ein einzelner Selbstlaut am Anfang wird nicht abgetrennt. Ein Kind tippt die richtige Trennung an.",
+          folie: "Das Wort passt nicht mehr in die Zeile. ✂️\n\n**Wo** trennst du richtig?",
+          fragen34: [
+            ["Trenne: **Sonne**", ["Son-ne", "So-nne", "Sonn-e"]],
+            ["Trenne: **Zucker**", ["Zu-cker", "Zuc-ker", "Zuck-er"]],
+            ["Trenne: **Fenster**", ["Fens-ter", "Fe-nster", "Fenst-er"]],
+            ["Trenne: **Katze**", ["Kat-ze", "Ka-tze", "Katz-e"]],
+            ["Trenne: **Schule**", ["Schu-le", "Sch-ule", "Schul-e"]],
+            ["Trenne: **Apfel**", ["Ap-fel", "A-pfel", "Apf-el"]]
+          ],
           emoji: "✂️", warum: "So trennst du Wörter am Zeilenende richtig." }
     ],
-    ab12: { titel: "Silben-Schwingen", aufgaben: [
+    ab12: { titel: "Silben lesen", aufgaben: [
         { typ: "tabelle", text: "Sprich das Wort in Silben. Wie viele Silben? Kreuze an.", spalten: ["Bild", "1", "2", "3"], zeilen: [["[bild:hund]", "", "", ""], ["[bild:banane]", "", "", ""], ["[bild:sonne]", "", "", ""], ["[bild:elefant]", "", "", ""], ["[bild:maus]", "", "", ""], ["[bild:tomate]", "", "", ""]] },
-        { typ: "zuordnen", text: "Verbinde jedes Bild mit der passenden Silbenzahl.", nur: "1", links: ["[bild:katze]", "[bild:fisch]", "[bild:rakete]"], rechts: ["●", "● ●", "● ● ●"] },
+        { typ: "zuordnen", text: "Lies die Silben. Verbinde mit dem Bild.", nur: "2", links: ["Ra – ke – te", "Ba – na – ne", "To – ma – te"], rechts: ["[bild:banane]", "[bild:tomate]", "[bild:rakete]"] },
         { typ: "luecken", text: "Schreibe das Wort und male Silbenbögen darunter.", nummern: true, saetze: ["[bild:auto] ___", "[bild:igel] ___", "[bild:tomate] To – ma – ___"] },
         { typ: "malen", text: "Male etwas mit drei Silben.", bild: "" }
     ]},
-    ab34: { titel: "Silben-Profis", aufgaben: [
-        { typ: "tabelle", text: "Zerlege die Wörter in Silben und zähle sie.", spalten: ["Wort", "in Silben", "Anzahl"], zeilen: [["Schokolade", "", ""], ["Regenbogen", "", ""], ["Turnhalle", "", ""], ["Marienkäfer", "", ""], ["Hausaufgaben", "", ""], ["Fußballspiel", "", ""]] },
-        { typ: "luecken", text: "Setze die Silben zu Wörtern zusammen.", nummern: true, saetze: ["Ge – burts – tag → ___", "Schmet – ter – ling → ___", "Kin – der – gar – ten → ___", "Ta – schen – lam – pe → ___"] },
-        { typ: "luecken", text: "Trenne die Wörter am Zeilenende – setze den Strich an die richtige Stelle.", nummern: true, saetze: ["Sonne → ___", "Fenster → ___", "Mutter → ___", "Schule → ___"] },
-        { typ: "schreiben", text: "Finde selbst das längste Wort, das du kennst. Schreibe es in Silben auf.", zeilen: 2 }
+    ab34: { titel: "Lange Wörter knacken", aufgaben: [
+        { typ: "tabelle", text: "Zerlege die Wörter in Silben und zähle sie.", spalten: ["Wort", "in Silben", "Anzahl"], zeilen: [["Fußballspiel", "", ""], ["Klassenzimmer", "", ""], ["Feuerwehrauto", "", ""], ["Hausaufgaben", "", ""], ["Taschenlampe", "", ""], ["Geburtstagsfeier", "", ""]] },
+        { typ: "luecken", text: "Welche Silbe fehlt? Schreibe das ganze Wort.", nummern: true, saetze: ["Schmet – ___ – ling → ___", "Kin – der – ___ – ten → ___", "Re – gen – ___ – gen → ___"] },
+        { typ: "luecken", text: "Trenne die Wörter am Zeilenende.", nummern: true, saetze: ["Sonne → ___", "Zucker → ___", "Fenster → ___", "Apfel → ___"] },
+        { typ: "schreiben", text: "Finde das längste Wort, das du kennst. Schreibe es in Silben auf.", zeilen: 2 }
     ]}
 }),
 
 SOZIAL_EINHEIT({
     id: "l-anlaut-detektive",
-    titel: "Anlaut-Detektive",
-    kategorie: "Deutsch: Lesen",
-    ziel12: "Den ersten Laut eines Wortes hören und dem Buchstaben zuordnen",
-    ziel34: "Laute am Anfang, in der Mitte und am Ende eines Wortes genau hören",
-    material: "Rote und grüne Karten (Universal-Set)\nAnlaut-Bildkarten (unter Arbeitsmaterial), evtl. Anlauttabelle der Klasse",
-    materialIds: ["lern-anlaut-karten"],
+    titel: "Mitsprechen – jeden Laut hören",
+    kategorie: "Deutsch: Schreiben & Rechtschreiben",
+    ziel12: "Laute am Anfang, am Ende und in der Mitte hören und dem Buchstaben zuordnen",
+    ziel34: "Mit der Strategie „Mitsprechen“ Wörter vollständig schreiben und fehlende Laute finden",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.",
     warmup12: "Ich sehe was, was du nicht siehst – und das fängt mit M an",
-    warmup34: "Blitzrunde: Wörter, die mit „Sch“ anfangen – wer findet in 1 Minute die meisten?",
+    warmup34: "Blitzrunde: Wörter mit „Schr“ am Anfang – wer findet in 1 Minute die meisten?",
     tafel: [
         { werkzeug: "anlaute", titel: "Anlaut-Raten mit Bildern", fuer: "12", einstellung: { modus: "auswahl" } },
         { werkzeug: "anlaute", titel: "Anlaut schnell nennen", fuer: "34", einstellung: { modus: "blitz" } }
     ],
-    lerntext12: { titel: "Detektiv Mo und das M", text:
-`Detektiv Mo hat eine Lupe. Damit findet er alles. Heute sucht er Dinge, die mit **M** anfangen.
-
-Er schaut unter den Tisch – da sitzt eine **Maus**! „Mmmmaus“, sagt Mo. „Das fängt mit M an!“
-
-Er schaut aus dem Fenster – da scheint der **Mond**. „Mmmmond. Auch mit M!“
-
-Dann sieht er einen **Hund**. „Hhhhund …“ Mo schüttelt den Kopf. „Nein, der fängt nicht mit M an.“
-
-**Nach dem Vorlesen:**
-1. Was hat Mo gefunden, das mit M anfängt?
-2. Warum passt der Hund nicht?
-3. Wer findet im Klassenzimmer etwas mit M?` },
-    lerntext34: { titel: "Der verschwundene Buchstabe", text:
-`Auf dem Schulhof liegt ein Zettel. Darauf steht: „Treffpunkt am _ußballplatz um _ier Uhr. Bring den _all mit!“
-
-Lena runzelt die Stirn. „Hier fehlen immer die Anfangsbuchstaben.“ Tarik grinst: „Kein Problem. Wir sprechen die Wörter laut – dann hören wir, was fehlt.“
-
-Fff-ußballplatz. Vvv-ier – nein, das schreibt man mit V! Und Bbb-all.
-
-„Aber Achtung“, sagt Lena. „Man hört nicht immer genau, wie man schreibt. Bei vier hört man F – aber man schreibt V.“
-
-**Fragen zum Gespräch:**
-1. Welche Buchstaben fehlen auf dem Zettel?
-2. Warum ist „vier“ eine Falle?
-3. Welche Wörter kennst du noch, die man anders schreibt, als man sie hört?` },
+    lerntext12: { titel: "Laute hören", text: "Mmm – aaa – uuu – sss: Maus." },
+    lerntext34: { titel: "Mitsprechen", text: "Ich schwinge das Wort und spreche jeden Laut mit." },
     uebungen: [
-        { titel: "Anlaut-Ampel", fuer: "12", dauer: "8 Min", kern: ["12"],
-          text: "Du sagst einen Buchstaben-Laut (z. B. „Mmm“) und dann Wörter. Fängt das Wort mit dem Laut an, zeigen die Kinder 👍, sonst 👎.\n- Maus\n- Mond\n- Hund\n- Messer\n- Sonne\n- Mama",
-          quiz: "ampel", loesungen: ["1", "1", "2", "1", "2", "1"],
-          folie: "Hör genau hin: Fängt das Wort mit **M** an?\n\n🟢 ja · 🔴 nein",
-          emoji: "🕵️", warum: "Wir hören den ersten Laut im Wort." },
-        { titel: "Wo steckt der Laut?", fuer: "34", dauer: "8 Min", kern: ["34"],
-          text: "Du nennst einen Laut (z. B. „L“) und ein Wort. Die Kinder zeigen mit den Fingern, wo sie den Laut hören: 1 = am Anfang, 2 = in der Mitte, 3 = am Ende.\n- Lampe (L)\n- Ball (L)\n- Igel (L)\n- Rose (R)\n- Tür (R)\n- Garten (R)",
-          antworten: ["1️⃣ Anfang", "2️⃣ Mitte", "3️⃣ Ende"], loesungen: ["1", "3", "3", "1", "3", "2"],
-          folie: "Wo hörst du den Laut?\n\n1️⃣ Anfang · 2️⃣ Mitte · 3️⃣ Ende",
-          emoji: "👂", warum: "Wer genau hört, schreibt richtig." },
-        { titel: "Anlaut-Kette", fuer: "alle", dauer: "5 Min",
-          text: "Ein Kind sagt ein Wort. Das nächste Kind sagt ein Wort, das mit dem letzten Laut des vorherigen Wortes anfängt (Maus → Sonne → Esel …). Kl. 1/2 dürfen auch nur Wörter mit dem gleichen Anfangslaut sagen.",
-          folie: "Maus → **S**onne → **E**sel → **L**öwe …\n\nDas neue Wort fängt mit dem **letzten Laut** an!",
-          emoji: "🔗", warum: "Ein Wortspiel zum Hören." }
+        { titel: "Erster Laut", fuer: "12", dauer: "6 Min", kern: ["12"],
+          text: "Das Bild steht an der Tafel. Alle sprechen das Wort langsam und halten den ersten Laut lange: Mmmm-ond. Dann tippt ein Kind den Buchstaben an.",
+          folie: "Sprich das Wort **langsam**. Halte den ersten Laut lange: **Mmmm**-ond. 🔍\n\nWelcher Buchstabe passt?",
+          fragen12: [
+            ["🐟 Womit fängt **Fisch** an?", ["F", "W", "S"]],
+            ["🌙 Womit fängt **Mond** an?", ["M", "N", "W"]],
+            ["🍌 Womit fängt **Banane** an?", ["B", "D", "P"]],
+            ["🦁 Womit fängt **Löwe** an?", ["L", "R", "M"]],
+            ["🚗 Womit fängt **Auto** an?", ["A", "O", "U"]],
+            ["🍦 Womit fängt **Eis** an?", ["Ei", "Au", "Eu"]],
+            ["🐭 Womit fängt **Maus** an?", ["M", "N", "H"]],
+            ["🌹 Womit fängt **Rose** an?", ["R", "L", "H"]]
+          ],
+          emoji: "🔍", warum: "Wer genau hinhört, findet den richtigen Buchstaben." },
+        { titel: "Letzter Laut & Lücke", fuer: "12", dauer: "6 Min", kern: ["12"],
+          text: "Jetzt wird es schwerer: Der letzte Laut – oder ein Laut in der Mitte fehlt. Alle sprechen das Wort langsam mit, dann tippt ein Kind an.",
+          folie: "Sprich das Wort **ganz langsam** bis zum Schluss. 🐢\n\nWelcher Buchstabe fehlt?",
+          fragen12: [
+            ["🌳 Bau**_** – was hörst du am Ende?", ["m", "n", "l"]],
+            ["⚽ Bal**_** – was hörst du am Ende?", ["l", "m", "n"]],
+            ["🛋️ Sof**_** – was hörst du am Ende?", ["a", "e", "o"]],
+            ["🐭 Ma**_**s – was fehlt?", ["u", "o", "a"]],
+            ["👖 Ho**_**e – was fehlt?", ["s", "f", "n"]],
+            ["☀️ So**_**ne – was fehlt?", ["n", "m", "l"]]
+          ],
+          emoji: "🐢", warum: "Mitsprechen bis zum letzten Laut." },
+        { titel: "Fehlt ein Laut?", fuer: "34", dauer: "7 Min", kern: ["34"],
+          text: "Drei Schreibweisen stehen an der Tafel – nur eine ist vollständig. Alle schwingen das Wort und sprechen jeden Laut mit. Ein Kind tippt die richtige Schreibweise an. Frag nach: Welcher Laut fehlte bei den anderen?",
+          folie: "Schwinge das Wort und sprich **jeden Laut** mit. 🗣️\n\nWelche Schreibweise ist **vollständig**?",
+          fragen34: [
+            ["Welches Wort ist richtig?", ["Schrank", "Schank", "Scharnk"]],
+            ["Welches Wort ist richtig?", ["Fenster", "Fenter", "Fesnter"]],
+            ["Welches Wort ist richtig?", ["Pflanze", "Planze", "Flanze"]],
+            ["Welches Wort ist richtig?", ["Gespenst", "Gespent", "Gepsenst"]],
+            ["Welches Wort ist richtig?", ["Strumpf", "Strupf", "Stumpf"]],
+            ["Welches Wort ist richtig?", ["Krokodil", "Kokodil", "Krokdil"]],
+            ["Welches Wort ist richtig?", ["Spaziergang", "Spazigang", "Sparziergang"]]
+          ],
+          emoji: "🗣️", warum: "Mitsprechen schützt vor vergessenen Buchstaben." },
+        { titel: "Satz-Detektive", fuer: "34", dauer: "6 Min", kern: ["34"],
+          text: "Ein Satz steht an der Tafel. In einem Wort fehlt ein Laut. Alle lesen den Satz leise und sprechen mit. Ein Kind tippt das falsche Wort an und sagt, wie es richtig heißt.",
+          folie: "Lies den Satz leise und sprich mit. 🕵️\n\nIn **einem** Wort fehlt ein Buchstabe. Welches?",
+          fragen34: [
+            ["Der Hund **spingt** über den Zaun.", ["spingt", "Hund", "Zaun"]],
+            ["Wir gehen heute ins **Kno**.", ["Kno", "gehen", "heute"]],
+            ["Mein Bruder spielt gern **Fußbal** im Garten.", ["Fußbal", "Bruder", "Garten"]],
+            ["Im Winter trage ich eine **Müze**.", ["Müze", "Winter", "trage"]],
+            ["Die **Blmen** im Garten blühen.", ["Blmen", "Garten", "blühen"]],
+            ["Am Abend **schlaft** das Baby schnell ein.", ["schlaft", "Abend", "Baby"]]
+          ],
+          emoji: "🕵️", warum: "Beim Kontrollieren hilft Mitsprechen auch." }
     ],
-    ab12: { titel: "Anlaut-Detektive", aufgaben: [
-        { typ: "ankreuzen", text: "Kreuze alle Bilder an, die mit M anfangen.", nebeneinander: true, optionen: ["[bild:maus]", "[bild:hund]", "[bild:mond]", "[bild:melone]", "[bild:sonne]", "[bild:mais]"] },
-        { typ: "zuordnen", text: "Verbinde das Bild mit seinem Anfangsbuchstaben.", nur: "1", links: ["[bild:auto]", "[bild:sonne]", "[bild:igel]", "[bild:lama]"], rechts: ["L", "A", "I", "S"] },
-        { typ: "tabelle", text: "Schreibe den Anfangsbuchstaben.", nur: "", spalten: ["Bild", "Buchstabe"], zeilen: [["[bild:tiger]", ""], ["[bild:rose]", ""], ["[bild:nudeln]", ""], ["[bild:ente]", ""], ["[bild:ufo]", ""], ["[bild:fisch]", ""]] },
-        { typ: "schreiben", text: "Schreibe zwei Wörter, die mit M anfangen.", zeilen: 2 }
+    ab12: { titel: "Laute hören", aufgaben: [
+        { typ: "tabelle", text: "Womit fängt das Wort an? Schreibe den Buchstaben.", spalten: ["Bild", "Anfang"], zeilen: [["[bild:maus]", ""], ["[bild:banane]", ""], ["[bild:sonne]", ""], ["[bild:auto]", ""], ["[bild:igel]", ""], ["[bild:tomate]", ""]] },
+        { typ: "luecken", text: "Sprich langsam mit. Welcher Buchstabe fehlt?", nummern: true, nur: "2", saetze: ["Ma_s", "Ho_e", "So_ne", "Ba_m"] },
+        { typ: "malen", text: "Male drei Dinge, die mit M anfangen.", bild: "" }
     ]},
-    ab34: { titel: "Laut-Detektive", aufgaben: [
-        { typ: "luecken", text: "Ergänze den fehlenden Anfangsbuchstaben.", nummern: true, saetze: ["___ußball   ___ier   ___ogel", "___uppe   ___isch   ___ater", "___rot   ___aum   ___ase"] },
-        { typ: "tabelle", text: "Wo hörst du das L? Kreuze an.", kreuz: [1, 2, 3], spalten: ["Wort", "Anfang", "Mitte", "Ende"], zeilen: [["Lampe", "", "", ""], ["Ball", "", "", ""], ["Salat", "", "", ""], ["Igel", "", "", ""], ["Löwe", "", "", ""], ["Wolke", "", "", ""]] },
-        { typ: "luecken", text: "Hört man F oder schreibt man V? Ergänze.", nummern: false, saetze: ["___ater   ___ogel   ___euer   ___ier   ___isch   ___orsicht"] },
-        { typ: "schreiben", text: "Finde drei Wörter mit „Sch“ am Anfang.", zeilen: 2 }
+    ab34: { titel: "Mitsprechen", aufgaben: [
+        { typ: "ankreuzen", text: "Kreuze die richtige Schreibweise an.", optionen: ["Schrank", "Scharnk", "Pflanze", "Planze", "Gespenst", "Gespent", "Krokodil", "Kokodil"], nebeneinander: true },
+        { typ: "luecken", text: "In jedem Satz fehlt ein Buchstabe. Schreibe das Wort richtig.", nummern: true, saetze: ["Der Hund spingt über den Zaun. → ___", "Im Winter trage ich eine Müze. → ___", "Die Blmen im Garten blühen. → ___"] },
+        { typ: "schreiben", text: "Schreibe drei lange Wörter. Schwinge sie vorher und sprich jeden Laut mit.", zeilen: 3 }
     ]}
 }),
 
 SOZIAL_EINHEIT({
     id: "l-lesen-malen",
-    titel: "Lesen & Malen",
+    titel: "Genau lesen – Wörter und Sätze verstehen",
     kategorie: "Deutsch: Lesen",
-    ziel12: "Kurze Wörter (Kl. 1: Bilder und Anlaute) lesen und passend malen",
-    ziel34: "Genau lesen: Mal-Aufträge Schritt für Schritt umsetzen",
-    material: "Buntstifte",
-    ohneVorbereitung: true,
-    warmup12: "Blitzlesen: Silben (ma, mi, mo …) – alle lesen im Chor",
-    warmup34: "Blitzlesen: Sätze – wer kann den Satz nach 3 Sekunden wiederholen?",
+    ziel12: "Wörter lesen und verstehen, ähnliche Wörter genau unterscheiden",
+    ziel34: "Sätze genau lesen und auf kleine Wörter (nicht, kein, unter …) achten",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.",
+    warmup12: "Blitzlesen an der Tafel (kurze Wörter)",
+    warmup34: "Blitzlesen an der Tafel (lange Wörter)",
     tafel: [
-        { werkzeug: "blitzlesen", titel: "Blitzlesen: Silben", fuer: "12", einstellung: { art: "silben12" } },
-        { werkzeug: "blitzlesen", titel: "Blitzlesen: Wörter Kl. 1/2", fuer: "12", einstellung: { art: "woerter12" } },
-        { werkzeug: "blitzlesen", titel: "Blitzlesen: Sätze Kl. 3/4", fuer: "34", einstellung: { art: "saetze34" } }
+        { werkzeug: "blitzlesen", titel: "Blitzlesen: kurze Wörter", fuer: "12", einstellung: { art: "silben12" } },
+        { werkzeug: "blitzlesen", titel: "Blitzlesen: lange Wörter", fuer: "34", einstellung: { art: "woerter34" } }
     ],
-    lerntext12: { titel: "Das leere Bild", text:
-`Lotte hat ein großes, leeres Blatt. „Was soll ich malen?“, fragt sie.
-
-Da kommt ein Zettel geflogen. Darauf steht nur ein Wort: **Sonne**. Lotte liest und malt eine gelbe Sonne.
-
-Dann kommt noch ein Zettel: **Haus**. Lotte malt ein Haus unter die Sonne.
-
-Und noch einer: **Hund**. Ein kleiner Hund kommt vor das Haus.
-
-Am Ende ist das Blatt voll. „Lesen ist wie Zaubern“, sagt Lotte. „Ein Wort – und schon ist ein Bild da!“
-
-**Nach dem Vorlesen:**
-1. Was stand auf den Zetteln?
-2. Was hat Lotte gemalt?
-3. Welches Wort würdest du gern malen?` },
-    lerntext34: { titel: "Die Schatzkarte", text:
-`Jonas hat eine alte Schatzkarte gefunden. Aber es ist keine Zeichnung – nur Text: „Male einen großen Baum in die Mitte. Rechts neben den Baum kommt ein Felsen. Unter den Felsen malst du ein rotes Kreuz. Da liegt der Schatz.“
-
-Jonas malt schnell los. Baum, Felsen, Kreuz – fertig! Doch seine Schwester lacht: „Dein Kreuz ist ja links! Und es ist blau!“
-
-Jonas liest noch einmal – diesmal ganz genau. Wort für Wort. „Okay … rechts. Rot. Unter dem Felsen.“
-
-**Fragen zum Gespräch:**
-1. Was hat Jonas beim ersten Mal falsch gemacht?
-2. Warum ist genaues Lesen bei einer Schatzkarte so wichtig?
-3. Wo im Alltag musst du ganz genau lesen? (Rezept, Spielregel, Bauanleitung …)` },
+    lerntext12: { titel: "Genau lesen", text: "Haus oder Maus? Ein Buchstabe macht den Unterschied." },
+    lerntext34: { titel: "Genau lesen", text: "Mia hat keinen Hund – kleine Wörter verändern alles." },
     uebungen: [
-        { titel: "Lies und zeig", fuer: "12", dauer: "8 Min", kern: ["12"],
-          text: "Du zeigst ein Wort an der Tafel (Blitzlesen). Kl. 2 liest leise, Kl. 1 schaut auf den ersten Buchstaben. Alle zeigen dann ohne zu reden pantomimisch, was das Wort ist (Hund: bellen, Auto: lenken, Eis: schlecken). Du sagst das Wort zur Kontrolle laut.\n- Hund\n- Auto\n- Eis\n- Ball\n- Maus\n- Sonne",
-          quiz: "karten",
-          folie: "Lies das Wort. 👀\n\nZeig **ohne Worte**, was es ist!",
-          emoji: "👀", warum: "Wir lesen und zeigen, was wir verstanden haben." },
+        { titel: "Lies und tipp!", fuer: "12", dauer: "6 Min", kern: ["12"],
+          text: "Ein Wort steht an der Tafel. Alle lesen es leise (Silbe für Silbe), dann laut zusammen. Ein Kind tippt das passende Bild an. Die Wörter sehen sich ähnlich – genau hinschauen!",
+          folie: "Lies das Wort **genau** – erst leise, dann laut. 👀\n\nWelches Bild passt?",
+          fragen12: [
+            ["Lies: **Haus**", ["🏠", "🐭", "🐶"]],
+            ["Lies: **Maus**", ["🐭", "🏠", "🌽"]],
+            ["Lies: **Tisch**", ["🪑", "🐟", "🛏️"]],
+            ["Lies: **Fisch**", ["🐟", "🪑", "🐸"]],
+            ["Lies: **Rose**", ["🌹", "👖", "🥫"]],
+            ["Lies: **Hose**", ["👖", "🌹", "🐰"]],
+            ["Lies: **Mond**", ["🌙", "👄", "⭐"]],
+            ["Lies: **Mund**", ["👄", "🌙", "👃"]]
+          ],
+          emoji: "👀", warum: "Ein Buchstabe – ein ganz anderes Wort." },
+        { titel: "Welches Wort passt?", fuer: "12", dauer: "6 Min", kern: ["12"],
+          text: "Ein Bild steht an der Tafel, darunter drei ähnliche Wörter. Alle lesen die Wörter leise. Ein Kind tippt das richtige Wort an.",
+          folie: "Schau das Bild an. 🖼️\n\nLies **alle drei** Wörter – welches passt?",
+          fragen12: [
+            ["🍎", ["Apfel", "Ampel", "Affe"]],
+            ["🐻", ["Bär", "Beere", "Bart"]],
+            ["🐰", ["Hase", "Nase", "Vase"]],
+            ["🌽", ["Mais", "Maus", "Haus"]],
+            ["🦶", ["Fuß", "Fisch", "Fass"]],
+            ["⭐", ["Stern", "Stein", "Stuhl"]]
+          ],
+          emoji: "🖼️", warum: "Wir lesen genau – nicht nur den Anfang." },
         { titel: "Genau-Leser", fuer: "34", dauer: "8 Min", kern: ["34"],
-          text: "Du zeigst Sätze. Stimmt der Satz zum Bild an der Tafel? Male dafür vorher ein einfaches Bild an die Tafel: ein Haus, links ein Baum, auf dem Dach ein Vogel, rechts eine Sonne. Die Kinder heben grün (stimmt) oder rot (stimmt nicht).\n- Der Baum steht links neben dem Haus.\n- Die Sonne ist links.\n- Auf dem Dach sitzt ein Vogel.\n- Unter dem Baum liegt ein Ball.",
-          quiz: "ampel", loesungen: ["1", "2", "1", "2"],
-          folie: "Lies genau: Stimmt der Satz zum Bild?\n\n🟢 stimmt · 🔴 stimmt nicht",
-          emoji: "🔍", warum: "Ein Wort kann alles verändern." }
+          text: "Ein Satz mit Frage steht an der Tafel. Alle lesen leise bis zum Punkt. Achtung auf kleine Wörter: nicht, kein, unter, hinter, vor, nur. Ein Kind tippt die Antwort an – und zeigt, welches Wort den Unterschied macht.",
+          folie: "Lies den Satz **bis zum Punkt**. 🔎\n\nAchte auf die kleinen Wörter: **nicht · kein · unter · hinter · nur**",
+          fragen34: [
+            ["**Mia hat keinen Hund, aber zwei Katzen.**\nWas hat Mia?", ["zwei Katzen", "einen Hund", "einen Hund und zwei Katzen"]],
+            ["**Der Ball liegt nicht unter dem Bett, sondern hinter dem Schrank.**\nWo liegt der Ball?", ["hinter dem Schrank", "unter dem Bett", "im Schrank"]],
+            ["**Tom kommt erst nach der Pause zurück.**\nWann ist Tom wieder da?", ["nach der Pause", "vor der Pause", "in der Pause"]],
+            ["**Nur Lena und Paul dürfen heute an den Computer.**\nWer darf an den Computer?", ["Lena und Paul", "alle Kinder", "nur Lena"]],
+            ["**Ben ist größer als Max, aber kleiner als Lea.**\nWer ist am größten?", ["Lea", "Ben", "Max"]],
+            ["**Das Spiel fällt aus, weil es regnet.**\nWarum fällt das Spiel aus?", ["Es regnet.", "Es ist zu kalt.", "Keiner hat Zeit."]],
+            ["**Opa trinkt morgens Tee, abends aber Kakao.**\nWas trinkt Opa am Abend?", ["Kakao", "Tee", "Saft"]],
+            ["**Die Bücherei hat montags geschlossen.**\nWann kannst du NICHT hin?", ["am Montag", "am Dienstag", "am Samstag"]]
+          ],
+          emoji: "🔎", warum: "Kleine Wörter verändern den ganzen Satz." },
+        { titel: "Welches Wort fehlt?", fuer: "34", dauer: "5 Min", kern: ["34"],
+          text: "Ein Satz mit Lücke steht an der Tafel. Alle lesen ihn leise und überlegen, welches Wort Sinn ergibt. Ein Kind tippt an und liest den ganzen Satz laut vor.",
+          folie: "Lies den Satz. Welches Wort ergibt **Sinn**? 🧠",
+          fragen34: [
+            ["Im Winter trage ich eine warme ___.", ["Mütze", "Sonnenbrille", "Badehose"]],
+            ["Der Bäcker backt jeden Morgen frisches ___.", ["Brot", "Gemüse", "Papier"]],
+            ["Weil Mila Fieber hat, bleibt sie im ___.", ["Bett", "Schwimmbad", "Kino"]],
+            ["Die Feuerwehr kommt mit lauter ___.", ["Sirene", "Musik", "Klingel"]],
+            ["Im Herbst fallen die ___ von den Bäumen.", ["Blätter", "Blüten", "Vögel"]],
+            ["Nach dem Sport habe ich großen ___.", ["Durst", "Schnupfen", "Ärger"]]
+          ],
+          emoji: "🧠", warum: "Wer mitdenkt, versteht den Satz." }
     ],
-    ab12: { titel: "Lesen & Malen", aufgaben: [
-        { typ: "zuordnen", text: "Verbinde das Bild mit dem Anfangsbuchstaben.", nur: "1", links: ["[bild:sonne]", "[bild:haus]", "[bild:mond]"], rechts: ["M", "S", "H"] },
-        { typ: "zuordnen", text: "Lies und verbinde.", nur: "2", links: ["Sonne", "Haus", "Mond", "Eis"], rechts: ["[bild:eis]", "[bild:mond]", "[bild:sonne]", "[bild:haus]"] },
-        { typ: "malen", text: "Male: eine Sonne, ein Haus und einen Hund.", bild: "" }
+    ab12: { titel: "Genau lesen", aufgaben: [
+        { typ: "zuordnen", text: "Lies genau. Verbinde Wort und Bild.", links: ["Haus", "Maus", "Hose", "Rose"], rechts: ["[bild:maus]", "[bild:haus]", "🌹", "👖"] },
+        { typ: "ankreuzen", text: "Kreuze das richtige Wort an: 🍎", nur: "2", optionen: ["Apfel", "Ampel", "Affe"], nebeneinander: true },
+        { typ: "malen", text: "Lies und male: ein Haus und eine Maus.", bild: "" }
     ]},
-    ab34: { titel: "Genau lesen – genau malen", aufgaben: [
-        { typ: "malen", text: "Lies jeden Satz genau und male: 1. Male einen großen Baum in die Mitte. 2. Links neben den Baum kommt ein kleines Haus mit rotem Dach. 3. Auf den Baum malst du drei Äpfel. 4. Rechts unten liegt ein blauer Ball. 5. Am Himmel fliegen zwei Vögel.", bild: "" },
-        { typ: "ankreuzen", text: "Kontrolle: Was hast du gemalt? Kreuze an.", nebeneinander: true, optionen: ["drei Äpfel", "ein grünes Dach", "einen blauen Ball", "zwei Vögel"] }
+    ab34: { titel: "Genau-Leser", aufgaben: [
+        { typ: "luecken", text: "Lies genau und beantworte die Frage.", nummern: true, saetze: ["Mia hat keinen Hund, aber zwei Katzen. Was hat Mia? ___", "Der Ball liegt nicht unter dem Bett, sondern hinter dem Schrank. Wo liegt der Ball? ___", "Ben ist größer als Max, aber kleiner als Lea. Wer ist am kleinsten? ___"] },
+        { typ: "luecken", text: "Welches Wort ergibt Sinn? Schreibe es in die Lücke.", nummern: true, saetze: ["Im Winter trage ich eine warme ___.", "Weil Mila Fieber hat, bleibt sie im ___.", "Im Herbst fallen die ___ von den Bäumen."] },
+        { typ: "schreiben", text: "Schreibe selbst einen Satz mit „nicht“ und einen mit „nur“.", zeilen: 2 }
     ]}
 }),
 
 SOZIAL_EINHEIT({
     id: "l-lese-detektive",
-    titel: "Lese-Detektive: Unsinn gesucht!",
+    titel: "Lese-Detektive: Texte verstehen",
     kategorie: "Deutsch: Lesen",
-    ziel12: "Merken, ob ein Wort oder Satz zum Bild passt",
-    ziel34: "Unsinn in Sätzen finden und Fragen zu einem kurzen Text beantworten",
-    material: "Rote und grüne Karten (Universal-Set)",
-    ohneVorbereitung: true,
-    warmup12: "Stimmt das? Du sagst Sätze („Ein Fisch kann fliegen.“), die Kinder zeigen Daumen hoch oder runter",
-    warmup34: "Blitzlesen: Sätze",
-    tafel: [{ werkzeug: "blitzlesen", titel: "Blitzlesen: Sätze", fuer: "34", einstellung: { art: "saetze34" } }],
-    lerntext12: { titel: "Die verrückte Zeitung", text:
-`Opa liest Zeitung. Plötzlich lacht er laut.
+    ziel12: "Einen kurzen Text mitlesen und Fragen dazu beantworten",
+    ziel34: "Einen Sachtext lesen, Informationen finden und prüfen: stimmt – stimmt nicht – steht nicht im Text",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.",
+    warmup12: "Stimmt das? Unsinn-Sätze",
+    warmup34: "Stimmt das? Unsinn-Sätze",
+    lerntext12: { titel: "Ausflug zum See", text:
+`Lena fährt mit Opa zum See. Sie nehmen Brote und Äpfel mit.
 
-„Hört mal! Hier steht: Die Kuh fliegt über das Dach.“ Die Kinder kichern. „Eine Kuh kann doch nicht fliegen!“
+Auf dem See schwimmen Enten. Lena will sie füttern. Aber Opa sagt: „Brot macht Enten krank.“ Also füttert Lena sie nicht.
 
-„Und hier: Der Fisch fährt Fahrrad.“ – „Quatsch!“, rufen alle.
+Opa hat eine Angel dabei. Er wartet lange. Aber er fängt keinen Fisch.
 
-„Und hier: Der Hund bellt.“ Die Kinder überlegen. „Das stimmt!“
+Dafür findet Lena am Ufer einen roten Stein. Den nimmt sie mit nach Hause.
 
-Opa zwinkert. „Ihr seid echte Lese-Detektive. Ihr merkt sofort, wenn etwas Unsinn ist.“
+**Nach dem Lesen:**
+1. Was hättest du am See gemacht?` },
+    lerntext34: { titel: "Der Wanderfalke", text:
+`Der Wanderfalke ist ein Greifvogel. Er ist etwa so groß wie eine Krähe. Sein Rücken ist grau, sein Bauch hell mit dunklen Streifen.
 
-**Nach dem Vorlesen:**
-1. Was war Unsinn in der Zeitung?
-2. Welcher Satz hat gestimmt?
-3. Erfinde selbst einen Unsinn-Satz!` },
-    lerntext34: { titel: "Fake News auf dem Schulhof", text:
-`In der Pause geht ein Gerücht herum: „Morgen fällt die Schule aus, weil im Keller ein Krokodil wohnt!“
+Der Wanderfalke ist das schnellste Tier der Welt. Wenn er von hoch oben auf seine Beute herabstürzt, wird er über 300 Kilometer pro Stunde schnell – schneller als ein Rennauto.
 
-Emil glaubt es sofort. Sara nicht. „Lies doch mal den Aushang an der Tür“, sagt sie.
+Er jagt vor allem andere Vögel, zum Beispiel Tauben. Früher brütete er nur an hohen Felsen. Heute wohnt er auch in Städten: auf Kirchtürmen, Hochhäusern und Fabrik-Schornsteinen. Dort findet er genug Tauben.
 
-Auf dem Aushang steht: „Morgen findet der Sporttag statt. Bitte Turnschuhe und Trinkflasche mitbringen.“ Von einem Krokodil steht da nichts.
-
-„Siehst du“, sagt Sara. „Wer genau liest, fällt nicht auf jeden Quatsch rein.“
+Vor etwa 50 Jahren gab es in Deutschland fast keine Wanderfalken mehr. Gift in der Natur hatte ihre Eier zerstört. Heute ist das Gift verboten – und die Wanderfalken sind zurück.
 
 **Fragen zum Gespräch:**
-1. Was war das Gerücht?
-2. Was stand wirklich auf dem Aushang?
-3. Woran merkst du, dass etwas nicht stimmen kann?` },
+1. Was hat dich am meisten überrascht?` },
     uebungen: [
-        { titel: "Stimmt das?", fuer: "alle", dauer: "8 Min", kern: ["12", "34"],
-          text: "Du zeigst Sätze. Die Kinder lesen (Kl. 1 hört zu) und heben grün, wenn der Satz stimmen kann, rot bei Unsinn.\n- Der Hund bellt.\n- Die Kuh fliegt.\n- Im Winter schneit es.\n- Ein Fisch fährt Fahrrad.\n- Die Sonne scheint am Tag.\n- Die Maus ist größer als der Elefant.",
-          text34: "Du zeigst Sätze. Die Kinder lesen leise und heben grün, wenn der Satz stimmen kann, rot bei Unsinn. Bei Rot: Wer kann den Satz richtig machen?\n- Im Sommer trägt Lea dicke Handschuhe gegen die Hitze.\n- Nach dem Regen sind die Straßen nass.\n- Der Bäcker backt in der Nacht frisches Brot.\n- Tom putzt sich die Zähne mit Senf.\n- Die Feuerwehr löscht den Brand mit Wasser.\n- Weil er müde war, ging Anton mittags um zwölf ins Kino schlafen.",
-          quiz: "ampel", loesungen12: ["1", "2", "1", "2", "1", "2"], loesungen34: ["2", "1", "1", "2", "1", "2"],
-          folie: "Lies genau: **Stimmt** das – oder ist es **Unsinn**?\n\n🟢 stimmt · 🔴 Unsinn",
-          emoji: "🕵️", warum: "Lese-Detektive merken sofort, wenn etwas nicht stimmt." },
-        { titel: "Unsinn-Werkstatt", fuer: "34", dauer: "4 Min",
-          text: "Jedes Kind schreibt auf einen Zettel einen Unsinn-Satz, der fast richtig klingt. Zettel einsammeln, mischen und vorlesen – die anderen finden das Unsinn-Wort.",
-          folie: "Schreib einen Satz, der **fast** richtig klingt. 🤪\n\nDie anderen finden den Fehler!", emoji: "🤪" }
+        { titel: "Detektiv-Fragen", fuer: "alle", dauer: "8 Min", kern: ["12", "34"],
+          text: "Der Text war gerade an der Tafel (Kl. 1/2: du liest vor, die Kinder lesen mit; Kl. 3/4: alle lesen leise, dann ein Kind laut). Jetzt kommen die Fragen. Wer unsicher ist, darf zurückblättern und im Text nachschauen – genau das machen Lese-Detektive!",
+          folie: "Lese-Detektive suchen **Beweise im Text**. 🕵️\n\nUnsicher? Zurück zum Text und nachschauen!",
+          fragen12: [
+            ["Mit wem fährt Lena zum See?", ["mit Opa", "mit Mama", "mit ihrer Freundin"]],
+            ["Was schwimmt auf dem See?", ["Enten", "Schwäne", "Boote"]],
+            ["Warum füttert Lena die Enten nicht?", ["Brot macht Enten krank.", "Sie hat kein Brot.", "Die Enten schlafen."]],
+            ["Fängt Opa einen Fisch?", ["Nein", "Ja, einen", "Ja, zwei"]],
+            ["Was findet Lena am Ufer?", ["einen roten Stein", "eine Feder", "einen Fisch"]],
+            ["Was nehmen Lena und Opa mit?", ["Brote und Äpfel", "Kuchen und Saft", "Pizza"]]
+          ],
+          fragen34: [
+            ["Wie groß ist ein Wanderfalke ungefähr?", ["so groß wie eine Krähe", "so groß wie ein Spatz", "so groß wie ein Adler"]],
+            ["Wie schnell wird er im Sturzflug?", ["über 300 km/h", "etwa 100 km/h", "etwa 50 km/h"]],
+            ["Was jagt der Wanderfalke vor allem?", ["andere Vögel", "Mäuse", "Fische"]],
+            ["Warum leben Wanderfalken heute auch in Städten?", ["Dort gibt es genug Tauben.", "Dort ist es wärmer.", "Dort gibt es keine Menschen."]],
+            ["Warum gab es früher fast keine Wanderfalken mehr?", ["Gift hat ihre Eier zerstört.", "Sie wurden alle gejagt.", "Es gab keine Felsen mehr."]],
+            ["Welche Überschrift passt auch zum Text?", ["Der Rekord-Flieger kehrt zurück", "Ein Tag im Zoo", "Wie man Tauben füttert"]]
+          ],
+          emoji: "🕵️", warum: "Gute Leser finden die Antwort im Text." },
+        { titel: "Steht das im Text?", fuer: "34", dauer: "6 Min", kern: ["34"],
+          text: "Jetzt wird es kniffliger: Es gibt drei Antworten. „Stimmt“ – steht so im Text. „Stimmt nicht“ – im Text steht etwas anderes. „Steht nicht im Text“ – davon sagt der Text gar nichts (auch wenn es vielleicht stimmt!). Bei Streit: im Text nachschauen.",
+          folie: "Drei Möglichkeiten: 🧐\n\n✅ **stimmt** · ❌ **stimmt nicht** · ❓ **steht nicht im Text**\n\nBeweis gesucht: Wo steht das?",
+          fragen34: [
+            ["Der Wanderfalke hat einen grauen Rücken.", ["✅ stimmt", "❌ stimmt nicht", "❓ steht nicht im Text"]],
+            ["Der Wanderfalke frisst am liebsten Mäuse.", ["❌ stimmt nicht", "✅ stimmt", "❓ steht nicht im Text"]],
+            ["Wanderfalken werden etwa 15 Jahre alt.", ["❓ steht nicht im Text", "✅ stimmt", "❌ stimmt nicht"]],
+            ["Wanderfalken wohnen heute auch auf Kirchtürmen.", ["✅ stimmt", "❌ stimmt nicht", "❓ steht nicht im Text"]],
+            ["Das Gift in der Natur ist heute erlaubt.", ["❌ stimmt nicht", "✅ stimmt", "❓ steht nicht im Text"]],
+            ["Ein Wanderfalke legt drei bis vier Eier.", ["❓ steht nicht im Text", "✅ stimmt", "❌ stimmt nicht"]]
+          ],
+          emoji: "🧐", warum: "Wir prüfen genau, was wirklich im Text steht." }
     ],
-    ab12: { titel: "Stimmt das?", aufgaben: [
-        { typ: "daumen", text: "Passt das Bild zum Wort? Kreise 👍 oder 👎 ein.", nur: "1", zeilen: ["[bild:hund] Hund", "[bild:katze] Maus", "[bild:auto] Auto", "[bild:apfel] Banane", "[bild:sonne] Sonne"] },
-        { typ: "daumen", text: "Lies. Stimmt das? Kreise 👍 oder 👎 ein.", nur: "2", zeilen: ["Der Hund bellt.", "Die Kuh fliegt.", "Im Winter schneit es.", "Ein Fisch fährt Rad.", "Oma liest ein Buch.", "Das Eis ist heiß."] },
-        { typ: "malen", text: "Male ein Unsinn-Bild (z. B. ein Fisch auf dem Fahrrad).", bild: "" }
+    ab12: { titel: "Ausflug zum See", aufgaben: [
+        { typ: "ankreuzen", text: "Mit wem fährt Lena zum See? Kreuze an.", optionen: ["mit Opa", "mit Mama", "mit Tom"], nebeneinander: true },
+        { typ: "ankreuzen", text: "Was findet Lena? Kreuze an.", optionen: ["einen roten Stein", "einen Fisch", "eine Feder"], nebeneinander: true },
+        { typ: "luecken", text: "Lies und ergänze.", nur: "2", nummern: true, saetze: ["Auf dem See schwimmen ___.", "Opa fängt keinen ___."] },
+        { typ: "malen", text: "Male Lena und Opa am See.", bild: "" }
     ]},
-    ab34: { titel: "Lese-Detektive", kontext: "Lies den Text genau. Achtung: Zwei Sätze sind Unsinn!", aufgaben: [
-        { typ: "luecken", text: "Lies den Text. Unterstreiche die zwei Unsinn-Sätze.", nummern: false, saetze: ["Am Samstag fährt Familie Vogel an den See. Papa packt die Badesachen ein. Mama nimmt Wintermützen mit, weil es so heiß ist. Am See ist das Wasser warm und klar. Die Kinder bauen eine Sandburg. Am Abend geht die Sonne im Norden unter. Müde fahren alle nach Hause."] },
-        { typ: "luecken", text: "Beantworte die Fragen in ganzen Sätzen.", nummern: true, saetze: ["Wohin fährt die Familie? ___", "Was bauen die Kinder? ___", "Wie ist das Wasser? ___"] },
-        { typ: "luecken", text: "Verbessere einen Unsinn-Satz.", nummern: false, saetze: ["___"] }
+    ab34: { titel: "Der Wanderfalke", aufgaben: [
+        { typ: "luecken", text: "Beantworte die Fragen mit dem Text.", nummern: true, saetze: ["Wie schnell wird der Wanderfalke im Sturzflug? ___", "Wo brütet er heute auch? ___", "Warum gab es früher fast keine Wanderfalken? ___"] },
+        { typ: "tabelle", text: "Stimmt (✓), stimmt nicht (✗) oder steht nicht im Text (?)", spalten: ["Satz", "✓ / ✗ / ?"], zeilen: [["Der Wanderfalke jagt Tauben.", ""], ["Er ist größer als ein Adler.", ""], ["Er mag Regen.", ""], ["Er wohnt auch in Städten.", ""]] },
+        { typ: "schreiben", text: "Schreibe eine eigene Frage zum Text – dein Nachbar beantwortet sie.", zeilen: 2 }
     ]}
 }),
 
 /* ============================== DEUTSCH: SCHREIBEN & RECHTSCHREIBEN ============================== */
 SOZIAL_EINHEIT({
     id: "l-reim-zauber",
-    titel: "Reim-Zauber",
+    titel: "Reimen & Verlängern",
     kategorie: "Deutsch: Schreiben & Rechtschreiben",
-    ziel12: "Reimwörter hören und finden",
-    ziel34: "Reimwörter finden und einen kurzen Reim selbst schreiben",
-    material: "Rote und grüne Karten (Universal-Set)\nReim-Bildkarten (unter Arbeitsmaterial)",
-    materialIds: ["lern-reim-karten"],
-    warmup12: "Reim-Ping-Pong: Du sagst „Maus“, die Kinder rufen ein Reimwort (Haus, Laus …)",
-    warmup34: "Reim-Ping-Pong mit Unsinnwörtern erlaubt (Bus – Kuss – Fluss – Pluss)",
-    tafel: [{ werkzeug: "reime", titel: "Reimt sich das?", fuer: "", einstellung: {} }],
-    lerntext12: { titel: "Die Reim-Hexe", text:
-`Die kleine Hexe Rosa kann nur zaubern, wenn sie reimt.
-
-„Hokus Pokus Haus – heraus kommt eine **Maus**!“ Puff – da sitzt eine Maus auf dem Tisch.
-
-„Hokus Pokus Stein – jetzt komm, kleines **Schwein**!“ Puff – ein rosa Schwein grunzt.
-
-Dann will Rosa eine Katze zaubern. „Hokus Pokus Baum – komm, Katze!“ Aber nichts passiert. Rosa überlegt. „Baum … Katze … das reimt sich ja gar nicht!“
-
-**Nach dem Vorlesen:**
-1. Welche Tiere hat Rosa gezaubert?
-2. Warum hat die Katze nicht geklappt?
-3. Was reimt sich auf Katze? (Tatze, Glatze, Matratze …)` },
-    lerntext34: { titel: "Rap-Battle in der Pause", text:
-`Bastian und Jule machen einen Rap-Battle. Bastian beginnt: „Ich bin schnell wie der Wind – schneller als jedes Kind!“
-
-Jule kontert: „Du redest ganz schön viel – ich gewinne jedes Spiel!“
-
-Die anderen klatschen den Takt. „Das Geheimnis“, erklärt Jule, „ist der Reim am Zeilenende. Wind – Kind, viel – Spiel. Die letzten Laute müssen gleich klingen.“
-
-Bastian grinst: „Und wer keinen Reim findet, hat verloren!“
-
-**Fragen zum Gespräch:**
-1. Welche Wörter haben sich gereimt?
-2. Woran erkennt man einen Reim?
-3. Findest du eine Reimzeile auf „Schule“ oder „Pause“?` },
-    uebungen: [
-        { titel: "Reimt sich das?", fuer: "alle", dauer: "8 Min", kern: ["12", "34"],
-          text: "Du nennst zwei Wörter (Kl. 1/2 mit Bildern an der Tafel). Reimen sie sich, heben die Kinder grün, sonst rot.\n- Maus – Haus\n- Hose – Rose\n- Hund – Katze\n- Schal – Wal\n- Mond – Sonne\n- Schwein – Stein",
-          quiz: "ampel", loesungen: ["1", "1", "2", "1", "2", "1"],
-          folie: "Reimen sich die Wörter?\n\n🟢 ja · 🔴 nein",
-          emoji: "🪄", warum: "Reime klingen am Ende gleich." },
-        { titel: "Reim-Memory", fuer: "12", dauer: "5 Min",
-          text: "Die Reim-Bildkarten liegen verdeckt an der Tafel (Magnete) oder auf dem Pult. Ein Kind nennt zwei Kartennummern, du deckst auf. Reimen sich die Bilder, bekommt die Klasse einen Punkt.",
-          folie: "🃏 Welche zwei Bilder **reimen** sich?", emoji: "🃏" },
-        { titel: "Reim-Zeilen", fuer: "34", dauer: "5 Min",
-          text: "An der Tafel stehen Zeilenanfänge. Die Kinder schreiben auf einen Zettel ein Ende, das sich reimt. Wer mag, liest vor.\n- In der Pause auf dem Hof …\n- Mein Hund heißt Fred …\n- Heute regnet's in der Stadt …",
-          quiz: "liste", folie: "Ergänze eine Zeile, die sich **reimt**! ✍️", emoji: "✍️" }
+    ziel12: "Reime hören und finden",
+    ziel34: "Mit der Strategie „Verlängern“ b/p, d/t und g/k am Wortende richtig schreiben",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.",
+    warmup12: "Reim-Ping-Pong: Ich sage ein Wort, ihr ruft ein Reimwort",
+    warmup34: "Blitzrunde: Mehrzahl-Ping-Pong (Hund – Hunde, Korb – Körbe …)",
+    tafel: [
+        { werkzeug: "reime", titel: "Reimt sich das?", fuer: "12", einstellung: {} }
     ],
-    ab12: { titel: "Reim-Zauber", aufgaben: [
-        { typ: "zuordnen", text: "Was reimt sich? Verbinde.", links: ["[bild:maus]", "[bild:hose]", "[bild:schal]", "[bild:schwein]"], rechts: ["[bild:stein]", "[bild:haus]", "[bild:wal]", "[bild:rose]"] },
-        { typ: "ankreuzen", text: "Was reimt sich auf Mais? Kreuze an.", nur: "1", nebeneinander: true, optionen: ["[bild:eis]", "[bild:hund]", "[bild:apfel]"] },
-        { typ: "luecken", text: "Finde ein Reimwort.", nummern: true, saetze: ["Maus – ___", "Hand – ___", "Bein – ___"] },
+    lerntext12: { titel: "Reime", text: "Haus – Maus: Hinten klingt es gleich." },
+    lerntext34: { titel: "Verlängern", text: "Hund – Hun-de: Beim Verlängern hörst du das d." },
+    uebungen: [
+        { titel: "Reimt sich das?", fuer: "12", dauer: "5 Min", kern: ["12"],
+          text: "Zwei Wörter stehen an der Tafel. Alle sprechen sie laut und hören auf das Ende. Ein Kind tippt an: reimt sich – reimt sich nicht.",
+          folie: "Sprich beide Wörter laut. 👂\n\nKlingen sie **hinten gleich**?",
+          fragen12: [
+            ["🏠 Haus – 🐭 Maus", ["👍 reimt sich", "👎 reimt sich nicht"]],
+            ["⚽ Ball – 🐟 Fisch", ["👎 reimt sich nicht", "👍 reimt sich"]],
+            ["🌹 Rose – 👖 Hose", ["👍 reimt sich", "👎 reimt sich nicht"]],
+            ["🐶 Hund – 👄 Mund", ["👍 reimt sich", "👎 reimt sich nicht"]],
+            ["🌙 Mond – ⭐ Stern", ["👎 reimt sich nicht", "👍 reimt sich"]],
+            ["🍰 Kuchen – 🔍 suchen", ["👍 reimt sich", "👎 reimt sich nicht"]]
+          ],
+          emoji: "👂", warum: "Reime hören heißt: genau aufs Ende hören." },
+        { titel: "Reim-Zauber", fuer: "12", dauer: "5 Min", kern: ["12"],
+          text: "Ein Wort steht an der Tafel. Welches der drei Wörter reimt sich darauf? Alle sprechen leise, ein Kind tippt an.",
+          folie: "Welches Wort **reimt sich**? 🪄\n\nSprich alle Wörter leise vor dich hin.",
+          fragen12: [
+            ["Was reimt sich auf **Katze**?", ["Tatze", "Kater", "Maus"]],
+            ["Was reimt sich auf **Stein**?", ["Bein", "Stern", "Stuhl"]],
+            ["Was reimt sich auf **Fisch**?", ["Tisch", "Frosch", "Fuß"]],
+            ["Was reimt sich auf **Wand**?", ["Sand", "Wind", "Wolke"]],
+            ["Was reimt sich auf **Bett**?", ["nett", "Brot", "Bus"]],
+            ["Was reimt sich auf **Hose**?", ["Dose", "Hase", "Socke"]]
+          ],
+          emoji: "🪄", warum: "Wir zaubern Reime." },
+        { titel: "Verlängern: Was hörst du?", fuer: "34", dauer: "8 Min", kern: ["34"],
+          text: "Am Wortende klingt b wie p, d wie t, g wie k. Darum: verlängern! Nomen → Mehrzahl (Korb → Kör-be), Verben → wir-Form (er lebt → wir le-ben), Adjektive → mit Nomen (wild → der wil-de Bär). Alle verlängern laut, dann tippt ein Kind den Buchstaben an.",
+          folie: "Am Ende unsicher? **Verlängern!** 🔊\n\nKorb → Kör-**b**e · Hund → Hun-**d**e · Zug → Zü-**g**e",
+          fragen34: [
+            ["Kor**_** (Kör-?e)", ["b", "p"]],
+            ["Hun**_** (Hun-?e)", ["d", "t"]],
+            ["Zwer**_** (Zwer-?e)", ["g", "k"]],
+            ["Bro**_** (Bro-?e)", ["t", "d"]],
+            ["Wal**_** (Wäl-?er)", ["d", "t"]],
+            ["Die**_** (Die-?e)", ["b", "p"]],
+            ["Ber**_** (Ber-?e)", ["g", "k"]],
+            ["er le**_**t (wir le-?en)", ["b", "p"]]
+          ],
+          emoji: "🔊", warum: "Verlängern macht leise Buchstaben hörbar." },
+        { titel: "Verlängern im Satz", fuer: "34", dauer: "6 Min", kern: ["34"],
+          text: "Ein Satz steht an der Tafel, ein Wort ist unsicher. Alle verlängern das Wort laut – erst dann tippt ein Kind die richtige Schreibweise an.",
+          folie: "Lies den Satz. Verlängere das unsichere Wort **laut**. 🔊\n\nWelche Schreibweise stimmt?",
+          fragen34: [
+            ["Im ___ wohnen Rehe und Füchse.", ["Wald", "Walt"]],
+            ["Der ___ fährt pünktlich ab.", ["Zug", "Zuk"]],
+            ["Mein Hund ist sehr ___.", ["lieb", "liep"]],
+            ["Wir klettern auf den ___.", ["Berg", "Berk"]],
+            ["Das ___ hat einen Platten.", ["Rad", "Rat"]],
+            ["Der Hase ist schnell und ___.", ["wild", "wilt"]]
+          ],
+          emoji: "✍️", warum: "Wir nutzen den Trick beim Schreiben." }
+    ],
+    ab12: { titel: "Reime", aufgaben: [
+        { typ: "zuordnen", text: "Was reimt sich? Verbinde.", links: ["[bild:haus]", "Hose", "Fisch"], rechts: ["Tisch", "[bild:maus]", "Rose"] },
+        { typ: "luecken", text: "Finde ein Reimwort.", nur: "2", nummern: true, saetze: ["Hand – ___", "Bein – ___", "Kuchen – ___"] },
         { typ: "malen", text: "Male zwei Dinge, die sich reimen.", bild: "" }
     ]},
-    ab34: { titel: "Reim-Werkstatt", aufgaben: [
-        { typ: "tabelle", text: "Finde zu jedem Wort zwei Reimwörter.", spalten: ["Wort", "Reimwort 1", "Reimwort 2"], zeilen: [["Ball", "", ""], ["Tisch", "", ""], ["Pause", "", ""], ["Schuh", "", ""], ["Nacht", "", ""]] },
-        { typ: "ankreuzen", text: "Welches Wort reimt sich NICHT? Kreuze es an.", nebeneinander: true, optionen: ["Hund", "Mund", "rund", "Hand"] },
-        { typ: "luecken", text: "Schreibe einen eigenen Reim mit zwei Zeilen.", nummern: false, saetze: ["___", "___"] }
+    ab34: { titel: "Verlängern", aufgaben: [
+        { typ: "tabelle", text: "Verlängere und setze ein: b/p, d/t, g/k.", spalten: ["Wort", "verlängert", "richtig"], zeilen: [["Kor_", "Körbe", "Korb"], ["Hun_", "", ""], ["Zwer_", "", ""], ["Wal_", "", ""], ["Die_", "", ""], ["Ber_", "", ""]] },
+        { typ: "luecken", text: "Setze richtig ein. Verlängere vorher!", nummern: true, saetze: ["Im Wal_ wohnen Rehe.", "Der Zu_ fährt ab.", "Mein Hund ist lie_.", "Das Ra_ hat einen Platten."] },
+        { typ: "schreiben", text: "Finde drei eigene Wörter mit d, g oder b am Ende und schreibe die Verlängerung dazu.", zeilen: 3 }
     ]}
 }),
 
 SOZIAL_EINHEIT({
     id: "l-abc-training",
-    titel: "Das ABC-Training",
+    titel: "ABC & Nachschlagen",
     kategorie: "Deutsch: Schreiben & Rechtschreiben",
-    ziel12: "Buchstaben erkennen und das ABC in der richtigen Reihenfolge üben",
-    ziel34: "Wörter nach dem ABC ordnen – fit fürs Wörterbuch",
-    material: "Evtl. ABC-Leiste der Klasse",
-    ohneVorbereitung: true,
-    warmup12: "ABC-Lied singen oder sprechen – bei jedem fünften Buchstaben aufstehen",
-    warmup34: "Welcher Buchstabe kommt vor/nach …? (Tafel: ABC-Blitz)",
-    tafel: [{ werkzeug: "abc", titel: "ABC-Blitz: vorher und nachher", fuer: "", einstellung: {} }],
-    lerntext12: { titel: "Die Buchstaben-Schlange", text:
-`Im Zoo wohnt eine lange Schlange. Sie heißt Abby. Auf jedem Stück ihres Körpers steht ein Buchstabe: A, B, C, D … bis Z.
-
-Eines Morgens ist Abby ganz durcheinander. Das M ist vorne, das A in der Mitte, das Z ganz hinten bei B.
-
-„Hilfe!“, zischt Abby. „Wer bringt meine Buchstaben in Ordnung?“
-
-Die Kinder singen das ABC-Lied. Und bei jedem Buchstaben rutscht ein Stück von Abby an den richtigen Platz. A, B, C … Am Ende ist Abby wieder ordentlich – und kann endlich lächeln.
-
-**Nach dem Vorlesen:**
-1. Was steht auf Abbys Körper?
-2. Wie haben die Kinder Abby geholfen?
-3. Welcher Buchstabe ist der erste in deinem Namen?` },
-    lerntext34: { titel: "Das Spielerverzeichnis", text:
-`Der Fußballtrainer braucht eine Liste aller Spieler – nach dem ABC sortiert. Denis soll helfen.
-
-„Anton, Ben, Carl, Dana … easy!“ Doch dann kommen Mia, Max und Mika. Alle fangen mit M an!
-
-„Dann schaust du auf den zweiten Buchstaben“, sagt der Trainer. „Ma kommt vor Mi.“ Max kommt also vor Mia und Mika. „Und Mia oder Mika? Dann der dritte Buchstabe: a kommt vor k.“
-
-Denis nickt. „Wie beim Wörterbuch!“
-
-**Fragen zum Gespräch:**
-1. Was macht man, wenn zwei Namen mit dem gleichen Buchstaben anfangen?
-2. In welcher Reihenfolge stehen Max, Mia und Mika?
-3. Wo braucht man das ABC im Alltag?` },
-    uebungen: [
-        { titel: "Wer kommt vorher?", fuer: "alle", dauer: "8 Min", kern: ["12", "34"],
-          text: "Du zeigst einen Buchstaben. Die Kinder flüstern ihrem Nachbarn, welcher Buchstabe direkt davor und danach kommt – dann rufst du ein Kind auf. Kl. 1/2 dürfen auf der ABC-Leiste nachschauen.\n- E\n- K\n- R\n- H",
-          quiz: "karten",
-          folie: "Welcher Buchstabe kommt **vorher**? Welcher **danach**? 🔤", emoji: "🔤", warum: "Das ABC sitzt bald ganz sicher." },
-        { titel: "ABC-Reihe am Platz", fuer: "34", dauer: "5 Min",
-          text: "Jedes Kind schreibt seinen Vornamen groß auf einen Zettel. Dann ordnet die Klasse die Namen gemeinsam nach dem ABC – du schreibst die Reihenfolge an die Tafel. Gleiche Anfangsbuchstaben? Zweiten Buchstaben anschauen!",
-          folie: "Wir ordnen unsere Namen nach dem **ABC**. 📋", emoji: "📋" }
+    ziel12: "Das ABC sicher kennen und Wörter nach dem ersten Buchstaben ordnen",
+    ziel34: "Wörter nach dem 2. und 3. Buchstaben ordnen und im Wörterbuch die Grundform suchen",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.\nZum Ausdrucken für die Mappen (optional): siehe Arbeitsmaterial",
+    warmup12: "ABC-Lied oder ABC im Chor sprechen",
+    warmup34: "ABC rückwärts im Chor – von Z bis A",
+    tafel: [
+        { werkzeug: "abc", titel: "ABC-Reihe", fuer: "alle", einstellung: {} }
     ],
-    ab12: { titel: "Das ABC-Training", aufgaben: [
-        { typ: "luecken", text: "Welcher Buchstabe fehlt?", nur: "", nummern: true, saetze: ["A  B  ___  D", "E  ___  G  H", "K  L  ___  N", "R  S  ___  U"] },
-        { typ: "zuordnen", text: "Verbinde gleiche Buchstaben.", nur: "1", links: ["A", "M", "O", "S"], rechts: ["s", "a", "m", "o"] },
-        { typ: "luecken", text: "Schreibe die Buchstaben in der richtigen Reihenfolge.", nur: "2", nummern: true, saetze: ["C  A  B → ___", "F  D  E → ___", "M  O  N → ___"] },
+    lerntext12: { titel: "Das ABC", text: "A, B, C … Jeder Buchstabe hat seinen Platz." },
+    lerntext34: { titel: "Nachschlagen", text: "Im Wörterbuch stehen die Wörter in der Grundform." },
+    uebungen: [
+        { titel: "ABC-Duell", fuer: "12", dauer: "6 Min", kern: ["12"],
+          text: "Die Frage steht an der Tafel. Wer unsicher ist, sagt das ABC leise bis zu dem Buchstaben auf. Ein Kind tippt an.",
+          folie: "Unsicher? Sag das ABC **leise** auf – bis du da bist. 🔤",
+          fragen12: [
+            ["Was kommt **nach** E?", ["F", "D", "G"]],
+            ["Was kommt **vor** M?", ["L", "N", "K"]],
+            ["Was kommt **nach** R?", ["S", "Q", "T"]],
+            ["Was kommt **vor** C?", ["B", "D", "A"]],
+            ["Was kommt **zwischen** G und I?", ["H", "J", "F"]],
+            ["Was kommt **nach** T?", ["U", "S", "V"]]
+          ],
+          emoji: "🔤", warum: "Das ABC ist die Ordnung für alle Wörter." },
+        { titel: "Wer steht vorne?", fuer: "12", dauer: "5 Min", kern: ["12"],
+          text: "Drei Wörter stehen an der Tafel. Welches kommt im ABC zuerst? Tipp: Schau nur auf den ersten Buchstaben.",
+          folie: "Welches Wort kommt im ABC **zuerst**? 🥇\n\nSchau auf den **ersten** Buchstaben.",
+          fragen12: [
+            ["Welches Wort kommt zuerst?", ["Apfel", "Hund", "Sonne"]],
+            ["Welches Wort kommt zuerst?", ["Ball", "Maus", "Tisch"]],
+            ["Welches Wort kommt zuerst?", ["Esel", "Igel", "Uhu"]],
+            ["Welches Wort kommt zuerst?", ["Katze", "Nase", "Rose"]],
+            ["Welches Wort kommt zuerst?", ["Dose", "Fisch", "Lampe"]],
+            ["Welches Wort kommt zuerst?", ["Mond", "Pilz", "Zebra"]]
+          ],
+          emoji: "🥇", warum: "So sind Wörter im Wörterbuch sortiert." },
+        { titel: "Wörterbuch-Profis", fuer: "34", dauer: "7 Min", kern: ["34"],
+          text: "Gleicher Anfangsbuchstabe? Dann entscheidet der zweite – und wenn der auch gleich ist, der dritte. Ein Kind tippt das Wort an, das im Wörterbuch zuerst steht.",
+          folie: "Gleicher Anfang? Dann entscheidet der **2.** – oder der **3.** Buchstabe! 📖\n\n**Ba**d · **Ba**ll · **Ba**um → d · l · u",
+          fragen34: [
+            ["Was steht zuerst?", ["Bad", "Ball", "Baum"]],
+            ["Was steht zuerst?", ["Hafen", "Hemd", "Hose"]],
+            ["Was steht zuerst?", ["Schaf", "Schere", "Schule"]],
+            ["Was steht zuerst?", ["Strand", "Straße", "Strumpf"]],
+            ["Was steht zuerst?", ["Kino", "Kirche", "Kissen"]],
+            ["Was steht zuerst?", ["Tante", "Tanz", "Tasse"]]
+          ],
+          emoji: "📖", warum: "So findest du Wörter schnell im Wörterbuch." },
+        { titel: "Grundform suchen", fuer: "34", dauer: "6 Min", kern: ["34"],
+          text: "Im Wörterbuch steht nicht „lief“ oder „Häuser“, sondern die Grundform: Verben in der Grundform (laufen), Nomen in der Einzahl (Haus), Adjektive ohne Endung (schnell). Ein Kind tippt an, unter welchem Wort man nachschlagen muss.",
+          folie: "Im Wörterbuch steht die **Grundform**. 🔎\n\nlief → **laufen** · Häuser → **Haus** · schneller → **schnell**",
+          fragen34: [
+            ["Unter welchem Wort findest du **lief**?", ["laufen", "lief", "liefen"]],
+            ["Unter welchem Wort findest du **Bäume**?", ["Baum", "Bäume", "Bäumchen"]],
+            ["Unter welchem Wort findest du **größer**?", ["groß", "größer", "Größe"]],
+            ["Unter welchem Wort findest du **fiel**?", ["fallen", "fiel", "Fell"]],
+            ["Unter welchem Wort findest du **Mäuse**?", ["Maus", "Mäuse", "Mäuschen"]],
+            ["Unter welchem Wort findest du **gesungen**?", ["singen", "gesungen", "Sänger"]]
+          ],
+          emoji: "🔎", warum: "Wer die Grundform kennt, findet jedes Wort." }
+    ],
+    ab12: { titel: "Das ABC", aufgaben: [
+        { typ: "luecken", text: "Welcher Buchstabe fehlt?", nummern: true, saetze: ["A B ___ D", "K L ___ N", "R ___ T U", "W X ___ Z"] },
+        { typ: "luecken", text: "Ordne nach dem ABC.", nur: "2", nummern: true, saetze: ["Hund, Apfel, Sonne → ___", "Tisch, Maus, Ball → ___"] },
         { typ: "malen", text: "Male etwas, das mit dem ersten Buchstaben deines Namens anfängt.", bild: "" }
     ]},
-    ab34: { titel: "Fit fürs Wörterbuch", aufgaben: [
-        { typ: "luecken", text: "Ordne die Wörter nach dem ABC.", nummern: true, saetze: ["Hund, Affe, Zebra, Katze → ___", "Ball, Brot, Blume, Bär → ___", "Maus, Mond, Milch, Mantel → ___"] },
-        { typ: "luecken", text: "Welcher Buchstabe kommt davor, welcher danach?", nummern: false, saetze: ["___ G ___     ___ P ___     ___ U ___     ___ L ___"] },
-        { typ: "schreiben", text: "Schreibe fünf Kinder aus deiner Klasse (nur Vornamen) nach dem ABC geordnet auf.", zeilen: 2 }
+    ab34: { titel: "Wörterbuch-Profi", aufgaben: [
+        { typ: "luecken", text: "Ordne nach dem ABC (2. oder 3. Buchstabe).", nummern: true, saetze: ["Baum, Bad, Ball → ___", "Schule, Schaf, Schere → ___", "Tasse, Tanz, Tante → ___"] },
+        { typ: "tabelle", text: "Schreibe die Grundform – so steht das Wort im Wörterbuch.", spalten: ["Wort", "Grundform"], zeilen: [["lief", ""], ["Bäume", ""], ["größer", ""], ["gesungen", ""], ["Mäuse", ""]] },
+        { typ: "schreiben", text: "Schlage drei Wörter im Wörterbuch nach und schreibe die Seitenzahl dazu.", zeilen: 3 }
     ]}
 }),
 
 SOZIAL_EINHEIT({
     id: "l-wortarten",
-    titel: "Wort-Sortiermaschine",
+    titel: "Groß oder klein? Nomen erkennen",
     kategorie: "Deutsch: Schreiben & Rechtschreiben",
-    ziel12: "Namenwörter erkennen: Dinge, die man anfassen kann, schreibt man groß (mit Begleiter der/die/das)",
-    ziel34: "Nomen, Verben und Adjektive erkennen und sortieren",
-    material: "Fingern (Universal-Set)",
-    ohneVorbereitung: true,
-    warmup12: "Begleiter-Spiel: Du zeigst auf Dinge im Raum, die Kinder rufen der, die oder das",
-    warmup34: "Pantomime: Ein Kind macht ein Verb vor, die anderen raten",
-    tafel: [{ werkzeug: "wortarten", titel: "Wortarten-Sortiermaschine", fuer: "34", einstellung: {} }, { werkzeug: "begleiter", titel: "der, die oder das?", fuer: "12", einstellung: {} }],
-    lerntext12: { titel: "Die Groß-Mach-Maschine", text:
-`Im Keller von Professor Pfiffig steht eine Maschine. Sie ist rund und rot und hat einen großen Knopf.
-
-Wenn man ein Wort hineinwirft, macht sie: Rummel-di-bummel – und das Wort kommt mit einem großen Buchstaben heraus! Aber nur, wenn es ein Ding, ein Tier oder ein Mensch ist.
-
-„Hund“ – Rummel-di-bummel – groß! „Ball“ – groß! „Mama“ – groß!
-
-„rennen“ – die Maschine piept. „Nein, nein“, sagt sie. „Rennen kann man nicht anfassen. Das bleibt klein.“
-
-**Nach dem Vorlesen:**
-1. Welche Wörter macht die Maschine groß?
-2. Warum bleibt „rennen“ klein?
-3. Was im Klassenzimmer würde die Maschine groß machen?` },
-    lerntext34: { titel: "Das Level-System", text:
-`Nils programmiert ein Spiel. Jedes Wort bekommt eine Farbe: Nomen werden blau, Verben rot, Adjektive grün.
-
-„Der schnelle Fuchs springt über den Zaun.“ Fuchs und Zaun – blau, das sind Nomen, man kann einen Begleiter davorsetzen. Springt – rot, das ist ein Verb, es sagt, was jemand tut. Schnell – grün, ein Adjektiv, es sagt, wie etwas ist.
-
-„Und der Trick?“, fragt seine Schwester. „Teste es: Kann man ‚der, die, das‘ davor sagen? Dann Nomen. Kann man ‚ich …‘ sagen? Dann Verb. Kann man ‚ganz …‘ sagen? Dann Adjektiv.“
-
-**Fragen zum Gespräch:**
-1. Welche drei Wortarten gibt es im Spiel?
-2. Wie testest du, ob ein Wort ein Nomen ist?
-3. Finde in diesem Satz ein Verb: „Die müde Katze schläft auf dem Sofa.“` },
-    uebungen: [
-        { titel: "Groß oder klein?", fuer: "12", dauer: "8 Min", kern: ["12"],
-          text: "Du sagst Wörter. Kann man es anfassen oder ist es ein Tier oder Mensch, stehen die Kinder auf (groß!). Sonst bleiben sie sitzen und machen sich klein.\n- Hund\n- laufen\n- Ball\n- Mama\n- lachen\n- Tisch",
-          quiz: "karten",
-          folie: "Kann man es **anfassen**? Dann schreibt man es **groß**!\n\n⬆️ aufstehen = groß · ⬇️ sitzen bleiben = klein",
-          emoji: "🤖", warum: "Namenwörter schreibt man groß." },
-        { titel: "Wortarten-Abstimmung", fuer: "34", dauer: "8 Min", kern: ["34"],
-          text: "Du zeigst ein Wort. Die Kinder zeigen mit den Fingern: 1 = Nomen, 2 = Verb, 3 = Adjektiv.\n- Fahrrad\n- springen\n- lustig\n- Pause\n- schreiben\n- dunkel",
-          antworten: ["1️⃣ Nomen", "2️⃣ Verb", "3️⃣ Adjektiv"], loesungen: ["1", "2", "3", "1", "2", "3"],
-          folie: "Welche Wortart?\n\n1️⃣ Nomen · 2️⃣ Verb · 3️⃣ Adjektiv",
-          emoji: "🎮", warum: "Wer die Wortarten kennt, schreibt richtig groß und klein." }
+    ziel12: "Nomen (Namenwörter) mit der Begleiter-Probe erkennen und großschreiben",
+    ziel34: "Nomen, Verben und Adjektive mit Proben erkennen und Nomen im Satz großschreiben",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.",
+    warmup12: "der, die oder das? – Begleiter-Blitz an der Tafel",
+    warmup34: "der, die oder das? – Begleiter-Blitz an der Tafel",
+    tafel: [
+        { werkzeug: "begleiter", titel: "der, die oder das?", fuer: "12", einstellung: {} },
+        { werkzeug: "wortarten", titel: "Wortarten sortieren", fuer: "34", einstellung: {} }
     ],
-    ab12: { titel: "Groß-Mach-Maschine", aufgaben: [
-        { typ: "tabelle", text: "Sprich: der, die oder das? Kreuze an.", nur: "", spalten: ["Bild", "der", "die", "das"], zeilen: [["[bild:hund]", "", "", ""], ["[bild:sonne]", "", "", ""], ["[bild:auto]", "", "", ""], ["[bild:fussball]", "", "", ""], ["[bild:katze]", "", "", ""]] },
-        { typ: "luecken", text: "Schreibe der, die oder das davor.", nummern: true, saetze: ["___ Maus", "___ Haus", "___ Ball", "___ Katze"] }
+    lerntext12: { titel: "Die Begleiter-Probe", text: "Kann ich der, die oder das davor sagen? Dann schreibe ich groß." },
+    lerntext34: { titel: "Die Wortarten-Proben", text: "der/die/das … → Nomen · ich … → Verb · ganz … → Adjektiv" },
+    uebungen: [
+        { titel: "Groß oder klein?", fuer: "12", dauer: "7 Min", kern: ["12"],
+          text: "Ein Wort steht an der Tafel. Alle machen die Begleiter-Probe laut: „der …? die …? das …?“ Passt ein Begleiter, schreibt man groß. Ein Kind tippt an.",
+          folie: "Mach die **Begleiter-Probe**: der? die? das? 🏷️\n\nPasst einer → **groß**. Passt keiner → **klein**.",
+          fragen12: [
+            ["hund", ["groß: Hund", "klein: hund"]],
+            ["laufen", ["klein: laufen", "groß: Laufen"]],
+            ["sonne", ["groß: Sonne", "klein: sonne"]],
+            ["rot", ["klein: rot", "groß: Rot"]],
+            ["tisch", ["groß: Tisch", "klein: tisch"]],
+            ["springen", ["klein: springen", "groß: Springen"]],
+            ["blume", ["groß: Blume", "klein: blume"]],
+            ["schnell", ["klein: schnell", "groß: Schnell"]]
+          ],
+          emoji: "🏷️", warum: "Mit der Probe weißt du es sicher." },
+        { titel: "Welches ist das Nomen?", fuer: "12", dauer: "5 Min", kern: ["12"],
+          text: "Drei Wörter stehen an der Tafel – nur eins ist ein Namenwort. Alle machen leise die Begleiter-Probe. Ein Kind tippt an.",
+          folie: "Nur **ein** Wort ist ein Namenwort. 🔍\n\nDer Begleiter verrät es!",
+          fragen12: [
+            ["Welches Wort ist ein Namenwort?", ["Ball", "rund", "rollen"]],
+            ["Welches Wort ist ein Namenwort?", ["Katze", "weich", "schlafen"]],
+            ["Welches Wort ist ein Namenwort?", ["Auto", "fahren", "schnell"]],
+            ["Welches Wort ist ein Namenwort?", ["Apfel", "rot", "essen"]],
+            ["Welches Wort ist ein Namenwort?", ["Haus", "groß", "wohnen"]],
+            ["Welches Wort ist ein Namenwort?", ["Lehrerin", "lesen", "nett"]]
+          ],
+          emoji: "🔍", warum: "Namenwörter erkennen – dann klappt die Großschreibung." },
+        { titel: "Wortarten-Proben", fuer: "34", dauer: "7 Min", kern: ["34"],
+          text: "Ein Wort steht an der Tafel. Alle probieren laut die drei Proben: „der/die/das …“ (Nomen) – „ich …“ (Verb) – „ganz …“ (Adjektiv). Welche passt? Ein Kind tippt an.",
+          folie: "Drei Proben: 🧪\n\n**der/die/das …** → Nomen · **ich …** → Verb · **ganz …** → Adjektiv",
+          fragen34: [
+            ["Freude", ["Nomen", "Verb", "Adjektiv"]],
+            ["schwimmen", ["Verb", "Nomen", "Adjektiv"]],
+            ["mutig", ["Adjektiv", "Nomen", "Verb"]],
+            ["Angst", ["Nomen", "Adjektiv", "Verb"]],
+            ["erzählen", ["Verb", "Nomen", "Adjektiv"]],
+            ["dunkel", ["Adjektiv", "Verb", "Nomen"]],
+            ["Geburtstag", ["Nomen", "Verb", "Adjektiv"]],
+            ["vergessen", ["Verb", "Adjektiv", "Nomen"]]
+          ],
+          emoji: "🧪", warum: "Proben statt Raten." },
+        { titel: "Fehler im Satz", fuer: "34", dauer: "6 Min", kern: ["34"],
+          text: "Ein Satz steht an der Tafel, ein Wort ist falsch geschrieben (groß/klein). Alle lesen leise und machen bei verdächtigen Wörtern die Probe. Ein Kind tippt das falsche Wort an.",
+          folie: "Ein Wort ist **falsch** geschrieben – groß oder klein. 🕵️\n\nMach die Probe!",
+          fragen34: [
+            ["Am Morgen trinkt Tom einen **kakao**.", ["kakao", "Morgen", "trinkt"]],
+            ["Meine Schwester **Spielt** gern Fußball.", ["Spielt", "Schwester", "Fußball"]],
+            ["Im **winter** bauen wir einen Schneemann.", ["winter", "bauen", "Schneemann"]],
+            ["Der Hund hat ein **Weiches** Fell.", ["Weiches", "Hund", "Fell"]],
+            ["Nach der Schule mache ich meine **hausaufgaben**.", ["hausaufgaben", "Schule", "mache"]],
+            ["Lena hat heute große **Angst** vor dem **Test**.", ["Alles richtig!", "Angst", "Test"]]
+          ],
+          emoji: "🕵️", warum: "Beim Kontrollieren helfen die Proben." }
+    ],
+    ab12: { titel: "Groß oder klein?", aufgaben: [
+        { typ: "tabelle", text: "Mach die Begleiter-Probe. Groß oder klein? Kreuze an.", spalten: ["Wort", "groß", "klein"], zeilen: [["hund", "", ""], ["laufen", "", ""], ["sonne", "", ""], ["rot", "", ""], ["tisch", "", ""]] },
+        { typ: "luecken", text: "Schreibe mit Begleiter.", nur: "2", nummern: true, saetze: ["___ Ball", "___ Katze", "___ Auto"] },
+        { typ: "malen", text: "Male drei Namenwörter und schreibe den Begleiter dazu.", bild: "" }
     ]},
-    ab34: { titel: "Wort-Sortiermaschine", aufgaben: [
-        { typ: "tabelle", text: "Sortiere die Wörter in die Tabelle.", woerter: ["Freund", "lachen", "laut", "Garten", "malen", "müde", "Tafel", "springen", "bunt"], spalten: ["Nomen", "Verben", "Adjektive"], zeilen: [["", "", ""], ["", "", ""], ["", "", ""]] },
-        { typ: "luecken", text: "Groß oder klein? Schreibe die Sätze richtig ab.", nummern: true, saetze: ["DER HUND SPIELT IM GARTEN. → ___", "DIE KLEINE KATZE SCHLÄFT. → ___"] },
-        { typ: "luecken", text: "Setze passende Adjektive ein.", nummern: false, saetze: ["Der ___ Elefant trinkt ___ Wasser."] }
+    ab34: { titel: "Wortarten-Proben", aufgaben: [
+        { typ: "tabelle", text: "Mach die Proben und sortiere.", spalten: ["Wort", "Nomen", "Verb", "Adjektiv"], zeilen: [["Freude", "", "", ""], ["schwimmen", "", "", ""], ["mutig", "", "", ""], ["Angst", "", "", ""], ["erzählen", "", "", ""], ["dunkel", "", "", ""]] },
+        { typ: "luecken", text: "Schreibe die Sätze richtig ab.", nummern: true, saetze: ["im winter bauen wir einen schneemann. → ___", "der hund hat ein weiches fell. → ___"] },
+        { typ: "schreiben", text: "Schreibe einen Satz mit einem Nomen, einem Verb und einem Adjektiv.", zeilen: 2 }
     ]}
 }),
 
 SOZIAL_EINHEIT({
     id: "l-satz-baumeister",
-    titel: "Satz-Baumeister",
+    titel: "Sätze bauen & Satzzeichen",
     kategorie: "Deutsch: Schreiben & Rechtschreiben",
-    ziel12: "Aus Wörtern einen Satz bauen – groß anfangen, Punkt am Ende",
-    ziel34: "Sätze umstellen, erweitern und das richtige Satzzeichen setzen",
-    material: "Wortkarten „Satz-Baumeister“ (unter Arbeitsmaterial)",
-    materialIds: ["lern-satz-karten"],
-    warmup12: "Satz-Kette: Jedes Kind sagt ein Wort, zusammen wird ein Satz daraus",
-    warmup34: "Punkt, Fragezeichen oder Ausrufezeichen? Du sprichst Sätze mit Betonung, die Kinder malen das Zeichen in die Luft",
-    lerntext12: { titel: "Die wackeligen Wörter", text:
-`Die Wörter „Tom“, „spielt“ und „Ball“ liegen durcheinander auf dem Tisch. „Ball spielt Tom“, sagt der Ball. „Das klingt komisch“, sagt Tom.
-
-Da kommt die Baumeisterin Bea. „Ein Satz ist wie ein Turm“, sagt sie. „Jedes Wort braucht seinen Platz.“
-
-Sie stellt die Wörter neu auf: „Tom spielt Ball.“ Ganz vorne steht ein großer Buchstabe. Und ganz am Ende setzt sie einen kleinen Punkt – wie einen Deckel auf den Turm.
-
-„Jetzt hält der Satz!“, ruft Tom.
-
-**Nach dem Vorlesen:**
-1. Was hat bei „Ball spielt Tom“ nicht gestimmt?
-2. Was kommt an den Anfang und was ans Ende eines Satzes?
-3. Baue einen Satz mit „Mama“ und „lacht“.` },
-    lerntext34: { titel: "Die Textnachricht", text:
-`Mira schreibt ihrer Freundin: „kommst du heute zum training ich hab neue schuhe“
-
-Die Antwort kommt sofort: „Häh? Was willst du?“
-
-Mira liest ihre Nachricht noch einmal. Kein Großbuchstabe, kein Satzzeichen – alles läuft zusammen. Sie schreibt neu: „Kommst du heute zum Training? Ich hab neue Schuhe!“
-
-„Ah, jetzt versteh ich’s“, antwortet die Freundin. „Klar komme ich!“
-
-**Fragen zum Gespräch:**
-1. Warum hat die Freundin die erste Nachricht nicht verstanden?
-2. Welche Satzzeichen hat Mira beim zweiten Mal gesetzt?
-3. Wann setzt man ein Fragezeichen, wann ein Ausrufezeichen?` },
+    ziel12: "Wörter zu einem sinnvollen Satz ordnen; Satzanfang groß, am Ende ein Punkt",
+    ziel34: "Aussage-, Frage- und Ausrufesätze erkennen und das passende Satzzeichen setzen",
+    material: "Alles kommt über die Tafel – du brauchst nichts extra.",
+    warmup12: "Stimmt das? Unsinn-Sätze",
+    warmup34: "Satzzeichen-Blitz: Punkt, Fragezeichen oder Ausrufezeichen?",
+    lerntext12: { titel: "Ein Satz", text: "Groß anfangen – sinnvoll ordnen – Punkt am Ende." },
+    lerntext34: { titel: "Satzzeichen", text: "Aussage → Punkt · Frage → Fragezeichen · Ausruf/Aufforderung → Ausrufezeichen" },
     uebungen: [
-        { titel: "Lebende Sätze", fuer: "alle", dauer: "8 Min", kern: ["12", "34"],
-          text: "Die Wörter stehen durcheinander an der Tafel. Drei bis vier Kinder kommen nach vorn – jedes „ist“ ein Wort und sagt es laut. Erst stehen sie durcheinander. Die anderen sagen, wer mit wem tauschen muss, bis der Satz stimmt. Kl. 3/4: Danach den Satz umstellen (Der Hund bellt laut. → Laut bellt der Hund.). Wer nicht nach vorn möchte, ist Bauleiter und sagt vom Platz aus, wer tauscht.",
-          folie: "Die Wörter sind durcheinander! 🧱\n\n**Ball.** · **Tom** · **spielt**\n\n**schläft.** · **Katze** · **Die**\n\nWer muss mit wem **tauschen**, damit der Satz stimmt?",
-          folie34: "Die Wörter sind durcheinander! 🧱\n\n**ein** · **liest** · **Buch.** · **Mama**\n\nDanach umstellen: **Der Hund bellt laut.** → Wie geht es noch?",
-          emoji: "🧱", warum: "Jedes Wort braucht seinen Platz im Satz." },
-        { titel: "Welches Zeichen?", fuer: "34", dauer: "5 Min",
-          text: "Du liest Sätze ohne Satzzeichen vor – mit passender Betonung. Die Kinder zeigen mit den Fingern: 1 = Punkt, 2 = Fragezeichen, 3 = Ausrufezeichen.\n- Kommst du mit ins Kino\n- Pass auf, da kommt ein Auto\n- Heute ist Mittwoch\n- Wie spät ist es",
-          antworten: ["1️⃣ Punkt .", "2️⃣ Fragezeichen ?", "3️⃣ Ausrufezeichen !"], loesungen: ["2", "3", "1", "2"],
-          folie: "Welches Satzzeichen fehlt?\n\n1️⃣ **.** · 2️⃣ **?** · 3️⃣ **!**", emoji: "❓" }
+        { titel: "Welcher Satz stimmt?", fuer: "12", dauer: "7 Min", kern: ["12"],
+          text: "Drei Sätze stehen an der Tafel – nur einer ist richtig gebaut. Alle lesen leise. Ein Kind tippt den richtigen Satz an und liest ihn laut vor.",
+          folie: "Lies alle drei Sätze. 🧱\n\nWelcher ist **richtig** gebaut?",
+          fragen12: [
+            ["Welcher Satz stimmt?", ["Tom spielt Ball.", "Ball spielt Tom.", "Spielt Ball Tom."]],
+            ["Welcher Satz stimmt?", ["Die Katze schläft.", "Schläft die Katze die.", "Katze die schläft."]],
+            ["Welcher Satz stimmt?", ["Mia malt ein Bild.", "Ein Bild malt Mia Mia.", "Malt Mia Bild ein."]],
+            ["Welcher Satz stimmt?", ["Der Hund bellt laut.", "Laut Hund der bellt.", "Bellt der laut Hund."]],
+            ["Welcher Satz ist richtig geschrieben?", ["Wir gehen in den Zoo.", "wir gehen in den Zoo.", "Wir gehen in den Zoo"]],
+            ["Welcher Satz ist richtig geschrieben?", ["Papa kocht Nudeln.", "papa kocht Nudeln.", "Papa kocht Nudeln"]]
+          ],
+          emoji: "🧱", warum: "Ein Satz braucht die richtige Reihenfolge." },
+        { titel: "Welches Zeichen?", fuer: "alle", dauer: "6 Min", kern: ["34"],
+          text: "Ein Satz ohne Satzzeichen steht an der Tafel. Du liest ihn mit passender Betonung vor (Kl. 3/4 lesen selbst). Ein Kind tippt das passende Zeichen an.",
+          folie: "Welches Satzzeichen fehlt? 🎯\n\n**.** erzählt · **?** fragt · **!** ruft oder fordert auf",
+          fragen12: [
+            ["Kommst du mit ins Kino", ["?", ".", "!"]],
+            ["Heute ist Montag", [".", "?", "!"]],
+            ["Pass auf", ["!", ".", "?"]],
+            ["Wie heißt du", ["?", ".", "!"]]
+          ],
+          fragen34: [
+            ["Kommst du mit ins Kino", ["?", ".", "!"]],
+            ["Pass auf, da kommt ein Auto", ["!", ".", "?"]],
+            ["Heute ist Mittwoch", [".", "?", "!"]],
+            ["Wie spät ist es", ["?", ".", "!"]],
+            ["Räum sofort dein Zimmer auf", ["!", ".", "?"]],
+            ["Wann beginnt das Fußballspiel", ["?", ".", "!"]],
+            ["Morgen fahren wir ans Meer", [".", "?", "!"]],
+            ["Hilfe, mein Fahrrad ist weg", ["!", "?", "."]]
+          ],
+          emoji: "🎯", warum: "Das Satzzeichen zeigt, wie ein Satz gemeint ist." },
+        { titel: "Frage-Profis", fuer: "34", dauer: "6 Min", kern: ["34"],
+          text: "Ein Aussagesatz steht an der Tafel. Welche Frage passt dazu? Ein Kind tippt an. Danach: Woran erkennst du eine Frage? (Fragewort oder Verb vorn, Fragezeichen)",
+          folie: "Welche **Frage** passt zum Satz? ❓\n\nTipp: Fragewörter – wer · was · wann · wo · warum · wie",
+          fragen34: [
+            ["**Lena wohnt in Leipzig.**", ["Wo wohnt Lena?", "Wann wohnt Lena?", "Wer wohnt in Lena?"]],
+            ["**Das Spiel beginnt um 3 Uhr.**", ["Wann beginnt das Spiel?", "Wo beginnt das Spiel?", "Warum beginnt das Spiel?"]],
+            ["**Max weint, weil er hingefallen ist.**", ["Warum weint Max?", "Wer ist Max?", "Wo weint Max?"]],
+            ["**Opa repariert das Fahrrad.**", ["Was repariert Opa?", "Wann repariert Opa?", "Wo ist das Fahrrad?"]],
+            ["**Die Katze schläft auf dem Sofa.**", ["Wo schläft die Katze?", "Wie heißt die Katze?", "Wann schläft die Katze?"]],
+            ["**Paula fährt mit dem Bus zur Schule.**", ["Wie fährt Paula zur Schule?", "Wann fährt Paula?", "Wer ist Paula?"]]
+          ],
+          emoji: "❓", warum: "Gute Fragen helfen beim Lesen und Schreiben." }
     ],
-    ab12: { titel: "Satz-Baumeister", aufgaben: [
-        { typ: "ankreuzen", text: "Welcher Satz passt zum Bild? Kreuze an. (Ich lese vor.)", nur: "1", optionen: ["[bild:hund] Der Hund bellt.", "[bild:hund] Der Hund fliegt."] },
-        { typ: "luecken", text: "Ordne die Wörter zu einem Satz. Denk an den Punkt!", nummern: true, saetze: ["malt   Lea → ___", "Eis   isst   Tom   ein → ___", "rennt   Hund   der → ___"] },
-        { typ: "malen", text: "Male ein Bild zu: Tom spielt Ball.", bild: "" }
+    ab12: { titel: "Sätze bauen", aufgaben: [
+        { typ: "luecken", text: "Ordne die Wörter zu einem Satz.", nummern: true, saetze: ["Ball. – Tom – spielt → ___", "schläft. – Katze – Die → ___"] },
+        { typ: "luecken", text: "Setze den Punkt und schreibe den Anfang groß.", nur: "2", nummern: true, saetze: ["wir gehen in den Zoo → ___", "papa kocht Nudeln → ___"] },
+        { typ: "malen", text: "Male: Der Hund spielt mit dem Ball.", bild: "" }
     ]},
-    ab34: { titel: "Satz-Baumeister", aufgaben: [
-        { typ: "luecken", text: "Ordne die Wörter zu einem Satz.", nummern: true, saetze: ["spielen – Pause – in – wir – der – Fußball → ___", "Katze – die – Baum – auf – klettert – den → ___"] },
-        { typ: "luecken", text: "Stelle den Satz zweimal um.", nummern: false, saetze: ["Anton fährt morgen mit dem Bus zur Schule.", "→ ___", "→ ___"] },
-        { typ: "luecken", text: "Setze . ? oder ! ein.", nummern: false, saetze: ["Wo ist mein Turnbeutel ___   Ich habe Hunger ___   Vorsicht, heiß ___   Morgen ist Sporttag ___"] },
-        { typ: "schreiben", text: "Schreibe eine Frage an deine Lehrerin.", zeilen: 1 }
+    ab34: { titel: "Satzzeichen", aufgaben: [
+        { typ: "luecken", text: "Setze das richtige Satzzeichen.", nummern: true, saetze: ["Kommst du mit ins Kino ___", "Pass auf, da kommt ein Auto ___", "Morgen fahren wir ans Meer ___", "Wann beginnt das Spiel ___"] },
+        { typ: "luecken", text: "Schreibe eine passende Frage.", nummern: true, saetze: ["Lena wohnt in Leipzig. → ___", "Max weint, weil er hingefallen ist. → ___"] },
+        { typ: "schreiben", text: "Schreibe je einen Satz mit . ? und !", zeilen: 3 }
     ]}
 })
-
 ];
