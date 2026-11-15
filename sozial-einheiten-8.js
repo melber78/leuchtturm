@@ -35,7 +35,7 @@ K({
     id: "k-mutter",
     titel: "Auf Mutter gehen – warum trifft das so hart?",
     ziel34: "Verstehen, warum Sprüche über die Familie so treffen, und mit einem eigenen Cool-bleiben-Plan reagieren (Körper bremsen – Kopf-Satz – kurz antworten – weggehen), ohne auszurasten",
-    material: "Tafel: Eisberg „Warum trifft das?“\nPlakat „Mein Cool-bleiben-Plan“ (Arbeitsmaterial)\nHinweis für dich: Die Wörter selbst werden nicht ausgesprochen und nicht angeschrieben – wir sagen „ein Spruch über die Mutter“ oder „das H-Wort“.",
+    material: "Plakat „Mein Cool-bleiben-Plan“ (Arbeitsmaterial)\nHinweis für dich: Die Wörter selbst werden nicht ausgesprochen und nicht angeschrieben – wir sagen „ein Spruch über die Mutter“ oder „das H-Wort“.",
     materialIds: ["schutzsaetze-familie"],
     lerntext34: { titel: "Der Spruch", text:
 `Mittwoch, Hofpause. Anton und Kevin streiten sich, wer beim Fußball dran ist. Kevin merkt, dass er verliert. Da sagt er einen Spruch über Antons Mutter – einen von der übelsten Sorte. Ein paar Jungs johlen.
@@ -56,9 +56,9 @@ Später sagt ihm sein Onkel: „Kevin kennt deine Mutter gar nicht. Der Spruch h
 5. Was würde deine Mutter (oder wer für dich wichtig ist) sich wünschen, wie du reagierst?` },
     uebungen: [
         { titel: "Warum trifft das so?", dauer: "5 Min",
-          text: "Die Folie zeigt den **Eisberg**: Oben – sichtbar – ist nur der Spruch. Darunter liegt, warum er so wehtut. Lies die Gründe einzeln vor und frag nach jedem: **Kennt ihr das?** (Daumen hoch, wer das kennt – niemand muss etwas erzählen.)\n\n- 💛 **Sie ist mir am wichtigsten.** Die Mutter ist für viele der wichtigste Mensch – wer sie angreift, trifft das Wichtigste.\n- 🛡️ **Ich will sie beschützen.** Sie ist nicht da und kann sich nicht wehren – also fühle ich mich zuständig.\n- 👀 **Alle haben es gehört.** Vor Zuschauern fühlt es sich an, als müsste ich sofort etwas tun, sonst bin ich der Verlierer.\n- 🔥 **Es geht um Ehre.** Viele haben gelernt: Wer so etwas stehen lässt, ist schwach.\n- 🤐 **Ich kann nichts beweisen.** Der Spruch ist Quatsch – aber dagegen reden hilft nicht. Das macht hilflos und wütend.\n- 🎯 **Und wer weiß genau, dass das dein wunder Punkt ist?** Der, der den Spruch macht. Er will dich steuern.\n\nZum Schluss die entscheidende Frage: **Wer weiß genau, dass das euer wunder Punkt ist?** → Der, der den Spruch macht. Er sucht den Knopf, der am schnellsten wirkt – nicht weil er etwas über deine Mutter weiß, sondern weil er **dich** steuern will.",
+          text: "Auf der Folie stehen die Gründe, warum ein Spruch über die Mutter so wehtut. Lies sie einzeln vor und frag nach jedem: **Kennt ihr das?** (Daumen hoch, wer das kennt – niemand muss etwas erzählen.)\n\n- 💛 **Sie ist mir am wichtigsten.** Die Mutter ist für viele der wichtigste Mensch – wer sie angreift, trifft das Wichtigste.\n- 🛡️ **Ich will sie beschützen.** Sie ist nicht da und kann sich nicht wehren – also fühle ich mich zuständig.\n- 👀 **Alle haben es gehört.** Vor Zuschauern fühlt es sich an, als müsste ich sofort etwas tun, sonst bin ich der Verlierer.\n- 🔥 **Es geht um Ehre.** Viele haben gelernt: Wer so etwas stehen lässt, ist schwach.\n- 🤐 **Ich kann nichts beweisen.** Der Spruch ist Quatsch – aber dagegen reden hilft nicht. Das macht hilflos und wütend.\n- 🎯 **Und wer weiß genau, dass das dein wunder Punkt ist?** Der, der den Spruch macht. Er will dich steuern.\n\nZum Schluss die entscheidende Frage: **Wer weiß genau, dass das euer wunder Punkt ist?** → Der, der den Spruch macht. Er sucht den Knopf, der am schnellsten wirkt – nicht weil er etwas über deine Mutter weiß, sondern weil er **dich** steuern will.",
           quiz: "liste",
-          folie: "🧊 **Oben:** ein Spruch über die Mutter.\n**Darunter:** warum er so wehtut.\n\nUnd: **Wer weiß genau, dass das dein wunder Punkt ist?**",
+          folie: "Warum tut ein **Spruch über die Mutter** so weh – mehr als jede andere Beleidigung? 🤔",
           kern: ["34"],
           emoji: "🧊",
           warum: "Wir verstehen, warum Sprüche über die Familie so wehtun." },
