@@ -1297,8 +1297,6 @@ function zeigeStunde(id){
             <div class="knopfleiste">
                 ${e.nur34 ? "" : `<button class="btn gold" data-einstieg="12"><i class="fa-solid fa-play"></i> Starten (Geschichte Kl. 1/2)</button>`}
                 <button class="btn${e.nur34 ? " gold" : ""}" data-einstieg="34"><i class="fa-solid fa-play"></i> Starten (Geschichte Kl. 3/4)</button>
-                ${e.nur34 ? "" : `<button class="btn" data-pptx="12"><i class="fa-solid fa-file-powerpoint"></i> PowerPoint Kl. 1/2</button>`}
-                <button class="btn" data-pptx="34"><i class="fa-solid fa-file-powerpoint"></i> PowerPoint Kl. 3/4</button>
             </div></div>` : ""}
         ${window.lernTafel && Array.isArray(e.tafel) && e.tafel.length ? `<div class="karte"><h2><i class="fa-solid fa-chalkboard"></i> Passende Tafel-Übungen</h2>
             <p class="ed-hilfe" style="margin:0 0 10px">Startet im Vollbild an der digitalen Tafel – schon passend eingestellt.</p>
