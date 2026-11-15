@@ -404,6 +404,7 @@ table.ab-tab td .lz{ min-height:0; }
             <a href="#methoden" data-reiter="methoden"><i class="fa-solid fa-shapes"></i> Methoden &amp; Planer</a>
             <a href="#tafel" data-reiter="tafel"><i class="fa-solid fa-chalkboard"></i> Tafel</a>
             <a href="#" onclick="if (window.lernTafel) window.lernTafel.starten('duell'); return false;"><i class="fa-solid fa-trophy"></i> Quiz-Duell</a>
+            <a href="ella-quiz.php"><i class="fa-solid fa-graduation-cap"></i> Ella-Quiz</a>
             <a href="lernangebot-generator.php"><i class="fa-solid fa-wand-magic-sparkles"></i> Arbeitsblätter</a>
             <a href="#rituale" data-reiter="rituale"><i class="fa-solid fa-box-archive"></i> Material</a>
 <?php else: ?>

@@ -103,6 +103,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-15", "Ella-Quiz", "Üben wie bei Schlaukopf: Klasse 1–4, Deutsch, Mathe, Sachunterricht, Lernen lernen – mit Sternen pro Thema, Fehler nochmal üben und Tafel-Modus Klasse gegen Ella. Mathe wird jedes Mal neu gemischt.", "ella-quiz.php"],
     ["2026-11-15", "Startklar! – Tagesbeginn & Stundenbeginn", "Auf der Guten-Morgen-Tafel und groß als eigene Kachel: was die Kinder vor dem Tag und vor jeder Stunde bereitlegen – zum Abhaken. Dazu Bilder per Auswahl und eigenes Material anlegen.", "tafelbilder.php#startklar"],
     ["2026-11-15", "Lernangebot Deutsch neu", "Eine Strategie pro Stunde (Silben, Mitsprechen, Verlängern, Nachschlagen, Proben, Satzzeichen), echtes Lesen – und jede Antwort wird an der Tafel angetippt: Punkt für die Klasse oder Ella.", "sozial-stunden.php?bereich=lernangebot"],
     ["2026-11-15", "Alles über die Tafel", "Sozialtraining, Vertretung und Lernangebot laufen ohne Extra-Material: keine doppelten Folien mehr, Abstimmen mit Daumen und Fingern, Lösungen zum Aufdecken. Material nur noch optional für die Mappen.", "sozial-stunden.php"],
@@ -230,6 +231,12 @@ $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strt
 <i class="fa-solid fa-sun"></i>
 <h2>Guten Morgen!</h2>
 <p>Tagesstart an der Tafel: Datum, Wetter, Stundenplan, Auspacken, Hinweise</p>
+</a>
+
+<a href="ella-quiz.php" class="portal-card">
+<i class="fa-solid fa-graduation-cap"></i>
+<h2>Ella-Quiz</h2>
+<p>Üben nach Klasse 1–4, Fach und Thema – allein am Gerät oder an der Tafel gegen Ella</p>
 </a>
 
 <a href="tafelbilder.php#pause" class="portal-card">
