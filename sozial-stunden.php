@@ -104,6 +104,8 @@ label.feld{ display:block; font-weight:800; font-size:13px; color:var(--grau); m
 .werkzeug select{ flex:0 1 230px; width:auto; }
 .diese-woche{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; background:white; border-left:6px solid var(--gold); border-radius:16px; padding:16px 20px; box-shadow:var(--schatten); margin-bottom:22px; }
 .diese-woche .dw-text{ flex:1; font-weight:800; }
+.dw-kopf{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.dw-kopf > span{ flex:1 1 auto; }
 .diese-woche .dw-text small{ display:block; color:var(--grau); font-weight:700; }
 .dw-zeile{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:10px; }
 .dw-thema{ flex:1 1 180px; font-size:17px; }
@@ -1114,10 +1116,12 @@ function dieseWocheZeigen(dw){
             ${kl.map(x => { const y = klasseInWoche(w, x), ee = y.einheit && y.einheit !== stufenThema(w, st) ? finde(y.einheit) : null;
                 return ee ? `<div class="dw-anders">${y.fortsetzung ? "↻" : "↪"} <b>${esc(x.name)}</b>: ${y.fortsetzung ? "Fortsetzung" : "stattdessen"} „${esc(ee.titel)}“ <a class="btn klein" href="#stunde/${encodeURIComponent(ee.id)}">Öffnen</a></div>` : ""; }).join("")}`;
     }).join("");
+    const abstand = Math.round((dw.datum - montag(heuteUtc())) / (7 * 864e5));
+    const name = { "-1": "Letzte Woche", "0": "Diese Woche", "1": "Nächste Woche", "2": "Übernächste Woche" }[abstand] || (abstand > 0 ? "In " + abstand + " Wochen" : "Vor " + (-abstand) + " Wochen");
     ziel.innerHTML = `<div class="diese-woche">
         <i class="fa-solid fa-calendar-day" style="font-size:26px;color:var(--gold)"></i>
-        <div class="dw-text">${dw.diese ? "Diese Woche" : "Als Nächstes"} <small style="display:inline">· KW ${kw(dw.datum)} · ab ${kurzDatum(dw.datum)}${w.notiz ? " · " + esc(w.notiz) : ""}</small>
-            ${zeilen}
+        <div class="dw-text"><div class="dw-kopf"><button class="btn klein" data-dwnav="-1" title="Woche davor"><i class="fa-solid fa-chevron-left"></i></button><span>${name} <small style="display:inline">· KW ${kw(dw.datum)} · ab ${kurzDatum(dw.datum)}${w.notiz ? " · " + esc(w.notiz) : ""}</small></span><button class="btn klein" data-dwnav="1" title="Nächste Woche"><i class="fa-solid fa-chevron-right"></i></button>${abstand ? `<button class="btn klein" data-dwnav="0">Diese Woche</button>` : ""}</div>
+            ${w.frei ? `<div class="dw-zeile"><span class="dw-thema"><i class="fa-solid fa-umbrella-beach" style="color:var(--gold)"></i> Ferien / fällt aus</span><a class="btn klein" href="#jahresplan">Jahresplan</a></div>` : zeilen}
             ${klassen.length ? `<small style="margin-top:6px">Tippen: ○ offen → ✓ gehalten → ◐ angefangen (geht nächste Woche weiter) → ✗ ausgefallen (nachholen) → – entfällt</small>` : ""}</div></div>`;
     ziel.querySelectorAll("[data-dwkl]").forEach(b => b.addEventListener("click", () => {
         const p = plan(), woche = p.wochen[k] = p.wochen[k] || {};
@@ -1127,7 +1131,16 @@ function dieseWocheZeigen(dw){
         planSpeichern();
         dieseWocheZeigen({ ...dw, eintrag: woche });
     }));
+    ziel.querySelectorAll("[data-dwnav]").forEach(b => b.addEventListener("click", () => {
+        const n = +b.dataset.dwnav, d = n ? new Date(dw.datum) : montag(heuteUtc());
+        if (n) d.setUTCDate(d.getUTCDate() + 7 * n);
+        dwWoche = iso(d);
+        dieseWocheZeigen(wocheFuer(d));
+    }));
 }
+// Kasten „Diese Woche“: angezeigte Woche (zum Blättern)
+let dwWoche = null;
+function wocheFuer(d){ return { datum: d, eintrag: (DATEN.jahresplan && DATEN.jahresplan.wochen[iso(d)]) || {}, diese: +d === +montag(heuteUtc()) }; }
 // Welche Stunde ist diese (oder die nächste offene) Woche dran?
 function aktuelleWoche(){
     if (!DATEN.jahresplan) return null;
@@ -1194,8 +1207,14 @@ function zeigeBibliothek(){
             <a class="btn gold" href="#neu"><i class="fa-solid fa-plus"></i> Neue Stunde</a>
         </div>
         <div id="kartenListe"></div>`;
-    const dw = mitPlan() ? aktuelleWoche() : null;
-    if (dw && dw.einheit) dieseWocheZeigen(dw);
+    if (mitPlan()) {
+        // Startwoche: zuletzt angesehene Woche, am Wochenende die nächste Woche, sonst die aktuelle bzw. nächste geplante
+        let dw = null;
+        if (dwWoche) dw = wocheFuer(tag(dwWoche));
+        else if ([0, 6].includes(heuteUtc().getUTCDay())) { const d = montag(heuteUtc()); d.setUTCDate(d.getUTCDate() + 7); dw = wocheFuer(d); }
+        else dw = aktuelleWoche() || wocheFuer(montag(heuteUtc()));
+        plan(); dieseWocheZeigen(dw);
+    }
     const liste = () => {
         const q = filterText.toLowerCase();
         const alle = alleEinheiten().filter(e => (!filterKat || e.kategorie === filterKat) && (!filterOhne || e.ohneVorbereitung) &&
