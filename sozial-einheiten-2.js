@@ -516,7 +516,7 @@ SOZIAL_EINHEIT({
     kategorie: "Konflikte lösen",
     ziel12: "Sich ehrlich entschuldigen und etwas wieder gutmachen",
     ziel34: "Eine gute Entschuldigung in vier Stufen formulieren und verstehen, dass Verzeihen Zeit braucht",
-    material: "Die Entschuldigungs-Treppe (4 Stufen) an der Tafel\nSituationskarten für die Tischpaare",
+    material: "Alles kommt über die Tafel.\nZum Ausdrucken (für die Mappen, optional): Plakat „Die Entschuldigungs-Treppe“",
     lerntext12: { titel: "Das Malwasser", text:
 `Lea malt ein Bild mit einem großen Regenbogen. Es ist fast fertig.
 
@@ -560,11 +560,14 @@ Eine Woche später setzt Charlotte sich in der Pause wieder neben Nora.
           emoji: "🙏",
           warum: "Nicht jedes Sorry ist echt. Wir hören genau hin." },
         { titel: "Die Entschuldigungs-Treppe", fuer: "alle", dauer: "6 Min",
-          text: "An der Tafel: **1. Ich sage, was ich getan habe. 2. Ich sage, dass es falsch war. 3. Ich verstehe, wie du dich fühlst. 4. Ich mache es wieder gut.** Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung. Kl. 1/2 nutzen die Stufen 1 und 4, Kl. 3/4 alle vier. Zwei Paare zeigen sie vorn.",
-          text12: "An der Tafel: **1. Ich sage, was ich getan habe. 4. Ich mache es wieder gut.** (Die Stufen 2 und 3 lässt du weg.) Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung: „Ich habe … – Ich mache es wieder gut, indem …“. Zwei Paare zeigen sie vorn.",
-          text34: "An der Tafel: **1. Ich sage, was ich getan habe. 2. Ich sage, dass es falsch war. 3. Ich verstehe, wie du dich fühlst. 4. Ich mache es wieder gut.** Die Tischnachbarn bekommen je eine Situationskarte (z. B. Radiergummi kaputt gemacht, jemanden geschubst, über ein Bild gelacht) und üben die Entschuldigung mit allen vier Stufen. Zwei Paare zeigen sie vorn.",
-          folie12: "So geht eine echte Entschuldigung:\n\n**1.** Ich sage, was ich getan habe.\n**2.** Ich mache es wieder gut.\n\nÜbt mit eurer Situationskarte.",
-          folie34: "So geht eine echte Entschuldigung:\n\n**1.** Ich sage, was ich getan habe.\n**2.** Ich sage, dass es falsch war.\n**3.** Ich verstehe, wie du dich fühlst.\n**4.** Ich mache es wieder gut.\n\nÜbt mit eurer Situationskarte.",
+          text: "Die Treppe steht an der Tafel. Dann kommt je eine Situation an die Tafel. Per Glücksrad kommen zwei Kinder nach vorn: Eins hat etwas angestellt und entschuldigt sich – Stufe für Stufe. Das andere sagt danach, wie es sich angefühlt hat. Die Klasse zählt mit den Fingern mit: Waren alle Stufen dabei?\n\n- Du hast den Radiergummi von deinem Nachbarn kaputt gemacht.\n- Du hast jemanden in der Schlange geschubst.\n- Du hast über ein Bild gelacht.\n- Du hast beim Spiel geschummelt.\n- Du hast ein geliehenes Buch nass gemacht.",
+          text12: "Die Treppe steht an der Tafel (Kl. 1/2: zwei Stufen). Dann kommt je eine Situation an die Tafel. Per Glücksrad kommen zwei Kinder nach vorn: Eins entschuldigt sich: „Ich habe … – Ich mache es wieder gut, indem …“. Das andere sagt, wie es sich angefühlt hat. Die Klasse zeigt mit den Fingern: Waren beide Stufen dabei?\n\n- Du hast den Radiergummi von deinem Nachbarn kaputt gemacht.\n- Du hast jemanden in der Schlange geschubst.\n- Du hast über ein Bild gelacht.\n- Du hast beim Spiel geschummelt.\n- Du hast ein geliehenes Buch nass gemacht.",
+          text34: "Die Treppe steht an der Tafel. Dann kommt je eine Situation an die Tafel. Per Glücksrad kommen zwei Kinder nach vorn: Eins entschuldigt sich mit allen vier Stufen. Das andere sagt, wie es sich angefühlt hat. Die Klasse zählt mit den Fingern mit: Waren alle vier Stufen dabei?\n\n- Du hast den Radiergummi von deinem Nachbarn kaputt gemacht.\n- Du hast jemanden in der Schlange geschubst.\n- Du hast über ein Bild gelacht.\n- Du hast beim Spiel geschummelt.\n- Du hast ein geliehenes Buch nass gemacht.",
+          quiz: "karten",
+          folie12: "So geht eine echte Entschuldigung:\n\n**1.** Ich sage, was ich getan habe.\n**2.** Ich mache es wieder gut.\n\nGleich kommt eine Situation. Zwei Kinder spielen sie vor – alle anderen zählen mit den Fingern: **Sind beide Stufen dabei?** ✌️",
+          folie34: "So geht eine echte Entschuldigung:\n\n**1.** Ich sage, was ich getan habe.\n**2.** Ich sage, dass es falsch war.\n**3.** Ich verstehe, wie du dich fühlst.\n**4.** Ich mache es wieder gut.\n\nGleich kommt eine Situation. Zwei Kinder spielen sie vor – alle anderen zählen mit den Fingern: **Sind alle 4 Stufen dabei?**",
+          frage12: "**1.** Was habe ich getan? · **2.** Wie mache ich es wieder gut?",
+          frage34: "**1.** Was habe ich getan? · **2.** Das war falsch. · **3.** Wie fühlst du dich? · **4.** Wie mache ich es wieder gut?",
           kern: ["12", "34"],
           emoji: "🪜",
           warum: "Wir üben, wie eine echte Entschuldigung geht – Stufe für Stufe." },

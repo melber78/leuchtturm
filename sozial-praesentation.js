@@ -597,7 +597,7 @@ window.sozialMedien = medienFuer;
 /* Lernangebot: eigener Ablauf als Quizshow „Klasse gegen Eule Ella“ –
    Mission → Kopf-Start → Detektiv-Fall → Denk-Runde → Challenges/Quiz → Tafel-Challenge → Arbeiten → Endstand */
 function uebungStufe(e, u0, stufe){
-    return Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, antworten: u0["antworten" + stufe] || u0.antworten, folie: u0["folie" + stufe] || u0.folie || "", warum: u0["warum" + stufe] || u0.warum || "", zusatz: !!(window.istZusatz && window.istZusatz(e, u0, stufe)) });
+    return Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, antworten: u0["antworten" + stufe] || u0.antworten, folie: u0["folie" + stufe] || u0.folie || "", warum: u0["warum" + stufe] || u0.warum || "", frage: u0["frage" + stufe] || u0.frage || "", zusatz: !!(window.istZusatz && window.istZusatz(e, u0, stufe)) });
 }
 /* Kopf-Start: fertige Beispiele, damit niemand sich etwas ausdenken muss.
    Liefert { frage, liste: [{ t, l }] } – t = was du sagst/zeigst, l = Lösung (optional). */
@@ -764,13 +764,12 @@ function folienBauen(e, stufe){
     ueListe.forEach(u0 => {
         // Klassen sind getrennt: nur Übungen dieser Stufe, Text passend zur Stufe
         if (u0.fuer && u0.fuer !== "alle" && u0.fuer !== stufe) return;
-        const u = Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, antworten: u0["antworten" + stufe] || u0.antworten, folie: u0["folie" + stufe] || u0.folie || "", warum: u0["warum" + stufe] || u0.warum || "", zusatz: !!(window.istZusatz && window.istZusatz(e, u0, stufe)) });
+        const u = Object.assign({}, u0, { text: window.stufenText ? window.stufenText(u0, stufe) : u0.text, antworten: u0["antworten" + stufe] || u0.antworten, folie: u0["folie" + stufe] || u0.folie || "", warum: u0["warum" + stufe] || u0.warum || "", frage: u0["frage" + stufe] || u0.frage || "", zusatz: !!(window.istZusatz && window.istZusatz(e, u0, stufe)) });
         // quiz: daumen/ampel/… = Abstimmung je Punkt · karten = je Punkt eine Folie ohne Abstimmung ·
         // liste = alle Punkte auf der Übungsfolie · keine = Punkte nur für die Lehrkraft
         const punkte = aufzaehlung(u.text).slice(0, 10).map(p => p.split(/\s+→\s+/)[0]);
         const art = u.quiz || quizArt(u.text);
         if (art === "liste" && punkte.length) u.liste = punkte;
-        f.push({ typ: "ankuendigung", u });   // „Als Nächstes …“ – kurze Einführung vor jeder Übung
         f.push({ typ: "uebung", u });
         if (punkte.length >= 2 && art === "karten") punkte.forEach((p, i) => f.push({ typ: "karte", u, aussage: p, nr: i + 1, von: punkte.length }));
         else if (punkte.length >= 2 && !["frage", "keine", "liste", "karten"].includes(art)) {
@@ -1048,7 +1047,7 @@ function folieHtml(f, e){
                 <div class="p-reihe l-pkreihe">${punktKnoepfe}</div>`}`;
         }
         if (f.typ === "raetsel") return `<div class="l-quizkopf"><span>${f.u.emoji || "🃏"} ${esc(f.u.titel)}</span><span>Karte ${f.nr} / ${f.von}</span></div>
-                <div class="l-raetselkarte"${f.aussage.length > 80 ? ' style="font-size:clamp(20px,min(2.8vw,4.6vh),44px)"' : ""}><span class="l-rk-ecke">?</span>${inline(f.aussage)}</div>${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${inline(f.u.frage)}</div>` : ""}
+                <div class="l-raetselkarte"${f.aussage.length > 80 ? ' style="font-size:clamp(20px,min(2.8vw,4.6vh),44px)"' : ""}><span class="l-rk-ecke">?</span>${inline(f.aussage)}</div>${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${md(f.u.frage)}</div>` : ""}
                 <div class="p-reihe"><button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div><div class="p-reihe l-pkreihe">${punktKnoepfe}</div>`;
         if (f.typ === "knobel") { const d = f.d;
             return `<div class="l-level lila">KNOBEL-RÄTSEL</div>
@@ -1133,14 +1132,15 @@ function folieHtml(f, e){
         case "uebung": {
             const min = minuten(f.u.dauer);
             const kurz = String(f.u.text || "").split(/\n\s*\n/)[0];
-            return `<div>${f.u.zusatz ? '<span class="p-chip zusatz">Zusatz – wenn noch Zeit ist</span>' : fuerChip(f.u)}${f.u.dauer ? `<span class="p-chip">${esc(f.u.dauer)}</span>` : ""}</div><h2>${esc(f.u.titel)}</h2>
+            const reihe = zustand.folien.filter(x => x.typ === "uebung" && !x.u.zusatz), unr = reihe.findIndex(x => x.u === f.u) + 1;
+            return `<div>${f.u.zusatz ? '<span class="p-chip zusatz">Zusatz – wenn noch Zeit ist</span>' : (reihe.length > 1 ? `<span class="p-chip">Übung ${unr} von ${reihe.length}</span>` : "") + fuerChip(f.u)}${f.u.dauer ? `<span class="p-chip">${esc(f.u.dauer)}</span>` : ""}</div><h2>${f.u.emoji ? esc(f.u.emoji) + " " : ""}${esc(f.u.titel)}</h2>
                 <div class="p-text" style="font-size:${String(f.u.text || "").length > 450 ? "clamp(14px,min(1.45vw,2.3vh),26px)" : String(f.u.text || "").length > 280 ? "clamp(17px,min(2.1vw,3.6vh),34px)" : "clamp(20px,min(2.6vw,4.6vh),40px)"}">${md(f.u.folie ? f.u.folie : aufzaehlung(f.u.text).length ? kurz.split("\n").filter(z => !/^\s*[-•]/.test(z)).join("\n") : f.u.text)}</div>${f.u.liste ? `<div class="p-liste">${f.u.liste.map(x => `<div>${inline(x)}</div>`).join("")}</div>` : ""}
                 <div class="p-reihe">${min ? `<button class="p-knopf gold" data-start="${min}">⏱ ${min} Minuten starten</button>` : ""}<button class="p-knopf hell" data-p="rad">🎡 Wer fängt an?</button>${f.u.zusatz ? `<button class="p-knopf hell" data-springen="${f.weiter}">⏭ Überspringen</button>` : ""}</div>`;
         }
         case "abstimmung":
             return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage"${f.aussage.length > 70 ? ' style="font-size:clamp(20px,min(3vw,5vh),48px)"' : f.aussage.length > 32 ? ' style="font-size:clamp(22px,min(3.6vw,6vh),56px)"' : ""}>${inline(f.aussage)}</div>${stimmenHtml("q" + zustand.i + f.aussage, abstimmOptionen(f.art, f.u))}${f.loesung && f.loesung.length ? '<div class="p-reihe" style="margin-top:1.5vh"><button class="p-knopf hell" data-aufloesen="1">✅ Auflösen</button></div>' : ""}`;
         case "karte":
-            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage">${inline(f.aussage)}</div>${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${inline(f.u.frage)}</div>` : ""}
+            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage">${inline(f.aussage)}</div>${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${md(f.u.frage)}</div>` : ""}
                 <div class="p-reihe" style="margin-top:2vh"><button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div>`;
         case "arbeitsblatt":
             return `<div class="p-bilder">${ltBild("stift")}${ltBild("heft")}</div><h2>Bearbeite jetzt leise dein Arbeitsblatt.</h2>
