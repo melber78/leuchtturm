@@ -2,7 +2,7 @@
    Leuchtturm – Sozialtraining: „Klartext“ Teil 3 – NUR Kl. 3/4
    Reihe „Auf Mutter gehen“: Familien-Beleidigungen und sexualisierte
    Schimpfwörter. Drei Stunden, die aufeinander aufbauen:
-   1. Warum trifft das so? – Schutzsätze
+   1. Warum trifft das so? – Cool-bleiben-Plan
    2. Was Schimpfwörter wirklich sagen
    3. Unsere Sprach-Regel (Vertrag + was tun, wenn's doch passiert)
    4. Wer am Boden liegt – Schluss! (Kopftritte, absolute Grenzen, Zuschauer)
@@ -34,8 +34,8 @@ window.SOZIAL_VORLAGEN.push(
 K({
     id: "k-mutter",
     titel: "Auf Mutter gehen – warum trifft das so hart?",
-    ziel34: "Verstehen, warum Sprüche über die Familie so treffen, und sich mit Schutzsätzen wehren, ohne auszurasten",
-    material: "Tafel: Eisberg „Warum trifft das?“\nPlakat „Familie ist tabu – meine Schutzsätze“ (Arbeitsmaterial)\nHinweis für dich: Die Wörter selbst werden nicht ausgesprochen und nicht angeschrieben – wir sagen „ein Spruch über die Mutter“ oder „das H-Wort“.",
+    ziel34: "Verstehen, warum Sprüche über die Familie so treffen, und mit einem eigenen Cool-bleiben-Plan reagieren (Körper bremsen – Kopf-Satz – kurz antworten – weggehen), ohne auszurasten",
+    material: "Tafel: Eisberg „Warum trifft das?“\nPlakat „Mein Cool-bleiben-Plan“ (Arbeitsmaterial)\nHinweis für dich: Die Wörter selbst werden nicht ausgesprochen und nicht angeschrieben – wir sagen „ein Spruch über die Mutter“ oder „das H-Wort“.",
     materialIds: ["schutzsaetze-familie"],
     lerntext34: { titel: "Der Spruch", text:
 `Mittwoch, Hofpause. Anton und Kevin streiten sich, wer beim Fußball dran ist. Kevin merkt, dass er verliert. Da sagt er einen Spruch über Antons Mutter – einen von der übelsten Sorte. Ein paar Jungs johlen.
@@ -60,18 +60,25 @@ Später sagt ihm sein Onkel: „Kevin kennt deine Mutter gar nicht. Der Spruch h
           folie: "Ein Spruch über die **Mutter**. 🧊\n\nWarum tut das so weh?\n\nUnd: **Wer weiß genau, dass das dein wunder Punkt ist?**",
           emoji: "🧊",
           warum: "Wir verstehen, warum Sprüche über die Familie so wehtun." },
-        { titel: "Schutzsätze", dauer: "7 Min",
-          text: "Gemeinsam Sätze sammeln, die zeigen: Meine Familie kriegst du nicht. Kurz, ruhig, ohne zurückzubeleidigen. Dann sagt jedes Kind seinen Lieblingssatz einmal laut vom Platz – mit fester Stimme und geradem Blick.\n\n- „Meine Mutter kennst du gar nicht.“\n- „Lass meine Familie da raus.“\n- „Das sagt mehr über dich als über sie.“\n- „Ich hab's gehört. Ich geb dir nicht, was du willst.“\n- Nichts sagen, umdrehen, zur Aufsicht gehen.",
+        { titel: "Mein Cool-bleiben-Plan", dauer: "6 Min",
+          text: "Lange, kluge Sätze kommen in der Wut nicht raus – und wirken auf dem Hof oft schwach. Was hilft, ist ein kurzer Plan in **4 Schritten**, den man vorher kennt. Gehe die Schritte mit der Gruppe durch, jeder Schritt wird einmal **gemeinsam gemacht** (nicht nur besprochen):\n\n- ✊ **Körper bremsen:** Hände in die Hosentaschen oder hinter den Rücken, einen Schritt zurück, ganz lange ausatmen.\n- 🧠 **Kopf-Satz – nur in Gedanken:** „Der kennt meine Mutter gar nicht.“ · „Der will, dass ich ausraste.“ · „Wer cool bleibt, gewinnt.“\n- 😐 **Kurz und lässig antworten – oder gar nicht:** „Okay.“ · „Mhm.“ · „Langweilig.“ · Schulterzucken. Kein Wort über seine Familie!\n- 🚶 **Respekt-Abgang:** umdrehen, weggehen, zur Aufsicht oder zu jemandem, der dir guttut.\n\nDann sucht sich jedes Kind **seinen** Kopf-Satz und **seine** Kurz-Antwort aus und sagt sie einmal laut (die Kurz-Antwort mit Schulterzucken). Wichtig zu sagen: **Weggehen ist nicht feige.** Wer weggeht, hat entschieden – nicht der, der den Spruch gemacht hat.",
           quiz: "liste",
-          folie: "**Meine Familie kriegst du nicht.** 🛡️\n\nKurz, ruhig, ohne zurückzubeleidigen. Sag deinen Lieblingssatz laut.",
+          folie: "Wer auf deine Familie geht, will dich **ausrasten** sehen. 🧊 Gib ihm das nicht – mit diesen 4 Schritten:",
           kern: ["34"],
-          emoji: "🛡️",
-          warum: "Wir üben Sätze, mit denen du dich wehrst – ohne auszurasten." }
+          emoji: "🧊",
+          warum: "Wir machen einen Plan, mit dem du cool bleibst – auch wenn's um deine Familie geht." },
+        { titel: "Training mit dem Quatsch-Spruch", dauer: "7 Min",
+          text: "Geübt wird **nie** mit einem echten Spruch – sondern mit einem Quatsch-Spruch, der niemandem wehtut. Du schreibst ihn an die Tafel, z. B. **„Deine Mutter trägt Socken!“** oder **„Deine Oma isst Nudeln!“**.\n\nEin Kind kommt nach vorn (freiwillig, per Glücksrad). **Du** sagst den Quatsch-Spruch – möglichst fies betont. Das Kind macht seinen Plan: Hände weg – ausatmen – Kurz-Antwort – Respekt-Abgang zur Tür. Die anderen achten auf **einen** Punkt: War der Körper ruhig?\n\nRunde 2 (für Mutige): Du legst nach („Hast du nicht gehört? Socken!“) – das Kind bleibt beim Plan und geht trotzdem. Applaus für jeden Abgang.\n\nZum Schluss: **Was war schwer?** Meist ist es der Moment, in dem die anderen johlen – genau das ist der Augenblick, in dem der Plan zählt.",
+          quiz: "keine",
+          folie: "**Training mit dem Quatsch-Spruch** 🧦\n\n„Deine Mutter trägt Socken!“\n\nHände weg – ausatmen – kurz antworten – **Respekt-Abgang**.",
+          kern: ["34"],
+          emoji: "🧦",
+          warum: "Wir üben den Plan – mit einem Spruch, der niemandem wehtut." }
     ],
     ab34: { titel: "Meine Familie kriegst du nicht", aufgaben: [
         { typ: "ankreuzen", text: "Warum trifft ein Spruch über die Mutter so hart? Kreuze an, was für dich stimmt.", optionen: ["Sie ist mir am wichtigsten.", "Ich will sie beschützen.", "Es ist vor allen peinlich.", "Es geht um Ehre.", "Ich weiß nicht, was ich sagen soll."] },
         { typ: "tabelle", text: "Was passiert dann? Schreib in jede Spalte, was danach passieren kann.", spalten: ["Wenn ich ausraste …", "Wenn ich ruhig bleibe …"], zeilen: [["", ""], ["", ""]] },
-        { typ: "luecken", text: "", nummern: false, saetze: ["Mein Schutzsatz: ___", "Danach mache ich: ___"] },
+        { typ: "luecken", text: "Mein Cool-bleiben-Plan:", nummern: false, saetze: ["✊ So bremse ich meinen Körper: ___", "🧠 Mein Kopf-Satz: ___", "😐 Meine Kurz-Antwort: ___", "🚶 Dahin gehe ich danach: ___"] },
         { typ: "schreiben", text: "Was würde deine Mutter (oder wer für dich wichtig ist) sich wünschen, wie du reagierst?", zeilen: 3 }
     ]}
 }),
@@ -124,7 +131,7 @@ K({
     id: "k-sprachregel",
     titel: "Unsere Sprach-Regel: Familie ist tabu",
     ziel34: "Gemeinsam eine verbindliche Sprach-Regel aufstellen und festlegen, was passiert, wenn sie gebrochen wird",
-    material: "Plakat „Unsere Gruppenregeln“ (leer, mit Unterschriften – Arbeitsmaterial)\nPlakat „Familie ist tabu – meine Schutzsätze“\nrote und grüne Karten",
+    material: "Plakat „Unsere Gruppenregeln“ (leer, mit Unterschriften – Arbeitsmaterial)\nPlakat „Mein Cool-bleiben-Plan“\nrote und grüne Karten",
     materialIds: ["gruppenregeln-leer", "schutzsaetze-familie", "rot-gruen"],
     lerntext34: { titel: "Die 4b macht einen Deal", text:
 `In der 4b gab es fast jeden Tag Prügeleien. Fast immer fing es mit einem Spruch über die Familie an. Die Lehrerin schlug vor: „Macht ihr selbst eine Regel. Ich schreibe nur mit.“

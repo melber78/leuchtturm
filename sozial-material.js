@@ -277,8 +277,8 @@ const B = {
         items: ["elefant", "giraffe", "pinguin", "krokodil", "affe", "loewe", "schildkroete", "hase", "eule", "frosch", "kaenguru", "igel"].map(b => ({ bild: b, text: (window.LT_BILDER && window.LT_BILDER[b] ? window.LT_BILDER[b][0] : b) })) },
     "schatz-hinweise": { titel: "Hinweiskarten für die Schatzsuche", gruppe: "Vertretung", art: "karten", proSeite: 8,
         items: Array.from({ length: 8 }, (_, i) => ({ emoji: "🗺️", text: "Hinweis " + (i + 1), linien: 2 })), hinweis: "Hinweise von Hand eintragen und im Raum verstecken." },
-    "schutzsaetze-familie": { titel: "Plakat: Familie ist tabu – meine Schutzsätze", gruppe: "Klartext (Kl. 3/4)", art: "plakat",
-        punkte: [{ emoji: "🛡️", text: "„Meine Mutter kennst du gar nicht.“" }, { emoji: "🚫", text: "„Lass meine Familie da raus.“" }, { emoji: "🪞", text: "„Das sagt mehr über dich als über sie.“" }, { emoji: "🧊", text: "„Ich geb dir nicht, was du willst.“" }, { emoji: "🚶", text: "Umdrehen, weggehen, Aufsicht holen." }],
+    "schutzsaetze-familie": { titel: "Plakat: Mein Cool-bleiben-Plan", gruppe: "Klartext (Kl. 3/4)", art: "plakat",
+        punkte: [{ emoji: "✊", text: "Körper bremsen: Hände weg, Schritt zurück, lang ausatmen." }, { emoji: "🧠", text: "Im Kopf: „Der kennt meine Mutter gar nicht.“" }, { emoji: "😐", text: "Kurz antworten: „Okay.“ – oder gar nichts." }, { emoji: "🚶", text: "Respekt-Abgang: weggehen, zur Aufsicht." }, { emoji: "🏆", text: "Wer cool bleibt, gewinnt." }],
         fuss: "Wer auf Familie geht, will dich ausrasten sehen. Gib ihm das nicht." },
     "grenzen-gewalt": { titel: "Plakat: Die absoluten Grenzen", gruppe: "Klartext (Kl. 3/4)", art: "plakat",
         punkte: [{ emoji: "🧠", text: "Nie gegen den Kopf – kein Schlag, kein Tritt." }, { emoji: "🛑", text: "Wer am Boden liegt: sofort Schluss." }, { emoji: "🔪", text: "Keine Gegenstände, keine Waffen." }, { emoji: "👥", text: "Nie zu mehreren auf einen." }, { emoji: "📵", text: "Zuschauer filmen nicht – sie holen Hilfe." }],
@@ -398,7 +398,7 @@ const WOZU = {
 "bewegungs-karten": "Für den Bewegungs-Würfel: Ein Kind zieht, die Augenzahl sagt, wie oft.",
 "tier-karten": "Für „Wer bin ich?“: verdeckt ziehen.",
 "schatz-hinweise": "Für die Schatzsuche: vor der Stunde im Raum verstecken.",
-"schutzsaetze-familie": "Hängt an der Tafel – die Kinder suchen sich daraus ihren Schutzsatz aus.",
+"schutzsaetze-familie": "Hängt an der Tafel und danach im Raum – die vier Schritte, wenn jemand auf die Familie geht.",
 "grenzen-gewalt": "Hängt dauerhaft im Raum – die Grenzen, die immer gelten.",
 "pflaster": "Für das Pflaster-Spiel: Du klebst jedem Kind eins auf."
 };
