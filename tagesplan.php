@@ -159,6 +159,9 @@ input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--meer
 .w-slot .t{ font-weight:800; display:block; overflow-wrap:anywhere; }
 .w-slot.aus{ opacity:.5; text-decoration:line-through; }
 .w-slot.pause{ background:transparent; border-left-color:transparent; padding:2px 8px; color:var(--grau); }
+.w-slot.w-frei{ background:transparent; border:2px dashed #d3dbd8; border-left:5px solid #d3dbd8; color:var(--grau); }
+.w-slot.w-frei b{ color:var(--grau); }
+.w-slot.w-frei .t{ font-weight:700; font-style:italic; }
 .w-ferien{ background:#f9eeda; color:#8a5a12; border-radius:10px; padding:4px 8px; font-size:12px; font-weight:800; margin-bottom:6px; }
 
 /* ---------- Stundenplan ---------- */
@@ -749,10 +752,13 @@ function zeigeWoche(){
         <div class="woche">${tage.map(d => {
             const t = tagDaten(d, false);
             const offeneTodos = [...t.todos, ...Object.values(t.slots).flatMap(x => Array.isArray(x.todos) ? x.todos : [])].filter(x => !x.ok).length;
-            const zeilen = s.zeiten.map(z => {
+            const belegt = s.zeiten.map(z => { const x = slotInfo(d, z.id); return z.typ !== "pause" && !!(x.art || x.einheit || x.ov.notiz); });
+            const erste = belegt.indexOf(true), letzte = belegt.lastIndexOf(true);
+            const zeilen = s.zeiten.map((z, zi) => {
                 const info = slotInfo(d, z.id), a = ARTEN[info.art] || ARTEN.sonstiges;
                 if (z.typ === "pause" && !info.art) return "";
-                if (!info.art && !info.einheit && !(info.ov.notiz)) return "";
+                if (!info.art && !info.einheit && !(info.ov.notiz) && (zi < erste || zi > letzte)) return "";
+                if (!info.art && !info.einheit && !(info.ov.notiz)) return `<a class="w-slot w-frei" href="#tag/${d}"><b>${esc(z.name + ".")} ${esc(zeitText(z))}</b><span class="t">Freistunde</span></a>`;
                 return `<a class="w-slot ${info.aus ? "aus" : ""}" href="#tag/${d}" style="--f:${a.farbe}"><b>${esc(z.typ === "pause" ? (z.name || "Pause") : z.name + ".")} ${esc(zeitText(z))} · ${esc(a.name)}</b><span class="t">${info.zweit ? '<i class="fa-solid fa-user-group" title="Zweitbesetzung" style="color:var(--grau)"></i> ' : ""}${esc(werText(info) || "")}${info.einheit && !info.aus ? (werText(info) ? ": " : "") + esc(info.einheit.titel) : ""}${info.ov.notiz ? ' <i class="fa-regular fa-note-sticky" style="color:var(--grau)"></i>' : ""}</span></a>`;
             }).join("");
             const extra = t.extra.filter(x => x.titel).map(x => `<a class="w-slot" href="#tag/${d}" style="--f:#c0392b"><b>${esc(x.von || "")}${x.bis ? "–" + esc(x.bis) : ""} · Termin</b><span class="t">${esc(x.titel)}</span></a>`).join("");
