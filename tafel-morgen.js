@@ -10,6 +10,20 @@
 "use strict";
 (function () {
 
+// Uhrzeit vom Server statt von der Tafel: Geht die Uhr des Tafel-PCs falsch, stimmt die Anzeige trotzdem.
+// Startwert kommt mit der Seite, danach wird alle 15 Minuten über den Server nachgestellt.
+let zeitVersatz = window.TAFEL_SERVERZEIT ? window.TAFEL_SERVERZEIT - window.TAFEL_GELADEN : 0;
+const jetztD = () => new Date(Date.now() + zeitVersatz);
+async function zeitAbgleichen(){
+    try {
+        const t0 = Date.now(), r = await fetch(location.pathname + "?zeit=" + t0, { method: "HEAD", cache: "no-store" }), t1 = Date.now();
+        const hdr = r.headers.get("Date"); if (!hdr) return;
+        const server = Date.parse(hdr) + 500;               // Date-Kopf hat nur ganze Sekunden
+        if (!isNaN(server) && t1 - t0 < 3000) zeitVersatz = server - (t0 + t1) / 2;
+    } catch (x) { /* offline: alter Wert bleibt */ }
+}
+zeitAbgleichen(); setInterval(zeitAbgleichen, 15 * 60 * 1000);
+
 // Vorgaben – werden beim ersten Öffnen in die gespeicherten Daten übernommen und sind danach frei bearbeitbar
 const DEF_FAECHER = {
     deutsch:   { n: "Deutsch", e: "📖", f: "#e2574c", m: ["fibel", "heft"] },
@@ -144,14 +158,14 @@ function wocheNr(d){ return d.getFullYear() * 100 + kw(d); }
 let autoGerueckt = false;
 D.klassen.forEach(k => {
     if (!k.dienstAuto || !(k.dienste || []).length) return;
-    const jetzt = wocheNr(new Date());
-    if (k.dienstWoche && jetzt > k.dienstWoche) { const diff = Math.round((new Date() - montagVon(k.dienstWoche)) / (7 * 864e5)); if (diff > 0) { diensteRuecken(k, diff); autoGerueckt = true; } }
+    const jetzt = wocheNr(jetztD());
+    if (k.dienstWoche && jetzt > k.dienstWoche) { const diff = Math.round((jetztD() - montagVon(k.dienstWoche)) / (7 * 864e5)); if (diff > 0) { diensteRuecken(k, diff); autoGerueckt = true; } }
     if (k.dienstWoche !== jetzt) { k.dienstWoche = jetzt; autoGerueckt = true; }
 });
 function montagVon(wn){ const j = Math.floor(wn / 100), w = wn % 100; const d = new Date(j, 0, 4); const tag = d.getDay() || 7; d.setDate(d.getDate() - tag + 1 + (w - 1) * 7); return d; }
 let tagVersatz = 0, wetterLive = null, abgehakt = {}, startModus = "";
 const klasse = () => D.klassen.find(k => k.id === D.aktiv) || D.klassen[0];
-const tag = () => { const d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() + tagVersatz); return d; };
+const tag = () => { const d = jetztD(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() + tagVersatz); return d; };
 
 /* ---------- Speichern ---------- */
 let speicherTimer = null, ungesichert = false, speicherFehler = "";
@@ -239,7 +253,7 @@ function ablauf(k, d){
         if (p) { const v = minuten(s.bis), naechste = k.zeiten[s.nr] && minuten(k.zeiten[s.nr][0]);
             liste.push({ art: "pause", name: p.name, e: p.e, v, b: naechste && naechste > v ? naechste : (v != null ? v + 20 : null), von: s.bis, bis: naechste && naechste > v ? k.zeiten[s.nr][0] : "" }); }
     });
-    const n = new Date(), jetzt = n.getHours() * 60 + n.getMinutes();
+    const n = jetztD(), jetzt = n.getHours() * 60 + n.getMinutes();
     if (tagVersatz === 0) liste.forEach(x => { x.status = x.v == null ? "" : jetzt >= x.b ? "vorbei" : jetzt >= x.v ? "jetzt" : ""; });
     // während einer Pause / vor Schulbeginn: die nächste Stunde ist „gleich dran“
     if (tagVersatz === 0 && !liste.some(x => x.status === "jetzt")) { const g = liste.find(x => x.art === "stunde" && !x.ausfall && x.status === ""); if (g) g.status = "gleich"; }
@@ -266,7 +280,7 @@ function hinweiseHeute(k, d){
 }
 // Begrüßung je nach Uhrzeit: bis 10 Uhr „Guten Morgen“, bis 17 Uhr „Guten Tag“, danach „Guten Abend“
 function tageszeit(){
-    const n = new Date(), m = n.getHours() * 60 + n.getMinutes();
+    const n = jetztD(), m = n.getHours() * 60 + n.getMinutes();
     if (tagVersatz !== 0 || m < 10 * 60) return ["Guten Morgen", "🌅"];
     if (m < 17 * 60) return ["Guten Tag", "☀️"];
     return ["Guten Abend", "🌙"];
@@ -453,7 +467,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { co
 window.addEventListener("resize", () => { if (document.getElementById("morgen") && document.getElementById("morgen").classList.contains("an")) einpassen(); });
 function uhr(){
     const el = document.getElementById("mgUhr"); if (!el) return;
-    const n = new Date();
+    const n = jetztD();
     el.textContent = String(n.getHours()).padStart(2, "0") + ":" + String(n.getMinutes()).padStart(2, "0");
 }
 
@@ -510,7 +524,7 @@ function wetterWahl(){
     o.querySelectorAll("[data-w]").forEach(b => b.addEventListener("click", () => {
         k.wetterManuell = k.wetterManuell || {};
         if (b.dataset.w) k.wetterManuell[heute] = b.dataset.w; else delete k.wetterManuell[heute];
-        Object.keys(k.wetterManuell).forEach(x => { if (x < iso(new Date(Date.now() - 7 * 864e5))) delete k.wetterManuell[x]; });
+        Object.keys(k.wetterManuell).forEach(x => { if (x < iso(new Date((Date.now() + zeitVersatz) - 7 * 864e5))) delete k.wetterManuell[x]; });
         speichern(); o.remove(); zeichnen();
     }));
 }
@@ -639,7 +653,7 @@ function editorAktivieren(p, k){
     p.querySelectorAll("[data-dweg]").forEach(b => b.addEventListener("click", () => { k.dienste.splice(+b.dataset.dweg, 1); neu(); }));
     const dp = p.querySelector("[data-dplus]"); if (dp) dp.addEventListener("click", () => { k.dienste.push({ e: "⭐", n: "", kind: "" }); neu(); });
     const dr = p.querySelector("[data-drueck]"); if (dr) dr.addEventListener("click", () => { diensteRuecken(k, 1); neu(); });
-    const da = p.querySelector("[data-dauto]"); if (da) da.addEventListener("change", () => { k.dienstAuto = da.checked; k.dienstWoche = wocheNr(new Date()); speichern(); });
+    const da = p.querySelector("[data-dauto]"); if (da) da.addEventListener("change", () => { k.dienstAuto = da.checked; k.dienstWoche = wocheNr(jetztD()); speichern(); });
     const ak = p.querySelector("[data-ausKurs]"); if (ak) ak.addEventListener("click", () => { const neu = kursBuchstabe(), l = buchstabenDerWoche(k); if (!l.includes(neu)) l.push(neu); k.buchstabe = l.slice(-4).join(", "); p.querySelector('[data-feld="buchstabe"]').value = k.buchstabe; speichern(); zeichnen(); });
     const os = p.querySelector("[data-ortsuche]");
     if (os) os.addEventListener("click", async () => {
@@ -690,7 +704,7 @@ function buchstabenDerWoche(k){ return [...new Set(String(k.buchstabe || "").toL
 // Buchstabe der Stunde aus dem Buchstabenkurs (auf diesem Gerät)
 function kursBuchstabe(){ try { return (JSON.parse(localStorage.getItem("tb_buchstabenkurs") || "{}").aktuell) || ""; } catch (x) { return ""; } }
 // Alte Tages-Hinweise (älter als 2 Wochen) entfernen
-function aufraeumen(k){ const grenze = iso(new Date(Date.now() - 14 * 864e5)); k.hinweise = (k.hinweise || []).filter(h => !/^\d{4}-/.test(h.wann) || h.wann >= grenze);
+function aufraeumen(k){ const grenze = iso(new Date((Date.now() + zeitVersatz) - 14 * 864e5)); k.hinweise = (k.hinweise || []).filter(h => !/^\d{4}-/.test(h.wann) || h.wann >= grenze);
     Object.keys(k.aenderungen || {}).forEach(t => { if (t < grenze) delete k.aenderungen[t]; }); }
 
 /* ---------- Öffnen / Schließen ---------- */
@@ -709,7 +723,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const w = document.getElementById("morgen"); if (!w) return;
     w.addEventListener("click", klick);
     let letzteMinute = -1;   // jede Minute neu zeichnen: Stundenwechsel, blasse Stunden, Material der Stunde
-    setInterval(() => { if (!w.classList.contains("an")) return; uhr(); const m = new Date().getMinutes(); if (m !== letzteMinute) { if (letzteMinute >= 0) zeichnen(); letzteMinute = m; } }, 1000);
+    setInterval(() => { if (!w.classList.contains("an")) return; uhr(); const m = jetztD().getMinutes(); if (m !== letzteMinute) { if (letzteMinute >= 0) zeichnen(); letzteMinute = m; } }, 1000);
     setInterval(() => { if (w.classList.contains("an")) wetterLaden(); }, 30 * 60 * 1000);
     if (location.hash === "#morgen") oeffnen();
     window.addEventListener("hashchange", () => { if (location.hash === "#morgen") oeffnen(); });

@@ -575,6 +575,7 @@ body{ background:#f6f2ea; }
 <script>
 window.TAFEL_DATEN = <?= json_encode($tbDaten, $JSON) ?>;
 window.TAFEL_CSRF = <?= json_encode($_SESSION["tafel_csrf"]) ?>;
+window.TAFEL_SERVERZEIT = <?= round(microtime(true) * 1000) ?>; window.TAFEL_GELADEN = Date.now();
 window.TB_ERLAUBT = <?= json_encode(["buchstabenkurs" => !$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs"), "morgen" => !$LT_GAST || lt_gastDarf($LT_GAST, "morgen")]) ?>;
 </script>
 <script src="tafel-morgen.js?v=<?= @filemtime(__DIR__ . "/tafel-morgen.js") ?>"></script>
