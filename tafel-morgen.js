@@ -256,7 +256,8 @@ function materialJetzt(k, d){
     const bezug = stunden.find(s => s.status === "jetzt") || stunden.find(s => s.status === "gleich");
     if (!bezug) return { titel: "Schulschluss", e: "🎒", liste: vereint(immer, MATERIAL.postmappe ? ["postmappe"] : []), schluss: true, letzte: true };
     const letzte = bezug === stunden[stunden.length - 1] && stunden.length > 1;
-    if (bezug === stunden[0]) return { titel: "Zum Tagesbeginn", e: "🌅", liste: vereint(immer, extra, fachMaterial(k, bezug.f)), stunde: bezug };
+    // „Zum Tagesbeginn“ nur bis die 1. Stunde anfängt – danach läuft die Karte mit dem Stundenplan mit
+    if (bezug === stunden[0] && bezug.status !== "jetzt") return { titel: "Zum Tagesbeginn", e: "🌅", liste: vereint(immer, extra, fachMaterial(k, bezug.f)), stunde: bezug };
     return { titel: fachInfo(bezug.f).n, e: fachInfo(bezug.f).e, liste: vereint(fachMaterial(k, bezug.f), letzte && MATERIAL.verhaltenshefter ? ["verhaltenshefter"] : []), stunde: bezug, letzte };
 }
 function hinweiseHeute(k, d){
