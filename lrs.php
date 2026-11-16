@@ -637,6 +637,47 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .rs-optionen span{ border:2px solid #C9D6E3; border-radius:8px; padding:0 10px; min-width:34px; text-align:center; }
 .rs-wortbank{ display:flex; flex-wrap:wrap; gap:8px 12px; border:2px dashed #8FA3B8; border-radius:14px; padding:12px 14px; font-size:19px; }
 .rs-tabelle{ width:100%; border-collapse:collapse; table-layout:fixed; }
+/* Vom Lesen zum Schreiben */
+.rsa-schritte.vs-4{ grid-template-columns:repeat(4, 1fr); }
+.vs-probe{ display:flex; flex-direction:column; gap:8px; font-size:18px; }
+.vs-merk{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.vs-merkbox{ border:2.5px solid #2C4A6E; border-radius:14px; padding:10px 12px; font-size:16px; display:flex; flex-direction:column; gap:6px; }
+.vs-merkbox small{ color:#4A5866; font-size:14px; }
+.vs-koenige{ display:flex; flex-wrap:wrap; gap:6px; }
+.vs-koenige span{ border:2px solid #C9D6E3; background:#EEF2F7; border-radius:8px; padding:2px 10px; font-size:22px; font-weight:700; }
+.vs-beispiel{ display:flex; align-items:center; flex-wrap:wrap; gap:10px; font-size:20px; background:#F3F6F9; border-radius:14px; padding:10px 14px; }
+.vs-pfeil{ font-size:26px; color:#2C4A6E; }
+.vs-wort{ display:inline-flex; gap:14px; flex-wrap:wrap; }
+.vs-silbe{ display:inline-flex; gap:3px; padding-bottom:7px; border-bottom:3px solid #E67E22; border-radius:0 0 40% 40% / 0 0 14px 14px; }
+.vs-k{ display:inline-flex; width:38px; height:44px; border:2px solid #2C4A6E; border-radius:6px; align-items:center; justify-content:center; font-size:24px; background:#fff; }
+.vs-k.vok{ background:#E6EBF0; }
+.vs-karte{ padding:8px 12px; }
+.vs-bildfeld{ width:58px; height:58px; flex:none; display:flex; align-items:center; justify-content:center; }
+.vs-bildfeld.klein{ width:48px; height:48px; }
+.vs-hoer{ font-size:28px; }
+.vs-diktathinweis{ margin-left:auto; font-size:15px; }
+.vs-tab td{ height:50px; }
+.vs-tab .vs-bz{ text-align:center; }
+.vs-wortzelle{ font-size:26px; letter-spacing:.06em; }
+.vs-silbenzelle .fs-loes{ font-size:19px; }
+.vs-falsch{ color:#2C3E55; font-family:"Atkinson Hyperlegible", sans-serif; }
+.vs-teppich{ border-collapse:collapse; width:100%; table-layout:fixed; }
+.vs-teppich td{ border:2px solid #C9D6E3; font-size:22px; padding:6px 2px; text-align:center; }
+.vs-teppich tr:nth-child(odd) td{ background:#F3F6F9; }
+.vs-silbendiktat{ display:grid; grid-template-columns:repeat(3, 1fr); gap:12px 22px; }
+.vs-silbendiktat > div{ display:flex; align-items:flex-end; gap:8px; }
+.vs-linie{ flex:1; border-bottom:2px solid #8FA3B8; height:40px; display:flex; align-items:flex-end; font-size:22px; padding-left:6px; }
+.vs-trainer{ border-top:2px dashed #8FA3B8; padding-top:8px; font-size:14px; color:#4A5866; margin-top:auto; }
+.vs-silbenfelder{ display:flex; align-items:flex-end; gap:6px; }
+.vs-sf{ display:inline-flex; min-width:84px; height:44px; border-bottom:3px solid #E67E22; align-items:flex-end; justify-content:center; font-size:22px; padding:0 4px; }
+.vs-bind{ color:#8FA3B8; font-size:22px; }
+.vs-ganz{ margin-left:auto; min-width:190px; height:40px; border-bottom:2px solid #8FA3B8; display:flex; align-items:flex-end; font-size:22px; padding-left:6px; }
+.vs-luecke{ display:inline-flex; align-items:center; gap:1px; font-size:28px; letter-spacing:.04em; }
+.vs-luecke .vs-k{ width:34px; height:40px; margin:0 3px; }
+.vs-satzzeilen{ display:flex; flex-direction:column; gap:12px; }
+.vs-satzzeile{ display:flex; gap:10px; align-items:center; }
+.vs-linien{ flex:1; display:flex; flex-direction:column; gap:14px; }
+.vs-linien > div{ border-bottom:2px solid #8FA3B8; height:34px; display:flex; align-items:flex-end; font-size:19px; }
 /* Rechtschreibung anwenden */
 .rsa-wahl{ display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:4px 14px; font-size:14px; margin-top:4px; }
 .rsa-wahl label{ display:flex; gap:6px; align-items:center; font-weight:600; margin:0; }
@@ -4009,7 +4050,7 @@ function fs_seite(bereich, nr, titel, inhalt, extra = {}){
     let kopf = ws_kopf(titel, label);
     if (extra.kopfRechts != null) kopf = kopf.replace('<div class="ws-name">Name: <span class="ws-linie"></span></div>', `<div class="ws-name">${extra.kopfRechts}</div>`);
     let html = ws_seite(nr, `${kopf}${inhalt}<!--/ws-inhalt-->
-        <div class="ws-fuss"><div>Leuchtturm · ${label}</div><div>${afs.startsWith("AFS") || extra.ohneAfs ? afs : "AFS · " + afs}</div></div>`);
+        <div class="ws-fuss"><div>Melanie Bernshausen · Diplomierte Mediendidaktikerin (EÖDL)</div><div>${afs.startsWith("AFS") || extra.ohneAfs ? afs : "AFS · " + afs}</div></div>`);
     // ältere Schüler: sachlichere Gestaltung
     const reif = extra.reif != null ? extra.reif : (typeof s.reif === "function" ? s.reif() : s.reif);
     if (reif) html = html.replace('<div class="ws-seite"', '<div class="ws-seite fs-reif"');
@@ -5763,6 +5804,191 @@ const RSA_BLAETTER = [
     { nr: "6", kurz: "Eigener Text", name: "Mein Text mit Stopp-Routine", bau: rsaB_text },
     { nr: "7", kurz: "Fehlerprofil", name: "Mein Fehlerprofil", bau: rsaB_profil },
 ];
+/* ---------- Vom Lesen zum Schreiben: Wörter verschriften ----------
+   Für Kinder, die lesen können, aber beim Schreiben nicht nachvollziehbar verschriften
+   („wie gehört“, aber Laute fehlen, sind vertauscht oder falsch zugeordnet).
+   Aufbau: Silben schwingen → Silbenkönig (Vokal) → Laute einzeln abhören (Lautkästchen)
+   → Silbe für Silbe schreiben → Kontroll-Lesen (Laut für Laut) → Sätze mit Schreib-Treppe.
+   Nur lautgetreue Wörter (kein Auslaut d/g/b, keine Doppelkonsonanten, kein Dehnungs-h,
+   kein sp/st am Anfang) – erst wenn das sicher sitzt, kommen die Rechtschreib-Strategien. */
+const VS_WOERTER = {
+    A: ["Rose", "Hose", "Hase", "Tomate", "Banane", "Rakete", "Lama", "Lupe", "Löwe", "Melone", "Kiwi", "Ufo", "Kanu", "Biene", "Seife", "Raupe", "Eule", "Taube", "Kamera",
+        "Nase", "Dose", "Name", "Limo", "Sofa", "Salami", "Rosine", "Kino", "Note", "Mode", "Tube", "Hupe", "Rübe", "Domino", "Pirat", "Rute", "Wale"],
+    B: ["Igel", "Kamel", "Besen", "Leiter", "Paket", "Telefon", "Ananas", "Mais", "Bus", "Lok", "Fisch", "Schal", "Schaf", "Tiger", "Ziege", "Maus", "Hai", "Wal",
+        "Gabel", "Tafel", "Nudel", "Esel", "Regen", "Wagen", "Rasen", "Ofen", "Feder", "Kabel", "Motor", "Planet", "Kugel", "Segel", "Nebel", "Hafen", "Muschel", "Dusche"],
+    C: ["Mantel", "Pinsel", "Ente", "Zelt", "Wolke", "Kerze", "Tulpe", "Krone", "Frosch", "Brot", "Elefant", "Kaktus", "Wolf", "Pilz", "Gurke", "Krake", "Brezel", "Trompete",
+        "Lampe", "Tante", "Blume", "Fenster", "Pflanze", "Kröte", "Gras", "Bremse", "Muskel", "Monster", "Kurve", "Garten", "Wurst", "Kranich", "Klasse"],
+    D: ["Kalender", "Internet", "Pausenbrot", "Marmelade", "Limonade", "Tomatensalat", "Kindergarten", "Wintermantel", "Paprika", "Krokodil", "Trompete", "Telefon", "Kamera",
+        "Monitor", "Lineal", "Hosentasche", "Turnhose", "Gemüse", "Bananenbrot", "Melonenkern", "Regenwurm", "Ameisenhaufen", "Elefant", "Karneval", "Tulpenbeet", "Gartenzaun"]
+};
+// „Klasse“ hat ss – rausnehmen; „Kurve“ hat v – rausnehmen (nur lautgetreue Wörter)
+VS_WOERTER.C = VS_WOERTER.C.filter(w => !["Klasse", "Kurve"].includes(w));
+VS_WOERTER.D = VS_WOERTER.D.filter(w => !["Karneval"].includes(w));
+const VS_SAETZE = {
+    A: ["Lisa malt eine Rose.", "Timo mag Bananen.", "Die Rakete ist rot.", "Oma hat eine Lupe.", "Mila malt einen Löwen.", "Opa mag Tomaten.", "Die Melone ist reif.", "Die Eule ruft.", "Der Hase hopst.", "Die Biene summt."],
+    B: ["Der Igel ist im Garten.", "Papa holt das Paket.", "Die Maus mag Mais.", "Das Telefon klingelt.", "Der Bus ist da.", "Tom holt eine Leiter.", "Am Abend gibt es Nudeln.", "Der Esel ist grau.", "Der Wal ist riesig.", "Lena malt einen Tiger."],
+    C: ["Im Zelt ist es warm.", "Die Kerze ist an.", "Der Frosch quakt.", "Mein Mantel ist warm.", "Die Wolke ist grau.", "Am Montag malen wir Tulpen.", "Opa holt Brot.", "Der Elefant trinkt.", "Die Lampe ist kaputt.", "Im Garten wachsen Blumen."],
+    D: ["Im Kindergarten malen die Kinder.", "Die Marmelade ist aus Kirschen.", "Der Pirat hat eine Kamera.", "Im Winter trage ich den Wintermantel.", "Am Montag gibt es Tomatensalat.", "Lena hat ihr Pausenbrot dabei.", "Das Internet ist heute langsam.", "Im Kalender malen wir die Ferien an.", "Der Regenwurm ist unter der Erde.", "Im Ameisenhaufen ist es warm."]
+};
+const VS_VOKALE = ["a", "e", "i", "o", "u", "ä", "ö", "ü", "au", "ei", "eu", "äu", "ie"];
+// Wort in Laute (Grapheme) zerlegen: sch, ch, ck, ng, pf, qu, ei, au, eu, äu, ie zählen als ein Laut
+function vs_laute(wort){ return (String(wort).match(/sch|ch|ck|ng|pf|qu|ei|ai|au|eu|äu|ie|./gi) || []); }
+const vs_istVokal = l => VS_VOKALE.includes(l.toLowerCase());
+let VS_BILDKEY = null;
+function vs_bild(wort){
+    if (!bild_da()) return null;
+    if (!VS_BILDKEY){ VS_BILDKEY = {}; Object.keys(LT_BILDER).forEach(k => { VS_BILDKEY[bild_name(k)] = k; }); }
+    return VS_BILDKEY[wort] || null;
+}
+function vs_ctx(stufe, bilder){ const kl = lt_klasse(); return { stufe: stufe || (kl <= 2 ? "A" : kl === 3 ? "B" : "C"), bilder: bilder == null ? kl <= 4 : bilder, gross: kl >= 5 }; }
+function vs_ausFormular(){
+    const st = lt_wert("vs-stufe"), b = lt_wert("vs-bilder");
+    return vs_ctx(st && st !== "auto" ? st : "", b === "mit" ? true : b === "ohne" ? false : null);
+}
+function vs_stufen(vs){ return vs.stufe === "AC" ? ["A", "B", "C"] : [vs.stufe]; }
+// Wörter ziehen: mit Bildern bevorzugt Wörter mit Bild
+function vs_woerter(vs, nurMitBild, passt){
+    const alle = vs_stufen(vs).flatMap(s => VS_WOERTER[s] || []).filter(w => !passt || passt(w));
+    const mit = alle.filter(w => vs_bild(w));
+    let vorrat = [];
+    const quelle = nurMitBild && vs.bilder && mit.length >= 14 ? mit : alle;   // zu wenige Bildwörter → lieber ohne Bild als doppelt
+    return () => { if (!vorrat.length) vorrat = mische(quelle); return vorrat.pop(); };
+}
+function vs_saetze(vs){ const alle = vs_stufen(vs).flatMap(s => VS_SAETZE[s] || []); let v = []; return () => { if (!v.length) v = mische(alle); return v.pop(); }; }
+const VS_TREPPE = [["👋", "Schwingen", "Wort in Silben schwingen."], ["🗣️", "Langsam sprechen", "Silbe für Silbe – jeden Laut lang ziehen."], ["✍️", "Schreiben", "Für jeden Laut einen Buchstaben."], ["🔍", "Kontroll-Lesen", "Laut für Laut lesen, genau wie es dasteht. Passt es?"]];
+function vs_treppeHtml(vs, klein){
+    const t = vs && !vs.gross ? VS_TREPPE.map((x, i) => i === 3 ? ["🤖", "Roboter-Lesen", "Laut für Laut lesen, genau wie es dasteht. Passt es?"] : x) : VS_TREPPE;
+    return `<div class="rsa-routine${klein ? " klein" : ""}"><div class="rsa-rt-titel">${vs && vs.gross ? "Meine Schreib-Routine" : "Meine Schreib-Treppe"} – bei jedem Wort</div><div class="rsa-schritte vs-4">${t.map(([em, n, x], i) => `<div><span class="rsa-snr">${i + 1}</span><b>${em} ${n}</b><small>${x}</small></div>`).join("")}</div></div>`;
+}
+// Lautkästchen eines Wortes: je Silbe eine Gruppe, je Laut ein Kästchen (Lösung als Lösungsbuchstabe)
+function vs_kaestchen(wort, zeigen){
+    return `<span class="vs-wort">${silben_trennen(wort).map(s => `<span class="vs-silbe">${vs_laute(s).map(l => `<span class="vs-k${vs_istVokal(l) ? " vok" : ""}">${zeigen ? ws_esc(l) : L(ws_esc(l))}</span>`).join("")}</span>`).join("")}</span>`;
+}
+function vs_bildZelle(wort, vs, gr){ const k = vs.bilder && vs_bild(wort); return k ? bild(k, gr || 54) : ""; }
+
+/* Blatt 1: Schreib-Treppe & Silbenkönige (Merkblatt) */
+function vsB_treppe(ctx){
+    const vs = ctx.vs, bsp = vs.gross ? "Kalender" : "Tomate";
+    return { titel: vs.gross ? "So schreibe ich ein Wort" : "Meine Schreib-Treppe", html: `
+        <div class="fs-ziel"><span>Lesen kannst du schon. Jetzt lernst du, <b>jeden Laut zu hören</b> – dann kann jeder lesen, was du schreibst.</span></div>
+        ${vs_treppeHtml(vs)}
+        <div class="vs-merk">
+          <div class="vs-merkbox"><b>👑 Jede Silbe hat einen König – einen Selbstlaut:</b><div class="vs-koenige">${VS_VOKALE.map(v => `<span>${v}</span>`).join("")}</div><small>Keine Silbe ohne König! Fehlt er, fehlt ein Laut.</small></div>
+          <div class="vs-merkbox"><b>🔤 Diese Laute schreibt man mit mehreren Buchstaben – sie kommen in <u>ein</u> Kästchen:</b><div class="vs-koenige">${["sch", "ch", "ei", "au", "eu", "ie", "ng", "pf", "qu"].map(v => `<span>${v}</span>`).join("")}</div></div>
+        </div>
+        <div class="vs-beispiel"><b>So geht's – Beispiel:</b> ${silben_trennen(bsp).join(" – ")} <span class="vs-pfeil">→</span> ${vs_kaestchen(bsp, true)}</div>
+        <div class="vs-probe"><b>Probier es aus:</b>${(() => { const n = vs_woerter(vs, true); return Array.from({ length: 4 }, () => n()).map(w => `<div class="fs-karte vs-karte"><div class="vs-bildfeld">${vs_bildZelle(w, vs, 50) || `<span class="vs-hoer">🔊</span>`}</div>${vs_kaestchen(w)}${vs_bildZelle(w, vs, 50) ? "" : `<span class="vs-diktathinweis">${L(ws_esc(w))}</span>`}</div>`).join(""); })()}</div>
+        <div class="rsa-stolper"><div><b>Laute, die ich oft vergesse:</b><i></i></div><div><b>Laute, die ich verwechsle:</b><i></i></div></div>` };
+}
+
+/* Blatt 2: Silben schwingen & König finden */
+function vsB_silben(ctx){
+    const vs = ctx.vs, naechstes = vs_woerter(vs, true);
+    const zeile = i => { const w = naechstes(), s = silben_trennen(w);
+        return `<tr><td class="rsa-n">${i + 1}</td>${vs.bilder ? `<td class="vs-bz">${vs_bildZelle(w, vs, 44)}</td>` : ""}<td class="vs-wortzelle">${ws_esc(w)}</td><td style="text-align:center;">${L(String(s.length))}</td><td class="vs-silbenzelle">${L(s.map(x => ws_esc(x).replace(/(sch|ch|ei|au|eu|äu|ie|[aeiouäöü])/i, "<u>$1</u>")).join(" · "))}</td></tr>`; };
+    return { titel: "Silben schwingen – König finden", zeile, max: 16, html: `
+        ${ws_aufgabe(1, `Lies das Wort und <b>schwinge</b> es in Silben. Zeichne unter jede Silbe einen <b>Bogen</b> und kreise in jeder Silbe den <b>König</b> (Selbstlaut) ein. Schreibe auf, wie viele Silben es sind – und schreibe das Wort in Silben auf.`)}
+        <table class="rs-tabelle rsa-tab vs-tab"><thead><tr><th style="width:8%;">Nr.</th>${vs.bilder ? '<th style="width:11%;">Bild</th>' : ""}<th style="width:${vs.bilder ? 31 : 38}%;">Wort (Bögen + König)</th><th style="width:11%;">Silben</th><th>In Silben geschrieben</th></tr></thead>
+        <tbody class="fs-fuell"></tbody></table>` };
+}
+
+/* Blatt 3: Lautkästchen – jeden Laut hören */
+function vsB_kaestchen(ctx){
+    const vs = ctx.vs, naechstes = vs_woerter(vs, true), diktat = [];
+    const zeile = i => { const w = naechstes(), k = vs_bildZelle(w, vs, 52); diktat.push(w);
+        return `<div class="fs-karte vs-karte"><div class="fs-reihe-nr">${i + 1}</div><div class="vs-bildfeld">${k || `<span class="vs-hoer">🔊</span>`}</div>${vs_kaestchen(w)}${k ? "" : `<span class="vs-diktathinweis">${L(ws_esc(w))}</span>`}</div>`; };
+    return { titel: "Lautkästchen: Jeden Laut hören", zeile, max: 12, html: `
+        ${ws_aufgabe(1, `${vs.bilder ? "Schau das Bild an oder hör zu (🔊 = die Trainerin sagt das Wort – es steht auf dem Lösungsblatt)." : "Die Trainerin sagt ein Wort."} Sprich es <b>Silbe für Silbe ganz langsam</b>. Für <b>jeden Laut</b> kommt ein Buchstabe in ein Kästchen. Jede Gruppe ist eine Silbe – die grauen Kästchen sind die Könige.`)}
+        <div class="fs-ziel" style="font-size:16px;"><span>Gleich viele Kästchen wie Laute: Bleibt ein Kästchen leer, hast du einen Laut überhört!</span></div>
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Blatt 4: Silbenteppich & Silbendiktat */
+function vsB_teppich(ctx){
+    const vs = ctx.vs, kons = ["m", "l", "n", "r", "s", "f", "w", "h", "t", "b", "d", "g", "k", "p", "sch"], vok = vs.stufe === "A" || vs.stufe === "AC" ? ["a", "e", "i", "o", "u"] : ["a", "e", "i", "o", "u", "au", "ei", "ie"];
+    const reihen = mische(kons).slice(0, 7);
+    const diktat = mische(reihen.flatMap(k => vok.map(v => k + v))).slice(0, 12);
+    const geschlossen = vs.stufe !== "A" ? mische(["mal", "tor", "bus", "ken", "sel", "fen", "gel", "lin", "dor", "kat", "sam", "rus"]).slice(0, 4) : [];
+    const liste = diktat.slice(0, 12 - geschlossen.length).concat(geschlossen);
+    return { titel: "Silbenteppich & Silbendiktat", html: `
+        ${ws_aufgabe(1, "Lies den Silbenteppich Zeile für Zeile – laut und deutlich.")}
+        <table class="vs-teppich"><tbody>${reihen.map(k => `<tr>${vok.map(v => `<td>${k === "sch" ? "Sch" : k.toUpperCase()}${v}</td>`).join("")}</tr>`).join("")}</tbody></table>
+        ${ws_aufgabe(2, "Silbendiktat: Die Trainerin sagt eine Silbe. Sprich sie leise nach und schreibe sie auf. Dann lies, was du geschrieben hast – passt es?")}
+        <div class="vs-silbendiktat">${liste.map((s, i) => `<div><span class="fs-reihe-nr">${i + 1}</span><span class="vs-linie">${L(ws_esc(s))}</span></div>`).join("")}</div>
+        <div class="vs-trainer">✂ Für die Trainerin – diktieren: ${liste.map(s => `<b>${ws_esc(s)}</b>`).join(" · ")}</div>` };
+}
+
+/* Blatt 5: Silbe für Silbe schreiben */
+function vsB_silbeFuerSilbe(ctx){
+    const vs = ctx.vs, naechstes = vs_woerter(vs, true, w => silben_trennen(w).length >= 2);
+    const zeile = i => { const w = naechstes(), s = silben_trennen(w), k = vs_bildZelle(w, vs, 52);
+        return `<div class="fs-karte vs-karte"><div class="fs-reihe-nr">${i + 1}</div><div class="vs-bildfeld">${k || `<span class="vs-hoer">🔊</span>`}</div><div class="vs-silbenfelder">${s.map(x => `<span class="vs-sf">${L(ws_esc(x))}</span>`).join('<span class="vs-bind">·</span>')}</div><span class="vs-ganz">${L(ws_esc(w))}</span>${k ? "" : `<span class="vs-diktathinweis">${L("🔊 " + ws_esc(w))}</span>`}</div>`; };
+    return { titel: "Silbe für Silbe schreiben", zeile, max: 11, html: `
+        ${ws_aufgabe(1, `Jedes Feld ist eine Silbe. Schwinge das Wort, sprich die <b>1. Silbe</b> langsam und schreibe sie ins erste Feld – dann die nächste. Zum Schluss schreibst du das <b>ganze Wort</b> auf die Linie rechts und liest es ${vs.gross ? "Laut für Laut" : "wie ein Roboter"}.`)}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Blatt 6: Welcher Laut fehlt? (Häufungen und Mitte hören) */
+function vsB_fehlt(ctx){
+    const vs = ctx.vs, naechstes = vs_woerter(vs, true, w => vs_laute(w).length >= 3);
+    const zeile = i => { let w, laute, idx;
+        for (let v = 0; v < 20; v++){ w = naechstes(); laute = vs_laute(w);
+            const kons = laute.map((l, j) => j).filter(j => !vs_istVokal(laute[j]) && j > 0 && (j < laute.length - 1) && (!vs_istVokal(laute[j - 1]) || !vs_istVokal(laute[j + 1])));
+            const kand = kons.length ? kons : laute.map((l, j) => j).filter(j => j > 0);
+            idx = zufallsElement(kand); if (laute.length >= 3) break; }
+        const k = vs_bildZelle(w, vs, 46);
+        return `<div class="fs-karte vs-karte"><div class="fs-reihe-nr">${i + 1}</div><div class="vs-bildfeld klein">${k || ""}</div><span class="vs-luecke">${laute.map((l, j) => j === idx ? `<span class="vs-k">${L(ws_esc(l))}</span>` : `<span class="vs-b">${ws_esc(l)}</span>`).join("")}</span><span class="vs-ganz">${L(ws_esc(w))}</span></div>`; };
+    return { titel: "Welcher Laut fehlt?", zeile, max: 13, html: `
+        ${ws_aufgabe(1, `In jedem Wort fehlt <b>ein Laut</b> – oft dort, wo zwei Mitlaute zusammenstehen (Kr, mp, nt …). Sprich das Wort ganz langsam mit, setze den fehlenden Buchstaben ins Kästchen und schreibe das ganze Wort auf die Linie.`)}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Blatt 7: Kontroll-Lesen – so hat jemand geschrieben */
+function vs_fehlerwort(w){
+    const l = vs_laute(w), arten = ["weg", "weg", "dreh", "vok"];
+    for (let v = 0; v < 30; v++){
+        const art = zufallsElement(arten), a = l.slice();
+        if (art === "weg"){ const kand = a.map((x, j) => j).filter(j => j > 0 && !vs_istVokal(a[j])); if (!kand.length) continue; a.splice(zufallsElement(kand), 1); }
+        else if (art === "dreh"){ const j = zufallsZahl(0, a.length - 2); if (a[j] === a[j + 1]) continue; [a[j], a[j + 1]] = [a[j + 1], a[j]]; }
+        else { const kand = a.map((x, j) => j).filter(j => vs_istVokal(a[j]) && j < a.length - 1); if (!kand.length) continue; a.splice(zufallsElement(kand), 1); }
+        const f = a.join(""), fg = f.charAt(0).toUpperCase() + f.slice(1).toLowerCase();
+        if (fg.toLowerCase() !== w.toLowerCase()) return { f: fg, art };
+    }
+    return { f: w.slice(0, -1), art: "weg" };
+}
+function vsB_kontrolle(ctx){
+    const vs = ctx.vs, naechstes = vs_woerter(vs, true, w => vs_laute(w).length >= 4);
+    const name = { weg: "Laut fehlt", dreh: "vertauscht", vok: "König fehlt" };
+    const zeile = i => { const w = naechstes(), fw = vs_fehlerwort(w), k = vs_bildZelle(w, vs, 44);
+        return `<tr><td class="rsa-n">${i + 1}</td>${vs.bilder ? `<td class="vs-bz">${k}</td>` : ""}<td class="vs-wortzelle vs-falsch">${ws_esc(fw.f)}</td><td style="font-size:15px;">${L(name[fw.art])}</td><td>${L(ws_esc(w))}</td></tr>`; };
+    return { titel: vs.gross ? "Kontroll-Lesen: Was steht wirklich da?" : "Roboter-Lesen: Was steht wirklich da?", zeile, max: 14, html: `
+        ${ws_aufgabe(1, `So hat jemand geschrieben. Lies das Wort <b>Laut für Laut</b> – ${vs.gross ? "genau so, wie es dasteht, nicht wie es heißen soll" : "wie ein Roboter, genau so, wie es dasteht"}. Was ist passiert? Schreibe es auf und schreibe das Wort richtig.`)}
+        <div class="fs-ziel" style="font-size:16px;"><span>Genau so prüfst du später <b>deine eigenen</b> Wörter: Wer liest, was er <i>meint</i>, findet keinen Fehler. Wer liest, was <i>dasteht</i>, findet ihn.</span></div>
+        <table class="rs-tabelle rsa-tab vs-tab"><thead><tr><th style="width:8%;">Nr.</th>${vs.bilder ? '<th style="width:11%;">Bild</th>' : ""}<th style="width:${vs.bilder ? 25 : 30}%;">So steht es da</th><th style="width:22%;">Was ist passiert?</th><th>Richtig geschrieben</th></tr></thead>
+        <tbody class="fs-fuell"></tbody></table>` };
+}
+
+/* Blatt 8: Satzdiktat mit Schreib-Treppe */
+function vsB_saetze(ctx){
+    const vs = ctx.vs, naechster = vs_saetze(vs), saetze = Array.from({ length: 6 }, () => naechster());
+    return { titel: "Sätze schreiben – mit Schreib-Treppe", html: `
+        ${ws_aufgabe(1, "Die Trainerin (oder dein Partner) liest einen Satz zweimal vor. Schreibe ihn Wort für Wort mit der Schreib-Treppe. Kreuze nach jedem Satz an, was du gemacht hast.")}
+        ${vs_treppeHtml(vs, true)}
+        <div class="vs-satzzeilen">${saetze.map((s, i) => `<div class="vs-satzzeile"><span class="fs-reihe-nr">${i + 1}</span><div class="vs-linien"><div>${L(ws_esc(s))}</div><div></div></div><div class="rsa-checks"><span>${fs_kreuzBox(false)} 👋</span><span>${fs_kreuzBox(false)} 🗣️</span><span>${fs_kreuzBox(false)} 🔍</span></div></div>`).join("")}</div>
+        <div class="vs-trainer">✂ Zum Vorlesen: ${saetze.map((s, i) => `<b>${i + 1}.</b> ${ws_esc(s)}`).join(" ")}</div>` };
+}
+
+const VS_BLAETTER = [
+    { nr: "1", kurz: "Schreib-Treppe", name: "Schreib-Treppe & Silbenkönige (Merkblatt)", bau: vsB_treppe },
+    { nr: "2", kurz: "Silben & König", name: "Silben schwingen – König finden", bau: vsB_silben },
+    { nr: "3", kurz: "Lautkästchen", name: "Lautkästchen: Jeden Laut hören", bau: vsB_kaestchen },
+    { nr: "4", kurz: "Silbenteppich", name: "Silbenteppich & Silbendiktat", bau: vsB_teppich },
+    { nr: "5", kurz: "Silbe für Silbe", name: "Silbe für Silbe schreiben", bau: vsB_silbeFuerSilbe },
+    { nr: "6", kurz: "Laut fehlt", name: "Welcher Laut fehlt?", bau: vsB_fehlt },
+    { nr: "7", kurz: "Kontroll-Lesen", name: "Kontroll-Lesen: Was steht wirklich da?", bau: vsB_kontrolle },
+    { nr: "8", kurz: "Sätze", name: "Sätze schreiben mit Schreib-Treppe", bau: vsB_saetze },
+];
+
 // Einstellungen für die Blätter (Generator) – bzw. Standard für Stunde/Förderpaket
 function rsa_ctx(code, keys, niveau){
     keys = (keys && keys.length ? keys : RSA_STANDARD).filter(k => RS_SCHWERPUNKTE[k]);
@@ -6678,6 +6904,27 @@ const FS_SERIEN = {
         ctxExtra: () => ({ rsa: rsa_ausFormular() }),
         speicherName: () => "Rechtschreibung anwenden",
         blaetter: RSA_BLAETTER },
+    verschriften: { tab: "symptom", mat: "symptom", wert: "vs-serie", reif: true,
+        optionText: "Vom Lesen zum Schreiben – Wörter hörbar verschriften (Kl. 2–9)",
+        label: "Vom Lesen zum Schreiben", afs: "Symptomtraining: Laute hören und verschriften", select: "#sy-typ", erstellen: "erstelleSymptom",
+        ordner: "Rechtschreibung",
+        tipp: "Für Kinder, die lesen können, aber so schreiben, dass man es kaum lesen kann. Erst wenn jedes Wort hörbar richtig dasteht, kommen die Rechtschreib-Strategien.",
+        optionenHtml: `
+            <p class="beschreibung" style="margin:12px 0 6px;"><b>Idee:</b> Das Kind lernt, jeden Laut zu hören und aufzuschreiben – mit einer festen <b>Schreib-Treppe</b>: Schwingen → langsam sprechen → schreiben → Laut für Laut kontrollieren. Nur lautgetreue Wörter. Acht Blätter: Merkblatt · Silben & König · Lautkästchen · Silbenteppich & Silbendiktat · Silbe für Silbe · Welcher Laut fehlt? · Kontroll-Lesen · Sätze.</p>
+            <div class="zeile zwei">
+                <div><label>Stufe</label><select id="vs-stufe">
+                    <option value="auto">passend zur Klasse (Kl. 2: A · Kl. 3: B · ab Kl. 4: C)</option>
+                    <option value="A">A – offene Silben: Ro-se, To-ma-te</option>
+                    <option value="B">B – geschlossene Silben: I-gel, Ka-mel, Fisch</option>
+                    <option value="C">C – Mitlaut-Häufungen: Kr-o-ne, Ma-n-tel, Zelt</option>
+                    <option value="D">D – lange Wörter (ab Kl. 5): Ka-len-der, Pau-sen-brot</option>
+                    <option value="AC">A bis C gemischt</option>
+                </select></div>
+                <div><label>Bilder</label><select id="vs-bilder"><option value="auto">bis Kl. 4 mit Bildern, ab Kl. 5 ohne</option><option value="mit">mit Bildern</option><option value="ohne">ohne Bilder (Trainerin diktiert)</option></select></div>
+            </div>`,
+        ctxExtra: () => ({ vs: vs_ausFormular() }),
+        speicherName: () => "Vom Lesen zum Schreiben",
+        blaetter: VS_BLAETTER },
     optdiff: { label: "Optische Differenzierung", afs: "Funktionstraining: Optische Differenzierung", select: "#od-typ", erstellen: "erstelleOptDiff", blaetter: [
         { nr: "1", kurz: "Gleich/verschieden", name: "Gleich oder verschieden?", bau: fsO_gleich },
         { nr: "2", kurz: "Wer ist anders?", name: "Wer ist anders?", bau: fsO_fehlerreihe },
@@ -7400,6 +7647,7 @@ function std_auswahlAufbauen(){
         `<option value="">– ohne Aufmerksamkeitsblatt –</option>`;
     document.getElementById("std-funktion").innerHTML = STD_FUNKTIONEN.map(k => `<option value="${k}">${ws_esc(FS_SERIEN[k].label)}</option>`).join("") + `<option value="">– ohne Funktionsblatt –</option>`;
     document.getElementById("std-symptom").innerHTML =
+        `<optgroup label="Vom Lesen zum Schreiben (Laute hören)"><option value="vs">Schreib-Treppe: Silben, Lautkästchen, Kontroll-Lesen</option></optgroup>` +
         `<optgroup label="Rechtschreibung anwenden statt nur wissen (gemischt)"><option value="rsa">Stopp-Routine: Signalstellen, Werkzeug, Beweis</option></optgroup>` +
         `<optgroup label="Rechtschreibung (ab Kl. 3/4)">${Object.entries(RS_SCHWERPUNKTE).map(([k, sp]) => `<option value="rs:${k}">${ws_esc(sp.name)}</option>`).join("")}</optgroup>` +
         `<optgroup label="Lesetraining nach Leistungsstand (kleinschrittig)">${Object.entries(LE_STUFEN).map(([k, st]) => `<option value="le:${k}">Lesestufe ${st.nr} · ${ws_esc(st.name)} – ${ws_esc(st.unter)}</option>`).join("")}</optgroup>` +
@@ -7435,6 +7683,7 @@ function std_blattListen(){
     let liste = [];
     if (sy.startsWith("rs:")) liste = FS_SERIEN.rechtschreibung.blaetter;
     else if (sy === "rsa") liste = RSA_BLAETTER;
+    else if (sy === "vs") liste = VS_BLAETTER;
     else if (sy === "kartei") liste = KT_BLAETTER;
     else if (sy === "ws") liste = WS_BLAETTER;
     else if (sy === "lesen" || sy.startsWith("lesen:")) liste = LT_AUFGABEN.map(a => ({ nr: a.key, name: "Lesetext + " + a.name }));
@@ -7443,6 +7692,7 @@ function std_blattListen(){
     sb.innerHTML = liste.length ? liste.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("") : `<option value="">–</option>`;
     if (sy.startsWith("rs:")) sb.value = "2";
     if (sy === "rsa") sb.value = "2";
+    if (sy === "vs") sb.value = "3";
     const sa = document.getElementById("std-symptom-anzahl");
     sa.disabled = !sy || sy === "diktat"; if (sa.disabled) sa.value = "1";
     sa.title = sy === "diktat" ? "Beim Diktat gehören die Blätter fest zusammen" : "";
@@ -7455,6 +7705,7 @@ function std_blattListen(){
     else if (sy === "diktat") hinweis.textContent = "Ein Diktattext passend zu Klassenstufe und Schwierigkeit wird zufällig gewählt (gekürzte Fassung für die Stunde).";
     else if (sy === "ws") hinweis.textContent = "Es werden die Lernwörter aus dem Reiter Symptomtraining → Worterarbeitung verwendet: " + (lt_wert("ws-woerter") || "–");
     else if (sy === "rsa") hinweis.textContent = "Gemischte Aufgaben aus den häufigsten Schwerpunkten (Wortende, ä/e, Doppelkonsonant, s/ss/ß, ie, groß/klein, das/dass, Dehnungs-h) – mit Fehlerwörtern aus der Förderkartei, wenn oben ein Kürzel gewählt ist. Tipp: Blatt 1 (Werkzeugkasten) einmal laminieren.";
+    else if (sy === "vs") hinweis.textContent = "Für Kinder, die lesen können, aber nicht nachvollziehbar schreiben: Laute hören mit der Schreib-Treppe. Stufe passend zur Klasse (Kl. 2: offene Silben, Kl. 3: geschlossene, ab Kl. 4: Mitlaut-Häufungen). Tipp: Blatt 1 einmal laminieren.";
     else hinweis.textContent = "";
 }
 
@@ -7586,6 +7837,8 @@ function std_rezeptAusFormular(){
         std_mehrere(liste, liste.find(x => x.nr === sb) || liste[0], n).forEach(x => neu({ p: "Symptomtraining", t: "rs", k: sy.slice(3), nr: x.nr }));
     } else if (sy === "rsa"){
         std_mehrere(RSA_BLAETTER, RSA_BLAETTER.find(x => x.nr === sb) || RSA_BLAETTER[1], n).forEach(x => neu({ p: "Symptomtraining", t: "rsa", nr: x.nr }));
+    } else if (sy === "vs"){
+        std_mehrere(VS_BLAETTER, VS_BLAETTER.find(x => x.nr === sb) || VS_BLAETTER[2], n).forEach(x => neu({ p: "Symptomtraining", t: "vs", nr: x.nr }));
     } else if (sy.startsWith("le:")){
         const st = sy.slice(3), liste = LE_BLAETTER[st] || [], i0 = Math.max(0, parseInt(sb, 10) || 0);
         for (let i = 0; i < n && liste.length; i++) neu({ p: "Symptomtraining", t: "le", st, i: Math.min(liste.length - 1, i0 + i) });
@@ -7660,6 +7913,7 @@ function std_alternativen(it, r){
     }
     else if (it.t === "rs") pool = FS_SERIEN.rechtschreibung.blaetter.map(b => ({ t: "rs", k: it.k, nr: b.nr }));
     else if (it.t === "rsa") pool = RSA_BLAETTER.map(b => ({ t: "rsa", nr: b.nr }));
+    else if (it.t === "vs") pool = VS_BLAETTER.map(b => ({ t: "vs", nr: b.nr }));
     else if (it.t === "lesen") pool = LT_AUFGABEN.map(a => ({ t: "lesen", a: a.key }));
     else if (it.t === "le") pool = (LE_BLAETTER[it.st] || []).map((b, i) => ({ t: "le", st: it.st, i }));
     else if (it.t === "kartei") pool = KT_BLAETTER.map(b => ({ t: "kartei", nr: b.nr }));
@@ -7730,6 +7984,7 @@ function std_itemInfo(it, r){
     if (it.t === "fs"){ const s = FS_SERIEN[it.s], b = s && fs_katalog(it.s).find(x => x.nr === it.nr); return b ? { name: b.name, gruppe: s.label, ok: true } : { name: "?", ok: false }; }
     if (it.t === "rs"){ const b = FS_SERIEN.rechtschreibung.blaetter.find(x => x.nr === it.nr), sp = RS_SCHWERPUNKTE[it.k]; return b && sp ? { name: b.name, gruppe: sp.name, ok: true } : { name: "?", ok: false }; }
     if (it.t === "rsa"){ const b = RSA_BLAETTER.find(x => x.nr === it.nr); return b ? { name: b.name, gruppe: "Rechtschreibung anwenden", ok: true } : { name: "?", ok: false }; }
+    if (it.t === "vs"){ const b = VS_BLAETTER.find(x => x.nr === it.nr); return b ? { name: b.name, gruppe: "Vom Lesen zum Schreiben", ok: true } : { name: "?", ok: false }; }
     if (it.t === "lesen"){ const a = LT_AUFGABEN.find(x => x.key === it.a); return a ? { name: a.name, gruppe: "Lesetraining", ok: true } : { name: "?", ok: false }; }
     if (it.t === "diktat"){ const d = STD_DIKTAT.find(x => x.key === it.d); return d ? { name: d.name, gruppe: "Diktat", ok: true } : { name: "?", ok: false }; }
     if (it.t === "kartei"){ const b = KT_BLAETTER.find(x => x.nr === it.nr); return b ? { name: b.name, gruppe: "Meine Fehlerwörter", ok: true } : { name: "?", ok: false }; }
@@ -7794,6 +8049,7 @@ function std_ausRezept(r){
         if (it.t === "fs"){ const b = fs_katalog(it.s).find(x => x.nr === it.nr); blaetter.push(mitCache(fp_blattEintrag(it.s, b, 0), it.u)); geuebt.push(b.name); }
         else if (it.t === "rs"){ const b = FS_SERIEN.rechtschreibung.blaetter.find(x => x.nr === it.nr); blaetter.push(mitCache(fp_rsEintrag(it.k, b.bau, b.name, 0, code), it.u)); geuebt.push(`${RS_NAMEN[it.k] ? RS_NAMEN[it.k].kurz : it.k}: ${b.name}`); }
         else if (it.t === "rsa"){ const b = RSA_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Anwenden: " + b.kurz, name: "Rechtschreibung anwenden – " + b.name, bau: c => b.bau({ ...c, rsa: rsa_ctx(code) }), extra: { label: "Rechtschreibung anwenden", afs: "Symptomtraining: Rechtschreibstrategien anwenden", reif: true }, quelle: { t: "rsa", nr: b.nr } }, it.u)); geuebt.push("Anwenden: " + b.name); } }
+        else if (it.t === "vs"){ const b = VS_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Schreiben: " + b.kurz, name: "Vom Lesen zum Schreiben – " + b.name, bau: c => b.bau({ ...c, vs: vs_ctx() }), extra: { label: "Vom Lesen zum Schreiben", afs: "Symptomtraining: Laute hören und verschriften", reif: true }, quelle: { t: "vs", nr: b.nr } }, it.u)); geuebt.push("Schreiben: " + b.name); } }
         else if (it.t === "lesen"){
             const lt = ctxLesen.lt, a = LT_AUFGABEN.find(x => x.key === it.a);
             const extra = { label: "Lesetraining", afs: "Symptomtraining: Lesen & Textverständnis", reif: lt.reif };
@@ -7993,6 +8249,7 @@ function std_optionen(ph, r){
     if (ph === "Aufmerksamkeit") ["aufmerksamkeit", "aufmerksamkeit5"].forEach(k => gruppen.push([FS_SERIEN[k].label, fs_katalog(k).map(b => opt({ t: "fs", s: k, nr: b.nr }, b.name))]));
     if (ph === "Funktionstraining") STD_FUNKTIONEN.forEach(k => gruppen.push([FS_SERIEN[k].label, FS_SERIEN[k].blaetter.map(b => opt({ t: "fs", s: k, nr: b.nr }, b.name))]));
     if (ph === "Symptomtraining"){
+        gruppen.push(["Vom Lesen zum Schreiben", VS_BLAETTER.map(b => opt({ t: "vs", nr: b.nr }, b.name))]);
         gruppen.push(["Rechtschreibung anwenden (gemischt)", RSA_BLAETTER.map(b => opt({ t: "rsa", nr: b.nr }, b.name))]);
         Object.entries(RS_SCHWERPUNKTE).forEach(([k, sp]) => gruppen.push(["Rechtschreibung: " + sp.name, FS_SERIEN.rechtschreibung.blaetter.map(b => opt({ t: "rs", k, nr: b.nr }, b.name))]));
         gruppen.push(["Lesetraining" + (r.lesetext ? ` („${r.lesetext}“)` : ""), LT_AUFGABEN.map(a => opt({ t: "lesen", a: a.key }, a.name))]);
