@@ -1582,6 +1582,11 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             <div><label>Blatt</label><select id="std-symptom-blatt"></select></div>
             <div><label>Anzahl</label><select id="std-symptom-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
         </div>
+        <div class="zeile std-anz-zeile std-nur-foerder" style="margin-top:12px;">
+            <div><label>Zusätzlich: Vom Lesen zum Schreiben</label><select id="std-vs"><option value="">– nichts zusätzlich –</option></select></div>
+            <div><label>Stufe</label><select id="std-vs-stufe"><option value="">passend zur Klasse</option><option value="A">A – offene Silben</option><option value="B">B – geschlossene Silben</option><option value="C">C – Mitlaut-Häufungen</option><option value="D">D – lange Wörter</option><option value="AC">A bis C gemischt</option></select></div>
+            <div><label>Anzahl</label><select id="std-vs-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option></select></div>
+        </div>
         <p class="beschreibung std-nur-foerder" id="std-hinweis" style="margin:6px 0 0;"></p>
         <div class="std-heft std-nur-foerder" id="std-heft" style="display:none;">
             <label style="margin-top:12px;"><i class="fa-solid fa-book-bookmark"></i> Aus dem Trainingsheft</label>
@@ -7646,12 +7651,13 @@ function std_auswahlAufbauen(){
         ["aufmerksamkeit", "aufmerksamkeit5"].map(k => `<optgroup label="${ws_esc(FS_SERIEN[k].label)}">${fs_katalog(k).map(b => `<option value="${k}:${b.nr}">${ws_esc(b.name)}${b.ab ? ` (ab Kl. ${b.ab})` : ""}</option>`).join("")}</optgroup>`).join("") +
         `<option value="">– ohne Aufmerksamkeitsblatt –</option>`;
     document.getElementById("std-funktion").innerHTML = STD_FUNKTIONEN.map(k => `<option value="${k}">${ws_esc(FS_SERIEN[k].label)}</option>`).join("") + `<option value="">– ohne Funktionsblatt –</option>`;
+    document.getElementById("std-vs").innerHTML = `<option value="">– nichts zusätzlich –</option>` + VS_BLAETTER.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("");
     document.getElementById("std-symptom").innerHTML =
-        `<optgroup label="Vom Lesen zum Schreiben (Laute hören)"><option value="vs">Schreib-Treppe: Silben, Lautkästchen, Kontroll-Lesen</option></optgroup>` +
         `<optgroup label="Rechtschreibung anwenden statt nur wissen (gemischt)"><option value="rsa">Stopp-Routine: Signalstellen, Werkzeug, Beweis</option></optgroup>` +
         `<optgroup label="Rechtschreibung (ab Kl. 3/4)">${Object.entries(RS_SCHWERPUNKTE).map(([k, sp]) => `<option value="rs:${k}">${ws_esc(sp.name)}</option>`).join("")}</optgroup>` +
         `<optgroup label="Lesetraining nach Leistungsstand (kleinschrittig)">${Object.entries(LE_STUFEN).map(([k, st]) => `<option value="le:${k}">Lesestufe ${st.nr} · ${ws_esc(st.name)} – ${ws_esc(st.unter)}</option>`).join("")}</optgroup>` +
         `<optgroup label="Lesetext + Aufgabe"><option value="lesen">Lesetext passend zur Klassenstufe</option>${[1, 2, 3, 4, 5, 6].map(k => `<option value="lesen:${k}">Lesetext auf Niveau Kl. ${k}</option>`).join("")}</optgroup>` +
+        `<optgroup label="Vom Lesen zum Schreiben (Laute hören)"><option value="vs">Schreib-Treppe: Silben, Lautkästchen, Kontroll-Lesen</option></optgroup>` +
         `<option value="diktat">Diktat (Übungs-, Lücken- oder Testdiktat)</option>` +
         `<option value="kartei">Eigene Fehlerwörter aus der Förderkartei</option>` +
         `<option value="ws">Worterarbeitung (Lernwörter aus dem Reiter Symptomtraining)</option>` +
@@ -7853,6 +7859,8 @@ function std_rezeptAusFormular(){
     } else if (sy === "ws"){
         std_mehrere(WS_BLAETTER, WS_BLAETTER.find(x => x.nr === sb) || WS_BLAETTER[0], n).forEach(x => neu({ p: "Symptomtraining", t: "ws", nr: x.nr }));
     }
+    const vsZ = lt_wert("std-vs");
+    if (vsZ){ const st = lt_wert("std-vs-stufe"); std_mehrere(VS_BLAETTER, VS_BLAETTER.find(x => x.nr === vsZ) || VS_BLAETTER[2], std_anzahl("std-vs-anzahl")).forEach(x => neu(Object.assign({ p: "Symptomtraining", t: "vs", nr: x.nr }, st ? { st } : {}))); }
     std_heftGewaehlt(code).forEach(m => neu({ p: STD_HEFT_PHASE[m.bereich] || "Symptomtraining", t: "heft", id: m.id }));
     // Nicht geschaffte Blätter aus früheren Stunden: jeweils an den Anfang ihrer Phase
     const weiter = std_weiterGewaehlt(code);
@@ -8049,7 +8057,7 @@ function std_ausRezept(r){
         if (it.t === "fs"){ const b = fs_katalog(it.s).find(x => x.nr === it.nr); blaetter.push(mitCache(fp_blattEintrag(it.s, b, 0), it.u)); geuebt.push(b.name); }
         else if (it.t === "rs"){ const b = FS_SERIEN.rechtschreibung.blaetter.find(x => x.nr === it.nr); blaetter.push(mitCache(fp_rsEintrag(it.k, b.bau, b.name, 0, code), it.u)); geuebt.push(`${RS_NAMEN[it.k] ? RS_NAMEN[it.k].kurz : it.k}: ${b.name}`); }
         else if (it.t === "rsa"){ const b = RSA_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Anwenden: " + b.kurz, name: "Rechtschreibung anwenden – " + b.name, bau: c => b.bau({ ...c, rsa: rsa_ctx(code) }), extra: { label: "Rechtschreibung anwenden", afs: "Symptomtraining: Rechtschreibstrategien anwenden", reif: true }, quelle: { t: "rsa", nr: b.nr } }, it.u)); geuebt.push("Anwenden: " + b.name); } }
-        else if (it.t === "vs"){ const b = VS_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Schreiben: " + b.kurz, name: "Vom Lesen zum Schreiben – " + b.name, bau: c => b.bau({ ...c, vs: vs_ctx() }), extra: { label: "Vom Lesen zum Schreiben", afs: "Symptomtraining: Laute hören und verschriften", reif: true }, quelle: { t: "vs", nr: b.nr } }, it.u)); geuebt.push("Schreiben: " + b.name); } }
+        else if (it.t === "vs"){ const b = VS_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Schreiben: " + b.kurz, name: "Vom Lesen zum Schreiben – " + b.name, bau: c => b.bau({ ...c, vs: vs_ctx(it.st || "") }), extra: { label: "Vom Lesen zum Schreiben", afs: "Symptomtraining: Laute hören und verschriften", reif: true }, quelle: { t: "vs", nr: b.nr } }, it.u)); geuebt.push("Schreiben: " + b.name); } }
         else if (it.t === "lesen"){
             const lt = ctxLesen.lt, a = LT_AUFGABEN.find(x => x.key === it.a);
             const extra = { label: "Lesetraining", afs: "Symptomtraining: Lesen & Textverständnis", reif: lt.reif };
