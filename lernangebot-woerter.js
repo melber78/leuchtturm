@@ -86,5 +86,16 @@ function mischen(liste){ const a = liste.slice(); for (let i = a.length - 1; i >
 function ziehen(liste, n){ return mischen(liste).slice(0, n); }
 function zufall(min, max){ return min + Math.floor(Math.random() * (max - min + 1)); }
 
+// Antworten dürfen sich nicht verraten: Geht es um groß/klein oder Wortarten, stehen alle Wörter klein da
+// (sonst sieht man das Nomen sofort am großen Anfangsbuchstaben).
+const VERRAET = /\b(groß|klein|Nomen|Namenwort|Wortart|Tu-Wort|Tuwort|Verb|Adjektiv|Wiewort|Begleiter)/i;
+const LABEL = /^(Nomen|Verb|Verben|Adjektiv|Adjektive|Namenwort|Tuwort|Tu-Wort|Wiewort|der|die|das|groß|klein)$/i;
+window.ltNeutral = function (f, ant){
+    if (!VERRAET.test(String(f || "")) || !Array.isArray(ant)) return { f, a: ant };
+    const einzel = ant.every(x => typeof x === "string" && !/\s/.test(x) && !x.startsWith("bild:"));
+    if (!einzel) return { f, a: ant };
+    return { f: String(f).replace(/\*\*([^*]+)\*\*/g, (m, w) => LABEL.test(w) ? m : "**" + w.toLowerCase() + "**"),
+             a: ant.map(x => LABEL.test(x) ? x : x.toLowerCase()) };
+};
 window.LERN_DATEN = { woerter: W.filter(x => bildDa(x.b)), reime: REIME, wortarten: WORTARTEN, lesen: LESEN, bildSvg, mischen, ziehen, zufall };
 })();

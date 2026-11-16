@@ -30,10 +30,10 @@ duell("l-einmaleins", {
     titel12: "Doppel-Duell",
     "12": [
         ["3 + 3 = ?", ["6", "5", "9"]],
-        ["Das Doppelte von 5?", ["10", "7", "25"]],
+        ["Das Doppelte von 5?", ["10", "7", "15"]],
         ["2 + 2 + 2 + 2 = ?", ["8", "6", "10"]],
         ["Wie viele Socken sind das?", ["6", "3", "8"], { b: "🧦🧦  🧦🧦  🧦🧦" }],
-        ["2 Hände – wie viele Finger?", ["10", "5", "12"]],
+        ["2 Hände – wie viele Finger?", ["10", "8", "12"]],
         ["5 + 5 + 5 = ?", ["15", "10", "20"]]
     ]
 });
@@ -43,7 +43,7 @@ duell("l-uhr", {
         ["Es ist 8:45 Uhr. Wie spät ist es in 20 Minuten?", ["9:05 Uhr", "9:15 Uhr", "8:65 Uhr"]],
         ["Viertel nach drei – wie schreibt man das?", ["3:15 Uhr", "3:45 Uhr", "2:45 Uhr"]],
         ["Viertel vor sieben – wie schreibt man das?", ["6:45 Uhr", "7:15 Uhr", "6:15 Uhr"]],
-        ["Wie viele Minuten hat eine Stunde?", ["60", "100", "30"]],
+        ["Wie viele Minuten hat eine Stunde?", ["60", "100", "50"]],
         ["Halb neun – wie schreibt man das?", ["8:30 Uhr", "9:30 Uhr", "8:50 Uhr"]],
         ["Der Film beginnt um 16:30 Uhr und dauert 1 Stunde 15 Minuten. Wann ist er zu Ende?", ["17:45 Uhr", "17:15 Uhr", "18:00 Uhr"]]
     ]
@@ -66,26 +66,26 @@ duell("l-konzentration", {
         ["Rechne im Kopf: 7 + 8 − 5", ["10", "11", "9"]],
         ["Welches Wort ist falsch geschrieben?", ["Tafl", "Schule", "Fenster", "Stuhl"]],
         ["Wie viele Dreiecke zeigen nach oben?", ["4", "3", "5"], { b: "▲ ▼ ▲ ▼ ▲ ▼ ▲" }],
-        ["Was hilft beim Konzentrieren?", ["Tisch frei räumen", "Handy neben das Heft legen", "Nebenbei reden"]]
+        ["Was hilft beim Konzentrieren am meisten?", ["Nur das Material für die Aufgabe auf dem Tisch", "Leise Musik nebenbei", "Alle Stifte bereitlegen, falls man sie braucht"]]
     ]
 });
 duell("l-arbeitsplatz", {
     titel12: "Startklar-Duell", titel34: "Startklar-Duell",
     "12": [
-        ["Was brauchst du zum Ausmalen?", ["🖍️ Buntstifte", "✂️ Schere", "📏 Lineal"]],
+        ["Womit malst du große Flächen am besten aus?", ["🖍️ Wachsmalstifte", "🖊️ Füller", "✏️ spitzer Bleistift"]],
         ["Was machst du zuerst?", ["🧹 Tisch frei machen", "🚀 Loslegen", "✅ Kontrollieren"]],
-        ["Was gehört **nicht** ins Mäppchen?", ["🍌 Banane", "✏️ Bleistift", "🧽 Radiergummi"]],
-        ["Der Bleistift ist stumpf. Was hilft?", ["Spitzer", "Kleber", "Lineal"]],
-        ["Womit schneidest du aus?", ["✂️ Schere", "🖍️ Buntstift", "📏 Lineal"]],
-        ["Wann bist du startklar?", ["Nur das, was ich brauche, liegt bereit", "Der Tisch ist voll Spielzeug", "Ich suche noch meine Stifte"]]
+        ["Was gehört **nicht** ins Mäppchen?", ["🧸 Anhänger zum Spielen", "📏 kleines Lineal", "🖊️ Füller"]],
+        ["Der Bleistift ist stumpf. Was ist am besten?", ["Vor der Stunde spitzen", "In der Stunde zum Mülleimer gehen und spitzen", "Den Nachbarn um seinen bitten"]],
+        ["Wie schneidest du sicher?", ["✂️ Schere vom Körper weg", "✂️ Schere zu mir hin", "✂️ Papier ganz schnell drehen"]],
+        ["Wann bist du startklar?", ["Material liegt bereit und ich schaue nach vorn", "Mein Mäppchen ist offen", "Ich habe meinen Platz gefunden"]]
     ],
     "34": [
-        ["Was liegt auf einem guten Arbeitsplatz?", ["Nur Material für die Aufgabe", "Handy und Spielzeug", "Alles aus der Tasche"]],
+        ["Was liegt auf einem guten Arbeitsplatz?", ["Nur Material für die Aufgabe", "Alle Hefte für den ganzen Tag", "Das Material und die Trinkflasche mitten auf dem Heft"]],
         ["Was kommt nach „Tisch frei“?", ["Material bereitlegen", "Kontrollieren", "Pause machen"]],
-        ["Womit ziehst du einen geraden Strich?", ["Lineal", "Radiergummi", "Kleber"]],
-        ["Dein Füller ist leer. Was tust du?", ["Patrone wechseln oder Bleistift nehmen", "Gar nichts schreiben", "Ständig den Nachbarn stören"]],
+        ["Wie ziehst du einen geraden Strich?", ["Lineal festhalten, Stift am Lineal entlang", "Ohne Lineal ganz langsam", "Lineal locker hinlegen und schnell ziehen"]],
+        ["Dein Füller ist leer. Was tust du?", ["Leise die Patrone wechseln", "Nach vorn gehen und fragen, was ich tun soll", "Warten, bis jemand es merkt"]],
         ["Was fragst du dich beim Schritt „Aufgabe lesen“?", ["Was soll ich tun?", "Wie spät ist es?", "Wer ist schon fertig?"]],
-        ["Wann kontrollierst du deine Arbeit?", ["Wenn ich fertig bin", "Bevor ich anfange", "Nie"]]
+        ["Wann kontrollierst du deine Arbeit?", ["Wenn ich fertig bin – bevor ich abgebe", "Nur wenn die Lehrerin es sagt", "Wenn ich die Note bekomme"]]
     ]
 });
 duell("l-merk-tricks", {
@@ -96,7 +96,7 @@ duell("l-merk-tricks", {
         ["Was kam **zuletzt**?", ["Maus", "Eis", "Ball"], { h: "Ball, Eis, Baum, Maus" }],
         ["Welche Farbe war **in der Mitte**?", ["Gelb", "Rot", "Blau"], { h: "Rot, Gelb, Blau" }],
         ["Welche Zahlen waren es?", ["7, 3, 9", "7, 9, 3", "3, 7, 9"], { h: "7, 3, 9" }],
-        ["Welcher Trick hilft beim Merken?", ["Ein Bild im Kopf machen", "Schnell weggucken", "Gar nicht hinhören"]],
+        ["Welcher Trick hilft beim Merken?", ["Ein Bild im Kopf machen", "Es einmal laut sagen", "Es sich ganz fest vornehmen"]],
         ["Welches Wort war **nicht** dabei?", ["Mond", "Hut", "Tasse"], { h: "Fisch, Hut, Stern, Tasse" }]
     ],
     "34": [
@@ -105,7 +105,7 @@ duell("l-merk-tricks", {
         ["Welcher Trick hilft beim Merken von Wörtern?", ["Eine verrückte Geschichte daraus machen", "Die Wörter einmal schnell überfliegen", "Nebenbei laut Musik hören"]],
         ["Was ist am **Dienstag**?", ["Musik", "Sport", "Kunst"], { h: "Montag Sport, Dienstag Musik, Mittwoch Kunst" }],
         ["Welches Wort war **nicht** dabei?", ["Stuhl", "Glas", "Feder"], { h: "Lampe, Kissen, Tor, Glas, Feder, Wolke" }],
-        ["Warum hilft Wiederholen?", ["Das Gehirn speichert es fester", "Dann ist man schneller fertig", "Es hilft gar nicht"]]
+        ["Warum hilft Wiederholen?", ["Das Gehirn speichert es fester", "Dann ist man schneller fertig", "Dann muss man nicht mehr aufpassen"]]
     ]
 });
 duell("l-lern-quiz", {
@@ -122,7 +122,7 @@ duell("l-lern-quiz", {
     "34": [
         ["7 · 8 = ?", ["56", "54", "64"]],
         ["Welche Wortart ist „lustig“?", ["Adjektiv", "Nomen", "Verb"]],
-        ["Wie viele Minuten hat eine Stunde?", ["60", "100", "24"]],
+        ["Wie viele Minuten hat eine Stunde?", ["60", "100", "50"]],
         ["Welches Satzzeichen gehört hinter eine Frage?", ["?", ".", "!"]],
         ["1000 − 350 = ?", ["650", "750", "550"]],
         ["Wie viele Flächen hat ein Würfel?", ["6", "4", "8"]]
@@ -131,19 +131,19 @@ duell("l-lern-quiz", {
 duell("l-lerntheke", {
     titel12: "Stationen-Duell", titel34: "Stationen-Duell",
     "12": [
-        ["Der Timer klingelt. Was tust du?", ["Stift weg, Blatt weitergeben", "Einfach weiterschreiben", "Aufstehen und herumlaufen"]],
-        ["Du bist mit der Station fertig. Was nun?", ["Die Zusatzaufgabe machen", "Den Nachbarn stören", "Das Blatt zerknüllen"]],
-        ["Du verstehst eine Aufgabe nicht. Was zuerst?", ["Noch einmal genau lesen", "Laut rufen", "Aufgeben"]],
+        ["Der Timer klingelt. Was tust du?", ["Stift weg, Blatt weitergeben", "Noch schnell den Satz fertig schreiben", "Erst alles einpacken"]],
+        ["Du bist mit der Station fertig. Was nun?", ["Kontrollieren, dann die Zusatzaufgabe", "Sofort zur nächsten Station", "Leise warten, bis alle fertig sind"]],
+        ["Du verstehst eine Aufgabe nicht. Was zuerst?", ["Noch einmal genau lesen", "Sofort die Lehrerin fragen", "Die Aufgabe überspringen"]],
         ["6 + 4 = ?", ["10", "9", "11"]],
         ["Wie viele Silben hat „Tomate“?", ["3", "2", "4"]],
         ["Welches Wort fängt mit **M** an?", ["Maus", "Sonne", "Igel"]]
     ],
     "34": [
-        ["Der Timer klingelt. Was tust du?", ["Stift weg, Blatt weitergeben", "Einfach weiterschreiben", "Aufstehen und herumlaufen"]],
-        ["Wie kontrollierst du 47 + 25 = 72?", ["72 − 25 rechnen", "Noch einmal 47 + 25 abschreiben", "Gar nicht"]],
-        ["Wann machst du die Zusatzaufgabe?", ["Wenn ich mit der Station fertig bin", "Sofort am Anfang", "Nie"]],
+        ["Der Timer klingelt. Was tust du?", ["Stift weg, Blatt weitergeben", "Noch schnell den Satz fertig schreiben", "Erst alles einpacken"]],
+        ["Wie kontrollierst du 47 + 25 = 72?", ["72 − 25 rechnen", "72 + 25 rechnen", "47 − 25 rechnen"]],
+        ["Wann machst du die Zusatzaufgabe?", ["Wenn ich fertig bin und kontrolliert habe", "Sofort am Anfang", "Wenn mir langweilig ist"]],
         ["9 · 6 = ?", ["54", "56", "45"]],
-        ["Welches Wort ist ein Nomen?", ["Freude", "rennen", "leise"]],
+        ["Welches Wort ist ein Nomen?", ["freude", "freuen", "fröhlich"]],
         ["3 Stationen mit je 6 Minuten – wie lange dauert das?", ["18 Minuten", "12 Minuten", "24 Minuten"]]
     ]
 });
@@ -156,7 +156,7 @@ duell("l-zuhoeren", {
         ["Wie viele Bananen liegen im Korb?", ["2", "3", "5"], { h: "Im Korb liegen drei Äpfel und zwei Bananen." }],
         ["Was kommt zuerst?", ["👏 Klatschen", "🦶 Stampfen", "👋 Winken"], { h: "Klatsch zweimal, dann stampf einmal." }],
         ["Was ist am Montag?", ["Sport", "Musik", "Kunst"], { h: "Am Montag ist Sport, am Dienstag ist Musik." }],
-        ["Wie hört ein Zuhör-Profi zu?", ["👀 Schaut hin und ist leise", "🗣️ Redet dazwischen", "🙈 Schaut weg"]]
+        ["Wie hört ein Zuhör-Profi zu?", ["👀 Schaut hin und wartet, bis der andere fertig ist", "✋ Meldet sich sofort, wenn er etwas weiß", "✏️ Schreibt nebenbei weiter"]]
     ],
     "34": [
         ["Wann fährt der Bus?", ["7:55 Uhr", "7:40 Uhr", "7:35 Uhr"], { h: "Der Bus fährt heute nicht um 7:40 Uhr, sondern um 7:55 Uhr – von Haltestelle 3." }],
@@ -164,45 +164,45 @@ duell("l-zuhoeren", {
         ["Was sollt ihr **nicht** mitbringen?", ["Badesachen", "Handtuch", "Trinkflasche"], { h: "Bringt morgen bitte Turnschuhe, eine Trinkflasche und ein Handtuch mit – aber keine Badesachen." }],
         ["Wann ist die Bücherei geschlossen?", ["Mittwoch", "Donnerstag", "Freitag"], { h: "Die Bücherei ist am Mittwoch geschlossen, dafür am Donnerstag bis 16 Uhr geöffnet." }],
         ["Wo schreibst du deinen Namen hin?", ["oben rechts", "oben links", "unten"], { h: "Erst schreibst du deinen Namen oben rechts, dann unterstreichst du die Überschrift rot." }],
-        ["Was hilft beim genauen Zuhören?", ["Wichtige Wörter im Kopf wiederholen", "Nebenbei malen", "Mit dem Nachbarn reden"]]
+        ["Was hilft beim genauen Zuhören?", ["Wichtige Wörter im Kopf wiederholen", "Die Augen zumachen", "Gleich die Antwort überlegen"]]
     ]
 });
 duell("l-ueben-portionen", {
     titel12: "Übe-Duell", titel34: "Übe-Duell",
     "12": [
         ["Was ist besser?", ["Jeden Tag ein bisschen üben", "Einmal ganz lange üben"]],
-        ["Eine Karte war falsch. Wohin kommt sie?", ["📦 „übe ich noch“", "📦 „kann ich“", "🗑️ in den Müll"]],
-        ["Wie viele Karten übst du auf einmal?", ["5 Karten", "100 Karten", "gar keine"]],
+        ["Eine Karte war falsch. Wohin kommt sie?", ["📦 „übe ich noch“", "📦 „kann ich“", "📦 ganz nach hinten in den Stapel"]],
+        ["Wie viele Karten übst du auf einmal?", ["5 bis 10 Karten", "alle Karten", "nur 1 Karte"]],
         ["Du kannst eine Karte sicher. Wohin kommt sie?", ["📦 „kann ich“", "📦 „übe ich noch“"]],
-        ["Wann übst du die schweren Karten wieder?", ["Nächstes Mal wieder", "Nie mehr", "Nur in den Ferien"]],
+        ["Wann übst du die schweren Karten wieder?", ["Morgen wieder", "In einer Woche", "Erst vor der Arbeit"]],
         ["3 + 4 = ?", ["7", "6", "8"]]
     ],
     "34": [
-        ["Was hilft beim Lernen von 7 · 8?", ["Jeden Tag kurz mit Kärtchen üben", "Einmal vor der Arbeit ganz lange", "Gar nicht üben"]],
-        ["Was steht auf der Rückseite der Karte?", ["die Lösung", "dein Name", "nichts"]],
-        ["Wie lange ist eine gute Übe-Portion?", ["5 bis 10 Minuten", "2 Stunden", "10 Sekunden"]],
-        ["Welche Karten übst du am meisten?", ["die schweren", "die leichten", "alle auf einmal"]],
+        ["Was hilft beim Lernen von 7 · 8 am besten?", ["Jeden Tag kurz mit Kärtchen üben", "Einmal vor der Arbeit ganz lange", "Die Reihe einmal abschreiben"]],
+        ["Was steht auf der Rückseite der Übe-Karte?", ["die Lösung", "eine neue Aufgabe", "ein Tipp"]],
+        ["Wie lange ist eine gute Übe-Portion?", ["5 bis 10 Minuten", "eine Stunde", "1 Minute"]],
+        ["Welche Karten übst du am meisten?", ["die schweren", "die leichten", "alle gleich oft"]],
         ["7 · 8 = ?", ["56", "54", "58"]],
-        ["Was machst du nach 3 Minuten Training?", ["Tauschen oder kurz Pause", "Weitermachen bis zum Umfallen", "Die Karten wegwerfen"]]
+        ["Was machst du nach 3 Minuten Training mit dem Partner?", ["Rollen tauschen", "Einfach weitermachen", "Neue Karten schreiben"]]
     ]
 });
 duell("l-lernweg", {
     titel12: "Lern-Profi-Duell", titel34: "Lern-Profi-Duell",
     "12": [
-        ["Du steckst fest. Was hilft?", ["🙋 Die Hilfe-Treppe", "😠 Aufgeben", "💤 Schlafen"]],
-        ["Welcher Satz ist ein Mut-Satz?", ["Ich kann das NOCH nicht.", "Ich bin zu dumm.", "Das schaffe ich nie."]],
-        ["Was ist eine gute Kopf-Pause?", ["🙆 Aufstehen und strecken", "📱 Ein Video schauen", "🎮 Ein Spiel spielen"]],
-        ["Fehler sind …", ["Helfer", "schlimm", "peinlich"]],
-        ["Was machst du zuerst bei einer Aufgabe?", ["Genau lesen: Was soll ich tun?", "Sofort losschreiben", "Das Blatt abgeben"]],
-        ["Womit merkst du dir Dinge gut?", ["Mit einem Bild im Kopf", "Mit Weggucken", "Gar nicht"]]
+        ["Du steckst fest. Was ist der 1. Schritt der Hilfe-Treppe?", ["Noch einmal genau lesen", "Die Lehrerin fragen", "Den Nachbarn fragen"]],
+        ["Welcher Satz ist ein Mut-Satz?", ["Ich kann das NOCH nicht.", "Das ist eben nicht mein Ding.", "Die anderen sind einfach schneller."]],
+        ["Was ist die beste Kopf-Pause?", ["🙆 Aufstehen, strecken, Wasser trinken", "📖 Ein anderes Buch lesen", "✏️ Schnell die nächste Aufgabe anfangen"]],
+        ["Fehler sind …", ["Helfer: Sie zeigen, was ich noch üben kann", "egal, Hauptsache fertig", "nur bei Arbeiten wichtig"]],
+        ["Was machst du zuerst bei einer Aufgabe?", ["Genau lesen: Was soll ich tun?", "Das Beispiel abschreiben", "Schauen, was der Nachbar macht"]],
+        ["Womit merkst du dir Dinge gut?", ["Mit einem Bild im Kopf", "Mit einmal Durchlesen", "Mit ganz schnellem Lesen"]]
     ],
     "34": [
-        ["Eine Aufgabe ist zu schwer. Was hilft?", ["Sie in kleine Schritte teilen", "Das Blatt umdrehen", "Einfach irgendwas hinschreiben"]],
-        ["Welche Frage ist genau?", ["Was heißt ‚Umfang‘ bei Aufgabe 2?", "Hä?", "Ich versteh das alles nicht."]],
-        ["Wie kontrollierst du 63 − 28 = 35?", ["35 + 28 rechnen", "63 + 28 rechnen", "Gar nicht"]],
-        ["Welches Wochenziel ist gut?", ["Jeden Tag 5 Minuten Einmaleins", "Der Beste der Welt werden", "Alles auf einmal lernen"]],
-        ["Was tust du bei Frust?", ["3-mal tief atmen", "Das Blatt zerreißen", "Den Nachbarn anschreien"]],
-        ["Welche Pause hilft dem Kopf?", ["Wasser trinken und strecken", "Ein Handy-Spiel", "Ein Video schauen"]]
+        ["Eine Aufgabe ist zu schwer. Was hilft zuerst?", ["Sie in kleine Schritte teilen", "Die Lösung vom Nachbarn ansehen", "Mit der nächsten Aufgabe weitermachen"]],
+        ["Welche Frage ist genau?", ["Was heißt ‚Umfang‘ bei Aufgabe 2?", "Wie geht Aufgabe 2?", "Können Sie das nochmal erklären?"]],
+        ["Wie kontrollierst du 63 − 28 = 35?", ["35 + 28 rechnen", "63 + 28 rechnen", "63 − 35 rechnen"]],
+        ["Welches Wochenziel ist gut?", ["Jeden Tag 5 Minuten die 7er-Reihe", "Besser in Mathe werden", "Mehr üben"]],
+        ["Was hilft bei Frust zuerst?", ["3-mal tief atmen", "Schnell die Aufgabe beenden", "Die Aufgabe einfach weglassen"]],
+        ["Welche Pause hilft dem Kopf am meisten?", ["Bewegen und Wasser trinken", "Sitzen bleiben und ausruhen", "Etwas Süßes essen"]]
     ]
 });
 
@@ -218,14 +218,14 @@ function mischen(frage, ant){
     return { a: idx.map(k => String(ant[k]).trim()), r: idx.indexOf(0) };
 }
 window.LERN_DUELLE = D;
-window.lernMischen = mischen;
+window.lernMischen = (f, ant) => { const n = window.ltNeutral ? window.ltNeutral(f, ant) : { f, a: ant }; return Object.assign({ f: n.f }, mischen(n.f, n.a)); };
 window.lernDuell = function (e, st) {
     const d = e && (D[e.ersetzt || e.id] || D[e.id]);
     if (!d || !d[st]) return null;
     return {
         titel: d["titel" + st] || "Ella-Duell", folie: d["folie" + st] || d.folie || "", emoji: "🦉",
         ersetzt: d["ersetzt" + st] || [],
-        fragen: d[st].map(([f, ant, x]) => Object.assign({ f }, mischen(f, ant), x ? { h: x.h || "", b: x.b || "" } : {}))
+        fragen: d[st].map(([f0, ant0, x]) => { const { f, a: ant } = window.ltNeutral ? window.ltNeutral(f0, ant0) : { f: f0, a: ant0 }; return Object.assign({ f }, mischen(f, ant), x ? { h: x.h || "", b: x.b || "" } : {}); })
     };
 };
 })();

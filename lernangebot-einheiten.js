@@ -579,14 +579,14 @@ SOZIAL_EINHEIT({
           text: "Ein Wort steht an der Tafel. Alle probieren laut die drei Proben: „der/die/das …“ (Nomen) – „ich …“ (Verb) – „ganz …“ (Adjektiv). Welche passt? Ein Kind tippt an.",
           folie: "Drei Proben: 🧪\n\n**der/die/das …** → Nomen · **ich …** → Verb · **ganz …** → Adjektiv",
           fragen34: [
-            ["Freude", ["Nomen", "Verb", "Adjektiv"]],
-            ["schwimmen", ["Verb", "Nomen", "Adjektiv"]],
-            ["mutig", ["Adjektiv", "Nomen", "Verb"]],
-            ["Angst", ["Nomen", "Adjektiv", "Verb"]],
-            ["erzählen", ["Verb", "Nomen", "Adjektiv"]],
-            ["dunkel", ["Adjektiv", "Verb", "Nomen"]],
-            ["Geburtstag", ["Nomen", "Verb", "Adjektiv"]],
-            ["vergessen", ["Verb", "Adjektiv", "Nomen"]]
+            ["Welche Wortart ist **freude**?", ["Nomen", "Verb", "Adjektiv"]],
+            ["Welche Wortart ist **schwimmen**?", ["Verb", "Nomen", "Adjektiv"]],
+            ["Welche Wortart ist **mutig**?", ["Adjektiv", "Nomen", "Verb"]],
+            ["Welche Wortart ist **angst**?", ["Nomen", "Adjektiv", "Verb"]],
+            ["Welche Wortart ist **erzählen**?", ["Verb", "Nomen", "Adjektiv"]],
+            ["Welche Wortart ist **dunkel**?", ["Adjektiv", "Verb", "Nomen"]],
+            ["Welche Wortart ist **geburtstag**?", ["Nomen", "Verb", "Adjektiv"]],
+            ["Welche Wortart ist **vergessen**?", ["Verb", "Adjektiv", "Nomen"]]
           ],
           emoji: "🧪", warum: "Proben statt Raten." },
         { titel: "Fehler im Satz", fuer: "34", dauer: "6 Min", kern: ["34"],

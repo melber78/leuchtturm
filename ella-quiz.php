@@ -198,6 +198,7 @@ function bildHtml(b){
 }
 function frageZeigen(){
     const q = Q.fragen[Q.i];
+    if (window.ltNeutral && !q.neutral) { const n = window.ltNeutral(q.f, q.a); q.f = n.f; q.a = n.a; q.neutral = true; }
     Q.opt = mischen(q.a.map((a, k) => ({ a, ok: k === 0 })));
     Q.gewaehlt = false;
     document.getElementById("qFort").style.width = (Q.i / Q.fragen.length * 100) + "%";
