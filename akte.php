@@ -165,6 +165,36 @@ switch ($aktion) {
         usort($akte["stunden"], fn($a, $b) => strcmp($b["datum"], $a["datum"]));
         break;
 
+    // Stunde auf ein anderes Datum verschieben – auf Wunsch auch die gleiche Stunde beim zweiten Kind
+    case "stunde_verschieben":
+        $id = (string)($eingabe["id"] ?? "");
+        $neu = $datum($eingabe["datum"] ?? "", true);
+        if ($neu === "") { flock($fp, LOCK_UN); fclose($fp); $antwort(false, ["fehler" => "Bitte ein gültiges Datum wählen."]); }
+        $alt = null; $altInhalt = null;
+        foreach ($akte["stunden"] as &$st) {
+            if ($st["id"] !== $id) continue;
+            $alt = $st["datum"]; $altInhalt = (string)($st["inhalt"] ?? "");
+            $st["datum"] = $neu; $geaendert = true;
+        }
+        unset($st);
+        if ($alt === null) { flock($fp, LOCK_UN); fclose($fp); $antwort(false, ["fehler" => "Diese Stunde gibt es nicht mehr."]); }
+        usort($akte["stunden"], fn($a, $b) => strcmp($b["datum"], $a["datum"]));
+        $mit = [];
+        if (!empty($eingabe["mit"]) && $alt !== $neu) {
+            foreach ($alle as $code => &$andere) {
+                if ($code === $kind || !is_array($andere) || empty($andere["stunden"])) continue;
+                $treffer = false;
+                foreach ($andere["stunden"] as &$st2) {
+                    if (($st2["datum"] ?? "") === $alt && (string)($st2["inhalt"] ?? "") === $altInhalt) { $st2["datum"] = $neu; $treffer = true; }
+                }
+                unset($st2);
+                if ($treffer) { usort($andere["stunden"], fn($a, $b) => strcmp($b["datum"], $a["datum"])); $mit[] = $code; }
+            }
+            unset($andere);
+        }
+        $meldung = "Verschoben auf " . date("d.m.Y", strtotime($neu)) . "." . ($mit ? " Auch bei " . implode(", ", $mit) . " verschoben." : "");
+        break;
+
     case "stunde_loeschen":
         $id = (string)($eingabe["id"] ?? "");
         $vorher = count($akte["stunden"]);

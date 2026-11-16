@@ -214,6 +214,16 @@ if ($kindDaten) {
     $alleKartei = json_decode((string)@file_get_contents($karteiDatei), true);
     if (is_array($alleKartei) && isset($alleKartei[$aktuellesKind])) $kartei = array_merge($kartei, $alleKartei[$aktuellesKind]);
 }
+// Stunden, die gleichzeitig mit einem anderen Kind geplant sind (gleiches Datum, gleicher Inhalt)
+$stPartner = [];
+if ($kindDaten && is_array($alleAkten ?? null)) {
+    foreach ($akte["stunden"] as $st) {
+        foreach ($alleAkten as $code => $a2) {
+            if ($code === $aktuellesKind || !is_array($a2)) continue;
+            foreach ((array)($a2["stunden"] ?? []) as $st2) if (($st2["datum"] ?? "") === $st["datum"] && (string)($st2["inhalt"] ?? "") === (string)$st["inhalt"]) { $stPartner[$st["id"]][] = $code; break; }
+        }
+    }
+}
 $erledigtIds = array_keys((array)$akte["erledigt"]);
 $heftAnzahl = $kindDaten ? count(array_filter($kindDaten["hefte"], fn($h) => isset($materialById[$h["material_id"]]))) : 0;
 $heftErledigt = $kindDaten ? count(array_filter($kindDaten["hefte"], fn($h) => isset($materialById[$h["material_id"]]) && in_array($h["material_id"], $erledigtIds, true))) : 0;
@@ -356,6 +366,12 @@ textarea{ resize:vertical; min-height:62px; font-weight:600; }
 .stunde.offen{ border-color:#d6dee3; border-style:dashed; }
 .stunde.angefangen{ border-color:#f2a93b; background:#fffaf0; }
 .stunde.bearbeiten{ border-color:#3d7ea6; }
+.ue-verschieben{ display:inline-block; font-size:12px; font-weight:800; color:#3d7ea6; background:#eef5fa; border-radius:999px; padding:1px 9px; text-decoration:none; white-space:nowrap; }
+.st-verschieben{ grid-column:1 / -1; background:#eef5fa; border-radius:14px; padding:12px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.st-verschieben input[type=date]{ width:auto; min-width:150px; }
+.st-verschieben .knopf{ padding:6px 12px; font-size:13px; }
+.st-verschieben label.mit{ display:flex; align-items:center; gap:6px; font-size:13px; font-weight:700; margin:0; width:100%; text-transform:none; letter-spacing:0; color:var(--text); }
+.st-verschieben label.mit input{ width:auto; }
 .st-statusreihe{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
 .st-status{ border:2px solid #e2e8ec; background:#fff; border-radius:999px; padding:4px 10px; font:inherit; font-size:12px; font-weight:800; color:#7c8a94; cursor:pointer; }
 .st-status.offen.an{ background:#eef1f3; border-color:#9aa6ab; color:#16324a; }
@@ -489,7 +505,7 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
         <h3><i class="fa-solid fa-calendar-check"></i> Stunden</h3>
         <?php if (!$letzteStunden): ?><p class="leer-text" style="margin:0;">Noch keine Stunde eingetragen.</p><?php endif; ?>
         <?php foreach ($letzteStunden as $st): ?>
-            <div class="klein" style="color:var(--text);"><?= ["offen" => "○", "angefangen" => "◐"][$st["status"] ?? ""] ?? "✓" ?> <b><?= h(date("d.m.Y", strtotime($st["datum"]))) ?></b> · <?= h(mb_strimwidth(str_replace("\n", " · ", $st["inhalt"]), 0, 80, "…")) ?></div>
+            <div class="klein" style="color:var(--text);"><?= ["offen" => "○", "angefangen" => "◐"][$st["status"] ?? ""] ?? "✓" ?> <b><?= h(date("d.m.Y", strtotime($st["datum"]))) ?></b><?php if (($st["status"] ?? "erledigt") !== "erledigt"): ?> <a class="ue-verschieben" href="<?= h(tabUrl($aktuellesKind, "stunden") . "&verschieben=" . urlencode($st["id"])) ?>" title="Auf ein anderes Datum verschieben"><i class="fa-solid fa-calendar-days"></i> verschieben</a><?php endif; ?> · <?= h(mb_strimwidth(str_replace("\n", " · ", $st["inhalt"]), 0, 80, "…")) ?></div>
         <?php endforeach; ?>
         <div class="aktionen">
             <a class="knopf voll" href="lrs.php?stunde=<?= urlencode($aktuellesKind) ?>"><i class="fa-solid fa-layer-group"></i> Stunde planen</a>
@@ -684,6 +700,7 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
 <script>
 const AKTE_KIND = <?= json_encode($aktuellesKind, JSON_UNESCAPED_UNICODE) ?>;
 let AKTE = <?= json_encode($akte, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
+const ST_PARTNER = <?= json_encode((object)$stPartner, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
 const AF_FUNKTIONEN = { aufmerksamkeit: "Aufmerksamkeit/Konzentration", optdiff: "Optische Differenzierung", optged: "Optisches Gedächtnis", optser: "Optische Serialität",
     akdiff: "Akustische Differenzierung", akged: "Akustisches Gedächtnis", akser: "Akustische Serialität", koerper: "Körperschema", raum: "Raumorientierung" };
 const AF_WEITERE = { lesen: "Lesen", schreiben: "Schreiben/Abschreiben", sonstiges: "Sonstiges" };
@@ -861,7 +878,7 @@ function heft_filter(){
 
 /* --- Stunden --- */
 const ST_STATUS = { offen: { z: "○", t: "offen" }, angefangen: { z: "◐", t: "angefangen" }, erledigt: { z: "✓", t: "erledigt" } };
-let stunden_filterWert = "alle", stunden_bearbeiten = null;
+let stunden_filterWert = "alle", stunden_bearbeiten = null, stunden_verschieben = new URLSearchParams(location.search).get("verschieben");
 function stunde_status(s){ return ST_STATUS[s.status] ? s.status : "erledigt"; }   // ältere Einträge gelten als erledigt
 function stunden_zeigen(){
     const el = document.getElementById("stunden-liste");
@@ -888,12 +905,40 @@ function stunden_zeigen(){
         <div><div class="datum">${af_datum(s.datum)}</div><div class="dauer">${s.dauer} Minuten</div>
             <div style="display:flex; gap:6px; margin-top:8px;">
                 <a class="knopf" style="padding:5px 10px; font-size:12px;" title="Im Generator öffnen: Blätter tauschen oder ergänzen, Ablaufplan neu drucken" href="lrs.php?stunde=${encodeURIComponent(AKTE_KIND)}&sid=${encodeURIComponent(s.id)}"><i class="fa-solid fa-layer-group"></i></a>
+                <button class="knopf" style="padding:5px 10px; font-size:12px;" title="Auf ein anderes Datum verschieben" onclick="stunden_verschieben = stunden_verschieben === '${id}' ? null : '${id}'; stunden_zeigen()"><i class="fa-solid fa-calendar-days"></i></button>
                 <button class="knopf" style="padding:5px 10px; font-size:12px;" title="Bearbeiten" onclick="stunden_bearbeiten='${id}'; stunden_zeigen()"><i class="fa-solid fa-pen"></i></button>
                 <button class="knopf" style="padding:5px 10px; font-size:12px; color:#c0392b; background:#fdeceb;" title="Löschen" onclick="stunde_loeschen('${id}')"><i class="fa-solid fa-trash"></i></button></div></div>
         <div><div class="st-statusreihe">${knoepfe}</div>
             <div class="inhalt">${af_esc(s.inhalt) || '<span class="leer-text">ohne Inhaltsangabe</span>'}</div>
             <label>Beobachtung</label><textarea rows="2" onchange="stunde_beob('${id}', this.value)" placeholder="Wie lief die Stunde? Wo habt ihr aufgehört? (wird beim Verlassen des Feldes gespeichert)">${af_esc(s.beobachtung)}</textarea></div>
+        ${stunden_verschieben === s.id ? stunde_verschiebenBox(s) : ""}
     </div>`; }).join("") : `<div class="leer">${alle.length ? "Keine Stunden mit diesem Stand." : "Noch keine Stunden eingetragen."}</div>`;
+}
+function st_plusTage(d, n){ const t = new Date(d + "T12:00:00"); t.setDate(t.getDate() + n); return t.toISOString().slice(0, 10); }
+function stunde_verschiebenBox(s){
+    const id = af_esc(s.id), p = ST_PARTNER[s.id] || [];
+    const schnell = [[7, "+1 Woche"], [14, "+2 Wochen"], [1, "+1 Tag"]].map(([n, t]) => `<button class="knopf" onclick="document.getElementById('sv-datum').value = st_plusTage(document.getElementById('sv-datum').value || '${af_esc(s.datum)}', ${n})">${t}</button>`).join("");
+    return `<div class="st-verschieben"><b><i class="fa-solid fa-calendar-days"></i> Verschieben auf:</b>
+        <input type="date" id="sv-datum" value="${af_esc(s.datum)}"> ${schnell}
+        ${p.length ? `<label class="mit"><input type="checkbox" id="sv-mit" checked> Gemeinsame Stunde – auch bei ${p.map(af_esc).join(", ")} verschieben</label>` : ""}
+        <button class="knopf voll" onclick="stunde_verschiebenJetzt('${id}')"><i class="fa-solid fa-check"></i> Verschieben</button>
+        <button class="knopf" onclick="stunden_verschieben=null; stunden_zeigen()">Abbrechen</button></div>`;
+}
+async function stunde_verschiebenJetzt(id){
+    const d = document.getElementById("sv-datum").value, mit = !!(document.getElementById("sv-mit") || {}).checked;
+    if (!d) { alert("Bitte ein Datum wählen."); return; }
+    try {
+        const j = await akte_api({ aktion: "stunde_verschieben", id, datum: d, mit });
+        stunden_verschieben = null; stunden_zeigen();
+        const k = document.querySelector(`.stunde[data-id="${CSS.escape(id)}"]`);
+        if (k) { k.scrollIntoView({ behavior: "smooth", block: "center" }); k.style.boxShadow = "0 0 0 4px #9fd3a8"; setTimeout(() => k.style.boxShadow = "", 2500); }
+        if (j.meldung) st_hinweis(j.meldung);
+    } catch (e){ alert(e.message); }
+}
+function st_hinweis(t){
+    let el = document.getElementById("st-hinweis");
+    if (!el) { el = document.createElement("div"); el.id = "st-hinweis"; el.style.cssText = "position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background:#1f3b4d; color:#fff; padding:10px 18px; border-radius:999px; font-weight:800; z-index:99; max-width:92vw; text-align:center;"; document.body.appendChild(el); }
+    el.textContent = t; el.style.display = "block"; clearTimeout(el._t); el._t = setTimeout(() => el.style.display = "none", 3500);
 }
 async function stunde_statusSetzen(id, status){
     try { await akte_api({ aktion: "stunde_aendern", id, stunde: { status } }); stunden_zeigen(); } catch (e){ alert(e.message); }
@@ -919,6 +964,7 @@ async function stunde_loeschen(id){
     try { await akte_api({ aktion: "stunde_loeschen", id }); stunden_zeigen(); } catch (e){ alert(e.message); }
 }
 stunden_zeigen();
+if (stunden_verschieben) window.addEventListener("load", () => setTimeout(() => { const b = document.querySelector(".st-verschieben"); if (b) b.scrollIntoView({ block: "center" }); }, 100));
 </script>
 
 <?php if ($tab === "heft"): ?>
