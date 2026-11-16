@@ -433,11 +433,22 @@ function einpassen(){
     const h1 = document.querySelector("#mgInhalt .mg-gruss h1");
     if (h1) { h1.style.fontSize = ""; let g = parseFloat(getComputedStyle(h1).fontSize), n = 0;
         while (h1.scrollWidth > h1.clientWidth + 1 && g > 18 && n++ < 40) { g -= 2; h1.style.fontSize = g + "px"; } }
-    document.querySelectorAll("#mgInhalt .mg-karte").forEach(k => {
+    const karten = () => document.querySelectorAll("#mgInhalt .mg-karte").forEach(k => {
         k.classList.remove("eng", "sehr-eng");
         if (k.scrollHeight > k.clientHeight + 2) { k.classList.add("eng"); if (k.scrollHeight > k.clientHeight + 2) k.classList.add("sehr-eng"); }
     });
+    document.querySelectorAll("#mgInhalt .mg-spalte").forEach(sp => sp.classList.remove("eng", "sehr-eng"));
+    karten();
+    // Reicht das nicht, wird die ganze Spalte kompakter (Startklar, Dienste …) und danach noch einmal geprüft
+    const voll = sp => sp.scrollHeight > sp.clientHeight + 2 || [...sp.querySelectorAll(".mg-karte")].some(k => k.scrollHeight > k.clientHeight + 2);
+    document.querySelectorAll("#mgInhalt .mg-spalte").forEach(sp => {
+        if (!voll(sp) && !sp.querySelector(".mg-karte.sehr-eng")) return;   // lieber alles etwas kleiner als Material ohne Namen
+        sp.classList.add("eng"); karten();
+        if (voll(sp)) { sp.classList.add("sehr-eng"); karten(); }
+    });
 }
+// Nach dem Laden der Schrift neu einpassen (vorher sind die Maße noch falsch)
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { const m = document.getElementById("morgen"); if (m && m.classList.contains("an")) einpassen(); });
 window.addEventListener("resize", () => { if (document.getElementById("morgen") && document.getElementById("morgen").classList.contains("an")) einpassen(); });
 function uhr(){
     const el = document.getElementById("mgUhr"); if (!el) return;

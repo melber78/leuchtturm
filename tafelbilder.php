@@ -151,7 +151,7 @@ body{ background:#f6f2ea; }
 .mg-info-box{ background:#e9f7ee; color:#1d5c38; border-radius:14px; padding:12px 16px; font-weight:700; margin-bottom:8px; }
 @keyframes mgSonne{ to{ transform:rotate(360deg); } }
 .mg-uhr{ font:900 clamp(24px,min(3.2vw,5.5vh),58px) "Nunito",sans-serif; color:#16324a; background:white; border-radius:20px; padding:.15em .6em; box-shadow:0 6px 18px rgba(22,50,74,.1); font-variant-numeric:tabular-nums; }
-.mg-raster{ flex:1; display:grid; grid-template-columns:27fr 40fr 33fr; gap:1.4vw; min-height:0; }
+.mg-raster{ flex:1; display:grid; grid-template-columns:minmax(0,27fr) minmax(0,40fr) minmax(0,33fr); gap:1.4vw; min-height:0; }
 .mg-spalte{ display:flex; flex-direction:column; gap:1.4vw; min-height:0; }
 .mg-karte{ background:white; border-radius:26px; box-shadow:0 10px 28px rgba(22,50,74,.09); padding:1.6vh 1.3vw; display:flex; flex-direction:column; min-height:0; overflow:hidden; position:relative; }
 .mg-karte h2{ margin:0 0 .8vh; font:900 clamp(15px,min(1.5vw,2.6vh),28px) "Nunito",sans-serif; text-transform:uppercase; letter-spacing:.05em; color:#8a7a60; }
@@ -223,12 +223,12 @@ body{ background:#f6f2ea; }
 .mg-check{ display:flex; align-items:center; gap:.6vw; text-align:left; border:3px solid #f0ebe0; background:#fffdf8; border-radius:14px; padding:.5vh .7vw; font:800 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#16324a; cursor:pointer; }
 .mg-check span{ font-size:1.4em; }
 .mg-check.ok{ border-color:#2e9e5b; background:#e9f7ee; text-decoration:line-through; color:#5d7a68; }
-.mg-dienste{ flex:1 !important; }
-.mg-dliste{ display:grid; grid-template-columns:1fr 1fr; gap:.6vh .8vw; align-content:start; }
+.mg-dienste{ flex:none !important; overflow:visible; }   /* Dienste immer ganz sichtbar – „Das brauche ich“ nimmt den Rest */
+.mg-dliste{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:.6vh .8vw; align-content:start; }
 .mg-dienst{ display:flex; align-items:center; gap:.5vw; background:#f8f6f1; border-radius:14px; padding:.4vh .6vw; min-width:0; }
 .mg-dienst span{ font-size:clamp(20px,min(2.2vw,3.6vh),40px); }
 .mg-dienst small{ display:block; font:800 clamp(10px,min(.95vw,1.6vh),17px) "Nunito",sans-serif; color:#8a7a60; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.mg-dienst b{ display:block; font:900 clamp(13px,min(1.35vw,2.3vh),25px) "Nunito",sans-serif; color:#16324a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.mg-dienst b{ display:block; font:900 clamp(13px,min(1.35vw,2.3vh),25px) "Nunito",sans-serif; color:#16324a; line-height:1.15; overflow-wrap:anywhere; }
 .mg-dienst div{ min-width:0; }
 .mg-achtung.weg{ display:none; }
 .mg-schalter{ display:flex !important; align-items:center; gap:8px; text-transform:none !important; letter-spacing:0 !important; font-size:15px !important; color:#16324a !important; cursor:pointer; }
@@ -240,7 +240,7 @@ body{ background:#f6f2ea; }
 #morgen.vollbild .mg-ecke{ display:flex; }
 .mg-ecke button{ width:40px; height:40px; border-radius:50%; border:0; background:white; box-shadow:0 3px 10px rgba(0,0,0,.15); font-size:18px; cursor:pointer; }
 /* Karte zu voll: alles etwas kleiner */
-.mg-karte.eng .mg-dinge{ grid-template-columns:repeat(4,1fr); gap:.4vw; }
+.mg-karte.eng .mg-dinge{ grid-template-columns:repeat(5,minmax(0,1fr)); gap:.4vw; }
 .mg-karte.eng .mg-ding span{ font-size:clamp(20px,min(2.2vw,3.6vh),42px); }
 .mg-karte.eng .mg-ding b{ font-size:clamp(10px,min(.9vw,1.6vh),17px); }
 .mg-karte.eng .mg-fuer{ margin-bottom:.4vh; font-size:clamp(14px,min(1.5vw,2.5vh),28px); }
@@ -248,7 +248,7 @@ body{ background:#f6f2ea; }
 .mg-karte.eng .mg-check{ padding:.2vh .5vw; font-size:clamp(11px,min(1.1vw,1.9vh),20px); border-width:2px; }
 .mg-karte.eng .mg-dliste{ gap:.3vh .5vw; } .mg-karte.eng .mg-dienst{ padding:.2vh .4vw; }
 .mg-karte.eng .mg-hinweise li{ font-size:clamp(13px,min(1.3vw,2.2vh),24px); padding:.4vh .6vw; }
-.mg-karte.sehr-eng .mg-dinge{ grid-template-columns:repeat(5,1fr); }
+.mg-karte.sehr-eng .mg-dinge{ grid-template-columns:repeat(5,minmax(0,1fr)); }
 .mg-karte.sehr-eng .mg-ding b{ display:none; }
 .mg-karte.sehr-eng .mg-ding span{ font-size:clamp(18px,min(1.9vw,3.2vh),36px); }
 .mg-karte.sehr-eng h2{ margin-bottom:.3vh; }
@@ -287,8 +287,8 @@ body{ background:#f6f2ea; }
 /* Beachten */
 .mg-achtung{ background:#fff8e1; }
 .mg-spalte .mg-pack{ flex:1.5; }
-.mg-dinge.viele{ grid-template-columns:repeat(4,1fr); gap:.5vw; } .mg-dinge.viele .mg-ding span{ font-size:clamp(22px,min(2.4vw,4vh),46px); } .mg-dinge.viele .mg-ding b{ font-size:clamp(11px,min(.95vw,1.7vh),18px); }
-.mg-dinge.sehr-viele{ grid-template-columns:repeat(5,1fr); gap:.4vw; } .mg-dinge.sehr-viele .mg-ding span{ font-size:clamp(18px,min(2vw,3.3vh),40px); } .mg-dinge.sehr-viele .mg-ding b{ font-size:clamp(10px,min(.85vw,1.5vh),16px); }
+.mg-dinge.viele{ grid-template-columns:repeat(4,minmax(0,1fr)); gap:.5vw; } .mg-dinge.viele .mg-ding span{ font-size:clamp(22px,min(2.4vw,4vh),46px); } .mg-dinge.viele .mg-ding b{ font-size:clamp(11px,min(.95vw,1.7vh),18px); }
+.mg-dinge.sehr-viele{ grid-template-columns:repeat(5,minmax(0,1fr)); gap:.4vw; } .mg-dinge.sehr-viele .mg-ding span{ font-size:clamp(18px,min(2vw,3.3vh),40px); } .mg-dinge.sehr-viele .mg-ding b{ font-size:clamp(10px,min(.85vw,1.5vh),16px); }
 .mg-hinweise{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.9vh; }
 .mg-hinweise li{ display:flex; gap:.7vw; align-items:center; background:white; border-radius:16px; padding:.7vh .8vw; font:800 clamp(15px,min(1.6vw,2.7vh),30px)/1.2 "Nunito",sans-serif; color:#16324a; }
 .mg-hinweise li span{ font-size:1.5em; }
@@ -384,9 +384,29 @@ body{ background:#f6f2ea; }
 /* Startklar (vor dem Tag / vor der Stunde) */
 .mg-start{ background:#eefaf2; }
 .mg-spalte .mg-start{ flex:none; overflow:visible; }   /* Startklar: immer ganz sichtbar, die anderen Karten passen sich an */
+/* Volle Spalte (z. B. Startklar + viel Material + Dienste): alles etwas kompakter */
+.mg-spalte.eng{ gap:1vh; }
+.mg-spalte.eng .mg-karte{ padding:1vh 1vw; }
+.mg-spalte.eng .mg-karte h2{ margin-bottom:.4vh; font-size:clamp(13px,min(1.25vw,2.2vh),24px); }
+.mg-spalte.eng .mg-startliste{ gap:.4vh .4vw; }
+.mg-spalte.eng .mg-startliste .mg-check{ padding:.15vh .4vw; font-size:clamp(11px,min(1vw,1.8vh),19px); border-width:2px; }
+.mg-spalte.eng .mg-dliste{ gap:.3vh .4vw; }
+.mg-spalte.eng .mg-dienst{ padding:.15vh .4vw; }
+.mg-spalte.eng .mg-dienst span{ font-size:clamp(16px,min(1.7vw,2.8vh),32px); }
+.mg-spalte.eng .mg-dienst small{ font-size:clamp(9px,min(.8vw,1.4vh),15px); }
+.mg-spalte.eng .mg-dienst b{ font-size:clamp(12px,min(1.15vw,2vh),22px); }
+.mg-spalte.sehr-eng .mg-startliste .mg-check span{ font-size:1.15em; }
+.mg-spalte.sehr-eng .mg-startliste .mg-check{ font-size:clamp(10px,min(.9vw,1.6vh),17px); }
+/* sehr wenig Platz: Material nur noch als Bilder, so viele nebeneinander wie passen */
+.mg-karte.sehr-eng .mg-dinge{ grid-template-columns:repeat(auto-fill,minmax(clamp(34px,3.4vw,64px),1fr)); gap:.3vw; }
+.mg-karte.sehr-eng .mg-ding{ padding:.3vh .2vw; }
+/* Material als fließende Reihe: jedes Kärtchen so breit wie sein Name – nichts wird getrennt, die Spalte wird nicht breiter */
+#mgInhalt .mg-dinge{ display:flex; flex-wrap:wrap; }
+#mgInhalt .mg-ding{ flex:1 1 auto; min-width:clamp(48px,4.6vw,96px); max-width:34%; }
+#mgInhalt .mg-ding b{ white-space:nowrap; text-align:center; }
 .mg-start h2 > span:first-child{ min-width:0; }
 .mg-start-knoepfe{ display:flex; gap:6px; flex:none; }
-.mg-startliste{ display:grid; grid-template-columns:1fr 1fr; gap:.6vh .5vw; overflow:hidden; align-content:start; }
+.mg-startliste{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:.6vh .5vw; overflow:hidden; align-content:start; }
 .mg-startliste .mg-check{ padding:.4vh .5vw; font-size:clamp(12px,min(1.1vw,2vh),22px); line-height:1.15; }
 .mg-startliste .mg-leer{ grid-column:1/-1; }
 .mg-karte.eng .mg-startliste .mg-check{ padding:.2vh .5vw; font-size:clamp(11px,min(1.1vw,1.9vh),20px); border-width:2px; }
