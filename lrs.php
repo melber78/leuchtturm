@@ -1046,6 +1046,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
                 <option value="leicht">Leicht</option>
                 <option value="mittel" selected>Mittel</option>
                 <option value="schwer">Schwer</option>
+                <option value="profi">Profi (sehr schwer)</option>
             </select>
         </div>
         <div>
@@ -1572,7 +1573,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
         <p class="beschreibung std-nur-erst" style="margin:6px 0 0;">Für den ersten Termin mit einem neuen Kind: Kennenlernen, ein Aufmerksamkeitsblatt, ein Lese-Schnappschuss mit Schülerblatt (Text, darunter Wörter, Silben und Buchstaben als Rückfallstufen) und Lehrerexemplar mit Beobachtungsbogen, Wahrnehmungsspiele und ein Abschluss mit Erfolgserlebnis.</p>
         <div class="zeile zwei" style="margin-top:12px;">
             <div><label>Klassenstufe</label><select id="std-klasse"><option value="1">Klasse 1</option><option value="2">Klasse 2</option><option value="3">Klasse 3</option><option value="4">Klasse 4</option><option value="5">Klasse 5</option><option value="6">Klasse 6</option><option value="7">Klasse 7</option><option value="8">Klasse 8</option></select></div>
-            <div><label>Schwierigkeit</label><select id="std-schwierigkeit"><option value="leicht">leicht</option><option value="mittel">mittel</option><option value="schwer">schwer</option></select></div>
+            <div><label>Schwierigkeit</label><select id="std-schwierigkeit"><option value="leicht">leicht</option><option value="mittel">mittel</option><option value="schwer">schwer</option><option value="profi">Profi (sehr schwer)</option></select></div>
         </div>
         <div class="zeile std-anz-zeile" style="margin-top:12px;">
             <div><label>Aufmerksamkeit (Einstieg)</label><select id="std-aufm"></select></div>
@@ -1805,10 +1806,11 @@ const THEMEN = {
 
 function liesGlobal(){
     const klasse = parseInt(document.getElementById("g-klasse").value);
-    const schwierigkeit = document.getElementById("g-schwierigkeit").value;
+    const wahl = document.getElementById("g-schwierigkeit").value, profi = wahl === "profi";
+    const schwierigkeit = profi ? "schwer" : wahl;   // ältere Generatoren kennen nur leicht/mittel/schwer
     const thema = document.getElementById("g-thema").value;
     const umfang = document.getElementById("g-umfang").value;
-    return { klasse, schwierigkeit, thema, umfang };
+    return { klasse, schwierigkeit, thema, umfang, profi };
 }
 
 function wortpool(){
@@ -3428,18 +3430,15 @@ function ws_einpassen(nurSeite){
         inhalt.style.width = B + "px";
 
         const maxF = parseFloat(seite.dataset.max) || WS_MAX;
-        let f = 1;
-        for (let schritt = 0; schritt < 6; schritt++){
-            ws_kartenEinpassen(seite);
-            const neu = Math.min(maxF, Math.max(WS_MIN, H / inhalt.scrollHeight));
-            if (Math.abs(neu - f) < 0.004){ f = neu; break; }
-            f = neu;
-            inhalt.style.width = (B / f) + "px";
-        }
-        ws_kartenEinpassen(seite);
-        if (inhalt.scrollHeight * f > H + 1 && f > WS_MIN){
-            f = Math.max(WS_MIN, f * H / (inhalt.scrollHeight * f));
-            inhalt.style.width = (B / f) + "px";
+        // größten Faktor suchen, bei dem alles auf die Seite passt (die Breite ändert die Zeilenumbrüche – deshalb wird jeder Faktor geprüft)
+        const passt = f => { inhalt.style.width = (B / f) + "px"; ws_kartenEinpassen(seite); return inhalt.scrollHeight * f <= H + 1; };
+        let f;
+        if (passt(maxF)) f = maxF;
+        else {
+            let lo = WS_MIN, hi = maxF;
+            for (let schritt = 0; schritt < 9; schritt++){ const mitte = (lo + hi) / 2; if (passt(mitte)) lo = mitte; else hi = mitte; }
+            f = lo;
+            passt(f);
         }
 
         inhalt.style.transformOrigin = "top left";
@@ -4419,8 +4418,8 @@ function fs_zaehlreihe(i, inhalt, loesung){
 }
 
 // Kachel (Raster mit gefärbten Feldern)
-function fs_kachel(felder, n, farbe, leer = false, loesung = null){
-    const gr = n === 3 ? 22 : 18;
+function fs_kachel(felder, n, farbe, leer = false, loesung = null, groesse = 0){
+    const gr = groesse || (n <= 3 ? 22 : n === 4 ? 18 : 15);
     return `<div class="fs-kachel" style="grid-template-columns:repeat(${n}, ${gr}px); grid-template-rows:repeat(${n}, ${gr}px);">` +
         felder.map((an, k) => leer
             ? `<div class="${loesung && loesung[k] ? "fs-lfill" : ""}" style="background:#fff; border:1px solid #C9D6E3;${loesung && loesung[k] ? ` --lf:${farbe};` : ""}"></div>`
@@ -4511,6 +4510,7 @@ const FS_BUCHSTABEN_ZIELE = [
     { z: "a", v: "oecnu" },   // leicht: deutlich andere Buchstaben
     { z: "b", v: "dphkl" },   // mittel: ähnliche Formen
     { z: "d", v: "bpqgo" },   // schwer: gespiegelte/gedrehte Verwechsler
+    { z: "q", v: "pgdb9o" },  // Profi: noch mehr Spiegel-Verwechsler
 ];
 
 /* ---------- Aufmerksamkeit ---------- */
@@ -4550,7 +4550,7 @@ function fsA_formenDetektiv(ctx){
 }
 
 function fsA_buchstabenDetektiv(ctx){
-    const t = FS_BUCHSTABEN_ZIELE[fs_stufe(ctx)];
+    const t = FS_BUCHSTABEN_ZIELE[fs_st(ctx)];
     const zeile = i => {
         const reihe = [...Array(13)].map(() => Math.random() < 0.25 ? t.z : zufallsElement(t.v.split("")));
         return fs_zaehlreihe(i, reihe.map(b => b === t.z ? LM(`<span class="fs-buchstabe">${b}</span>`) : `<span class="fs-buchstabe">${b}</span>`).join(""), reihe.filter(b => b === t.z).length);
@@ -4601,10 +4601,12 @@ function fsA_muster(ctx){
 /* ---------- Optische Differenzierung ---------- */
 
 function fsO_gleich(ctx){
+    const profi = fs_profi(ctx);
     const zeile = () => {
-        const w = ctx.wort();
-        const w2 = Math.random() < 0.45 ? w : (ws_ablenker(w, 1)[0] || w);
-        const gr = fs_wortGroesse(w, 230, 30);
+        const w = profi ? (Math.random() < 0.5 ? ctx.wort() + " " + ctx.wort() : ctx.wort(x => x.length >= 8)) : ctx.wort();
+        const teile = w.split(" "), j = zufallsZahl(0, teile.length - 1);
+        const w2 = Math.random() < 0.45 ? w : teile.map((t, k) => k === j ? (ws_ablenker(t, 1)[0] || t) : t).join(" ");
+        const gr = fs_wortGroesse(w, profi ? 300 : 230, profi ? 24 : 30);
         return `<tr><td style="font-size:${gr}px;">${ws_esc(w)}</td><td style="font-size:${gr}px;">${ws_esc(w2)}</td><td>${fs_kreuzBox(w === w2)}</td><td>${fs_kreuzBox(w !== w2)}</td></tr>`;
     };
     return { titel: "Gleich oder verschieden?", zeile, html: `
@@ -4615,7 +4617,7 @@ function fsO_gleich(ctx){
 function fsO_fehlerreihe(ctx){
     const zeile = i => {
         const w = ctx.wort();
-        const plaetze = w.length > 7 ? 4 : 5;
+        const plaetze = fs_profi(ctx) ? (w.length > 7 ? 5 : 6) : (w.length > 7 ? 4 : 5);
         const anders = zufallsZahl(0, plaetze - 1);
         const v = ws_ablenker(w, 1)[0] || (w + "e");
         const gr = fs_wortGroesse(w, 600 / plaetze, 28);
@@ -4628,7 +4630,7 @@ function fsO_fehlerreihe(ctx){
 }
 
 function fsO_kacheln(ctx){
-    const st = fs_stufe(ctx), n = st === 2 ? 4 : 3, anzahl = n === 3 ? 4 : 7, unterschied = st === 0 ? 2 : 1;
+    const st = fs_st(ctx), n = [3, 3, 4, 5][st], anzahl = [4, 4, 7, 11][st], unterschied = st === 0 ? 2 : 1;
     const farbe = zufallsElement(FS_FARBEN).c;
     const zeile = () => {
         const vorlage = fs_zufallsKachel(n, anzahl);
@@ -4639,7 +4641,8 @@ function fsO_kacheln(ctx){
             if (v.join() !== vorlage.join() && !varianten.some(x => x.join() === v.join())) varianten.push(v);
         }
         const optionen = mische([vorlage, ...varianten]);
-        return `<div class="fs-kachel-reihe"><div class="fs-vorlage">${fs_kachel(vorlage, n, farbe)}</div><div class="fs-optionen">${optionen.map(o => o === vorlage ? LM(fs_kachel(o, n, farbe)) : fs_kachel(o, n, farbe)).join("")}</div></div>`;
+        const g = n >= 5 ? 12 : 0;
+        return `<div class="fs-kachel-reihe"><div class="fs-vorlage">${fs_kachel(vorlage, n, farbe, false, null, g)}</div><div class="fs-optionen">${optionen.map(o => o === vorlage ? LM(fs_kachel(o, n, farbe, false, null, g)) : fs_kachel(o, n, farbe, false, null, g)).join("")}</div></div>`;
     };
     return { titel: "Muster vergleichen", zeile, html: `
         ${ws_aufgabe(1, "Links steht die Vorlage. Welches Muster rechts ist <b>genau gleich</b>? Kreise es ein.")}
@@ -4647,11 +4650,11 @@ function fsO_kacheln(ctx){
 }
 
 function fsO_unterschiede(ctx){
-    const anzahl = [3, 5, 7][fs_stufe(ctx)];
+    const anzahl = fs_w(ctx, [3, 5, 7, 10]), m = fs_profi(ctx) ? 6 : 5, z = fs_profi(ctx) ? 38 : 44;
     const paar = () => {
-        const a = [...Array(25)].map(() => fs_zufallsForm());
+        const a = [...Array(m * m)].map(() => fs_zufallsForm());
         const b = fs_veraendern(a, anzahl);
-        return `<div class="fs-zwei-bilder"><div><div class="fs-bild-titel">Vorlage</div>${fs_formenGitter(a, 5, 44)}</div><div><div class="fs-bild-titel">Hier ist ${anzahl}-mal etwas anders</div>${fs_formenGitter(b, 5, 44, b.geaendert)}</div></div>`;
+        return `<div class="fs-zwei-bilder"><div><div class="fs-bild-titel">Vorlage</div>${fs_formenGitter(a, m, z)}</div><div><div class="fs-bild-titel">Hier ist ${anzahl}-mal etwas anders</div>${fs_formenGitter(b, m, z, b.geaendert)}</div></div>`;
     };
     return { titel: "Unterschiede finden", html: `
         ${ws_aufgabe(1, `Vergleiche die beiden Bilder Feld für Feld. Kreise im rechten Bild die ${anzahl} Unterschiede ein.`)}
@@ -4661,17 +4664,18 @@ function fsO_unterschiede(ctx){
 }
 
 function fsO_suchbild(ctx){
-    const t = FS_BUCHSTABEN_ZIELE[fs_stufe(ctx)];
+    const t = FS_BUCHSTABEN_ZIELE[fs_st(ctx)];
     const zeile = () => Math.random() < 0.22 ? `<div class="fs-lm">${t.z}</div>` : `<div>${zufallsElement(t.v.split(""))}</div>`;
-    return { titel: "Buchstaben-Suchbild", zeile, schritt: 12, max: 400, html: `
+    const sp = fs_profi(ctx) ? 14 : 12;
+    return { titel: "Buchstaben-Suchbild", zeile, schritt: sp, max: 500, html: `
         <div class="fs-ziel">Male jedes <b style="font-size:40px; color:#1D5FA8;">${t.z}</b> gelb an. Wie viele hast du gefunden? <span class="fs-zaehl" style="display:inline-block;"></span></div>
-        <div class="fs-suchbild fs-fuell" style="grid-template-columns:repeat(12, minmax(0,1fr));"></div>` };
+        <div class="fs-suchbild fs-fuell" style="grid-template-columns:repeat(${sp}, minmax(0,1fr));${sp > 12 ? " font-size:27px;" : ""}"></div>` };
 }
 
 /* ---------- Optisches Gedächtnis ---------- */
 
 function fsG_formenreihen(ctx){
-    const laenge = [3, 4, 5][fs_stufe(ctx)];
+    const laenge = fs_w(ctx, [3, 4, 5, 7]);
     const zeile = () => {
         const reihe = fs_verschiedeneFormen(laenge);
         return `<div class="fs-karte"><div class="fs-merk">${reihe.map(x => fs_f(x, 30)).join("")}</div><div class="fs-abdecken">abdecken →</div><div class="fs-boxen">${reihe.map(x => `<span class="fs-box">${L(fs_f(x, 26))}</span>`).join("")}</div></div>`;
@@ -4682,7 +4686,7 @@ function fsG_formenreihen(ctx){
 }
 
 function fsG_wortreihen(ctx){
-    const k = [2, 3, 4][fs_stufe(ctx)];
+    const k = fs_w(ctx, [2, 3, 4, 6]);
     const zeile = () => {
         const woerter = [];
         while (woerter.length < k){ const w = ctx.wort(); if (!woerter.includes(w)) woerter.push(w); }
@@ -4694,7 +4698,7 @@ function fsG_wortreihen(ctx){
 }
 
 function fsG_kacheln(ctx){
-    const st = fs_stufe(ctx), n = st === 2 ? 4 : 3, anzahl = [3, 4, 6][st];
+    const st = fs_st(ctx), n = [3, 3, 4, 5][st], anzahl = [3, 4, 6, 9][st];
     const farbe = zufallsElement(FS_FARBEN).c;
     const zeile = () => {
         const vorlage = fs_zufallsKachel(n, anzahl);
@@ -4706,7 +4710,7 @@ function fsG_kacheln(ctx){
 }
 
 function fsG_veraendert(ctx){
-    const anzahl = [2, 3, 4][fs_stufe(ctx)];
+    const anzahl = fs_w(ctx, [2, 3, 4, 6]);
     const a = [...Array(25)].map(() => fs_zufallsForm());
     const b = fs_veraendern(a, anzahl);
     return { titel: "Was hat sich verändert?", html: `
@@ -4730,13 +4734,20 @@ function fsS_zahlenreihen(ctx){
             const schritt = zufallsElement([2, 3, 4, 5]) * (Math.random() < 0.3 ? -1 : 1);
             const start = schritt < 0 ? zufallsZahl(40, 60) : zufallsZahl(1, 20);
             reihe = [...Array(8)].map((_, k) => start + k * schritt);
-        } else {
+        } else if (!fs_profi(ctx) || Math.random() < 0.2){
             const a = zufallsZahl(2, 6), b = zufallsZahl(1, 4), start = zufallsZahl(1, 15);
             reihe = [start];
             for (let k = 1; k < 8; k++) reihe.push(reihe[k - 1] + (k % 2 ? a : b));   // +a, +b im Wechsel
+        } else {
+            const art = zufallsZahl(0, 4), start = zufallsZahl(1, 6);
+            if (art === 0){ reihe = [start]; for (let k = 1; k < 8; k++) reihe.push(reihe[k - 1] + k); }                 // +1 +2 +3 …
+            else if (art === 1){ reihe = [zufallsZahl(1, 3)]; for (let k = 1; k < 8; k++) reihe.push(reihe[k - 1] * 2); }   // verdoppeln
+            else if (art === 2){ reihe = [start, start + zufallsZahl(1, 3)]; for (let k = 2; k < 8; k++) reihe.push(reihe[k - 1] + reihe[k - 2]); }   // Summe der beiden davor
+            else if (art === 3){ const a = zufallsZahl(2, 5), b = zufallsZahl(3, 9) * 10; reihe = [...Array(8)].map((_, k) => k % 2 ? b - Math.floor(k / 2) * a : start + Math.floor(k / 2) * a); }   // zwei Reihen ineinander
+            else { const a = zufallsZahl(3, 6); reihe = [zufallsZahl(30, 60)]; for (let k = 1; k < 8; k++) reihe.push(k % 2 ? reihe[k - 1] + a * 2 : reihe[k - 1] - a); }   // +2a, −a
         }
-        const luecken = new Set(mische([...Array(6).keys()].map(k => k + 2)).slice(0, [2, 3, 4][st]));
-        const html = reihe.map((z, k) => luecken.has(k) ? `<span class="fs-box">${L(z)}</span>` : `<span class="fs-gross" style="min-width:46px; text-align:center;">${z}</span>`).join("");
+        const luecken = new Set(mische([...Array(6).keys()].map(k => k + 2)).slice(0, fs_w(ctx, [2, 3, 4, 4])));
+        const html = reihe.map((z, k) => luecken.has(k) ? `<span class="fs-box"${z > 999 ? ' style="width:60px;"' : ""}>${L(z)}</span>` : `<span class="fs-gross" style="min-width:46px; text-align:center;">${z}</span>`).join("");
         return `<div class="fs-reihe"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-reihe-inhalt">${html}</div></div>`;
     };
     return { titel: "Zahlenreihen fortsetzen", zeile, html: `
@@ -4745,7 +4756,7 @@ function fsS_zahlenreihen(ctx){
 }
 
 function fsS_reihenfolge(ctx){
-    const laenge = [3, 4, 5][fs_stufe(ctx)];
+    const laenge = fs_w(ctx, [3, 4, 5, 7]);
     const zeile = () => {
         const reihe = fs_verschiedeneFormen(laenge);
         let gemischt = mische(reihe);
@@ -4758,9 +4769,9 @@ function fsS_reihenfolge(ctx){
 }
 
 function fsS_buchstabensalat(ctx){
-    const max = [5, 7, 10][fs_stufe(ctx)];
+    const max = fs_w(ctx, [5, 7, 10, 20]), min = fs_profi(ctx) ? 8 : 3;
     const zeile = i => {
-        const w = ctx.wort(x => x.length >= 3 && x.length <= max);
+        const w = ctx.wort(x => x.length >= min && x.length <= max);
         const b = w.split("");
         let m = mische(b);
         for (let v = 0; v < 10 && m.join("") === w && b.length > 1; v++) m = mische(b);
@@ -4778,7 +4789,8 @@ function fsS_abc(ctx){
         for (let v = 0; woerter.length < 4 && v < 200; v++){
             const w = ctx.wort();
             const gleicherAnfang = woerter.some(x => x[0].toLowerCase() === w[0].toLowerCase());
-            if (!woerter.includes(w) && (st === 2 || !gleicherAnfang)) woerter.push(w);
+            const profiAnfang = fs_profi(ctx) && woerter.length && v < 150 && w[0].toLowerCase() !== woerter[0][0].toLowerCase();   // Profi: gleiche Anfangsbuchstaben → nach dem 2./3. Buchstaben ordnen
+            if (!woerter.includes(w) && !profiAnfang && (st === 2 || !gleicherAnfang)) woerter.push(w);
         }
         const sortiert = [...woerter].sort((a, b) => a.localeCompare(b, "de", { sensitivity: "base" }));
         return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-chips">${woerter.map(w => `<div class="fs-chip"><span class="fs-chiptext">${ws_esc(w)}</span><span class="fs-nrbox">${L(sortiert.indexOf(w) + 1)}</span></div>`).join("")}</div></div>`;
@@ -4791,10 +4803,11 @@ function fsS_abc(ctx){
 
 function fsS_alphabet(ctx){
     const ABC = "abcdefghijklmnopqrstuvwxyz";
-    const luecken = [2, 3, 4][fs_stufe(ctx)];
+    const luecken = fs_w(ctx, [2, 3, 4, 6]), profi = fs_profi(ctx);
     const zeile = i => {
         const start = zufallsZahl(0, ABC.length - 9);
-        const teil = ABC.slice(start, start + 9).split("").map(b => i % 2 ? b.toUpperCase() : b);
+        let teil = ABC.slice(start, start + 9).split("").map(b => i % 2 ? b.toUpperCase() : b);
+        if (profi && i % 3 !== 0) teil.reverse();   // Profi: auch rückwärts
         const leer = new Set(mische([...Array(8).keys()].map(k => k + 1)).slice(0, luecken));
         const html = teil.map((b, k) => leer.has(k) ? `<span class="fs-box">${L(b)}</span>` : `<span class="fs-gross" style="min-width:40px; text-align:center;">${b}</span>`).join("");
         return `<div class="fs-reihe"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-reihe-inhalt">${html}</div></div>`;
@@ -4826,6 +4839,7 @@ const FS_MINIMALPAARE = [
 const FS_LAUTWOERTER = {
     m: ["Maus", "Mama", "Mond", "Lampe", "Hammer", "Blume", "Baum", "Turm", "Kamm", "Ameise", "Tomate", "Melone", "Himmel", "Arm", "Mütze", "Mantel", "Zimmer", "Kamel", "Lamm", "Roman"],
     n: ["Nase", "Nest", "Nudel", "Biene", "Sonne", "Banane", "Kanne", "Zahn", "Mann", "Bohne", "Schwan", "Laterne", "Hahn", "Kran", "Nuss", "Hund", "Tanne", "Kino", "Zitrone", "Ente"],
+    l: ["Löwe", "Lampe", "Ball", "Insel", "Wolke", "Blume", "Esel", "Tulpe", "Salat", "Kamel", "Lineal", "Pullover", "Teller", "Apfel", "Gabel", "Schal", "Leiter", "Halle", "Wal", "Licht", "Flöte", "Schlüssel", "Igel", "Kerzenlicht"],
     r: ["Rose", "Rad", "Rabe", "Regen", "Tor", "Bär", "Ohr", "Uhr", "Stern", "Garten", "Karte", "Birne", "Pferd", "Zebra", "Ring", "Ritter", "Tür", "Feuer", "Torte", "Rakete"],
 };
 
@@ -4860,7 +4874,7 @@ function fsD_reime(ctx){
 
 function fsD_minimalpaare(ctx){
     const st = fs_stufe(ctx);
-    const liste = mische(FS_MINIMALPAARE.slice(0, st + 1).flat());
+    const liste = mische(FS_MINIMALPAARE.slice(0, st + 1).flat().concat(fs_profi(ctx) ? FX_MINIMAL_SCHWER.filter(p => p[0] !== p[1]) : []));
     const zeile = i => {
         const p = liste[i];
         if (!p) return "";
@@ -4873,7 +4887,7 @@ function fsD_minimalpaare(ctx){
 }
 
 function fsD_lautposition(ctx){
-    const laut = ["m", "n", "r"][fs_stufe(ctx)];
+    const laut = fs_profi(ctx) ? "l" : ["m", "n", "r"][fs_stufe(ctx)];
     const woerter = mische(FS_LAUTWOERTER[laut]);
     const zeile = i => {
         const w = woerter[i];
@@ -4892,7 +4906,7 @@ function fsD_lautposition(ctx){
 /* ---------- Akustisches Gedächtnis ---------- */
 
 function fsH_wortfolgen(ctx){
-    const k = [3, 4, 5][fs_stufe(ctx)];
+    const k = fs_w(ctx, [3, 4, 5, 7]);
     const zeile = i => {
         const woerter = [];
         while (woerter.length < k){ const w = ctx.wort(); if (!woerter.includes(w)) woerter.push(w); }
@@ -4906,8 +4920,8 @@ function fsH_wortfolgen(ctx){
 function fsH_zahlenspanne(ctx){
     const st = fs_stufe(ctx);
     const zeile = i => {
-        const k = [3, 4, 5][st] + Math.floor(i / 4);           // wird von Reihe zu Reihe etwas länger
-        const zahlen = [...Array(Math.min(k, 8))].map(() => zufallsZahl(1, 9));
+        const k = fs_w(ctx, [3, 4, 5, 6]) + Math.floor(i / 4);           // wird von Reihe zu Reihe etwas länger
+        const zahlen = [...Array(Math.min(k, fs_profi(ctx) ? 10 : 8))].map(() => zufallsZahl(1, 9));
         return `<div class="fs-karte"><div class="fs-ansage"><b>Lehrkraft liest vor</b>${zahlen.join(" – ")}</div><div class="fs-boxen">${'<span class="fs-box"></span>'.repeat(zahlen.length)}</div></div>`;
     };
     return { titel: "Zahlen merken", zeile, html: `
@@ -4916,13 +4930,13 @@ function fsH_zahlenspanne(ctx){
 }
 
 function fsH_auftraege(ctx){
-    const k = [1, 2, 3][fs_stufe(ctx)];
+    const k = fs_w(ctx, [1, 2, 3, 4]), m = fs_profi(ctx) ? 7 : 5;
     const FORMEN = ["kreis", "quadrat", "raute", "rechteck"];
     const zeile = i => {
-        const reihe = [...Array(5)].map(() => zufallsElement(FORMEN));
-        const stellen = mische([0, 1, 2, 3, 4]).slice(0, k).sort();
+        const reihe = [...Array(m)].map(() => zufallsElement(FORMEN));
+        const stellen = mische([...Array(m).keys()]).slice(0, k).sort();
         const auftraege = stellen.map(s => `Form ${s + 1} ${zufallsElement(FS_FARBEN).n}`);
-        return `<div class="fs-karte"><div class="fs-ansage"><b>Lehrkraft sagt</b>Male ${auftraege.join(", ")} an.</div><div class="fs-chips">${reihe.map(f => fs_umriss(f, 40)).join("")}</div></div>`;
+        return `<div class="fs-karte"><div class="fs-ansage"><b>Lehrkraft sagt</b>Male ${auftraege.join(", ")} an.</div><div class="fs-chips">${reihe.map(f => fs_umriss(f, m > 5 ? 32 : 40)).join("")}</div></div>`;
     };
     return { titel: "Aufträge merken", zeile, html: `
         ${ws_aufgabe(1, "Hör gut zu: Die Lehrkraft sagt dir, welche Formen du in welcher Farbe anmalen sollst. Hör bis zum Ende zu und male erst dann.")}
@@ -4933,7 +4947,7 @@ function fsH_auftraege(ctx){
 
 function fsR_silbenfolge(ctx){
     const zeile = i => {
-        const w = ctx.wort(x => silben_trennen(x).length >= 2);
+        const w = ctx.wort(x => silben_trennen(x).length >= (fs_profi(ctx) ? 3 : 2));
         const silben = silben_trennen(w);
         let idx = mische([...silben.keys()]);
         for (let v = 0; v < 10 && idx.every((x, k) => x === k); v++) idx = mische([...silben.keys()]);
@@ -4945,7 +4959,7 @@ function fsR_silbenfolge(ctx){
 }
 
 function fsR_wortfolge(ctx){
-    const k = [3, 4, 5][fs_stufe(ctx)];
+    const k = fs_w(ctx, [3, 4, 5, 7]);
     const zeile = i => {
         const woerter = [];
         while (woerter.length < k){ const w = ctx.wort(); if (!woerter.includes(w)) woerter.push(w); }
@@ -4958,9 +4972,9 @@ function fsR_wortfolge(ctx){
 }
 
 function fsR_lautfolge(ctx){
-    const max = [4, 5, 6][fs_stufe(ctx)];
+    const max = fs_w(ctx, [4, 5, 6, 9]), min = fs_profi(ctx) ? 6 : 3;
     const zeile = i => {
-        const w = ctx.wort(x => x.length >= 3 && x.length <= max && !/(sch|ch|ck|ei|au|eu|ie)/i.test(x));
+        const w = ctx.wort(x => x.length >= min && x.length <= max && !/(sch|ch|ck|ei|au|eu|ie)/i.test(x));
         const b = w.split("");
         let idx = mische([...b.keys()]);
         for (let v = 0; v < 10 && idx.every((x, k) => x === k); v++) idx = mische([...b.keys()]);
@@ -5034,12 +5048,12 @@ function fsRO_blickrichtung(ctx){
 
 function fsRO_pfeile(ctx){
     const st = fs_stufe(ctx);
-    const PFEILE = [["←", "→"], ["←", "→", "↑", "↓"], ["←", "→", "↑", "↓"]][st];
+    const PFEILE = fs_profi(ctx) ? ["←", "→", "↑", "↓", "↗", "↘", "↙", "↖"] : [["←", "→"], ["←", "→", "↑", "↓"], ["←", "→", "↑", "↓"]][st];
     const zeile = i => {
         const reihe = [...Array(10)].map(() => zufallsElement(PFEILE));
-        return `<div class="fs-reihe"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-reihe-inhalt fs-pfeile">${reihe.map(p => `<div class="fs-pfeil-zelle"><span class="fs-pfeilzeichen">${p}</span><span class="fs-nrbox">${L({ "←": "l", "→": "r", "↑": "o", "↓": "u" }[p])}</span></div>`).join("")}</div></div>`;
+        return `<div class="fs-reihe"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-reihe-inhalt fs-pfeile">${reihe.map(p => `<div class="fs-pfeil-zelle"><span class="fs-pfeilzeichen">${p}</span><span class="fs-nrbox"${p.length && "↗↘↙↖".includes(p) ? ' style="width:40px;"' : ""}>${L({ "←": "l", "→": "r", "↑": "o", "↓": "u", "↗": "ro", "↘": "ru", "↙": "lu", "↖": "lo" }[p])}</span></div>`).join("")}</div></div>`;
     };
-    const legende = st === 0 ? "r = rechts, l = links" : "r = rechts, l = links, o = oben, u = unten";
+    const legende = st === 0 ? "r = rechts, l = links" : "r = rechts, l = links, o = oben, u = unten" + (fs_profi(ctx) ? " · schräg: ro, ru, lo, lu" : "");
     return { titel: "Pfeile lesen", zeile, html: `
         <div class="fs-ziel">${legende}</div>
         ${ws_aufgabe(1, "In welche Richtung zeigt der Pfeil? Schreibe den passenden Buchstaben darunter. Sprich dabei leise mit.")}
@@ -5047,7 +5061,7 @@ function fsRO_pfeile(ctx){
 }
 
 function fsRO_diktat(ctx){
-    const st = fs_stufe(ctx), n = 9, zuege = [5, 7, 9][st];
+    const st = fs_st(ctx), n = st === 3 ? 10 : 9, zuege = [5, 7, 9, 12][st];
     const RICHTUNG = { "→": [1, 0], "←": [-1, 0], "↓": [0, 1], "↑": [0, -1] };
     const aufgabe = () => {
         for (let versuch = 0; versuch < 200; versuch++){
@@ -5069,7 +5083,7 @@ function fsRO_diktat(ctx){
             const startIdx = start[1] * n + start[0];
             const felder = [...Array(n * n)].map((_, idx) => `<div class="${idx === startIdx ? "fs-startfeld" : (weg.has(idx) ? "fs-weg" : "")}"></div>`).join("");
             return `<div class="fs-code">${code.map(c => `<span>${c}</span>`).join("")}</div>
-                <div class="fs-raster" style="grid-template-columns:repeat(${n}, 38px);">${felder}</div>`;
+                <div class="fs-raster" style="grid-template-columns:repeat(${n}, ${n > 9 ? 34 : 38}px);">${felder}</div>`;
         }
         return "";
     };
@@ -5081,7 +5095,7 @@ function fsRO_diktat(ctx){
 }
 
 function fsRO_spiegeln(ctx){
-    const st = fs_stufe(ctx), n = st === 0 ? 3 : 4, anzahl = [3, 5, 7][st];
+    const st = fs_st(ctx), n = [3, 4, 4, 5][st], anzahl = [3, 5, 7, 11][st];
     const farbe = zufallsElement(FS_FARBEN).c;
     const zeile = () => {
         const vorlage = fs_zufallsKachel(n, anzahl);
@@ -6208,7 +6222,7 @@ const BILD_GRUPPEN_SCHWER = [["wasser", "bauernhof"], ["vogel", "insekt"], ["obs
 function au_niveau(ctx){
     const k = lt_klasse();
     const band = k <= 1 ? 0 : k === 2 ? 1 : k === 3 ? 2 : k === 4 ? 3 : k <= 6 ? 4 : 5;
-    return Math.max(0, Math.min(6, band + fs_stufe(ctx) - 1));
+    return Math.max(0, Math.min(6, band + fs_st(ctx) - 1));
 }
 function au_w(n, werte){ return werte[Math.min(werte.length - 1, Math.max(0, n))]; }
 function au_gr(n){ return au_w(n, [46, 44, 40, 38, 34, 32, 30]); }
@@ -6884,6 +6898,797 @@ function au_pruefen(key){
 
 /* ---------- Alle Serien ---------- */
 
+/* ===============================================================
+   Funktionstraining – Profi-Stufe und viele weitere Blattarten
+   =============================================================== */
+
+function fs_profi(ctx){ return !!(ctx && ctx.g && ctx.g.profi); }
+// Stufe 0 (leicht) … 3 (Profi)
+function fs_st(ctx){ return fs_profi(ctx) ? 3 : fs_stufe(ctx); }
+function fs_w(ctx, werte){ return werte[Math.min(werte.length - 1, fs_st(ctx))]; }
+function fx_ziehen(liste){ let v = []; return () => { if (!v.length) v = mische(liste); return v.pop(); }; }
+function fx_reihe(i, inhalt, rechts = ""){ return `<div class="fs-reihe"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-reihe-inhalt">${inhalt}</div>${rechts}</div>`; }
+function fx_karte(i, inhalt, stil = ""){ return `<div class="fs-karte"${stil ? ` style="${stil}"` : ""}><div class="fs-reihe-nr">${i + 1}</div>${inhalt}</div>`; }
+function fx_ansage(titel, text){ return `<div class="fs-ansage"><b>${titel}</b>${text}</div>`; }
+function fx_boxen(werte, zeigen = true){
+    const gr = werte.length > 8 ? 30 : werte.length > 6 ? 36 : 46;
+    return `<div class="fs-boxen" style="gap:${werte.length > 6 ? 5 : 8}px;">${werte.map(w => `<span class="fs-box" style="width:${gr}px; height:${gr}px;">${zeigen ? L(ws_esc(String(w)), gr < 46 ? "font-size:18px;" : "") : ""}</span>`).join("")}</div>`;
+}
+function fx_linie(loesung = "", gr = 22){ return `<div class="ws-schreiblinie" style="flex:1; min-height:44px; display:flex; align-items:flex-end; padding:0 0 2px 10px;">${loesung ? L(ws_esc(loesung), `font-size:${gr}px; white-space:normal;`) : ""}</div>`; }
+function fx_wortLang(ctx, min){ return ctx.wort(w => w.length >= min) ; }
+
+// Sätze nach Länge (keine Namen, die fremd klingen)
+const FX_SAETZE = [
+    ["Der Hund bellt laut.", "Wir gehen heute baden.", "Mama kocht eine Suppe.", "Die Katze schläft im Korb.", "Opa liest die Zeitung.", "Im Garten blühen Rosen.",
+     "Der Bus kommt zu spät.", "Ich trinke gern Kakao.", "Das Fenster ist offen.", "Der Ball liegt im Gras.", "Lena malt ein Pferd.", "Wir spielen Fußball.",
+     "Es regnet schon wieder.", "Paul hat Geburtstag.", "Die Uhr tickt leise.", "Der Apfel ist sauer.", "Tim fährt Fahrrad.", "Das Baby lacht."],
+    ["Am Morgen packe ich meine Schultasche.", "Der kleine Igel sucht im Laub nach Futter.", "Nach der Schule fahren wir zum See.", "Meine Schwester spielt jeden Tag Klavier.",
+     "Im Winter bauen wir einen großen Schneemann.", "Der Bäcker backt frische Brötchen.", "Am Wochenende besuchen wir Oma und Opa.", "Die Feuerwehr fährt mit Blaulicht vorbei.",
+     "Unser Hund wartet jeden Tag an der Tür.", "Im Herbst fallen bunte Blätter von den Bäumen.", "Ben hat seinen Turnbeutel vergessen.", "Wir kaufen Äpfel, Milch und Brot ein.",
+     "Der Zug fährt pünktlich um acht Uhr ab.", "Meine Mutter gießt jeden Abend die Blumen."],
+    ["Weil es draußen stark regnet, bleiben wir heute im Klassenzimmer.", "Nach dem Mittagessen räumt jeder seinen Teller in die Spülmaschine.",
+     "Der Hausmeister repariert das kaputte Fenster im zweiten Stock.", "Am Freitag schreiben wir einen Test über die Tiere im Wald.",
+     "Mein Bruder hat sich beim Fußballspielen den Fuß verstaucht.", "Im Sommer fahren wir mit dem Fahrrad an die Ostsee.",
+     "Die Lehrerin sammelt die Hefte ein und legt sie auf den Tisch.", "Wenn der Wecker klingelt, stehe ich sofort auf.",
+     "Der Busfahrer wartet, bis alle Kinder sicher eingestiegen sind.", "Gestern Abend haben wir zusammen einen spannenden Film geschaut.",
+     "In der großen Pause spielen die Jungen auf dem Hof Tischtennis.", "Am Wochenende hilft Jonas seinem Vater beim Reparieren des Autos."],
+    ["Bevor wir zum Ausflug starten, kontrolliert die Lehrerin, ob alle eine Brotdose und eine Trinkflasche dabeihaben.",
+     "Obwohl der Wetterbericht Sonne versprochen hatte, zogen am Nachmittag dunkle Wolken über die Stadt.",
+     "Nachdem wir die Zelte aufgebaut hatten, sammelten wir trockenes Holz für das Lagerfeuer am Abend.",
+     "Der Tierarzt erklärte uns, dass Igel im Winter mehrere Monate schlafen und dabei kaum Energie verbrauchen.",
+     "Weil der Bus wegen eines Unfalls umgeleitet wurde, kamen viele Schüler erst zur zweiten Stunde.",
+     "Am letzten Schultag vor den Ferien räumen alle Klassen ihre Fächer aus und wischen die Tische ab.",
+     "Wer im Straßenverkehr sicher unterwegs sein will, muss auf Ampeln, Schilder und andere Fahrzeuge achten.",
+     "Im Museum durften wir uns ein echtes Dinosaurierskelett ansehen, das über zehn Meter lang war."],
+];
+function fx_satz(ctx, plus = 0){ const st = Math.min(3, fs_st(ctx) + plus); return zufallsElement(FX_SAETZE[st]); }
+
+/* ---------- Optische Differenzierung ---------- */
+
+const FX_ZEICHEN = ["aoecu", "bdpq", "mnuwv", "bdpqg69", "rnmhk", "IlI1il!|"];
+function fxO_zeichenketten(ctx){
+    const st = fs_st(ctx), laenge = [4, 5, 6, 8][st];
+    const sets = [[FX_ZEICHEN[0]], [FX_ZEICHEN[1], FX_ZEICHEN[2]], [FX_ZEICHEN[1], FX_ZEICHEN[3]], [FX_ZEICHEN[3], FX_ZEICHEN[4]]][st];
+    const zeile = () => {
+        const set = zufallsElement(sets).split("");
+        const a = [...Array(laenge)].map(() => zufallsElement(set));
+        const b = [...a];
+        const gleich = Math.random() < 0.4;
+        if (!gleich){
+            if (Math.random() < 0.5 && laenge > 2){ const k = zufallsZahl(0, laenge - 2); [b[k], b[k + 1]] = [b[k + 1], b[k]]; }
+            if (b.join("") === a.join("")){ const k = zufallsZahl(0, laenge - 1); b[k] = zufallsElement(set.filter(z => z !== a[k])); }
+        }
+        const ist = a.join("") === b.join("");
+        const s = `font-family:Arial, sans-serif; letter-spacing:${st >= 2 ? 1 : 3}px;`;
+        return `<tr><td style="${s}">${ws_esc(a.join(""))}</td><td style="${s}">${ws_esc(b.join(""))}</td><td>${fs_kreuzBox(ist)}</td><td>${fs_kreuzBox(!ist)}</td></tr>`;
+    };
+    return { titel: "Zeichenketten vergleichen", zeile, html: `
+        ${ws_aufgabe(1, "Vergleiche beide Zeichenketten Zeichen für Zeichen – von links nach rechts. Sind sie <b>genau</b> gleich? Kreuze an.")}
+        <table class="fs-vergleich"><thead><tr><th>links</th><th>rechts</th><th>gleich</th><th>verschieden</th></tr></thead><tbody class="fs-fuell"></tbody></table>` };
+}
+
+function fxO_zahlenVergleich(ctx){
+    const st = fs_st(ctx), laenge = [4, 6, 8, 11][st];
+    const gruppe = z => st >= 2 ? z.replace(/(\d{3})(?=\d)/g, "$1 ") : z;
+    const zeile = () => {
+        const a = [...Array(laenge)].map(() => zufallsZahl(0, 9));
+        const b = [...a];
+        const gleich = Math.random() < 0.4;
+        if (!gleich){
+            const k = zufallsZahl(1, laenge - 2);
+            if (Math.random() < 0.6 && a[k] !== a[k + 1]) [b[k], b[k + 1]] = [b[k + 1], b[k]];
+            else { const ersatz = { 6: 9, 9: 6, 1: 7, 7: 1, 3: 8, 8: 3, 5: 6, 0: 8, 2: 5, 4: 1 }; b[k] = ersatz[a[k]]; }
+        }
+        const ist = a.join("") === b.join("");
+        return `<tr><td style="font-family:Arial, sans-serif;">${gruppe(a.join(""))}</td><td style="font-family:Arial, sans-serif;">${gruppe(b.join(""))}</td><td>${fs_kreuzBox(ist)}</td><td>${fs_kreuzBox(!ist)}</td></tr>`;
+    };
+    return { titel: "Zahlen vergleichen", zeile, html: `
+        ${ws_aufgabe(1, "Wie bei einer Telefonnummer: Vergleiche beide Zahlen Ziffer für Ziffer. Sind sie genau gleich? Kreuze an.")}
+        <table class="fs-vergleich"><thead><tr><th>Zahl 1</th><th>Zahl 2</th><th>gleich</th><th>verschieden</th></tr></thead><tbody class="fs-fuell"></tbody></table>` };
+}
+
+function fxO_doppelgaenger(ctx){
+    const st = fs_st(ctx), n = [3, 3, 4, 4][st], anzahl = [3, 4, 6, 8][st], plaetze = [4, 5, 5, 6][st];
+    const farbe = zufallsElement(FS_FARBEN).c;
+    const zeile = i => {
+        const zwilling = fs_zufallsKachel(n, anzahl);
+        const liste = [zwilling, zwilling];
+        while (liste.length < plaetze){
+            const v = [...zwilling];
+            const an = mische([...v.keys()].filter(k => v[k]))[0], aus = mische([...v.keys()].filter(k => !v[k]))[0];
+            v[an] = false; v[aus] = true;
+            if (st === 0){ const an2 = mische([...v.keys()].filter(k => v[k]))[0], aus2 = mische([...v.keys()].filter(k => !v[k]))[0]; v[an2] = false; v[aus2] = true; }
+            if (!liste.some(x => x.join() === v.join())) liste.push(v);
+        }
+        const gemischt = mische(liste.map((x, k) => ({ x, zw: k < 2 })));
+        const g = n === 4 ? (plaetze > 5 ? 13 : 15) : (plaetze > 4 ? 19 : 0);
+        return fx_reihe(i, gemischt.map(o => o.zw ? LM(fs_kachel(o.x, n, farbe, false, null, g)) : fs_kachel(o.x, n, farbe, false, null, g)).join(""));
+    };
+    return { titel: "Doppelgänger finden", zeile, html: `
+        ${ws_aufgabe(1, "In jeder Reihe sind <b>genau zwei</b> Muster gleich. Finde die Doppelgänger und kreise beide ein.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxO_abschreibfehler(ctx){
+    const st = fs_st(ctx), fehler = [1, 2, 2, 3][st];
+    const ziehen = fx_ziehen(FX_SAETZE[st].concat(st >= 2 ? FX_SAETZE[st - 1] : []));
+    const zeile = i => {
+        const satz = ziehen();
+        const woerter = satz.split(" ");
+        const kandidaten = mische([...woerter.keys()].filter(k => woerter[k].replace(/[.,!?]/g, "").length >= 3)).slice(0, Math.min(fehler, woerter.length));
+        const kopie = woerter.map((w, k) => {
+            if (!kandidaten.includes(k)) return ws_esc(w);
+            const satzzeichen = (w.match(/[.,!?]$/) || [""])[0], kern = w.replace(/[.,!?]$/, "");
+            const v = (ws_ablenker(kern, 1)[0] || kern + "e") + satzzeichen;
+            return LM(ws_esc(v));
+        });
+        return `<div class="fs-karte" style="flex-direction:column; align-items:stretch; gap:6px;">
+            <div style="font-size:${[24, 22, 20, 18][st]}px;"><b style="color:#7c8a94; font-size:13px;">${i + 1} · Vorlage</b><br>${ws_esc(satz)}</div>
+            <div style="display:flex; align-items:center; gap:12px;"><div style="flex:1; font-size:${[24, 22, 20, 18][st]}px; border-top:2px dashed #C9D6E3; padding-top:6px;"><b style="color:#7c8a94; font-size:13px;">Abschrift</b><br>${kopie.join(" ")}</div><div class="fs-zaehl">${L(kandidaten.length)}</div></div></div>`;
+    };
+    return { titel: "Abschreibfehler finden", zeile, html: `
+        ${ws_aufgabe(1, "Jemand hat die Sätze abgeschrieben und dabei Fehler gemacht. Vergleiche Wort für Wort, kreise die falschen Wörter in der Abschrift ein und schreibe die Anzahl der Fehler ins Kästchen.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fx_drehen(felder, n){ return felder.map((_, k) => felder[(n - 1 - (k % n)) * n + Math.floor(k / n)]); }   // 90° im Uhrzeigersinn
+function fx_spiegelnW(felder, n){ return felder.map((_, k) => felder[Math.floor(k / n) * n + (n - 1 - k % n)]); }
+function fx_spiegelnS(felder, n){ return felder.map((_, k) => felder[(n - 1 - Math.floor(k / n)) * n + k % n]); }
+function fxO_gedreht(ctx){
+    const st = fs_st(ctx), n = st >= 2 ? 4 : 3, anzahl = [3, 4, 5, 7][st];
+    const farbe = zufallsElement(FS_FARBEN).c;
+    const zeile = i => {
+        for (let v = 0; v < 300; v++){
+            const a = fs_zufallsKachel(n, anzahl);
+            const rot = [fx_drehen(a, n)]; rot.push(fx_drehen(rot[0], n)); rot.push(fx_drehen(rot[1], n));
+            const sp = fx_spiegelnW(a, n);
+            const spRot = [sp, fx_drehen(sp, n), fx_drehen(fx_drehen(sp, n), n), fx_drehen(fx_drehen(fx_drehen(sp, n), n), n)];
+            const k = s => s.join();
+            const alleRot = new Set([k(a), ...rot.map(k)]);
+            if (alleRot.size < 4 || spRot.some(s => alleRot.has(k(s)))) continue;   // symmetrisch – nicht eindeutig
+            const richtig = zufallsElement(st === 0 ? [rot[1]] : rot);
+            const falsch = mische(spRot).slice(0, 3);
+            const opt = mische([richtig, ...falsch]);
+            const g = n === 4 ? 15 : 19;
+            return `<div class="fs-kachel-reihe"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-vorlage">${fs_kachel(a, n, farbe, false, null, g)}</div><div class="fs-optionen">${opt.map(o => o === richtig ? LM(fs_kachel(o, n, farbe, false, null, g)) : fs_kachel(o, n, farbe, false, null, g)).join("")}</div></div>`;
+        }
+        return "";
+    };
+    return { titel: "Gedreht oder gespiegelt?", zeile, html: `
+        ${ws_aufgabe(1, `Links steht die Vorlage. Rechts wurde sie gedreht – aber nur <b>ein</b> Muster ist wirklich nur gedreht. Die anderen sind gespiegelt. Kreise das gedrehte Muster ein.${st === 0 ? " Tipp: Es steht auf dem Kopf." : ""}`)}
+        <div class="fs-kacheln fs-fuell"></div>` };
+}
+
+/* ---------- Optisches Gedächtnis ---------- */
+
+function fx_merkKarte(merk, rechts, breite = ""){ return `<div class="fs-karte"><div class="fs-merk"${breite ? ` style="${breite}"` : ""}>${merk}</div><div class="fs-abdecken">abdecken →</div>${rechts}</div>`; }
+
+function fxG_zahlen(ctx){
+    const st = fs_st(ctx);
+    const zeile = i => {
+        const k = [3, 4, 5, 7][st] + (i >= 6 ? 1 : 0);
+        const z = [...Array(k)].map(() => zufallsZahl(0, 9));
+        return fx_merkKarte(`<span style="font-size:${k > 6 ? 26 : 30}px; letter-spacing:${k > 6 ? 3 : 6}px; font-family:Arial, sans-serif;">${z.join("")}</span>`, fx_boxen(z));
+    };
+    return { titel: "Zahlen merken", zeile, html: `
+        ${ws_aufgabe(1, "Schau dir die Zahl genau an und sprich sie dir leise vor. Decke sie ab und schreibe die Ziffern aus dem Kopf in die Kästchen.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxG_buchstabenketten(ctx){
+    const st = fs_st(ctx), BU = "bdfghklmnprstwz".split(""), VO = "aeiou".split("");
+    const zeile = i => {
+        const k = [3, 4, 5, 6][st];
+        const z = [...Array(k)].map((_, j) => st === 0 && j === 1 ? zufallsElement(VO) : zufallsElement(st >= 2 ? [...BU, ...VO, "q", "x", "y"] : BU));
+        return fx_merkKarte(`<span style="font-size:30px; letter-spacing:6px; font-family:Arial, sans-serif;">${z.join("")}</span>`, fx_boxen(z));
+    };
+    return { titel: "Buchstabenketten merken", zeile, html: `
+        ${ws_aufgabe(1, "Diese Buchstabenketten ergeben kein Wort – du musst sie dir also wirklich merken! Präge dir eine Kette ein, decke sie ab und schreibe sie aus dem Kopf in die Kästchen.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fx_posGitter(n, belegt, leer = false){
+    let html = `<div style="display:grid; grid-template-columns:repeat(${n}, 34px); grid-auto-rows:34px; gap:2px; background:#C9D6E3; border:2px solid #8FA3B8; border-radius:8px; overflow:hidden; flex:none;">`;
+    for (let k = 0; k < n * n; k++){
+        const z = belegt[k];
+        html += `<div style="background:#fff; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700; color:#1D5FA8;">${z ? (leer ? L(z) : z) : ""}</div>`;
+    }
+    return html + "</div>";
+}
+function fxG_positionen(ctx){
+    const st = fs_st(ctx), n = [3, 4, 4, 5][st], k = [3, 4, 5, 7][st];
+    const SYM = st === 0 ? ["●", "▲", "■", "★"] : ["A", "B", "K", "M", "R", "T", "S", "5", "8", "3", "●", "▲", "★"];
+    const zeile = () => {
+        const belegt = {};
+        mische([...Array(n * n).keys()]).slice(0, k).forEach(p => belegt[p] = zufallsElement(SYM));
+        return `<div class="fs-karte" style="justify-content:space-around;">${fx_posGitter(n, belegt)}<div class="fs-abdecken">abdecken →</div>${fx_posGitter(n, belegt, true)}</div>`;
+    };
+    return { titel: "Wo war was?", zeile, schritt: 1, html: `
+        ${ws_aufgabe(1, "Merke dir, <b>was</b> in welchem Feld steht. Decke das linke Gitter ab und trage alles aus dem Kopf an die richtige Stelle ein.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxG_wasFehlt(ctx){
+    const st = fs_st(ctx), k = [4, 5, 6, 8][st];
+    const zeile = i => {
+        const woerter = [];
+        for (let v = 0; woerter.length < k && v < 200; v++){ const w = ctx.wort(); if (!woerter.includes(w)) woerter.push(w); }
+        const fehlt = zufallsElement(woerter);
+        const rest = mische(woerter.filter(w => w !== fehlt));
+        const gr = st >= 2 ? 17 : 20;
+        return `<div class="fs-karte" style="align-items:stretch;"><div class="fs-merk" style="flex-direction:column; align-items:flex-start; gap:2px; min-width:170px; font-size:${gr}px;">${woerter.map(ws_esc).join("<br>")}</div><div class="fs-abdecken" style="align-self:center;">abdecken →</div>
+            <div style="flex:1; display:flex; flex-direction:column; gap:6px;"><div style="font-size:${gr - 2}px; color:#4A5866;">${rest.map(ws_esc).join(" · ")}</div><div style="display:flex; align-items:flex-end; gap:8px; font-size:16px;">Es fehlt: ${fx_linie(fehlt)}</div></div></div>`;
+    };
+    return { titel: "Welches Wort fehlt?", zeile, html: `
+        ${ws_aufgabe(1, "Lies die Wörter links zweimal und präge sie dir ein. Decke sie ab. Rechts stehen sie durcheinander – aber eins fehlt. Welches? Schreibe es auf.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxG_punktfigur(ctx){
+    const st = fs_st(ctx), n = [3, 4, 4, 5][st], schritte = [3, 4, 6, 9][st];
+    const zeile = () => `<div class="fs-karte" style="justify-content:space-around;">${fs_punktefeld(n, fs_linienzug(n, schritte), 150)}<div class="fs-abdecken">abdecken →</div>${fs_punktefeld(n, [], 150)}</div>`;
+    return { titel: "Figuren merken", zeile, html: `
+        ${ws_aufgabe(1, "Präge dir die Figur genau ein: Wo beginnt die Linie, wohin führt sie? Decke sie ab und zeichne sie aus dem Kopf in das leere Punktefeld.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* ---------- Optische Serialität ---------- */
+
+const FX_RAND = { 3: [0, 1, 2, 5, 8, 7, 6, 3], 4: [0, 1, 2, 3, 7, 11, 15, 14, 13, 12, 8, 4] };
+function fxS_kachelfolge(ctx){
+    const st = fs_st(ctx), n = st >= 2 ? 4 : 3, rand = FX_RAND[n];
+    const farbe = zufallsElement(FS_FARBEN).c;
+    const zeile = i => {
+        const punkte = [...Array(st >= 1 ? 2 : 1)].map((_, j) => ({ p: zufallsZahl(0, rand.length - 1), s: (st === 0 ? 1 : zufallsElement([1, 2])) * (j === 1 && st >= 2 ? -1 : 1) }));
+        if (st === 3) punkte.push({ p: zufallsZahl(0, rand.length - 1), s: zufallsElement([1, 3]) });
+        const pos = (q, t) => rand[((q.p + q.s * t) % rand.length + rand.length) % rand.length];
+        if ([0, 1, 2, 3].some(t => new Set(punkte.map(q => pos(q, t))).size < punkte.length)) return zeile(i);
+        const bild = t => { const f = Array(n * n).fill(false); punkte.forEach(q => f[pos(q, t)] = true); return f; };
+        const folge = [0, 1, 2].map(bild), weiter = bild(3);
+        return `<div class="fs-kachel-reihe"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-optionen" style="justify-content:flex-start; gap:12px; align-items:center;">${folge.map(f => fs_kachel(f, n, farbe)).join('<span class="fs-pfeil">→</span>')}<span class="fs-pfeil">→</span>${fs_kachel(weiter.map(() => false), n, farbe, true, weiter)}</div></div>`;
+    };
+    return { titel: "Wie geht es weiter?", zeile, html: `
+        ${ws_aufgabe(1, `Die farbigen Felder wandern am Rand entlang. Finde heraus, wie sie sich bewegen${st >= 2 ? " – Vorsicht, nicht alle laufen gleich schnell oder in dieselbe Richtung" : ""}. Male das nächste Bild ins leere Feld.`)}
+        <div class="fs-kacheln fs-fuell"></div>` };
+}
+
+function fxS_buchstabenreihen(ctx){
+    const st = fs_st(ctx), ABC = "abcdefghijklmnopqrstuvwxyz";
+    const zeile = i => {
+        let reihe = [];
+        for (let v = 0; v < 100; v++){
+            const art = st === 0 ? zufallsElement(["1", "2"]) : st === 1 ? zufallsElement(["2", "3", "r"]) : st === 2 ? zufallsElement(["3", "r2", "zz", "dd"]) : zufallsElement(["wachs", "zz", "r3", "dd", "4"]);
+            let start = zufallsZahl(0, 10);
+            if (art === "1" || art === "2" || art === "3" || art === "4"){ const d = +art; reihe = [...Array(7)].map((_, k) => ABC[start + k * d]); }
+            else if (art === "r" || art === "r2" || art === "r3"){ const d = art === "r" ? 1 : art === "r2" ? 2 : 3; start = zufallsZahl(20, 25); reihe = [...Array(7)].map((_, k) => ABC[start - k * d]); }
+            else if (art === "zz"){ reihe = [...Array(8)].map((_, k) => k % 2 ? ABC[25 - start - (k - 1) / 2] : ABC[start + k / 2]); }        // a z b y c x
+            else if (art === "dd"){ reihe = [...Array(8)].map((_, k) => ABC[start + Math.floor(k / 2)] + (k % 2 ? ABC[start + Math.floor(k / 2)] : "")); }   // a aa b bb
+            else { reihe = [0, 1, 3, 6, 10, 15, 21].map(x => ABC[start + x]); }          // +1 +2 +3 …
+            if (reihe.every(Boolean)) break;
+        }
+        const luecken = new Set(mische([...Array(reihe.length - 2).keys()].map(k => k + 2)).slice(0, [2, 2, 3, 3][st]));
+        return fx_reihe(i, reihe.map((b, k) => luecken.has(k) ? `<span class="fs-box">${L(b)}</span>` : `<span class="fs-gross" style="min-width:42px; text-align:center;">${b}</span>`).join(""));
+    };
+    return { titel: "Buchstabenreihen", zeile, html: `
+        ${ws_aufgabe(1, "Jede Reihe folgt einer Regel. Finde sie heraus und schreibe die fehlenden Buchstaben in die Kästchen.")}
+        <div class="fs-ziel" style="font-size:20px; letter-spacing:2px;">a b c d e f g h i j k l m n o p q r s t u v w x y z</div>
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxS_silbensalat(ctx){
+    const st = fs_st(ctx), min = [2, 2, 3, 3][st];
+    const zeile = i => {
+        let w = ctx.wort(x => silben_trennen(x).length >= min);
+        if (st === 3 && silben_trennen(w).length < 4) w = ctx.wort(x => silben_trennen(x).length >= 3);
+        const s = silben_trennen(w);
+        let m = mische(s.map((x, k) => ({ x: k === 0 ? x.toLowerCase() : x, k })));
+        for (let v = 0; v < 10 && m.every((o, k) => o.k === k) && s.length > 1; v++) m = mische(m);
+        return fx_karte(i, `<div class="fs-chips" style="flex:none; justify-content:flex-start;">${m.map(o => `<span class="fs-chiptext" style="border:2px solid #8FA3B8; background:#F4F7FA; border-radius:10px; padding:2px 10px; font-size:24px;">${ws_esc(o.x)}</span>`).join("")}</div>${fx_linie(w, 24)}`);
+    };
+    return { titel: "Silben-Salat", zeile, html: `
+        ${ws_aufgabe(1, "Die Silben sind durcheinandergeraten. Setze sie in der richtigen Reihenfolge zusammen und schreibe das Wort auf die Linie.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxS_satzsalat(ctx){
+    const st = fs_st(ctx);
+    const ziehen = fx_ziehen(FX_SAETZE[Math.min(2, st)].concat(st === 3 ? FX_SAETZE[3] : []));
+    const zeile = i => {
+        const satz = ziehen();
+        const woerter = satz.replace(/[.!?]$/, "").split(" ");
+        let m = mische(woerter);
+        for (let v = 0; v < 10 && m.join(" ") === woerter.join(" "); v++) m = mische(woerter);
+        return `<div class="fs-karte" style="flex-direction:column; align-items:stretch; gap:6px;"><div style="display:flex; gap:8px; flex-wrap:wrap; font-size:${[22, 20, 18, 17][st]}px;"><b style="color:#7c8a94;">${i + 1}</b>${m.map(w => `<span style="border:2px solid #C9D6E3; border-radius:8px; padding:0 8px; background:#F4F7FA;">${ws_esc(w)}</span>`).join("")}</div>${fx_linie(satz, 18)}${st >= 2 ? fx_linie() : ""}</div>`;
+    };
+    return { titel: "Satz-Salat", zeile, html: `
+        ${ws_aufgabe(1, "Die Wörter sind durcheinander. Bilde einen sinnvollen Satz und schreibe ihn auf die Linie. Denke an den Punkt am Ende.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxS_rueckwaerts(ctx){
+    const st = fs_st(ctx), min = [3, 5, 7, 9][st];
+    const zeile = i => {
+        const w = st === 3 && Math.random() < 0.4 ? [ctx.wort(), ctx.wort()].join(" ") : ctx.wort(x => x.length >= min) || ctx.wort();
+        const r = w.toLowerCase().split("").reverse().join("");
+        return fx_karte(i, `<span style="font-size:26px; font-family:Arial, sans-serif; letter-spacing:2px; min-width:220px;">${ws_esc(r)}</span>${fx_linie(w, 24)}`);
+    };
+    return { titel: "Rückwärts gelesen", zeile, html: `
+        ${ws_aufgabe(1, "Diese Wörter sind rückwärts geschrieben. Lies sie Buchstabe für Buchstabe von rechts nach links und schreibe sie richtig auf die Linie.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* ---------- Akustische Differenzierung ---------- */
+
+const FX_LANG = ["Rose", "Nase", "Hose", "Biene", "Igel", "Ofen", "Hase", "Tafel", "Esel", "Sofa", "Brot", "Blume", "Lupe", "Rabe", "Kran", "Zug", "Tor", "Wal", "Mond", "Sieb", "Fliege",
+    "Schuhe", "Zahn", "Bohne", "Boot", "Meer", "Haar", "Name", "Gabel", "Nebel", "Löwe", "Käse", "Flöte", "Bär", "Tür", "Füße", "Miete", "Stiel", "Wahl", "Saat", "Beet", "Ruhe", "Höhle", "Hüte", "Schal", "Kugel"];
+const FX_KURZ = ["Sonne", "Tasse", "Kanne", "Hütte", "Mitte", "Bett", "Ball", "Kamm", "Fisch", "Tisch", "Hand", "Wolke", "Puppe", "Mütze", "Ente", "Kiste", "Hund", "Schiff", "Teller", "Koffer",
+    "Katze", "Pilz", "Wurst", "Zelt", "Löffel", "Brille", "Kissen", "Gitter", "Hammer", "Mappe", "Wanne", "Insel", "Tanne", "Kette", "still", "Wall", "satt", "Hölle", "offen", "Pfanne", "Bank", "Glocke"];
+function fxD_langKurz(ctx){
+    const st = fs_st(ctx);
+    const PAARE = ["Miete", "Stiel", "Wahl", "Saat", "Beet", "Höhle", "Hüte", "still", "Wall", "satt", "Hölle", "offen", "Ofen", "Mitte", "Bett", "Hütte"];
+    const pool = mische([...FX_LANG.map(w => ({ w, lang: true })), ...FX_KURZ.map(w => ({ w, lang: false }))].filter(x => st >= 2 || !PAARE.includes(x.w)));
+    const zeile = i => {
+        const x = pool[i % pool.length];
+        return `<div class="fs-karte" style="justify-content:space-between;"><span class="fs-satz" style="font-size:26px;">${ws_esc(x.w)}</span><span class="fs-kreuz"><span>${fs_kreuzBox(x.lang)} lang ▬</span><span>${fs_kreuzBox(!x.lang)} kurz •</span></span></div>`;
+    };
+    return { titel: "Lang oder kurz?", zeile, schritt: 2, max: pool.length, html: `
+        ${ws_aufgabe(1, "Sprich jedes Wort deutlich. Wie klingt der <b>betonte Selbstlaut</b> (Vokal): lang wie in <i>Rose</i> oder kurz wie in <i>Sonne</i>? Kreuze an.")}
+        <div class="fs-zweispaltig fs-fuell"></div>` };
+}
+
+// Laute zählen: Bindestriche trennen die Laute
+const FX_LAUTE = [
+    ["M-au-s", "H-au-s", "Sch-a-f", "F-i-sch", "T-i-sch", "B-u-ch", "Ei-s", "B-a-ll", "B-e-tt", "R-o-ck", "D-ie-b", "L-ie-d", "O-f-e-n", "R-o-s-e", "N-a-s-e", "H-o-s-e", "K-a-nn-e", "S-o-nn-e", "T-a-ss-e", "B-oo-t"],
+    ["B-r-o-t", "G-r-a-s", "F-r-o-sch", "K-l-ei-d", "Sch-w-ei-n", "T-r-au-m", "K-r-a-n", "M-i-l-ch", "B-ie-n-e", "S-o-ck-e", "W-a-l-d", "H-u-n-d", "M-o-n-d", "K-i-n-d", "G-l-a-s", "N-a-d-e-l", "K-a-m-e-l", "T-u-l-p-e", "S-a-l-a-t", "P-a-k-e-t"],
+    ["L-a-m-p-e", "B-l-u-m-e", "W-o-l-k-e", "Sch-n-e-ck-e", "Sch-r-a-n-k", "Sch-l-a-ng-e", "F-l-a-sch-e", "B-r-ü-ck-e", "G-l-o-ck-e", "F-l-ie-g-e", "K-n-o-ch-e-n", "Sch-l-ü-ss-e-l", "T-o-m-a-t-e", "B-a-n-a-n-e", "M-e-l-o-n-e", "R-a-k-e-t-e", "P-i-l-o-t", "D-r-a-ch-e-n", "Sch-l-i-tt-e-n", "L-i-n-e-a-l"],
+    ["K-r-o-k-o-d-i-l", "T-e-l-e-f-o-n", "Sch-o-k-o-l-a-d-e", "K-a-n-i-n-ch-e-n", "G-e-sch-e-n-k", "K-a-r-o-tt-e", "B-a-d-e-w-a-nn-e", "L-o-k-o-m-o-t-i-v-e", "A-m-ei-s-e-n-h-au-f-e-n",
+     "S-a-l-a-t-sch-ü-ss-e-l", "P-a-p-a-g-ei", "E-l-e-f-a-n-t", "B-a-n-a-n-e-n-m-i-l-ch", "Sch-a-ff-n-e-r", "K-a-k-a-o", "T-e-l-e-sk-o-p"].filter(w => !/sk|ff-n-e-r/.test(w)),
+];
+function fxD_lautezaehlen(ctx){
+    const st = fs_st(ctx);
+    const liste = mische(FX_LAUTE.slice(0, st + 1).flat().concat(st >= 2 ? FX_LAUTE[st] : []));
+    const zeile = i => {
+        const t = liste[i % liste.length], teile = t.split("-"), w = teile.join("");
+        return `<div class="fs-karte" style="justify-content:space-between;"><span class="fs-satz" style="font-size:26px;">${ws_esc(w)}</span><span style="display:flex; flex-direction:column; align-items:center; gap:2px;"><span class="fs-box" style="width:44px; height:40px;">${L(teile.length)}</span>${L(teile.join("·"), "font-size:11px;")}</span></div>`;
+    };
+    return { titel: "Laute zählen", zeile, schritt: 2, max: liste.length, html: `
+        ${ws_aufgabe(1, "Sprich das Wort ganz langsam und dehne es: <b>Sch – a – f</b>. Wie viele Laute hörst du? Achtung: Nicht die Buchstaben zählen! <b>sch</b>, <b>ch</b>, <b>ei</b>, <b>au</b>, <b>ie</b> und doppelte Buchstaben sind jeweils nur ein Laut.")}
+        <div class="fs-zweispaltig fs-fuell"></div>` };
+}
+
+const FX_REIMFAMILIEN = [
+    ["Haus", "Maus", "Laus", "raus", "Schmaus"], ["Hand", "Sand", "Band", "Wand", "Land", "Rand", "Strand"], ["Nase", "Hase", "Vase", "Blase"],
+    ["Kanne", "Tanne", "Wanne", "Panne", "Pfanne"], ["Hose", "Rose", "Dose", "lose"], ["Tisch", "Fisch", "frisch", "Gemisch"], ["Bein", "Schwein", "Stein", "Wein", "klein", "fein"],
+    ["Topf", "Kopf", "Knopf", "Zopf"], ["Ball", "Stall", "Knall", "Fall", "Schall"], ["Sonne", "Tonne", "Wonne"], ["Decke", "Schnecke", "Ecke", "Hecke", "Zecke", "Strecke"],
+    ["Baum", "Traum", "Raum", "Schaum", "Saum"], ["Nacht", "lacht", "acht", "gemacht", "Schacht"], ["Tier", "vier", "hier", "Papier", "Klavier"], ["Socke", "Glocke", "Flocke", "Locke"],
+    ["Katze", "Tatze", "Glatze", "Matratze"], ["Ziege", "Wiege", "Fliege", "Liege"], ["Wurm", "Turm", "Sturm"], ["Welle", "Kelle", "Delle", "Quelle", "Zelle"],
+    ["Hund", "Mund", "rund", "bunt", "Grund"], ["Kuchen", "suchen", "fluchen", "buchen"], ["Wagen", "Kragen", "Magen", "tragen"], ["Kessel", "Sessel", "Fessel"],
+];
+function fxD_reimNicht(ctx){
+    const st = fs_st(ctx), k = [3, 4, 4, 5][st];
+    const zeile = i => {
+        const fam = zufallsElement(FX_REIMFAMILIEN.filter(f => f.length >= k - 1));
+        const drei = mische(fam).slice(0, k - 1);
+        const endung = w => w.slice(-2).toLowerCase(), vokal = w => (w.toLowerCase().match(/[aeiouäöü]+/g) || [""]).slice(-1)[0];
+        const andere = FX_REIMFAMILIEN.filter(f => f !== fam).flat();
+        // je schwerer, desto ähnlicher klingt das falsche Wort
+        let kand = st >= 2 ? andere.filter(w => endung(w) === endung(drei[0]) || vokal(w) === vokal(drei[0])) : andere;
+        if (!kand.length) kand = andere;
+        const fremd = zufallsElement(kand);
+        const alle = mische([...drei, fremd]);
+        return fx_karte(i, `<div class="fs-chips">${alle.map(w => { const t = `<span class="fs-chiptext" style="border:2px solid #8FA3B8; background:#F4F7FA; border-radius:10px; padding:2px 12px; font-size:24px;">${ws_esc(w)}</span>`; return w === fremd ? LM(t) : t; }).join("")}</div>`);
+    };
+    return { titel: "Was reimt sich nicht?", zeile, html: `
+        ${ws_aufgabe(1, "Sprich alle Wörter einer Reihe laut. Die meisten reimen sich – eins passt nicht dazu. Streiche es durch.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxD_lautFehlt(ctx){
+    const st = fs_st(ctx);
+    const paare = FS_MINIMALPAARE.slice(0, Math.min(3, st + 1)).flat().concat(st >= 2 ? FX_MINIMAL_SCHWER : []).filter(([a, b]) => a.length === b.length && [...a.toLowerCase()].filter((z, k) => z !== b.toLowerCase()[k]).length === 1);
+    const liste = mische(paare);
+    const zeile = i => {
+        const [a, b] = liste[i % liste.length];
+        const k = [...a.toLowerCase()].findIndex((z, j) => z !== b.toLowerCase()[j]);
+        const gehoert = Math.random() < 0.5 ? a : b;
+        const luecke = gehoert.slice(0, k) + "_" + gehoert.slice(k + 1);
+        const opt = [a[k].toLowerCase(), b[k].toLowerCase()].sort();
+        return `<div class="fs-karte">${fx_ansage("Lehrkraft sagt", ws_esc(gehoert))}<span class="fs-satz" style="font-size:28px; letter-spacing:2px;">${ws_esc(luecke).replace("_", `<span class="fs-box" style="display:inline-block; width:40px; height:40px; vertical-align:middle;">${L(gehoert[k])}</span>`)}</span><span style="font-size:18px; color:#4A5866;">${st >= 2 ? "" : opt.join(" oder ")}</span></div>`;
+    };
+    return { titel: "Welcher Laut fehlt?", zeile, max: liste.length, html: `
+        ${ws_aufgabe(1, `Die Lehrkraft spricht ein Wort deutlich vor. Hör genau hin und schreibe den fehlenden Buchstaben ins Kästchen.${st >= 2 ? " Diesmal ohne Auswahl!" : ""}`)}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+const FX_MINIMAL_SCHWER = [["Kirche", "Kirsche"], ["Tasche", "Tasse"], ["Rinde", "Rinne"], ["Ecke", "Egge"], ["Tür", "Tier"], ["Söhne", "Sehne"], ["fühlen", "fielen"], ["Mücke", "Mütze"],
+    ["Hecke", "Hexe"], ["Nadel", "Nagel"], ["Kragen", "Kragen"], ["Wiese", "Riese"], ["Bude", "Pute"], ["Gras", "Kreis"], ["Grippe", "Krippe"], ["Dose", "Rose"], ["Tanne", "Kanne"]];
+
+const FX_AUSLAUT = [["Hund", "bunt", 1], ["Wald", "kalt", 1], ["Rad", "satt", 1], ["Berg", "Werk", 1], ["Kind", "Wind", 1], ["Zug", "Spuk", 1], ["Tag", "Sack", 1], ["Gras", "Glas", 1],
+    ["Pferd", "Brett", 1], ["gelb", "knapp", 1], ["Mund", "Mut", 1], ["Feld", "Welt", 1], ["Kleid", "Zeit", 1], ["Dorf", "Torf", 1], ["Zwerg", "Zweck", 1], ["Mond", "Monat", 1], ["Brot", "Boot", 1],
+    ["Korb", "Mops", 0], ["Bad", "Bahn", 0], ["Burg", "Turm", 0], ["Sand", "Sahne", 0], ["Stab", "Stamm", 0], ["Lob", "Lok", 0], ["Laub", "Laus", 0], ["Hand", "Bank", 0], ["Kalb", "Kalk", 0],
+    ["Weg", "Weste", 0], ["Sieb", "Sieg", 0], ["Schild", "Schilf", 0], ["Rind", "Ring", 0]];
+function fxD_gleicherLaut(ctx){
+    const st = fs_st(ctx);
+    const anlaut = w => { const k = w.toLowerCase(); return (k.match(/^(sch|ei|au|eu|äu|ie)/) || [k[0]])[0]; };
+    let liste;
+    if (st < 2){
+        const pool = mische(wortpool().concat(FX_LANG, FX_KURZ).filter(w => !/^(sp|st|ch|v|ph|c|y|qu|pf)/i.test(w)));
+        liste = [];
+        for (let k = 0; k + 1 < pool.length && liste.length < 40; k += 2){
+            let b = pool[k + 1];
+            if (Math.random() < 0.45){ const g = pool.find(x => x !== pool[k] && anlaut(x) === anlaut(pool[k])); if (g) b = g; }
+            liste.push([pool[k], b, anlaut(pool[k]) === anlaut(b) ? 1 : 0]);
+        }
+    } else liste = mische(FX_AUSLAUT);
+    const zeile = i => {
+        const p = liste[i % liste.length];
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><span class="fs-satz"><b>${ws_esc(p[0])}</b> – <b>${ws_esc(p[1])}</b></span><span class="fs-kreuz"><span>${fs_kreuzBox(p[2] === 1)} gleich</span><span>${fs_kreuzBox(p[2] === 0)} anders</span></span></div>`;
+    };
+    const wo = st < 2 ? "am <b>Anfang</b>" : "am <b>Ende</b>";
+    return { titel: st < 2 ? "Gleicher Anfangslaut?" : "Gleicher Endlaut?", zeile, max: liste.length, html: `
+        ${ws_aufgabe(1, `Sprich beide Wörter laut. Hörst du ${wo} den gleichen Laut? Kreuze an.${st >= 2 ? " Achtung: Es zählt, was du <b>hörst</b>, nicht was du schreibst – Hun<b>d</b> klingt am Ende wie bun<b>t</b>!" : ""}`)}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* ---------- Akustisches Gedächtnis ---------- */
+
+function fxH_saetze(ctx){
+    const st = fs_st(ctx);
+    const ziehen = fx_ziehen(FX_SAETZE[st]);
+    const zeile = i => {
+        const s = ziehen();
+        return `<div class="fs-karte" style="align-items:stretch;">${fx_ansage("Lehrkraft liest einmal vor", ws_esc(s))}<div class="fs-linien">${"<div></div>".repeat(st >= 2 ? 3 : 2)}</div></div>`;
+    };
+    return { titel: "Sätze merken", zeile, html: `
+        ${ws_aufgabe(1, "Hör gut zu: Die Lehrkraft liest einen Satz <b>einmal</b> vor. Sprich ihn leise nach und schreibe ihn dann auf – Wort für Wort, ohne etwas wegzulassen.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxH_rueckwaerts(ctx){
+    const st = fs_st(ctx);
+    const zeile = i => {
+        const k = [2, 3, 4, 5][st] + Math.floor(i / 4);
+        const z = [...Array(Math.min(k, 8))].map(() => zufallsZahl(1, 9));
+        return `<div class="fs-karte">${fx_ansage("Lehrkraft sagt", z.join(" – "))}${fx_boxen([...z].reverse())}</div>`;
+    };
+    return { titel: "Zahlen rückwärts", zeile, html: `
+        ${ws_aufgabe(1, "Hör gut zu: Die Lehrkraft sagt Zahlen vor. Schreibe sie <b>rückwärts</b> auf – die zuletzt gehörte Zahl zuerst. Tipp: Sprich sie dir im Kopf noch einmal vor.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+const FX_EINKAUF = ["Äpfel", "Bananen", "Brot", "Butter", "Milch", "Eier", "Käse", "Nudeln", "Reis", "Tomaten", "Gurken", "Joghurt", "Mehl", "Zucker", "Saft", "Kartoffeln", "Zwiebeln",
+    "Möhren", "Salz", "Honig", "Kekse", "Wurst", "Quark", "Birnen", "Brötchen", "Paprika", "Erdbeeren", "Sahne", "Müsli", "Wasser"];
+function fxH_einkauf(ctx){
+    const st = fs_st(ctx), k = [3, 4, 5, 7][st];
+    const zeile = i => {
+        const dinge = mische(FX_EINKAUF).slice(0, k).map(d => st >= 2 ? `${zufallsZahl(2, 6)} ${d}` : d);
+        return `<div class="fs-karte" style="align-items:stretch;">${fx_ansage("Lehrkraft liest vor", "Wir brauchen: " + dinge.map(ws_esc).join(", ") + ".")}<div class="fs-linien">${"<div></div>".repeat(Math.ceil(k / 3) + 1)}</div></div>`;
+    };
+    return { titel: "Der Einkaufszettel", zeile, html: `
+        ${ws_aufgabe(1, `Hör gut zu: Die Lehrkraft liest einen Einkaufszettel vor. Schreibe danach alles auf, was gekauft werden soll${st >= 2 ? " – mit der richtigen Anzahl" : ""}.`)}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fx_fantasiewort(st){
+    const K = ["b", "d", "f", "g", "k", "l", "m", "n", "p", "r", "s", "t", "w"], V = ["a", "e", "i", "o", "u"], KL = ["bl", "kr", "tr", "fl", "gr", "schn", "str", "pl", "dr", "schw"];
+    const n = [1, 2, 2, 3][st] + (st >= 1 && Math.random() < 0.4 ? 1 : 0);
+    let w = "";
+    for (let k = 0; k < n; k++){
+        w += (st >= 2 && Math.random() < 0.35 ? zufallsElement(KL) : zufallsElement(K)) + zufallsElement(V);
+        if (st >= 1 && Math.random() < 0.35) w += zufallsElement(["n", "l", "s", "m", "t"]);
+    }
+    return w;
+}
+function fxH_fantasie(ctx){
+    const st = fs_st(ctx), k = [2, 2, 3, 3][st];
+    const zeile = i => {
+        const w = [...Array(k)].map(() => fx_fantasiewort(st));
+        return `<div class="fs-karte">${fx_ansage("Lehrkraft spricht deutlich", w.map(ws_esc).join(" – "))}<div class="fs-linien" style="flex-direction:row; gap:14px; align-items:flex-end;">${w.map(x => `<div style="flex:1; min-height:34px;">${L(ws_esc(x), "font-size:20px;")}</div>`).join("")}</div></div>`;
+    };
+    return { titel: "Fantasiewörter", zeile, html: `
+        ${ws_aufgabe(1, "Hör gut zu: Die Lehrkraft spricht ausgedachte Wörter. Die gibt es nicht – du musst also jeden Laut genau hören und behalten. Schreibe sie so auf, wie du sie gehört hast.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxH_wasFehlte(ctx){
+    const st = fs_st(ctx), k = [4, 5, 6, 8][st];
+    const zeile = i => {
+        const woerter = [];
+        for (let v = 0; woerter.length < k && v < 200; v++){ const w = ctx.wort(); if (!woerter.includes(w)) woerter.push(w); }
+        const fehlt = zufallsElement(woerter);
+        const zweit = st >= 2 ? mische(woerter.filter(w => w !== fehlt)) : woerter.filter(w => w !== fehlt);
+        return `<div class="fs-karte">${fx_ansage("Lehrkraft liest vor", `<u>1. Mal:</u> ${woerter.map(ws_esc).join(", ")}<br><u>2. Mal:</u> ${zweit.map(ws_esc).join(", ")}`)}<div style="flex:1; display:flex; align-items:flex-end; gap:8px; font-size:16px;">Es fehlte: ${fx_linie(fehlt)}</div></div>`;
+    };
+    return { titel: "Welches Wort fehlte?", zeile, html: `
+        ${ws_aufgabe(1, `Hör gut zu: Die Lehrkraft liest Wörter zweimal vor. Beim zweiten Mal fehlt eins${st >= 2 ? " und die Reihenfolge ist anders" : ""}. Welches? Schreibe es auf.`)}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxH_mix(ctx){
+    const st = fs_st(ctx), k = [3, 4, 5, 6][st], sortieren = st >= 2;
+    const BU = "BDFGHKLMNPRST".split("");
+    const zeile = i => {
+        const z = mische([...Array(Math.ceil(k / 2))].map(() => String(zufallsZahl(1, 9))).concat([...Array(Math.floor(k / 2))].map(() => zufallsElement(BU))));
+        const loes = sortieren ? z.filter(x => /\d/.test(x)).sort().concat(z.filter(x => !/\d/.test(x)).sort()) : z;
+        return `<div class="fs-karte">${fx_ansage("Lehrkraft sagt", z.join(" – "))}${fx_boxen(loes)}</div>`;
+    };
+    return { titel: "Zahlen und Buchstaben", zeile, html: `
+        ${ws_aufgabe(1, sortieren
+            ? "Hör gut zu: Die Lehrkraft sagt Zahlen und Buchstaben durcheinander. Schreibe <b>zuerst die Zahlen</b> von klein nach groß, <b>dann die Buchstaben</b> nach dem ABC. Das musst du im Kopf sortieren!"
+            : "Hör gut zu: Die Lehrkraft sagt Zahlen und Buchstaben. Schreibe sie in der gehörten Reihenfolge in die Kästchen.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* ---------- Akustische Serialität ---------- */
+
+function fxR_satzOrdnen(ctx){
+    const st = fs_st(ctx);
+    const ziehen = fx_ziehen(FX_SAETZE[Math.min(2, st)].concat(st === 3 ? FX_SAETZE[3] : []));
+    const zeile = i => {
+        const s = ziehen(), woerter = s.replace(/[.!?]$/, "").split(" ");
+        const idx = mische([...woerter.keys()]);
+        return `<div class="fs-karte" style="align-items:flex-start;">${fx_ansage("Lehrkraft liest vor", ws_esc(s))}<div class="fs-chips" style="justify-content:flex-start; gap:8px;">${idx.map(k => `<div class="fs-chip"><span class="fs-chiptext" style="font-size:${st >= 2 ? 17 : 20}px; padding:2px 8px;">${ws_esc(woerter[k])}</span><span class="fs-nrbox" style="width:30px; height:28px;">${L(k + 1)}</span></div>`).join("")}</div></div>`;
+    };
+    return { titel: "Gehörter Satz", zeile, html: `
+        ${ws_aufgabe(1, "Hör gut zu: Die Lehrkraft liest einen Satz vor. Unter jedem Wort steht ein Kästchen: Schreibe hinein, als wievieltes du das Wort gehört hast.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxR_rhythmus(ctx){
+    const st = fs_st(ctx), k = [3, 4, 6, 8][st];
+    const zeile = i => {
+        const r = [...Array(k)].map(() => Math.random() < 0.5 ? "●" : "▬");
+        if (r.every(x => x === r[0])) r[0] = r[0] === "●" ? "▬" : "●";
+        return `<div class="fs-karte">${fx_ansage("Lehrkraft klatscht", r.join(" "))}<div class="fs-boxen">${r.map(x => `<span class="fs-box" style="width:40px; height:40px; display:flex; align-items:center; justify-content:center;">${L(x, "font-size:22px;")}</span>`).join("")}</div></div>`;
+    };
+    return { titel: "Klatsch-Rhythmus", zeile, html: `
+        ${ws_aufgabe(1, "Hör gut zu: Die Lehrkraft klatscht einen Rhythmus – ● kurz (ein Klatscher) und ▬ lang (Hände kurz zusammenhalten). Klatsche ihn nach und male ihn dann in die Kästchen.")}
+        <div class="fs-ziel">● = kurz &nbsp;&nbsp; ▬ = lang</div>
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+const FX_TIERLAUTE = [["Kuh", "Muh"], ["Katze", "Miau"], ["Hund", "Wau"], ["Hahn", "Kikeriki"], ["Schaf", "Mäh"], ["Ente", "Schnatter"], ["Schwein", "Grunz"], ["Esel", "I-ah"],
+    ["Eule", "Huhu"], ["Frosch", "Quak"], ["Ziege", "Meck"], ["Biene", "Summ"], ["Pferd", "Wieher"], ["Löwe", "Brüll"], ["Maus", "Piep"], ["Schlange", "Zisch"]];
+function fxR_tierkonzert(ctx){
+    const st = fs_st(ctx), k = [3, 4, 5, 7][st];
+    const zeile = i => {
+        const t = mische(FX_TIERLAUTE).slice(0, k);
+        const gezeigt = mische([...t.keys()]);
+        return `<div class="fs-karte">${fx_ansage("Lehrkraft macht nach", t.map(x => x[1]).join(" – "))}<div class="fs-chips" style="gap:8px;">${gezeigt.map(j => `<div class="fs-chip"><span class="fs-chiptext" style="font-size:19px; padding:2px 8px;">${t[j][0]}</span><span class="fs-nrbox" style="width:30px; height:28px;">${L(j + 1)}</span></div>`).join("")}</div></div>`;
+    };
+    return { titel: "Tierkonzert", zeile, html: `
+        ${ws_aufgabe(1, "Hör gut zu: Die Lehrkraft macht Tierlaute nach – einen nach dem anderen. Welches Tier war zuerst dran, welches danach? Nummeriere die Tiere.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxR_lautstelle(ctx){
+    const st = fs_st(ctx);
+    const passt = w => !/(sch|ch|ck|ei|au|eu|äu|ie|ng|nk|pf|qu|x|z|h|ä|ö|ü|ß|(.)\2)/i.test(w) && w.length >= [3, 4, 5, 6][st];
+    const extra = FX_LANG.concat(FX_KURZ).filter(passt);
+    const zeile = i => {
+        let w = ctx.wort(passt);
+        if (!passt(w)) w = zufallsElement(extra.length ? extra : FX_LANG.concat(FX_KURZ).filter(x => x.length >= 4 && !/(sch|ch|ck|ei|au|eu|äu|ie|ng|nk|pf|qu|x|z|h|ä|ö|ü|ß|(.)\2)/i.test(x)));
+        if (!w) return "";
+        const b = w.toLowerCase().split("");
+        const fragen = st === 0 ? [["1.", 0], ["letzter", b.length - 1]] : st === 1 ? [["1.", 0], ["2.", 1], ["letzter", b.length - 1]] : [["2.", 1], ["3.", 2], ["vorletzter", b.length - 2], ["letzter", b.length - 1]];
+        return `<div class="fs-karte">${fx_ansage("Lehrkraft spricht gedehnt", ws_esc(w))}<div class="fs-chips" style="justify-content:flex-start; gap:14px;">${fragen.map(([t, k]) => `<div class="fs-chip"><span style="font-size:13px; color:#4A5866;">${t} Laut</span><span class="fs-box">${L(b[k])}</span></div>`).join("")}</div></div>`;
+    };
+    return { titel: "Welcher Laut an welcher Stelle?", zeile, html: `
+        ${ws_aufgabe(1, "Hör gut zu: Die Lehrkraft spricht ein Wort langsam und gedehnt. Welchen Laut hörst du an der gefragten Stelle? Schreibe den Buchstaben ins Kästchen.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* ---------- Körperschema ---------- */
+
+// Figur von vorn (mit Gesicht) oder von hinten (ohne Gesicht); markiert wird eine Hand oder ein Fuß
+function fx_figur(vorn, teil, bildLinks, gr = 90){
+    const x = bildLinks ? 0 : 1;   // markierte Seite im Bild: 0 = links, 1 = rechts
+    const hand = [[14, 58], [66, 58]], fuss = [[26, 112], [54, 112]];
+    const p = (teil === "Hand" ? hand : fuss)[x];
+    const kopf = vorn
+        ? `<circle cx="40" cy="20" r="14" fill="#FBE3C8" stroke="#1E2A36" stroke-width="2.5"/><circle cx="35" cy="18" r="2" fill="#1E2A36"/><circle cx="45" cy="18" r="2" fill="#1E2A36"/><path d="M34 25 Q40 30 46 25" fill="none" stroke="#1E2A36" stroke-width="2"/>`
+        : `<circle cx="40" cy="20" r="14" fill="#7A4E2D" stroke="#1E2A36" stroke-width="2.5"/>`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${gr * 0.7}" height="${gr}" viewBox="0 0 80 122">${kopf}
+        <rect x="27" y="34" width="26" height="40" rx="8" fill="${vorn ? "#7FB3E6" : "#5E8FC0"}" stroke="#1E2A36" stroke-width="2.5"/>
+        <line x1="28" y1="40" x2="14" y2="58" stroke="#1E2A36" stroke-width="5" stroke-linecap="round"/><line x1="52" y1="40" x2="66" y2="58" stroke="#1E2A36" stroke-width="5" stroke-linecap="round"/>
+        <line x1="34" y1="74" x2="26" y2="110" stroke="#1E2A36" stroke-width="5" stroke-linecap="round"/><line x1="46" y1="74" x2="54" y2="110" stroke="#1E2A36" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="${p[0]}" cy="${p[1]}" r="8" fill="#E8B900" stroke="#B23A2E" stroke-width="3"/></svg>`;
+    return `<img alt="" width="${Math.round(gr * 0.7)}" height="${gr}" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}">`;
+}
+function fxK_figur(ctx){
+    const st = fs_st(ctx);
+    const zeile = i => {
+        const zellen = [...Array([3, 4, 4, 5][st])].map(() => {
+            const vorn = st === 0 ? true : Math.random() < 0.5, links = Math.random() < 0.5, teil = st >= 2 && Math.random() < 0.5 ? "Fuß" : "Hand";
+            const rechts = vorn ? links : !links;    // von vorn: Bild-links = rechte Seite der Figur
+            return `<div style="display:flex; flex-direction:column; align-items:center; gap:4px;">${fx_figur(vorn, teil, links, 84)}<span style="font-size:14px; display:flex; gap:8px;"><span>${fs_kreuzBox(rechts, "width:24px; height:24px;")} r</span><span>${fs_kreuzBox(!rechts, "width:24px; height:24px;")} l</span></span></div>`;
+        });
+        return fx_reihe(i, zellen.join(""));
+    };
+    return { titel: "Rechts oder links – bei der Figur?", zeile, html: `
+        ${ws_aufgabe(1, `Bei jeder Figur ist ${st >= 2 ? "eine Hand oder ein Fuß" : "eine Hand"} gelb markiert. Ist das ihre <b>rechte (r)</b> oder <b>linke (l)</b> Seite? Kreuze an.${st >= 1 ? " Achtung: Figuren mit Gesicht schauen dich an, Figuren ohne Gesicht drehen dir den Rücken zu!" : " Die Figuren schauen dich an – stell dich so hin wie sie!"}`)}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxK_ketten(ctx){
+    const st = fs_st(ctx), k = [2, 2, 3, 4][st];
+    const einzel = [];
+    KOERPERTEILE.forEach(t => ["rechte", "linke"].forEach(s => einzel.push(ks_zeige(s, t).replace(/\.$/, ""))));
+    BEWEGUNGEN.forEach(b => ["rechte", "linke"].forEach(s => einzel.push(b(s).replace(/\.$/, ""))));
+    const zeile = i => {
+        const teile = mische(einzel).slice(0, k);
+        const satz = teile.map((t, j) => j === 0 ? t : (j === teile.length - 1 ? "und zum Schluss: " : "dann: ") + t.charAt(0).toLowerCase() + t.slice(1)).join(", ") + ".";
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><span class="fs-satz" style="font-size:${st >= 2 ? 19 : 21}px;">${ws_esc(satz)}</span><span class="fs-kreuz"><span><span class="fs-kaestchen-klein"></span> geschafft</span></span></div>`;
+    };
+    return { titel: "Bewegungsketten", zeile, html: `
+        ${ws_aufgabe(1, "Die Lehrkraft liest eine ganze Kette vor. Hör bis zum Ende zu und führe <b>dann</b> alle Bewegungen in der richtigen Reihenfolge aus – ohne nachzufragen.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxK_gegenueber(ctx){
+    const st = fs_st(ctx);
+    const saetze = [];
+    KOERPERTEILE.forEach(t => ["rechte", "linke"].forEach(s => {
+        const form = { m: `den ${s}n`, f: `die ${s}`, n: `das ${s}` }[t.g];
+        saetze.push(`Zeige auf ${form} ${t.wort} deines Gegenübers.`);
+        if (st >= 1) ["rechten", "linken"].forEach(h => saetze.push(`Tippe mit deiner ${h} Hand auf ${form} ${t.wort} deines Gegenübers.`));
+    }));
+    if (st >= 2) ["rechte", "linke"].forEach(s => saetze.push(`Hebe deine ${s} Hand, wenn dein Gegenüber seine ${s === "rechte" ? "linke" : "rechte"} Hand hebt.`, `Stelle dich so hin, dass deine ${s} Schulter zum Fenster zeigt.`));
+    return fs_satzBlatt("Rechts und links beim Gegenüber", "Stellt euch zu zweit gegenüber. Einer liest vor, der andere führt aus. Denkt daran: Rechts beim Gegenüber ist von dir aus gesehen links!", saetze);
+}
+
+/* ---------- Raumorientierung ---------- */
+
+function fx_schritt(dx, dy){
+    const n = Math.max(Math.abs(dx), Math.abs(dy)), w = n === 1 ? "ein Feld" : n + " Felder";
+    const h = dx > 0 ? "rechts" : dx < 0 ? "links" : "", v = dy < 0 ? "oben" : dy > 0 ? "unten" : "";
+    return h && v ? `${w} schräg nach ${h} ${v}` : `${w} nach ${h || v}`;
+}
+function fxRO_woLiegt(ctx){
+    const st = fs_st(ctx), n = st >= 2 ? 5 : 4;
+    const zeichen = mische("ABDEFGHKLMNPRSTUWZ".split("")).slice(0, n * n - (n === 5 ? 7 : 0));
+    while (zeichen.length < n * n) zeichen.push(String(zeichen.length - 15));
+    const gitter = mische(zeichen);
+    const RICHT = [["rechts neben", 1, 0], ["links neben", -1, 0], ["über", 0, -1], ["unter", 0, 1]];
+    if (st >= 1) RICHT.push(["schräg rechts über", 1, -1], ["schräg links unter", -1, 1], ["schräg links über", -1, -1], ["schräg rechts unter", 1, 1]);
+    if (st >= 2) RICHT.push(["zwei Felder rechts von", 2, 0], ["zwei Felder unter", 0, 2], ["zwei Felder über", 0, -2]);
+    const zeile = i => {
+        for (let v = 0; v < 100; v++){
+            const p = zufallsZahl(0, n * n - 1), x = p % n, y = Math.floor(p / n);
+            const r = zufallsElement(RICHT);
+            let nx = x + r[1], ny = y + r[2], text = `Was steht ${r[0]} dem <b>${gitter[p]}</b>?`;
+            if (st === 3 && Math.random() < 0.5){
+                const r2 = zufallsElement(RICHT.slice(0, 4));
+                nx += r2[1]; ny += r2[2];
+                text = `Gehe vom <b>${gitter[p]}</b> ${fx_schritt(r[1], r[2])}, dann ${fx_schritt(r2[1], r2[2])}. Wo landest du?`;
+            }
+            if (nx < 0 || ny < 0 || nx >= n || ny >= n) continue;
+            return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><span class="fs-satz" style="font-size:20px;">${text}</span><span class="fs-box">${L(gitter[ny * n + nx])}</span></div>`;
+        }
+        return "";
+    };
+    const tabelle = `<div style="display:flex; justify-content:center;"><div style="display:grid; grid-template-columns:repeat(${n}, 46px); grid-auto-rows:46px; gap:3px; background:#8FA3B8; border:3px solid #1D5FA8; border-radius:10px; overflow:hidden;">${gitter.map(z => `<div style="background:#fff; display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700;">${z}</div>`).join("")}</div></div>`;
+    return { titel: "Was steht wo?", zeile, html: `
+        ${ws_aufgabe(1, "Schau dir die Tafel genau an. Lies jede Frage, suche das Feld mit dem Finger und schreibe die Antwort ins Kästchen.")}
+        ${tabelle}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxRO_lagewoerter(ctx){
+    const st = fs_st(ctx), n = st >= 2 ? 5 : 3, mitte = Math.floor(n * n / 2);
+    const FORM = [["Quadrat", "■"], ["Stern", "★"], ["Herz", "♥"], ["Dreieck", "▲"]];
+    const ZEICHEN = [["ein Kreuz", "✗"], ["einen Punkt", "•"], ["einen Strich", "–"], ["einen Kreis", "○"]];
+    const RICHT = [["rechts neben", 1, 0], ["links neben", -1, 0], ["über", 0, -1], ["unter", 0, 1], ["rechts über", 1, -1], ["links über", -1, -1], ["rechts unter", 1, 1], ["links unter", -1, 1]];
+    const zeile = i => {
+        const f = zufallsElement(FORM);
+        const auftraege = [], belegt = {};
+        const anzahl = [1, 2, 2, 3][st];
+        for (let v = 0; auftraege.length < anzahl && v < 100; v++){
+            const r = zufallsElement(st === 0 ? RICHT.slice(0, 4) : RICHT), weit = n === 5 && Math.random() < 0.5 ? 2 : 1;
+            const x = 1 + Math.floor(n / 2) - 1 + r[1] * weit, y = Math.floor(n / 2) + r[2] * weit, p = y * n + x;
+            if (belegt[p] || p === mitte) continue;
+            const z = zufallsElement(ZEICHEN.filter(q => !Object.values(belegt).includes(q[1])));
+            if (!z) break;
+            belegt[p] = z[1];
+            auftraege.push(`Male ${z[0]} ${weit === 2 ? "zwei Felder " : ""}${r[0]} ${["Herz", "Dreieck", "Quadrat"].includes(f[0]) ? "das" : "den"} ${f[0]}.`);
+        }
+        const gitter = `<div style="display:grid; grid-template-columns:repeat(${n}, 40px); grid-auto-rows:40px; gap:2px; background:#C9D6E3; border:2px solid #8FA3B8; border-radius:8px; overflow:hidden; flex:none;">${[...Array(n * n).keys()].map(k => `<div style="background:#fff; display:flex; align-items:center; justify-content:center; font-size:24px; color:#1D5FA8;">${k === mitte ? f[1] : belegt[k] ? L(belegt[k]) : ""}</div>`).join("")}</div>`;
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><div style="flex:1; font-size:19px; display:flex; flex-direction:column; gap:4px;">${auftraege.map(a => `<span>${a.replace(/(rechts|links|über|unter)/g, "<b>$1</b>")}</span>`).join("")}</div>${gitter}</div>`;
+    };
+    return { titel: "Malen nach Lagewörtern", zeile, html: `
+        ${ws_aufgabe(1, "Lies die Anweisung genau. Male das Zeichen in das richtige Feld neben der Form.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxRO_koordinaten(ctx){
+    const st = fs_st(ctx), n = [4, 5, 6, 7][st], SP = "ABCDEFG";
+    const FARBEN = FS_FARBEN.slice(0, st >= 2 ? 4 : 2);
+    const gitter = (felder, leer) => {
+        let html = `<div style="display:grid; grid-template-columns:24px repeat(${n}, 30px); grid-auto-rows:30px; gap:1px; flex:none; font-size:14px; font-weight:700;"><div></div>${SP.slice(0, n).split("").map(b => `<div style="text-align:center; align-self:end;">${b}</div>`).join("")}`;
+        for (let y = 1; y <= n; y++){
+            html += `<div style="align-self:center; text-align:right; padding-right:3px;">${y}</div>`;
+            for (let x = 0; x < n; x++){ const f = felder[SP[x] + y]; html += `<div class="${f && leer ? "fs-lfill" : ""}" style="border:1px solid #8FA3B8; ${f && !leer ? `background:${f.c};` : ""}${f && leer ? `--lf:${f.c};` : ""}"></div>`; }
+        }
+        return html + "</div>";
+    };
+    const zeile = i => {
+        const felder = {}, k = [2, 3, 4, 5][st];
+        while (Object.keys(felder).length < k) felder[SP[zufallsZahl(0, n - 1)] + zufallsZahl(1, n)] = zufallsElement(FARBEN);
+        const liste = Object.entries(felder).map(([f, c]) => `${f} ${c.n}`).join(", ");
+        if (i % 2 === 0) return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><div style="flex:1; font-size:19px;"><b>Male an:</b> ${liste}</div>${gitter(felder, true)}</div>`;
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><div style="flex:1; font-size:19px; display:flex; flex-direction:column; gap:8px;"><b>Welche Felder sind bunt?</b>${fx_linie(liste, 16)}</div>${gitter(felder, false)}</div>`;
+    };
+    return { titel: "Felder finden (Koordinaten)", zeile, html: `
+        ${ws_aufgabe(1, "Ein Feld hat einen Namen aus Buchstabe (oben) und Zahl (links), zum Beispiel <b>B3</b>. Male die genannten Felder an – oder schreibe auf, welche Felder bunt sind.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxRO_drehen(ctx){
+    const st = fs_st(ctx), P = ["↑", "→", "↓", "←"];
+    const DREH = [["eine Vierteldrehung nach rechts", 1], ["eine Vierteldrehung nach links", -1], ["eine halbe Drehung", 2]];
+    if (st >= 2) DREH.push(["eine Dreivierteldrehung nach rechts", 3], ["eine Dreivierteldrehung nach links", -3]);
+    const zeile = i => {
+        const start = zufallsZahl(0, 3);
+        const schritte = st === 3 ? [zufallsElement(DREH), zufallsElement(DREH)] : [zufallsElement(st === 0 ? DREH.slice(0, 2) : DREH)];
+        const ende = ((start + schritte.reduce((s, d) => s + d[1], 0)) % 4 + 4) % 4;
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><span style="font-size:44px; font-family:Arial, sans-serif; color:#1D4F86; width:50px; text-align:center;">${P[start]}</span><span class="fs-satz" style="font-size:19px;">Der Pfeil macht ${schritte.map(d => d[0]).join(" und danach ")}.</span><span class="fs-box" style="width:56px; height:56px; display:flex; align-items:center; justify-content:center;">${L(P[ende], "font-size:38px; font-family:Arial, sans-serif;")}</span></div>`;
+    };
+    return { titel: "Pfeile drehen", zeile, html: `
+        ${ws_aufgabe(1, "Wohin zeigt der Pfeil nach der Drehung? Drehe dein Blatt oder deinen Finger mit, wenn du willst. Zeichne den Pfeil ins Kästchen.")}
+        <div class="fs-ziel">Vierteldrehung nach rechts: ↑ wird zu →</div>
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+function fxRO_wegAblesen(ctx){
+    const st = fs_st(ctx), n = 7, zuege = [3, 4, 6, 8][st], Z = 30;
+    const RICHTUNG = { "→": [1, 0], "←": [-1, 0], "↓": [0, 1], "↑": [0, -1] };
+    const karte = () => {
+        for (let v = 0; v < 300; v++){
+            let x = zufallsZahl(0, n - 1), y = zufallsZahl(0, n - 1);
+            const pkt = [[x, y]], code = [], besucht = new Set([x + "," + y]);
+            let ok = true, letzte = null;
+            for (let k = 0; k < zuege && ok; k++){
+                const gegen = { "→": "←", "←": "→", "↑": "↓", "↓": "↑" };
+                const r = zufallsElement(Object.keys(RICHTUNG).filter(q => q !== letzte && q !== gegen[letzte]));
+                const weite = zufallsZahl(1, 3);
+                for (let s = 0; s < weite; s++){ x += RICHTUNG[r][0]; y += RICHTUNG[r][1]; if (x < 0 || y < 0 || x >= n || y >= n || besucht.has(x + "," + y)) { ok = false; break; } besucht.add(x + "," + y); }
+                pkt.push([x, y]); code.push(`${weite} ${r}`); letzte = r;
+            }
+            if (!ok) continue;
+            let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${n * Z}" height="${n * Z}" viewBox="0 0 ${n * Z} ${n * Z}"><rect width="100%" height="100%" fill="#fff"/>`;
+            for (let k = 0; k <= n; k++) svg += `<line x1="${k * Z}" y1="0" x2="${k * Z}" y2="${n * Z}" stroke="#C9D6E3"/><line x1="0" y1="${k * Z}" x2="${n * Z}" y2="${k * Z}" stroke="#C9D6E3"/>`;
+            svg += `<polyline points="${pkt.map(([a, b]) => `${a * Z + Z / 2},${b * Z + Z / 2}`).join(" ")}" fill="none" stroke="#B23A2E" stroke-width="4" stroke-linejoin="round"/>`;
+            svg += `<rect x="${pkt[0][0] * Z + 4}" y="${pkt[0][1] * Z + 4}" width="${Z - 8}" height="${Z - 8}" fill="#2E6FD1"/><circle cx="${x * Z + Z / 2}" cy="${y * Z + Z / 2}" r="8" fill="#E8B900" stroke="#1E2A36" stroke-width="2"/></svg>`;
+            return `<div class="fs-karte" style="flex-direction:column; align-items:stretch; gap:8px;"><img alt="" width="${n * Z}" height="${n * Z}" style="align-self:center;" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}"><div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center;">${code.map(c => `<span class="fs-box" style="width:52px; height:36px; display:inline-flex; align-items:center; justify-content:center;">${L(c, "font-size:16px; font-family:Arial, sans-serif;")}</span>`).join("")}</div></div>`;
+        }
+        return "";
+    };
+    return { titel: "Weg aufschreiben", zeile: () => karte(), schritt: 2, html: `
+        ${ws_aufgabe(1, "Der Weg startet im blauen Feld und endet beim gelben Punkt. Schreibe ihn als Code auf: wie viele Felder in welche Richtung, zum Beispiel <b>3 →</b>.")}
+        <div class="fs-zweispaltig fs-fuell"></div>` };
+}
+
+
+// Großer Wortschatz nur für das Funktionstraining (damit sich Wörter nicht ständig wiederholen)
+const FX_WORTSCHATZ = ("Affe Ast Auto Axt Bach Bad Ball Bank Bär Bart Bauch Baum Becher Beere Bein Berg Besen Bett Biber Biene Bild Birne Blatt Blitz Blume Boot Brief Brille Brot Brücke Buch Burg Bus Dach Dackel Decke Delfin Dose Drache "
+ + "Dorf Eimer Eis Elch Ente Erde Esel Eule Feder Fee Fenster Fisch Flasche Flöte Fluss Frosch Fuchs Gabel Gans Garten Geige Geld Gras Gurke Hafen Hahn Hammer Hand Hase Haus Hecke Heft Helm Hemd Hose Hund Hut Igel Insel Jacke "
+ + "Kaffee Käfer Kakao Kamel Kamm Kanne Kasse Katze Kerze Kette Kino Kirche Kiste Kissen Kleid Knopf Koch Koffer Kopf Korb Krone Kuchen Kuh Kugel Lampe Laub Leiter Licht Linie Löffel Löwe Lupe Mantel Markt Maus Meer Messer Milch "
+ + "Möhre Mond Mühle Mütze Nadel Nase Nest Netz Nudel Nuss Ofen Ohr Onkel Palme Panda Papier Park Pferd Pilz Pinsel Pizza Puppe Rabe Rad Rakete Raupe Regen Reh Ring Rock Rose Rucksack Säge Salat Sand Schaf Schal Schiff Schloss "
+ + "Schnee Schuh Schule Schwan Seil Sessel Sofa Sonne Spiegel Stern Stiefel Stift Stuhl Suppe Tafel Tanne Tasche Tasse Teller Tiger Tisch Tomate Topf Tor Torte Traktor Traube Tulpe Turm Uhr Vase Vogel Wagen Wald Wal Wand Wasser "
+ + "Wiese Wolke Wolle Wurm Wurst Zahn Zange Zaun Zebra Zelt Ziege Zimmer Zitrone Zug Zwerg Ameise Apfelbaum Badewanne Bahnhof Banane Bilderbuch Blumentopf Bratwurst Briefkasten Buntstift Butterbrot Dampfer Eichhörnchen Eisenbahn "
+ + "Elefant Erdbeere Fahrrad Fallschirm Feuerwehr Fledermaus Flugzeug Fußball Gartenzaun Geburtstag Gespenst Giraffe Gitarre Gummistiefel Haltestelle Hängematte Hausaufgabe Heuschrecke Himbeere Hubschrauber Kartoffel Kastanie "
+ + "Kinderwagen Klassenzimmer Kletterwand Kochtopf Krokodil Kühlschrank Laterne Leuchtturm Lineal Marienkäfer Marmelade Matratze Melone Motorrad Mülleimer Nashorn Pausenbrot Pinguin Pullover Radiergummi Regenbogen Regenschirm "
+ + "Ritterburg Rutsche Sandkasten Schatzkiste Schaukel Schildkröte Schlafanzug Schlitten Schlüssel Schmetterling Schneemann Schokolade Schornstein Schraube Schubkarre Schultasche Sonnenblume Spielplatz Spinnennetz Staubsauger "
+ + "Steckdose Straßenbahn Taschenlampe Telefon Teppich Turnhalle Wackelzahn Waschmaschine Wasserball Weihnachtsbaum Wecker Werkzeug Windmühle Wohnzimmer Zahnbürste Zauberer Zeitung Zirkus Zitronenfalter").split(" ");
+function fx_breit(ctx){
+    if (ctx.g.thema === "eigen" && document.getElementById("g-eigene-woerter").value.trim()) return ctx;
+    const kl = ctx.g.klasse || 2, max = fs_profi(ctx) ? 99 : ({ 1: 5, 2: 7, 3: 10 }[kl] || 99);
+    const alle = [...new Set([...Object.values(THEMEN).flat(), ...FX_WORTSCHATZ, ...FX_LANG, ...FX_KURZ])].filter(w => /^[A-ZÄÖÜ][a-zäöüß]+$/.test(w) && w.length <= max);
+    let vorrat = [];
+    return Object.assign(Object.create(ctx), { pool: alle, wort(filter){
+        for (let v = 0; v < 300; v++){ if (!vorrat.length) vorrat = mische(alle); const w = vorrat.pop(); if (!filter || filter(w)) return w; }
+        return ctx.wort(filter);
+    } });
+}
 const FS_SERIEN = {
     aufmerksamkeit: { label: "Aufmerksamkeit", afs: "Aufmerksamkeit & Konzentration", select: "#aufm-typ", erstellen: "erstelleAufmerksamkeit",
         optionText: "Grundschule (Kl. 1–4) – 25 Übungen, frei wählbar",
@@ -6957,12 +7762,22 @@ const FS_SERIEN = {
         { nr: "3", kurz: "Muster vergleichen", name: "Muster vergleichen", bau: fsO_kacheln },
         { nr: "4", kurz: "Unterschiede", name: "Unterschiede finden", bau: fsO_unterschiede },
         { nr: "5", kurz: "Buchstaben-Suchbild", name: "Buchstaben-Suchbild", bau: fsO_suchbild },
+        { nr: "6", kurz: "Zeichenketten", name: "Zeichenketten vergleichen", bau: fxO_zeichenketten },
+        { nr: "7", kurz: "Zahlen vergleichen", name: "Zahlen vergleichen", bau: fxO_zahlenVergleich },
+        { nr: "8", kurz: "Doppelgänger", name: "Doppelgänger finden", bau: fxO_doppelgaenger },
+        { nr: "9", kurz: "Abschreibfehler", name: "Abschreibfehler finden", bau: fxO_abschreibfehler },
+        { nr: "10", kurz: "Gedreht/gespiegelt", name: "Gedreht oder gespiegelt?", bau: fxO_gedreht },
     ]},
     optged: { label: "Optisches Gedächtnis", afs: "Funktionstraining: Optisches Gedächtnis", select: "#og-typ", erstellen: "erstelleOptGed", blaetter: [
         { nr: "1", kurz: "Formen merken", name: "Formen merken", bau: fsG_formenreihen },
         { nr: "2", kurz: "Wörter merken", name: "Wörter merken", bau: fsG_wortreihen },
         { nr: "3", kurz: "Muster merken", name: "Muster merken", bau: fsG_kacheln },
         { nr: "4", kurz: "Was ist anders?", name: "Was hat sich verändert?", bau: fsG_veraendert },
+        { nr: "5", kurz: "Zahlen merken", name: "Zahlen merken", bau: fxG_zahlen },
+        { nr: "6", kurz: "Buchstabenketten", name: "Buchstabenketten merken", bau: fxG_buchstabenketten },
+        { nr: "7", kurz: "Wo war was?", name: "Wo war was?", bau: fxG_positionen },
+        { nr: "8", kurz: "Welches Wort fehlt?", name: "Welches Wort fehlt?", bau: fxG_wasFehlt },
+        { nr: "9", kurz: "Figuren merken", name: "Figuren merken", bau: fxG_punktfigur },
     ]},
     optser: { label: "Optische Serialität", afs: "Funktionstraining: Optische Serialität", select: "#os-typ", erstellen: "erstelleOptSer", blaetter: [
         { nr: "1", kurz: "Zahlenreihen", name: "Zahlenreihen fortsetzen", bau: fsS_zahlenreihen },
@@ -6970,36 +7785,66 @@ const FS_SERIEN = {
         { nr: "3", kurz: "Buchstaben-Salat", name: "Buchstaben-Salat", bau: fsS_buchstabensalat },
         { nr: "4", kurz: "ABC-Ordnung", name: "ABC-Ordnung", bau: fsS_abc },
         { nr: "5", kurz: "ABC-Lücken", name: "ABC-Lücken", bau: fsS_alphabet },
+        { nr: "6", kurz: "Wie geht es weiter?", name: "Wie geht es weiter? (Muster)", bau: fxS_kachelfolge },
+        { nr: "7", kurz: "Buchstabenreihen", name: "Buchstabenreihen", bau: fxS_buchstabenreihen },
+        { nr: "8", kurz: "Silben-Salat", name: "Silben-Salat", bau: fxS_silbensalat },
+        { nr: "9", kurz: "Satz-Salat", name: "Satz-Salat", bau: fxS_satzsalat },
+        { nr: "10", kurz: "Rückwärts", name: "Rückwärts gelesen", bau: fxS_rueckwaerts },
     ]},
     akdiff: { label: "Akustische Differenzierung", afs: "Funktionstraining: Akustische Differenzierung", select: "#ad-typ", erstellen: "erstelleAkDiff", blaetter: [
         { nr: "1", kurz: "Silben hören", name: "Silben hören", bau: fsD_silben },
         { nr: "2", kurz: "Reimen", name: "Reimen", bau: fsD_reime },
         { nr: "3", kurz: "Genau hinhören", name: "Genau hinhören (Minimalpaare)", bau: fsD_minimalpaare },
         { nr: "4", kurz: "Lautposition", name: "Wo hörst du den Laut?", bau: fsD_lautposition },
+        { nr: "5", kurz: "Lang oder kurz?", name: "Lang oder kurz?", bau: fxD_langKurz },
+        { nr: "6", kurz: "Laute zählen", name: "Laute zählen", bau: fxD_lautezaehlen },
+        { nr: "7", kurz: "Reimt sich nicht", name: "Was reimt sich nicht?", bau: fxD_reimNicht },
+        { nr: "8", kurz: "Laut fehlt", name: "Welcher Laut fehlt?", bau: fxD_lautFehlt },
+        { nr: "9", kurz: "Gleicher Laut?", name: "Gleicher Anfangs-/Endlaut?", bau: fxD_gleicherLaut },
     ]},
     akged: { label: "Akustisches Gedächtnis", afs: "Funktionstraining: Akustisches Gedächtnis", select: "#akg-typ", erstellen: "erstelleAkGed", blaetter: [
         { nr: "1", kurz: "Wörter merken", name: "Wörter merken", bau: fsH_wortfolgen },
         { nr: "2", kurz: "Zahlen merken", name: "Zahlen merken", bau: fsH_zahlenspanne },
         { nr: "3", kurz: "Aufträge merken", name: "Aufträge merken", bau: fsH_auftraege },
+        { nr: "4", kurz: "Sätze merken", name: "Sätze merken", bau: fxH_saetze },
+        { nr: "5", kurz: "Zahlen rückwärts", name: "Zahlen rückwärts", bau: fxH_rueckwaerts },
+        { nr: "6", kurz: "Einkaufszettel", name: "Der Einkaufszettel", bau: fxH_einkauf },
+        { nr: "7", kurz: "Fantasiewörter", name: "Fantasiewörter", bau: fxH_fantasie },
+        { nr: "8", kurz: "Was fehlte?", name: "Welches Wort fehlte?", bau: fxH_wasFehlte },
+        { nr: "9", kurz: "Zahlen & Buchstaben", name: "Zahlen und Buchstaben", bau: fxH_mix },
     ]},
     akser: { label: "Akustische Serialität", afs: "Funktionstraining: Akustische Serialität", select: "#aks-typ", erstellen: "erstelleAkSer", blaetter: [
         { nr: "1", kurz: "Silbenfolge", name: "Silben in Reihenfolge", bau: fsR_silbenfolge },
         { nr: "2", kurz: "Wortfolge", name: "Gehörte Reihenfolge", bau: fsR_wortfolge },
         { nr: "3", kurz: "Lautfolge", name: "Laute in Reihenfolge", bau: fsR_lautfolge },
+        { nr: "4", kurz: "Gehörter Satz", name: "Gehörter Satz", bau: fxR_satzOrdnen },
+        { nr: "5", kurz: "Klatsch-Rhythmus", name: "Klatsch-Rhythmus", bau: fxR_rhythmus },
+        { nr: "6", kurz: "Tierkonzert", name: "Tierkonzert", bau: fxR_tierkonzert },
+        { nr: "7", kurz: "Laut-Stelle", name: "Welcher Laut an welcher Stelle?", bau: fxR_lautstelle },
     ]},
     koerper: { label: "Körperschema", afs: "Funktionstraining: Körperschema", select: "#ks-typ", erstellen: "erstelleKoerper", blaetter: [
         { nr: "1", kurz: "Zeigen", name: "Zeige deinen Körper", bau: fsK_zeigen },
         { nr: "2", kurz: "Bewegungen", name: "Rechts und links bewegen", bau: fsK_bewegungen },
         { nr: "3", kurz: "Über Kreuz", name: "Über Kreuz", bau: fsK_ueberkreuz },
+        { nr: "4", kurz: "Figur r/l", name: "Rechts oder links – bei der Figur?", bau: fxK_figur },
+        { nr: "5", kurz: "Bewegungsketten", name: "Bewegungsketten", bau: fxK_ketten },
+        { nr: "6", kurz: "Gegenüber", name: "Rechts und links beim Gegenüber", bau: fxK_gegenueber },
     ]},
     raum: { label: "Raumorientierung", afs: "Funktionstraining: Raumorientierung", select: null, erstellen: "erstelleRaum", altName: "Wer springt denn da? (bisheriges Einzelblatt)", blaetter: [
         { nr: "1", kurz: "Blickrichtung", name: "Wohin schauen die Tiere?", bau: fsRO_blickrichtung },
         { nr: "2", kurz: "Pfeile", name: "Pfeile lesen", bau: fsRO_pfeile },
         { nr: "3", kurz: "Wege nach Plan", name: "Wege nach Plan", bau: fsRO_diktat },
         { nr: "4", kurz: "Spiegelbilder", name: "Spiegelbilder", bau: fsRO_spiegeln },
+        { nr: "5", kurz: "Was steht wo?", name: "Was steht wo?", bau: fxRO_woLiegt },
+        { nr: "6", kurz: "Lagewörter", name: "Malen nach Lagewörtern", bau: fxRO_lagewoerter },
+        { nr: "7", kurz: "Koordinaten", name: "Felder finden (Koordinaten)", bau: fxRO_koordinaten },
+        { nr: "8", kurz: "Pfeile drehen", name: "Pfeile drehen", bau: fxRO_drehen },
+        { nr: "9", kurz: "Weg aufschreiben", name: "Weg aufschreiben", bau: fxRO_wegAblesen },
     ]},
 };
 
+
+["optdiff", "optged", "optser", "akdiff", "akged", "akser", "koerper", "raum"].forEach(k => FS_SERIEN[k].blaetter.forEach(b => { const bau = b.bau; b.bau = ctx => bau(fx_breit(ctx)); }));
 
 /* ===============================================================
    Erweiterungen: Silbentrennung · Förderkartei · Förderplan ·
@@ -7832,7 +8677,7 @@ const STD_DIKTAT = [
     { key: "luecken", name: "Lückendiktat (Lehrkraft + Lückenblatt)", blaetter: ["lehrkraft", "luecken"] },
     { key: "test", name: "Testdiktat mit Auswertungsbogen", blaetter: ["lehrkraft", "schueler", "auswertung"] },
 ];
-function std_stufe(){ return { leicht: "l", mittel: "m", schwer: "s" }[lt_wert("g-schwierigkeit")] || "m"; }
+function std_stufe(){ return { leicht: "l", mittel: "m", schwer: "s", profi: "s" }[lt_wert("g-schwierigkeit")] || "m"; }
 function std_lesetext(niveau){
     const k = niveau || lt_klasse(), st = std_stufe();
     const passend = LT_TEXTE.filter(t => t.k === k && t.s === st);
@@ -7870,10 +8715,25 @@ let std_rezept = null, std_bearbeiten = false, std_cache = {}, std_akteId = null
 const STD_PHASEN = ["Aufmerksamkeit", "Funktionstraining", "Symptomtraining"];
 function std_neuUid(){ return "b" + Date.now().toString(36) + (std_uid++); }
 function std_lesetextVon(text){ const k = lt_klasse(); return { text, klasse: k, stufe: text.s, umfang: 0, art: k <= 4 ? "farbig" : "normal", saetze: lt_saetze(text.x), reif: k >= 5 }; }
-function std_itemsFunktion(neu, f, fb, n){
+// Welche Funktionsblätter hatte das Kind zuletzt? (neueste zuerst, aus den gespeicherten Stunden)
+function std_zuletztGenutzt(code, f){
+    const liste = [];
+    (LRS_STUNDEN[code] || []).slice(0, 6).forEach(st => ((st.rezept || {}).items || []).forEach(it => { if (it.t === "fs" && it.s === f && !liste.includes(it.nr)) liste.push(it.nr); }));
+    return liste;
+}
+function std_itemsFunktion(neu, f, fb, n, code){
     if (!f || f === "=") return;
-    const b = fb === "zufall" ? null : FS_SERIEN[f].blaetter.find(x => x.nr === fb);
-    std_mehrere(FS_SERIEN[f].blaetter, b, n).forEach(x => neu({ p: "Funktionstraining", t: "fs", s: f, nr: x.nr }));
+    const alle = FS_SERIEN[f].blaetter;
+    const b = fb === "zufall" ? null : alle.find(x => x.nr === fb);
+    if (!b){
+        // zufällig: zuerst Blätter, die das Kind in den letzten Stunden nicht hatte
+        const zuletzt = std_zuletztGenutzt(code || lt_wert("std-kind"), f);
+        const frisch = mische(alle.filter(x => !zuletzt.includes(x.nr)));
+        const alt = alle.filter(x => zuletzt.includes(x.nr)).sort((x, y) => zuletzt.indexOf(y.nr) - zuletzt.indexOf(x.nr));
+        [...frisch, ...alt, ...mische(alle)].slice(0, n).forEach(x => neu({ p: "Funktionstraining", t: "fs", s: f, nr: x.nr }));
+        return;
+    }
+    std_mehrere(alle, b, n).forEach(x => neu({ p: "Funktionstraining", t: "fs", s: f, nr: x.nr }));
 }
 function std_itemsSymptom(r, neu, sy, sb, n){
     if (!sy || sy === "=") return;
@@ -7936,7 +8796,7 @@ function std_rezeptAusFormular(){
             else it.wer = "beide";
         });
         const neu2 = o => neu({ ...o, wer: "2" });
-        if (f2 !== "=") std_itemsFunktion(neu2, f2, lt_wert("std-funktion2-blatt"), std_anzahl("std-funktion2-anzahl"));
+        if (f2 !== "=") std_itemsFunktion(neu2, f2, lt_wert("std-funktion2-blatt"), std_anzahl("std-funktion2-anzahl"), k2);
         if (s2 !== "=") std_itemsSymptom(r, neu2, s2, lt_wert("std-symptom2-blatt"), std_anzahl("std-symptom2-anzahl"));
         // Reihenfolge: Phase für Phase, innerhalb der Phase erst die gemeinsamen, dann Kind 1, dann Kind 2
         const rang = { beide: 0, "1": 1, "2": 2 };
@@ -9965,14 +10825,14 @@ function lt_klasseWechsel(){
     lt_textAuswahlFuellen("lt", LT_TEXTE);
 }
 function lt_init(){
-    const k = lt_wert("g-klasse") || "2", s = { leicht: "l", mittel: "m", schwer: "s" }[lt_wert("g-schwierigkeit")] || "m";
+    const k = lt_wert("g-klasse") || "2", s = { leicht: "l", mittel: "m", schwer: "s", profi: "s" }[lt_wert("g-schwierigkeit")] || "m";
     ["lt", "dk"].forEach(p => { document.getElementById(p + "-klasse").value = k; document.getElementById(p + "-stufe").value = s; });
     document.getElementById("lt-umfang").value = lt_wert("g-umfang") || "mittel";
     lt_klasseWechsel();
     lt_textAuswahlFuellen("dk", DK_TEXTE);
     // Gemeinsame Einstellungen oben übernehmen, wenn sie geändert werden
     document.getElementById("g-klasse").addEventListener("change", () => { ["lt", "dk"].forEach(p => document.getElementById(p + "-klasse").value = lt_wert("g-klasse")); lt_klasseWechsel(); lt_textAuswahlFuellen("dk", DK_TEXTE); });
-    document.getElementById("g-schwierigkeit").addEventListener("change", () => { const st = { leicht: "l", mittel: "m", schwer: "s" }[lt_wert("g-schwierigkeit")]; ["lt", "dk"].forEach(p => document.getElementById(p + "-stufe").value = st); lt_textAuswahlFuellen("lt", LT_TEXTE); lt_textAuswahlFuellen("dk", DK_TEXTE); });
+    document.getElementById("g-schwierigkeit").addEventListener("change", () => { const st = { leicht: "l", mittel: "m", schwer: "s", profi: "s" }[lt_wert("g-schwierigkeit")]; ["lt", "dk"].forEach(p => document.getElementById(p + "-stufe").value = st); lt_textAuswahlFuellen("lt", LT_TEXTE); lt_textAuswahlFuellen("dk", DK_TEXTE); });
     document.getElementById("g-umfang").addEventListener("change", () => document.getElementById("lt-umfang").value = lt_wert("g-umfang"));
 }
 

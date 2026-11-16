@@ -103,6 +103,8 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-16", "Funktionstraining: viel mehr Abwechslung & Profi-Stufe", "38 neue Blattarten (z. B. Abschreibfehler, Gedreht oder gespiegelt?, Laute zählen, Lang oder kurz?, Einkaufszettel, Tierkonzert, Koordinaten, Weg aufschreiben), neue Schwierigkeit „Profi (sehr schwer)“, großer Wortschatz – und die Stundenplanung meidet Blätter, die das Kind zuletzt hatte.", "lrs.php"],
+    ["2026-11-16", "Stunden verschieben", "In der Kinder-Akte geplante Stunden mit einem Tipp auf ein anderes Datum legen – gemeinsame Stunden mit 2 Kindern auf Wunsch gleich mit.", "trainingshefte.php"],
     ["2026-11-15", "Ella-Quiz", "Üben wie bei Schlaukopf: Klasse 1–4, Deutsch, Mathe, Sachunterricht, Lernen lernen – mit Sternen pro Thema, Fehler nochmal üben und Tafel-Modus Klasse gegen Ella. Mathe wird jedes Mal neu gemischt.", "ella-quiz.php"],
     ["2026-11-15", "Startklar! – Tagesbeginn & Stundenbeginn", "Auf der Guten-Morgen-Tafel und groß als eigene Kachel: was die Kinder vor dem Tag und vor jeder Stunde bereitlegen – zum Abhaken. Dazu Bilder per Auswahl und eigenes Material anlegen.", "tafelbilder.php#startklar"],
     ["2026-11-15", "Lernangebot Deutsch neu", "Eine Strategie pro Stunde (Silben, Mitsprechen, Verlängern, Nachschlagen, Proben, Satzzeichen), echtes Lesen – und jede Antwort wird an der Tafel angetippt: Punkt für die Klasse oder Ella.", "sozial-stunden.php?bereich=lernangebot"],
