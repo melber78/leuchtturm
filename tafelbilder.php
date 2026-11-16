@@ -224,6 +224,7 @@ body{ background:#f6f2ea; }
 .mg-check span{ font-size:1.4em; }
 .mg-check.ok{ border-color:#2e9e5b; background:#e9f7ee; text-decoration:line-through; color:#5d7a68; }
 .mg-dienste{ flex:none !important; overflow:visible; }   /* Dienste immer ganz sichtbar – „Das brauche ich“ nimmt den Rest */
+.mg-pack .mg-dinge{ flex:1; align-content:center; }   /* Dienste immer ganz sichtbar – „Das brauche ich“ nimmt den Rest */
 .mg-dliste{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:.6vh .8vw; align-content:start; }
 .mg-dienst{ display:flex; align-items:center; gap:.5vw; background:#f8f6f1; border-radius:14px; padding:.4vh .6vw; min-width:0; }
 .mg-dienst span{ font-size:clamp(20px,min(2.2vw,3.6vh),40px); }
@@ -286,6 +287,8 @@ body{ background:#f6f2ea; }
 .mg-ding.ok::after{ content:"✓"; position:absolute; top:-8px; right:-6px; background:#2e9e5b; color:white; border-radius:50%; width:28px; height:28px; font:900 18px/28px "Nunito",sans-serif; }
 /* Beachten */
 .mg-achtung{ background:#fff8e1; }
+.mg-spalte .mg-achtung{ flex:none; }   /* „Denk daran!“ nur so groß wie nötig – der Platz geht an Buchstabe und Wetter */
+.mg-achtung .mg-leer.klein{ padding:.3vh 0; }
 .mg-spalte .mg-pack{ flex:1.5; }
 .mg-dinge.viele{ grid-template-columns:repeat(4,minmax(0,1fr)); gap:.5vw; } .mg-dinge.viele .mg-ding span{ font-size:clamp(22px,min(2.4vw,4vh),46px); } .mg-dinge.viele .mg-ding b{ font-size:clamp(11px,min(.95vw,1.7vh),18px); }
 .mg-dinge.sehr-viele{ grid-template-columns:repeat(5,minmax(0,1fr)); gap:.4vw; } .mg-dinge.sehr-viele .mg-ding span{ font-size:clamp(18px,min(2vw,3.3vh),40px); } .mg-dinge.sehr-viele .mg-ding b{ font-size:clamp(10px,min(.85vw,1.5vh),16px); }
