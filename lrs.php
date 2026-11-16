@@ -638,6 +638,9 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .rs-wortbank{ display:flex; flex-wrap:wrap; gap:8px 12px; border:2px dashed #8FA3B8; border-radius:14px; padding:12px 14px; font-size:19px; }
 .rs-tabelle{ width:100%; border-collapse:collapse; table-layout:fixed; }
 /* Vom Lesen zum Schreiben */
+.std-zwei{ border:2px dashed #3d7ea6; border-radius:14px; padding:10px 14px 12px; margin-top:12px; background:#f4f9fd; }
+.std-wer{ width:auto !important; flex:none; max-width:110px; font-weight:800; }
+.std-zwei-kopf{ font-weight:800; color:#2C4A6E; margin-bottom:4px; }
 .rsa-schritte.vs-4{ grid-template-columns:repeat(4, 1fr); }
 .vs-probe{ display:flex; flex-direction:column; gap:8px; font-size:18px; }
 .vs-merk{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
@@ -1558,6 +1561,10 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             <div><label>Kind (Kürzel, optional)</label><select id="std-kind"></select></div>
             <div><label>Dauer der Stunde</label><div style="display:flex; gap:8px;"><select id="std-dauer" onchange="std_dauerWechsel()" style="flex:1;"><option value="20">20 Minuten</option><option value="25">25 Minuten</option><option value="30">30 Minuten</option><option value="35">35 Minuten</option><option value="40" selected>40 Minuten</option><option value="45">45 Minuten</option><option value="50">50 Minuten</option><option value="60">60 Minuten</option><option value="75">75 Minuten</option><option value="90">90 Minuten</option><option value="eigen">andere Dauer …</option></select><input type="number" id="std-dauer-eigen" min="10" max="180" step="5" value="40" style="display:none; width:90px;" onchange="std_dauerWechsel()" title="Minuten"></div></div>
         </div>
+        <div class="zeile zwei std-nur-foerder" style="margin-top:12px;">
+            <div><label>Zweites Kind (optional – zwei Kinder in einer Stunde)</label><select id="std-kind2"></select></div>
+            <div><p class="beschreibung" style="margin:24px 0 0;">Aufmerksamkeit machen beide gemeinsam. Funktions- und Symptomtraining stellst du unten für Kind 2 auf „gleich wie Kind 1“ oder auf etwas Eigenes.</p></div>
+        </div>
         <div class="zeile zwei" style="margin-top:12px;">
             <div><label>Art der Stunde</label><select id="std-art" onchange="std_artWechsel()"><option value="foerder">Förderstunde (AFS-Aufbau)</option><option value="erst">Erststunde – Kennenlernen &amp; Lese-Schnappschuss</option></select></div>
             <div class="std-nur-erst"><label>Lesetext-Darstellung</label><select id="std-erst-silben"><option value="farbig">mit Silbenfarben</option><option value="boegen">mit Silbenbögen</option><option value="normal">ohne Silbenhilfe</option></select></div>
@@ -1586,6 +1593,20 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             <div><label>Zusätzlich: Vom Lesen zum Schreiben</label><select id="std-vs"><option value="">– nichts zusätzlich –</option></select></div>
             <div><label>Stufe</label><select id="std-vs-stufe"><option value="">passend zur Klasse</option><option value="A">A – offene Silben</option><option value="B">B – geschlossene Silben</option><option value="C">C – Mitlaut-Häufungen</option><option value="D">D – lange Wörter</option><option value="AC">A bis C gemischt</option></select></div>
             <div><label>Anzahl</label><select id="std-vs-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option></select></div>
+        </div>
+        <div class="std-zwei std-nur-foerder" id="std-zwei" style="display:none;">
+            <div class="std-zwei-kopf"><i class="fa-solid fa-user-group"></i> Kind 2: <b id="std-zwei-name"></b></div>
+            <div class="zeile std-anz-zeile">
+                <div><label>Funktionstraining Kind 2</label><select id="std-funktion2"></select></div>
+                <div><label>Blatt</label><select id="std-funktion2-blatt"></select></div>
+                <div><label>Anzahl</label><select id="std-funktion2-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
+            </div>
+            <div class="zeile std-anz-zeile" style="margin-top:10px;">
+                <div><label>Symptomtraining Kind 2</label><select id="std-symptom2"></select></div>
+                <div><label>Blatt</label><select id="std-symptom2-blatt"></select></div>
+                <div><label>Anzahl</label><select id="std-symptom2-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
+            </div>
+            <p class="beschreibung" style="margin:6px 0 0;">„Gleich wie Kind 1“: beide bekommen dieselbe Art Blatt – Fehlerwörter aus der Kartei trotzdem jeweils die eigenen. Jedes Blatt trägt oben das Kürzel. Den Ablaufplan gibt es einmal, den Rückblick für jedes Kind.</p>
         </div>
         <p class="beschreibung std-nur-foerder" id="std-hinweis" style="margin:6px 0 0;"></p>
         <div class="std-heft std-nur-foerder" id="std-heft" style="display:none;">
@@ -7368,7 +7389,7 @@ const LT_LINIENFELD = "flex:1; min-height:96px; background:repeating-linear-grad
 
 function std_ablaufplan(info){
     const zeilen = info.phasen.map(p => `<tr><td><b>${p.phase}</b></td><td style="white-space:nowrap;"><b>${p.zeit}</b><br><small style="color:#7c8a94;">Min. ${p.von}–${p.bis}</small></td><td>${p.inhalt}</td><td style="text-align:center;"><span class="fs-kaestchen-klein" style="width:26px; height:26px;"></span></td></tr>`).join("");
-    return { titel: "Ablaufplan der Stunde", extra: { info: true, max: 1, reif: true, label: "Stundenplanung", afs: "AFS · Aufmerksamkeit – Funktion – Symptom", kopfRechts: `Kürzel: <b>${ws_esc(info.kind || "______")}</b> · Datum: <span class="ws-linie" style="width:120px;"></span>` }, html: `
+    return { titel: "Ablaufplan der Stunde", extra: { info: true, max: 1, reif: true, label: "Stundenplanung", afs: "AFS · Aufmerksamkeit – Funktion – Symptom", kopfRechts: `Kürzel: <b>${ws_esc(info.kind2 ? (info.kind || "Kind 1") + " + " + info.kind2 : (info.kind || "______"))}</b> · Datum: <span class="ws-linie" style="width:120px;"></span>` }, html: `
         <div class="dk-info"><span>Dauer: <b>${info.dauer} Minuten</b></span><span>Beginn: <span style="display:inline-block; width:70px; border-bottom:1.5px solid #1E2A36;"></span> Uhr</span><span>Ende: <span style="display:inline-block; width:70px; border-bottom:1.5px solid #1E2A36;"></span> Uhr</span></div>
         <table class="std-tabelle"><thead><tr><th style="width:150px;">Phase</th><th style="width:86px;">Zeit</th><th>Inhalt / Material</th><th style="width:44px;">✓</th></tr></thead><tbody>${zeilen}</tbody></table>
         <div><b style="font-size:15px;">Für den Lernverlauf (danach in die Förderkartei übertragen)</b></div>
@@ -7662,6 +7683,12 @@ function std_auswahlAufbauen(){
         `<option value="kartei">Eigene Fehlerwörter aus der Förderkartei</option>` +
         `<option value="ws">Worterarbeitung (Lernwörter aus dem Reiter Symptomtraining)</option>` +
         `<option value="">– ohne Symptomblatt –</option>`;
+    document.getElementById("std-funktion2").innerHTML = `<option value="=">= gleich wie Kind 1</option>` + document.getElementById("std-funktion").innerHTML;
+    document.getElementById("std-symptom2").innerHTML = `<option value="=">= gleich wie Kind 1</option>` + document.getElementById("std-symptom").innerHTML;
+    document.getElementById("std-kind2").innerHTML = document.getElementById("std-kind").innerHTML;
+    document.getElementById("std-kind2").addEventListener("change", std_zweiZeigen);
+    document.getElementById("std-funktion2").addEventListener("change", std_blattListen2);
+    document.getElementById("std-symptom2").addEventListener("change", std_blattListen2);
     ["std-aufm-anzahl", "std-funktion-anzahl", "std-symptom-anzahl"].forEach(id => {
         const el = document.getElementById(id);
         try { const v = localStorage.getItem("lt_" + id); if (v) el.value = v; } catch (e){}
@@ -7681,6 +7708,38 @@ function std_auswahlAufbauen(){
     std_heftZeigen();
     std_weiterZeigen();
     std_blattListen();
+}
+// Zweites Kind: Bereich zeigen und Blatt-Listen füllen
+function std_zweiZeigen(){
+    const k2 = lt_wert("std-kind2"), box = document.getElementById("std-zwei");
+    if (!box) return;
+    box.style.display = k2 ? "" : "none";
+    document.getElementById("std-zwei-name").textContent = k2 || "";
+    if (k2 && kt_woerter(k2).length && lt_wert("std-symptom2") === "=" && lt_wert("std-symptom") !== "kartei") document.getElementById("std-symptom2").value = "kartei";
+    std_blattListen2();
+}
+function std_symptomListe(sy){
+    if (sy.startsWith("rs:")) return FS_SERIEN.rechtschreibung.blaetter;
+    if (sy === "rsa") return RSA_BLAETTER;
+    if (sy === "vs") return VS_BLAETTER;
+    if (sy === "kartei") return KT_BLAETTER;
+    if (sy === "ws") return WS_BLAETTER;
+    if (sy === "lesen" || sy.startsWith("lesen:")) return LT_AUFGABEN.map(a => ({ nr: a.key, name: "Lesetext + " + a.name }));
+    if (sy.startsWith("le:")) return (LE_BLAETTER[sy.slice(3)] || []).map((b, i) => ({ nr: String(i), name: b.name }));
+    if (sy === "diktat") return STD_DIKTAT.map(d => ({ nr: d.key, name: d.name }));
+    return [];
+}
+function std_blattListen2(){
+    const f = lt_wert("std-funktion2"), sy = lt_wert("std-symptom2");
+    const fb = document.getElementById("std-funktion2-blatt"), sb = document.getElementById("std-symptom2-blatt");
+    if (!fb || !sb) return;
+    fb.innerHTML = f && f !== "=" ? `<option value="zufall">zufällig</option>` + FS_SERIEN[f].blaetter.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("") : `<option value="">–</option>`;
+    const liste = sy && sy !== "=" ? std_symptomListe(sy) : [];
+    sb.innerHTML = liste.length ? liste.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("") : `<option value="">–</option>`;
+    if (sy.startsWith("rs:") || sy === "rsa") sb.value = "2";
+    if (sy === "vs") sb.value = "3";
+    document.getElementById("std-funktion2-anzahl").disabled = !f || f === "=";
+    document.getElementById("std-symptom2-anzahl").disabled = !sy || sy === "=" || sy === "diktat";
 }
 function std_blattListen(){
     const f = lt_wert("std-funktion"), sy = lt_wert("std-symptom");
@@ -7811,33 +7870,13 @@ let std_rezept = null, std_bearbeiten = false, std_cache = {}, std_akteId = null
 const STD_PHASEN = ["Aufmerksamkeit", "Funktionstraining", "Symptomtraining"];
 function std_neuUid(){ return "b" + Date.now().toString(36) + (std_uid++); }
 function std_lesetextVon(text){ const k = lt_klasse(); return { text, klasse: k, stufe: text.s, umfang: 0, art: k <= 4 ? "farbig" : "normal", saetze: lt_saetze(text.x), reif: k >= 5 }; }
-function std_rezeptAusFormular(){
-    const code = lt_wert("std-kind");
-    const r = { v: 1, kind: code, dauer: std_dauer(), klasse: lt_wert("std-klasse"), stufe: lt_wert("std-schwierigkeit"),
-        plan: lt_an("std-plan"), rueck: lt_an("std-rueck"), eltern: lt_an("std-eltern"), items: [] };
-    const neu = (o) => r.items.push({ u: std_neuUid(), ...o });
-    const aufm = lt_wert("std-aufm");
-    if (aufm){
-        let sk, nr, b = null;
-        if (aufm === "zufall") sk = fp_serieVon("aufmerksamkeit");
-        else { [sk, nr] = aufm.split(":"); b = fs_katalog(sk).find(x => x.nr === nr); }
-        const pool = fs_katalog(sk).filter(x => au_passt(x) && (x.nr !== "3" || sk !== "aufmerksamkeit5"));
-        std_mehrere(pool.length ? pool : fs_katalog(sk), b, std_anzahl("std-aufm-anzahl")).forEach(x => neu({ p: "Aufmerksamkeit", t: "fs", s: sk, nr: x.nr }));
-    }
-    if (lt_wert("std-art") === "erst"){
-        r.erst = { art: lt_wert("std-erst-silben") || "farbig" };
-        r.lesetext = es_textWaehlen().t;
-        neu({ p: "Symptomtraining", t: "erst", b: "lesen" });
-        neu({ p: "Symptomtraining", t: "erst", b: "beob" });
-        return r;
-    }
-    const f = lt_wert("std-funktion");
-    if (f){
-        const fb = lt_wert("std-funktion-blatt");
-        const b = fb === "zufall" ? null : FS_SERIEN[f].blaetter.find(x => x.nr === fb);
-        std_mehrere(FS_SERIEN[f].blaetter, b, std_anzahl("std-funktion-anzahl")).forEach(x => neu({ p: "Funktionstraining", t: "fs", s: f, nr: x.nr }));
-    }
-    const sy = lt_wert("std-symptom"), sb = lt_wert("std-symptom-blatt"), n = std_anzahl("std-symptom-anzahl");
+function std_itemsFunktion(neu, f, fb, n){
+    if (!f || f === "=") return;
+    const b = fb === "zufall" ? null : FS_SERIEN[f].blaetter.find(x => x.nr === fb);
+    std_mehrere(FS_SERIEN[f].blaetter, b, n).forEach(x => neu({ p: "Funktionstraining", t: "fs", s: f, nr: x.nr }));
+}
+function std_itemsSymptom(r, neu, sy, sb, n){
+    if (!sy || sy === "=") return;
     if (sy.startsWith("rs:")){
         const liste = FS_SERIEN.rechtschreibung.blaetter;
         std_mehrere(liste, liste.find(x => x.nr === sb) || liste[0], n).forEach(x => neu({ p: "Symptomtraining", t: "rs", k: sy.slice(3), nr: x.nr }));
@@ -7859,9 +7898,50 @@ function std_rezeptAusFormular(){
     } else if (sy === "ws"){
         std_mehrere(WS_BLAETTER, WS_BLAETTER.find(x => x.nr === sb) || WS_BLAETTER[0], n).forEach(x => neu({ p: "Symptomtraining", t: "ws", nr: x.nr }));
     }
+}
+function std_rezeptAusFormular(){
+    const code = lt_wert("std-kind");
+    const r = { v: 1, kind: code, dauer: std_dauer(), klasse: lt_wert("std-klasse"), stufe: lt_wert("std-schwierigkeit"),
+        plan: lt_an("std-plan"), rueck: lt_an("std-rueck"), eltern: lt_an("std-eltern"), items: [] };
+    const neu = (o) => r.items.push({ u: std_neuUid(), ...o });
+    const aufm = lt_wert("std-aufm");
+    if (aufm){
+        let sk, nr, b = null;
+        if (aufm === "zufall") sk = fp_serieVon("aufmerksamkeit");
+        else { [sk, nr] = aufm.split(":"); b = fs_katalog(sk).find(x => x.nr === nr); }
+        const pool = fs_katalog(sk).filter(x => au_passt(x) && (x.nr !== "3" || sk !== "aufmerksamkeit5"));
+        std_mehrere(pool.length ? pool : fs_katalog(sk), b, std_anzahl("std-aufm-anzahl")).forEach(x => neu({ p: "Aufmerksamkeit", t: "fs", s: sk, nr: x.nr }));
+    }
+    if (lt_wert("std-art") === "erst"){
+        r.erst = { art: lt_wert("std-erst-silben") || "farbig" };
+        r.lesetext = es_textWaehlen().t;
+        neu({ p: "Symptomtraining", t: "erst", b: "lesen" });
+        neu({ p: "Symptomtraining", t: "erst", b: "beob" });
+        return r;
+    }
+    std_itemsFunktion(neu, lt_wert("std-funktion"), lt_wert("std-funktion-blatt"), std_anzahl("std-funktion-anzahl"));
+    std_itemsSymptom(r, neu, lt_wert("std-symptom"), lt_wert("std-symptom-blatt"), std_anzahl("std-symptom-anzahl"));
     const vsZ = lt_wert("std-vs");
     if (vsZ){ const st = lt_wert("std-vs-stufe"); std_mehrere(VS_BLAETTER, VS_BLAETTER.find(x => x.nr === vsZ) || VS_BLAETTER[2], std_anzahl("std-vs-anzahl")).forEach(x => neu(Object.assign({ p: "Symptomtraining", t: "vs", nr: x.nr }, st ? { st } : {}))); }
     std_heftGewaehlt(code).forEach(m => neu({ p: STD_HEFT_PHASE[m.bereich] || "Symptomtraining", t: "heft", id: m.id }));
+    // Zwei Kinder: wer bekommt welches Blatt? (beide · 1 · 2)
+    const k2 = lt_wert("std-kind2");
+    if (k2 && k2 !== code){
+        r.kind2 = k2;
+        const f2 = lt_wert("std-funktion2"), s2 = lt_wert("std-symptom2");
+        r.items.forEach(it => {
+            if (it.t === "heft") it.wer = "1";
+            else if (it.p === "Funktionstraining") it.wer = f2 === "=" ? "beide" : "1";
+            else if (it.p === "Symptomtraining") it.wer = s2 === "=" ? "beide" : "1";
+            else it.wer = "beide";
+        });
+        const neu2 = o => neu({ ...o, wer: "2" });
+        if (f2 !== "=") std_itemsFunktion(neu2, f2, lt_wert("std-funktion2-blatt"), std_anzahl("std-funktion2-anzahl"));
+        if (s2 !== "=") std_itemsSymptom(r, neu2, s2, lt_wert("std-symptom2-blatt"), std_anzahl("std-symptom2-anzahl"));
+        // Reihenfolge: Phase für Phase, innerhalb der Phase erst die gemeinsamen, dann Kind 1, dann Kind 2
+        const rang = { beide: 0, "1": 1, "2": 2 };
+        r.items = r.items.map((it, n) => ({ it, n })).sort((a, b) => STD_PHASEN.indexOf(a.it.p) - STD_PHASEN.indexOf(b.it.p) || rang[a.it.wer] - rang[b.it.wer] || a.n - b.n).map(x => x.it);
+    }
     // Nicht geschaffte Blätter aus früheren Stunden: jeweils an den Anfang ihrer Phase
     const weiter = std_weiterGewaehlt(code);
     // dasselbe Blatt nicht zusätzlich neu vorschlagen
@@ -7932,7 +8012,7 @@ function std_alternativen(it, r){
     return frei.length ? frei : pool;
 }
 function std_itemErsetzen(alt, neu){
-    Object.keys(alt).forEach(k => { if (!["u", "p", "von", "vd"].includes(k)) delete alt[k]; });
+    Object.keys(alt).forEach(k => { if (!["u", "p", "von", "vd", "wer"].includes(k)) delete alt[k]; });
     Object.assign(alt, neu, { u: std_neuUid() });   // neue ID → nur dieses Blatt wird neu erstellt
 }
 function std_anderesBlatt(u){
@@ -7965,10 +8045,10 @@ function std_blattLeisten(){
     fs_seiten("stunde").forEach(seite => {
         const b = (s.blaetter || []).find(x => x.nr === seite.dataset.blatt);
         if (!b || !b.uid) return;
-        const u = String(b.uid).split(":")[0];
+        const uv = String(b.uid).split(":")[0], u = uv.split("~")[0];
         const it = std_rezept.items.find(x => x.u === u);
-        if (!it || gezeigt.has(u)) return;
-        gezeigt.add(u);
+        if (!it || gezeigt.has(uv)) return;
+        gezeigt.add(uv);
         const name = std_itemInfo(it, std_rezept).name;
         const alt = it.t !== "heft" && std_alternativen(it, std_rezept).length;
         const leiste = document.createElement("div");
@@ -8013,8 +8093,8 @@ function std_ausRezept(r){
     const phasenText = {};
     if (items.some(it => it.t === "lesen") && !items.some(it => it.t === "lesen" && !it.von)){ const t = LT_TEXTE.find(x => x.t === r.lesetext); ctxLesen.lt = t ? std_lesetextVon(t) : std_lesetext(); r.lesetext = ctxLesen.lt.text.t; }
     if (items.some(it => it.t === "diktat") && !items.some(it => it.t === "diktat" && !it.von)){ const t = DK_TEXTE.find(x => x.t === r.diktat); ctxDiktat.dk = t ? { text: dk_kuerzen(t, "mittel"), klasse: lt_klasse(), reif: lt_klasse() >= 5 } : std_diktat(); r.diktat = ctxDiktat.dk.text.t; }
-    STD_PHASEN.forEach(ph => {
-        const alle = items.filter(it => it.p === ph), teile = [];
+    const phasenTeile = (alle, code, ph) => {
+        const teile = [];
         const weiter = alle.filter(it => it.von), liste = alle.filter(it => !it.von);
         if (weiter.length) teile.push(`Weiterarbeiten (in der letzten Stunde nicht geschafft): ${weiter.map(it => `„${ws_esc(std_itemInfo(it, r).name)}“${it.vd ? " (vom " + std_datumKurz(it.vd) + ")" : ""}`).join(", ")}.`);
         // Aufmerksamkeit / Funktion: nach Reihe gruppiert
@@ -8046,23 +8126,39 @@ function std_ausRezept(r){
         if (kt.length) teile.push(`Eigene Fehlerwörter: ${kt.map(it => `„${ws_esc(std_itemInfo(it, r).name)}“`).join(", ")} (${kt_kontextFuer(code, "offen").eigene.length} Wörter aus der Lernbox).`);
         const ws = liste.filter(it => it.t === "ws");
         if (ws.length) teile.push(`Worterarbeitung ${ws.map(it => `„${ws_esc(std_itemInfo(it, r).name)}“`).join(", ")} mit ${ws_woerterLesen().map(w => ws_esc(w.silben.join("-"))).join(", ")}.`);
+        const rsa = liste.filter(it => it.t === "rsa");
+        if (rsa.length) teile.push(`Rechtschreibung anwenden (Stopp-Routine): ${rsa.map(it => `„${ws_esc(std_itemInfo(it, r).name)}“`).join(", ")}. Nach jedem Satz: Stopp – Signalstelle – Werkzeug – Beweis.`);
+        const vsl = liste.filter(it => it.t === "vs");
+        if (vsl.length) teile.push(`Vom Lesen zum Schreiben: ${vsl.map(it => `„${ws_esc(std_itemInfo(it, r).name)}“`).join(", ")}. Schreib-Treppe: schwingen – langsam sprechen – schreiben – Laut für Laut kontrollieren.`);
         const heft = liste.filter(it => it.t === "heft");
         if (heft.length) teile.push("Aus dem Trainingsheft: " + heft.map(it => { const m = std_itemInfo(it, r).m; return `„${ws_esc(m.titel)}“${std_heftDruckbar(m) ? "" : " (separat drucken)"}`; }).join(", ") + ".");
-        if (teile.length) phasenText[ph] = { text: teile.join(" "), n: alle.length };
+        return teile;
+    };
+    const KZ = c => `<b>${ws_esc(c)}</b>`;
+    STD_PHASEN.forEach(ph => {
+        const alle = items.filter(it => it.p === ph);
+        if (!alle.length) return;
+        if (!r.kind2){ const teile = phasenTeile(alle, code, ph); if (teile.length) phasenText[ph] = { text: teile.join(" "), n: alle.length }; return; }
+        const gruppe = w => alle.filter(it => (it.wer || "1") === w), zeilen = [];
+        const tb = phasenTeile(gruppe("beide"), code, ph), t1 = phasenTeile(gruppe("1"), code, ph), t2 = phasenTeile(gruppe("2"), r.kind2, ph);
+        if (tb.length) zeilen.push(`<b>Beide:</b> ${tb.join(" ")}`);
+        if (t1.length) zeilen.push(`${KZ(code || "Kind 1")}: ${t1.join(" ")}`);
+        if (t2.length) zeilen.push(`${KZ(r.kind2)}: ${t2.join(" ")}`);
+        if (zeilen.length) phasenText[ph] = { text: zeilen.join("<br>"), n: gruppe("beide").length * 2 + gruppe("1").length + gruppe("2").length };
     });
     // Blätter in Phasen-Reihenfolge, innerhalb der Phase in Rezept-Reihenfolge
-    STD_PHASEN.forEach(ph => items.filter(it => it.p === ph).forEach(it => {
+    const bauItem = (it, code, U, geuebt, kz) => {
         const info = std_itemInfo(it, r);
         const start = blaetter.length;
-        if (it.t === "fs"){ const b = fs_katalog(it.s).find(x => x.nr === it.nr); blaetter.push(mitCache(fp_blattEintrag(it.s, b, 0), it.u)); geuebt.push(b.name); }
-        else if (it.t === "rs"){ const b = FS_SERIEN.rechtschreibung.blaetter.find(x => x.nr === it.nr); blaetter.push(mitCache(fp_rsEintrag(it.k, b.bau, b.name, 0, code), it.u)); geuebt.push(`${RS_NAMEN[it.k] ? RS_NAMEN[it.k].kurz : it.k}: ${b.name}`); }
-        else if (it.t === "rsa"){ const b = RSA_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Anwenden: " + b.kurz, name: "Rechtschreibung anwenden – " + b.name, bau: c => b.bau({ ...c, rsa: rsa_ctx(code) }), extra: { label: "Rechtschreibung anwenden", afs: "Symptomtraining: Rechtschreibstrategien anwenden", reif: true }, quelle: { t: "rsa", nr: b.nr } }, it.u)); geuebt.push("Anwenden: " + b.name); } }
-        else if (it.t === "vs"){ const b = VS_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Schreiben: " + b.kurz, name: "Vom Lesen zum Schreiben – " + b.name, bau: c => b.bau({ ...c, vs: vs_ctx(it.st || "") }), extra: { label: "Vom Lesen zum Schreiben", afs: "Symptomtraining: Laute hören und verschriften", reif: true }, quelle: { t: "vs", nr: b.nr } }, it.u)); geuebt.push("Schreiben: " + b.name); } }
+        if (it.t === "fs"){ const b = fs_katalog(it.s).find(x => x.nr === it.nr); blaetter.push(mitCache(fp_blattEintrag(it.s, b, 0), U)); geuebt.push(b.name); }
+        else if (it.t === "rs"){ const b = FS_SERIEN.rechtschreibung.blaetter.find(x => x.nr === it.nr); blaetter.push(mitCache(fp_rsEintrag(it.k, b.bau, b.name, 0, code), U)); geuebt.push(`${RS_NAMEN[it.k] ? RS_NAMEN[it.k].kurz : it.k}: ${b.name}`); }
+        else if (it.t === "rsa"){ const b = RSA_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Anwenden: " + b.kurz, name: "Rechtschreibung anwenden – " + b.name, bau: c => b.bau({ ...c, rsa: rsa_ctx(code) }), extra: { label: "Rechtschreibung anwenden", afs: "Symptomtraining: Rechtschreibstrategien anwenden", reif: true }, quelle: { t: "rsa", nr: b.nr } }, U)); geuebt.push("Anwenden: " + b.name); } }
+        else if (it.t === "vs"){ const b = VS_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Schreiben: " + b.kurz, name: "Vom Lesen zum Schreiben – " + b.name, bau: c => b.bau({ ...c, vs: vs_ctx(it.st || "") }), extra: { label: "Vom Lesen zum Schreiben", afs: "Symptomtraining: Laute hören und verschriften", reif: true }, quelle: { t: "vs", nr: b.nr } }, U)); geuebt.push("Schreiben: " + b.name); } }
         else if (it.t === "lesen"){
             const lt = ctxLesen.lt, a = LT_AUFGABEN.find(x => x.key === it.a);
             const extra = { label: "Lesetraining", afs: "Symptomtraining: Lesen & Textverständnis", reif: lt.reif };
             if (!blaetter.some(b => b.uid === "lesetext")){ blaetter.push(mitCache({ nr: "0", kurz: "Lesetext", name: `Lesetext „${lt.text.t}“`, bau: () => std_lesetextSeite(lt), extra }, "lesetext")); geuebt.push(`Lesen: ${lt.text.t}`); }
-            blaetter.push(mitCache({ nr: "0", kurz: a.kurz, name: a.name, bau: c => LT_BAU[a.key]({ ...c, lt }), extra }, it.u)); geuebt.push(a.name);
+            blaetter.push(mitCache({ nr: "0", kurz: a.kurz, name: a.name, bau: c => LT_BAU[a.key]({ ...c, lt }), extra }, U)); geuebt.push(a.name);
         }
         else if (it.t === "diktat"){
             const d = STD_DIKTAT.find(x => x.key === it.d), dk = ctxDiktat.dk;
@@ -8070,7 +8166,7 @@ function std_ausRezept(r){
             d.blaetter.forEach(key => {
                 const b = DK_BLAETTER.find(x => x.key === key);
                 const teile = key === "auswertung" && lang ? [["Auswertung 1", dkB_auswertung1], ["Auswertung 2", dkB_auswertung2]] : [[b.kurz, b.bau]];
-                teile.forEach(([kurz, bau], z) => blaetter.push(mitCache({ nr: "0", kurz: `Diktat: ${kurz}`, name: b.name, bau: c => bau({ ...c, dk }), extra: { label: "Diktat", afs: "Symptomtraining: Diktat", reif: dk.reif } }, it.u + ":" + key + z)));
+                teile.forEach(([kurz, bau], z) => blaetter.push(mitCache({ nr: "0", kurz: `Diktat: ${kurz}`, name: b.name, bau: c => bau({ ...c, dk }), extra: { label: "Diktat", afs: "Symptomtraining: Diktat", reif: dk.reif } }, U + ":" + key + z)));
             });
             geuebt.push(`Diktat: ${dk.text.titel || dk.text.t}`);
         }
@@ -8078,29 +8174,39 @@ function std_ausRezept(r){
             const lb = le_buchstabenLesen(r.lb != null ? r.lb : ((LRS_AKTEN[code] || {}).lb || ""));
             const le = { bekannt: lb, set: lb.length ? new Set(lb) : null, farbig: true, texte: null };
             const b = LE_BLAETTER[it.st][it.i];
-            blaetter.push(mitCache(le_eintrag(it.st, b, le), it.u)); geuebt.push(`Lesen ${LE_STUFEN[it.st].nr}: ${b.name}`);
+            blaetter.push(mitCache(le_eintrag(it.st, b, le), U)); geuebt.push(`Lesen ${LE_STUFEN[it.st].nr}: ${b.name}`);
         }
-        else if (it.t === "kartei"){ const b = KT_BLAETTER.find(x => x.nr === it.nr), kt = kt_kontextFuer(code, "offen"); blaetter.push(mitCache({ nr: "0", kurz: `Kartei: ${b.kurz}`, name: b.name, bau: c => b.bau({ ...c, kt }), extra: { label: "Meine Fehlerwörter", afs: "Symptomtraining: Fehlerwörter-Kartei", reif: lt_klasse() >= 5 } }, it.u)); geuebt.push(`Meine Fehlerwörter: ${b.name}`); }
-        else if (it.t === "ws"){ const b = WS_BLAETTER.find(x => x.nr === it.nr), woerter = ws_woerterLesen(); blaetter.push(mitCache({ nr: "0", kurz: `Worterarbeitung: ${b.kurz}`, name: b.name, bau: () => ({ seite: b.fn(woerter) }) }, it.u)); geuebt.push(`Worterarbeitung: ${b.name}`); }
+        else if (it.t === "kartei"){ const b = KT_BLAETTER.find(x => x.nr === it.nr), kt = kt_kontextFuer(code, "offen"); blaetter.push(mitCache({ nr: "0", kurz: `Kartei: ${b.kurz}`, name: b.name, bau: c => b.bau({ ...c, kt }), extra: { label: "Meine Fehlerwörter", afs: "Symptomtraining: Fehlerwörter-Kartei", reif: lt_klasse() >= 5 } }, U)); geuebt.push(`Meine Fehlerwörter: ${b.name}`); }
+        else if (it.t === "ws"){ const b = WS_BLAETTER.find(x => x.nr === it.nr), woerter = ws_woerterLesen(); blaetter.push(mitCache({ nr: "0", kurz: `Worterarbeitung: ${b.kurz}`, name: b.name, bau: () => ({ seite: b.fn(woerter) }) }, U)); geuebt.push(`Worterarbeitung: ${b.name}`); }
         else if (it.t === "heft"){
             const m = info.m, seiten = m.endung === "pdf" ? (std_heftCache[m.id] || []) : (STD_HEFT_BILD.includes(m.endung) ? [new URL(m.pfad, location.href).href] : []);
-            seiten.forEach((bild, i) => blaetter.push({ nr: "0", uid: it.u + ":" + i, kurz: `Heft: ${m.titel}${seiten.length > 1 ? " (" + (i + 1) + ")" : ""}`, name: `Trainingsheft: ${m.titel}${seiten.length > 1 ? ` – Seite ${i + 1}` : ""}`, bau: () => ({ seite: std_heftSeite(bild) }) }));
+            seiten.forEach((bild, i) => blaetter.push({ nr: "0", uid: U + ":" + i, kurz: `Heft: ${m.titel}${seiten.length > 1 ? " (" + (i + 1) + ")" : ""}`, name: `Trainingsheft: ${m.titel}${seiten.length > 1 ? ` – Seite ${i + 1}` : ""}`, bau: () => ({ seite: std_heftSeite(bild) }) }));
             geuebt.push(`Trainingsheft: ${m.titel}`);
         }
         if (it.von) for (let i = start; i < blaetter.length; i++) if (blaetter[i].uid !== "lesetext" || !items.some(x => x.t === "lesen" && !x.von)) blaetter[i] = { ...blaetter[i], weiter: true, kurz: "↪ " + blaetter[i].kurz };
+        // Zwei Kinder: Kürzel oben aufs Blatt und in die Blattliste
+        if (kz) for (let i = start; i < blaetter.length; i++) if (blaetter[i].uid !== "lesetext") blaetter[i] = { ...blaetter[i], kurz: kz + ": " + blaetter[i].kurz, extra: { ...(blaetter[i].extra || {}), kopfRechts: `Kürzel: <b>${ws_esc(kz)}</b>` } };
+    };
+    const geuebt2 = [];
+    STD_PHASEN.forEach(ph => items.filter(it => it.p === ph).forEach(it => {
+        if (!r.kind2){ bauItem(it, code, it.u, geuebt, ""); return; }
+        const wer = it.wer || "1";
+        if (wer !== "2") bauItem(it, code, it.u, geuebt, code || "Kind 1");
+        if (wer !== "1") bauItem(it, r.kind2, it.u + "~2", geuebt2, r.kind2);
     }));
     const phasen = [{ phase: "Ankommen", zeit: "", inhalt: "Begrüßung, kurzes Gespräch: Wie war die Woche? Was hat in der Schule gut geklappt?" + (code && kt_woerter(code).length ? ` Lernbox: fällige Wörter von ${ws_esc(code)} abfragen.` : "") }];
     STD_PHASEN.forEach(ph => { if (phasenText[ph]) phasen.push({ phase: ph, zeit: "", inhalt: phasenText[ph].text, n: phasenText[ph].n }); });
     phasen.push({ phase: "Abschluss", zeit: "", inhalt: "Stunden-Rückblick, Stempel im Lernpass, kurzes Spiel (z. B. Reimwörter-Ping-Pong)" + (r.eltern ? ", Elternblatt mitgeben." : ".") });
     std_zeitenVerteilen(phasen, r.dauer || 40);
     const heftIds = items.filter(it => it.t === "heft" && !it.ng).map(it => it.id);
-    const info = { kind: code, phasen, geuebt, merksatz, dauer: r.dauer || 40, heft: heftIds, rezept: r };
+    const info = { kind: code, kind2: r.kind2 || "", phasen, geuebt, merksatz, dauer: r.dauer || 40, heft: heftIds, rezept: r };
     std_letzte = info;
     setTimeout(() => { std_akteLeiste(); std_editorZeigen(); std_blattLeisten(); }, 0);
     const ergebnis = [];
     if (r.plan) ergebnis.push({ nr: "0", kurz: "Ablaufplan", name: "Ablaufplan (für dich)", bau: () => std_ablaufplan(info) });
     ergebnis.push(...blaetter);
-    if (r.rueck) ergebnis.push({ nr: "0", kurz: "Rückblick", name: "Stunden-Rückblick", bau: () => std_rueckblick(info) });
+    if (r.rueck && !r.kind2) ergebnis.push({ nr: "0", kurz: "Rückblick", name: "Stunden-Rückblick", bau: () => std_rueckblick(info) });
+    if (r.rueck && r.kind2) [[code || "Kind 1", geuebt], [r.kind2, geuebt2]].forEach(([kz, g]) => ergebnis.push({ nr: "0", kurz: kz + ": Rückblick", name: "Stunden-Rückblick " + kz, bau: () => { const x = std_rueckblick({ ...info, kind: kz, geuebt: g }); return { ...x, extra: { ...(x.extra || {}), kopfRechts: `Kürzel: <b>${ws_esc(kz)}</b>` } }; } }));
     if (r.eltern){
         const foki = [...new Set([...items.filter(it => it.p === "Funktionstraining" && it.t === "fs").map(it => it.s), ...items.filter(it => it.t === "rs").map(it => it.k), ...(items.some(it => it.t === "ws") ? ["worterarbeitung"] : []), "aufmerksamkeit"])];
         ergebnis.push({ nr: "0", kurz: "Elternblatt", name: "Elternblatt", bau: () => eb_blatt(foki, code) });
@@ -8286,7 +8392,7 @@ function std_editorZeigen(){
             return `<div class="std-ed-phase"><div class="std-ed-name">${ph}</div><div class="std-ed-zeilen">
                 ${liste.map(it => { const info = std_itemInfo(it, r), sel = encodeURIComponent(JSON.stringify({ t: it.t, s: it.s, nr: it.nr, k: it.k, a: it.a, d: it.d, id: it.id, st: it.st, i: it.i }));
                     const alt = it.t !== "heft" && std_alternativen(it, r).length;
-                    return `<div class="std-ed-zeile ${it.ng ? "ng" : ""} ${it.von ? "weiter" : ""}"><select data-tausch="${it.u}" title="${it.von ? "Aus der Stunde vom " + std_datumKurz(it.vd) + " übernommen" : ""}">${info.ok ? "" : `<option selected>${ws_esc(info.name)}</option>`}${optHtml}</select>
+                    return `<div class="std-ed-zeile ${it.ng ? "ng" : ""} ${it.von ? "weiter" : ""}">${r.kind2 ? `<select class="std-wer" data-wer="${it.u}" title="Für wen?">${[["beide", "beide"], ["1", r.kind || "Kind 1"], ["2", r.kind2]].map(([w, n]) => `<option value="${w}" ${(it.wer || "1") === w ? "selected" : ""}>${ws_esc(n)}</option>`).join("")}</select>` : ""}<select data-tausch="${it.u}" title="${it.von ? "Aus der Stunde vom " + std_datumKurz(it.vd) + " übernommen" : ""}">${info.ok ? "" : `<option selected>${ws_esc(info.name)}</option>`}${optHtml}</select>
                         <button class="std-ed-knopf" data-ed="tausch" data-u="${it.u}" title="Anderes Blatt derselben Art" ${alt ? "" : "disabled"}><i class="fa-solid fa-dice"></i></button>
                         <button class="std-ed-knopf ${it.ng ? "an" : ""}" data-ed="ng" data-u="${it.u}" title="${it.ng ? "Nicht geschafft – kommt in die nächste Stunde (nochmal tippen = doch geschafft)" : "Als nicht geschafft markieren – kommt in die nächste Stunde"}"><i class="fa-solid fa-forward"></i></button>
                         <button class="std-ed-x" data-weg="${it.u}" title="Blatt entfernen">✕</button></div>`; }).join("")}
@@ -8305,6 +8411,10 @@ function std_editorZeigen(){
             std_nachAenderung(neu);
         });
     });
+    el.querySelectorAll("[data-wer]").forEach(sel => sel.addEventListener("change", () => {
+        const it = r.items.find(x => x.u === sel.dataset.wer); if (!it) return;
+        it.wer = sel.value; std_nachAenderung();
+    }));
     el.querySelectorAll("[data-ed]").forEach(b => b.addEventListener("click", () => {
         if (b.dataset.ed === "tausch") std_anderesBlatt(b.dataset.u); else std_ngUmschalten(b.dataset.u);
     }));
@@ -8316,7 +8426,7 @@ function std_editorZeigen(){
         if (!sel.value) return;
         const neu = JSON.parse(decodeURIComponent(sel.value));
         const ph = sel.dataset.neu, letzte = r.items.map(x => x.p).lastIndexOf(ph);
-        const eintrag = { u: std_neuUid(), p: ph, ...neu };
+        const eintrag = { u: std_neuUid(), p: ph, ...neu, ...(r.kind2 ? { wer: "beide" } : {}) };
         if (letzte < 0) r.items.push(eintrag); else r.items.splice(letzte + 1, 0, eintrag);
         std_nachAenderung(neu);
     }));
@@ -8562,7 +8672,7 @@ function std_akteLeiste(){
     const code = std_letzte && std_letzte.kind;
     el.style.display = code ? "flex" : "none";
     if (!code) return;
-    el.innerHTML = `<i class="fa-solid fa-folder-open" style="color:var(--meer);"></i> Stunde (${std_letzte.dauer} Min.) für <b>${ws_esc(code)}</b>
+    el.innerHTML = `<i class="fa-solid fa-folder-open" style="color:var(--meer);"></i> Stunde (${std_letzte.dauer} Min.) für <b>${ws_esc(code)}</b>${std_letzte.kind2 ? ` und <b>${ws_esc(std_letzte.kind2)}</b>` : ""}
         <input type="date" id="std-akte-datum" value="${new Date().toISOString().slice(0, 10)}" style="width:auto; padding:6px 10px;">
         ${std_akteId ? "" : `<select id="std-akte-stand" style="width:auto; padding:6px 10px;"><option value="offen">○ geplant</option><option value="erledigt" ${std_standVorschlag === "erledigt" ? "selected" : ""}>✓ schon gehalten</option></select>`}
         ${std_akteId ? `<button class="btn klein" onclick="std_inAkte(true)"><i class="fa-solid fa-floppy-disk"></i> Änderungen in der Akte speichern</button><button class="btn sekundaer klein" onclick="std_inAkte(false)">Als neue Stunde eintragen</button>`
@@ -8589,6 +8699,13 @@ async function std_inAkte(aendern){
             std_akteHinweis = `✅ Änderungen gespeichert – der Ablaufplan oben ist aktuell. <a href="${fp_akteLink(info.kind, "stunden")}" target="_blank">Zur Akte</a>`;
             st.innerHTML = std_akteHinweis;
             return;
+        }
+        if (info.kind2 && !(aendern && std_akteId)){
+            try { const a2 = await fetch("akte.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ aktion: "stunde_hinzu", kind: info.kind2, stunde: { datum: lt_wert("std-akte-datum"), dauer: info.dauer, inhalt, status: lt_wert("std-akte-stand") || "offen", heft: [], rezept } }) });
+                const j2 = await a2.json().catch(() => ({ ok: false })); if (j2.ok && j2.akte && j2.akte.stunden) LRS_STUNDEN[info.kind2] = j2.akte.stunden.map(x => ({ id: x.id, datum: x.datum, dauer: x.dauer, inhalt: x.inhalt, rezept: x.rezept || null, heft: x.heft || [] }));
+                j.meldung = (j.meldung || "") + (j2.ok ? ` Auch bei ${info.kind2} eingetragen.` : ` ⚠️ Bei ${info.kind2} nicht eingetragen: ${j2.fehler || "Fehler"}`);
+            } catch (e){ j.meldung = (j.meldung || "") + ` ⚠️ Bei ${info.kind2} nicht eingetragen.`; }
         }
         if (j.akte && j.akte.stunden){ LRS_STUNDEN[info.kind] = j.akte.stunden.map(x => ({ id: x.id, datum: x.datum, dauer: x.dauer, inhalt: x.inhalt, rezept: x.rezept || null, heft: x.heft || [] })); const n = j.akte.stunden.find(x => x.inhalt === inhalt); if (n){ std_akteId = n.id; std_akteLeiste(); std_editorZeigen(); } }
         std_weiterZeigen();
@@ -10663,7 +10780,7 @@ silben_laden();
 std_auswahlAufbauen();
 fp_auswahlAufbauen();
 lt_init();
-["std-kind", "fp-kind", "ws-kt-kind"].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = kt_kindOptionen(id === "ws-kt-kind" ? "— Kürzel —" : "— ohne —"); });
+["std-kind", "std-kind2", "fp-kind", "ws-kt-kind"].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = kt_kindOptionen(id === "ws-kt-kind" ? "— Kürzel —" : "— ohne —"); });
 (function startParameter(){
     if (fp_hashLesen()) return;
     const q = new URLSearchParams(location.search);
