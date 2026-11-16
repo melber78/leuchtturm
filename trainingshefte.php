@@ -391,6 +391,8 @@ textarea{ resize:vertical; min-height:62px; font-weight:600; }
 .dp-tab th{ background:#eef2f6; font-size:11.5px; }
 .dp-unterschriften{ display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; margin-top:34px; }
 .dp-unterschriften div{ border-top:1px solid #444; padding-top:4px; font-size:11px; color:#555; }
+.zwei-kinder{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.zwei-kinder select{ font:800 14px "Nunito",sans-serif; padding:9px 10px; border:2px solid #e2e8ee; border-radius:12px; background:white; color:#16324a; }
 </style>
 </head>
 <body>
@@ -492,6 +494,11 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
         <div class="aktionen">
             <a class="knopf voll" href="lrs.php?stunde=<?= urlencode($aktuellesKind) ?>"><i class="fa-solid fa-layer-group"></i> Stunde planen</a>
             <a class="knopf" href="<?= h(tabUrl($aktuellesKind, "stunden")) ?>">Alle Stunden</a>
+            <form class="zwei-kinder" action="lrs.php" method="get" onsubmit="if(!this.kind2.value){event.preventDefault(); this.kind2.focus();}">
+                <input type="hidden" name="stunde" value="<?= h($aktuellesKind) ?>">
+                <select name="kind2" aria-label="Zweites Kind"><option value="">+ zweites Kind …</option><?php foreach ($alleKinder as $k2): if ($k2["code"] === $aktuellesKind) continue; ?><option value="<?= h($k2["code"]) ?>"><?= h($k2["code"]) ?></option><?php endforeach; ?></select>
+                <button class="knopf" type="submit"><i class="fa-solid fa-user-group"></i> Stunde mit 2 Kindern</button>
+            </form>
         </div>
     </div>
 </div>
@@ -648,7 +655,14 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
 <div class="karte">
     <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
         <h2>Stunden</h2>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
         <a class="knopf voll" href="lrs.php?stunde=<?= urlencode($aktuellesKind) ?>"><i class="fa-solid fa-layer-group"></i> Neue Stunde im Generator planen</a>
+        <form class="zwei-kinder" action="lrs.php" method="get" onsubmit="if(!this.kind2.value){event.preventDefault(); this.kind2.focus();}">
+                <input type="hidden" name="stunde" value="<?= h($aktuellesKind) ?>">
+                <select name="kind2" aria-label="Zweites Kind"><option value="">+ zweites Kind …</option><?php foreach ($alleKinder as $k2): if ($k2["code"] === $aktuellesKind) continue; ?><option value="<?= h($k2["code"]) ?>"><?= h($k2["code"]) ?></option><?php endforeach; ?></select>
+                <button class="knopf" type="submit"><i class="fa-solid fa-user-group"></i> Stunde mit 2 Kindern</button>
+            </form>
+        </div>
     </div>
     <p class="klein" style="margin:4px 0 14px; color:#7c8a94; font-weight:700;">Im Generator kannst du eine zusammengestellte Stunde mit einem Klick hier eintragen. Oder du trägst sie direkt hier ein.</p>
     <details style="margin-bottom:16px;">

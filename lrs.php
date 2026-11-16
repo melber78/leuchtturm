@@ -10814,6 +10814,8 @@ lt_init();
         const sk = document.getElementById("std-kind");
         sk.value = stunde;
         sk.dispatchEvent(new Event("change"));
+        const k2 = q.get("kind2");
+        if (k2 && LRS_KINDER.includes(k2) && k2 !== stunde){ const s2 = document.getElementById("std-kind2"); s2.value = k2; std_zweiZeigen(); setTimeout(() => document.getElementById("std-zwei").scrollIntoView({ behavior: "smooth", block: "center" }), 300); }
         const sid = q.get("sid");
         if (sid) silben_laden().then(() => std_ausAkteOeffnen(stunde, sid)).then(ok => { if (ok === false) alert("Diese Stunde wurde in der Akte nicht gefunden."); });
         return;
