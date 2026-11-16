@@ -309,6 +309,10 @@ function zeichnen(){
             ${kl ? `<div class="mg-kleidung">${kl[0]} ${kl[1]}</div>` : ""}`
                : `<div class="mg-wbild">❔</div><div class="mg-wtext">Wie ist das Wetter?</div><div class="mg-tipp">antippen und auswählen</div>`}
         </section>
+        <section class="mg-karte mg-achtung">
+          <h2>${klein ? "Denk daran!" : "Heute beachten"}</h2>
+          ${hin.length ? `<ul class="mg-hinweise">${hin.map(h => `<li><span>${esc(h.e || "📢")}</span>${esc(h.t)}</li>`).join("")}</ul>` : `<div class="mg-leer klein">Heute nichts Besonderes 🙂</div>`}
+        </section>
       </div>
       <section class="mg-karte mg-plan">
         <h2 class="mg-h2-knopf">${klein ? "Unser Tag" : "Stundenplan"}${!wochenende ? `<button class="mg-k hell klein" data-aendern="0" title="Vertretung, Ausfall oder zusätzliche Stunde – nur für ${istHeute ? "heute" : "diesen Tag"}">✏️ ${istHeute ? "Heute" : "Tag"} ändern</button>` : ""}</h2>
@@ -333,10 +337,6 @@ function zeichnen(){
           ${mj.letzte && (k.ende || []).length ? `<div class="mg-schluss"><h3>${mj.schluss ? "Vor dem Nachhausegehen" : "In der letzten Stunde"}</h3>${k.ende.map(x => { const key = "ende|" + x.id; return `<button class="mg-check ${abgehakt[key] ? "ok" : ""}" data-ding="${key}"><span>${esc(x.e)}</span>${esc(x.t)}</button>`; }).join("")}</div>` : ""}
         </section>
         ${k.diensteZeigen && (k.dienste || []).length ? `<section class="mg-karte mg-dienste"><h2>Klassendienste</h2><div class="mg-dliste">${k.dienste.map(x => `<div class="mg-dienst"><span>${esc(x.e)}</span><div><small>${esc(x.n)}</small><b>${esc(x.kind || "–")}</b></div></div>`).join("")}</div></section>` : ""}
-        <section class="mg-karte mg-achtung ${!hin.length && ((k.diensteZeigen && (k.dienste || []).length) || k.startZeigen) ? "weg" : ""}">
-          <h2>${klein ? "Denk daran!" : "Heute beachten"}</h2>
-          ${hin.length ? `<ul class="mg-hinweise">${hin.map(h => `<li><span>${esc(h.e || "📢")}</span>${esc(h.t)}</li>`).join("")}</ul>` : `<div class="mg-leer klein">Heute nichts Besonderes 🙂</div>`}
-        </section>
       </div>
     </div>`;
     uhr();
