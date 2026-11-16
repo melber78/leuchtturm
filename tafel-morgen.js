@@ -323,6 +323,7 @@ function zeichnen(){
               ${x.status === "jetzt" ? `<span class="mg-jetzt">${klein ? "👉 jetzt" : "jetzt"}</span>` : x.status === "gleich" ? `<span class="mg-jetzt gleich">gleich</span>` : ""}</li>`; }).join("")}</ol>`}
       </section>
       <div class="mg-spalte">
+        ${k.startZeigen && ((k.tagStart || []).length || (k.stundeStart || []).length) ? startKarte(k, d) : ""}
         <section class="mg-karte mg-pack">
           <h2>${mj.ganzerTag ? (klein ? "Das brauche ich" : "Bitte mitbringen") : mj.schluss ? (klein ? "Einpacken!" : "Bitte einpacken") : (klein ? "Das brauche ich jetzt" : "Bitte auspacken")}</h2>
           ${mj.titel ? `<div class="mg-fuer" style="--ff:${mj.stunde ? fachInfo(mj.stunde.f).f : "#8a7a60"}"><span>${mj.e || ""}</span>${mj.stunde && mj.titel !== "Zum Tagesbeginn" ? (klein ? "Für " : "Für die " + mj.stunde.nr + ". Stunde: ") + esc(mj.titel) : esc(mj.titel)}</div>` : ""}
@@ -330,7 +331,6 @@ function zeichnen(){
             : `<div class="mg-leer klein">${mj.stunde ? "Nichts Besonderes – Federmappe reicht 🙂" : "–"}</div>`}
           ${mj.letzte && (k.ende || []).length ? `<div class="mg-schluss"><h3>${mj.schluss ? "Vor dem Nachhausegehen" : "In der letzten Stunde"}</h3>${k.ende.map(x => { const key = "ende|" + x.id; return `<button class="mg-check ${abgehakt[key] ? "ok" : ""}" data-ding="${key}"><span>${esc(x.e)}</span>${esc(x.t)}</button>`; }).join("")}</div>` : ""}
         </section>
-        ${k.startZeigen && ((k.tagStart || []).length || (k.stundeStart || []).length) ? startKarte(k, d) : ""}
         ${k.diensteZeigen && (k.dienste || []).length ? `<section class="mg-karte mg-dienste"><h2>Klassendienste</h2><div class="mg-dliste">${k.dienste.map(x => `<div class="mg-dienst"><span>${esc(x.e)}</span><div><small>${esc(x.n)}</small><b>${esc(x.kind || "–")}</b></div></div>`).join("")}</div></section>` : ""}
         <section class="mg-karte mg-achtung ${!hin.length && ((k.diensteZeigen && (k.dienste || []).length) || k.startZeigen) ? "weg" : ""}">
           <h2>${klein ? "Denk daran!" : "Heute beachten"}</h2>

@@ -383,6 +383,7 @@ body{ background:#f6f2ea; }
 
 /* Startklar (vor dem Tag / vor der Stunde) */
 .mg-start{ background:#eefaf2; }
+.mg-spalte .mg-start{ flex:none; overflow:visible; }   /* Startklar: immer ganz sichtbar, die anderen Karten passen sich an */
 .mg-start h2 > span:first-child{ min-width:0; }
 .mg-start-knoepfe{ display:flex; gap:6px; flex:none; }
 .mg-startliste{ display:grid; grid-template-columns:1fr 1fr; gap:.6vh .5vw; overflow:hidden; align-content:start; }
