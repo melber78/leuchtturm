@@ -1,4 +1,4 @@
-<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs", "leise"]; require __DIR__ . "/gast-zugang.php"; ?>
+<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs", "leise", "einmaleins"]; require __DIR__ . "/gast-zugang.php"; ?>
 <?php
 if (empty($_SESSION["tafel_csrf"])) $_SESSION["tafel_csrf"] = bin2hex(random_bytes(16));
 // Gespeicherte Tafelbild-Einstellungen (Morgentafel …) – Gäste haben eigene Daten
@@ -447,6 +447,11 @@ body{ background:#f6f2ea; }
 .k-start .mini-pause span{ font-size:30px; }
 .k-start .mini-raster{ display:flex; gap:8px; }
 .k-start .mini-raster i{ width:52px; height:46px; background:white; border-radius:10px; box-shadow:0 3px 8px rgba(22,50,74,.08); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:22px; }
+.k-ee{ background:linear-gradient(135deg,#fff3d1,#e2f0ff); }
+.mini-ee{ display:grid; grid-template-columns:repeat(4, 34px); grid-auto-rows:28px; gap:3px; background:#c9d6e3; border:3px solid #16324a; border-radius:10px; overflow:hidden; font:900 15px "Nunito",sans-serif; }
+.mini-ee b, .mini-ee i{ display:flex; align-items:center; justify-content:center; font-style:normal; }
+.mini-ee b{ background:#16324a; color:#ffd77a; } .mini-ee b:first-child{ background:#f2a93b; color:#16324a; }
+.mini-ee i{ background:white; color:#16324a; } .mini-ee i.w{ background:#f2a93b; }
 @media (max-width:900px){ .mg-sg-liste{ grid-template-columns:1fr; } .mg-iw{ grid-template-columns:repeat(auto-fill,minmax(46px,1fr)); } }
 </style>
 </head>
@@ -472,6 +477,12 @@ body{ background:#f6f2ea; }
         <button class="kachel" type="button" onclick="window.lernTafel && lernTafel.starten('pausevorbei')">
             <div class="k-buehne k-pause"><div class="mini-pause"><span>⏰</span>Pause vorbei!</div><div class="mini-raster"><i>🧸</i><i>🎒</i><i>🪑</i><i>🤫</i></div></div>
             <div class="k-text"><h2>Pause vorbei!</h2><p>Klingel, Checkliste zum Abhaken und Countdown: alles wegräumen, an den Platz – wir fangen an.</p><div class="k-tags"><span>nach der Pause</span><span>Kl. 1–4</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "einmaleins")): ?>
+        <button class="kachel" type="button" onclick="tafelEinmaleins.oeffnen()">
+            <div class="k-buehne k-ee"><div class="mini-ee"><b>·</b><b>1</b><b>2</b><b>3</b><b>1</b><i>1</i><i>2</i><i>3</i><b>2</b><i>2</i><i class="w">4</i><i>6</i><b>3</b><i>3</i><i>6</i><i>9</i></div></div>
+            <div class="k-text"><h2>Das große 1 × 1</h2><p>Die 1×1-Tabelle zum Antippen: Reihen leuchten auf, Aufgaben mit Tauschaufgabe, Rechentrick und Punktefeld, verdecken und aufdecken – und Blitzrechnen Klasse gegen Ella.</p><div class="k-tags"><span>interaktiv</span><span>Kl. 2–4</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs")): ?>
@@ -584,6 +595,7 @@ window.TB_ERLAUBT = <?= json_encode(["buchstabenkurs" => !$LT_GAST || lt_gastDar
 <script src="tafel-morgen.js?v=<?= @filemtime(__DIR__ . "/tafel-morgen.js") ?>"></script>
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
 <script src="lernangebot-tafel.js?v=<?= @filemtime(__DIR__ . "/lernangebot-tafel.js") ?: 1 ?>"></script>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "einmaleins")): ?><script src="tafel-einmaleins.js?v=<?= @filemtime(__DIR__ . "/tafel-einmaleins.js") ?: 1 ?>"></script><?php endif; ?>
 <script>
 // Leise-Wald direkt aus den Tafelbildern (auch über tafelbilder.php#leise-ende usw.)
 function leiseStarten(modus){ if (window.lernTafel) window.lernTafel.starten("leise", { modus }); }

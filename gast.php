@@ -39,6 +39,7 @@ $INFO = [
     "quiz" => ["ella-quiz.php", "fa-graduation-cap", "Ella-Quiz", "Üben nach Klasse 1–4, Fach und Thema – allein oder an der Tafel"],
     "vertretung"  => ["sozial-stunden.php?bereich=vertretung", "fa-shuffle", "Vertretungsstunden", "Fertige Stunden für Kl. 1–4 mit Zufallsauswahl"],
     "morgen"      => ["tafelbilder.php#morgen", "fa-sun", "Guten Morgen!", "Tagesstart an der Tafel: Datum, Wetter, Stundenplan, Auspacken, Hinweise"],
+    "einmaleins"  => ["tafelbilder.php#einmaleins", "fa-table-cells", "Das große 1×1", "Die 1×1-Tabelle zum Antippen – Reihen, Rechentricks, Blitzrechnen Klasse gegen Ella"],
     "buchstabenkurs" => ["tafelbilder.php#buchstabenkurs", "fa-pen-fancy", "Buchstabenkurs", "Buchstaben in der Lineatur nachspuren und schreiben – an der digitalen Tafel"],
     "lrs"         => ["lrs.php", "fa-wand-magic-sparkles", "Material-Generator", "Arbeitsblätter nach AFS – Aufmerksamkeit, Funktion, Lesen, Rechtschreiben"],
     "akten"       => ["trainingshefte.php", "fa-user-graduate", "Kinder-Akten", "Förderplan, Förderpaket, Trainingsheft, Lernbox &amp; Stunden (nur Kürzel)"],
