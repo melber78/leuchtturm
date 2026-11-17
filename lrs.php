@@ -7689,6 +7689,244 @@ function fx_breit(ctx){
         return ctx.wort(filter);
     } });
 }
+/* ===============================================================
+   b/d-Training (Funktionstraining · Optische Differenzierung)
+   =============================================================== */
+
+const BD_W = {
+    b0: ["Baum", "Buch", "Ball", "Bett", "Bus", "Bär", "Biene", "Brot", "Brille", "Blume", "Burg", "Bein", "Birne", "Banane", "Boot", "Bach", "Bank", "Becher", "Besen", "Bagger", "Berg", "Blatt", "Bluse", "Bohne", "Brief", "Brücke", "Butter", "Bürste", "Bogen", "Beere"],
+    d0: ["Dach", "Dose", "Daumen", "Decke", "Dorf", "Drache", "Dino", "Delfin", "Dusche", "Dackel", "Dampfer", "Deckel", "Diamant", "Distel", "Domino", "Donner", "Dreieck", "Durst", "Daune", "Dattel"],
+    bm: ["Gabel", "Nebel", "Kabel", "Hobel", "Robbe", "Krabbe", "Erbse", "Farbe", "Silber", "Zauberer", "Rabe", "Taube", "Hebel", "Schnabel", "Kübel", "Zwiebel", "Säbel", "Abend", "Obst", "Leber", "Nabel", "Fieber", "Eber"],
+    dm: ["Leder", "Feder", "Nadel", "Nudel", "Ruder", "Bruder", "Kinder", "Räder", "Laden", "Faden", "Seide", "Ende", "Erde", "Adler", "Pudel", "Paddel", "Sandale", "Kleider", "Lieder", "Wunder", "Schublade"],
+    be: ["Sieb", "Kalb", "Korb", "Laub", "Staub", "Stab", "gelb", "halb", "Urlaub", "Raub", "Lob"],
+    de: ["Rad", "Kind", "Hund", "Wind", "Mund", "Hand", "Wald", "Land", "Pferd", "Kleid", "Feld", "Geld", "Brand", "Strand", "Mond", "Freund"],
+    beide: ["Bad", "Bild", "Boden", "Bude", "Dieb", "Dübel", "Bindfaden", "Bänder", "Brandung", "Bordstein", "Brotdose", "Badetuch", "Dachboden", "Feldbett", "Strandbad", "Doppelbett", "Bildschirm", "Abendbrot", "Badewanne", "Diebe", "Daunendecke", "Duschbad", "Drehbuch", "Dudelsack"],
+};
+// kleingeschriebene Wörter: hier verwechseln Kinder b und d am häufigsten
+BD_W.klein = ["bei", "bis", "bald", "bunt", "blau", "bitte", "baden", "bauen", "backen", "bellen", "bringen", "binden", "biegen", "böse", "breit", "braun", "bleiben", "brav",
+    "du", "das", "die", "der", "dem", "den", "dort", "dann", "drei", "dick", "dünn", "dunkel", "danach", "drehen", "drücken", "duschen", "dürfen", "denken", "doch", "draußen"];
+BD_W.beide = BD_W.beide.filter(w => /b/i.test(w) && /d/i.test(w));
+const BD_PAARE = [["Bach", "Dach"], ["Bank", "Dank"], ["Bein", "dein"], ["Becken", "Decken"], ["Bock", "Dock"], ["Bohle", "Dohle"], ["Leber", "Leder"], ["Rebe", "Rede"], ["lieber", "Lieder"], ["Bauer", "Dauer"], ["Nabel", "Nadel"], ["Bose", "Dose"]].filter(p => p[0] !== "Bose");
+const BD_SAETZE = [
+    ["Der Dackel bellt.", "Die Biene sitzt auf der Blume.", "Der Bär badet im Bach.", "Das Dach ist alt.", "Die Dose ist im Bad.", "Der Bus fährt durch das Dorf.", "Das Baby schläft unter der Decke.", "Der Drache ist bunt.",
+     "Ben baut am Bach.", "Die Brotdose liegt auf dem Boden.", "Der Dieb hat das Rad.", "Der Delfin taucht unter das Boot.", "Die Kinder bauen eine Burg.", "Das Brot liegt im Korb."],
+    ["Bitte decke den Tisch für das Abendbrot.", "Der Bauer bringt die Bohnen in das Dorf.", "Die Taube badet im Brunnen.", "Der Daumen tut nach dem Basteln weh.", "Oben auf dem Dach sitzt ein dicker Rabe.",
+     "Der Hund buddelt im Garten ein tiefes Loch.", "Die Kinder dürfen im Bad baden.", "Draußen donnert und blitzt es.", "Im Dorf gibt es einen kleinen Bäcker.", "Das Buch liegt unter der Bettdecke."],
+    ["Bevor die Kinder baden dürfen, duschen sie unter der Dusche am Beckenrand.", "Dabei bemerkte der Bauer, dass ein Dachs den Boden im Beet durchwühlt hatte.",
+     "Am Abend deckt die Oma den Tisch, und danach bringt der Opa die Brötchen.", "Die Brücke über den breiten Bach drohte bei dem Unwetter einzubrechen.",
+     "Durch das dichte Blätterdach drang kaum ein Sonnenstrahl bis auf den Boden.", "Der Dieb versteckte das Bild unter einer dicken Decke im Dachboden."],
+];
+
+function bd_verwechsler(st){ return [[], [], ["p", "q"], ["p", "q", "g", "h", "6", "9"]][st]; }
+function bd_woerter(st){
+    const W = BD_W;
+    const kurz = W.klein.filter(w => w.length <= 5);
+    return [kurz.concat(W.be, W.de), W.klein.concat(W.be, W.de, W.bm, W.dm), W.klein.concat(W.bm, W.dm, W.be, W.de, W.beide, W.b0, W.d0),
+        W.klein.concat(W.bm, W.dm, W.beide, W.beide, ["dabei", "drüben", "bedeckt", "bedanken", "durchbohren", "baden", "Badewanne"])][st];
+}
+const BD_STIL = "font-family:Andika, 'Comic Sans MS', sans-serif;";
+
+/* 1 · Merkblatt: das Bett */
+function bd_bett(gr = 150){
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${gr * 2.2}" height="${gr}" viewBox="0 0 220 100">
+        <rect x="18" y="58" width="184" height="16" rx="5" fill="#BFD7F0" stroke="#1E2A36" stroke-width="2.5"/>
+        <rect x="40" y="46" width="34" height="14" rx="7" fill="#fff" stroke="#1E2A36" stroke-width="2"/>
+        <path d="M78 58 Q120 42 190 58" fill="#F6C9C3" stroke="#1E2A36" stroke-width="2"/>
+        <line x1="18" y1="8" x2="18" y2="92" stroke="#2E6FD1" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="34" cy="70" r="16" fill="none" stroke="#2E6FD1" stroke-width="7"/>
+        <line x1="202" y1="8" x2="202" y2="92" stroke="#B23A2E" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="186" cy="70" r="16" fill="none" stroke="#B23A2E" stroke-width="7"/>
+        <text x="8" y="99" font-size="11" fill="#2E6FD1" font-family="Arial" font-weight="700">b</text><text x="206" y="99" font-size="11" fill="#B23A2E" font-family="Arial" font-weight="700">d</text></svg>`;
+    return `<img alt="" width="${gr * 2.2}" height="${gr}" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}">`;
+}
+function bdB_merk(ctx){
+    const st = fs_st(ctx);
+    const muster = st === 0 ? ["b b b", "d d d", "b d b d"] : st === 1 ? ["bd db", "bbd ddb", "bdbd dbdb"] : st === 2 ? ["bdpq", "dbqp", "bddb pqqp"] : ["bdbpdq", "dbbddb", "qbdpbd dbpq"];
+    const zeile = i => {
+        const m = zufallsElement(muster);
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><span style="font-size:30px; letter-spacing:6px; ${BD_STIL} min-width:200px;">${m}</span>${fx_linie()}</div>`;
+    };
+    return { titel: "So unterscheidest du b und d", zeile, html: `
+        <div style="display:flex; gap:18px; align-items:center; justify-content:center; background:#F4F7FA; border-radius:14px; padding:10px;">
+            ${bd_bett(120)}
+            <div style="font-size:17px; line-height:1.45; max-width:300px;"><b>Der Bett-Trick:</b> Ein Bett hat vorne und hinten ein Brett. Links steht das <b style="color:#2E6FD1;">b</b>, rechts das <b style="color:#B23A2E;">d</b> – die Bäuche zeigen zur Matratze.<br><b>Der Fäuste-Trick:</b> Mach zwei Fäuste, Daumen hoch, Fäuste zusammen. Links siehst du ein <b style="color:#2E6FD1;">b</b>, rechts ein <b style="color:#B23A2E;">d</b>.</div>
+        </div>
+        <div style="display:flex; justify-content:space-around; font-size:19px; text-align:center;">
+            <div><span style="font-size:70px; color:#2E6FD1; ${BD_STIL} line-height:1;">b</span><br><b>erst der Strich, dann der Bauch</b></div>
+            <div><span style="font-size:70px; color:#B23A2E; ${BD_STIL} line-height:1;">d</span><br><b>erst der Bauch, dann der Strich</b></div>
+        </div>
+        ${ws_aufgabe(1, "Lies jede Reihe langsam laut vor. Schreibe sie dann auf die Linie ab – sprich jeden Buchstaben mit.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* 2 · Suchbild */
+function bdB_suchbild(ctx){
+    const st = fs_st(ctx), v = bd_verwechsler(st), sp = st >= 2 ? 14 : 12;
+    const zeile = () => {
+        const r = Math.random();
+        if (r < 0.32) return `<div>b</div>`;
+        if (r < 0.64 || !v.length) return `<div>d</div>`;
+        return `<div>${zufallsElement(v)}</div>`;
+    };
+    return { titel: "b und d im Suchbild", zeile, schritt: sp, max: 400, html: `
+        <div class="fs-ziel">Male jedes <b style="font-size:36px; color:#2E6FD1;">b</b> blau und jedes <b style="font-size:36px; color:#B23A2E;">d</b> rot an.${v.length ? " Vorsicht: Es gibt auch Verwechsler!" : ""}</div>
+        <div class="fs-ziel" style="background:#fff; border:2px dashed #C9D6E3;">Anzahl b: <span class="fs-zaehl" style="display:inline-block;"></span> &nbsp; Anzahl d: <span class="fs-zaehl" style="display:inline-block;"></span></div>
+        <div class="fs-suchbild fs-fuell" style="grid-template-columns:repeat(${sp}, minmax(0,1fr)); ${BD_STIL}${sp > 12 ? " font-size:28px;" : ""}"></div>` };
+}
+
+/* 3 · Zählreihen */
+function bdB_zaehlen(ctx){
+    const st = fs_st(ctx), v = bd_verwechsler(st), n = [10, 12, 14, 16][st];
+    const zeile = i => {
+        const reihe = [...Array(n)].map(() => { const r = Math.random(); return r < 0.4 ? "b" : r < 0.8 || !v.length ? "d" : zufallsElement(v); });
+        const zb = reihe.filter(x => x === "b").length, zd = reihe.filter(x => x === "d").length;
+        return `<div class="fs-reihe"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-reihe-inhalt" style="${BD_STIL}">${reihe.map(x => `<span class="fs-buchstabe">${x}</span>`).join("")}</div>
+            <div style="display:flex; flex-direction:column; gap:3px; font-size:15px; flex:none;"><span>b <span class="fs-kaestchen-klein" style="width:34px; height:24px;">${L(zb)}</span></span><span>d <span class="fs-kaestchen-klein" style="width:34px; height:24px;">${L(zd)}</span></span></div></div>`;
+    };
+    return { titel: "Wie viele b, wie viele d?", zeile, html: `
+        ${ws_aufgabe(1, "Fahre mit dem Finger langsam durch jede Reihe. Zähle alle <b>b</b> und alle <b>d</b> und schreibe die Anzahl in die Kästchen. Tipp: Erst alle b zählen, dann alle d.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* 4 · Lückenwörter */
+function bdB_luecken(ctx){
+    const st = fs_st(ctx), ziehen = fx_ziehen(bd_woerter(st));
+    const zeile = () => {
+        const w = ziehen();
+        const stellen = [...w].map((z, k) => /[bd]/i.test(z) ? k : -1).filter(k => k >= 0);
+        const klein = stellen.filter(k => /[bd]/.test(w[k]));
+        const leer = st === 3 ? stellen : [zufallsElement(klein.length ? klein : stellen)];
+        const html = [...w].map((z, k) => leer.includes(k) ? `<span class="fs-box" style="display:inline-flex; width:36px; height:40px; vertical-align:middle; align-items:center; justify-content:center;">${L(z)}</span>` : ws_esc(z)).join("");
+        return `<div class="fs-karte" style="justify-content:space-between;"><span style="font-size:28px; ${BD_STIL} letter-spacing:1px;">${html}</span><span style="font-size:14px; color:#7c8a94;">b oder d?</span></div>`;
+    };
+    return { titel: "b oder d?", zeile, schritt: 2, html: `
+        ${ws_aufgabe(1, `Sprich jedes Wort deutlich. Hörst du <b>b</b> oder <b>d</b>? Schreibe den Buchstaben in die Lücke${st === 3 ? " – manchmal fehlen beide" : ""}. Achte auf groß und klein.`)}
+        <div class="fs-zweispaltig fs-fuell"></div>` };
+}
+
+/* 5 · Richtig geschrieben? */
+function bd_varianten(w, st){
+    const tausch = { b: "d", d: "b", B: "D", D: "B" }, spiegel = { b: "p", d: "q" };
+    const stellen = [...w].map((z, k) => tausch[z] ? k : -1).filter(k => k >= 0);
+    const v = new Set();
+    stellen.forEach(k => v.add(w.slice(0, k) + tausch[w[k]] + w.slice(k + 1)));
+    if (stellen.length > 1) v.add([...w].map((z, k) => stellen.includes(k) ? tausch[z] : z).join(""));
+    if (st >= 1) stellen.filter(k => spiegel[w[k]]).forEach(k => v.add(w.slice(0, k) + spiegel[w[k]] + w.slice(k + 1)));
+    v.delete(w);
+    // keine Variante, die selbst ein echtes Wort ist (gelb → Geld, Leder → Leber)
+    if (!bd_varianten.echt) bd_varianten.echt = new Set([...Object.values(BD_W).flat(), ...BD_PAARE.flat(), ...Object.values(THEMEN).flat(), ...FX_WORTSCHATZ, ...FX_LANG, ...FX_KURZ].map(x => x.toLowerCase()));
+    return [...v].filter(x => !bd_varianten.echt.has(x.toLowerCase()));
+}
+function bdB_richtig(ctx){
+    const st = fs_st(ctx), ziehen = fx_ziehen(bd_woerter(st).filter(w => w.length >= 3 && /[bd]/.test(w))), anzahl = [2, 3, 4, 4][st];
+    const zeile = i => {
+        let w, v;
+        for (let k = 0; k < 4; k++){ w = ziehen(); v = mische(bd_varianten(w, st)); if (v.length >= anzahl - 1) break; }
+        // Notfall: gespiegelte Formen und ausgelassene Buchstaben, ohne Doppelte
+        const reserve = [...bd_varianten(w, 3), ...[...w].map((_, k) => k ? w.slice(0, k) + w.slice(k + 1) : "")].filter(x => x && x !== w && !v.includes(x));
+        while (v.length < anzahl - 1 && reserve.length) v.push(reserve.shift());
+        const alle = mische([w, ...v.slice(0, anzahl - 1)]);
+        return fx_reihe(i, alle.map(x => { const t = `<span style="font-size:${st >= 2 ? 25 : 28}px; ${BD_STIL}">${ws_esc(x)}</span>`; return x === w ? LM(t) : t; }).join(""));
+    };
+    return { titel: "Welches Wort ist richtig?", zeile, html: `
+        ${ws_aufgabe(1, "In jeder Reihe ist nur <b>ein</b> Wort richtig geschrieben. Bei den anderen sind b und d vertauscht" + (st >= 2 ? " oder gespiegelt (p, q)" : st === 1 ? " oder gespiegelt (p, q)" : "") + ". Kreise das richtige Wort ein.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* 6 · Wortpaare: hören und lesen */
+function bdB_paare(ctx){
+    const st = fs_st(ctx), liste = mische(BD_PAARE.concat(st >= 2 ? BD_PAARE : []));
+    const zeile = i => {
+        const p = liste[i % liste.length], gehoert = zufallsElement(p), [a, b] = mische(p);
+        return `<div class="fs-karte">${fx_ansage("Lehrkraft sagt", ws_esc(gehoert))}<div class="fs-chips">${[a, b].map(x => { const t = `<span class="fs-gross" style="${BD_STIL}">${ws_esc(x)}</span>`; return x === gehoert ? LM(t) : t; }).join("")}</div></div>`;
+    };
+    return { titel: "Bach oder Dach?", zeile, max: st >= 2 ? 24 : 12, html: `
+        ${ws_aufgabe(1, "Die Lehrkraft sagt ein Wort. Lies beide Wörter ganz genau und kreise das gehörte Wort ein. Danach: Lies beide Wörter selbst laut vor.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* 7 · Sätze lesen */
+function bdB_saetze(ctx){
+    const st = fs_st(ctx), ziehen = fx_ziehen(BD_SAETZE[Math.min(2, st)].concat(st === 3 ? BD_SAETZE[1] : []));
+    const zeile = i => {
+        const s = ziehen();
+        const zb = (s.match(/b/gi) || []).length, zd = (s.match(/d/gi) || []).length;
+        const html = ws_esc(s).replace(/[bdBD]/g, z => `${z}`);
+        return `<div class="fs-karte"><div class="fs-reihe-nr">${i + 1}</div><span class="fs-satz bd-satz" style="font-size:${[26, 24, 21, 20][st]}px; ${BD_STIL}">${html}</span>
+            <div style="display:flex; flex-direction:column; gap:3px; font-size:15px; flex:none;"><span>b <span class="fs-kaestchen-klein" style="width:34px; height:24px;">${L(zb)}</span></span><span>d <span class="fs-kaestchen-klein" style="width:34px; height:24px;">${L(zd)}</span></span></div></div>`;
+    };
+    return { titel: "b und d in Sätzen", zeile, html: `
+        ${ws_aufgabe(1, "Lies jeden Satz. Unterstreiche jedes <b style=\"color:#2E6FD1;\">b</b> blau und jedes <b style=\"color:#B23A2E;\">d</b> rot – auch die großen B und D. Zähle sie. Lies den Satz danach laut vor.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* 8 · Blitzlesen: Silben */
+function bdB_silben(ctx){
+    const st = fs_st(ctx);
+    const V = st === 0 ? ["a", "e", "i", "o", "u"] : ["a", "e", "i", "o", "u", "au", "ei", "ä", "ö", "ü"];
+    const K = st >= 2 ? ["b", "d", "b", "d", "p"] : ["b", "d"];
+    const zeile = i => {
+        const n = [5, 6, 6, 7][st];
+        const reihe = [...Array(n)].map(() => {
+            const k = zufallsElement(K), v = zufallsElement(V);
+            if (st === 3 && Math.random() < 0.4) return zufallsElement(["ab", "ob", "ud", "id", "ed", "eb"]) + zufallsElement(["", "a", "e"]);
+            if (st >= 1 && Math.random() < 0.3) return v + zufallsElement(["b", "d"]);    // ab, od …
+            return k + v;
+        });
+        return fx_reihe(i, reihe.map(x => `<span style="font-size:${[34, 32, 30, 28][st]}px; ${BD_STIL} min-width:56px; text-align:center;">${x}</span>`).join(""));
+    };
+    return { titel: "Blitzlesen: ba, da, ab, ad …", zeile, html: `
+        ${ws_aufgabe(1, "Lies die Silben Reihe für Reihe laut – erst langsam und genau, dann schneller. Die Lehrkraft stoppt die Zeit.")}
+        <div class="fs-zeit"><span>1. Mal:<span class="fs-l"></span>Sek.</span><span>2. Mal:<span class="fs-l"></span>Sek.</span><span>3. Mal:<span class="fs-l"></span>Sek.</span></div>
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* 9 · Wörter-Diktat */
+function bdB_diktat(ctx){
+    const st = fs_st(ctx), ziehen = fx_ziehen(bd_woerter(st));
+    const zeile = i => {
+        const w = [ziehen(), ziehen()];
+        return `<div class="fs-karte">${fx_ansage("Lehrkraft sagt", w.map(ws_esc).join(" – "))}<div class="fs-linien" style="flex-direction:row; gap:14px; align-items:flex-end;">${w.map(x => `<div style="flex:1; min-height:34px;">${L(ws_esc(x), "font-size:22px;")}</div>`).join("")}</div></div>`;
+    };
+    return { titel: "Hören und schreiben: b oder d", zeile, html: `
+        ${ws_aufgabe(1, "Die Lehrkraft diktiert Wörter. Sprich leise mit und überlege bei jedem <b>b</b> und <b>d</b>: Strich zuerst oder Bauch zuerst? Schreibe das Wort auf.")}
+        <div class="fs-ziel" style="font-size:18px;"><span style="color:#2E6FD1; font-size:30px; ${BD_STIL}">b</span> Strich, dann Bauch &nbsp;·&nbsp; <span style="color:#B23A2E; font-size:30px; ${BD_STIL}">d</span> Bauch, dann Strich</div>
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* 10 · Wörter sortieren */
+function bdB_sortieren(ctx){
+    const st = fs_st(ctx), W = BD_W;
+    const nur = (l, n) => mische(l).slice(0, n);
+    const mitB = W.klein.filter(w => /b/.test(w) && !/d/i.test(w)), mitD = W.klein.filter(w => /d/.test(w) && !/b/i.test(w));
+    const woerter = mische(st === 0 ? [...nur(mitB.concat(W.be), 9), ...nur(mitD.concat(W.de), 9)] : st === 1 ? [...nur(mitB.concat(W.be, W.bm), 9), ...nur(mitD.concat(W.de, W.dm), 9)]
+        : [...nur(mitB.concat(W.bm, W.be), 7), ...nur(mitD.concat(W.dm, W.de), 7), ...nur(W.beide, st === 3 ? 7 : 5)]);
+    const spalten = st >= 2 ? [["nur b", w => /b/i.test(w) && !/d/i.test(w)], ["nur d", w => /d/i.test(w) && !/b/i.test(w)], ["b und d", w => /b/i.test(w) && /d/i.test(w)]] : [["mit b", w => /b/i.test(w)], ["mit d", w => /d/i.test(w)]];
+    const zeilen = Math.max(...spalten.map(([, f]) => woerter.filter(f).length));
+    let tab = `<table class="std-tabelle" style="width:100%; font-size:22px; ${BD_STIL}"><thead><tr>${spalten.map(([t]) => `<th style="text-align:center;">${t}</th>`).join("")}</tr></thead><tbody>`;
+    for (let r = 0; r < zeilen + 1; r++) tab += `<tr>${spalten.map(([, f]) => { const x = woerter.filter(f)[r]; return `<td style="height:44px;">${x ? L(ws_esc(x)) : ""}</td>`; }).join("")}</tr>`;
+    tab += "</tbody></table>";
+    return { titel: "Wörter sortieren", html: `
+        ${ws_aufgabe(1, "Lies jedes Wort genau. Wo steht ein <b>b</b>, wo ein <b>d</b>? Schreibe jedes Wort in die richtige Spalte und hake es oben ab.")}
+        <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; font-size:24px; ${BD_STIL}">${woerter.map(w => `<span style="border:2px solid #C9D6E3; border-radius:10px; padding:2px 12px; background:#F4F7FA;">${ws_esc(w)}</span>`).join("")}</div>
+        ${tab}
+        ${ws_aufgabe(2, "Finde eigene Wörter: Schreibe drei Wörter mit <b>b</b> und drei Wörter mit <b>d</b> auf.")}
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 24px; font-size:18px;"><b style="color:#2E6FD1;">mit b</b><b style="color:#B23A2E;">mit d</b>${'<div style="border-bottom:2px solid #1E2A36; height:38px;"></div>'.repeat(6)}</div>` };
+}
+
+const BD_BLAETTER = [
+    { nr: "1", kurz: "Merkblatt", name: "So unterscheidest du b und d", bau: bdB_merk },
+    { nr: "2", kurz: "Suchbild", name: "b und d im Suchbild", bau: bdB_suchbild },
+    { nr: "3", kurz: "Zählen", name: "Wie viele b, wie viele d?", bau: bdB_zaehlen },
+    { nr: "4", kurz: "Lückenwörter", name: "b oder d? (Lückenwörter)", bau: bdB_luecken },
+    { nr: "5", kurz: "Richtiges Wort", name: "Welches Wort ist richtig?", bau: bdB_richtig },
+    { nr: "6", kurz: "Bach oder Dach?", name: "Bach oder Dach? (Wortpaare)", bau: bdB_paare },
+    { nr: "7", kurz: "Sätze", name: "b und d in Sätzen", bau: bdB_saetze },
+    { nr: "8", kurz: "Blitzlesen", name: "Blitzlesen: ba, da, ab, ad …", bau: bdB_silben },
+    { nr: "9", kurz: "Diktat", name: "Hören und schreiben: b oder d", bau: bdB_diktat },
+    { nr: "10", kurz: "Sortieren", name: "Wörter sortieren", bau: bdB_sortieren },
+];
+
 const FS_SERIEN = {
     aufmerksamkeit: { label: "Aufmerksamkeit", afs: "Aufmerksamkeit & Konzentration", select: "#aufm-typ", erstellen: "erstelleAufmerksamkeit",
         optionText: "Grundschule (Kl. 1–4) – 25 Übungen, frei wählbar",
@@ -7768,6 +8006,12 @@ const FS_SERIEN = {
         { nr: "9", kurz: "Abschreibfehler", name: "Abschreibfehler finden", bau: fxO_abschreibfehler },
         { nr: "10", kurz: "Gedreht/gespiegelt", name: "Gedreht oder gespiegelt?", bau: fxO_gedreht },
     ]},
+    bd: { tab: "optdiff", mat: "optdiff", wert: "bd-serie", reif: true,
+        optionText: "b/d-Training – 10 Blätter gegen die Verwechslung von b und d",
+        label: "b/d-Training", afs: "Funktionstraining: Optische Differenzierung (b/d)", select: "#od-typ", erstellen: "erstelleOptDiff",
+        speicherName: () => "b/d-Training",
+        tipp: "Von leicht (nur b und d) bis Profi (mit p, q und anderen Verwechslern, Wörter mit b und d, lange Sätze) – die Schwierigkeit oben entscheidet.",
+        blaetter: BD_BLAETTER },
     optged: { label: "Optisches Gedächtnis", afs: "Funktionstraining: Optisches Gedächtnis", select: "#og-typ", erstellen: "erstelleOptGed", blaetter: [
         { nr: "1", kurz: "Formen merken", name: "Formen merken", bau: fsG_formenreihen },
         { nr: "2", kurz: "Wörter merken", name: "Wörter merken", bau: fsG_wortreihen },
@@ -8489,7 +8733,7 @@ function fp_dynamisch(){
 }
 
 /* ---------- Stunde zusammenstellen ---------- */
-const STD_FUNKTIONEN = ["optdiff", "optged", "optser", "akdiff", "akged", "akser", "koerper", "raum"];
+const STD_FUNKTIONEN = ["optdiff", "bd", "optged", "optser", "akdiff", "akged", "akser", "koerper", "raum"];
 
 // Klassenstufe/Schwierigkeit der Stunde = gemeinsame Einstellungen oben (beide Richtungen abgleichen)
 function std_einstellungenVerbinden(){
