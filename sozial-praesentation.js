@@ -981,6 +981,8 @@ function stimmenHtml(schluessel, optionen){
 }
 const GEFUEHLE_OPT = ["fröhlich", "traurig", "wütend", "ängstlich", "cool"].map(g => ({ wert: g, name: g, art: "gefuehl", zeichen: g }));
 // Karten: "Situation (Lösung/Idee)" → die Klammer bleibt verdeckt, bis man sie antippt
+function istEnglisch(e){ return !!(e && /^Englisch/.test(e.kategorie || "")); }
+function anhoerenKnopf(){ return istEnglisch(zustand.e) ? '<button class="p-knopf hell" data-anhoeren="1">🔊 Anhören</button>' : ""; }
 function karteTeilen(t){ const m = /^(.*?)\s*\(([^()]+)\)\s*$/.exec(String(t || "")); return m ? { text: m[1], loes: m[2] } : { text: String(t || ""), loes: "" }; }
 function loesKnopf(u, loes){ return loes ? `<div class="p-reihe" style="margin-top:1.2vh"><button class="p-knopf hell" data-zeig="1">${esc(u.loesKnopf || "💡 Lösung zeigen")}</button></div><div class="p-loes" hidden>${inline(loes)}</div>` : ""; }
 function abstimmOptionen(art, u, f){
@@ -1154,10 +1156,10 @@ function folieHtml(f, e){
                 <div class="p-reihe">${min ? `<button class="p-knopf gold" data-start="${min}">⏱ ${min} Minuten starten</button>` : ""}<button class="p-knopf hell" data-p="rad">🎡 Wer fängt an?</button>${f.u.zusatz ? `<button class="p-knopf hell" data-springen="${f.weiter}">⏭ Überspringen</button>` : ""}</div>`;
         }
         case "abstimmung": { const kt = karteTeilen(f.aussage), a = kt.text;   // "(…)" am Ende = Erklärung, erscheint beim Auflösen
-            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage"${a.length > 70 ? ' style="font-size:clamp(20px,min(3vw,5vh),48px)"' : a.length > 32 ? ' style="font-size:clamp(22px,min(3.6vw,6vh),56px)"' : ""}>${inline(a)}</div>${stimmenHtml("q" + zustand.i + f.aussage, abstimmOptionen(f.art, f.u))}${f.loesung && f.loesung.length ? '<div class="p-reihe" style="margin-top:1.5vh"><button class="p-knopf hell" data-aufloesen="1">✅ Auflösen</button></div>' : ""}${kt.loes ? `<div class="p-loes" data-erkl="1" hidden>💬 ${inline(kt.loes)}</div>` : ""}`; }
+            return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage"${a.length > 70 ? ' style="font-size:clamp(20px,min(3vw,5vh),48px)"' : a.length > 32 ? ' style="font-size:clamp(22px,min(3.6vw,6vh),56px)"' : ""}>${inline(a)}</div>${stimmenHtml("q" + zustand.i + f.aussage, abstimmOptionen(f.art, f.u))}${f.loesung && f.loesung.length || istEnglisch(zustand.e) ? `<div class="p-reihe" style="margin-top:1.5vh">${istEnglisch(zustand.e) && f.u.titel !== "What's this?" ? anhoerenKnopf() : ""}${f.loesung && f.loesung.length ? '<button class="p-knopf hell" data-aufloesen="1">✅ Auflösen</button>' : ""}</div>` : ""}${kt.loes ? `<div class="p-loes" data-erkl="1" hidden>💬 ${inline(kt.loes)}</div>` : ""}`; }
         case "karte": { const kt = karteTeilen(f.aussage);
             return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage">${inline(kt.text)}</div>${loesKnopf(f.u, kt.loes)}${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${md(f.u.frage)}</div>` : ""}
-                <div class="p-reihe" style="margin-top:2vh"><button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div>`; }
+                <div class="p-reihe" style="margin-top:2vh">${anhoerenKnopf()}<button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div>`; }
         case "arbeitsblatt":
             return `<div class="p-bilder">${ltBild("stift")}${ltBild("heft")}</div><h2>Bearbeite jetzt leise dein Arbeitsblatt.</h2>
                 <div class="p-text" style="font-size:clamp(20px,2.6vw,40px)">🤫 Wenn du fertig bist, drehst du dein Blatt um und wartest leise.</div>
@@ -1255,7 +1257,12 @@ function folieAktivieren(el, f){
         const erkl = el.querySelector("[data-erkl]"); if (erkl) erkl.hidden = false;
     }));
     el.querySelectorAll("[data-springen]").forEach(b => b.addEventListener("click", () => zeigen(+b.dataset.springen)));
-    el.querySelectorAll("[data-vorlesen]").forEach(b => b.addEventListener("click", () => vorlesen(f.text, b)));
+    el.querySelectorAll("[data-vorlesen]").forEach(b => b.addEventListener("click", () => vorlesen(f.text, b, istEnglisch(zustand.e))));
+    // Englisch: Wort oder Satz anhören (Wortkarte: das fett gedruckte Wort aus der Lösung)
+    el.querySelectorAll("[data-anhoeren]").forEach(b => b.addEventListener("click", () => {
+        const kt = karteTeilen(f.aussage), wort = (/\*\*([^*]+)\*\*/.exec(kt.loes) || [])[1];
+        vorlesen(f.typ === "karte" && wort ? wort : kt.text, b, true);
+    }));
     el.querySelectorAll("[data-vorleser]").forEach(b => b.addEventListener("click", () => {
         const nr = zustand.i;
         gluecksrad({ titel: "📖 Wer liest vor?", lesen: true, fertig: name => {
@@ -1384,14 +1391,17 @@ function folieAktivieren(el, f){
     if (el.querySelector("#lGlas")) glasAktivieren(el);
 }
 
-function vorlesen(text, knopf){
+function vorlesen(text, knopf, englisch){
     if (!window.speechSynthesis) { alert("Dieser Browser kann nicht vorlesen."); return; }
-    if (speechSynthesis.speaking) { speechSynthesis.cancel(); knopf.textContent = "🔊 Vorlesen lassen"; return; }
-    const u = new SpeechSynthesisUtterance(ohneMarkdown(text));
-    u.lang = "de-DE"; u.rate = .9;
-    const stimme = speechSynthesis.getVoices().find(v => /^de/i.test(v.lang));
+    const alt = knopf.dataset.alt || (knopf.dataset.alt = knopf.textContent);
+    if (speechSynthesis.speaking) { speechSynthesis.cancel(); knopf.textContent = alt; return; }
+    // Englisch-Stunden: nur den englischen Text lesen (deutsche Hilfe in *(…)* weglassen), mit englischer Stimme
+    const roh = englisch ? String(text || "").replace(/\*\([^)]*\)\*/g, " ").replace(/\([^)]*\)/g, " ") : text;
+    const u = new SpeechSynthesisUtterance(ohneMarkdown(roh).replace(/\p{Extended_Pictographic}|\uFE0F|\u200D/gu, " "));
+    u.lang = englisch ? "en-GB" : "de-DE"; u.rate = englisch ? .8 : .9;
+    const stimme = speechSynthesis.getVoices().find(v => englisch ? /^en[-_]GB/i.test(v.lang) : /^de/i.test(v.lang)) || (englisch && speechSynthesis.getVoices().find(v => /^en/i.test(v.lang)));
     if (stimme) u.voice = stimme;
-    u.onend = () => { knopf.textContent = "🔊 Vorlesen lassen"; };
+    u.onend = () => { knopf.textContent = alt; };
     knopf.textContent = "⏹ Stopp";
     speechSynthesis.speak(u);
 }
