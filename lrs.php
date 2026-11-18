@@ -1038,6 +1038,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
                 <option value="6">6</option>
                 <option value="7">7</option>
                 <option value="8">8</option>
+                <option value="9">9</option>
             </select>
         </div>
         <div>
@@ -1572,7 +1573,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
         </div>
         <p class="beschreibung std-nur-erst" style="margin:6px 0 0;">Für den ersten Termin mit einem neuen Kind: Kennenlernen, ein Aufmerksamkeitsblatt, ein Lese-Schnappschuss mit Schülerblatt (Text, darunter Wörter, Silben und Buchstaben als Rückfallstufen) und Lehrerexemplar mit Beobachtungsbogen, Wahrnehmungsspiele und ein Abschluss mit Erfolgserlebnis.</p>
         <div class="zeile zwei" style="margin-top:12px;">
-            <div><label>Klassenstufe</label><select id="std-klasse"><option value="1">Klasse 1</option><option value="2">Klasse 2</option><option value="3">Klasse 3</option><option value="4">Klasse 4</option><option value="5">Klasse 5</option><option value="6">Klasse 6</option><option value="7">Klasse 7</option><option value="8">Klasse 8</option></select></div>
+            <div><label>Klassenstufe</label><select id="std-klasse"><option value="1">Klasse 1</option><option value="2">Klasse 2</option><option value="3">Klasse 3</option><option value="4">Klasse 4</option><option value="5">Klasse 5</option><option value="6">Klasse 6</option><option value="7">Klasse 7</option><option value="8">Klasse 8</option><option value="9">Klasse 9</option></select></div>
             <div><label>Schwierigkeit</label><select id="std-schwierigkeit"><option value="leicht">leicht</option><option value="mittel">mittel</option><option value="schwer">schwer</option><option value="profi">Profi (sehr schwer)</option></select></div>
         </div>
         <div class="zeile std-anz-zeile" style="margin-top:12px;">
@@ -4517,7 +4518,7 @@ const FS_BUCHSTABEN_ZIELE = [
 /* ---------- Aufmerksamkeit ---------- */
 
 function fsA_zahlentafel(ctx){
-    const st = fs_stufe(ctx), n = [4, 5, 6][st];
+    const st = Math.min(2, fs_st(ctx)), n = [4, 5, 6][st];
     const zahlen = mische([...Array(n * n).keys()].map(i => i + 1));
     return { titel: "Zahlentafel", html: `
         ${ws_aufgabe(1, `Suche die Zahlen von 1 bis ${n * n} der Reihe nach. Zeige mit dem Finger auf jede Zahl und sprich sie leise mit.`)}
@@ -4528,7 +4529,7 @@ function fsA_zahlentafel(ctx){
 
 function fsA_formenDetektiv(ctx){
     const ziel = fs_zufallsForm();
-    const anteil = [0.3, 0.25, 0.2][fs_stufe(ctx)];
+    const anteil = [0.3, 0.25, 0.2][Math.min(2, fs_st(ctx))];
     const zeile = i => {
         let html = "", treffer = 0;
         for (let k = 0; k < 11; k++){
@@ -4563,7 +4564,7 @@ function fsA_buchstabenDetektiv(ctx){
 }
 
 function fsA_labyrinth(ctx){
-    const n = [8, 11, 14][fs_stufe(ctx)];
+    const n = [8, 11, 14][Math.min(2, fs_st(ctx))];
     const zellen = fs_labyrinth(n);
     // Lösungsweg (Breitensuche vom Start zum Ziel)
     const vorher = { 0: -1 }, schlange = [0];
@@ -4588,7 +4589,7 @@ function fsA_labyrinth(ctx){
 }
 
 function fsA_muster(ctx){
-    const p = [2, 3, 4][fs_stufe(ctx)];
+    const p = [2, 3, 4][Math.min(2, fs_st(ctx))];
     const zeile = () => {
         const teile = fs_verschiedeneFormen(p);
         const gezeigt = [...teile, ...teile];
@@ -4725,7 +4726,7 @@ function fsG_veraendert(ctx){
 /* ---------- Optische Serialität ---------- */
 
 function fsS_zahlenreihen(ctx){
-    const st = fs_stufe(ctx);
+    const st = Math.min(2, fs_st(ctx));
     const zeile = i => {
         let reihe;
         if (st === 0){
@@ -4784,7 +4785,7 @@ function fsS_buchstabensalat(ctx){
 }
 
 function fsS_abc(ctx){
-    const st = fs_stufe(ctx);
+    const st = Math.min(2, fs_st(ctx));
     const zeile = i => {
         const woerter = [];
         for (let v = 0; woerter.length < 4 && v < 200; v++){
@@ -4874,7 +4875,7 @@ function fsD_reime(ctx){
 }
 
 function fsD_minimalpaare(ctx){
-    const st = fs_stufe(ctx);
+    const st = Math.min(2, fs_st(ctx));
     const liste = mische(FS_MINIMALPAARE.slice(0, st + 1).flat().concat(fs_profi(ctx) ? FX_MINIMAL_SCHWER.filter(p => p[0] !== p[1]) : []));
     const zeile = i => {
         const p = liste[i];
@@ -4888,7 +4889,7 @@ function fsD_minimalpaare(ctx){
 }
 
 function fsD_lautposition(ctx){
-    const laut = fs_profi(ctx) ? "l" : ["m", "n", "r"][fs_stufe(ctx)];
+    const laut = fs_profi(ctx) ? "l" : ["m", "n", "r"][Math.min(2, fs_st(ctx))];
     const woerter = mische(FS_LAUTWOERTER[laut]);
     const zeile = i => {
         const w = woerter[i];
@@ -4919,7 +4920,7 @@ function fsH_wortfolgen(ctx){
 }
 
 function fsH_zahlenspanne(ctx){
-    const st = fs_stufe(ctx);
+    const st = Math.min(2, fs_st(ctx));
     const zeile = i => {
         const k = fs_w(ctx, [3, 4, 5, 6]) + Math.floor(i / 4);           // wird von Reihe zu Reihe etwas länger
         const zahlen = [...Array(Math.min(k, fs_profi(ctx) ? 10 : 8))].map(() => zufallsZahl(1, 9));
@@ -5048,7 +5049,7 @@ function fsRO_blickrichtung(ctx){
 }
 
 function fsRO_pfeile(ctx){
-    const st = fs_stufe(ctx);
+    const st = Math.min(2, fs_st(ctx));
     const PFEILE = fs_profi(ctx) ? ["←", "→", "↑", "↓", "↗", "↘", "↙", "↖"] : [["←", "→"], ["←", "→", "↑", "↓"], ["←", "→", "↑", "↓"]][st];
     const zeile = i => {
         const reihe = [...Array(10)].map(() => zufallsElement(PFEILE));
@@ -5705,7 +5706,7 @@ function rsa_satz(roh){
     if (i < roh.length) teile.push({ t: roh.slice(i) });
     return teile;
 }
-function rsa_niveau(ctx){ return (ctx.rsa && ctx.rsa.niveau) || (lt_klasse() >= 6 ? "profi" : "basis"); }
+function rsa_niveau(ctx){ return (ctx.rsa && ctx.rsa.niveau) || (lt_klasse() >= 7 ? "profi" : (lt_klasse() >= 5 ? "beide" : "basis")); }
 function rsa_saetze(niveau){
     const liste = niveau === "beide" ? [...RSA_SAETZE.basis, ...RSA_SAETZE.profi] : (RSA_SAETZE[niveau] || RSA_SAETZE.basis);
     let vorrat = [];
@@ -6050,7 +6051,7 @@ function fs_d2Zeichen(buchstabe, oben, unten){
 }
 
 function fsB_d2(ctx){
-    const st = fs_stufe(ctx);
+    const st = Math.min(2, fs_st(ctx));
     const pro = [12, 14, 16][st];
     const zeile = i => {
         let html = "", treffer = 0;
@@ -6090,7 +6091,7 @@ function fsB_geheimschrift(ctx){
 }
 
 function fsB_pfad(ctx){
-    const anzahl = [9, 12, 15][fs_stufe(ctx)];
+    const anzahl = [9, 12, 15][Math.min(2, fs_st(ctx))];
     const ABC = "ABCDEFGHIJKLMNO";
     const punkte = [];
     for (let i = 0; i < anzahl; i++){ punkte.push(String(i + 1)); punkte.push(ABC[i]); }
@@ -6110,7 +6111,7 @@ function fsB_pfad(ctx){
 }
 
 function fsB_rechenketten(ctx){
-    const st = fs_stufe(ctx);
+    const st = Math.min(2, fs_st(ctx));
     const zeile = i => {
         const start = zufallsZahl(2, 12);
         let wert = start;
@@ -6136,7 +6137,7 @@ function fsB_rechenketten(ctx){
 }
 
 function fsB_wortschlangen(ctx){
-    const st = fs_stufe(ctx);
+    const st = Math.min(2, fs_st(ctx));
     const FUELL = "bcdfghklmnprstwz";
     const zeile = i => {
         const anzahl = [2, 2, 3][st];
@@ -6223,7 +6224,7 @@ const BILD_GRUPPEN_SCHWER = [["wasser", "bauernhof"], ["vogel", "insekt"], ["obs
 function au_niveau(ctx){
     const k = lt_klasse();
     const band = k <= 1 ? 0 : k === 2 ? 1 : k === 3 ? 2 : k === 4 ? 3 : k <= 6 ? 4 : 5;
-    return Math.max(0, Math.min(6, band + fs_st(ctx) - 1));
+    return Math.max(0, Math.min(6, band + fs_stufe(ctx) - 1));
 }
 function au_w(n, werte){ return werte[Math.min(werte.length - 1, Math.max(0, n))]; }
 function au_gr(n){ return au_w(n, [46, 44, 40, 38, 34, 32, 30]); }
@@ -6893,6 +6894,8 @@ const AU_KATALOG_5 = [
     { nr: "19", kurz: "Code-Wache", name: "Code-Wache: genau prüfen", bau: au_codewache, gruppe: "suchen" },
     { nr: "20", kurz: "Auftragsfilter", name: "Auftragsfilter: mehrere Merkmale prüfen", bau: au_auftragsfilter, gruppe: "logik" },
 ];
+const AU_KATALOG_56 = AU_KATALOG_5.map(b => ({ ...b, ab: 5, bis: 6 }));
+const AU_KATALOG_79 = AU_KATALOG_5.map(b => ({ ...b, ab: 7, bis: 9 }));
 function au_passt(b){ const k = lt_klasse(); return (!b.ab || k >= b.ab) && (!b.bis || k <= b.bis); }
 function fs_katalog(key){ return FS_SERIEN[key].katalog || FS_SERIEN[key].blaetter; }
 function au_optionenHtml(key, katalog){
@@ -6913,7 +6916,7 @@ function au_zaehlen_(key){
     if (el) el.textContent = `(${n} gewählt)`;
 }
 function au_klassePruefen(){
-    ["aufmerksamkeit", "aufmerksamkeit5"].forEach(key => {
+    ["aufmerksamkeit", "aufmerksamkeit5", "aufmerksamkeit7"].forEach(key => {
         fs_katalog(key).forEach(b => {
             const cb = document.querySelector(`.au-blatt[data-serie="${key}"][value="${b.nr}"]`);
             if (!cb) return;
@@ -6961,7 +6964,13 @@ function au_pruefen(key){
 
 function fs_profi(ctx){ return !!(ctx && ctx.g && ctx.g.profi); }
 // Stufe 0 (leicht) … 3 (Profi)
-function fs_st(ctx){ return fs_profi(ctx) ? 3 : fs_stufe(ctx); }
+function fs_st(ctx){
+    if (fs_profi(ctx)) return 3;
+    const klasse = Number((ctx && ctx.g && ctx.g.klasse) || lt_klasse());
+    const basis = klasse <= 4 ? 0 : (klasse <= 6 ? 1 : 2);
+    const anpassung = ({ leicht: -1, mittel: 0, schwer: 1 }[(ctx && ctx.g && ctx.g.schwierigkeit) || "mittel"] || 0);
+    return Math.max(0, Math.min(2, basis + anpassung));
+}
 function fs_w(ctx, werte){ return werte[Math.min(werte.length - 1, fs_st(ctx))]; }
 function fx_ziehen(liste){ let v = []; return () => { if (!v.length) v = mische(liste); return v.pop(); }; }
 function fx_reihe(i, inhalt, rechts = ""){ return `<div class="fs-reihe"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-reihe-inhalt">${inhalt}</div>${rechts}</div>`; }
@@ -7738,7 +7747,7 @@ const FX_WORTSCHATZ = ("Affe Ast Auto Axt Bach Bad Ball Bank Bär Bart Bauch Bau
  + "Steckdose Straßenbahn Taschenlampe Telefon Teppich Turnhalle Wackelzahn Waschmaschine Wasserball Weihnachtsbaum Wecker Werkzeug Windmühle Wohnzimmer Zahnbürste Zauberer Zeitung Zirkus Zitronenfalter").split(" ");
 function fx_breit(ctx){
     if (ctx.g.thema === "eigen" && document.getElementById("g-eigene-woerter").value.trim()) return ctx;
-    const kl = ctx.g.klasse || 2, max = fs_profi(ctx) ? 99 : ({ 1: 5, 2: 7, 3: 10 }[kl] || 99);
+    const kl = ctx.g.klasse || 2, max = fs_profi(ctx) ? 99 : (kl <= 2 ? 7 : (kl <= 4 ? 12 : (kl <= 6 ? 16 : 99)));
     const alle = [...new Set([...Object.values(THEMEN).flat(), ...FX_WORTSCHATZ, ...FX_LANG, ...FX_KURZ])].filter(w => /^[A-ZÄÖÜ][a-zäöüß]+$/.test(w) && w.length <= max);
     let vorrat = [];
     return Object.assign(Object.create(ctx), { pool: alle, wort(filter){
@@ -7990,11 +7999,17 @@ const FS_SERIEN = {
         katalog: AU_KATALOG_GS, blaetter: AU_KATALOG_GS, optionenHtml: au_optionenHtml("aufmerksamkeit", AU_KATALOG_GS),
         dynamisch: au_dynamisch("aufmerksamkeit"), pruefen: au_pruefen("aufmerksamkeit") },
     aufmerksamkeit5: { tab: "aufmerksamkeit", mat: "aufmerksamkeit", wert: "serie5", reif: true,
-        optionText: "Ab Klasse 5 – 18 Übungen, frei wählbar",
-        label: "Aufmerksamkeit · ab Klasse 5", afs: "Aufmerksamkeit & Konzentration", select: "#aufm-typ", erstellen: "erstelleAufmerksamkeit",
-        speicherName: () => "Aufmerksamkeit ab Klasse 5",
-        katalog: AU_KATALOG_5, blaetter: AU_KATALOG_5, optionenHtml: au_optionenHtml("aufmerksamkeit5", AU_KATALOG_5),
+        optionText: "Klasse 5–6 – 20 Übungstypen, frei wählbar",
+        label: "Aufmerksamkeit · Klasse 5–6", afs: "Aufmerksamkeit & Konzentration", select: "#aufm-typ", erstellen: "erstelleAufmerksamkeit",
+        speicherName: () => "Aufmerksamkeit Klasse 5–6",
+        katalog: AU_KATALOG_56, blaetter: AU_KATALOG_56, optionenHtml: au_optionenHtml("aufmerksamkeit5", AU_KATALOG_56),
         dynamisch: au_dynamisch("aufmerksamkeit5"), pruefen: au_pruefen("aufmerksamkeit5") },
+    aufmerksamkeit7: { tab: "aufmerksamkeit", mat: "aufmerksamkeit", wert: "serie7", reif: true,
+        optionText: "Klasse 7–9 – 20 Übungstypen, frei wählbar",
+        label: "Aufmerksamkeit · Klasse 7–9", afs: "Aufmerksamkeit & Konzentration", select: "#aufm-typ", erstellen: "erstelleAufmerksamkeit",
+        speicherName: () => "Aufmerksamkeit Klasse 7–9",
+        katalog: AU_KATALOG_79, blaetter: AU_KATALOG_79, optionenHtml: au_optionenHtml("aufmerksamkeit7", AU_KATALOG_79),
+        dynamisch: au_dynamisch("aufmerksamkeit7"), pruefen: au_pruefen("aufmerksamkeit7") },
     rechtschreibung: { tab: "symptom", mat: "symptom", wert: "rs-serie", reif: true, nachErsterOption: true,
         optionText: "Rechtschreibung – Strategien & Übungen (ab Klasse 4/5)",
         label: "Rechtschreibung", afs: "Symptomtraining: Rechtschreibstrategien", select: "#sy-typ", erstellen: "erstelleSymptom",
@@ -8026,7 +8041,7 @@ const FS_SERIEN = {
             <label>Schwerpunkte, die gemischt werden (eigene Stolpersteine ankreuzen)</label>
             <div class="rsa-wahl">${Object.entries(RS_SCHWERPUNKTE).map(([k, sp]) => `<label><input type="checkbox" class="rsa-sp" value="${k}"${RSA_STANDARD.includes(k) ? " checked" : ""}> ${sp.name} <small>(${RSA_WERKZEUG_VON[k] || "M"})</small></label>`).join("")}</div>
             <label style="margin-top:10px;">Satz-Niveau (Signalstellen finden, Fehlerdetektiv)</label>
-            <select id="rsa-niveau"><option value="auto">passend zur Klassenstufe (bis Kl. 5 Basis, ab Kl. 6 Profi)</option><option value="basis">Basis</option><option value="profi">Profi</option><option value="beide">gemischt</option></select>`,
+            <select id="rsa-niveau"><option value="auto">passend zur Klassenstufe (Kl. 2–4 Basis, Kl. 5–6 gemischt, Kl. 7–9 Profi)</option><option value="basis">Basis</option><option value="profi">Profi</option><option value="beide">gemischt</option></select>`,
         ctxExtra: () => ({ rsa: rsa_ausFormular() }),
         speicherName: () => "Rechtschreibung anwenden",
         blaetter: RSA_BLAETTER },
@@ -8739,7 +8754,11 @@ async function fp_inKartei(){
 }
 
 // Blätter einer Funktions-Serie auswählen (Aufmerksamkeit je nach Klasse)
-function fp_serieVon(key){ return key === "aufmerksamkeit" && lt_klasse() >= 5 ? "aufmerksamkeit5" : key; }
+function fp_serieVon(key){
+    if (key !== "aufmerksamkeit") return key;
+    const k = lt_klasse();
+    return k >= 7 ? "aufmerksamkeit7" : (k >= 5 ? "aufmerksamkeit5" : "aufmerksamkeit");
+}
 function fp_blattEintrag(serieKey, b, nr){
     const s = FS_SERIEN[serieKey];
     return { nr: String(nr), kurz: `${s.label.replace(" · ab Klasse 5", "")}: ${b.kurz}`, name: `${s.label} – ${b.name}`, bau: b.bau, extra: { label: s.label, afs: s.afs, reif: lt_reifVon(s) }, quelle: { t: "fs", s: serieKey, nr: b.nr } };
@@ -8802,7 +8821,7 @@ function std_einstellungenVerbinden(){
     });
 }
 function std_klasseAusKuerzel(){
-    const m = /^([1-8])/.exec(lt_wert("std-kind") || "");
+    const m = /^([1-9])/.exec(lt_wert("std-kind") || "");
     if (!m) return;
     const l = document.getElementById("std-klasse");
     if (l.value !== m[1]){ l.value = m[1]; l.dispatchEvent(new Event("change")); }
@@ -8815,7 +8834,7 @@ function std_auswahlAufbauen(){
     try { if (localStorage.getItem("lt_std_art") === "erst") document.getElementById("std-art").value = "erst"; } catch (e){}
     std_artWechsel();
     aufm.innerHTML = `<option value="zufall">Passend zur Klassenstufe (zufällig)</option>` +
-        ["aufmerksamkeit", "aufmerksamkeit5"].map(k => `<optgroup label="${ws_esc(FS_SERIEN[k].label)}">${fs_katalog(k).map(b => `<option value="${k}:${b.nr}">${ws_esc(b.name)}${b.ab ? ` (ab Kl. ${b.ab})` : ""}</option>`).join("")}</optgroup>`).join("") +
+        ["aufmerksamkeit", "aufmerksamkeit5", "aufmerksamkeit7"].map(k => `<optgroup label="${ws_esc(FS_SERIEN[k].label)}">${fs_katalog(k).map(b => `<option value="${k}:${b.nr}">${ws_esc(b.name)}${b.ab ? ` (ab Kl. ${b.ab})` : ""}</option>`).join("")}</optgroup>`).join("") +
         `<option value="">– ohne Aufmerksamkeitsblatt –</option>`;
     document.getElementById("std-funktion").innerHTML = STD_FUNKTIONEN.map(k => `<option value="${k}">${ws_esc(FS_SERIEN[k].label)}</option>`).join("") + `<option value="">– ohne Funktionsblatt –</option>`;
     document.getElementById("std-vs").innerHTML = `<option value="">– nichts zusätzlich –</option>` + VS_BLAETTER.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("");
@@ -8980,9 +8999,9 @@ const STD_DIKTAT = [
 ];
 function std_stufe(){ return { leicht: "l", mittel: "m", schwer: "s", profi: "s" }[lt_wert("g-schwierigkeit")] || "m"; }
 function std_lesetext(niveau){
-    const k = niveau || lt_klasse(), st = std_stufe();
-    const passend = LT_TEXTE.filter(t => t.k === k && t.s === st);
-    const text = zufallsElement(passend.length ? passend : LT_TEXTE.filter(t => t.k === k));
+    const k = niveau || lt_klasse(), st = std_stufe(), bankKlasse = Math.min(k, 8);
+    const passend = LT_TEXTE.filter(t => t.k === bankKlasse && t.s === st);
+    const text = zufallsElement(passend.length ? passend : LT_TEXTE.filter(t => t.k === bankKlasse));
     return { text, klasse: k, stufe: text.s, umfang: 0, art: k <= 4 ? "farbig" : "normal", saetze: lt_saetze(text.x), reif: k >= 5 };
 }
 function std_lesetextSeite(lt){
@@ -8994,9 +9013,9 @@ function std_lesetextSeite(lt){
         ${lt.klasse <= 4 ? `<div class="st-malbox" style="flex:1; min-height:90px;">Male ein Bild zum Text:</div>` : `<div style="font-size:15px; font-weight:700; color:#4A5866;">Notizen zum Text:</div><div style="${LT_LINIENFELD} min-height:60px;"></div>`}` };
 }
 function std_diktat(){
-    const k = lt_klasse(), st = std_stufe();
-    const passend = DK_TEXTE.filter(t => t.k === k && t.s === st);
-    const text = dk_kuerzen(zufallsElement(passend.length ? passend : DK_TEXTE.filter(t => t.k === k)), "mittel");
+    const k = lt_klasse(), bankKlasse = Math.min(k, 8), st = std_stufe();
+    const passend = DK_TEXTE.filter(t => t.k === bankKlasse && t.s === st);
+    const text = dk_kuerzen(zufallsElement(passend.length ? passend : DK_TEXTE.filter(t => t.k === bankKlasse)), "mittel");
     return { text, klasse: k, reif: k >= 5 };
 }
 function std_anzahl(id){ const n = parseInt(lt_wert(id), 10); return n > 0 ? n : 1; }
@@ -9070,7 +9089,7 @@ function std_rezeptAusFormular(){
         let sk, nr, b = null;
         if (aufm === "zufall") sk = fp_serieVon("aufmerksamkeit");
         else { [sk, nr] = aufm.split(":"); b = fs_katalog(sk).find(x => x.nr === nr); }
-        const pool = fs_katalog(sk).filter(x => au_passt(x) && (x.nr !== "3" || sk !== "aufmerksamkeit5"));
+        const pool = fs_katalog(sk).filter(x => au_passt(x) && (x.nr !== "3" || !["aufmerksamkeit5", "aufmerksamkeit7"].includes(sk)));
         const passend = pool.length ? pool : fs_katalog(sk), anzahl = std_anzahl("std-aufm-anzahl");
         if (aufm === "zufall"){
             const zuletzt = std_zuletztGenutzt(code || lt_wert("std-kind"), sk);
@@ -9164,7 +9183,7 @@ function std_alternativen(it, r){
     let pool = [];
     if (it.t === "fs"){
         const k = fs_katalog(it.s);
-        const passt = it.s.startsWith("aufmerksamkeit") ? k.filter(x => au_passt(x) && (x.nr !== "3" || it.s !== "aufmerksamkeit5")) : k;
+        const passt = it.s.startsWith("aufmerksamkeit") ? k.filter(x => au_passt(x) && (x.nr !== "3" || !["aufmerksamkeit5", "aufmerksamkeit7"].includes(it.s))) : k;
         pool = (passt.length ? passt : k).map(b => ({ t: "fs", s: it.s, nr: b.nr }));
     }
     else if (it.t === "rs") pool = FS_SERIEN.rechtschreibung.blaetter.map(b => ({ t: "rs", k: it.k, nr: b.nr }));
@@ -9528,7 +9547,7 @@ async function std_neuBauen(){
 function std_optionen(ph, r){
     const code = r.kind, gruppen = [];
     const opt = (o, text) => `<option value="${encodeURIComponent(JSON.stringify(o))}">${ws_esc(text)}</option>`;
-    if (ph === "Aufmerksamkeit") ["aufmerksamkeit", "aufmerksamkeit5"].forEach(k => gruppen.push([FS_SERIEN[k].label, fs_katalog(k).map(b => opt({ t: "fs", s: k, nr: b.nr }, b.name))]));
+    if (ph === "Aufmerksamkeit") ["aufmerksamkeit", "aufmerksamkeit5", "aufmerksamkeit7"].forEach(k => gruppen.push([FS_SERIEN[k].label, fs_katalog(k).map(b => opt({ t: "fs", s: k, nr: b.nr }, b.name))]));
     if (ph === "Funktionstraining") STD_FUNKTIONEN.forEach(k => gruppen.push([FS_SERIEN[k].label, FS_SERIEN[k].blaetter.map(b => opt({ t: "fs", s: k, nr: b.nr }, b.name))]));
     if (ph === "Symptomtraining"){
         gruppen.push(["Vom Lesen zum Schreiben", VS_BLAETTER.map(b => opt({ t: "vs", nr: b.nr }, b.name))]);
@@ -9673,7 +9692,7 @@ function std_rezeptAusText(stunde, code){
         const hi = text.indexOf("Aus dem Trainingsheft:");
         const heftNamen = hi >= 0 ? namen(text.slice(hi)) : [];
         if (hi >= 0) text = text.slice(0, hi);
-        if (ph === "Aufmerksamkeit") namen(text).forEach(n => { for (const k of ["aufmerksamkeit", "aufmerksamkeit5"]){ const b = fs_katalog(k).find(x => x.name === n); if (b){ neu({ p: ph, t: "fs", s: k, nr: b.nr }); break; } } });
+        if (ph === "Aufmerksamkeit") namen(text).forEach(n => { for (const k of ["aufmerksamkeit", "aufmerksamkeit5", "aufmerksamkeit7"]){ const b = fs_katalog(k).find(x => x.name === n); if (b){ neu({ p: ph, t: "fs", s: k, nr: b.nr }); break; } } });
         else if (ph === "Funktionstraining") STD_FUNKTIONEN.forEach(k => { const lab = FS_SERIEN[k].label, i = text.indexOf(lab + ":"); if (i < 0) return;
             namen(text.slice(i).split(". Ziel")[0]).forEach(n => { const b = FS_SERIEN[k].blaetter.find(x => x.name === n); if (b) neu({ p: ph, t: "fs", s: k, nr: b.nr }); }); });
         else {
@@ -9700,7 +9719,7 @@ async function std_ausAkteOeffnen(code, sid){
     const r = stunde.rezept && stunde.rezept.items ? JSON.parse(JSON.stringify(stunde.rezept)) : std_rezeptAusText(stunde, code);
     r.kind = code;
     r.items.forEach(it => { if (!it.u) it.u = std_neuUid(); });
-    if (/^[1-8]$/.test(String(r.klasse || ""))){ const l = document.getElementById("std-klasse"); l.value = r.klasse; l.dispatchEvent(new Event("change")); }
+    if (/^[1-9]$/.test(String(r.klasse || ""))){ const l = document.getElementById("std-klasse"); l.value = r.klasse; l.dispatchEvent(new Event("change")); }
     if (r.stufe){ const sw = document.getElementById("std-schwierigkeit"); sw.value = r.stufe; sw.dispatchEvent(new Event("change")); }
     std_rezept = r; std_cache = {};
     { const a = document.getElementById("std-art"); if (a){ a.value = r.erst ? "erst" : "foerder"; std_artWechsel(); }
@@ -9745,7 +9764,7 @@ function fp_planLaden(fragen){
     fp_rsAufbauen(akte.r);
     akte.f.forEach(k => { const cb = document.querySelector(`.fp-f[value="${k}"]`); if (cb) cb.checked = true; });
     akte.r.forEach(k => { const cb = document.querySelector(`.fp-r[value="${k}"]`); if (cb) cb.checked = true; });
-    if (/^[1-8]$/.test(akte.klasse)){ const g = document.getElementById("g-klasse"); if (g.value !== akte.klasse){ g.value = akte.klasse; g.dispatchEvent(new Event("change")); } }
+    if (/^[1-9]$/.test(akte.klasse)){ const g = document.getElementById("g-klasse"); if (g.value !== akte.klasse){ g.value = akte.klasse; g.dispatchEvent(new Event("change")); } }
     fp_aktualisieren();
 }
 async function fp_planSpeichern(){
@@ -11941,7 +11960,7 @@ mat_bearbeitbarMachen();
 mat_knoepfeEinfuegen();
 fs_init();
 // Aufmerksamkeit: Startauswahl (gemischt) und Klassenstufen-Filter
-["aufmerksamkeit", "aufmerksamkeit5"].forEach(k => au_mix(k));
+["aufmerksamkeit", "aufmerksamkeit5", "aufmerksamkeit7"].forEach(k => au_mix(k));
 au_klassePruefen();
 document.getElementById("g-klasse").addEventListener("change", au_klassePruefen);
 silben_laden();
