@@ -1621,6 +1621,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             <p class="beschreibung" style="margin:6px 0 0;">Angehakte Blätter kommen in diese Stunde (Weiterarbeiten am alten Blatt). Sie werden nicht neu gedruckt – bei Bedarf in der Blattliste unten wieder anhaken.</p>
         </div>
         <p class="beschreibung std-nur-foerder" style="margin:4px 0 0;">„Anzahl“: Das gewählte Blatt kommt zuerst, weitere Blätter derselben Reihe werden passend ergänzt – die Zeiten im Ablaufplan verteilen sich automatisch neu.</p>
+        <p class="beschreibung std-nur-foerder" style="margin:4px 0 0;">Bei zufälliger Auswahl werden kürzlich verwendete Aufmerksamkeits-Übungstypen möglichst übersprungen. Die Zahlen, Zeichen, Formen und Auftragsdaten werden bei jeder Erstellung neu erzeugt.</p>
         <label style="margin-top:12px;">Dazu</label>
         <div class="fp-wahl">
             <label><input type="checkbox" id="std-plan" checked> Ablaufplan (für dich)</label>
@@ -6786,6 +6787,58 @@ function au_rotschwarz(ctx){
         <div class="fs-zeit"><span>1.:<span class="fs-l"></span>Sek.</span><span>2.:<span class="fs-l"></span>Sek.</span><span>3.:<span class="fs-l"></span>Sek.</span></div>` };
 }
 
+/* Neue, klassenstufengerechte Aufmerksamkeitsvarianten: Formen, Merkspanne und mehrteilige Filter. */
+function au_formenpaare(ctx){
+    const st = au_niveau(ctx), zeilen = au_w(st, [5, 6, 7, 8, 8, 9, 10]), karten = au_w(st, [7, 8, 8, 9, 10, 11, 12]);
+    const a = fs_zufallsForm(), b = fs_zufallsForm();
+    if (fs_gleich(a, b)) b.form = zufallsElement(FS_FORMEN.filter(x => x !== a.form));
+    const eine = (x, y) => fs_gleich(x, a) && fs_gleich(y, b);
+    let html = `<div class='fs-ziel'>Gesucht: erst ${fs_f(a, 24)}, dann ${fs_f(b, 24)} – genau in dieser Reihenfolge.</div>`;
+    html += ws_aufgabe(1, 'Kreise auf jeder Zeile alle Karten ein, auf denen die beiden Formen genau in der gezeigten Reihenfolge stehen. Zähle danach die Treffer der Zeile.');
+    for (let r = 0; r < zeilen; r++){
+        let treffer = 0;
+        const items = Array.from({length: karten}, () => {
+            let x, y;
+            if (Math.random() < 0.25){ x = a; y = b; treffer++; }
+            else { do { x = fs_zufallsForm(); y = fs_zufallsForm(); } while (eine(x, y)); }
+            return `<span style='display:inline-flex;align-items:center;gap:4px;border:1px solid #D8DFE7;border-radius:7px;padding:3px 5px;margin:2px;'>${fs_f(x, 22)}${fs_f(y, 22)}</span>`;
+        }).join('');
+        html += au_reihe(r, items, `<span style='white-space:nowrap'>Treffer: ______</span>`);
+    }
+    return { titel: 'Formen-Paare: genau hinsehen', html };
+}
+function au_formengedachtnis(ctx){
+    const st = au_niveau(ctx), n = au_w(st, [3, 3, 3, 4, 4, 4, 4]), symbole = ['●', '■', '▲', '★', '◆'];
+    const raster = Array.from({length: n * n}, () => zufallsElement(symbole));
+    const tabelle = leer => `<table style='border-collapse:collapse;margin:12px auto'><tbody>${Array.from({length:n}, (_, r) => `<tr>${Array.from({length:n}, (_, k) => `<td style='border:2px solid #536875;width:54px;height:48px;text-align:center;font-size:30px'>${leer ? '&nbsp;' : raster[r*n+k]}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    return { titel: 'Formen-Merkfeld', html: `${ws_aufgabe(1, 'Schau dir das obere Feld 30 Sekunden genau an. Decke es dann mit einem Blatt Papier ab und trage die Formen aus dem Gedächtnis in das leere Feld ein. Kontrolliere erst danach.')}<div><b>30 Sekunden ansehen – dann abdecken:</b>${tabelle(false)}</div><div style='margin-top:18px'><b>Aus dem Gedächtnis eintragen:</b>${tabelle(true)}</div>` };
+}
+function au_codewache(ctx){
+    const st = au_niveau(ctx), zeilen = au_w(st, [6, 7, 8, 9, 9, 10, 11]), pro = au_w(st, [8, 9, 10, 11, 12, 13, 14]);
+    const ziel = st >= 5 ? 'd7' : 'B4', buchstaben = ziel === 'd7' ? ['d','D','p','q','b'] : ['B','D','P','R','8'];
+    const ziffern = ziel === 'd7' ? ['7','1','4','9'] : ['4','1','7','9'];
+    let html = `<div class='fs-ziel'>Gesucht ist exakt <b style='font-family:monospace;font-size:24px'>${ziel}</b>. Groß- und Kleinschreibung zählt; vertauschte Zeichen sind kein Treffer.</div>`;
+    html += ws_aufgabe(1, 'Streiche den Ziel-Code durch. Arbeite von links nach rechts. Schreibe am Ende jeder Zeile die Zahl der Treffer auf.');
+    for (let r = 0; r < zeilen; r++){
+        let hits = 0;
+        const tokens = Array.from({length: pro}, () => {
+            if (Math.random() < 0.24){ hits++; return ziel; }
+            let x; do { x = zufallsElement(buchstaben) + zufallsElement(ziffern); } while (x === ziel); return x;
+        });
+        html += au_reihe(r, `<span style='font:700 21px/1.9 monospace;letter-spacing:3px'>${tokens.join('　')}</span>`, `<span style='white-space:nowrap'>Treffer: ______</span>`);
+    }
+    return { titel: 'Code-Wache: genau prüfen', html };
+}
+function au_auftragsfilter(ctx){
+    const st = au_niveau(ctx), streng = st >= 5, anzahl = au_w(st, [6, 7, 8, 9, 10, 11, 12]);
+    const orte = ['Archiv', 'Eingang', 'Ufer', 'Wald', 'Atelier', 'Keller', 'Insel', 'Hof'];
+    const zeilen = Array.from({length: anzahl}, (_, i) => ({
+        code: `A-${String(zufallsZahl(11, 98)).padStart(2, '0')}`, status: Math.random() < 0.25 ? 'WARTEN' : 'FREI',
+        zahl: zufallsZahl(11, 88), ort: zufallsElement(orte), zeit: `${String(8 + Math.floor(i / 4)).padStart(2, '0')}:${String((i * 13 + 5) % 60).padStart(2, '0')}`
+    }));
+    const regel = streng ? 'Markiere nur Aufträge mit Status FREI, gerader Kennzahl und einem Ort, der mit einem Vokal beginnt. Sortiere die markierten Kennzahlen anschließend von klein nach groß.' : 'Markiere nur Aufträge mit Status FREI und einem Ort, der mit einem Vokal beginnt. Zähle die markierten Aufträge.';
+    return { titel: 'Auftragsfilter: mehrere Merkmale prüfen', html: `${ws_aufgabe(1, regel)}<table class='rs-tabelle'><thead><tr><th>Code</th><th>Uhrzeit</th><th>Status</th><th>Kennzahl</th><th>Ort</th><th>Auswahl</th></tr></thead><tbody>${zeilen.map(x => `<tr><td>${x.code}</td><td>${x.zeit}</td><td>${x.status}</td><td>${x.zahl}</td><td>${x.ort}</td><td>_____</td></tr>`).join('')}</tbody></table><p>${streng ? 'Kennzahlen sortiert: ______________________________________________' : 'Anzahl markierter Aufträge: ______'}</p>` };
+}
 /* ---------- Kataloge: welche Blätter es je Serie gibt ---------- */
 // bild: arbeitet mit Grafiken · ab/bis: Klassenstufen · gruppe: für die Auswahl
 const AU_GRUPPEN = { suchen: "Suchen & Konzentrieren", vergleichen: "Genau hinsehen & Vergleichen", logik: "Logik & Regeln", zeichnen: "Verfolgen & Zeichnen" };
@@ -6815,6 +6868,8 @@ const AU_KATALOG_GS = [
     { nr: "17", kurz: "Linien-Wirrwarr", name: "Linien-Wirrwarr", bau: au_wirrwarr, gruppe: "zeichnen", bild: true },
     { nr: "18", kurz: "Punktebild", name: "Punktebild abzeichnen", bau: au_punktebild, gruppe: "zeichnen" },
     { nr: "25", kurz: "Spiegelbild", name: "Spiegelbild ergänzen", bau: au_spiegelhaelfte, gruppe: "zeichnen" },
+    { nr: "26", kurz: "Formen-Paare", name: "Formen-Paare: genau hinsehen", bau: au_formenpaare, gruppe: "suchen", ab: 2 },
+    { nr: "27", kurz: "Formen-Merkfeld", name: "Formen-Merkfeld (sehen und erinnern)", bau: au_formengedachtnis, gruppe: "suchen", ab: 2 },
 ];
 const AU_KATALOG_5 = [
     { nr: "1", kurz: "Konzentrations-Test", name: "Konzentrations-Test (d2-Stil)", bau: fsB_d2, gruppe: "suchen" },
@@ -6835,6 +6890,8 @@ const AU_KATALOG_5 = [
     { nr: "16", kurz: "Linien-Wirrwarr", name: "Linien-Wirrwarr", bau: au_wirrwarr, gruppe: "zeichnen" },
     { nr: "17", kurz: "Punktebild", name: "Punktebild abzeichnen", bau: au_punktebild, gruppe: "zeichnen" },
     { nr: "18", kurz: "Spiegelbild", name: "Spiegelbild ergänzen", bau: au_spiegelhaelfte, gruppe: "zeichnen" },
+    { nr: "19", kurz: "Code-Wache", name: "Code-Wache: genau prüfen", bau: au_codewache, gruppe: "suchen" },
+    { nr: "20", kurz: "Auftragsfilter", name: "Auftragsfilter: mehrere Merkmale prüfen", bau: au_auftragsfilter, gruppe: "logik" },
 ];
 function au_passt(b){ const k = lt_klasse(); return (!b.ab || k >= b.ab) && (!b.bis || k <= b.bis); }
 function fs_katalog(key){ return FS_SERIEN[key].katalog || FS_SERIEN[key].blaetter; }
@@ -9014,7 +9071,14 @@ function std_rezeptAusFormular(){
         if (aufm === "zufall") sk = fp_serieVon("aufmerksamkeit");
         else { [sk, nr] = aufm.split(":"); b = fs_katalog(sk).find(x => x.nr === nr); }
         const pool = fs_katalog(sk).filter(x => au_passt(x) && (x.nr !== "3" || sk !== "aufmerksamkeit5"));
-        std_mehrere(pool.length ? pool : fs_katalog(sk), b, std_anzahl("std-aufm-anzahl")).forEach(x => neu({ p: "Aufmerksamkeit", t: "fs", s: sk, nr: x.nr }));
+        const passend = pool.length ? pool : fs_katalog(sk), anzahl = std_anzahl("std-aufm-anzahl");
+        if (aufm === "zufall"){
+            const zuletzt = std_zuletztGenutzt(code || lt_wert("std-kind"), sk);
+            const frisch = passend.filter(x => !zuletzt.includes(x.nr));
+            std_mehrere(frisch.length >= anzahl ? frisch : passend, null, anzahl).forEach(x => neu({ p: "Aufmerksamkeit", t: "fs", s: sk, nr: x.nr }));
+        } else {
+            std_mehrere(passend, b, anzahl).forEach(x => neu({ p: "Aufmerksamkeit", t: "fs", s: sk, nr: x.nr }));
+        }
     }
     if (lt_wert("std-art") === "erst"){
         r.erst = { art: lt_wert("std-erst-silben") || "farbig" };
