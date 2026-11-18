@@ -5004,17 +5004,21 @@ function fs_satzBlatt(titel, auftrag, saetze){
     return { titel, zeile, html: `${ws_aufgabe(1, auftrag)}<div class="fs-reihen fs-fuell"></div>` };
 }
 
-function fsK_zeigen(){
+function fsK_zeigen(ctx){
+    const alle = KOERPERTEILE.flatMap(teil => ["rechte", "linke"].map(seite => ks_zeige(seite, teil)));
+    const umfang = [8, 12, 16, 18][fs_st(ctx)];
     return fs_satzBlatt("Zeige deinen Körper", "Die Lehrkraft (oder ein Partner) liest vor. Zeige den Körperteil und kreuze an, wenn du es geschafft hast.",
-        KOERPERTEILE.flatMap(teil => ["rechte", "linke"].map(seite => ks_zeige(seite, teil))));
+        mische(alle).slice(0, umfang));
 }
 
-function fsK_bewegungen(){
+function fsK_bewegungen(ctx){
+    const alle = BEWEGUNGEN.flatMap(vorlage => ["rechte", "linke"].map(seite => vorlage(seite)));
+    const umfang = [6, 9, 12, 14][fs_st(ctx)];
     return fs_satzBlatt("Rechts und links bewegen", "Lies die Anweisung (oder lass sie dir vorlesen) und führe die Bewegung genau aus.",
-        BEWEGUNGEN.flatMap(vorlage => ["rechte", "linke"].map(seite => vorlage(seite))));
+        mische(alle).slice(0, umfang));
 }
 
-function fsK_ueberkreuz(){
+function fsK_ueberkreuz(ctx){
     const ZIELE = [
         { wort: "Knie", g: "n" }, { wort: "Ohr", g: "n" }, { wort: "Schulter", g: "f" }, { wort: "Fuß", g: "m" },
         { wort: "Ellenbogen", g: "m" }, { wort: "Auge", g: "n" }, { wort: "Hüfte", g: "f" }, { wort: "Wange", g: "f" },
@@ -5024,24 +5028,26 @@ function fsK_ueberkreuz(){
         if (teil.wort === "Ellenbogen" && hand === seite) return;   // mit derselben Hand nicht erreichbar
         saetze.push(`Berühre mit der ${hand}n Hand ${ks_akk(seite, teil)}.`);
     })));
-    return fs_satzBlatt("Über Kreuz", "Achte genau auf rechts und links: Welche Hand berührt welchen Körperteil? Führe die Bewegung aus.", saetze);
+    const umfang = [12, 20, 32, 40][fs_st(ctx)];
+    return fs_satzBlatt("Über Kreuz", "Achte genau auf rechts und links: Welche Hand berührt welchen Körperteil? Führe die Bewegung aus.", mische(saetze).slice(0, umfang));
 }
 
 /* ---------- Raumorientierung ---------- */
 
 function fsRO_blickrichtung(ctx){
     const tiere = TIER_BANK.filter(t => ["fisch", "vogel", "schildkroete", "schlange"].includes(t.icon));
+    const anzahl = [5, 7, 9, 10][fs_st(ctx)];
     const zeile = i => {
         const tier = zufallsElement(tiere);
         const grundRechts = ["schildkroete", "schlange"].includes(tier.icon);   // Fisch und Vogel schauen ungespiegelt nach links
         let rechts = 0;
-        const bilder = [...Array(7)].map(() => {
+        const bilder = [...Array(anzahl)].map(() => {
             const gespiegelt = Math.random() < 0.5;
             if (gespiegelt !== grundRechts) rechts++;
             return `<span class="fs-tier" style="transform:scaleX(${gespiegelt ? -1 : 1});">${TIER_ICONS[tier.icon]}</span>`;
         }).join("");
         return `<div class="fs-reihe"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-reihe-inhalt">${bilder}</div>
-            <div style="display:flex; flex-direction:column; gap:4px; font-size:15px; flex:none;"><span>→ <span class="fs-kaestchen-klein" style="width:30px; height:26px;">${L(rechts)}</span></span><span>← <span class="fs-kaestchen-klein" style="width:30px; height:26px;">${L(7 - rechts)}</span></span></div></div>`;
+            <div style="display:flex; flex-direction:column; gap:4px; font-size:15px; flex:none;"><span>→ <span class="fs-kaestchen-klein" style="width:30px; height:26px;">${L(rechts)}</span></span><span>← <span class="fs-kaestchen-klein" style="width:30px; height:26px;">${L(anzahl - rechts)}</span></span></div></div>`;
     };
     return { titel: "Wohin schauen die Tiere?", zeile, html: `
         ${ws_aufgabe(1, "Schau jedes Tier genau an: Schaut es nach rechts (→) oder nach links (←)? Zähle in jeder Reihe und schreibe die Anzahl in die Kästchen.")}
@@ -7995,7 +8001,7 @@ const BD_BLAETTER = [
 
 const FS_SERIEN = {
     aufmerksamkeit: { label: "Aufmerksamkeit", afs: "Aufmerksamkeit & Konzentration", select: "#aufm-typ", erstellen: "erstelleAufmerksamkeit",
-        optionText: "Grundschule (Kl. 1–4) – 25 Übungen, frei wählbar",
+        optionText: "Grundschule (Kl. 1–4) – 27 Übungstypen, frei wählbar",
         katalog: AU_KATALOG_GS, blaetter: AU_KATALOG_GS, optionenHtml: au_optionenHtml("aufmerksamkeit", AU_KATALOG_GS),
         dynamisch: au_dynamisch("aufmerksamkeit"), pruefen: au_pruefen("aufmerksamkeit") },
     aufmerksamkeit5: { tab: "aufmerksamkeit", mat: "aufmerksamkeit", wert: "serie5", reif: true,
@@ -9415,11 +9421,11 @@ const ES_TEXTE = [
 ];
 function es_vonLt(t){ return { t: t.t, x: t.x, fragen: [...(t.mc || []).map(f => f[0]), ...(t.of || []).map(f => f[0])].slice(0, 4) }; }
 function es_textWaehlen(){
-    const k = lt_klasse();
-    const eigen = ES_TEXTE.find(t => t.k === k);
+    const k = lt_klasse(), bankKlasse = Math.min(k, 8);
+    const eigen = ES_TEXTE.find(t => t.k === bankKlasse);
     if (eigen) return eigen;
-    const passend = LT_TEXTE.filter(t => t.k === k && t.s === "m");
-    return es_vonLt(zufallsElement(passend.length ? passend : LT_TEXTE.filter(t => t.k === k)));
+    const passend = LT_TEXTE.filter(t => t.k === bankKlasse && t.s === "m");
+    return es_vonLt(zufallsElement(passend.length ? passend : LT_TEXTE.filter(t => t.k === bankKlasse)));
 }
 function es_text(titel){
     const eigen = ES_TEXTE.find(t => t.t === titel);
@@ -11962,7 +11968,11 @@ fs_init();
 // Aufmerksamkeit: Startauswahl (gemischt) und Klassenstufen-Filter
 ["aufmerksamkeit", "aufmerksamkeit5", "aufmerksamkeit7"].forEach(k => au_mix(k));
 au_klassePruefen();
-document.getElementById("g-klasse").addEventListener("change", au_klassePruefen);
+document.getElementById("g-klasse").addEventListener("change", () => {
+    au_klassePruefen();
+    const k = lt_klasse(), serie = k >= 7 ? "aufmerksamkeit7" : (k >= 5 ? "aufmerksamkeit5" : "aufmerksamkeit");
+    if (!document.querySelector(`.au-blatt[data-serie="${serie}"]:checked`)) au_mix(serie);
+});
 silben_laden();
 std_auswahlAufbauen();
 fp_auswahlAufbauen();
