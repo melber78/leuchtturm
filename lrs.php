@@ -1576,6 +1576,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             <div><label>Klassenstufe</label><select id="std-klasse"><option value="1">Klasse 1</option><option value="2">Klasse 2</option><option value="3">Klasse 3</option><option value="4">Klasse 4</option><option value="5">Klasse 5</option><option value="6">Klasse 6</option><option value="7">Klasse 7</option><option value="8">Klasse 8</option><option value="9">Klasse 9</option></select></div>
             <div><label>Schwierigkeit</label><select id="std-schwierigkeit"><option value="leicht">leicht</option><option value="mittel">mittel</option><option value="schwer">schwer</option><option value="profi">Profi (sehr schwer)</option></select></div>
         </div>
+        <p class="beschreibung std-nur-foerder" style="margin:6px 0 0;">Die Funktionsbereiche passen Umfang und Komplexität an drei Altersstufen an: Klasse 2–4, 5–6 und 7–9. „Schwierigkeit“ senkt oder erhöht die Aufgabenstufe innerhalb des Altersbands.</p>
         <div class="zeile std-anz-zeile" style="margin-top:12px;">
             <div><label>Aufmerksamkeit (Einstieg)</label><select id="std-aufm"></select></div>
             <div class="std-leer"></div>
@@ -1591,6 +1592,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
             <div><label>Blatt</label><select id="std-symptom-blatt"></select></div>
             <div><label>Anzahl</label><select id="std-symptom-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
         </div>
+        <p class="beschreibung std-nur-foerder" style="margin:6px 0 0;">Für gut lesende Kinder mit großen Schreibproblemen: „Vom Lesen zum Schreiben“ trainiert das sichere Verschriften Schritt für Schritt. Wenn Regeln bekannt sind, beim Schreiben aber nicht angewendet werden, nutze „Rechtschreibung anwenden“ mit Signalstellen, Werkzeugwahl, Begründung und Transfer in eigene Texte.</p>
         <div class="zeile std-anz-zeile std-nur-foerder" style="margin-top:12px;">
             <div><label>Zusätzlich: Vom Lesen zum Schreiben</label><select id="std-vs"><option value="">– nichts zusätzlich –</option></select></div>
             <div><label>Stufe</label><select id="std-vs-stufe"><option value="">passend zur Klasse</option><option value="A">A – offene Silben</option><option value="B">B – geschlossene Silben</option><option value="C">C – Mitlaut-Häufungen</option><option value="D">D – lange Wörter</option><option value="AC">A bis C gemischt</option></select></div>
