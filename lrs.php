@@ -6830,7 +6830,7 @@ function au_codewache(ctx){
     return { titel: 'Code-Wache: genau prüfen', html };
 }
 function au_auftragsfilter(ctx){
-    const st = au_niveau(ctx), streng = st >= 5, anzahl = au_w(st, [6, 7, 8, 9, 10, 11, 12]);
+    const st = au_niveau(ctx), streng = lt_klasse() >= 7, anzahl = au_w(st, [6, 7, 8, 9, 10, 11, 12]);
     const orte = ['Archiv', 'Eingang', 'Ufer', 'Wald', 'Atelier', 'Keller', 'Insel', 'Hof'];
     const zeilen = Array.from({length: anzahl}, (_, i) => ({
         code: `A-${String(zufallsZahl(11, 98)).padStart(2, '0')}`, status: Math.random() < 0.25 ? 'WARTEN' : 'FREI',
