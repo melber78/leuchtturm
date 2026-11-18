@@ -78,6 +78,7 @@ button, input, select, textarea{ font-family:inherit; font-size:15px; }
 .btn.blau{ background:var(--meer); color:white; }
 .btn.nacht{ background:var(--nacht); color:white; }
 .btn.rot{ background:#fbebeb; color:var(--rot); }
+.btn.gruen{ background:#2e8b57; color:white; }
 .btn.klein{ padding:6px 10px; font-size:13px; border-radius:9px; }
 .btn:disabled{ opacity:.5; cursor:default; }
 .karte{ background:white; border-radius:20px; box-shadow:var(--schatten); padding:22px 24px; margin-bottom:20px; }
@@ -372,6 +373,31 @@ table.ab-tab td .lz{ min-height:0; }
 .lehrer-druck .ld-uebung{ break-inside:avoid; margin-bottom:3mm; }
 .lehrer-druck .ld-badge{ font-size:8.5pt; font-weight:800; color:var(--meer); }
 
+/* ---------- Zusammenfassung für die Kinder (2 gleiche Hälften zum Ausschneiden) ---------- */
+.blatt.zus{ padding:0; }
+.zus-haelfte{ flex:1 1 0; min-height:0; overflow:hidden; display:flex; flex-direction:column; padding:9mm 14mm 5mm; }
+.zus-schnitt{ flex:none; border-top:.5mm dashed #9aa7ad; position:relative; height:0; }
+.zus-schnitt span{ position:absolute; left:8mm; top:-3.2mm; background:white; padding:0 1.5mm; font-size:11pt; color:#9aa7ad; }
+.zus-kopf{ display:flex; align-items:center; gap:3mm; border-bottom:.6mm solid var(--meer); padding-bottom:1.6mm; }
+.zus-emoji{ font-size:1.9em; line-height:1; }
+.zus-titel{ flex:1; }
+.zus-titel small{ display:block; font-family:"Nunito",sans-serif; font-size:.5em; font-weight:900; letter-spacing:.06em; text-transform:uppercase; color:#8a979c; }
+.zus-titel b{ font-size:1.35em; color:var(--nacht); line-height:1.1; }
+.zus-name{ font-size:.7em; display:flex; gap:1.5mm; align-items:flex-end; width:52mm; }
+.zus-name .ln{ flex:1; }
+.zus-kern{ margin:2.6mm 0 2mm; background:#fff4d6; border:.5mm solid #f2c46b; border-radius:3mm; padding:.45em .7em; font-weight:700; font-size:1.12em; line-height:1.3; }
+.zus-kern::before{ content:"💡 "; }
+.zus-punkte{ margin:0; padding-left:1.2em; display:flex; flex-direction:column; gap:.3em; }
+.zus-punkte li::marker{ color:var(--meer); }
+.zus-woerter{ display:grid; grid-template-columns:repeat(2, 1fr); gap:.15em 5mm; margin:0 0 2mm; font-size:.92em; }
+.zus-woerter div{ display:flex; gap:1.5mm; align-items:baseline; border-bottom:.25mm dotted #c9d6e3; }
+.zus-woerter b{ font-family:"Nunito",sans-serif; }
+.zus-woerter span.de{ margin-left:auto; color:#55636a; }
+.zus-ich{ margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:4mm; padding-top:2mm; font-size:.8em; }
+.zus-ich .gesichter{ display:flex; gap:3mm; font-size:1.3em; }
+.zus-ich .gesichter span{ border:.4mm solid #c9d6e3; border-radius:50%; width:1.6em; height:1.6em; display:flex; align-items:center; justify-content:center; }
+.zus-fuss{ font-family:"Nunito",sans-serif; font-size:6.5pt; font-weight:700; color:#8a979c; text-align:center; margin-top:1.5mm; }
+
 /* ---------- Druck ---------- */
 #druck{ position:absolute; left:-10000px; top:0; visibility:hidden; }
 @page{ size:A4; margin:0; }
@@ -431,6 +457,7 @@ table.ab-tab td .lz{ min-height:0; }
 <div id="druck"></div>
 
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
+<script src="stunden-merke.js?v=<?= @filemtime(__DIR__ . "/stunden-merke.js") ?: 1 ?>"></script>
 <?php foreach ($vorlagenDateien as $vd): ?>
 <script src="<?= htmlspecialchars(basename($vd)) ?>?v=<?= @filemtime($vd) ?: 1 ?>"></script>
 <?php endforeach; ?>
@@ -883,6 +910,43 @@ function lesetextBlatt(e, stufe){
         ${fragen.length ? `<div class="lese-fragen"><b>Zum Nachdenken</b><ol>${fragen.map(q => `<li>${esc(q)}</li>`).join("")}</ol></div>` : ""}</div>` + FUSS;
     return blatt;
 }
+// „Das habe ich heute gelernt“: kurze Zusammenfassung, zweimal auf einer A4-Seite (zum Ausschneiden und Einkleben)
+function zusammenfassungDaten(e, stufe){
+    let liste = (window.STUNDEN_MERKE || {})[e.ersetzt || e.id] || (window.STUNDEN_MERKE || {})[e.id];
+    if (!liste || !liste.length) {   // eigene Stunden: aus Ziel und Übungen
+        const ziel = (stufe === "34" ? e.ziel34 : e.ziel12) || e.ziel34 || e.ziel12 || "";
+        const ue = (e.uebungen || []).filter(u => !u.fuer || u.fuer === "alle" || u.fuer === stufe).map(u => u["warum" + stufe] || u.warum || u.titel).filter(Boolean);
+        liste = [ziel || e.titel, ...ue.slice(0, 4)];
+    }
+    const emoji = ((e.uebungen || []).find(u => u.emoji) || {}).emoji || "💡";
+    return { kern: liste[0], punkte: liste.slice(1), emoji, woerter: Array.isArray(e.woerter) ? e.woerter.slice(0, 10) : [] };
+}
+function zusammenfassungBlatt(e, stufe){
+    const d = zusammenfassungDaten(e, stufe);
+    const haelfte = `<div class="zus-haelfte">
+        <div class="zus-kopf"><span class="zus-emoji">${d.emoji}</span><div class="zus-titel"><small>Das habe ich heute gelernt</small><b>${inline(e.titel)}</b></div><div class="zus-name"><span>Name:</span><span class="ln"></span></div></div>
+        <div class="zus-kern">${inline(d.kern)}</div>
+        ${d.woerter.length ? `<div class="zus-woerter">${d.woerter.map(w => `<div><span>${w[0]}</span><b>${esc(w[1])}</b><span class="de">${esc(w[2])}</span></div>`).join("")}</div>` : ""}
+        ${d.punkte.length ? `<ul class="zus-punkte">${d.punkte.map(p => `<li>${inline(p).replace(/_{5,}/g, '<span class="ln" style="min-width:45mm"></span>')}</li>`).join("")}</ul>` : ""}
+        <div class="zus-ich"><span>So gut kann ich das schon:</span><span class="gesichter"><span>😀</span><span>🙂</span><span>😐</span></span></div>
+        <div class="zus-fuss">${esc(window.BEREICH.name)} · Melanie Bernshausen · Diplomierte Mediendidaktikerin (EÖDL)</div>
+    </div>`;
+    const blatt = document.createElement("div");
+    blatt.className = "blatt zus " + (stufe === "34" ? "stufe34" : "stufe12");
+    blatt.innerHTML = haelfte + '<div class="zus-schnitt"><span>✂</span></div>' + haelfte;
+    return blatt;
+}
+// Schrift so groß wie möglich, ohne dass eine Hälfte überläuft
+function zusammenfassungEinpassen(blatt){
+    const h = blatt.querySelector(".zus-haelfte");
+    const ok = () => h.scrollHeight <= h.clientHeight + 1;
+    let lo = 9, hi = blatt.classList.contains("stufe34") ? 26 : 30;
+    blatt.style.fontSize = hi + "pt";
+    if (ok()) return;
+    for (let i = 0; i < 12; i++) { const m = (lo + hi) / 2; blatt.style.fontSize = m + "pt"; if (ok()) lo = m; else hi = m; }
+    blatt.style.fontSize = lo + "pt";
+}
+
 // Lesetext so groß wie möglich auf genau eine Seite
 function leseEinpassen(blatt){
     let lo = 10, hi = blatt.classList.contains("stufe34") ? 22 : 26;
@@ -1010,7 +1074,7 @@ function lehrerHtml(e, st){
         })()}
     </div>`;
 }
-function anzahlGemerkt(k){ const std = (k === "ab12" || k === "ab34" || k.startsWith("lese")) ? 9 : 1; try { const v = parseInt(localStorage.getItem("sozial_anz_" + k), 10); if (v > 0) return v; } catch (err) {} return std; }
+function anzahlGemerkt(k){ const std = (k === "ab12" || k === "ab34" || k.startsWith("lese")) ? 9 : k.startsWith("zus") ? 5 : 1; try { const v = parseInt(localStorage.getItem("sozial_anz_" + k), 10); if (v > 0) return v; } catch (err) {} return std; }
 function anzahlFeld(k){ return `<label class="druck-anzahl" title="Anzahl Exemplare"><input type="number" data-anzahl="${k}" min="1" max="40" value="${anzahlGemerkt(k)}" inputmode="numeric"><span>×</span></label>`; }
 function druckAnzahl(k){
     const f = document.querySelector(`[data-anzahl="${k}"]`);
@@ -1028,6 +1092,13 @@ async function drucken(e, was){
         ziel.appendChild(erstes);
         await schriften();
         leseEinpassen(erstes);
+        for (let k = 1; k < anzahl; k++) ziel.appendChild(erstes.cloneNode(true));
+    } else if (was === "zus12" || was === "zus34") {
+        const st = was.slice(3), anzahl = druckAnzahl(was);
+        const erstes = zusammenfassungBlatt(e, st);
+        ziel.appendChild(erstes);
+        await schriften();
+        zusammenfassungEinpassen(erstes);
         for (let k = 1; k < anzahl; k++) ziel.appendChild(erstes.cloneNode(true));
     } else if (was === "regie12" || was === "regie34") {
         const st = was.slice(5);
@@ -1050,7 +1121,7 @@ async function drucken(e, was){
         blaetter.forEach(([b, n]) => { let nach = b; for (let k = 1; k < n; k++) { const c = b.cloneNode(true); nach.after(c); nach = c; } });
     }
     const titel = document.title;
-    document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", lehrer12: " – Vorbereitung Kl. 1-2", lehrer34: " – Vorbereitung Kl. 3-4", alles12: " – Kl. 1-2", alles34: " – Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 1-2", ab34: " – AB Kl. 3-4" }[was] || "");
+    document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", lehrer12: " – Vorbereitung Kl. 1-2", lehrer34: " – Vorbereitung Kl. 3-4", alles12: " – Kl. 1-2", alles34: " – Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 1-2", ab34: " – AB Kl. 3-4", zus12: " – Zusammenfassung Kl. 1-2", zus34: " – Zusammenfassung Kl. 3-4" }[was] || "");
     window.addEventListener("afterprint", () => { ziel.innerHTML = ""; document.title = titel; }, { once: true });
     setTimeout(() => window.print(), 60);
 }
@@ -1318,7 +1389,10 @@ function zeigeStunde(id){
                 <div class="druck-posten">${anzahlFeld("ab34")}<button class="btn blau" data-druck="ab34"><i class="fa-solid fa-file"></i> Arbeitsblatt Kl. 3/4</button></div>
                 <div class="druck-posten nur12">${anzahlFeld("lese12")}<button class="btn" data-druck="lese12"><i class="fa-solid fa-book-open"></i> Lesetext Kl. 1/2</button></div>
                 <div class="druck-posten">${anzahlFeld("lese34")}<button class="btn" data-druck="lese34"><i class="fa-solid fa-book-open"></i> Lesetext Kl. 3/4</button></div>
+                <div class="druck-posten nur12">${anzahlFeld("zus12")}<button class="btn gruen" data-druck="zus12"><i class="fa-solid fa-lightbulb"></i> Zusammenfassung Kl. 1/2</button></div>
+                <div class="druck-posten">${anzahlFeld("zus34")}<button class="btn gruen" data-druck="zus34"><i class="fa-solid fa-lightbulb"></i> Zusammenfassung Kl. 3/4</button></div>
             </div>
+            <p class="ed-hilfe" style="margin-top:6px"><i class="fa-solid fa-lightbulb"></i> <b>Zusammenfassung:</b> „Das habe ich heute gelernt“ – Merksatz und die wichtigsten Punkte der Stunde für die Mappe der Kinder. Zwei gleiche Hälften pro Blatt zum Ausschneiden und Einkleben (die Zahl = Anzahl der Blätter, also für doppelt so viele Kinder).</p>
             <div class="knopfleiste" style="margin-top:10px"><button class="btn gold" data-druck="alles12"><i class="fa-solid fa-layer-group"></i> Alles für Kl. 1/2</button><button class="btn gold" data-druck="alles34"><i class="fa-solid fa-layer-group"></i> Alles für Kl. 3/4</button><span class="ed-hilfe" style="margin:0;align-self:center">Stundenvorbereitung nur für diese Stufe + ihre Arbeitsblätter in der eingestellten Anzahl</span></div>
             <p class="ed-hilfe" style="margin-top:10px">Die Zahl vor jedem Knopf ist die Anzahl der Exemplare – sie wird gemerkt. Der Lesetext kommt ohne deine Hinweise auf eine A4-Seite – die Abschnitt-Nummern passen zu den Folien („Wer liest vor?“). Tipp: Im Druckfenster „Als PDF sichern“ wählen, um die Stunde als PDF abzulegen.</p>
         </div>
@@ -1374,7 +1448,7 @@ function zeigeStunde(id){
     }
     vorschauZeigen(document.getElementById("v34"), e, "34");
     if (e.nur34) {
-        inhalt.querySelectorAll('[data-einstieg="12"], [data-pptx="12"], [data-druck="ab1"], [data-druck="ab2"], [data-druck="regie12"], [data-druck="lese12"], [data-druck="lehrer12"], [data-druck="alles12"], [data-va="12"], .nur12').forEach(x => x.remove());
+        inhalt.querySelectorAll('[data-einstieg="12"], [data-pptx="12"], [data-druck="ab1"], [data-druck="ab2"], [data-druck="regie12"], [data-druck="lese12"], [data-druck="zus12"], [data-druck="lehrer12"], [data-druck="alles12"], [data-va="12"], .nur12').forEach(x => x.remove());
         const start34 = inhalt.querySelector('[data-einstieg="34"]'); if (start34) start34.classList.add("gold");
     }
     inhalt.querySelectorAll("[data-druck]").forEach(b => b.addEventListener("click", () => drucken(e, b.dataset.druck)));
