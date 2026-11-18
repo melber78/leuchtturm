@@ -375,7 +375,10 @@ table.ab-tab td .lz{ min-height:0; }
 
 /* ---------- Zusammenfassung für die Kinder (2 gleiche Hälften zum Ausschneiden) ---------- */
 .blatt.zus{ padding:0; }
-.zus-haelfte{ flex:1 1 0; min-height:0; overflow:hidden; display:flex; flex-direction:column; padding:9mm 14mm 5mm; }
+.zus-haelfte{ flex:1 1 0; min-height:0; overflow:hidden; display:flex; flex-direction:column; padding:12mm 14mm 8mm; }
+.zus-feld{ flex:1 0 38mm; margin-top:4mm; border:.5mm dashed #9aa7ad; border-radius:4mm; padding:2.5mm 4mm; display:flex; flex-direction:column; }
+.zus-feld b{ font-family:"Nunito",sans-serif; font-size:.8em; color:var(--nacht); }
+.zus-feld .linien{ flex:1; background:repeating-linear-gradient(to bottom, transparent 0, transparent calc(2.4em - .3mm), #c9d6e3 calc(2.4em - .3mm), #c9d6e3 2.4em); margin-top:1mm; }
 .zus-schnitt{ flex:none; border-top:.5mm dashed #9aa7ad; position:relative; height:0; }
 .zus-schnitt span{ position:absolute; left:8mm; top:-3.2mm; background:white; padding:0 1.5mm; font-size:11pt; color:#9aa7ad; }
 .zus-kopf{ display:flex; align-items:center; gap:3mm; border-bottom:.6mm solid var(--meer); padding-bottom:1.6mm; }
@@ -910,7 +913,7 @@ function lesetextBlatt(e, stufe){
         ${fragen.length ? `<div class="lese-fragen"><b>Zum Nachdenken</b><ol>${fragen.map(q => `<li>${esc(q)}</li>`).join("")}</ol></div>` : ""}</div>` + FUSS;
     return blatt;
 }
-// „Das habe ich heute gelernt“: kurze Zusammenfassung, zweimal auf einer A4-Seite (zum Ausschneiden und Einkleben)
+// „Das habe ich heute gelernt“: kurze Zusammenfassung, ein A4-Blatt pro Kind
 function zusammenfassungDaten(e, stufe){
     let liste = (window.STUNDEN_MERKE || {})[e.ersetzt || e.id] || (window.STUNDEN_MERKE || {})[e.id];
     if (!liste || !liste.length) {   // eigene Stunden: aus Ziel und Übungen
@@ -928,19 +931,20 @@ function zusammenfassungBlatt(e, stufe){
         <div class="zus-kern">${inline(d.kern)}</div>
         ${d.woerter.length ? `<div class="zus-woerter">${d.woerter.map(w => `<div><span>${w[0]}</span><b>${esc(w[1])}</b><span class="de">${esc(w[2])}</span></div>`).join("")}</div>` : ""}
         ${d.punkte.length ? `<ul class="zus-punkte">${d.punkte.map(p => `<li>${inline(p).replace(/_{5,}/g, '<span class="ln" style="min-width:45mm"></span>')}</li>`).join("")}</ul>` : ""}
+        <div class="zus-feld"><b>✏️ Das merke ich mir – schreibe oder male:</b><div class="linien"></div></div>
         <div class="zus-ich"><span>So gut kann ich das schon:</span><span class="gesichter"><span>😀</span><span>🙂</span><span>😐</span></span></div>
         <div class="zus-fuss">${esc(window.BEREICH.name)} · Melanie Bernshausen · Diplomierte Mediendidaktikerin (EÖDL)</div>
     </div>`;
     const blatt = document.createElement("div");
     blatt.className = "blatt zus " + (stufe === "34" ? "stufe34" : "stufe12");
-    blatt.innerHTML = haelfte + '<div class="zus-schnitt"><span>✂</span></div>' + haelfte;
+    blatt.innerHTML = haelfte;
     return blatt;
 }
 // Schrift so groß wie möglich, ohne dass eine Hälfte überläuft
 function zusammenfassungEinpassen(blatt){
     const h = blatt.querySelector(".zus-haelfte");
     const ok = () => h.scrollHeight <= h.clientHeight + 1;
-    let lo = 9, hi = blatt.classList.contains("stufe34") ? 26 : 30;
+    let lo = 10, hi = blatt.classList.contains("stufe34") ? 23 : 26;
     blatt.style.fontSize = hi + "pt";
     if (ok()) return;
     for (let i = 0; i < 12; i++) { const m = (lo + hi) / 2; blatt.style.fontSize = m + "pt"; if (ok()) lo = m; else hi = m; }
@@ -949,7 +953,7 @@ function zusammenfassungEinpassen(blatt){
 
 // Lesetext so groß wie möglich auf genau eine Seite
 function leseEinpassen(blatt){
-    let lo = 10, hi = blatt.classList.contains("stufe34") ? 22 : 26;
+    let lo = 10, hi = blatt.classList.contains("stufe34") ? 23 : 26;
     blatt.style.fontSize = hi + "pt";
     if (passt(blatt)) return true;
     for (let i = 0; i < 12; i++) { const m = (lo + hi) / 2; blatt.style.fontSize = m + "pt"; if (passt(blatt)) lo = m; else hi = m; }
@@ -1074,7 +1078,7 @@ function lehrerHtml(e, st){
         })()}
     </div>`;
 }
-function anzahlGemerkt(k){ const std = (k === "ab12" || k === "ab34" || k.startsWith("lese")) ? 9 : k.startsWith("zus") ? 5 : 1; try { const v = parseInt(localStorage.getItem("sozial_anz_" + k), 10); if (v > 0) return v; } catch (err) {} return std; }
+function anzahlGemerkt(k){ const std = (k === "ab12" || k === "ab34" || k.startsWith("lese")) ? 9 : k.startsWith("zus") ? 9 : 1; try { const v = parseInt(localStorage.getItem("sozial_anz_" + k), 10); if (v > 0) return v; } catch (err) {} return std; }
 function anzahlFeld(k){ return `<label class="druck-anzahl" title="Anzahl Exemplare"><input type="number" data-anzahl="${k}" min="1" max="40" value="${anzahlGemerkt(k)}" inputmode="numeric"><span>×</span></label>`; }
 function druckAnzahl(k){
     const f = document.querySelector(`[data-anzahl="${k}"]`);
@@ -1392,7 +1396,7 @@ function zeigeStunde(id){
                 <div class="druck-posten nur12">${anzahlFeld("zus12")}<button class="btn gruen" data-druck="zus12"><i class="fa-solid fa-lightbulb"></i> Zusammenfassung Kl. 1/2</button></div>
                 <div class="druck-posten">${anzahlFeld("zus34")}<button class="btn gruen" data-druck="zus34"><i class="fa-solid fa-lightbulb"></i> Zusammenfassung Kl. 3/4</button></div>
             </div>
-            <p class="ed-hilfe" style="margin-top:6px"><i class="fa-solid fa-lightbulb"></i> <b>Zusammenfassung:</b> „Das habe ich heute gelernt“ – Merksatz und die wichtigsten Punkte der Stunde für die Mappe der Kinder. Zwei gleiche Hälften pro Blatt zum Ausschneiden und Einkleben (die Zahl = Anzahl der Blätter, also für doppelt so viele Kinder).</p>
+            <p class="ed-hilfe" style="margin-top:6px"><i class="fa-solid fa-lightbulb"></i> <b>Zusammenfassung:</b> „Das habe ich heute gelernt“ – Merksatz und die wichtigsten Punkte der Stunde für die Mappe der Kinder – ein A4-Blatt pro Kind, mit Feld zum Schreiben oder Malen.</p>
             <div class="knopfleiste" style="margin-top:10px"><button class="btn gold" data-druck="alles12"><i class="fa-solid fa-layer-group"></i> Alles für Kl. 1/2</button><button class="btn gold" data-druck="alles34"><i class="fa-solid fa-layer-group"></i> Alles für Kl. 3/4</button><span class="ed-hilfe" style="margin:0;align-self:center">Stundenvorbereitung nur für diese Stufe + ihre Arbeitsblätter in der eingestellten Anzahl</span></div>
             <p class="ed-hilfe" style="margin-top:10px">Die Zahl vor jedem Knopf ist die Anzahl der Exemplare – sie wird gemerkt. Der Lesetext kommt ohne deine Hinweise auf eine A4-Seite – die Abschnitt-Nummern passen zu den Folien („Wer liest vor?“). Tipp: Im Druckfenster „Als PDF sichern“ wählen, um die Stunde als PDF abzulegen.</p>
         </div>
