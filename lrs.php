@@ -800,6 +800,12 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .eb-plan td:last-child{ border-right:2px solid #E1E8EF; border-radius:0 12px 12px 0; width:54px; text-align:center; }
 .eb-plan b{ color:#1E2A36; }
 .eb-tipps{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px 18px; font-size:14.5px; background:#EAF5EC; border:2px solid #9CC7A4; border-radius:16px; padding:12px 16px; }
+.eb-woche{ width:100%; border-collapse:collapse; font-size:14px; line-height:1.32; }
+.eb-woche th{ font-size:12px; color:#4A5866; text-align:left; padding:4px 6px; border-bottom:2px solid #C9D6E3; }
+.eb-woche td{ padding:7px 6px; border-bottom:1.5px solid #E1E8EF; vertical-align:middle; }
+.eb-woche td.wann{ width:118px; font-weight:800; color:#1D4F86; font-size:13px; white-space:nowrap; }
+.eb-woche .tag{ width:27px; text-align:center; padding:4px 2px; }
+.eb-woche .eb-k{ display:inline-block; width:19px; height:19px; border:2px solid #1D5FA8; border-radius:5px; }
 .eb-woerter{ font-size:19px; background:#FFF4D6; border-radius:14px; padding:10px 16px; }
 .eb-rueck{ border:2px dashed #8FA3B8; border-radius:14px; padding:10px 14px; font-size:14.5px; display:flex; flex-direction:column; gap:10px; }
 .eb-rueck .linie{ border-bottom:1.5px solid #8FA3B8; height:18px; }
@@ -1542,7 +1548,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
                         <div class="fp-label">Dazu</div>
                         <label class="fp-chip klein an"><input type="checkbox" id="fp-uebersicht" checked><span class="fp-chip-text"><i class="fa-solid fa-clipboard-list"></i> Übersicht für dich</span></label>
                         <label class="fp-chip klein an"><input type="checkbox" id="fp-kaertchen" checked><span class="fp-chip-text"><i class="fa-solid fa-id-card"></i> Strategie-Kärtchen</span></label>
-                        <label class="fp-chip klein an"><input type="checkbox" id="fp-eltern" checked><span class="fp-chip-text"><i class="fa-solid fa-house-chimney"></i> Elternblatt</span></label>
+                        <label class="fp-chip klein an"><input type="checkbox" id="fp-eltern" checked><span class="fp-chip-text"><i class="fa-solid fa-house-chimney"></i> Wochenhausaufgabe</span></label>
                     </div>
                 </div>
             </div>
@@ -1629,7 +1635,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
         <div class="fp-wahl">
             <label><input type="checkbox" id="std-plan" checked> Ablaufplan (für dich)</label>
             <label><input type="checkbox" id="std-rueck" checked> Stunden-Rückblick fürs Kind (Kl. 1–4 kindgerecht, ab Kl. 5 Reflexion)</label>
-            <label><input type="checkbox" id="std-eltern"> Elternblatt mitgeben</label>
+            <label><input type="checkbox" id="std-eltern"> Wochenhausaufgabe für die Eltern (Übungen für den Alltag)</label>
         </div>
         <button class="btn" onclick="fs_erstellen('stunde')"><i class="fa-solid fa-layer-group"></i> Stunde zusammenstellen</button>
         <button class="btn sekundaer" type="button" onclick="std_timerOeffnen()" title="Timer mit den Phasen und Minuten der Stunde"><i class="fa-solid fa-stopwatch"></i> Timer für die Stunde</button>
@@ -8454,24 +8460,122 @@ const EB_TIPPS = [
     "Feste Übungszeit, ruhiger Platz, kein Handy daneben.",
     "Nicht mit Geschwistern oder Mitschülern vergleichen.",
 ];
-function eb_blatt(foki, code){
-    const tage = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
-    const vorschlaege = [];
-    foki.forEach(k => {
-        if (EB_RS[k]) vorschlaege.push({ titel: RS_NAMEN[k] ? RS_NAMEN[k].kurz : RS_SCHWERPUNKTE[k].name, text: EB_RS[k] });
-        (EB_UEBUNGEN[k] || []).forEach(([titel, text]) => vorschlaege.push({ titel, text }));
-    });
-    if (!vorschlaege.length) [...EB_UEBUNGEN.lesen, ...EB_UEBUNGEN.aufmerksamkeit, ...EB_UEBUNGEN.akdiff].forEach(([titel, text]) => vorschlaege.push({ titel, text }));
-    // abwechselnd aus den Bereichen verteilen
-    const plan = tage.map((tag, i) => ({ tag, u: vorschlaege[i % vorschlaege.length] }));
-    const woerter = code ? kt_woerter(code).slice(0, 10).map(w => w.w) : [];
-    return { titel: "10 Minuten am Tag", extra: { kopfRechts: 'Woche vom: <span class="ws-linie" style="width:150px;"></span>', label: "Elternblatt", afs: "Leuchtturm · Zusammenarbeit mit dem Elternhaus", ohneAfs: true, max: 1.1, info: true }, html: `
-        <div class="eb-intro">Liebe Eltern, kurze, regelmäßige Übungen von etwa <b>10 Minuten</b> helfen Ihrem Kind mehr als eine lange Übungsstunde am Wochenende. Hier sind Vorschläge für diese Woche – passend zu dem, was wir gerade in der Förderung üben. Haken Sie ab, was Sie geschafft haben.</div>
-        <table class="eb-plan"><tbody>${plan.map(p => `<tr><td>${p.tag}</td><td><b>${ws_esc(p.u.titel)}:</b> ${ws_esc(p.u.text)}</td><td><span class="fs-kaestchen-klein"></span></td></tr>`).join("")}</tbody></table>
-        ${woerter.length ? `<div class="eb-woerter"><b>Unsere Übungswörter:</b> ${woerter.map(ws_esc).join(" · ")}</div>` : ""}
-        <div class="eb-tipps">${EB_TIPPS.map(t => `<div>✔ ${t}</div>`).join("")}</div>
-        <div class="eb-rueck"><b>Rückmeldung an die Förderung</b><div>☐ hat gut geklappt &nbsp;&nbsp; ☐ war manchmal schwierig &nbsp;&nbsp; ☐ bitte kurz sprechen</div><div class="linie"></div><div class="linie"></div></div>` };
+/* ---------- Wochenhausaufgabe: Übungen für den Alltag (Eltern & Kind) ---------- */
+// [Situation, Titel, So geht's] – ohne Arbeitsblatt, nebenbei im Familienalltag
+const EB_SITUATION = { fr: "🍞 Frühstück", weg: "🚗 Unterwegs", ein: "🛒 Einkaufen", kue: "🍳 Küche", abend: "🌙 Vor dem Schlafen", spiel: "🎲 Spielzeit", bad: "🛁 Badezimmer", haus: "🏠 Zu Hause" };
+const EB_ALLTAG = {
+    aufmerksamkeit: [
+        ["fr", "Was ist anders?", "Ihr Kind schließt die Augen, Sie verändern eine Sache auf dem Frühstückstisch (Tasse umdrehen, Löffel wegnehmen). Was ist anders?"],
+        ["weg", "Kennzeichen-Jagd", "Im Auto oder Bus: Wer findet zuerst ein Kennzeichen mit einer 7 – oder mit dem Buchstaben K?"],
+        ["spiel", "Ich packe meinen Koffer", "Abwechselnd einen Gegenstand dazunehmen und alle vorherigen in der richtigen Reihenfolge wiederholen."],
+        ["haus", "Zahlentafel-Rennen", "Zahlen 1–25 durcheinander auf einen Zettel schreiben. Ihr Kind zeigt sie der Reihe nach, Sie stoppen die Zeit. Jeden Tag ein Versuch."],
+        ["abend", "Stille Minute", "Licht aus, eine Minute ganz still sein: Was hörst du alles? Danach zählt Ihr Kind die Geräusche auf."],
+    ],
+    optdiff: [
+        ["fr", "Buchstaben-Detektiv", "Auf der Müslipackung oder Zeitung alle e (oder a) suchen und einkreisen. Wie viele sind es?"],
+        ["ein", "Gleiche Packung finden", "Im Supermarkt: Ihr Kind sucht genau die Packung, die Sie zeigen – gleiche Sorte, gleiche Größe."],
+        ["spiel", "Unterschiede finden", "Suchbilder aus Rätselheften oder der Kinderzeitung: Wer findet zuerst alle Unterschiede?"],
+        ["weg", "Schilder lesen", "Unterwegs auf Schildern Wörter suchen, die gleich anfangen wie der eigene Name."],
+        ["haus", "Socken-Paare", "Beim Wäsche zusammenlegen: Ihr Kind sucht die passenden Sockenpaare – genau hinschauen!"],
+    ],
+    bd: [
+        ["fr", "b oder d?", "Auf Verpackungen alle b blau und alle d rot einkreisen (Butter, Brot, Dose …)."],
+        ["haus", "Bett-Trick", "Zwei Fäuste, Daumen hoch, Fäuste zusammen: links das b, rechts das d – wie ein Bett. Jeden Tag einmal zeigen lassen."],
+        ["weg", "b-d-Wörter sammeln", "Unterwegs abwechselnd Wörter mit b oder d nennen: Baum, Dach, Bus, Dose … Wer zuerst keins mehr weiß, verliert."],
+        ["kue", "Strich zuerst?", "Mit dem Finger auf den Tisch, in Mehl oder auf eine beschlagene Scheibe schreiben: b (erst Strich, dann Bauch) und d (erst Bauch, dann Strich)."],
+    ],
+    optged: [
+        ["fr", "Kim-Spiel", "6–8 Dinge vom Tisch 30 Sekunden anschauen, abdecken, eins wegnehmen: Was fehlt?"],
+        ["ein", "Einkaufszettel anschauen", "Ihr Kind schaut den Einkaufszettel eine Minute an. Im Laden darf es sagen, was noch fehlt."],
+        ["spiel", "Memory", "Eine Runde Memory – Ihr Kind darf zuerst. Zum Schluss: Wo lag welches Paar?"],
+        ["haus", "Muster nachbauen", "Sie legen mit Bausteinen ein kleines Muster. Ihr Kind schaut es an, Sie decken es ab – nachbauen aus dem Kopf."],
+    ],
+    optser: [
+        ["kue", "Tisch decken nach Plan", "Ihr Kind deckt den Tisch immer in derselben Reihenfolge: Teller – Besteck – Glas – Serviette. Morgen umgekehrt?"],
+        ["spiel", "Muster weiterlegen", "Mit Besteck, Knöpfen oder Steinen eine Reihe legen (Löffel – Gabel – Gabel …). Ihr Kind setzt sie fort."],
+        ["haus", "Wörter-Salat", "Die Buchstaben eines Lernworts auf Zettel schreiben und mischen. Ihr Kind legt das Wort richtig."],
+        ["weg", "Zahlen-Reihen", "Unterwegs: 2, 4, 6 … wie geht es weiter? Oder Hausnummern: Kommt als Nächstes eine gerade oder ungerade?"],
+    ],
+    akdiff: [
+        ["weg", "Reimwörter-Ping-Pong", "Sie sagen ein Wort (Maus), Ihr Kind antwortet mit einem Reim (Haus). Wer zuerst keinen mehr findet, verliert."],
+        ["haus", "Silben schwingen", "Beim Treppensteigen jedes Wort in Silben: pro Stufe eine Silbe – Scho-ko-la-de."],
+        ["kue", "Anlaut-Raten", "„Ich sehe etwas, das fängt mit Mmm an …“ – Ihr Kind rät: Milch!"],
+        ["fr", "Laute zählen", "Wie viele Laute hörst du in „Brot“? (B – r – o – t = 4). Jeden Tag zwei Wörter vom Tisch."],
+        ["abend", "Lang oder kurz?", "Wörter langsam sprechen: Ist der Selbstlaut lang wie in Rose oder kurz wie in Sonne?"],
+    ],
+    akged: [
+        ["ein", "Einkaufsliste merken", "Vor dem Einkauf 4–6 Dinge nennen. Im Laden zählt Ihr Kind sie aus dem Kopf auf."],
+        ["weg", "Zahlen nachsprechen", "Sie sagen 4–6 Ziffern, Ihr Kind spricht sie nach. Für Profis: rückwärts!"],
+        ["kue", "Küchen-Aufträge", "Zwei bis drei Aufträge auf einmal: „Hol die Butter, leg den Löffel hin und mach die Tür zu.“ Erst wenn alles gesagt ist, loslegen."],
+        ["abend", "Was war heute?", "Ihr Kind erzählt drei Dinge vom Tag – in der richtigen Reihenfolge."],
+    ],
+    akser: [
+        ["haus", "Klatsch-Rhythmus", "Sie klatschen einen kurzen Rhythmus vor (kurz – kurz – lang), Ihr Kind klatscht ihn genau nach."],
+        ["weg", "Silben-Salat", "Sie sprechen die Silben eines Wortes durcheinander (ne – Son). Ihr Kind setzt das Wort zusammen: Sonne!"],
+        ["kue", "Welcher Laut zuerst?", "Wort langsam sprechen (Tisch): Was hörst du zuerst, was zuletzt?"],
+        ["abend", "Geschichte weitererzählen", "Sie beginnen eine Geschichte mit drei Sätzen, Ihr Kind erzählt sie in derselben Reihenfolge nach und erfindet einen Schluss."],
+    ],
+    koerper: [
+        ["bad", "Rechts oder links?", "Beim Zähneputzen: Mit welcher Hand putzt du? Zeig dein linkes Ohr, dein rechtes Knie …"],
+        ["spiel", "Simon sagt …", "„Simon sagt: Fass mit der rechten Hand an dein linkes Ohr.“ Nur wenn „Simon sagt“ davorsteht, wird es gemacht."],
+        ["haus", "Anziehen mit Ansage", "Beim Anziehen sagt Ihr Kind laut: „Erst den linken Schuh, dann den rechten.“"],
+    ],
+    raum: [
+        ["weg", "Rechts oder links?", "Beim Spazierengehen an jeder Kreuzung fragen: In welche Richtung gehen wir jetzt?"],
+        ["haus", "Schatzsuche", "Einen kleinen Schatz verstecken und den Weg beschreiben: „3 Schritte geradeaus, dann links …“ Danach tauschen."],
+        ["kue", "Wo steht was?", "„Was steht links neben der Milch? Was liegt unter dem Teller?“ – abwechselnd fragen."],
+        ["abend", "Zimmer-Rätsel", "„Ich denke an etwas, das über deinem Bett hängt …“ – Ihr Kind rät."],
+    ],
+    lesen: [
+        ["abend", "Gemeinsam lesen", "Abwechselnd eine Seite oder einen Satz vorlesen. Danach: Was war das Spannendste?"],
+        ["fr", "Packungen lesen", "Ihr Kind liest beim Frühstück ein Wort oder einen kurzen Satz von der Verpackung vor."],
+        ["ein", "Einkaufszettel lesen", "Ihr Kind liest im Laden den Einkaufszettel vor und hakt ab."],
+        ["weg", "Schilder-Leser", "Unterwegs Schilder, Straßennamen und Plakate vorlesen."],
+        ["kue", "Rezept lesen", "Ein einfaches Rezept gemeinsam lesen – Ihr Kind liest die Zutaten vor."],
+    ],
+    worterarbeitung: [
+        ["haus", "Lernwörter-Box", "Täglich die Lernwörter üben: lesen – abdecken – schreiben – vergleichen."],
+        ["fr", "Wort des Tages", "Jeden Morgen ein Lernwort an den Kühlschrank hängen. Abends schreibt Ihr Kind es aus dem Kopf."],
+        ["weg", "Wörter buchstabieren", "Unterwegs ein Lernwort buchstabieren – auch rückwärts!"],
+        ["bad", "Spiegel-Schrift", "Ein Lernwort mit dem Finger auf den beschlagenen Badezimmerspiegel schreiben."],
+    ],
+    vs: [
+        ["kue", "Einkaufszettel schreiben", "Ihr Kind schreibt 3–4 Dinge auf den Einkaufszettel – Wort in Silben schwingen, dann schreiben, dann leise mitlesen."],
+        ["fr", "Mitsprechen beim Schreiben", "Ein Wort vom Tisch langsam sprechen und dabei schreiben: Brot – B, r, o, t. Danach mit dem Finger nachlesen."],
+        ["abend", "Ein Satz vom Tag", "Ihr Kind schreibt einen Satz über den Tag. Gemeinsam laut vorlesen: Steht da, was gemeint war?"],
+        ["haus", "Kärtchen fürs Zimmer", "Dinge im Zimmer beschriften (Tür, Bett, Lampe) – erst schwingen, dann schreiben."],
+    ],
+};
+function eb_rsZeilen(foki){
+    return foki.filter(k => EB_RS[k]).map(k => ["haus", "Rechtschreiben: " + (RS_NAMEN[k] ? RS_NAMEN[k].kurz : RS_SCHWERPUNKTE[k].name), EB_RS[k]]);
 }
+function eb_blatt(foki, code){
+    const bereiche = [...new Set(foki)].filter(k => EB_ALLTAG[k]);
+    if (!bereiche.length) bereiche.push("lesen", "aufmerksamkeit", "akdiff");
+    // reihum aus den Bereichen ziehen, möglichst verschiedene Alltagssituationen
+    const toepfe = bereiche.map(k => mische(EB_ALLTAG[k]));
+    const zeilen = [...eb_rsZeilen(foki).slice(0, 2)], situationen = new Set();
+    for (let runde = 0; zeilen.length < 6 && runde < 12; runde++){
+        toepfe.forEach(t => {
+            if (zeilen.length >= 6 || !t.length) return;
+            let i = t.findIndex(x => !situationen.has(x[0]));
+            if (i < 0) i = 0;
+            const x = t.splice(i, 1)[0];
+            situationen.add(x[0]); zeilen.push(x);
+        });
+        if (toepfe.every(t => !t.length)) break;
+    }
+    const woerter = code ? kt_woerter(code).slice(0, 10).map(w => w.w) : [];
+    const tage = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+    return { titel: "Unsere Wochenhausaufgabe", extra: { kopfRechts: `${code ? `Kürzel: <b>${ws_esc(code)}</b> · ` : ""}Woche vom: <span class="ws-linie" style="width:130px;"></span>`, label: "Wochenhausaufgabe", afs: "Leuchtturm · Zusammenarbeit mit dem Elternhaus", ohneAfs: true, max: 1.1, info: true }, html: `
+        <div class="eb-intro">Liebe Eltern, diese Übungen passen in den ganz normalen Alltag – ohne Arbeitsblatt und ohne Stress. <b>Ein bis zwei Übungen am Tag</b> (5–10 Minuten) reichen völlig. Sie passen zu dem, was wir gerade in der Förderung üben. Kreuzen Sie an, was Sie gemacht haben, und geben Sie das Blatt nächste Woche wieder mit.</div>
+        <table class="eb-woche"><thead><tr><th>Wann?</th><th>Unsere Übung</th>${tage.map(t => `<th class="tag">${t}</th>`).join("")}</tr></thead>
+        <tbody>${zeilen.map(([s, titel, text]) => `<tr><td class="wann">${EB_SITUATION[s] || ""}</td><td><b>${ws_esc(titel)}:</b> ${ws_esc(text)}</td>${tage.map(() => '<td class="tag"><span class="eb-k"></span></td>').join("")}</tr>`).join("")}</tbody></table>
+        ${woerter.length ? `<div class="eb-woerter"><b>Unsere Übungswörter diese Woche:</b> ${woerter.map(ws_esc).join(" · ")}</div>` : ""}
+        <div class="eb-tipps">${mische(EB_TIPPS).slice(0, 4).map(t => `<div>✔ ${t}</div>`).join("")}</div>
+        <div class="eb-rueck"><b>Rückmeldung an die Förderung</b><div>☐ hat gut geklappt &nbsp;&nbsp; ☐ war manchmal schwierig &nbsp;&nbsp; ☐ bitte kurz sprechen</div><div>Das ist uns aufgefallen:</div><div class="linie"></div><div class="linie"></div><div style="display:flex; gap:10px; align-items:flex-end;"><span>Unterschrift:</span><span style="flex:1; border-bottom:1.5px solid #8FA3B8; height:18px;"></span><span>Datum:</span><span style="width:110px; border-bottom:1.5px solid #8FA3B8; height:18px;"></span></div></div>` };
+}
+
 function eb_foki(){ return [...document.querySelectorAll(".eb-wahl:checked")].map(c => c.value); }
 
 /* ---------- Silbentext-Generator ---------- */
@@ -8806,7 +8910,7 @@ function fp_dynamisch(){
         });
     }
     if (lt_an("fp-kaertchen") && rs.length){ sk_blaetter(rs).forEach(b => { blaetter.push({ ...b, kurz: "Kärtchen" }); }); inhalt.push("Strategie-Kärtchen"); }
-    if (lt_an("fp-eltern")){ blaetter.push({ nr: "0", kurz: "Elternblatt", name: "Elternblatt", bau: () => eb_blatt([...funktionen, ...rs, ...(lesen.length ? ["lesen"] : [])], code) }); inhalt.push("Elternblatt (10 Minuten am Tag)"); }
+    if (lt_an("fp-eltern")){ blaetter.push({ nr: "0", kurz: "Wochenhausaufgabe", name: "Wochenhausaufgabe (Eltern)", bau: () => eb_blatt([...funktionen, ...rs, ...(lesen.length ? ["lesen"] : [])], code) }); inhalt.push("Wochenhausaufgabe für die Eltern (Übungen für den Alltag)"); }
     if (uebersicht){
         const stufen = (fp_import && fp_import.f) || {};
         const beispiele = ((fp_import && fp_import.woerter) || []).filter(w => w.sp.some(k => rs.includes(k))).slice(0, 10).map(w => `${w.wort} / ${w.falsch}`);
@@ -9391,7 +9495,7 @@ function std_ausRezept(r){
     }));
     const phasen = [{ phase: "Ankommen", zeit: "", inhalt: "Begrüßung, kurzes Gespräch: Wie war die Woche? Was hat in der Schule gut geklappt?" + (code && kt_woerter(code).length ? ` Lernbox: fällige Wörter von ${ws_esc(code)} abfragen.` : "") }];
     STD_PHASEN.forEach(ph => { if (phasenText[ph]) phasen.push({ phase: ph, zeit: "", inhalt: phasenText[ph].text, n: phasenText[ph].n }); });
-    phasen.push({ phase: "Abschluss", zeit: "", inhalt: "Stunden-Rückblick, Stempel im Lernpass, kurzes Spiel (z. B. Reimwörter-Ping-Pong)" + (r.eltern ? ", Elternblatt mitgeben." : ".") });
+    phasen.push({ phase: "Abschluss", zeit: "", inhalt: "Stunden-Rückblick, Stempel im Lernpass, kurzes Spiel (z. B. Reimwörter-Ping-Pong)" + (r.eltern ? ", Wochenhausaufgabe mitgeben und kurz erklären." : ".") });
     std_zeitenVerteilen(phasen, r.dauer || 40);
     const heftIds = items.filter(it => it.t === "heft" && !it.ng).map(it => it.id);
     const info = { kind: code, kind2: r.kind2 || "", phasen, geuebt, merksatz, dauer: r.dauer || 40, heft: heftIds, rezept: r };
@@ -9403,8 +9507,12 @@ function std_ausRezept(r){
     if (r.rueck && !r.kind2) ergebnis.push({ nr: "0", kurz: "Rückblick", name: "Stunden-Rückblick", bau: () => std_rueckblick(info) });
     if (r.rueck && r.kind2) [[code || "Kind 1", geuebt], [r.kind2, geuebt2]].forEach(([kz, g]) => ergebnis.push({ nr: "0", kurz: kz + ": Rückblick", name: "Stunden-Rückblick " + kz, bau: () => { const x = std_rueckblick({ ...info, kind: kz, geuebt: g }); return { ...x, extra: { ...(x.extra || {}), kopfRechts: `Kürzel: <b>${ws_esc(kz)}</b>` } }; } }));
     if (r.eltern){
-        const foki = [...new Set([...items.filter(it => it.p === "Funktionstraining" && it.t === "fs").map(it => it.s), ...items.filter(it => it.t === "rs").map(it => it.k), ...(items.some(it => it.t === "ws") ? ["worterarbeitung"] : []), "aufmerksamkeit"])];
-        ergebnis.push({ nr: "0", kurz: "Elternblatt", name: "Elternblatt", bau: () => eb_blatt(foki, code) });
+        const fokiFuer = w => { const it2 = items.filter(it => !r.kind2 || !it.wer || it.wer === "beide" || it.wer === w);
+            return [...new Set([...it2.filter(it => it.p === "Funktionstraining" && it.t === "fs").map(it => it.s), ...it2.filter(it => it.t === "rs").map(it => it.k),
+                ...(it2.some(it => it.t === "ws" || it.t === "kartei") ? ["worterarbeitung"] : []), ...(it2.some(it => it.t === "vs") ? ["vs"] : []),
+                ...(it2.some(it => it.t === "lesen" || it.t === "le") ? ["lesen"] : []), "aufmerksamkeit"])]; };
+        if (r.kind2) [[code, "1"], [r.kind2, "2"]].forEach(([kz, w]) => ergebnis.push({ nr: "0", kurz: kz + ": Wochenhausaufgabe", name: "Wochenhausaufgabe " + kz, bau: () => eb_blatt(fokiFuer(w), kz) }));
+        else ergebnis.push({ nr: "0", kurz: "Wochenhausaufgabe", name: "Wochenhausaufgabe (Eltern)", bau: () => eb_blatt(fokiFuer("1"), code) });
     }
     return ergebnis.map((b, i) => ({ ...b, nr: String(i + 1) }));
 }
@@ -9518,7 +9626,7 @@ function es_ausRezept(r){
     if (aufm.length) phasen.push({ phase: "Aufmerksamkeit", n: aufm.length, inhalt: `${aufm.length > 1 ? "Blätter" : "Blatt"} ${aufm.map(it => `„${ws_esc(std_itemInfo(it, r).name)}“`).join(", ")} – leicht, muss sicher gelingen.` });
     phasen.push({ phase: "Lese-Schnappschuss", inhalt: `Schülerblatt „${ws_esc(et.t)}“ (${n} Wörter), Lehrerexemplar mitführen: Zeit stoppen, Fehler markieren. Zu schwer? Sofort eine Stufe tiefer: Wörter → Silben → Buchstaben. Danach Verständnisfragen mündlich. Abbrechen, bevor Frust entsteht.` });
     phasen.push({ phase: "Wahrnehmung als Spiel", inhalt: "<b>Akustische Differenzierung:</b> gleich oder anders? Tasse – Kasse · Dach – Bach · Nase – Nase · Hose – Rose · Wand – Wand. <b>Akustische Serialität:</b> Silben klatschen, ersten und letzten Laut nennen. <b>Optische Differenzierung:</b> b / d / p / q suchen. <b>Optisches Gedächtnis:</b> Kim-Spiel mit 4–5 Bildkarten." });
-    phasen.push({ phase: "Abschluss", inhalt: "Erfolgsmoment mit etwas, das sicher klappt. Konkretes Lob, Ausblick auf die nächste Stunde" + (r.rueck ? ", Stunden-Rückblick" : "") + (r.eltern ? ", Elternblatt mitgeben" : "") + "." });
+    phasen.push({ phase: "Abschluss", inhalt: "Erfolgsmoment mit etwas, das sicher klappt. Konkretes Lob, Ausblick auf die nächste Stunde" + (r.rueck ? ", Stunden-Rückblick" : "") + (r.eltern ? ", Wochenhausaufgabe mitgeben" : "") + "." });
     std_zeitenVerteilen(phasen, r.dauer || 40, { ...STD_GEWICHT, Ankommen: 7, Aufmerksamkeit: 5 });
     const info = { kind: code, phasen, geuebt, merksatz: "", dauer: r.dauer || 40, heft: [], rezept: r };
     std_letzte = info;
@@ -9527,7 +9635,7 @@ function es_ausRezept(r){
     if (r.plan) ergebnis.push({ nr: "0", kurz: "Ablaufplan", name: "Ablaufplan Erststunde (für dich)", bau: () => es_ablaufplan(info) });
     ergebnis.push(...blaetter);
     if (r.rueck) ergebnis.push({ nr: "0", kurz: "Rückblick", name: "Stunden-Rückblick", bau: () => std_rueckblick(info) });
-    if (r.eltern) ergebnis.push({ nr: "0", kurz: "Elternblatt", name: "Elternblatt", bau: () => eb_blatt(["aufmerksamkeit"], code) });
+    if (r.eltern) ergebnis.push({ nr: "0", kurz: "Wochenhausaufgabe", name: "Wochenhausaufgabe (Eltern)", bau: () => eb_blatt(["aufmerksamkeit", "akdiff", "lesen"], code) });
     return ergebnis.map((b, i) => ({ ...b, nr: String(i + 1) }));
 }
 function std_dynamisch(){
@@ -11938,16 +12046,16 @@ Object.assign(FS_SERIEN, {
         blaetter: [{ nr: "1", kurz: "Pass", name: "Lernpass", bau: sp_blatt }] },
 
     eltern: { tab: "extras", mat: "sonstiges", wert: "eltern", select: "#ex-typ", erstellen: "erstelleExtras",
-        optionText: "Elternblatt – 10-Minuten-Übungen für zu Hause",
-        label: "Elternblatt", afs: "Leuchtturm · Zusammenarbeit mit dem Elternhaus", ordner: "Elternbriefe",
-        tippVoll: "Wochenplan mit fünf kurzen Übungen passend zu den gewählten Bereichen. „Neu mischen“ verteilt die Übungen anders.",
+        optionText: "Wochenhausaufgabe – Übungen für den Alltag (Eltern & Kind)",
+        label: "Wochenhausaufgabe", afs: "Leuchtturm · Zusammenarbeit mit dem Elternhaus", ordner: "Elternbriefe",
+        tippVoll: "Sechs Alltags-Übungen (Frühstück, Unterwegs, Einkaufen, Küche, Abend …) passend zu den gewählten Bereichen, mit Wochenraster Mo–So zum Ankreuzen. „Neu mischen“ wählt andere Übungen.",
         optionenHtml: `
             <label style="margin-top:12px;">Was üben wir gerade?</label>
-            <div class="fp-wahl">${Object.entries(FP_FUNKTIONEN).map(([k, n]) => `<label><input type="checkbox" class="eb-wahl" value="${k}"${k === "aufmerksamkeit" ? " checked" : ""}> ${ws_esc(n)}</label>`).join("")}<label><input type="checkbox" class="eb-wahl" value="lesen"> Lesen</label><label><input type="checkbox" class="eb-wahl" value="worterarbeitung"> Lernwörter</label>${Object.entries(RS_SCHWERPUNKTE).map(([k, sp]) => `<label><input type="checkbox" class="eb-wahl" value="${k}"> ${ws_esc(sp.name)}</label>`).join("")}</div>
+            <div class="fp-wahl">${Object.entries(FP_FUNKTIONEN).map(([k, n]) => `<label><input type="checkbox" class="eb-wahl" value="${k}"${k === "aufmerksamkeit" ? " checked" : ""}> ${ws_esc(n)}</label>`).join("")}<label><input type="checkbox" class="eb-wahl" value="bd"> b/d-Verwechslung</label><label><input type="checkbox" class="eb-wahl" value="lesen"> Lesen</label><label><input type="checkbox" class="eb-wahl" value="vs"> Schreiben (hörbar verschriften)</label><label><input type="checkbox" class="eb-wahl" value="worterarbeitung"> Lernwörter</label>${Object.entries(RS_SCHWERPUNKTE).map(([k, sp]) => `<label><input type="checkbox" class="eb-wahl" value="${k}"> ${ws_esc(sp.name)}</label>`).join("")}</div>
             <label style="margin-top:10px;">Übungswörter aus der Förderkartei mitgeben (optional)</label><select id="eb-kind">${kt_kindOptionen("— keine —")}</select>`,
-        speicherName: () => "Elternblatt", einzelTitel: true,
+        speicherName: () => "Wochenhausaufgabe" + (lt_wert("eb-kind") ? " (" + lt_wert("eb-kind") + ")" : ""), einzelTitel: true,
         kind: () => lt_wert("eb-kind"),
-        blaetter: [{ nr: "1", kurz: "Elternblatt", name: "Elternblatt", bau: () => { const foki = eb_foki(); return eb_blatt(foki.length ? mische(foki) : [], lt_wert("eb-kind")); } }] },
+        blaetter: [{ nr: "1", kurz: "Wochenhausaufgabe", name: "Wochenhausaufgabe", bau: () => { const foki = eb_foki(); return eb_blatt(foki.length ? mische(foki) : [], lt_wert("eb-kind")); } }] },
 });
 
 // Rechtschreib-Serie: eigene Fehlerwörter eines Kindes einbeziehen
