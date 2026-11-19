@@ -8646,6 +8646,7 @@ const FP_FUNKTIONEN = {
 const FP_ZIELE = {
     aufmerksamkeit: "Aufmerksamkeit gezielt lenken und über die ganze Übung halten",
     optdiff: "ähnliche Buchstaben, Formen und Wortbilder sicher unterscheiden",
+    bd: "b und d sicher unterscheiden – beim Lesen und beim Schreiben (Bett-Trick, Strich zuerst oder Bauch zuerst)",
     optged: "Wortbilder und Formen kurz einprägen und sicher wiedergeben",
     optser: "Reihenfolgen von Zeichen und Buchstaben sicher erfassen",
     akdiff: "ähnlich klingende Laute und Silben sicher unterscheiden",
@@ -8662,7 +8663,7 @@ const LT_LINIENFELD = "flex:1; min-height:96px; background:repeating-linear-grad
 
 function std_ablaufplan(info){
     const zeilen = info.phasen.map(p => `<tr><td><b>${p.phase}</b></td><td style="white-space:nowrap;"><b>${p.zeit}</b><br><small style="color:#7c8a94;">Min. ${p.von}–${p.bis}</small></td><td>${p.inhalt}</td><td style="text-align:center;"><span class="fs-kaestchen-klein" style="width:26px; height:26px;"></span></td></tr>`).join("");
-    return { titel: "Ablaufplan der Stunde", extra: { info: true, max: 1, reif: true, label: "Stundenplanung", afs: "AFS · Aufmerksamkeit – Funktion – Symptom", kopfRechts: `Kürzel: <b>${ws_esc(info.kind2 ? (info.kind || "Kind 1") + " + " + info.kind2 : (info.kind || "______"))}</b> · Datum: <span class="ws-linie" style="width:120px;"></span>` }, html: `
+    return { titel: "Ablaufplan der Stunde", extra: { info: true, max: 1, reif: true, label: "Stundenplanung", afs: "AFS · Aufmerksamkeit – Funktion – Symptom", kopfRechts: `Kürzel: <b>${ws_esc(info.kind2 ? (info.kind || "Kind 1") + " + " + info.kind2 : (info.kind || "______"))}</b>${info.partner ? ` <span style="color:#7c8a94;">(mit ${ws_esc(info.partner)})</span>` : ""} · Datum: <span class="ws-linie" style="width:120px;"></span>` }, html: `
         <div class="dk-info"><span>Dauer: <b>${info.dauer} Minuten</b></span><span>Beginn: <span style="display:inline-block; width:70px; border-bottom:1.5px solid #1E2A36;"></span> Uhr</span><span>Ende: <span style="display:inline-block; width:70px; border-bottom:1.5px solid #1E2A36;"></span> Uhr</span></div>
         <table class="std-tabelle"><thead><tr><th style="width:150px;">Phase</th><th style="width:86px;">Zeit</th><th>Inhalt / Material</th><th style="width:44px;">✓</th></tr></thead><tbody>${zeilen}</tbody></table>
         <div><b style="font-size:15px;">Für den Lernverlauf (danach in die Förderkartei übertragen)</b></div>
@@ -9501,8 +9502,22 @@ function std_ausRezept(r){
     const info = { kind: code, kind2: r.kind2 || "", phasen, geuebt, merksatz, dauer: r.dauer || 40, heft: heftIds, rezept: r };
     std_letzte = info;
     setTimeout(() => { std_akteLeiste(); std_editorZeigen(); std_blattLeisten(); }, 0);
+    // Zwei Kinder: je Kind ein eigener Ablaufplan (seine Blätter + die gemeinsamen), Zeiten je Kind verteilt
+    const planFuer = (kz, w, partner) => {
+        const ph2 = [{ phase: "Ankommen", zeit: "", inhalt: "Begrüßung, kurzes Gespräch: Wie war die Woche? Was hat in der Schule gut geklappt?" + (kz && kt_woerter(kz).length ? ` Lernbox: fällige Wörter von ${ws_esc(kz)} abfragen.` : "") }];
+        STD_PHASEN.forEach(ph => {
+            const meine = items.filter(it => it.p === ph && ((it.wer || "1") === w || it.wer === "beide"));
+            const teile = meine.length ? phasenTeile(meine, kz, ph) : [];
+            if (teile.length) ph2.push({ phase: ph, zeit: "", inhalt: teile.join(" ") + (meine.some(it => it.wer === "beide") ? ` <i style="color:#7c8a94;">(${meine.every(it => it.wer === "beide") ? "zusammen" : "teils zusammen"} mit ${ws_esc(partner)})</i>` : ""), n: meine.length });
+        });
+        ph2.push({ phase: "Abschluss", zeit: "", inhalt: "Stunden-Rückblick, Stempel im Lernpass" + (r.eltern ? ", Wochenhausaufgabe mitgeben und kurz erklären." : ".") });
+        std_zeitenVerteilen(ph2, r.dauer || 40);
+        return { ...info, kind: kz, kind2: "", partner, phasen: ph2 };
+    };
     const ergebnis = [];
-    if (r.plan) ergebnis.push({ nr: "0", kurz: "Ablaufplan", name: "Ablaufplan (für dich)", bau: () => std_ablaufplan(info) });
+    if (r.plan && !r.kind2) ergebnis.push({ nr: "0", kurz: "Ablaufplan", name: "Ablaufplan (für dich)", bau: () => std_ablaufplan(info) });
+    if (r.plan && r.kind2) [[code || "Kind 1", "1", r.kind2], [r.kind2, "2", code || "Kind 1"]].forEach(([kz, w, partner]) =>
+        ergebnis.push({ nr: "0", kurz: kz + ": Ablaufplan", name: "Ablaufplan " + kz + " (für dich)", bau: () => std_ablaufplan(planFuer(kz, w, partner)) }));
     ergebnis.push(...blaetter);
     if (r.rueck && !r.kind2) ergebnis.push({ nr: "0", kurz: "Rückblick", name: "Stunden-Rückblick", bau: () => std_rueckblick(info) });
     if (r.rueck && r.kind2) [[code || "Kind 1", geuebt], [r.kind2, geuebt2]].forEach(([kz, g]) => ergebnis.push({ nr: "0", kurz: kz + ": Rückblick", name: "Stunden-Rückblick " + kz, bau: () => { const x = std_rueckblick({ ...info, kind: kz, geuebt: g }); return { ...x, extra: { ...(x.extra || {}), kopfRechts: `Kürzel: <b>${ws_esc(kz)}</b>` } }; } }));
