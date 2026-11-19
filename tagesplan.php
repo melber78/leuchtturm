@@ -52,9 +52,17 @@ foreach ((array)$aktenRoh as $code => $a) {
     foreach ((array)($a["stunden"] ?? []) as $st) {
         $d = (string)($st["datum"] ?? "");
         if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $d) || $d < date("Y-m-d", strtotime("-120 days"))) continue;
-        $LRS[$d][] = ["k" => (string)$code, "id" => (string)($st["id"] ?? ""), "s" => (string)($st["status"] ?? "offen"), "geplant" => !empty($st["rezept"])];
+        $LRS[$d][] = ["k" => (string)$code, "id" => (string)($st["id"] ?? ""), "s" => (string)($st["status"] ?? "offen"), "geplant" => !empty($st["rezept"]), "i" => trim((string)($st["inhalt"] ?? ""))];
     }
 }
+// Stunden mit 2 Kindern (gleicher Tag, gleicher Inhalt) gehören zusammen in dieselbe Schulstunde
+foreach ($LRS as $d => &$liste) {
+    $zaehl = [];
+    foreach ($liste as $x) if ($x["i"] !== "") $zaehl[$x["i"]] = ($zaehl[$x["i"]] ?? 0) + 1;
+    foreach ($liste as &$x) { $x["g"] = ($x["i"] !== "" && $zaehl[$x["i"]] > 1) ? substr(md5($x["i"]), 0, 10) : $x["id"]; unset($x["i"]); }
+    unset($x);
+}
+unset($liste);
 $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE;
 ?>
 <!DOCTYPE html>
@@ -298,6 +306,7 @@ table.dr-woche .zelle b{ color:var(--f); display:block; font-size:8pt; }
 .lrs-kinder.klein-zeile{ align-items:center; margin:0 0 12px; font-weight:800; color:var(--grau); font-size:14px; }
 .lrs-kinder.klein-zeile .lrs-kind{ font-size:13px; padding:5px 12px; min-height:34px; }
 .lrs-kind.aus{ background:white; color:var(--grau); border-color:var(--linie); text-decoration:line-through; }
+.lrs-wahl{ font:800 14px "Nunito",sans-serif; border:2px solid #7b5cc4; color:#16324a; border-radius:10px; padding:6px 8px; background:white; max-width:100%; }
 </style>
 <style id="druckSeite">@page{ size:A4 portrait; margin:12mm; }</style>
 </head>
@@ -403,7 +412,7 @@ function spaeterSpeichern(schluessel, aufgabe){
     }, 600));
 }
 function stundenplanSpeichern(){ spaeterSpeichern("sp", () => senden({ aktion: "stundenplan_speichern", stundenplan: sp() })); }
-function tagLeer(t){ return !t || (!Object.keys(t.slots || {}).length && !(t.extra || []).length && !(t.todos || []).length && !(t.notiz || "").trim()); }
+function tagLeer(t){ return !t || (!Object.keys(t.slots || {}).length && !(t.extra || []).length && !(t.todos || []).length && !(t.notiz || "").trim() && !Object.keys(t.lrsSlot || {}).length); }
 function tagSpeichern(datum){
     const t = DATEN.tage[datum];
     if (t && t.slots) Object.keys(t.slots).forEach(k => { if (!Object.keys(t.slots[k]).filter(x => t.slots[k][x] !== "" && t.slots[k][x] !== undefined && !(Array.isArray(t.slots[k][x]) && !t.slots[k][x].length)).length) delete t.slots[k]; });
@@ -501,13 +510,34 @@ const lrsCache = {};
 function lrsVerteilen(datum){
     if (lrsCache[datum]) return lrsCache[datum];
     const aus = lrsAus();
-    const liste = ((window.TP_LRS || {})[datum] || []).filter(x => !aus.includes(x.k)), erg = { slots: {}, rest: [] };
+    const eintraege = ((window.TP_LRS || {})[datum] || []).filter(x => !aus.includes(x.k));
+    // Gruppen: Kinder, die zusammen in einer Stunde sind, bleiben zusammen
+    const gruppen = [];
+    eintraege.forEach(x => { const k = x.g || x.id; let g = gruppen.find(y => y.key === k); if (!g) gruppen.push(g = { key: k, liste: [] }); g.liste.push(x); });
+    const erg = { slots: {}, rest: [] };
     const zeilen = sp().zeiten.filter(z => z.typ !== "pause").map(z => ({ z, i: slotInfo(datum, z.id, true) })).filter(x => x.i.art === "lrs" && !x.i.aus);
     zeilen.forEach(x => erg.slots[x.z.id] = []);
-    zeilen.forEach(x => { const t = String(x.i.titel || "").toLowerCase(); for (let k = liste.length - 1; k >= 0; k--) if (t && t.split(/[\s,;+\/&]+/).includes(liste[k].k.toLowerCase())) erg.slots[x.z.id].unshift(...liste.splice(k, 1)); });
-    zeilen.forEach(x => { if (!erg.slots[x.z.id].length && liste.length) erg.slots[x.z.id].push(liste.shift()); });
-    if (liste.length) { if (zeilen.length) erg.slots[zeilen[zeilen.length - 1].z.id].push(...liste); else erg.rest = liste; }
+    const offen = gruppen.slice(), setzen = (g, zid) => { erg.slots[zid].push(...g.liste.map(x => ({ ...x, gk: g.key }))); offen.splice(offen.indexOf(g), 1); };
+    // 1. selbst zugeordnet (im Tag gespeichert)
+    const fest = tagDaten(datum, false).lrsSlot || {};
+    gruppen.forEach(g => { if (fest[g.key] && erg.slots[fest[g.key]]) setzen(g, fest[g.key]); });
+    // 2. Kürzel steht im Feld „Gruppe/Kürzel“ der Stundenplan-Zeile
+    zeilen.forEach(x => { const t = String(x.i.titel || "").toLowerCase().split(/[\s,;+\/&]+/); offen.slice().forEach(g => { if (g.liste.some(e => t.includes(e.k.toLowerCase()))) setzen(g, x.z.id); }); });
+    // 3. der Reihe nach in freie LRS-Stunden, Rest in die letzte
+    zeilen.forEach(x => { if (!erg.slots[x.z.id].length && offen.length) setzen(offen[0], x.z.id); });
+    offen.slice().forEach(g => { if (zeilen.length) setzen(g, zeilen[zeilen.length - 1].z.id); else { erg.rest.push(...g.liste.map(x => ({ ...x, gk: g.key }))); offen.splice(offen.indexOf(g), 1); } });
     return lrsCache[datum] = erg;
+}
+function lrsGruppenText(liste){
+    const g = []; liste.forEach(x => { let y = g.find(z => z.gk === x.gk); if (!y) g.push(y = { gk: x.gk, l: [] }); y.l.push(x); });
+    return g.map(y => (LRS_STAND[y.l[0].s] || "○") + " " + y.l.map(x => esc(x.k)).join(" + ")).join(" · ");
+}
+function lrsZuordnen(datum, gk, zid){
+    const t = tagDaten(datum, true);
+    if (!t.lrsSlot || typeof t.lrsSlot !== "object" || Array.isArray(t.lrsSlot)) t.lrsSlot = {};
+    t.lrsSlot[gk] = zid;
+    Object.keys(lrsCache).forEach(x => delete lrsCache[x]);
+    tagSpeichern(datum);
 }
 const LRS_STAND = { offen: "○", angefangen: "◐", erledigt: "✓" };
 // Kinder, die NICHT in der Tages-/Wochenplanung erscheinen sollen (Kürzel), gespeichert im Stundenplan
@@ -599,10 +629,14 @@ function todoHtml(liste, wo){
     return `${liste.map((x, i) => `<div class="todo ${x.ok ? "ok" : ""}"><input type="checkbox" data-todo="${wo}" data-i="${i}" ${x.ok ? "checked" : ""}><span>${esc(x.t)}</span><button data-todoweg="${wo}" data-i="${i}" title="Löschen"><i class="fa-solid fa-xmark"></i></button></div>`).join("")}
         <div class="todo-neu"><input type="text" data-todoneu="${wo}" placeholder="${wo === "tag" ? "To-do für heute …" : "To-do (z. B. kopieren, mitbringen) …"}" maxlength="300"><button class="btn klein" data-todoplus="${wo}" title="Hinzufügen"><i class="fa-solid fa-plus"></i></button></div>`;
 }
-function stundeHtml(info){
+function stundeHtml(info, zid){
     if (info.art === "lrs" && info.lrs && !info.einheit) {
         if (!info.lrs.length) return `<div class="slot-stunde leer-stunde"><div class="titel" style="color:var(--grau);font-weight:800">Noch keine LRS-Stunde geplant</div><a class="btn klein gold" href="${esc(lrsPlanLink(info))}"><i class="fa-solid fa-plus"></i> Stunde planen</a></div>`;
-        return info.lrs.map(x => `<div class="slot-stunde"><div class="titel">${esc(x.k)}<small>${x.s === "erledigt" ? "✓ gehalten" : x.s === "angefangen" ? "◐ angefangen" : "○ geplant"} · LRS-Stunde aus der Kinder-Akte</small></div><a class="btn klein blau" href="${esc(lrsLink(x))}"><i class="fa-solid fa-book-open"></i> Öffnen</a></div>`).join("");
+        const lrsZeilen = sp().zeiten.filter(z => z.typ !== "pause" && slotInfo(ansicht.datum, z.id, true).art === "lrs");
+        const gruppen = []; info.lrs.forEach(x => { let g = gruppen.find(y => y.gk === x.gk); if (!g) gruppen.push(g = { gk: x.gk, liste: [] }); g.liste.push(x); });
+        return gruppen.map(g => `<div class="slot-stunde"><div class="titel">${g.liste.map(x => esc(x.k)).join(" + ")}<small>${g.liste.map(x => x.s === "erledigt" ? "✓ gehalten" : x.s === "angefangen" ? "◐ angefangen" : "○ geplant")[0]} · LRS-Stunde aus der Kinder-Akte${g.liste.length > 1 ? " · zusammen" : ""}</small></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">${lrsZeilen.length > 1 ? `<select class="lrs-wahl" data-lrsgk="${esc(g.gk)}" title="In welcher Stunde?">${lrsZeilen.map(z => `<option value="${esc(z.id)}" ${z.id === zid ? "selected" : ""}>${esc(z.name)}. Stunde${z.von ? " · " + esc(z.von) : ""}</option>`).join("")}</select>` : ""}
+            ${g.liste.map(x => `<a class="btn klein blau" href="${esc(lrsLink(x))}"><i class="fa-solid fa-book-open"></i> ${g.liste.length > 1 ? esc(x.k) : "Öffnen"}</a>`).join("")}</div></div>`).join("");
     }
     const e = info.einheit;
     const b = ARTEN[info.art] && ARTEN[info.art].bereich;
@@ -666,7 +700,7 @@ function zeigeTag(){
                     </span>
                 </div>
                 ${offenAendern === z.id ? aendernHtml(info) : ""}
-                ${info.aus ? "" : stundeHtml(info)}
+                ${info.aus ? "" : stundeHtml(info, z.id)}
                 <div class="slot-notiz"><textarea data-notiz rows="1" placeholder="Notiz zur Stunde (Kürzel statt Namen) …" maxlength="3000">${esc(ov.notiz || "")}</textarea></div>
                 ${todos.length || ov.todoOffen ? `<div style="margin-top:6px">${todoHtml(todos, "z:" + z.id)}</div>` : `<button class="btn klein flach" data-todoauf style="margin-top:2px;padding-left:0"><i class="fa-solid fa-list-check"></i> To-do</button>`}
             </div></div>`;
@@ -701,6 +735,7 @@ function tagEreignisse(d){
     document.getElementById("datumWahl").onchange = e => { if (gueltig(e.target.value)) location.hash = "tag/" + e.target.value; };
     inhalt.querySelector("[data-drucken]").onclick = () => druckeTag(d);
     inhalt.querySelectorAll("textarea").forEach(ta => ta.addEventListener("input", () => hoehe(ta)));
+    inhalt.querySelectorAll("[data-lrsgk]").forEach(w => w.onchange = () => { lrsZuordnen(d, w.dataset.lrsgk, w.value); toast("Gespeichert – die LRS-Stunde steht jetzt in der " + w.selectedOptions[0].textContent.split(" ·")[0]); neuZeichnen(); });
 
     inhalt.querySelectorAll(".slot[data-z]").forEach(el => {
         const zid = el.dataset.z;
@@ -825,7 +860,7 @@ function zeigeWoche(){
                 if (z.typ === "pause" && !info.art) return "";
                 if (!info.art && !info.einheit && !(info.ov.notiz) && (zi < erste || zi > letzte)) return "";
                 if (!info.art && !info.einheit && !(info.ov.notiz)) return `<a class="w-slot w-frei" href="#tag/${d}"><b>${esc(z.name + ".")} ${esc(zeitText(z))}</b><span class="t">Freistunde</span></a>`;
-                return `<a class="w-slot ${info.aus ? "aus" : ""}" href="#tag/${d}" style="--f:${a.farbe}"><b>${esc(z.typ === "pause" ? (z.name || "Pause") : z.name + ".")} ${esc(zeitText(z))} · ${esc(a.name)}</b><span class="t">${info.zweit ? '<i class="fa-solid fa-user-group" title="Zweitbesetzung" style="color:var(--grau)"></i> ' : ""}${esc(werText(info) || "")}${info.einheit && !info.aus ? (werText(info) ? ": " : "") + esc(info.einheit.titel) : ""}${info.lrs && !info.aus ? (info.lrs.length ? ` <span class="w-lrs">${info.lrs.map(x => (LRS_STAND[x.s] || "○") + " " + esc(x.k)).join(" · ")}</span>` : ` <span class="w-lrs leer">noch nicht geplant</span>`) : ""}${info.ov.notiz ? ' <i class="fa-regular fa-note-sticky" style="color:var(--grau)"></i>' : ""}</span></a>`;
+                return `<a class="w-slot ${info.aus ? "aus" : ""}" href="#tag/${d}" style="--f:${a.farbe}"><b>${esc(z.typ === "pause" ? (z.name || "Pause") : z.name + ".")} ${esc(zeitText(z))} · ${esc(a.name)}</b><span class="t">${info.zweit ? '<i class="fa-solid fa-user-group" title="Zweitbesetzung" style="color:var(--grau)"></i> ' : ""}${esc(werText(info) || "")}${info.einheit && !info.aus ? (werText(info) ? ": " : "") + esc(info.einheit.titel) : ""}${info.lrs && !info.aus ? (info.lrs.length ? ` <span class="w-lrs">${lrsGruppenText(info.lrs)}</span>` : ` <span class="w-lrs leer">noch nicht geplant</span>`) : ""}${info.ov.notiz ? ' <i class="fa-regular fa-note-sticky" style="color:var(--grau)"></i>' : ""}</span></a>`;
             }).join("") + lrsVerteilen(d).rest.map(x => `<a class="w-slot" href="${esc(lrsLink(x))}" style="--f:${ARTEN.lrs.farbe}"><b>LRS-Stunde (nicht im Stundenplan)</b><span class="t"><span class="w-lrs">${(LRS_STAND[x.s] || "○") + " " + esc(x.k)}</span></span></a>`).join("");
             const extra = t.extra.filter(x => x.titel).map(x => `<a class="w-slot" href="#tag/${d}" style="--f:#c0392b"><b>${esc(x.von || "")}${x.bis ? "–" + esc(x.bis) : ""} · Termin</b><span class="t">${esc(x.titel)}</span></a>`).join("");
             return `<div class="w-tag ${d === heute() ? "heute" : ""}"><a class="w-kopf" href="#tag/${d}">${TAGNAMEN[wochentag(d)]}<small>${kurz(d)}</small></a>
