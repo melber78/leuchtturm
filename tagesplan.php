@@ -292,6 +292,12 @@ table.dr-sp tr.pause td{ height:auto; background:#f6f8f7; font-style:italic; }
 .dr-legende{ display:flex; gap:5mm; flex-wrap:wrap; margin-top:4mm; font-size:9pt; font-weight:700; }
 .dr-legende span{ border-left:2mm solid var(--f); padding-left:1.5mm; }
 table.dr-woche .zelle b{ color:var(--f); display:block; font-size:8pt; }
+.lrs-kinder{ display:flex; flex-wrap:wrap; gap:8px; }
+.lrs-kind{ font:800 15px "Nunito",sans-serif; border-radius:999px; padding:9px 16px; cursor:pointer; border:2px solid #7b5cc4; display:inline-flex; gap:7px; align-items:center; min-height:44px; }
+.lrs-kind.an{ background:#7b5cc4; color:white; }
+.lrs-kinder.klein-zeile{ align-items:center; margin:0 0 12px; font-weight:800; color:var(--grau); font-size:14px; }
+.lrs-kinder.klein-zeile .lrs-kind{ font-size:13px; padding:5px 12px; min-height:34px; }
+.lrs-kind.aus{ background:white; color:var(--grau); border-color:var(--linie); text-decoration:line-through; }
 </style>
 <style id="druckSeite">@page{ size:A4 portrait; margin:12mm; }</style>
 </head>
@@ -494,7 +500,8 @@ function stundeLink(e){ return BEREICHE[e.b].url + "#stunde/" + encodeURICompone
 const lrsCache = {};
 function lrsVerteilen(datum){
     if (lrsCache[datum]) return lrsCache[datum];
-    const liste = [...((window.TP_LRS || {})[datum] || [])], erg = { slots: {}, rest: [] };
+    const aus = lrsAus();
+    const liste = ((window.TP_LRS || {})[datum] || []).filter(x => !aus.includes(x.k)), erg = { slots: {}, rest: [] };
     const zeilen = sp().zeiten.filter(z => z.typ !== "pause").map(z => ({ z, i: slotInfo(datum, z.id, true) })).filter(x => x.i.art === "lrs" && !x.i.aus);
     zeilen.forEach(x => erg.slots[x.z.id] = []);
     zeilen.forEach(x => { const t = String(x.i.titel || "").toLowerCase(); for (let k = liste.length - 1; k >= 0; k--) if (t && t.split(/[\s,;+\/&]+/).includes(liste[k].k.toLowerCase())) erg.slots[x.z.id].unshift(...liste.splice(k, 1)); });
@@ -503,6 +510,25 @@ function lrsVerteilen(datum){
     return lrsCache[datum] = erg;
 }
 const LRS_STAND = { offen: "○", angefangen: "◐", erledigt: "✓" };
+// Kinder, die NICHT in der Tages-/Wochenplanung erscheinen sollen (Kürzel), gespeichert im Stundenplan
+function lrsAus(){ const a = sp().lrsAus; return Array.isArray(a) ? a : []; }
+function lrsKindUmschalten(k){
+    const a = lrsAus().slice(), i = a.indexOf(k);
+    if (i >= 0) a.splice(i, 1); else a.push(k);
+    sp().lrsAus = a;
+    Object.keys(lrsCache).forEach(x => delete lrsCache[x]);
+    stundenplanSpeichern();
+}
+function lrsKinderKarte(){
+    const kinder = window.TP_KINDER || [];
+    if (!kinder.length) return "";
+    const aus = lrsAus();
+    return `<div class="karte"><h2><i class="fa-solid fa-children"></i> Kinder in meiner Planung</h2>
+        <p style="font-size:14px;color:var(--grau);font-weight:700;margin:0 0 10px">Geplante LRS-Stunden aus den Kinder-Akten erscheinen automatisch in Tag und Woche. Tippe ein Kürzel an, um das Kind ein- oder auszublenden. Die Kinder-Akte selbst bleibt unverändert.</p>
+        <div class="lrs-kinder">${kinder.map(k => `<button class="lrs-kind ${aus.includes(k) ? "aus" : "an"}" data-lrskind="${esc(k)}" title="${aus.includes(k) ? "ausgeblendet – antippen zum Einblenden" : "in der Planung – antippen zum Ausblenden"}"><i class="fa-solid ${aus.includes(k) ? "fa-eye-slash" : "fa-check"}"></i> ${esc(k)}</button>`).join("")}</div>
+        ${aus.length ? `<p style="font-size:13px;color:var(--grau);font-weight:700;margin:10px 0 0">Ausgeblendet: ${aus.map(esc).join(", ")}</p>` : ""}
+    </div>`;
+}
 function lrsLink(x){ return "lrs.php?stunde=" + encodeURIComponent(x.k) + (x.id ? "&sid=" + encodeURIComponent(x.id) : ""); }
 function lrsPlanLink(info){ const t = String(info.titel || "").split(/[\s,;+\/&]+/).find(w => (window.TP_KINDER || []).includes(w)); return t ? "lrs.php?stunde=" + encodeURIComponent(t) : "trainingshefte.php"; }
 function slotInfo(datum, zid, ohneLrs){
@@ -787,6 +813,7 @@ function zeigeWoche(){
             ${mo === montag(heute()) ? "" : `<button class="btn" data-diese><i class="fa-solid fa-sun"></i> Diese Woche</button>`}
             <button class="btn nacht" data-drucken><i class="fa-solid fa-print"></i> Woche drucken</button>
         </div>
+        ${(window.TP_KINDER || []).length ? `<div class="lrs-kinder klein-zeile"><span><i class="fa-solid fa-children"></i> LRS-Kinder in der Planung:</span>${(window.TP_KINDER || []).map(k => `<button class="lrs-kind ${lrsAus().includes(k) ? "aus" : "an"}" data-lrskind="${esc(k)}">${esc(k)}</button>`).join("")}</div>` : ""}
         ${ferien("sozial") || ferien("lernangebot") ? `<div class="hinweis"><i class="fa-solid fa-umbrella-beach"></i> Laut Jahresplan sind diese Woche Ferien bzw. ${ferien("sozial") && ferien("lernangebot") ? "Sozialtraining und Lernangebot fallen" : (ferien("sozial") ? "Sozialtraining fällt" : "Lernangebot fällt")} aus.</div>` : ""}
         <div class="woche">${tage.map(d => {
             const t = tagDaten(d, false);
@@ -809,6 +836,7 @@ function zeigeWoche(){
     inhalt.querySelectorAll("[data-woche]").forEach(b => b.onclick = () => location.hash = "woche/" + plusTage(mo, +b.dataset.woche));
     const di = inhalt.querySelector("[data-diese]"); if (di) di.onclick = () => location.hash = "woche/" + montag(heute());
     inhalt.querySelector("[data-drucken]").onclick = () => druckeWoche(mo);
+    inhalt.querySelectorAll("[data-lrskind]").forEach(b => b.onclick = () => { lrsKindUmschalten(b.dataset.lrskind); neuZeichnen(); });
 }
 
 /* ---------- Stundenplan bearbeiten ---------- */
@@ -857,6 +885,7 @@ function zeigeStundenplan(){
             </div>
             <p style="font-size:13px;color:var(--grau);font-weight:700;margin:12px 0 0"><i class="fa-solid fa-lightbulb"></i> Bei Sozialtraining und Lernangebot mit GS1–GS4 steht im Tagesplan automatisch die Stunde aus dem Jahresplan.</p>
         </div>
+        ${lrsKinderKarte()}
         <div class="karte"><h2 style="justify-content:space-between;flex-wrap:wrap"><span><i class="fa-solid fa-table"></i> Überblick</span><button class="btn nacht klein" data-spdruck><i class="fa-solid fa-print"></i> Stundenplan drucken</button></h2><div class="uebersicht">${uebersichtHtml()}</div></div>
         <div class="karte"><h2><i class="fa-solid fa-clock"></i> Zeitraster</h2>
             ${s.zeiten.map((z, i) => `<div class="raster-zeile ${z.typ === "pause" ? "pause" : ""}" data-i="${i}">
@@ -888,6 +917,7 @@ function zeigeStundenplan(){
         });
     });
     inhalt.querySelector("[data-spdruck]").onclick = druckeStundenplan;
+    inhalt.querySelectorAll("[data-lrskind]").forEach(b => b.onclick = () => { lrsKindUmschalten(b.dataset.lrskind); neuZeichnen(); });
     inhalt.querySelectorAll("[data-aufsicht]").forEach(c => c.onchange = () => {
         const zid = c.closest(".sp-zeile").dataset.z;
         if (c.checked) { const e = spEintrag(wt, zid, true); e.art = "aufsicht"; if (!e.titel) e.titel = "Hof"; }

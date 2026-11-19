@@ -103,6 +103,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-19", "Mein Tag: LRS-Kinder ein- und ausblenden", "In der Woche (und unter „Mein Stundenplan“) tippst du ein Kürzel an, um das Kind aus deiner Tages- und Wochenplanung auszublenden – oder wieder einzublenden. Die Kinder-Akte bleibt unverändert.", "tagesplan.php#woche"],
     ["2026-11-19", "Wochenhausaufgabe für die Eltern", "Statt Elternblatt: sechs Übungen für den Familienalltag (Frühstück, Unterwegs, Einkaufen, Küche, Abend …) passend zu dem, was in der Stunde geübt wurde – mit Wochenraster Mo–So zum Ankreuzen und Rückmeldung. In der Stundenplanung unter „Dazu“ ankreuzen; bei 2 Kindern bekommt jedes sein eigenes Blatt.", "lrs.php"],
     ["2026-11-18", "Zusammenfassung für die Kinder", "Zu jeder Stunde (Sozialtraining, Vertretung, Lernangebot) gibt es jetzt „Das habe ich heute gelernt“ zum Drucken: Merksatz und die wichtigsten Punkte, bei Englisch mit Vokabeln – ein A4-Blatt pro Kind.", "sozial-stunden.php"],
     ["2026-11-17", "Vertretung Englisch (Kl. 3/4)", "10 fertige Englischstunden: My family, Colours, Numbers, Animals, My body, Clothes, Food, School things, Weather & days, Christmas – mit Aussprachehilfe, Wortkarten zum Anhören, What's this? und Right or wrong? an der Tafel, Spiel und Arbeitsblatt.", "sozial-stunden.php?bereich=vertretung"],
