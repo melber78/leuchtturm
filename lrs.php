@@ -12568,6 +12568,7 @@ mat_bearbeitbarMachen();
 mat_knoepfeEinfuegen();
 fs_init();
 wz_init();
+if (location.hash === "#werkzeug") setTimeout(wz_oeffnen, 50);
 // Aufmerksamkeit: Startauswahl (gemischt) und Klassenstufen-Filter
 ["aufmerksamkeit", "aufmerksamkeit5", "aufmerksamkeit7"].forEach(k => au_mix(k));
 au_klassePruefen();
