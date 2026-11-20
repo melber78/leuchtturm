@@ -120,7 +120,7 @@ table.tab td{ border:.3mm solid #9aa9b2; height:2.2em; padding:.2em .4em; }
 <script>
 "use strict";
 const D = window.LERN_DATEN;
-const FUSS = "Diplomierte Mediendidaktikerin (EÖDL)";
+const FUSS = "";
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const z = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
 const wahl = l => l[Math.floor(Math.random() * l.length)];

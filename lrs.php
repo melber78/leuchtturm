@@ -4113,7 +4113,7 @@ function fs_seite(bereich, nr, titel, inhalt, extra = {}){
     let kopf = ws_kopf(titel, label);
     if (extra.kopfRechts != null) kopf = kopf.replace('<div class="ws-name">Name: <span class="ws-linie"></span></div>', `<div class="ws-name">${extra.kopfRechts}</div>`);
     let html = ws_seite(nr, `${kopf}${inhalt}<!--/ws-inhalt-->
-        <div class="ws-fuss"><div>Diplomierte Mediendidaktikerin (EÖDL)</div><div>${afs.startsWith("AFS") || extra.ohneAfs ? afs : "AFS · " + afs}</div></div>`);
+        <div class="ws-fuss"><div></div><div>${afs.startsWith("AFS") || extra.ohneAfs ? afs : "AFS · " + afs}</div></div>`);
     // ältere Schüler: sachlichere Gestaltung
     const reif = extra.reif != null ? extra.reif : (typeof s.reif === "function" ? s.reif() : s.reif);
     if (reif) html = html.replace('<div class="ws-seite"', '<div class="ws-seite fs-reif"');

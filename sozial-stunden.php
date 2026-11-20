@@ -849,7 +849,7 @@ function aufgabeHtml(a, stufe = "34"){
     return "";
 }
 // Fußzeile auf jedem Blatt für die Kinder
-const FUSS = '<div class="blatt-fuss">Diplomierte Mediendidaktikerin (EÖDL)</div>';
+const FUSS = '<div class="blatt-fuss"></div>';
 // stufe: "1" (Vorlese-Fassung Kl. 1), "2" (Kl. 2) oder "34" – Kl. 1 und 2 nutzen beide das 1/2-Blatt
 function blattBauen(e, stufe){
     // Sozialtraining: ein Blatt für Kl. 1 und 2. Vertretung: „12“ = gemischte Gruppe (Vorlese-Fassung ohne Schreibaufgaben), „1“/„2“ = einzelne Stufe
@@ -933,7 +933,7 @@ function zusammenfassungBlatt(e, stufe){
         ${d.punkte.length ? `<ul class="zus-punkte">${d.punkte.map(p => `<li>${inline(p).replace(/_{5,}/g, '<span class="ln" style="min-width:45mm"></span>')}</li>`).join("")}</ul>` : ""}
         <div class="zus-feld"><b>✏️ Das merke ich mir – schreibe oder male:</b><div class="linien"></div></div>
         <div class="zus-ich"><span>So gut kann ich das schon:</span><span class="gesichter"><span>😀</span><span>🙂</span><span>😐</span></span></div>
-        <div class="zus-fuss">${esc(window.BEREICH.name)} · Diplomierte Mediendidaktikerin (EÖDL)</div>
+        <div class="zus-fuss">${esc(window.BEREICH.name)}</div>
     </div>`;
     const blatt = document.createElement("div");
     blatt.className = "blatt zus " + (stufe === "34" ? "stufe34" : "stufe12");

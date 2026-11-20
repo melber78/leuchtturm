@@ -246,7 +246,7 @@ function drucken(){
         ${plan.ziel ? `<table><tr><th>Ziel</th></tr><tr><td>${esc(plan.ziel)}</td></tr></table>` : ""}
         <h2>Material</h2><ul>${[...new Set(z.map(x => x.m.material).filter(Boolean))].map(t => `<li>${esc(t)}</li>`).join("") || "<li>–</li>"}</ul>
         <h2>Stundenverlauf</h2><table><tr><th style="width:12%">Min</th><th style="width:18%">Phase</th><th>Ablauf</th></tr>${z.map(x => `<tr><td>${x.zeit}</td><td>${esc(x.m.phase)}</td><td><b>${esc(x.m.titel)}</b><br>${esc(x.m.ablauf)}${x.m.tipp ? `<br><i>Tipp: ${esc(x.m.tipp)}</i>` : ""}</td></tr>`).join("")}</table>
-        <p style="font-size:8pt;color:#8a979c;margin-top:6mm;text-align:center">Diplomierte Mediendidaktikerin (EÖDL)</p></div>`;
+        </div>`;
     const titel = document.title; document.title = (plan.titel || "Meine Stunde") + " – Lernangebot";
     window.addEventListener("afterprint", () => { ziel2.innerHTML = ""; document.title = titel; }, { once: true });
     setTimeout(() => window.print(), 60);
