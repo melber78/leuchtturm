@@ -5,6 +5,16 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- App (Home-Bildschirm) -->
+<link rel="manifest" href="manifest.php">
+<meta name="theme-color" content="#16324a">
+<link rel="apple-touch-icon" href="app-icon-192.png">
+<link rel="icon" type="image/png" href="app-icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Leuchtturm">
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});</script>
+
 
 <title>Leuchtturm</title>
 

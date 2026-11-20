@@ -180,6 +180,16 @@ $sicherungen = array_reverse(array_values(array_filter(scandir($BACKUPS), functi
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- App (Home-Bildschirm) -->
+<link rel="manifest" href="manifest.php">
+<meta name="theme-color" content="#16324a">
+<link rel="apple-touch-icon" href="app-icon-192.png">
+<link rel="icon" type="image/png" href="app-icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Leuchtturm">
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});</script>
+
 <title>Leuchtturm – Updates</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
