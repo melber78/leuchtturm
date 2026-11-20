@@ -103,6 +103,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-20", "Rechtschreib-Werkstatt ab Klasse 3", "Lehrgang in 17 Stufen (Mitsprechen, Silben, Nomen groß, Verlängern, Ableiten, doppelte Mitlaute, ck/tz, ie, Dehnungs-h, s/ss/ß … bis das/dass) und Grundwortschatz Kl. 3/4 in 18 Paketen – je 9 kindgerechte Blätter bis zur Lernkontrolle „Kann ich's?“. Im Generator unter Symptomtraining und in der Stundenplanung.", "lrs.php"],
     ["2026-11-19", "Mein Tag: LRS-Kinder ein- und ausblenden", "In der Woche (und unter „Mein Stundenplan“) tippst du ein Kürzel an, um das Kind aus deiner Tages- und Wochenplanung auszublenden – oder wieder einzublenden. Die Kinder-Akte bleibt unverändert.", "tagesplan.php#woche"],
     ["2026-11-19", "Wochenhausaufgabe für die Eltern", "Statt Elternblatt: sechs Übungen für den Familienalltag (Frühstück, Unterwegs, Einkaufen, Küche, Abend …) passend zu dem, was in der Stunde geübt wurde – mit Wochenraster Mo–So zum Ankreuzen und Rückmeldung. In der Stundenplanung unter „Dazu“ ankreuzen; bei 2 Kindern bekommt jedes sein eigenes Blatt.", "lrs.php"],
     ["2026-11-18", "Zusammenfassung für die Kinder", "Zu jeder Stunde (Sozialtraining, Vertretung, Lernangebot) gibt es jetzt „Das habe ich heute gelernt“ zum Drucken: Merksatz und die wichtigsten Punkte, bei Englisch mit Vokabeln – ein A4-Blatt pro Kind.", "sozial-stunden.php"],
