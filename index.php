@@ -103,6 +103,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-20", "Deutsch-Werkzeugkasten", "Alle Arbeitsblätter zu den Rechtschreibstrategien an einem Ort, sortiert nach Werkzeug: Mitsprechen, Schwingen, Kurz/lang, Verlängern, Ableiten, Groß/klein, Ersatzprobe, Merkwörter, Komma – ein Tipp und die Blätter sind da.", "lrs.php"],
     ["2026-11-20", "Rechtschreib-Werkstatt jetzt bis Klasse 8", "Neue Lehrgangs-Stufen 18–25 (Nominalisierung, ent-/end-, wieder/wider, seit/seid, Zeitangaben, Komma, Fremdwörter, höfliche Anrede) und Grundwortschatz Kl. 5/6 und 7/8 (häufige Fehlerwörter, Fremdwörter, Beruf, Argumentieren, -nis, -ung/-heit/-keit). Ab Klasse 5 automatisch sachlicher gestaltet.", "lrs.php"],
     ["2026-11-20", "Rechtschreib-Werkstatt ab Klasse 3", "Lehrgang in 17 Stufen (Mitsprechen, Silben, Nomen groß, Verlängern, Ableiten, doppelte Mitlaute, ck/tz, ie, Dehnungs-h, s/ss/ß … bis das/dass) und Grundwortschatz Kl. 3/4 in 18 Paketen – je 9 kindgerechte Blätter bis zur Lernkontrolle „Kann ich's?“. Im Generator unter Symptomtraining und in der Stundenplanung.", "lrs.php"],
     ["2026-11-19", "Mein Tag: LRS-Kinder ein- und ausblenden", "In der Woche (und unter „Mein Stundenplan“) tippst du ein Kürzel an, um das Kind aus deiner Tages- und Wochenplanung auszublenden – oder wieder einzublenden. Die Kinder-Akte bleibt unverändert.", "tagesplan.php#woche"],

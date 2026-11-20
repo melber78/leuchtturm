@@ -119,6 +119,21 @@ textarea{ min-height:64px; resize:vertical; font-weight:400; }
 .tab.aktiv{ background:var(--nacht); color:white; }
 
 .bereich{ display:none; }
+.wz-kacheln{ display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px; margin-top:12px; }
+.wz-kachel{ border:2px solid #E3E9EF; background:white; border-radius:14px; padding:10px 12px; text-align:left; cursor:pointer; font-family:"Nunito",sans-serif; color:var(--text); display:flex; flex-direction:column; gap:2px; }
+.wz-kachel .wz-sym{ font-size:26px; line-height:1.1; }
+.wz-kachel b{ font-size:15px; color:var(--nacht); }
+.wz-kachel small{ font-size:12px; color:#6B7A88; line-height:1.3; }
+.wz-kachel.aktiv{ border-color:var(--nacht); background:#F1F5F9; }
+.wz-info{ margin-top:14px; border-radius:14px; background:#F6F8FA; padding:14px 16px; }
+.wz-info h3{ margin:0 0 4px; font-size:18px; color:var(--nacht); }
+.wz-info .wz-wie{ margin:0 0 10px; font-size:14px; }
+.wz-liste{ display:flex; flex-direction:column; gap:8px; }
+.wz-mat{ display:flex; gap:10px; align-items:center; border:none; background:white; border-radius:10px; padding:10px 12px; text-align:left; cursor:pointer; box-shadow:var(--schatten); font-family:"Nunito",sans-serif; color:var(--text); font-size:14px; }
+.wz-mat i{ color:var(--nacht); width:18px; text-align:center; }
+.wz-mat span{ flex:1; }
+.wz-mat small{ color:#6B7A88; white-space:nowrap; }
+@media (max-width:520px){ .wz-kacheln{ grid-template-columns:1fr 1fr; } .wz-mat{ flex-wrap:wrap; } .wz-mat small{ white-space:normal; } }
 .bereich.aktiv{ display:block; }
 
 .karte{ background:var(--karte); border-radius:24px; box-shadow:var(--schatten); padding:24px; margin-bottom:20px; }
@@ -1095,12 +1110,13 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
 <button class="tab" data-bereich="akged">🎧 Akustisches Gedächtnis</button>
 <button class="tab" data-bereich="akser">🔊 Akustische Serialität</button>
 <button class="tab" data-bereich="symptom">✏️ Symptomtraining</button>
+<button class="tab tab-neu" data-bereich="werkzeug">🧰 Deutsch-Werkzeugkasten</button>
 <button class="tab" data-bereich="koerper">🙆 Körperschema</button>
 <button class="tab" data-bereich="raum">🐸 Raumorientierung</button>
 <button class="tab tab-neu" data-bereich="lesen">📚 Lesen &amp; Diktat</button>
 <button class="tab tab-neu" data-bereich="plan">🧭 Förderplan</button>
 <button class="tab tab-neu" data-bereich="stunde">🗂️ Stunde</button>
-<button class="tab tab-neu" data-bereich="extras">🧰 Extras</button>
+<button class="tab tab-neu" data-bereich="extras">🎁 Extras</button>
 </div>
 
 <div class="bereich aktiv" id="bereich-aufmerksamkeit">
@@ -1362,7 +1378,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
 <div class="bereich" id="bereich-symptom">
     <div class="karte">
         <h2 class="titel">Symptomtraining</h2>
-        <p class="beschreibung">Individuelles Übungsmaterial direkt am Fehlerschwerpunkt.</p>
+        <p class="beschreibung">Individuelles Übungsmaterial direkt am Fehlerschwerpunkt. Alle Blätter zu den Rechtschreibstrategien (Werkstatt, Strategien &amp; Übungen, Anwenden, Vom Lesen zum Schreiben, Kärtchen) liegen jetzt gesammelt im <a href="#" onclick="wz_oeffnen(); return false;">🧰 Deutsch-Werkzeugkasten</a>.</p>
         <label>Aufgaben-Typ</label>
         <select id="sy-typ" onchange="sy_typWechsel()">
             <option value="serie">Worterarbeitung – Serie (4 Blätter, für starke LRS)</option>
@@ -1654,10 +1670,22 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
     </div>
 </div>
 
+<div class="bereich" id="bereich-werkzeug">
+    <div class="karte">
+        <h2 class="titel">🧰 Deutsch-Werkzeugkasten</h2>
+        <p class="beschreibung">Alle Arbeitsblätter zu den Rechtschreibstrategien an einem Ort. Tippe ein Werkzeug an – darunter stehen alle Blätter, die genau dieses Werkzeug üben. Ein Tipp erstellt die Blätter sofort.</p>
+        <div class="wz-kacheln" id="wz-kacheln"></div>
+        <div class="wz-info" id="wz-info" style="display:none;"></div>
+        <label style="margin-top:16px;">… oder selbst auswählen</label>
+        <select id="wz-typ"></select>
+        <button class="btn" onclick="erstelleWerkzeug()"><i class="fa-solid fa-wand-magic-sparkles"></i> Erstellen</button>
+    </div>
+</div>
+
 <div class="bereich" id="bereich-extras">
     <div class="karte">
         <h2 class="titel">Extras</h2>
-        <p class="beschreibung">Silbentexte zum Lesen, Strategie-Kärtchen fürs Mäppchen, Belohnungspass und Elternblatt.</p>
+        <p class="beschreibung">Silbentexte zum Lesen, Belohnungspass und Wochenhausaufgabe. Die Strategie-Kärtchen liegen jetzt im <a href="#" onclick="wz_oeffnen(); return false;">🧰 Deutsch-Werkzeugkasten</a>.</p>
         <label>Was möchtest du erstellen?</label>
         <select id="ex-typ"></select>
         <button class="btn" onclick="erstelleExtras()"><i class="fa-solid fa-wand-magic-sparkles"></i> Erstellen</button>
@@ -4085,7 +4113,7 @@ function fs_seite(bereich, nr, titel, inhalt, extra = {}){
     let kopf = ws_kopf(titel, label);
     if (extra.kopfRechts != null) kopf = kopf.replace('<div class="ws-name">Name: <span class="ws-linie"></span></div>', `<div class="ws-name">${extra.kopfRechts}</div>`);
     let html = ws_seite(nr, `${kopf}${inhalt}<!--/ws-inhalt-->
-        <div class="ws-fuss"><div>Melanie Bernshausen · Diplomierte Mediendidaktikerin (EÖDL)</div><div>${afs.startsWith("AFS") || extra.ohneAfs ? afs : "AFS · " + afs}</div></div>`);
+        <div class="ws-fuss"><div>Diplomierte Mediendidaktikerin (EÖDL)</div><div>${afs.startsWith("AFS") || extra.ohneAfs ? afs : "AFS · " + afs}</div></div>`);
     // ältere Schüler: sachlichere Gestaltung
     const reif = extra.reif != null ? extra.reif : (typeof s.reif === "function" ? s.reif() : s.reif);
     if (reif) html = html.replace('<div class="ws-seite"', '<div class="ws-seite fs-reif"');
@@ -8349,9 +8377,9 @@ const FS_SERIEN = {
         speicherName: () => "Aufmerksamkeit Klasse 7–9",
         katalog: AU_KATALOG_79, blaetter: AU_KATALOG_79, optionenHtml: au_optionenHtml("aufmerksamkeit7", AU_KATALOG_79),
         dynamisch: au_dynamisch("aufmerksamkeit7"), pruefen: au_pruefen("aufmerksamkeit7") },
-    rechtschreibung: { tab: "symptom", mat: "symptom", wert: "rs-serie", reif: true, nachErsterOption: true,
+    rechtschreibung: { tab: "werkzeug", mat: "symptom", wert: "rs-serie", reif: true,
         optionText: "Rechtschreibung – Strategien & Übungen (ab Klasse 4/5)",
-        label: "Rechtschreibung", afs: "Symptomtraining: Rechtschreibstrategien", select: "#sy-typ", erstellen: "erstelleSymptom",
+        label: "Rechtschreibung", afs: "Symptomtraining: Rechtschreibstrategien", select: "#wz-typ", erstellen: "erstelleWerkzeug",
         ordner: "Rechtschreibung",
         tipp: "Der Rechtschreib-Schwerpunkt oben bestimmt Regel und Wörter aller Blätter; die Schwierigkeit oben wird hier nicht gebraucht.",
         optionenHtml: `
@@ -8370,9 +8398,9 @@ const FS_SERIEN = {
         { nr: "5", kurz: "Strategie-Check", name: "Strategie-Check", bau: rsB_strategie },
         { nr: "6", kurz: "Partnerdiktat", name: "Übungswörter & Partnerdiktat", bau: rsB_diktat },
     ]},
-    anwenden: { tab: "symptom", mat: "symptom", wert: "rs-anwenden", reif: true,
+    anwenden: { tab: "werkzeug", mat: "symptom", wert: "rs-anwenden", reif: true,
         optionText: "Rechtschreibung anwenden statt nur wissen – gemischt, mit Stopp-Routine (ab Klasse 4/5)",
-        label: "Rechtschreibung anwenden", afs: "Symptomtraining: Rechtschreibstrategien anwenden", select: "#sy-typ", erstellen: "erstelleSymptom",
+        label: "Rechtschreibung anwenden", afs: "Symptomtraining: Rechtschreibstrategien anwenden", select: "#wz-typ", erstellen: "erstelleWerkzeug",
         ordner: "Rechtschreibung",
         tipp: "Für Kinder, die die Regeln kennen, sie beim Schreiben aber nicht anwenden. Die Aufgaben mischen alle angekreuzten Schwerpunkte – das Kind muss selbst erkennen, welche Regel dran ist.",
         optionenHtml: `
@@ -8384,9 +8412,9 @@ const FS_SERIEN = {
         ctxExtra: () => ({ rsa: rsa_ausFormular() }),
         speicherName: () => "Rechtschreibung anwenden",
         blaetter: RSA_BLAETTER },
-    rlehrgang: { tab: "symptom", mat: "symptom", wert: "rl-serie", reif: () => lt_klasse() >= 5,
+    rlehrgang: { tab: "werkzeug", mat: "symptom", wert: "rl-serie", reif: () => lt_klasse() >= 5,
         optionText: "Rechtschreib-Werkstatt Kl. 3–8 – Lehrgang Schritt für Schritt & Grundwortschatz",
-        label: "Rechtschreib-Werkstatt", afs: "Symptomtraining: Rechtschreibung Schritt für Schritt", select: "#sy-typ", erstellen: "erstelleSymptom",
+        label: "Rechtschreib-Werkstatt", afs: "Symptomtraining: Rechtschreibung Schritt für Schritt", select: "#wz-typ", erstellen: "erstelleWerkzeug",
         ordner: "Rechtschreibung",
         tipp: "Wähle die Lehrgangs-Stufe, an der das Kind gerade arbeitet, oder ein Grundwortschatz-Paket. „Kann ich's?“ zeigt, ob es mit der nächsten Stufe weitergehen kann.",
         optionenHtml: `
@@ -8397,9 +8425,9 @@ const FS_SERIEN = {
         speicherName: () => "Rechtschreib-Werkstatt – " + rl_name(lt_wert("rl-thema") || "l1"),
         kind: () => lt_wert("rl-kind"),
         blaetter: RL_BLAETTER },
-    verschriften: { tab: "symptom", mat: "symptom", wert: "vs-serie", reif: true,
+    verschriften: { tab: "werkzeug", mat: "symptom", wert: "vs-serie", reif: true,
         optionText: "Vom Lesen zum Schreiben – Wörter hörbar verschriften (Kl. 2–9)",
-        label: "Vom Lesen zum Schreiben", afs: "Symptomtraining: Laute hören und verschriften", select: "#sy-typ", erstellen: "erstelleSymptom",
+        label: "Vom Lesen zum Schreiben", afs: "Symptomtraining: Laute hören und verschriften", select: "#wz-typ", erstellen: "erstelleWerkzeug",
         ordner: "Rechtschreibung",
         tipp: "Für Kinder, die lesen können, aber so schreiben, dass man es kaum lesen kann. Erst wenn jedes Wort hörbar richtig dasteht, kommen die Rechtschreib-Strategien.",
         optionenHtml: `
@@ -12383,7 +12411,7 @@ Object.assign(FS_SERIEN, {
         speicherName: () => "Lesetext – " + (lt_wert("st-titel") || "Silbentext"), einzelTitel: true,
         blaetter: [{ nr: "1", kurz: "Lesetext", name: "Lesetext" }] },
 
-    kaertchen: { tab: "extras", mat: "symptom", wert: "kaertchen", select: "#ex-typ", erstellen: "erstelleExtras", ohneMischen: true,
+    kaertchen: { tab: "werkzeug", mat: "symptom", wert: "kaertchen", select: "#wz-typ", erstellen: "erstelleWerkzeug", ohneMischen: true,
         optionText: "Strategie-Kärtchen fürs Mäppchen (Merksätze)",
         label: "Strategie-Kärtchen", afs: "Symptomtraining: Rechtschreibstrategien", ordner: "Strategie-Kärtchen", reif: true,
         tippVoll: "Je Seite 8 Kärtchen zum Ausschneiden. Freie Plätze werden zu „Mein Merksatz“-Kärtchen.",
@@ -12423,6 +12451,101 @@ Object.assign(FS_SERIEN, {
         blaetter: [{ nr: "1", kurz: "Wochenhausaufgabe", name: "Wochenhausaufgabe", bau: () => { const foki = eb_foki(); return eb_blatt(foki.length ? mische(foki) : [], lt_wert("eb-kind")); } }] },
 });
 
+/* ===============================================================
+   Deutsch-Werkzeugkasten: alle Blätter zu den Rechtschreibstrategien,
+   sortiert nach Werkzeug (Strategie). Nutzt die vorhandenen Serien.
+   =============================================================== */
+function erstelleWerkzeug(){}   // wird von fs_init übernommen
+const WZ_WERKZEUGE = [
+    { k: "sprechen", s: "🗣️", n: "Mitsprechen", wann: "Wörter, die man so schreibt, wie man sie spricht", rl: ["l1", "l11"], rs: ["spst"], vs: true },
+    { k: "schwingen", s: "👏", n: "Silben schwingen", wann: "lange Wörter, vergessene Buchstaben", rl: ["l2"], rs: [], vs: true },
+    { k: "kurzlang", s: "👂", n: "Kurz oder lang?", wann: "doppelt? ck oder tz? ss oder ß? ie oder i?", rl: ["l6", "l7", "l8", "l10"], rs: ["schaerfung", "cktz", "ie", "sss"] },
+    { k: "verlaengern", s: "🔍", n: "Verlängern", wann: "b/p, d/t, g/k am Ende, -ig/-lich, h", rl: ["l4", "l12", "l15"], rs: ["auslaut", "iglich", "silbenh"] },
+    { k: "ableiten", s: "🌳", n: "Ableiten", wann: "ä oder e? äu oder eu? ent- oder end-?", rl: ["l5", "l19"], rs: ["aeau"] },
+    { k: "gross", s: "📝", n: "Groß oder klein?", t: "Begleiter-Probe", wann: "Nomen, Nominalisierung, Zeitangaben, Anrede", rl: ["l3", "l18", "l22", "l25"], rs: ["grossklein"] },
+    { k: "bedeutung", s: "💭", n: "Ersatzprobe & Bedeutung", wann: "das/dass, seit/seid, wieder/wider", rl: ["l17", "l20", "l21"], rs: ["dasdass"] },
+    { k: "merken", s: "🧠", n: "Merkwörter", wann: "Dehnungs-h, v, aa/ee/oo, chs/x, Fremdwörter, Grundwortschatz", rl: ["l9", "l13", "l14", "l16", "l24"], rs: ["dehnung", "vf", "doppelvokal", "chsx"], gws: true },
+    { k: "komma", s: "✒️", n: "Komma-Check", wann: "Aufzählungen und Nebensätze", rl: ["l23"], rs: [] },
+    { k: "alle", s: "🧰", n: "Alle Werkzeuge", wann: "gemischt anwenden, Stopp-Routine, Kärtchen", rl: [], rs: [] },
+];
+
+// Alle Blätter eines Werkzeugs als Liste {text, info, icon, serie, …}
+function wz_material(w){
+    const liste = [];
+    const stufe = key => RL_STUFEN.find(x => x.key === key);
+    w.rl.forEach(key => { const st = stufe(key); if (st) liste.push({ icon: "fa-stairs", text: `Werkstatt Stufe ${st.nr}: ${st.titel}`, info: `9 Blätter · Kl. ${st.kl}`, serie: "rlehrgang", rl: key }); });
+    if (w.gws){
+        const kl = lt_klasse(), paket = kl >= 7 ? "g78-1" : (kl >= 5 ? "g56-1" : (kl >= 4 ? "g4-1" : "g3-1"));
+        liste.push({ icon: "fa-book", text: "Grundwortschatz – Wörter-Pakete (Paket unten im Auswahlfeld wechseln)", info: "9 Blätter · Kl. 3–8", serie: "rlehrgang", rl: paket });
+    }
+    w.rs.forEach(key => liste.push({ icon: "fa-list-check", text: `Strategien & Übungen: ${RS_SCHWERPUNKTE[key].name}`, info: "6 Blätter · ab Kl. 4/5", serie: "rechtschreibung", rs: key }));
+    if (w.vs) liste.push({ icon: "fa-shoe-prints", text: "Vom Lesen zum Schreiben – Schreib-Treppe: schwingen, sprechen, schreiben, kontrollieren", info: "Kl. 2–9", serie: "verschriften" });
+    if (w.rs.length > 1) liste.push({ icon: "fa-shuffle", text: `Alles zu „${w.n}“ gemischt anwenden – mit Stopp-Routine`, info: "7 Blätter · ab Kl. 4/5", serie: "anwenden", mix: w.rs });
+    if (w.rs.length) liste.push({ icon: "fa-id-card", text: `Strategie-Kärtchen fürs Mäppchen: ${w.n}`, info: "zum Ausschneiden", serie: "kaertchen", sk: w.rs });
+    if (w.k === "alle"){
+        liste.push({ icon: "fa-toolbox", text: "Alle Werkzeuge gemischt anwenden – Werkzeugkasten-Karte, Stopp-Routine, Fehlerdetektiv, eigener Text", info: "7 Blätter · ab Kl. 4/5", serie: "anwenden", mix: RSA_STANDARD });
+        liste.push({ icon: "fa-stairs", text: "Rechtschreib-Werkstatt: der ganze Lehrgang Stufe 1–25 (Stufe unten auswählen)", info: "9 Blätter · Kl. 3–8", serie: "rlehrgang", rl: "l1" });
+        liste.push({ icon: "fa-id-card", text: "Strategie-Kärtchen fürs Mäppchen: alle Schwerpunkte", info: "zum Ausschneiden", serie: "kaertchen", sk: Object.keys(RS_SCHWERPUNKTE) });
+    }
+    return liste;
+}
+
+function wz_kachelnBauen(){
+    const box = document.getElementById("wz-kacheln");
+    if (!box) return;
+    box.innerHTML = WZ_WERKZEUGE.map((w, i) => `<button type="button" class="wz-kachel" data-i="${i}" onclick="wz_zeigen(${i})"><span class="wz-sym">${w.s}</span><b>${ws_esc(w.n)}</b><small>${ws_esc(w.wann)}</small></button>`).join("");
+}
+
+function wz_zeigen(i){
+    const w = WZ_WERKZEUGE[i];
+    document.querySelectorAll(".wz-kachel").forEach(k => k.classList.toggle("aktiv", +k.dataset.i === i));
+    const info = document.getElementById("wz-info");
+    const erkl = RL_STRATEGIE[w.k] || (w.k === "bedeutung" ? RL_STRATEGIE.bedeutung : null);
+    const text = w.k === "alle"
+        ? "Wenn ein Kind die Regeln kennt, sie beim Schreiben aber nicht anwendet: Signalstelle wahrnehmen → Stopp → Werkzeug wählen → Beweis."
+        : (erkl ? erkl.t : "");
+    const mat = wz_material(w);
+    info.innerHTML = `<h3>${w.s} ${ws_esc(w.n)}${w.t ? ` <small style="font-weight:700; color:#6B7A88;">(${ws_esc(w.t)})</small>` : ""}</h3>
+        <p class="wz-wie">${text}</p>
+        <div class="wz-liste">${mat.map((m, j) => `<button type="button" class="wz-mat" onclick="wz_los(${i}, ${j})"><i class="fa-solid ${m.icon}"></i><span>${ws_esc(m.text)}</span><small>${m.info}</small></button>`).join("")}</div>`;
+    info.style.display = "block";
+}
+
+function wz_los(i, j){
+    const m = wz_material(WZ_WERKZEUGE[i])[j];
+    const s = FS_SERIEN[m.serie];
+    const typ = document.getElementById("wz-typ");
+    typ.value = s.wert;
+    typ.dispatchEvent(new Event("change"));
+    if (m.rl) document.getElementById("rl-thema").value = m.rl;
+    if (m.rs) document.getElementById("rs-schwerpunkt").value = m.rs;
+    if (m.mix) document.querySelectorAll(".rsa-sp").forEach(c => c.checked = m.mix.includes(c.value));
+    if (m.sk) document.querySelectorAll(".sk-wahl").forEach(c => c.checked = m.sk.includes(c.value));
+    Promise.resolve(silben_laden()).catch(() => {}).then(() => {
+        erstelleWerkzeug();
+        const aus = document.getElementById("fs-ausgabe-" + m.serie);
+        if (aus) setTimeout(() => aus.scrollIntoView({ behavior: "smooth", block: "start" }), 150);
+    });
+}
+
+function wz_oeffnen(){
+    const tab = document.querySelector('.tabs .tab[data-bereich="werkzeug"]');
+    if (tab){ tab.click(); tab.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
+}
+
+// Reihenfolge im Auswahlfeld: Werkstatt zuerst
+function wz_init(){
+    wz_kachelnBauen();
+    const typ = document.getElementById("wz-typ");
+    if (!typ) return;
+    ["rlehrgang", "rechtschreibung", "anwenden", "verschriften", "kaertchen"].forEach(k => {
+        const o = [...typ.options].find(x => x.value === FS_SERIEN[k].wert);
+        if (o) typ.appendChild(o);
+    });
+    typ.value = FS_SERIEN.rlehrgang.wert;
+    typ.dispatchEvent(new Event("change"));
+}
+
 // Rechtschreib-Werkstatt: eigene Fehlerwörter (die Kinderliste gibt es erst hier)
 FS_SERIEN.rlehrgang.optionenHtml = FS_SERIEN.rlehrgang.optionenHtml.replace('<p class="beschreibung"', `<label style="margin-top:10px;">Eigene Fehlerwörter einbeziehen (optional)</label>
     <select id="rl-kind">${kt_kindOptionen("— nur Übungswörter —")}</select>
@@ -12444,6 +12567,7 @@ blatt_aufbauen();
 mat_bearbeitbarMachen();
 mat_knoepfeEinfuegen();
 fs_init();
+wz_init();
 // Aufmerksamkeit: Startauswahl (gemischt) und Klassenstufen-Filter
 ["aufmerksamkeit", "aufmerksamkeit5", "aufmerksamkeit7"].forEach(k => au_mix(k));
 au_klassePruefen();

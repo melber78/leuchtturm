@@ -920,7 +920,7 @@ function stunde_verschiebenBox(s){
     const schnell = [[7, "+1 Woche"], [14, "+2 Wochen"], [1, "+1 Tag"]].map(([n, t]) => `<button class="knopf" onclick="document.getElementById('sv-datum').value = st_plusTage(document.getElementById('sv-datum').value || '${af_esc(s.datum)}', ${n})">${t}</button>`).join("");
     return `<div class="st-verschieben"><b><i class="fa-solid fa-calendar-days"></i> Verschieben auf:</b>
         <input type="date" id="sv-datum" value="${af_esc(s.datum)}"> ${schnell}
-        ${p.length ? `<label class="mit"><input type="checkbox" id="sv-mit" checked> Gemeinsame Stunde – auch bei ${p.map(af_esc).join(", ")} verschieben</label>` : ""}
+        ${p.length ? `<label class="mit"><input type="checkbox" id="sv-mit" checked> Gemeinsame Stunde – auch bei ${p.map(af_esc).join(", ")} verschieben</label><div class="klein" style="width:100%; color:#6B7A88;">War nur ein Kind da? Dann Haken weg – verschoben wird nur die Stunde dieses Kindes. Beim anderen Kind die Stunde einfach auf ✓ erledigt setzen.</div>` : ""}
         <button class="knopf voll" onclick="stunde_verschiebenJetzt('${id}')"><i class="fa-solid fa-check"></i> Verschieben</button>
         <button class="knopf" onclick="stunden_verschieben=null; stunden_zeigen()">Abbrechen</button></div>`;
 }
