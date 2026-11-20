@@ -5408,7 +5408,7 @@ function rs_markiert(roh){
     return { vor: roh.slice(0, m.index).replace(/\*/g, ""), wort: m[1], nach: roh.slice(m.index + m[0].length).replace(/\*/g, "") };
 }
 function rs_roh(eintrag){ return eintrag.split("|")[0]; }
-function rs_wort(eintrag){ return rs_roh(eintrag).replace(/\*/g, ""); }
+function rs_wort(eintrag){ return rs_roh(eintrag).replace(/[*^]/g, ""); }
 function rs_hilfe(eintrag){ return eintrag.split("|")[1] || ""; }
 
 // Wortvorrat einer Serie: Treffer und Kontrast gemischt, jeweils mit Kennzeichen
@@ -8040,7 +8040,7 @@ function rl_silbenSpalte(w){ return Math.min(2, Math.max(0, silben_trennen(w).le
 // Grundwortschatz: Wortart der Rechtschreibung bestimmen
 function rl_wortArt(w){
     const k = w.toLowerCase();
-    if (/v|[aeiouäöü]h[lmnr]|aa|ee|oo|chs|x|y|ph|th|qu|c(?!h|k)/.test(k)) return 2;                 // Merkwort
+    if (/v|[aeiouäöü]h[lmnr]|aa|ee|oo|chs|x|y|ph|th|qu|tion|c(?!h|k)/.test(k)) return 2;                 // Merkwort
     if (/(bb|dd|ff|gg|ll|mm|nn|pp|rr|ss|tt)|ck|tz|ß|ä|äu|ie|[bdg]$|[bdg]s?t$|ig$|[aeiouäöü]h[aeiou]|[aeiouäöü]h$/.test(k)) return 1;   // Nachdenkwort
     return 0;                                                                                            // Mitsprechwort
 }
@@ -8118,6 +8118,81 @@ const RL_GWS = [
     { key: "g4-7", kl: "4", titel: "Wichtige Merkwörter", w: ["Vater", "vier", "viel", "vor", "von", "voll", "fahren", "Zahl", "Meer", "Boot", "ihr", "ihm"] },
     { key: "g4-8", kl: "4", titel: "Medien und Technik", w: ["Computer", "Handy", "Bildschirm", "Taste", "Nachricht", "schicken", "Video", "Foto", "Kamera", "drucken", "suchen", "speichern"] },
 ];
+
+// ---------- Erweiterung bis Klasse 8 ----------
+Object.assign(RL_STRATEGIE, {
+    bedeutung: { s: "💭", n: "Bedeutung prüfen", t: "Ich frage mich: Was bedeutet das Wort hier? Die Bedeutung verrät mir die Schreibung." },
+    komma: { s: "✒️", n: "Komma-Check", t: "Aufzählung ohne und/oder? → Komma! Nebensatz mit weil, dass, wenn, als, obwohl, ob, nachdem …? → Komma zwischen Haupt- und Nebensatz." },
+    anrede: { s: "✉️", n: "Höflich anreden", t: "Spreche ich jemanden höflich mit Sie an? Dann schreibe ich Sie, Ihnen und Ihr groß." },
+});
+function rl_markiertStelle(optionenKlein){
+    return roh => { const m = rs_markiert(roh); if (!m) return null; const gross = m.wort[0] !== m.wort[0].toLowerCase();
+        return { vor: m.vor, ziel: m.wort, nach: m.nach, optionen: optionenKlein.map(o => gross ? o[0].toUpperCase() + o.slice(1) : o) }; };
+}
+function rl_anfangGross(roh){
+    const m = rs_markiert(roh); if (!m) return null; const e = m.wort[0];
+    return { vor: m.vor, ziel: e, nach: m.wort.slice(1) + m.nach, optionen: [e.toUpperCase(), e.toLowerCase()] };
+}
+RL_STUFEN.push(
+    { key: "l18", nr: 18, titel: "Verben und Adjektive als Nomen (beim Laufen, etwas Schönes)", kurz: "Nominalisierung", st: "gross", rs: "grossklein", kl: "5", merke: "Steht ein Signalwort davor (das, beim, zum, etwas, nichts, viel, alles)? → groß!" },
+    { key: "l19", nr: 19, titel: "ent- oder end-?", kurz: "ent-/end-", st: "ableiten", kl: "5",
+      merke: "end- nur, wenn es mit Ende zu tun hat (endlich, Endspiel). Sonst immer ent- (entdecken).",
+      daten: { treffer: ["entdecken", "entscheiden", "entlang", "entfernen", "entwickeln", "entspannen", "enttäuscht", "entgegen", "entschuldigen", "entstehen", "Entdeckung", "Entfernung", "Entscheidung", "Entwicklung", "entkommen", "entführen"],
+               kontrast: ["Ende", "endlich", "endgültig", "Endspiel", "Endstation", "unendlich", "Endung", "Endrunde", "Wochenende", "beenden", "Endergebnis", "Spielende"],
+               spalten: ["ent- (entdecken)", "end- (kommt von Ende)"], pruefen: "Hat es mit Ende zu tun?",
+               stelle: w => { const m = /[Ee]n[dt]/.exec(w); return m ? rs_teil(w, m.index, 3, [m[0].slice(0, 2) + "d", m[0].slice(0, 2) + "t"]) : null; } } },
+    { key: "l20", nr: 20, titel: "wieder oder wider?", kurz: "wieder/wider", st: "bedeutung", kl: "5/6",
+      merke: "wieder = noch einmal (wiederholen). wider = gegen (widersprechen).",
+      daten: { treffer: ["wiederholen", "Wiedersehen", "wiederkommen", "wiederfinden", "Wiederholung", "wiederum", "wiedererkennen", "Wiederwahl", "wiederbeleben", "wiedergeben"],
+               kontrast: ["widersprechen", "Widerstand", "widerlich", "Widerspruch", "erwidern", "widerspiegeln", "Widerrede", "widersetzen", "widerstehen", "widerwillig"],
+               spalten: ["wieder (noch einmal)", "wider (gegen)"], pruefen: "noch einmal oder gegen?",
+               stelle: w => { const m = /[Ww]ie?der/.exec(w); if (!m) return null; const W = m[0][0]; return rs_teil(w, m.index, m[0].length, [W + "ider", W + "ieder"]); } } },
+    { key: "l21", nr: 21, titel: "seit oder seid?", kurz: "seit/seid", st: "bedeutung", kl: "5/6",
+      merke: "seit hat mit Zeit zu tun (seit gestern). seid gehört zu ihr (ihr seid).",
+      daten: { saetze: true, spalten: ["seit (Zeit: seit wann?)", "seid (ihr seid)"], spaltenKurz: ["seit", "seid"], pruefen: "Zeit oder „ihr“?",
+               treffer: ["Ich warte *seit* einer Stunde.", "Es schneit *seit* gestern.", "Wir wohnen *seit* drei Jahren hier.", "Er spielt *seit* Montag Gitarre.", "Ich bin *seit* den Ferien größer.", "Sie kennt ihn *seit* der ersten Klasse.", "Wir sind *seit* heute Morgen unterwegs.", "Der Laden ist *seit* einer Woche geschlossen."],
+               kontrast: ["Ihr *seid* heute sehr leise.", "Wo *seid* ihr gewesen?", "Bitte *seid* pünktlich!", "Ihr *seid* die Besten!", "Wann *seid* ihr fertig?", "Ihr *seid* zu spät gekommen.", "Ihr *seid* wirklich mutig.", "Warum *seid* ihr so müde?"],
+               stelle: rl_markiertStelle(["seid", "seit"]) } },
+    { key: "l22", nr: 22, titel: "Tageszeiten und Wochentage: groß oder klein?", kurz: "Zeitangaben", st: "gross", kl: "6",
+      merke: "am Morgen, heute Abend, am Montag → groß. morgens, abends, montags → klein (mit -s am Ende).",
+      daten: { saetze: true, spalten: ["groß (am Morgen, heute Abend)", "klein (morgens, montags)"], spaltenKurz: ["groß", "klein"], pruefen: "Begleiter/heute, gestern davor oder -s am Ende?",
+               treffer: ["Am *Morgen* gehe ich joggen.", "Heute *Abend* kommt Oma.", "Am *Montag* haben wir Sport.", "Gestern *Mittag* gab es Nudeln.", "In der *Nacht* hat es geregnet.", "Jeden *Freitag* gehen wir schwimmen.", "Am *Wochenende* besuchen wir Opa.", "Morgen *Nachmittag* habe ich Training."],
+               kontrast: ["Ich trinke *morgens* Kakao.", "Wir trainieren *montags* im Verein.", "Er liest *abends* gern.", "Ich esse *mittags* in der Schule.", "Es ist *nachts* sehr still.", "Wir treffen uns *morgen* am Bahnhof.", "Kommst du *heute* mit?", "Sie hat *freitags* immer frei."],
+               stelle: rl_anfangGross } },
+    { key: "l23", nr: 23, titel: "Kommas bei Aufzählungen und Nebensätzen", kurz: "Komma", st: "komma", kl: "6/7",
+      merke: "Aufzählung ohne und/oder → Komma. Vor weil, dass, wenn, ob, obwohl … → Komma.",
+      daten: { saetze: true, spalten: ["Komma nötig", "kein Komma"], spaltenKurz: ["Komma", "kein Komma"], pruefen: "Aufzählung oder Nebensatz?",
+               treffer: ["Wir kaufen Äpfel^, Birnen und Bananen.", "Ich bleibe zu Hause^, weil ich krank bin.", "Er hofft^, dass morgen die Sonne scheint.", "Wenn es regnet^, nehmen wir den Bus.", "Sie lacht^, obwohl sie traurig ist.", "Als wir ankamen^, war das Spiel schon vorbei.", "Mein Bruder spielt Fußball^, Tennis und Handball.", "Ich weiß nicht^, ob ich morgen komme.", "Nachdem wir gegessen hatten^, gingen wir spazieren.", "Das ist das Buch^, das ich dir empfohlen habe.", "Wir gehen schwimmen^, sobald die Sonne scheint.", "Der Hund bellt^, weil jemand klingelt."],
+               kontrast: ["Ich mag Äpfel^ und Birnen.", "Möchtest du Tee^ oder Kakao?", "Am Morgen^ frühstücken wir zusammen.", "Der kleine Hund^ schläft im Korb.", "Wir gehen heute^ ins Kino.", "Lisa und Tom^ spielen im Garten.", "Nach der Schule^ mache ich Hausaufgaben.", "Er läuft schnell^ und springt weit."],
+               stelle: roh => { const i = roh.indexOf("^"); if (i < 0) return null; const t = roh.replace("^", ""), mit = t[i] === ","; return { vor: t.slice(0, i), ziel: mit ? "," : "", nach: t.slice(i + (mit ? 1 : 0)), optionen: [",", "–"] }; } } },
+    { key: "l24", nr: 24, titel: "Fremdwörter: th, ph, y, -tion, -ie", kurz: "Fremdwörter", st: "merken", kl: "7/8",
+      merke: "Fremdwörter behalten ihre Schreibung aus der fremden Sprache: Theater, Physik, Rhythmus, Station, Energie.",
+      daten: { treffer: ["Theater", "Thema", "Mathematik", "Apotheke", "Methode", "Physik", "Alphabet", "Strophe", "Katastrophe", "Rhythmus", "Typ", "System", "Gymnastik", "Symbol", "Pyramide", "Zylinder", "Station", "Information", "Situation", "Aktion", "Lektion", "Energie", "Chemie", "Biologie", "Melodie", "Theorie", "Strategie"],
+               kontrast: [], spalten: ["th oder ph", "y", "-tion oder -ie"], pruefen: "Fremdwort? Merkstelle: th, ph, y, tion, ie",
+               spalteVon: w => /th|ph/i.test(w) ? 0 : /y/i.test(w) ? 1 : 2,
+               stelle: w => { const t = [[/th/i, m => [m[0][0] === "T" ? "T" : "t", m[0]]], [/ph/, () => ["f", "ph"]], [/y/, () => ["ü", "y"]], [/tion/, () => ["zion", "tion"]], [/ie$/, () => ["i", "ie"]]];
+                   for (const [re, o] of t){ const m = re.exec(w); if (m) return rs_teil(w, m.index, m[0].length, o(m)); } return null; } } },
+    { key: "l25", nr: 25, titel: "Höfliche Anrede: Sie, Ihnen, Ihr", kurz: "Anrede", st: "anrede", kl: "7/8",
+      merke: "Höfliche Anrede (Sie, Ihnen, Ihr) → groß. Meint „sie“ andere Leute → klein.",
+      daten: { saetze: true, spalten: ["groß (höfliche Anrede)", "klein (sie = die anderen)"], spaltenKurz: ["groß", "klein"], pruefen: "Rede ich jemanden höflich an?",
+               treffer: ["Können *Sie* mir bitte helfen?", "Ich danke *Ihnen* für die Einladung.", "Haben *Sie* noch Fragen?", "Ich bewerbe mich bei *Ihnen* um einen Praktikumsplatz.", "Wie geht es *Ihnen*?", "Ich würde mich freuen, *Sie* kennenzulernen.", "Darf ich *Ihr* Telefon benutzen?", "Vielen Dank für *Ihre* Hilfe."],
+               kontrast: ["Die Kinder spielen, *sie* lachen laut.", "Meine Schwester sagt, *sie* kommt später.", "Die Hunde bellen, weil *sie* Hunger haben.", "Meine Eltern? Ich rufe *sie* gleich an.", "Die Schüler warten, bis *sie* aufgerufen werden.", "Ich gebe *ihnen* die Hefte zurück.", "Die Lehrerin sagt, *ihr* Auto ist kaputt.", "Die Spieler freuen sich über *ihren* Sieg."],
+               stelle: rl_anfangGross } },
+);
+RL_GWS.push(
+    { key: "g56-1", kl: "5/6", titel: "Häufige Fehlerwörter 1", w: ["vielleicht", "plötzlich", "endlich", "eigentlich", "ziemlich", "nämlich", "wahrscheinlich", "deshalb", "trotzdem", "natürlich", "allmählich", "tatsächlich"] },
+    { key: "g56-2", kl: "5/6", titel: "Häufige Fehlerwörter 2", w: ["wieder", "nachher", "morgens", "abends", "sofort", "bisschen", "außerdem", "irgendwann", "manchmal", "niemand", "jemand", "nichts"] },
+    { key: "g56-3", kl: "5/6", titel: "Schule und Lernen", w: ["Mathematik", "Biologie", "Geografie", "Geschichte", "Unterricht", "Hausaufgaben", "Klassenarbeit", "Zeugnis", "erklären", "wiederholen", "verbessern", "Ergebnis"] },
+    { key: "g56-4", kl: "5/6", titel: "Gefühle und Verhalten", w: ["Rücksicht", "Verantwortung", "Vertrauen", "Gerechtigkeit", "Enttäuschung", "ehrlich", "höflich", "freundlich", "ängstlich", "mutig", "geduldig", "aufmerksam"] },
+    { key: "g56-5", kl: "5/6", titel: "Natur und Umwelt", w: ["Umwelt", "Klima", "Energie", "Müll", "Pflanze", "Landschaft", "Strom", "Luft", "Erde", "schützen", "sparen", "verschmutzen"] },
+    { key: "g56-6", kl: "5/6", titel: "Wichtige Verben", w: ["beginnen", "erzählen", "behaupten", "empfehlen", "entscheiden", "verlieren", "gewinnen", "vergleichen", "beschreiben", "ergänzen", "ändern", "passieren"] },
+    { key: "g78-1", kl: "7/8", titel: "Fremdwörter 1", w: ["Theater", "Rhythmus", "Physik", "Chemie", "Interview", "Computer", "Information", "Situation", "Diskussion", "Problem", "System", "Interesse"] },
+    { key: "g78-2", kl: "7/8", titel: "Fremdwörter 2", w: ["Programm", "Kommunikation", "Reportage", "Garage", "Restaurant", "Medizin", "Religion", "Biografie", "Fotografie", "Methode", "Qualität", "Technik"] },
+    { key: "g78-3", kl: "7/8", titel: "Beruf und Zukunft", w: ["Bewerbung", "Praktikum", "Ausbildung", "Lebenslauf", "Termin", "Gespräch", "Unternehmen", "Erfahrung", "zuverlässig", "pünktlich", "selbstständig", "Verantwortung"] },
+    { key: "g78-4", kl: "7/8", titel: "Argumentieren", w: ["Meinung", "Begründung", "Beispiel", "Argument", "These", "Schluss", "deshalb", "außerdem", "allerdings", "dagegen", "schließlich", "folglich"] },
+    { key: "g78-5", kl: "7/8", titel: "Wörter mit -nis", w: ["Ergebnis", "Ereignis", "Erlebnis", "Hindernis", "Verhältnis", "Gefängnis", "Geheimnis", "Zeugnis", "Wagnis", "Kenntnis", "Bedürfnis", "Ersparnis"] },
+    { key: "g78-6", kl: "7/8", titel: "Wörter mit -ung, -heit, -keit", w: ["Erziehung", "Meinung", "Freiheit", "Gesundheit", "Sicherheit", "Möglichkeit", "Fähigkeit", "Ehrlichkeit", "Schwierigkeit", "Gelegenheit", "Entscheidung", "Bedeutung"] },
+);
 
 function rl_thema(key){ return RL_STUFEN.find(s => s.key === key) || RL_GWS.find(g => g.key === key) || RL_STUFEN[0]; }
 // Daten für die Blätter (Form wie RS_SCHWERPUNKTE) + Infos für die Kinder
@@ -8225,18 +8300,19 @@ function rlB_saetze(ctx){
 
 function rlB_kontrolle(ctx){
     const sp = ctx.rs;
-    const woerter = mische(sp.treffer.map(rs_wort)).slice(0, 10);
+    const anzahl = sp.saetze ? 8 : 10;
+    const woerter = mische([...sp.treffer, ...(sp.saetze ? sp.kontrast : [])].map(rs_wort)).slice(0, anzahl);
     const naechste = sp.lehrgang ? RL_STUFEN.find(s => s.nr === sp.lehrgang.nr + 1) : null;
     const naechstesPaket = sp.thema ? RL_GWS[RL_GWS.indexOf(sp.thema) + 1] : null;
     return { titel: "Kann ich's? – " + (sp.lehrgang ? sp.lehrgang.kurz : sp.thema ? sp.thema.titel : sp.name), html: `
         <div class="fs-ansage" style="width:auto; font-size:15px;"><b>Lehrkraft diktiert (vorher umknicken)</b>${woerter.map((w, i) => `${i + 1}. ${ws_esc(w)}`).join(" · ")}</div>
         <div class="ws-knick">Hier nach hinten knicken</div>
-        ${ws_aufgabe(1, `Schreibe die Wörter${sp.saetze ? " oder Sätze" : ""}, die dir diktiert werden. Sprich leise mit und prüfe jedes Wort mit der Strategie: ${sp.str.s} ${ws_esc(sp.str.n)}.`)}
-        <div class="fs-zweispaltig" style="gap:16px 24px;">${woerter.map((w, i) => `<div style="display:flex; gap:8px; align-items:flex-end;"><b style="width:26px;">${i + 1}.</b><span class="rs-linie" style="flex:1;">${L(ws_esc(w))}</span></div>`).join("")}</div>
-        ${ws_aufgabe(2, "Vergleiche mit der Lösung. Wie viele Wörter sind richtig?")}
-        <div style="display:flex; gap:30px; align-items:center; justify-content:center; font-size:20px;"><span>Ich habe <span class="rs-linie" style="min-width:50px;"></span> von 10 richtig.</span>
+        ${ws_aufgabe(1, `Schreibe die ${sp.saetze ? "Sätze" : "Wörter"}, die dir diktiert werden. Sprich leise mit und prüfe jedes Wort mit der Strategie: ${sp.str.s} ${ws_esc(sp.str.n)}.`)}
+        <div class="${sp.saetze ? "fs-reihen" : "fs-zweispaltig"}" style="gap:${sp.saetze ? 14 : 16}px 24px;">${woerter.map((w, i) => `<div style="display:flex; gap:8px; align-items:flex-end;"><b style="width:26px;">${i + 1}.</b><span class="rs-linie" style="flex:1; min-height:30px;">${L(ws_esc(w), sp.saetze ? "font-size:15px; white-space:normal;" : "")}</span></div>`).join("")}</div>
+        ${ws_aufgabe(2, `Vergleiche mit der Lösung. Wie viele ${sp.saetze ? "Sätze" : "Wörter"} sind richtig?`)}
+        <div style="display:flex; gap:30px; align-items:center; justify-content:center; font-size:20px;"><span>Ich habe <span class="rs-linie" style="min-width:50px;"></span> von ${anzahl} richtig.</span>
             <span class="rb-smileys" style="gap:18px;"><div>${lt_smiley("gut")}</div><div>${lt_smiley("mittel")}</div><div>${lt_smiley("schlecht")}</div></span></div>
-        <div class="rs-merksatz" style="font-size:16px;">8 oder mehr richtig? Super – ${naechste ? `weiter mit Stufe ${naechste.nr}: ${ws_esc(naechste.kurz)}!` : naechstesPaket ? `weiter mit dem nächsten Wörter-Paket: ${ws_esc(naechstesPaket.titel)}!` : "du bist ein Rechtschreib-Profi!"} · Weniger? Übe die Wörter noch einmal mit dem Partnerdiktat.</div>` };
+        <div class="rs-merksatz" style="font-size:16px;">${sp.saetze ? "6" : "8"} oder mehr richtig? Super – ${naechste ? `weiter mit Stufe ${naechste.nr}: ${ws_esc(naechste.kurz)}!` : naechstesPaket ? `weiter mit dem nächsten Wörter-Paket: ${ws_esc(naechstesPaket.titel)}!` : "du bist ein Rechtschreib-Profi!"} · Weniger? Übe die Wörter noch einmal mit dem Partnerdiktat.</div>` };
 }
 
 const RL_BLAETTER = [
@@ -8251,8 +8327,8 @@ const RL_BLAETTER = [
     { nr: "9", kurz: "Kann ich's?", name: "Kann ich's? (Lernkontrolle)", bau: rlB_kontrolle },
 ];
 function rl_optionen(){
-    return `<optgroup label="Lehrgang Schritt für Schritt (ab Kl. 3)">${RL_STUFEN.map(s => `<option value="${s.key}">Stufe ${s.nr}: ${ws_esc(s.titel)} (Kl. ${s.kl})</option>`).join("")}</optgroup>` +
-        ["3", "4"].map(kl => `<optgroup label="Grundwortschatz Klasse ${kl}">${RL_GWS.filter(g => g.kl === kl).map((g, i) => `<option value="${g.key}">Kl. ${kl} · Paket ${i + 1}: ${ws_esc(g.titel)}</option>`).join("")}</optgroup>`).join("");
+    return `<optgroup label="Lehrgang Schritt für Schritt (Kl. 3–8)">${RL_STUFEN.map(s => `<option value="${s.key}">Stufe ${s.nr}: ${ws_esc(s.titel)} (Kl. ${s.kl})</option>`).join("")}</optgroup>` +
+        ["3", "4", "5/6", "7/8"].map(kl => `<optgroup label="Grundwortschatz Klasse ${kl}">${RL_GWS.filter(g => g.kl === kl).map((g, i) => `<option value="${g.key}">Kl. ${kl} · Paket ${i + 1}: ${ws_esc(g.titel)}</option>`).join("")}</optgroup>`).join("");
 }
 function rl_name(key){ const t = rl_thema(key); return t.w ? `Grundwortschatz Kl. ${t.kl}: ${t.titel}` : `Stufe ${t.nr}: ${t.kurz}`; }
 
@@ -8309,7 +8385,7 @@ const FS_SERIEN = {
         speicherName: () => "Rechtschreibung anwenden",
         blaetter: RSA_BLAETTER },
     rlehrgang: { tab: "symptom", mat: "symptom", wert: "rl-serie", reif: () => lt_klasse() >= 5,
-        optionText: "Rechtschreib-Werkstatt ab Kl. 3 – Lehrgang Schritt für Schritt & Grundwortschatz",
+        optionText: "Rechtschreib-Werkstatt Kl. 3–8 – Lehrgang Schritt für Schritt & Grundwortschatz",
         label: "Rechtschreib-Werkstatt", afs: "Symptomtraining: Rechtschreibung Schritt für Schritt", select: "#sy-typ", erstellen: "erstelleSymptom",
         ordner: "Rechtschreibung",
         tipp: "Wähle die Lehrgangs-Stufe, an der das Kind gerade arbeitet, oder ein Grundwortschatz-Paket. „Kann ich's?“ zeigt, ob es mit der nächsten Stufe weitergehen kann.",
@@ -9215,7 +9291,7 @@ function std_auswahlAufbauen(){
     document.getElementById("std-vs").innerHTML = `<option value="">– nichts zusätzlich –</option>` + VS_BLAETTER.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("");
     document.getElementById("std-symptom").innerHTML =
         `<optgroup label="Rechtschreibung anwenden statt nur wissen (gemischt)"><option value="rsa">Stopp-Routine: Signalstellen, Werkzeug, Beweis</option></optgroup>` +
-        rl_optionen().replace(/<option value="/g, '<option value="rl:').replace('label="Lehrgang Schritt für Schritt (ab Kl. 3)"', 'label="Rechtschreib-Werkstatt: Lehrgang Schritt für Schritt (ab Kl. 3)"').replace(/label="Grundwortschatz Klasse/g, 'label="Rechtschreib-Werkstatt: Grundwortschatz Klasse') +
+        rl_optionen().replace(/<option value="/g, '<option value="rl:').replace('label="Lehrgang Schritt für Schritt (Kl. 3–8)"', 'label="Rechtschreib-Werkstatt: Lehrgang Schritt für Schritt (Kl. 3–8)"').replace(/label="Grundwortschatz Klasse/g, 'label="Rechtschreib-Werkstatt: Grundwortschatz Klasse') +
         `<optgroup label="Rechtschreibung (ab Kl. 3/4)">${Object.entries(RS_SCHWERPUNKTE).map(([k, sp]) => `<option value="rs:${k}">${ws_esc(sp.name)}</option>`).join("")}</optgroup>` +
         `<optgroup label="Lesetraining nach Leistungsstand (kleinschrittig)">${Object.entries(LE_STUFEN).map(([k, st]) => `<option value="le:${k}">Lesestufe ${st.nr} · ${ws_esc(st.name)} – ${ws_esc(st.unter)}</option>`).join("")}</optgroup>` +
         `<optgroup label="Lesetext + Aufgabe"><option value="lesen">Lesetext passend zur Klassenstufe</option>${[1, 2, 3, 4, 5, 6].map(k => `<option value="lesen:${k}">Lesetext auf Niveau Kl. ${k}</option>`).join("")}</optgroup>` +
