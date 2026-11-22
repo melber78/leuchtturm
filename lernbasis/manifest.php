@@ -1,0 +1,30 @@
+<?php header("Content-Type: application/manifest+json; charset=utf-8"); ?>
+{
+ "name": "Lernbasis – Klasse 5",
+ "short_name": "Lernbasis",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "any",
+ "background_color": "#0b1324",
+ "theme_color": "#0b1324",
+ "lang": "de",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512-maskable.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

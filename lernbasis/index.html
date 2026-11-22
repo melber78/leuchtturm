@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lernbasis</title>
+<meta name="theme-color" content="#0b1324">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lernbasis">
+<link rel="manifest" href="manifest.php">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#0b1324;--bg2:#111c33;--card:#17243f;--card2:#1e2d4d;--line:#2a3b60;--txt:#eef2ff;--mut:#9fb0d0;--acc:#38bdf8;--ok:#22c55e;--bad:#f43f5e;--warn:#fbbf24;--r:18px;--sub:#38bdf8}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{min-height:100vh;background:radial-gradient(1200px 600px at 80% -10%,#1d3b6e55,transparent),radial-gradient(900px 500px at -10% 110%,#3b1d6e44,transparent),var(--bg)}
+#app{max-width:760px;margin:0 auto;padding:0 14px 90px}
+button{font:inherit;color:inherit;border:0;cursor:pointer}
+input,textarea,select{font:inherit;color:var(--txt);background:var(--bg2);border:2px solid var(--line);border-radius:12px;padding:12px 14px;width:100%;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--acc)}
+textarea{min-height:90px;resize:vertical}
+h1,h2,h3{margin:.2em 0 .4em;line-height:1.2}
+h1{font-size:1.5rem}h2{font-size:1.25rem}h3{font-size:1.05rem}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:12px 0 10px;background:linear-gradient(var(--bg) 70%,transparent)}
+.top .ttl{flex:1;font-weight:700;font-size:1.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ib{width:42px;height:42px;border-radius:12px;background:var(--card);display:grid;place-items:center;font-size:1.2rem;flex:none}
+.pill{font-size:.8rem;padding:4px 10px;border-radius:99px;background:var(--card);color:var(--mut);white-space:nowrap}
+.hero{background:linear-gradient(135deg,#1e3a8a,#6d28d9);border-radius:24px;padding:18px;margin:6px 0 14px;box-shadow:0 10px 30px #0006}
+.hero .row{display:flex;align-items:center;gap:12px}
+.lvl{width:56px;height:56px;border-radius:16px;background:#ffffff22;display:grid;place-items:center;font-weight:800;font-size:1.3rem;flex:none}
+.bar{height:10px;border-radius:99px;background:#ffffff26;overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,#fde047,#fb923c);border-radius:99px;transition:width .4s}
+.stats{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.stats span{background:#ffffff1f;padding:6px 10px;border-radius:12px;font-size:.85rem}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
+.tile{background:var(--card);border-radius:var(--r);padding:14px;text-align:left;position:relative;overflow:hidden;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line);transition:transform .1s}
+.tile:active{transform:scale(.97)}
+.tile .ic{font-size:1.7rem}
+.tile b{font-size:1rem}
+.tile small{color:var(--mut);font-size:.78rem}
+.tile::after{content:"";position:absolute;right:-20px;top:-20px;width:70px;height:70px;border-radius:50%;background:var(--c,#38bdf8);opacity:.22}
+.acts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.act{border-radius:var(--r);padding:14px;text-align:left;background:var(--card2);border:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.act .ic{font-size:1.5rem;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#ffffff12;flex:none}
+.act b{display:block}.act small{color:var(--mut);font-size:.78rem}
+.sec{margin:18px 0 8px;color:var(--mut);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:12px;text-align:left;width:100%}
+.item .t{flex:1}.item small{color:var(--mut);display:block;font-size:.8rem}
+.ring{--p:0;width:44px;height:44px;border-radius:50%;background:conic-gradient(var(--sub) calc(var(--p)*1%),#ffffff14 0);display:grid;place-items:center;flex:none}
+.ring span{width:34px;height:34px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:.72rem;font-weight:700}
+.modes{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.mode{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 12px;text-align:center}
+.mode .ic{font-size:1.8rem;display:block}.mode b{display:block;margin-top:4px}.mode small{color:var(--mut);font-size:.78rem}
+.box{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--sub);border-radius:16px;padding:14px 16px;margin-bottom:10px}
+.box h3{color:var(--sub)}
+.tbl{font-family:ui-monospace,monospace;background:var(--bg2);border-radius:10px;padding:8px 10px;margin:8px 0;overflow-x:auto;white-space:nowrap}
+.text{background:#fffbea;color:#1f2937;border-radius:16px;padding:14px 16px;margin-bottom:12px;font-size:1.02rem;line-height:1.6}
+.text p{margin:.4em 0}
+details.text summary{font-weight:700;cursor:pointer}
+.q{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin:8px 0 12px;font-size:1.15rem}
+.q .k{display:block;color:var(--mut);font-size:.78rem;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--card2);border:2px solid var(--line);border-radius:14px;padding:14px;text-align:left;font-size:1rem}
+.opt.sel{border-color:var(--acc);background:#38bdf822}
+.opt.ok{border-color:var(--ok);background:#22c55e26}
+.opt.no{border-color:var(--bad);background:#f43f5e26}
+.tf{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{display:block;width:100%;padding:15px;border-radius:14px;background:var(--acc);color:#04263a;font-weight:800;font-size:1.02rem;margin-top:10px;text-align:center}
+.btn.sec2{background:var(--card2);color:var(--txt);border:1px solid var(--line)}
+.btn.ok{background:var(--ok);color:#052e16}.btn.no{background:var(--bad);color:#fff}
+.btn:disabled{opacity:.4}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fb{border-radius:16px;padding:14px;margin-top:10px;animation:pop .25s}
+.fb.ok{background:#22c55e22;border:1px solid #22c55e66}.fb.no{background:#f43f5e1f;border:1px solid #f43f5e66}
+.fb b{display:block;margin-bottom:4px}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+.prog{height:8px;background:#ffffff14;border-radius:99px;overflow:hidden;margin:4px 0 8px}.prog i{display:block;height:100%;background:var(--sub);transition:width .3s}
+.card3d{perspective:1000px;margin:10px 0}
+.flip{position:relative;min-height:220px;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}
+.flip.on{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:1.3rem;font-weight:600;background:var(--card);border:2px solid var(--line)}
+.face.b{transform:rotateY(180deg);background:linear-gradient(135deg,#0e7490,#4338ca);border-color:transparent}
+.face small{font-size:.75rem;color:var(--mut);font-weight:400;position:absolute;top:12px}
+.face.b small{color:#e0e7ff}
+.big{font-size:3rem;text-align:center;margin:10px 0}
+.center{text-align:center}.mut{color:var(--mut)}.small{font-size:.85rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 13px;border-radius:99px;background:var(--card);border:2px solid var(--line);font-size:.9rem}
+.chip.on{border-color:var(--sub);background:#38bdf822}
+.cb{display:flex;align-items:center;gap:10px;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.cb input{width:22px;height:22px;flex:none;accent-color:var(--acc)}
+.nav{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.nav button{width:36px;height:36px;border-radius:10px;background:var(--card);border:1px solid var(--line);font-size:.85rem}
+.nav button.done{background:#38bdf833}.nav button.cur{border:2px solid var(--acc)}
+.note{font-size:6rem;font-weight:900;text-align:center;line-height:1;margin:8px 0}
+.rev{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px;font-size:.95rem}
+.rev.ok{border-left:5px solid var(--ok)}.rev.no{border-left:5px solid var(--bad)}
+.timer{font-variant-numeric:tabular-nums}
+.ed{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;margin-bottom:6px}
+.ed input{padding:10px}
+.ed button{width:40px;border-radius:10px;background:var(--card2)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111827ee;border:1px solid var(--line);padding:12px 18px;border-radius:14px;z-index:50;animation:pop .2s;max-width:90vw;text-align:center}
+.pinpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:300px;margin:16px auto}
+.pinpad button{height:62px;border-radius:16px;background:var(--card);font-size:1.4rem;font-weight:700}
+.dots{display:flex;justify-content:center;gap:12px;margin:14px 0}.dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--mut)}.dots i.f{background:var(--acc);border-color:var(--acc)}
+table.st{width:100%;border-collapse:collapse;font-size:.9rem}table.st td,table.st th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
+.badge{font-size:.7rem;background:#ec489933;color:#f9a8d4;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:middle}
+sup{font-size:.7em}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ===== Aufgaben-Generatoren (Mathe, Geschichte) ===== */
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const fmt=n=>{const s=String(Math.abs(n));if(s.length<5)return (n<0?'−':'')+s;return (n<0?'−':'')+s.replace(/\B(?=(\d{3})+(?!\d))/g,' ');};
+const dez=n=>String(Math.round(n*1000)/1000).replace('.',',');
+const mcNum=(q,c,wr,ex)=>({t:'m',q,a:[String(c),...wr.map(String)],ex});
+function nearWrong(c,steps){const s=new Set();steps.forEach(d=>{if(c+d!==c&&c+d>=0)s.add(c+d)});return [...s].slice(0,3);}
+
+const GEN={
+ zahlen(){
+  const k=R(0,4);
+  if(k===0){const n=R(1000000,9999999);const names=['Einer','Zehner','Hunderter','Tausender','Zehntausender','Hunderttausender','Millionen'];const p=R(1,6);const d=String(n).split('').reverse()[p];
+   return {t:'i',q:`Welche Ziffer steht in <b>${fmt(n)}</b> an der <b>${names[p]}</b>stelle?`,a:d,ex:`Von rechts gezählt: Einer, Zehner, Hunderter, Tausender, Zehntausender, Hunderttausender, Millionen. An der ${names[p]}stelle steht ${d}.`};}
+  if(k===1){const n=R(1000000,9999999);const st=pick([[1000,'Tausender'],[10000,'Zehntausender'],[100000,'Hunderttausender']]);const r=Math.round(n/st[0])*st[0];
+   return {t:'i',q:`Runde <b>${fmt(n)}</b> auf <b>${st[1]}</b>.`,a:String(r),ex:`Schau auf die Ziffer rechts neben der ${st[1]}stelle: 0–4 abrunden, 5–9 aufrunden. Ergebnis: ${fmt(r)}.`};}
+  if(k===2){const base=pick([R(1,9)*1000000,R(10,99)*100000,R(100,999)*10000]);const nf=Math.random()<.5;const n=nf?base-1:base;const ans=nf?base:base-1;
+   return {t:'i',q:`Wie heißt der <b>${nf?'Nachfolger':'Vorgänger'}</b> von <b>${fmt(n)}</b>?`,a:String(ans),ex:`${nf?'Nachfolger = Zahl + 1':'Vorgänger = Zahl − 1'}: ${fmt(ans)}.`};}
+  if(k===3){const n=R(4,2999);const r=toRoman(n);if(Math.random()<.5)return {t:'i',q:`Schreibe als arabische Zahl: <b>${r}</b>`,a:String(n),ex:`I=1, V=5, X=10, L=50, C=100, D=500, M=1000. Steht ein kleineres Zeichen vor einem größeren, wird es abgezogen (IV = 4). ${r} = ${n}.`};
+   return {t:'i',q:`Schreibe als römische Zahl: <b>${n}</b>`,a:r,ex:`${n} = ${r}. Tipp: Zerlege in Tausender, Hunderter, Zehner und Einer.`};}
+  const d=String(R(1000000,9999999)).split('');const opts=new Set();while(opts.size<4){const c=[...d];const i=R(0,6),j=R(0,6);[c[i],c[j]]=[c[j],c[i]];if(c[0]!=='0')opts.add(Number(c.join('')));}
+  const arr=[...opts].sort((a,b)=>b-a);const big=Math.random()<.5;const c=big?arr[0]:arr[3];
+  return {t:'m',q:`Welche Zahl ist die <b>${big?'größte':'kleinste'}</b>?`,a:[fmt(c),...arr.filter(x=>x!==c).map(fmt)],ex:'Vergleiche von links nach rechts Stelle für Stelle. Die erste unterschiedliche Ziffer entscheidet.'};
+ },
+ rechnen(){
+  const k=R(0,4);
+  if(k===0){const a=R(10000,899999),b=R(1000,99999);return {t:'i',q:`${fmt(a)} + ${fmt(b)} =`,a:String(a+b),ex:`Schriftlich untereinander addieren, Überträge nicht vergessen. Ergebnis: ${fmt(a+b)}.`};}
+  if(k===1){const a=R(20000,999999),b=R(1000,a-1000);return {t:'i',q:`${fmt(a)} − ${fmt(b)} =`,a:String(a-b),ex:`Schriftlich subtrahieren (Ergänzungsverfahren). Probe: ${fmt(a-b)} + ${fmt(b)} = ${fmt(a)}.`};}
+  if(k===2){const a=R(102,989),b=R(12,89);return {t:'i',q:`${a} · ${b} =`,a:String(a*b),ex:`${a} · ${Math.floor(b/10)*10} = ${fmt(a*Math.floor(b/10)*10)} und ${a} · ${b%10} = ${fmt(a*(b%10))}. Zusammen: ${fmt(a*b)}.`};}
+  if(k===3){const d=R(3,9),q=R(112,1999);return {t:'i',q:`${fmt(d*q)} : ${d} =`,a:String(q),ex:`Schriftlich dividieren. Probe: ${q} · ${d} = ${fmt(d*q)}.`};}
+  const a=R(1100,9800),b=R(1100,9800),op=pick(['+','·']);
+  if(op==='+'){const c=Math.round(a/1000)*1000+Math.round(b/1000)*1000;return mcNum(`Überschlage: <b>${fmt(a)} + ${fmt(b)}</b> ist ungefähr …`,fmt(c),[fmt(c+1000),fmt(c-1000),fmt(c*10)],`Runde beide Zahlen auf Tausender: ${fmt(Math.round(a/1000)*1000)} + ${fmt(Math.round(b/1000)*1000)} = ${fmt(c)}.`);}
+  const x=R(21,89),y=R(21,89),c=Math.round(x/10)*10*Math.round(y/10)*10;return mcNum(`Überschlage: <b>${x} · ${y}</b> ist ungefähr …`,fmt(c),[fmt(c*10),fmt(Math.round(c/10)),fmt(c+1000)],`Runde auf Zehner: ${Math.round(x/10)*10} · ${Math.round(y/10)*10} = ${fmt(c)}.`);
+ },
+ regeln(){
+  const k=R(0,3);
+  if(k===0){const a=R(2,30),b=R(2,9),c=R(2,9);return {t:'i',q:`${a} + ${b} · ${c} =`,a:String(a+b*c),ex:`Punkt vor Strich: erst ${b} · ${c} = ${b*c}, dann ${a} + ${b*c} = ${a+b*c}.`};}
+  if(k===1){const a=R(2,15),b=R(2,15),c=R(2,9);return {t:'i',q:`(${a} + ${b}) · ${c} =`,a:String((a+b)*c),ex:`Klammern zuerst: ${a} + ${b} = ${a+b}, dann · ${c} = ${(a+b)*c}.`};}
+  if(k===2){const d=R(2,9),q=R(2,9),a=R(3,9),b=R(3,9);const v=a*b-d*q;if(v<0)return GEN.regeln();return {t:'i',q:`${a} · ${b} − ${d*q} : ${d} =`,a:String(v),ex:`Punkt vor Strich: ${a} · ${b} = ${a*b} und ${d*q} : ${d} = ${q}. Dann ${a*b} − ${q} = ${v}.`};}
+  const a=R(50,99),b=R(10,40),c=R(2,8);return {t:'i',q:`${a} − (${b} − ${c}) =`,a:String(a-(b-c)),ex:`Klammer zuerst: ${b} − ${c} = ${b-c}. Dann ${a} − ${b-c} = ${a-(b-c)}.`};
+ },
+ potenzen(){
+  const k=R(0,2);
+  if(k===0){const b=R(2,6),e=b<4?R(2,5):R(2,3);return {t:'i',q:`Berechne: <b>${b}<sup>${e}</sup></b>`,a:String(b**e),ex:`${b}<sup>${e}</sup> = ${Array(e).fill(b).join(' · ')} = ${b**e}. Die Hochzahl sagt, wie oft die Basis mit sich selbst malgenommen wird.`};}
+  if(k===1){const e=R(3,9);return {t:'i',q:`Schreibe als Zahl: <b>10<sup>${e}</sup></b>`,a:String(10**e),ex:`10<sup>${e}</sup> ist eine 1 mit ${e} Nullen: ${fmt(10**e)}.`};}
+  const n=R(11,20);return {t:'i',q:`Berechne die Quadratzahl: <b>${n}<sup>2</sup></b>`,a:String(n*n),ex:`${n} · ${n} = ${n*n}.`};
+ },
+ teilbarkeit(){
+  const k=R(0,3);
+  const rules={2:'letzte Ziffer gerade (0, 2, 4, 6, 8)',3:'Quersumme durch 3 teilbar',4:'letzte zwei Ziffern bilden eine durch 4 teilbare Zahl',5:'letzte Ziffer 0 oder 5',6:'durch 2 und durch 3 teilbar',9:'Quersumme durch 9 teilbar',10:'letzte Ziffer 0'};
+  if(k===0){const d=pick([2,3,4,5,6,9,10]);let n=R(100,9999);if(Math.random()<.5)n=n-n%d;const ok=n%d===0;const qs=String(n).split('').reduce((s,x)=>s+ +x,0);
+   return {t:'w',q:`${fmt(n)} ist durch ${d} teilbar.`,a:ok,ex:`Regel für ${d}: ${rules[d]}.${[3,6,9].includes(d)?` Quersumme von ${n}: ${qs}.`:''} ${ok?'Also teilbar.':'Also nicht teilbar.'}`};}
+  if(k===1){const n=R(2,99);const pr=isPrime(n);return {t:'w',q:`${n} ist eine Primzahl.`,a:pr,ex:pr?`${n} hat genau zwei Teiler: 1 und ${n}.`:`${n} hat mehr als zwei Teiler, z. B. ${smallDiv(n)}.`};}
+  if(k===2){const g=R(2,12),a=R(2,9),b=R(2,9);if(gcd(a,b)!==1||a===b)return GEN.teilbarkeit();return {t:'i',q:`Bestimme den ggT von <b>${g*a}</b> und <b>${g*b}</b>.`,a:String(g),ex:`Größter gemeinsamer Teiler: Schreibe die Teiler beider Zahlen auf und suche den größten, der in beiden Listen vorkommt: ${g}.`};}
+  const a=R(2,15),b=R(2,15);if(a===b)return GEN.teilbarkeit();const l=a*b/gcd(a,b);return {t:'i',q:`Bestimme das kgV von <b>${a}</b> und <b>${b}</b>.`,a:String(l),ex:`Kleinstes gemeinsames Vielfaches: Vielfache der größeren Zahl durchgehen, bis eines auch durch die kleinere teilbar ist: ${l}.`};
+ },
+ groessen(){
+  const T=[['km','m',1000],['m','cm',100],['cm','mm',10],['m','dm',10],['dm','cm',10],['t','kg',1000],['kg','g',1000],['g','mg',1000],['h','min',60],['min','s',60],['€','ct',100],['m²','dm²',100],['dm²','cm²',100],['cm²','mm²',100],['ha','m²',10000],['a','m²',100],['d','h',24]];
+  const k=R(0,4);
+  if(k===4){const ms=pick([10000,25000,50000,100000]);const cm=R(2,9);const m=cm*ms/100;return {t:'i',q:`Maßstab <b>1 : ${fmt(ms)}</b>. Auf der Karte sind es <b>${cm} cm</b>. Wie viele <b>Meter</b> sind das in Wirklichkeit?`,a:String(m),ex:`1 cm auf der Karte = ${fmt(ms)} cm = ${fmt(ms/100)} m in Wirklichkeit. ${cm} · ${fmt(ms/100)} m = ${fmt(m)} m.`};}
+  const [g,kl,f]=pick(T);
+  if(k===0||k===1){const v=R(2,f>=1000?60:25);return {t:'i',q:`${v} ${g} = ? ${kl}`,a:String(v*f),ex:`1 ${g} = ${fmt(f)} ${kl}. Also ${v} · ${fmt(f)} = ${fmt(v*f)} ${kl}.`,u:kl};}
+  if(k===2){const v=R(2,40);return {t:'i',q:`${fmt(v*f)} ${kl} = ? ${g}`,a:String(v),ex:`${fmt(f)} ${kl} = 1 ${g}. Also ${fmt(v*f)} : ${fmt(f)} = ${v} ${g}.`,u:g};}
+  if(f===60||f===24){const a=R(1,5),b=R(5,f-5);return {t:'i',q:`${a} ${g} ${b} ${kl} = ? ${kl}`,a:String(a*f+b),ex:`${a} ${g} = ${a*f} ${kl}, plus ${b} ${kl} = ${a*f+b} ${kl}.`,u:kl};}
+  if(f<10)return GEN.groessen();const fr=pick([.5,.5,.25,.75]);if((fr*f)%1)return GEN.groessen();const v=R(1,9)+fr;return {t:'i',q:`${dez(v)} ${g} = ? ${kl}`,a:String(v*f),ex:`1 ${g} = ${fmt(f)} ${kl}. ${dez(v)} · ${fmt(f)} = ${fmt(v*f)} ${kl}.`,u:kl};
+ },
+ gleichungen(){
+  const k=R(0,4),x=R(2,60);
+  if(k===0){const a=R(5,90);return {t:'i',q:`Löse: <b>x + ${a} = ${x+a}</b><br>x =`,a:String(x),ex:`Umkehraufgabe: x = ${x+a} − ${a} = ${x}. Probe: ${x} + ${a} = ${x+a}.`};}
+  if(k===1){const a=R(5,90);return {t:'i',q:`Löse: <b>x − ${a} = ${x}</b><br>x =`,a:String(x+a),ex:`Umkehraufgabe: x = ${x} + ${a} = ${x+a}. Probe: ${x+a} − ${a} = ${x}.`};}
+  if(k===2){const a=R(2,12),y=R(2,25);return {t:'i',q:`Löse: <b>${a} · x = ${a*y}</b><br>x =`,a:String(y),ex:`Umkehraufgabe: x = ${a*y} : ${a} = ${y}. Probe: ${a} · ${y} = ${a*y}.`};}
+  if(k===3){const a=R(2,9),y=R(2,15);return {t:'i',q:`Löse: <b>x : ${a} = ${y}</b><br>x =`,a:String(a*y),ex:`Umkehraufgabe: x = ${y} · ${a} = ${a*y}. Probe: ${a*y} : ${a} = ${y}.`};}
+  const a=R(x+5,x+90);return {t:'i',q:`Löse: <b>${a} − x = ${a-x}</b><br>x =`,a:String(x),ex:`Welche Zahl muss ich von ${a} abziehen, um ${a-x} zu erhalten? x = ${a} − ${a-x} = ${x}.`};
+ },
+ winkel(){
+  const types=[['spitzer Winkel',()=>R(5,85)],['rechter Winkel',()=>90],['stumpfer Winkel',()=>R(95,175)],['gestreckter Winkel',()=>180],['überstumpfer Winkel',()=>R(185,355)],['Vollwinkel',()=>360]];
+  const i=R(0,5);const w=types[i][1]();const wrong=types.map(t=>t[0]).filter((_,j)=>j!==i).sort(()=>Math.random()-.5).slice(0,3);
+  return {t:'m',q:`Ein Winkel ist <b>${w}°</b> groß. Das ist ein …`,a:[types[i][0],...wrong],ex:'spitz: unter 90° · recht: genau 90° · stumpf: zwischen 90° und 180° · gestreckt: 180° · überstumpf: zwischen 180° und 360° · Vollwinkel: 360°.'};
+ },
+ flaeche(){
+  const k=R(0,4),a=R(3,25),b=R(2,18);
+  if(k===0)return {t:'i',q:`Ein Rechteck ist <b>${a} cm</b> lang und <b>${b} cm</b> breit. Wie groß ist der <b>Umfang</b> in cm?`,a:String(2*(a+b)),ex:`u = 2 · (a + b) = 2 · (${a} + ${b}) = ${2*(a+b)} cm.`,u:'cm'};
+  if(k===1)return {t:'i',q:`Ein Rechteck ist <b>${a} cm</b> lang und <b>${b} cm</b> breit. Wie groß ist der <b>Flächeninhalt</b> in cm²?`,a:String(a*b),ex:`A = a · b = ${a} · ${b} = ${a*b} cm².`,u:'cm²'};
+  if(k===2)return {t:'i',q:`Ein Quadrat hat den Umfang <b>${4*a} m</b>. Wie lang ist eine Seite in m?`,a:String(a),ex:`Ein Quadrat hat 4 gleich lange Seiten: ${4*a} : 4 = ${a} m.`,u:'m'};
+  if(k===3)return {t:'i',q:`Ein Rechteck hat den Flächeninhalt <b>${a*b} cm²</b>. Eine Seite ist <b>${a} cm</b> lang. Wie lang ist die andere Seite in cm?`,a:String(b),ex:`A = a · b, also b = A : a = ${a*b} : ${a} = ${b} cm.`,u:'cm'};
+  const c=R(2,10),x=R(2,10),y=R(2,10);
+  if(Math.random()<.5)return {t:'i',q:`Ein Quader ist ${x} cm lang, ${y} cm breit und ${c} cm hoch. Wie groß ist sein <b>Volumen</b> in cm³?`,a:String(x*y*c),ex:`V = a · b · c = ${x} · ${y} · ${c} = ${x*y*c} cm³.`,u:'cm³'};
+  return {t:'i',q:`Ein Quader ist ${x} cm lang, ${y} cm breit und ${c} cm hoch. Wie groß ist seine <b>Oberfläche</b> in cm²?`,a:String(2*(x*y+x*c+y*c)),ex:`O = 2 · (a·b + a·c + b·c) = 2 · (${x*y} + ${x*c} + ${y*c}) = ${2*(x*y+x*c+y*c)} cm².`,u:'cm²'};
+ },
+ daten(){
+  const n=pick([5,7]);let l=Array.from({length:n},()=>R(1,20));const k=R(0,3);
+  if(k===0){const s=l.reduce((a,b)=>a+b,0);l[n-1]+=(n-s%n)%n;const m=l.reduce((a,b)=>a+b,0)/n;return {t:'i',q:`Berechne das <b>arithmetische Mittel</b> (Durchschnitt): ${l.join(', ')}`,a:String(m),ex:`Summe ${l.reduce((a,b)=>a+b,0)} geteilt durch Anzahl ${n} = ${m}.`};}
+  if(k===1){const mx=Math.max(...l),mn=Math.min(...l);return {t:'i',q:`Bestimme die <b>Spannweite</b>: ${l.join(', ')}`,a:String(mx-mn),ex:`Größter Wert minus kleinster Wert: ${mx} − ${mn} = ${mx-mn}.`};}
+  if(k===2){const s=[...l].sort((a,b)=>a-b);return {t:'i',q:`Bestimme den <b>Median</b> (Zentralwert): ${l.join(', ')}`,a:String(s[(n-1)/2]),ex:`Der Größe nach ordnen: ${s.join(', ')}. Der mittlere Wert ist ${s[(n-1)/2]}.`};}
+  l=[...new Set(l)];if(l.length<4)return GEN.daten();const mo=pick(l);l.push(mo);l.sort(()=>Math.random()-.5);return {t:'i',q:`Bestimme den <b>Modalwert</b> (häufigster Wert): ${l.join(', ')}`,a:String(mo),ex:`${mo} kommt am häufigsten vor.`};
+ },
+ brueche(){
+  const k=R(0,3);
+  if(k===0){let z=R(1,8),n=R(z+1,12);const g=gcd(z,n);z/=g;n/=g;const f=R(2,9);return {t:'i',q:`Erweitere <b>${z}/${n}</b> mit ${f}.`,a:`${z*f}/${n*f}`,ex:`Zähler und Nenner mit ${f} malnehmen: ${z*f}/${n*f}. Schreibweise: Zähler/Nenner.`};}
+  if(k===1){let z=R(1,8),n=R(z+1,12);const g=gcd(z,n);z/=g;n/=g;const f=R(2,8);return {t:'i',q:`Kürze <b>${z*f}/${n*f}</b> vollständig.`,a:`${z}/${n}`,ex:`Zähler und Nenner durch ihren ggT ${f} teilen: ${z}/${n}.`};}
+  if(k===2){const n=pick([2,3,4,5,10]),z=R(1,n-1),m=R(2,12)*n;return {t:'i',q:`Wie viel sind <b>${z}/${n} von ${m} €</b>?`,a:String(m/n*z),ex:`${m} € : ${n} = ${m/n} €, dann · ${z} = ${m/n*z} €.`,u:'€'};}
+  const n=pick([4,6,8,10,12]),a=R(1,n-1);let b=R(1,n-1);if(a===b)b=a===1?2:a-1;return mcNum(`Welcher Bruch ist größer?`,`${Math.max(a,b)}/${n}`,[`${Math.min(a,b)}/${n}`],`Bei gleichem Nenner ist der Bruch mit dem größeren Zähler größer.`);
+ },
+ blitz(){
+  const k=R(0,3);
+  if(k===0){const a=R(2,10),b=R(2,10);return {t:'i',q:`${a} · ${b} =`,a:String(a*b)};}
+  if(k===1){const a=R(11,20),b=R(2,9);return {t:'i',q:`${a} · ${b} =`,a:String(a*b)};}
+  if(k===2){const d=R(2,12),q=R(2,12);return {t:'i',q:`${d*q} : ${d} =`,a:String(q)};}
+  const a=R(15,99),b=R(11,a-1);return Math.random()<.5?{t:'i',q:`${a} + ${b} =`,a:String(a+b)}:{t:'i',q:`${a} − ${b} =`,a:String(a-b)};
+ },
+ jahrhundert(){
+  if(Math.random()<.7){const y=R(1,2099);const c=Math.ceil(y/100);return {t:'i',q:`In welchem <b>Jahrhundert</b> liegt das Jahr <b>${y}</b>? (nur die Zahl)`,a:String(c),ex:`Das 1. Jahrhundert umfasst die Jahre 1–100. Jahr ${y} → ${c}. Jahrhundert (Tipp: Jahr − 1, durch 100, abrunden, plus 1).`};}
+  const y=R(101,3000);const c=Math.ceil(y/100);return {t:'i',q:`In welchem Jahrhundert <b>vor Christus</b> liegt das Jahr <b>${y} v. Chr.</b>? (nur die Zahl)`,a:String(c),ex:`Vor Christus wird rückwärts gezählt, die Regel bleibt gleich: ${y} v. Chr. liegt im ${c}. Jahrhundert v. Chr.`};
+ }
+};
+function toRoman(n){const m=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];let s='';for(const [v,r] of m)while(n>=v){s+=r;n-=v}return s;}
+function gcd(a,b){return b?gcd(b,a%b):a}
+function isPrime(n){if(n<2)return false;for(let i=2;i*i<=n;i++)if(n%i===0)return false;return true}
+function smallDiv(n){for(let i=2;i<n;i++)if(n%i===0)return `${i} und ${n/i}`;return ''}
+
+/* ===== Lerninhalte Klasse 5 Gymnasium – orientiert am Fachlehrplan Sachsen-Anhalt (Schuljahrgänge 5/6) ===== */
+const SUBJECTS=[
+ {id:'ma',name:'Mathe',icon:'📐',color:'#3b82f6'},
+ {id:'de',name:'Deutsch',icon:'📖',color:'#ef4444'},
+ {id:'en',name:'Englisch',icon:'💬',color:'#8b5cf6'},
+ {id:'bio',name:'Biologie',icon:'🌿',color:'#22c55e'},
+ {id:'geo',name:'Geografie',icon:'🌍',color:'#06b6d4'},
+ {id:'ge',name:'Geschichte',icon:'🏛️',color:'#f59e0b'},
+ {id:'eigen',name:'Eigene Themen',icon:'⭐',color:'#ec4899'}
+];
+const WA=['Nomen','Verb','Adjektiv','Artikel','Pronomen','Präposition','Konjunktion','Adverb'];
+const wa=(q,c,ex)=>['m',q,[c,...WA.filter(x=>x!==c).sort(()=>Math.random()-.5).slice(0,3)],ex];
+const KAS=['Nominativ','Genitiv','Dativ','Akkusativ'];
+const kas=(q,c,ex)=>['m',q,[c,...KAS.filter(x=>x!==c)],ex];
+const ZF=['Präsens','Präteritum','Perfekt','Plusquamperfekt','Futur I'];
+const zf=(q,c,ex)=>['m',q,[c,...ZF.filter(x=>x!==c).sort(()=>Math.random()-.5).slice(0,3)],ex];
+const SG=['Subjekt','Prädikat','Dativobjekt','Akkusativobjekt','Adverbiale der Zeit','Adverbiale des Ortes','Adverbiale der Art und Weise','Adverbiale des Grundes'];
+const sg=(q,c,ex)=>{const near=c.startsWith('Adverbiale')?SG.filter(x=>x.startsWith('Adverbiale')&&x!==c):SG.filter(x=>!x.startsWith('Adverbiale')&&x!==c);return ['m',q,[c,...near.sort(()=>Math.random()-.5).slice(0,3)],ex]};
+
+const TOPICS=[
+/* ================= MATHE ================= */
+{id:'ma-zahlen',s:'ma',title:'Natürliche Zahlen & große Zahlen',gen:'zahlen',genShare:.75,
+ learn:[['Stellenwerttafel','Jede Stelle ist 10-mal so viel wert wie die Stelle rechts daneben.<div class="tbl">M | HT | ZT | T | H | Z | E</div>Große Zahlen schreibt man in Dreiergruppen von rechts: <b>4 583 207</b>.'],
+ ['Große Zahlen','1 Tausend = 1 000 · 1 Million = 1 000 000 (6 Nullen) · 1 Milliarde = 1 000 000 000 (9 Nullen) · 1 Billion = 12 Nullen.'],
+ ['Runden','Schau auf die Ziffer <b>rechts neben</b> der Rundungsstelle: 0, 1, 2, 3, 4 → abrunden · 5, 6, 7, 8, 9 → aufrunden.<br>Beispiel: 3 <b>4</b>72 auf Tausender → 3 000.'],
+ ['Römische Zahlen','I = 1, V = 5, X = 10, L = 50, C = 100, D = 500, M = 1000.<br>Höchstens drei gleiche Zeichen hintereinander. Ein kleineres Zeichen <b>vor</b> einem größeren wird abgezogen: IV = 4, IX = 9, XL = 40, XC = 90, CD = 400, CM = 900.']],
+ cards:[['1 Million hat … Nullen','6'],['1 Milliarde hat … Nullen','9'],['Römisch: D','500'],['Römisch: L','50'],['Römisch: C','100'],['Römisch: M','1000'],['Römisch: XL','40'],['Römisch: XC','90'],['Nachfolger','die Zahl, die um 1 größer ist'],['Vorgänger','die Zahl, die um 1 kleiner ist']],
+ tasks:[['m','Wie viele Nullen hat eine Milliarde?',['9','6','12','8'],'Million: 6 Nullen, Milliarde: 9, Billion: 12.'],
+ ['w','Bei römischen Zahlen dürfen höchstens drei gleiche Zeichen hintereinanderstehen.',true,'Deshalb schreibt man 4 als IV und nicht IIII.'],
+ ['m','Welche Zahl liegt auf dem Zahlenstrahl genau in der Mitte zwischen 2 400 und 3 000?',['2 700','2 600','2 800','2 750'],'Abstand 600, die Hälfte ist 300: 2 400 + 300 = 2 700.']]},
+{id:'ma-rechnen',s:'ma',title:'Schriftlich rechnen & Überschlag',gen:'rechnen',genShare:.85,
+ learn:[['Schriftliche Addition','Zahlen stellengerecht untereinander schreiben (Einer unter Einer). Von rechts nach links rechnen, Überträge klein notieren.'],
+ ['Schriftliche Subtraktion','Ergänzen: Von der unteren Zahl bis zur oberen ergänzen. Reicht es nicht, 10 dazunehmen und den Übertrag bei der nächsten Stelle unten dazuschreiben.'],
+ ['Schriftliche Multiplikation','Erste Zahl mit jeder Ziffer der zweiten Zahl malnehmen, Teilergebnisse stellengerecht eingerückt untereinander schreiben und addieren.'],
+ ['Überschlag','Vor dem Rechnen runden und grob ausrechnen. So merkst du, ob dein Ergebnis stimmen kann.<br>4 812 + 3 179 ≈ 5 000 + 3 000 = 8 000']],
+ cards:[['Summand + Summand =','Summe'],['Minuend − Subtrahend =','Differenz'],['Faktor · Faktor =','Produkt'],['Dividend : Divisor =','Quotient'],['Wozu dient ein Überschlag?','zur Kontrolle, ob das Ergebnis ungefähr stimmt']],
+ tasks:[['m','Wie heißt das Ergebnis einer Division?',['Quotient','Produkt','Differenz','Divisor'],'Dividend : Divisor = Quotient.'],
+ ['m','Wie heißt das Ergebnis einer Subtraktion?',['Differenz','Summe','Quotient','Subtrahend'],'Minuend − Subtrahend = Differenz.'],
+ ['w','Durch 0 darf man nicht teilen.',true,'Die Division durch 0 ist nicht erlaubt (nicht definiert).']]},
+{id:'ma-regeln',s:'ma',title:'Rechenregeln & Rechengesetze',gen:'regeln',genShare:.6,
+ learn:[['Reihenfolge','1. Klammern · 2. Punktrechnung (· und :) · 3. Strichrechnung (+ und −) · Sonst von links nach rechts.'],
+ ['Vertauschungsgesetz (Kommutativgesetz)','a + b = b + a und a · b = b · a. Gilt <b>nicht</b> für − und :.'],
+ ['Verbindungsgesetz (Assoziativgesetz)','(a + b) + c = a + (b + c) und (a · b) · c = a · (b · c).'],
+ ['Verteilungsgesetz (Distributivgesetz)','a · (b + c) = a · b + a · c<br>Beispiel: 7 · 23 = 7 · 20 + 7 · 3 = 140 + 21 = 161']],
+ cards:[['Kommutativgesetz','Vertauschungsgesetz: a + b = b + a'],['Assoziativgesetz','Verbindungsgesetz: (a + b) + c = a + (b + c)'],['Distributivgesetz','Verteilungsgesetz: a · (b + c) = a·b + a·c'],['Was rechnet man zuerst?','Klammern, dann Punkt vor Strich']],
+ tasks:[['m','Welches Gesetz wurde benutzt? 25 · 17 · 4 = 25 · 4 · 17',['Vertauschungsgesetz','Verbindungsgesetz','Verteilungsgesetz','Punkt vor Strich'],'Die Faktoren wurden in ihrer Reihenfolge vertauscht.'],
+ ['m','Welches Gesetz wurde benutzt? 6 · 48 = 6 · 40 + 6 · 8',['Verteilungsgesetz','Vertauschungsgesetz','Verbindungsgesetz','Klammerregel'],'Die Zahl 48 wurde zerlegt, die 6 wird auf beide Teile verteilt.'],
+ ['w','Für die Subtraktion gilt das Vertauschungsgesetz.',false,'10 − 4 = 6, aber 4 − 10 ergibt etwas anderes.'],
+ ['i','Rechne geschickt: 4 · 37 · 25 =','3700','4 · 25 = 100, und 100 · 37 = 3 700.']]},
+{id:'ma-potenzen',s:'ma',title:'Potenzen & Quadratzahlen',gen:'potenzen',genShare:.8,
+ learn:[['Potenz','3<sup>4</sup> = 3 · 3 · 3 · 3 = 81<br><b>3</b> ist die <b>Basis</b>, <b>4</b> ist der <b>Exponent</b> (Hochzahl). Der Exponent sagt, wie oft die Basis als Faktor vorkommt.'],
+ ['Zehnerpotenzen','10<sup>3</sup> = 1 000 · 10<sup>6</sup> = 1 000 000. Der Exponent ist die Anzahl der Nullen.'],
+ ['Quadratzahlen','1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225 … Lerne sie bis 20² = 400 auswendig!']],
+ cards:[['11²','121'],['12²','144'],['13²','169'],['14²','196'],['15²','225'],['16²','256'],['17²','289'],['18²','324'],['19²','361'],['20²','400'],['2¹⁰','1024'],['Basis in 5³','5']],
+ tasks:[['m','Was ist 2<sup>3</sup>?',['8','6','9','5'],'2 · 2 · 2 = 8 (nicht 2 · 3!).'],['m','Wie heißt die 4 in 7<sup>4</sup>?',['Exponent','Basis','Faktor','Potenzwert'],'Die Hochzahl heißt Exponent.'],['m','Was ist 1<sup>100</sup>?',['1','100','0','101'],'1 mal 1 mal 1 … bleibt immer 1.']]},
+{id:'ma-teilbarkeit',s:'ma',title:'Teilbarkeit, Primzahlen, ggT & kgV',gen:'teilbarkeit',genShare:.75,
+ learn:[['Teilbarkeitsregeln','durch 2: letzte Ziffer gerade · durch 5: letzte Ziffer 0 oder 5 · durch 10: letzte Ziffer 0 · durch 4: letzte zwei Ziffern durch 4 teilbar · durch 3: Quersumme durch 3 teilbar · durch 9: Quersumme durch 9 teilbar · durch 6: durch 2 <b>und</b> 3 teilbar'],
+ ['Quersumme','Summe aller Ziffern: Quersumme von 4 752 = 4 + 7 + 5 + 2 = 18'],
+ ['Primzahlen','Haben genau zwei Teiler: 1 und sich selbst. 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 … Die <b>1 ist keine</b> Primzahl. 2 ist die einzige gerade Primzahl.'],
+ ['ggT und kgV','<b>ggT</b> = größter gemeinsamer Teiler (12 und 18 → 6)<br><b>kgV</b> = kleinstes gemeinsames Vielfaches (4 und 6 → 12)']],
+ cards:[['Teilbar durch 3, wenn …','die Quersumme durch 3 teilbar ist'],['Teilbar durch 4, wenn …','die letzten zwei Ziffern eine durch 4 teilbare Zahl bilden'],['Teilbar durch 6, wenn …','sie durch 2 und durch 3 teilbar ist'],['Ist 1 eine Primzahl?','Nein – sie hat nur einen Teiler'],['Einzige gerade Primzahl','2'],['Primzahlen bis 30','2, 3, 5, 7, 11, 13, 17, 19, 23, 29'],['Primfaktorzerlegung von 60','2 · 2 · 3 · 5']],
+ tasks:[['m','Welche Zahl ist durch 9 teilbar?',['5 778','5 779','5 768','5 717'],'Quersumme von 5 778: 5+7+7+8 = 27, und 27 ist durch 9 teilbar.'],
+ ['m','Wie lautet die Primfaktorzerlegung von 36?',['2 · 2 · 3 · 3','4 · 9','2 · 3 · 6','2 · 2 · 9'],'Nur Primzahlen als Faktoren: 36 = 2 · 2 · 3 · 3. 4, 6 und 9 sind keine Primzahlen.']]},
+{id:'ma-groessen',s:'ma',title:'Größen umrechnen & Maßstab',gen:'groessen',genShare:.85,
+ learn:[['Längen','1 km = 1 000 m · 1 m = 10 dm = 100 cm · 1 dm = 10 cm · 1 cm = 10 mm'],
+ ['Massen','1 t = 1 000 kg · 1 kg = 1 000 g · 1 g = 1 000 mg'],
+ ['Zeit & Geld','1 d = 24 h · 1 h = 60 min · 1 min = 60 s · 1 € = 100 ct'],
+ ['Flächen','Umrechnungszahl <b>100</b>: 1 m² = 100 dm² · 1 dm² = 100 cm² · 1 cm² = 100 mm² · 1 a = 100 m² · 1 ha = 100 a = 10 000 m² · 1 km² = 100 ha'],
+ ['Maßstab','1 : 25 000 bedeutet: 1 cm auf der Karte sind 25 000 cm = 250 m in Wirklichkeit.']],
+ cards:[['1 km = … m','1 000'],['1 t = … kg','1 000'],['1 m² = … dm²','100'],['1 ha = … m²','10 000'],['1 a = … m²','100'],['1 km² = … ha','100'],['1 Tag = … h','24'],['Umrechnungszahl bei Flächen','100'],['1 : 100 000 – 1 cm sind …','1 km']],
+ tasks:[['m','Was ist richtig?',['3 m 5 cm = 305 cm','3 m 5 cm = 350 cm','3 m 5 cm = 35 cm','3 m 5 cm = 3 050 cm'],'3 m = 300 cm, plus 5 cm = 305 cm.'],['m','Welche Angabe ist am größten?',['2,1 kg','2 080 g','2 kg 9 g','2 019 g'],'2,1 kg = 2 100 g ist am meisten.']]},
+{id:'ma-gleichungen',s:'ma',title:'Gleichungen & Variablen',gen:'gleichungen',genShare:.8,
+ learn:[['Variable','Ein Platzhalter (meist x) für eine unbekannte Zahl.'],['Lösen mit der Umkehraufgabe','x + 17 = 42 → x = 42 − 17 = 25<br>Umkehrungen: + ↔ − und · ↔ :'],['Probe','Setze deine Lösung ein: 25 + 17 = 42 ✓']],
+ cards:[['Umkehrung von +','−'],['Umkehrung von ·',':'],['Was ist eine Variable?','ein Platzhalter für eine Zahl'],['Was macht man bei der Probe?','Lösung einsetzen und prüfen']],
+ tasks:[['m','Für welche Zahl gilt: x + x = 18?',['9','18','36','16'],'9 + 9 = 18.'],['i','Ich denke mir eine Zahl, multipliziere sie mit 6 und erhalte 54. Welche Zahl?','9','6 · x = 54 → x = 54 : 6 = 9.']]},
+{id:'ma-geometrie',s:'ma',title:'Geometrie: Grundbegriffe & Winkel',gen:'winkel',genShare:.4,
+ learn:[['Strecke, Strahl, Gerade','<b>Strecke</b>: Anfangs- und Endpunkt (AB) · <b>Strahl</b>: Anfangspunkt, kein Ende · <b>Gerade</b>: weder Anfang noch Ende'],
+ ['Zueinander','<b>parallel</b> (∥): überall gleicher Abstand, schneiden sich nie · <b>senkrecht</b> (⊥): schneiden sich im rechten Winkel'],
+ ['Winkelarten','spitz < 90° · recht = 90° · stumpf zwischen 90° und 180° · gestreckt = 180° · überstumpf zwischen 180° und 360° · Vollwinkel = 360°'],
+ ['Koordinatensystem','Erst nach rechts (x), dann nach oben (y): P(3|5) liegt 3 nach rechts und 5 nach oben.'],
+ ['Symmetrie','Achsensymmetrisch: Faltet man die Figur an der Achse, liegen beide Hälften genau aufeinander.']],
+ cards:[['Strecke','Linie mit Anfangs- und Endpunkt'],['Strahl','Linie mit Anfangspunkt, aber ohne Ende'],['Gerade','Linie ohne Anfang und Ende'],['parallel','überall gleicher Abstand, kein Schnittpunkt'],['senkrecht','Schnitt im rechten Winkel (90°)'],['stumpfer Winkel','zwischen 90° und 180°'],['überstumpfer Winkel','zwischen 180° und 360°'],['P(4|2): Was zuerst?','4 nach rechts (x), dann 2 nach oben (y)']],
+ tasks:[['m','Wie viele Symmetrieachsen hat ein Quadrat?',['4','2','1','8'],'2 Diagonalen und 2 Mittellinien = 4.'],['m','Wie viele Symmetrieachsen hat ein (nicht quadratisches) Rechteck?',['2','4','1','0'],'Nur die beiden Mittellinien, die Diagonalen nicht.'],
+ ['m','Der Punkt P(0|6) liegt …',['auf der y-Achse','auf der x-Achse','im Ursprung','rechts neben der y-Achse'],'x = 0 bedeutet: kein Schritt nach rechts – also auf der y-Achse.'],
+ ['m','Welcher Winkel entsteht zwischen den Zeigern einer Uhr um 3 Uhr?',['rechter Winkel','spitzer Winkel','stumpfer Winkel','gestreckter Winkel'],'Um 3 Uhr stehen die Zeiger im 90°-Winkel.'],
+ ['w','Zwei parallele Geraden haben genau einen Schnittpunkt.',false,'Parallele Geraden schneiden sich nie.']]},
+{id:'ma-flaeche',s:'ma',title:'Umfang, Flächeninhalt & Volumen',gen:'flaeche',genShare:.85,
+ learn:[['Rechteck','Umfang u = 2 · a + 2 · b · Flächeninhalt A = a · b'],['Quadrat','u = 4 · a · A = a · a'],['Quader','Volumen V = a · b · c · Oberfläche O = 2 · (a·b + a·c + b·c)'],['Würfel','V = a · a · a · O = 6 · a · a'],['Einheiten','Umfang in cm, m … · Fläche in cm², m² … · Volumen in cm³, m³ …']],
+ cards:[['Umfang Rechteck','u = 2·a + 2·b'],['Fläche Rechteck','A = a · b'],['Volumen Quader','V = a · b · c'],['Oberfläche Würfel','O = 6 · a · a'],['Wie viele Flächen hat ein Quader?','6'],['Wie viele Kanten hat ein Würfel?','12'],['Wie viele Ecken hat ein Quader?','8']],
+ tasks:[['m','Wie viele Kanten hat ein Quader?',['12','8','6','10'],'4 oben, 4 unten, 4 senkrecht = 12.'],['m','Ein Würfel hat die Kantenlänge 3 cm. Volumen?',['27 cm³','9 cm³','54 cm³','18 cm³'],'3 · 3 · 3 = 27 cm³.']]},
+{id:'ma-daten',s:'ma',title:'Daten & Diagramme',gen:'daten',genShare:.8,
+ learn:[['Daten erfassen','Strichliste → Häufigkeitstabelle → Säulen- oder Balkendiagramm (Säulen stehen, Balken liegen).'],
+ ['Kenngrößen','<b>Arithmetisches Mittel</b>: Summe : Anzahl · <b>Median</b>: mittlerer Wert der geordneten Liste · <b>Modalwert</b>: häufigster Wert · <b>Spannweite</b>: größter − kleinster Wert']],
+ cards:[['Arithmetisches Mittel','Summe aller Werte geteilt durch die Anzahl'],['Median','mittlerer Wert der der Größe nach geordneten Liste'],['Modalwert','der häufigste Wert'],['Spannweite','größter Wert minus kleinster Wert'],['Balkendiagramm','die Balken liegen waagerecht']],
+ tasks:[['m','Welche Darstellung zeigt waagerechte Balken?',['Balkendiagramm','Säulendiagramm','Strichliste','Häufigkeitstabelle'],'Säulen stehen senkrecht, Balken liegen waagerecht.']]},
+{id:'ma-brueche',s:'ma',title:'Brüche (Einstieg)',gen:'brueche',genShare:.75,
+ learn:[['Bruch','<b>3/4</b>: Der Nenner (4) sagt, in wie viele gleiche Teile das Ganze geteilt ist. Der Zähler (3) sagt, wie viele Teile genommen werden.'],['Erweitern & Kürzen','Erweitern: Zähler und Nenner mit derselben Zahl multiplizieren. Kürzen: durch dieselbe Zahl dividieren. Der Wert bleibt gleich!'],['Anteile berechnen','3/4 von 20 €: erst durch den Nenner (20 : 4 = 5), dann mal den Zähler (5 · 3 = 15 €).'],['Prozent','1/2 = 50 % · 1/4 = 25 % · 3/4 = 75 % · 1/10 = 10 % · 1/5 = 20 %']],
+ cards:[['Zähler','die Zahl über dem Bruchstrich'],['Nenner','die Zahl unter dem Bruchstrich'],['1/4 = … %','25 %'],['3/4 = … %','75 %'],['1/5 = … %','20 %'],['Erweitern','Zähler und Nenner mit derselben Zahl multiplizieren']],
+ tasks:[['m','Welcher Bruch hat denselben Wert wie 2/3?',['8/12','6/8','4/9','3/4'],'2/3 mit 4 erweitert ergibt 8/12.'],['m','Wie viel Prozent sind 1/5?',['20 %','15 %','25 %','50 %'],'1/5 = 2/10 = 20/100 = 20 %.']]},
+
+/* ================= DEUTSCH ================= */
+{id:'de-wortarten',s:'de',title:'Wortarten',
+ learn:[['Nomen','Namen für Lebewesen, Dinge, Gefühle, Gedanken. Großgeschrieben, haben einen Artikel. Endungen: -ung, -heit, -keit, -nis, -schaft.'],
+ ['Verb','Sagt, was jemand tut oder was geschieht. Verben werden konjugiert (ich lese, du liest …).'],
+ ['Adjektiv','Beschreibt, wie etwas ist. Kann gesteigert werden: groß – größer – am größten.'],
+ ['Pronomen','Stellvertreter: Personalpronomen (ich, du, er …), Possessivpronomen (mein, dein, sein …).'],
+ ['Präposition & Konjunktion','<b>Präpositionen</b> zeigen Verhältnisse (auf, unter, mit, wegen …). <b>Konjunktionen</b> verbinden Wörter oder Sätze (und, oder, aber, weil, dass …).']],
+ cards:[['Nomen','Namenwort – groß, mit Artikel'],['Verb','Tätigkeitswort – wird konjugiert'],['Adjektiv','Eigenschaftswort – kann gesteigert werden'],['Personalpronomen','ich, du, er, sie, es, wir, ihr, sie'],['Possessivpronomen','mein, dein, sein, ihr, unser, euer'],['Präposition','Verhältniswort: auf, unter, neben, mit …'],['Konjunktion','Bindewort: und, oder, aber, weil, dass …'],['Steigerung: gut','gut – besser – am besten']],
+ tasks:[wa('Der <b>schnelle</b> Hund rennt über die Wiese.','Adjektiv','„schnell“ beschreibt, wie der Hund ist.'),wa('Wir <b>spielen</b> nach der Schule Fußball.','Verb','„spielen“ sagt, was wir tun.'),wa('Das Buch liegt <b>unter</b> dem Tisch.','Präposition','„unter“ zeigt das Verhältnis zwischen Buch und Tisch.'),wa('Ich bleibe zu Hause, <b>weil</b> es regnet.','Konjunktion','„weil“ verbindet zwei Sätze.'),wa('<b>Sie</b> liest ein spannendes Buch.','Pronomen','„sie“ ist ein Personalpronomen.'),wa('Das ist <b>mein</b> Fahrrad.','Pronomen','„mein“ ist ein Possessivpronomen (besitzanzeigend).'),wa('Die <b>Freundschaft</b> zwischen den beiden ist eng.','Nomen','Endung -schaft und Artikel „die“.'),wa('Das <b>Laufen</b> fällt ihm heute schwer.','Nomen','Ein Verb mit Artikel wird zum Nomen (Nominalisierung) und großgeschrieben.'),wa('<b>Das</b> Fenster steht offen.','Artikel','„das“ begleitet das Nomen „Fenster“.'),wa('Opa kommt <b>morgen</b> zu Besuch.','Adverb','„morgen“ gibt die Zeit an und lässt sich nicht steigern oder beugen.'),
+ ['i','Steigere: groß – größer – ?','am größten','Superlativ mit „am“: am größten.'],['i','Ergänze die richtige Verbform (lesen): Du ___ jeden Abend.','liest','du liest – das e wird zu ie.'],['w','Nomen erkennt man oft an Endungen wie -ung, -heit und -keit.',true,'Beispiele: Zeitung, Freiheit, Sauberkeit.'],['w','Adjektive kann man immer konjugieren.',false,'Verben werden konjugiert. Adjektive werden gesteigert und dekliniert.']]},
+{id:'de-nomen',s:'de',title:'Nomen: Genus, Numerus & die vier Fälle',
+ learn:[['Genus','maskulin (der), feminin (die), neutrum (das). Achtung: <i>das</i> Mädchen, <i>die</i> Butter, <i>der</i> Joghurt / <i>das</i> Joghurt.'],['Numerus','Singular (Einzahl) und Plural (Mehrzahl).'],['Die vier Fälle (Kasus)','<b>Nominativ</b> – Wer oder was? · <b>Genitiv</b> – Wessen? · <b>Dativ</b> – Wem? · <b>Akkusativ</b> – Wen oder was?'],['Trick','Frage im Satz nach dem Wort: „Ich gebe <i>dem Hund</i> einen Knochen.“ – <i>Wem</i> gebe ich einen Knochen? → Dativ.']],
+ cards:[['Nominativ – Frage','Wer oder was?'],['Genitiv – Frage','Wessen?'],['Dativ – Frage','Wem?'],['Akkusativ – Frage','Wen oder was?'],['Genus von „Mädchen“','neutrum (das)'],['Plural von „Atlas“','Atlanten'],['Numerus','Singular / Plural']],
+ tasks:[kas('Ich gebe <b>dem Hund</b> einen Knochen.','Dativ','Wem gebe ich einen Knochen? Dem Hund.'),kas('Ich gebe dem Hund <b>einen Knochen</b>.','Akkusativ','Wen oder was gebe ich? Einen Knochen.'),kas('Das ist das Auto <b>meines Vaters</b>.','Genitiv','Wessen Auto? Meines Vaters.'),kas('<b>Die neue Lehrerin</b> lobt uns.','Nominativ','Wer lobt uns? Die neue Lehrerin.'),kas('Wir helfen <b>dem alten Mann</b>.','Dativ','Wem helfen wir? Dem alten Mann.'),kas('Wir warten auf <b>den Bus</b>.','Akkusativ','Auf wen oder was warten wir? Auf den Bus.'),kas('Mit <b>dem Fahrrad</b> fahre ich zur Schule.','Dativ','„mit“ verlangt immer den Dativ.'),kas('Wegen <b>des Regens</b> fällt das Fest aus.','Genitiv','„wegen“ steht mit dem Genitiv: wessen wegen?'),kas('Paul vermisst <b>seinen Bruder</b>.','Akkusativ','Wen vermisst Paul?'),
+ ['m','Welches Genus hat „Mädchen“?',['Neutrum','Femininum','Maskulinum','kein Genus'],'Es heißt „das Mädchen“ – Wörter auf -chen sind immer Neutrum.'],['m','Welcher Plural ist richtig?',['die Kakteen','die Kaktusse','die Kaktusen','die Kaktüsse'],'Kaktus – Kakteen.'],['i','Setze den richtigen Artikel ein: Ich spiele mit ___ Katze.','der','mit + Dativ: mit der Katze.']]},
+{id:'de-zeiten',s:'de',title:'Verben & Zeitformen',
+ learn:[['Präsens','Gegenwart: ich spiele'],['Präteritum','Vergangenheit, typisch beim Erzählen: ich spielte, ich lief'],['Perfekt','Vergangenheit, typisch beim Sprechen: ich habe gespielt, ich bin gelaufen (haben/sein + Partizip II)'],['Plusquamperfekt','Vorvergangenheit: ich hatte gespielt, ich war gelaufen'],['Futur I','Zukunft: ich werde spielen'],['Starke & schwache Verben','Schwach: Stamm bleibt (spielen – spielte). Stark: Stammvokal ändert sich (singen – sang – gesungen).']],
+ cards:[['gehen – Präteritum','ging'],['singen – Präteritum','sang'],['bringen – Präteritum','brachte'],['schreiben – Partizip II','geschrieben'],['laufen – Perfekt','ist gelaufen'],['denken – Präteritum','dachte'],['Plusquamperfekt von „ich esse“','ich hatte gegessen'],['Futur I von „du kommst“','du wirst kommen']],
+ tasks:[zf('Ich <b>bin</b> nach Hause <b>gelaufen</b>.','Perfekt','sein + Partizip II.'),zf('Er <b>schwamm</b> durch den See.','Präteritum','Einfache Vergangenheitsform von „schwimmen“.'),zf('Wir <b>werden</b> im Sommer <b>verreisen</b>.','Futur I','werden + Infinitiv.'),zf('Sie <b>hatte</b> schon <b>gegessen</b>.','Plusquamperfekt','hatte/war + Partizip II.'),zf('Du <b>spielst</b> sehr gut Klavier.','Präsens','Gegenwartsform.'),
+ ['i','Setze ins Präteritum: ich gehe → ich ___','ging','gehen – ging – gegangen.'],['i','Setze ins Präteritum: wir singen → wir ___','sangen','singen – sang – gesungen.'],['i','Setze ins Präteritum: er bringt → er ___','brachte','bringen – brachte – gebracht.'],['i','Setze ins Perfekt: ich schreibe → ich habe ___','geschrieben','Partizip II von schreiben: geschrieben.'],['i','Setze ins Perfekt: sie fährt → sie ___ gefahren','ist','Verben der Bewegung bilden das Perfekt meist mit „sein“.'],
+ ['m','Welche Zeitform nutzt man meist beim schriftlichen Erzählen?',['Präteritum','Perfekt','Präsens','Futur I'],'Geschichten werden schriftlich im Präteritum erzählt.'],['w','Starke Verben ändern im Präteritum ihren Stammvokal.',true,'z. B. finden – fand, sprechen – sprach.']]},
+{id:'de-satzglieder',s:'de',title:'Satzglieder',
+ learn:[['Umstellprobe','Wörter, die beim Umstellen zusammenbleiben, bilden ein Satzglied.<br>Am Morgen | trinkt | Opa | einen Kaffee. → Opa | trinkt | am Morgen | einen Kaffee.'],['Subjekt & Prädikat','<b>Subjekt</b>: Wer oder was? · <b>Prädikat</b>: Was tut …? Im Aussagesatz steht das Prädikat an 2. Stelle.'],['Objekte','<b>Dativobjekt</b>: Wem? · <b>Akkusativobjekt</b>: Wen oder was?'],['Adverbiale Bestimmungen','Zeit: Wann? Wie lange? · Ort: Wo? Wohin? · Art und Weise: Wie? · Grund: Warum?']],
+ cards:[['Frage nach dem Subjekt','Wer oder was?'],['Frage nach dem Dativobjekt','Wem?'],['Frage nach dem Akkusativobjekt','Wen oder was?'],['Adverbiale der Zeit – Fragen','Wann? Wie lange? Seit wann?'],['Adverbiale des Ortes – Fragen','Wo? Wohin? Woher?'],['Adverbiale des Grundes – Frage','Warum?'],['Wie findet man Satzglieder?','mit der Umstellprobe']],
+ tasks:[sg('<b>Der kleine Hund</b> bellt laut.','Subjekt','Wer bellt? Der kleine Hund.'),sg('Paul <b>schenkt</b> seiner Schwester ein Buch.','Prädikat','Was tut Paul? Er schenkt.'),sg('Paul schenkt <b>seiner Schwester</b> ein Buch.','Dativobjekt','Wem schenkt Paul ein Buch?'),sg('Paul schenkt seiner Schwester <b>ein Buch</b>.','Akkusativobjekt','Was schenkt Paul?'),sg('Wir fahren <b>morgen</b> nach Halle.','Adverbiale der Zeit','Wann fahren wir?'),sg('Wir fahren morgen <b>nach Halle</b>.','Adverbiale des Ortes','Wohin fahren wir?'),sg('Lena lacht <b>fröhlich</b>.','Adverbiale der Art und Weise','Wie lacht Lena?'),sg('<b>Wegen des Sturms</b> fällt die Schule aus.','Adverbiale des Grundes','Warum fällt die Schule aus?'),sg('Am Abend liest <b>meine Mutter</b> die Zeitung.','Subjekt','Wer liest? Meine Mutter – auch wenn das Subjekt nicht vorne steht.'),
+ ['i','Wie viele Satzglieder hat der Satz: „Am Morgen trinkt Opa Karl einen Kaffee.“','4','Am Morgen | trinkt | Opa Karl | einen Kaffee.'],['m','Mit welcher Probe findet man Satzglieder?',['Umstellprobe','Ersatzprobe','Weglassprobe','Klangprobe'],'Was beim Umstellen zusammenbleibt, ist ein Satzglied.'],['w','Im Aussagesatz steht das Prädikat an zweiter Satzgliedstelle.',true,'Das gebeugte Verb steht immer an Position 2.']]},
+{id:'de-rechtschreibung',s:'de',title:'Rechtschreibung: s/ss/ß, das/dass, groß/klein',
+ learn:[['s, ss oder ß?','Nach <b>kurzem</b> Vokal: ss (Fluss, essen). Nach <b>langem</b> Vokal oder au, ei, eu: ß (Straße, groß, heißen) – wenn der s-Laut scharf (stimmlos) ist. Summend (stimmhaft) gesprochen: s (Hase, Gras – verlängere: Gräser).'],
+ ['das oder dass?','<b>das</b> kann man durch <i>dieses, welches</i> oder <i>jenes</i> ersetzen. <b>dass</b> ist eine Konjunktion und leitet einen Nebensatz ein (oft nach sagen, wissen, hoffen).'],
+ ['Nominalisierung','Verben und Adjektive werden großgeschrieben, wenn sie als Nomen gebraucht werden. Signalwörter: Artikel (das Lesen), beim/zum (beim Schwimmen), etwas/nichts/viel (etwas Schönes).'],
+ ['Tageszeiten','Nach heute, gestern, morgen groß: heute Abend, gestern Morgen. Mit -s klein: abends, montags.']],
+ cards:[['ss nach …','kurzem Vokal (Fluss, essen)'],['ß nach …','langem Vokal oder au/ei/eu (Straße, heiß)'],['Ersatzprobe für „das“','dieses / welches / jenes'],['„dass“ ist eine …','Konjunktion (leitet einen Nebensatz ein)'],['beim + Verb →','Großschreibung (beim Lesen)'],['etwas + Adjektiv →','Großschreibung (etwas Neues)'],['heute + Tageszeit','heute Abend (groß)'],['Tageszeit mit -s','abends (klein)']],
+ tasks:[['m','Ich weiß, ___ du recht hast.',['dass','das'],'Nebensatz nach „wissen“ – nicht durch „welches“ ersetzbar.'],['m','Das Haus, ___ dort hinten steht, ist sehr alt.',['das','dass'],'Ersatzprobe: „welches dort hinten steht“ passt.'],['m','Ich hoffe, ___ das Wetter hält.',['dass','das'],'Nebensatz nach „hoffen“.'],
+ ['m','Der Fu_ball liegt im Tor.',['ß','ss','s'],'Langes u → ß: Fußball.'],['m','Sie i_t gern Nudeln.',['ss','ß','s'],'Kurzes i → ss: sie isst.'],['m','Wir überqueren den Flu_.',['ss','ß','s'],'Kurzes u: Fluss (Plural: Flüsse).'],['m','Das Gra_ ist nass.',['s','ß','ss'],'Verlängern: die Gräser – summendes s.'],['m','Der Elefant ist sehr gro_.',['ß','s','ss'],'Langes o und scharfes s: groß.'],
+ ['m','Welche Schreibung ist richtig?',['heute Abend','heute abend','Heute abend','heute-Abend'],'Nach heute, gestern, morgen wird die Tageszeit großgeschrieben.'],['m','Welche Schreibung ist richtig?',['Beim Schwimmen friere ich.','Beim schwimmen friere ich.','beim Schwimmen friere ich.','Beim Schwimmen Friere ich.'],'beim + Verb = Nominalisierung → groß.'],['m','Welche Schreibung ist richtig?',['Ich wünsche dir alles Gute.','Ich wünsche dir alles gute.','Ich Wünsche dir alles Gute.','Ich wünsche dir Alles gute.'],'alles + Adjektiv = Nominalisierung → „Gute“ groß.'],['m','Welche Schreibung ist richtig?',['Wir trainieren montags.','Wir trainieren Montags.','Wir trainieren am montag.','Wir Trainieren montags.'],'Mit -s am Ende wird die Zeitangabe kleingeschrieben.'],
+ ['m','Welches Wort ist richtig geschrieben?',['Maschine','Maschiene','Masschine','Maschinne'],'Maschine schreibt man ohne ie.'],['m','Welches Wort ist richtig geschrieben?',['endlich','entlich','ändlich','endtlich'],'endlich kommt von „Ende“.'],['m','Er kommt schon ___ zu spät.',['wieder','wider'],'„wieder“ = noch einmal. „wider“ = gegen.']]},
+{id:'de-zeichen',s:'de',title:'Zeichensetzung & wörtliche Rede',
+ learn:[['Wörtliche Rede – Begleitsatz vorne','Mama sagt<b>: „</b>Komm bitte nach Hause<b>.“</b>'],['Begleitsatz hinten','<b>„</b>Ich komme gleich<b>“, </b>ruft Paul.<br>Beim Ausrufe- oder Fragesatz: „Kommst du?“, fragt Lena.'],['Begleitsatz in der Mitte','„Wenn du willst“, sagt Opa, „gehen wir angeln.“'],['Komma','Bei Aufzählungen (aber nicht vor <i>und</i>/<i>oder</i>) · vor <i>aber, sondern, denn</i> · vor Nebensätzen mit <i>weil, dass, wenn, als, ob</i>.']],
+ cards:[['Doppelpunkt bei der wörtlichen Rede?','wenn der Begleitsatz vorne steht'],['Komma bei der wörtlichen Rede?','wenn der Begleitsatz danach oder dazwischen steht'],['Komma vor „und“ in einer Aufzählung?','Nein'],['Komma vor „aber“?','Ja, immer'],['Komma vor „weil“?','Ja – Nebensatz']],
+ tasks:[['m','Welcher Satz ist richtig?',['Mama sagt: „Komm bitte nach Hause.“','Mama sagt „Komm bitte nach Hause.“','Mama sagt: „komm bitte nach Hause“.','Mama sagt, „Komm bitte nach Hause.“'],'Begleitsatz vorne → Doppelpunkt, Anführungszeichen, Satzzeichen innerhalb.'],
+ ['m','Welcher Satz ist richtig?',['„Ich komme gleich“, rief Paul.','„Ich komme gleich.“, rief Paul.','„Ich komme gleich“ rief Paul.','„Ich komme gleich,“ rief Paul.'],'Begleitsatz hinten: kein Punkt in der Rede, Komma nach dem schließenden Anführungszeichen.'],
+ ['m','Welcher Satz ist richtig?',['„Hast du Hunger?“, fragte Oma.','„Hast du Hunger“, fragte Oma?','„Hast du Hunger?“ fragte Oma.','„Hast du Hunger.“, fragte Oma.'],'Das Fragezeichen bleibt in der Rede, danach folgt trotzdem ein Komma.'],
+ ['m','Welcher Satz ist richtig?',['Ich kaufe Äpfel, Birnen und Bananen.','Ich kaufe Äpfel, Birnen, und Bananen.','Ich kaufe Äpfel Birnen und Bananen.','Ich kaufe, Äpfel, Birnen und Bananen.'],'Komma zwischen den Aufzählungsgliedern, nicht vor „und“.'],
+ ['m','Welcher Satz ist richtig?',['Ich bleibe drinnen, weil es regnet.','Ich bleibe drinnen weil, es regnet.','Ich bleibe, drinnen weil es regnet.','Ich bleibe drinnen weil es regnet.'],'Vor dem Nebensatz mit „weil“ steht ein Komma.'],
+ ['w','Vor „aber“ steht immer ein Komma.',true,'z. B.: Ich bin müde, aber ich spiele weiter.'],['w','Vor „und“ steht in einer Aufzählung ein Komma.',false,'Äpfel, Birnen und Bananen – kein Komma vor „und“.']]},
+{id:'de-texte',s:'de',title:'Märchen, Fabel, Sage & Erzählen',
+ learn:[['Märchen','„Es war einmal …“, Ort und Zeit unbestimmt, Gut gegen Böse, Zauberei und Wunder, magische Zahlen (3, 7, 12), gutes Ende. Gesammelt u. a. von den Brüdern Grimm.'],['Fabel','Kurze Geschichte, Tiere handeln wie Menschen und haben typische Eigenschaften (Fuchs = listig, Löwe = mächtig). Am Ende eine Lehre (Moral). Berühmter Fabeldichter: Äsop.'],['Sage','Hat einen wahren Kern: echte Orte oder Personen, dazu Übernatürliches. Aus dem Harz: die Rosstrappe, der Hexentanzplatz.'],['Gut erzählen','<b>Einleitung</b>: Wer? Wo? Wann? · <b>Hauptteil</b>: Spannung steigt bis zum <b>Höhepunkt</b> · <b>Schluss</b>: Auflösung. Präteritum, wörtliche Rede, treffende Verben (statt „sagen“: flüstern, rufen, murmeln).']],
+ cards:[['Typischer Märchenanfang','Es war einmal …'],['Magische Zahlen im Märchen','3, 7, 12'],['Fabel – Besonderheit','Tiere handeln wie Menschen, am Ende steht eine Lehre'],['Fuchs in der Fabel','listig, schlau'],['Sage – Besonderheit','wahrer Kern: echte Orte oder Personen'],['Aufbau einer Erzählung','Einleitung – Hauptteil mit Höhepunkt – Schluss'],['Zeitform beim Erzählen','Präteritum'],['Wortfeld „gehen“','schlendern, rennen, schleichen, stapfen …']],
+ tasks:[['m','Woran erkennst du eine Fabel?',['Tiere handeln wie Menschen und es gibt eine Lehre.','Sie beginnt mit „Es war einmal“.','Sie spielt an einem echten Ort.','Sie wird immer in Reimen erzählt.'],'Typisch für die Fabel: Tiere mit menschlichen Eigenschaften und eine Moral.'],
+ ['m','Welche Textsorte hat einen wahren Kern, z. B. einen echten Ort?',['Sage','Märchen','Fabel','Gedicht'],'Sagen verbinden Wirkliches mit Übernatürlichem.'],['m','Was gehört in die Einleitung einer Erzählung?',['Wer, wo und wann','der Höhepunkt','die Lehre','die Lösung des Problems'],'Die Einleitung stellt Figuren, Ort und Zeit vor.'],
+ ['m','Welches Verb passt am besten? „Psst“, ___ Lena, „das Baby schläft.“',['flüsterte','brüllte','jubelte','stotterte'],'Bei „Psst“ und einem schlafenden Baby spricht man leise.'],['w','In Märchen sind Ort und Zeit meist genau angegeben.',false,'Märchen spielen „irgendwann, irgendwo“.'],['w','Die Spannung einer Erzählung ist im Höhepunkt am größten.',true,'Danach folgt die Auflösung im Schluss.']]},
+{id:'de-lesen',s:'de',title:'Lesetraining: Der Fund im Steinbruch',
+ text:`<p>Jonas verbrachte die Herbstferien bei seinem Opa Werner in einem kleinen Dorf im Harz. Am Mittwoch regnete es den ganzen Vormittag. Erst nach dem Mittagessen hörte es auf, und die beiden zogen ihre Gummistiefel an.</p><p>„Heute zeige ich dir den alten Steinbruch“, sagte Opa. „Dort habe ich als Junge jeden Nachmittag gesucht – meistens ohne Erfolg.“</p><p>Der Weg führte zuerst durch einen Fichtenwald und dann steil bergauf. Oben angekommen, war Jonas ziemlich außer Atem. Vor ihnen lag eine graue Wand aus Schiefer, von der der Regen viele kleine Bruchstücke gelöst hatte.</p><p>Jonas drehte einen flachen Stein nach dem anderen um. Nach einer halben Stunde wollte er schon aufgeben. Da entdeckte er auf einer Platte feine, geschwungene Linien, die aussahen wie die Rippen eines Fächers.</p><p>„Opa! Ist das ein Abdruck?“</p><p>Opa Werner setzte seine Lesebrille auf und pfiff leise durch die Zähne. „Das ist eine Muschel – und zwar eine, die vor etwa 380 Millionen Jahren gelebt hat. Damals war hier ein Meer.“</p><p>Jonas starrte ungläubig auf die Platte. Ein Meer, mitten im Harz?</p><p>Am Abend wickelte er seinen Fund vorsichtig in Zeitungspapier. Opa lächelte: „Siehst du, manchmal muss man nur lange genug suchen. Und manchmal braucht es den Regen dazu.“</p>`,
+ learn:[['So liest du einen Sachtext oder eine Geschichte','1. Überschrift lesen und vermuten. 2. Text ganz lesen. 3. Fragen lesen. 4. Antworten im Text suchen – nicht raten! 5. Bei „Warum“-Fragen zwischen den Zeilen lesen.']],
+ tasks:[['m','Wann machten sich Jonas und Opa auf den Weg?',['nach dem Mittagessen','am Vormittag','am Abend','am Donnerstag'],'„Erst nach dem Mittagessen hörte es auf, und die beiden zogen ihre Gummistiefel an.“'],
+ ['m','Woraus bestand die Wand im Steinbruch?',['aus Schiefer','aus Kalkstein','aus Granit','aus Sandstein'],'„eine graue Wand aus Schiefer“'],
+ ['m','Wie hatte der Regen beim Suchen geholfen?',['Er hatte Bruchstücke aus der Wand gelöst.','Er hatte andere Sammler ferngehalten.','Er hatte den Schiefer dunkler gefärbt.','Er hatte den Weg nach oben verkürzt.'],'„… von der der Regen viele kleine Bruchstücke gelöst hatte.“'],
+ ['m','Wie alt ist die Muschel ungefähr?',['380 Millionen Jahre','38 Millionen Jahre','3 800 Jahre','380 000 Jahre'],'Opa sagt: „vor etwa 380 Millionen Jahren“.'],
+ ['w','Opa hat als Junge im Steinbruch oft etwas gefunden.',false,'Er sagt: „meistens ohne Erfolg“.'],
+ ['m','Warum staunte Jonas so sehr?',['Er konnte sich kaum vorstellen, dass im Harz einmal ein Meer war.','Er hatte noch nie eine Lesebrille gesehen.','Die Muschel war größer als seine Hand.','Opa hatte ihm nichts vom Steinbruch erzählt.'],'„Ein Meer, mitten im Harz?“ – Er ist ungläubig über das frühere Meer.'],
+ ['m','Was zeigt das Verhalten von Opa, als er „leise durch die Zähne pfiff“?',['Er war beeindruckt.','Er war enttäuscht.','Er war ungeduldig.','Er war verärgert.'],'Ein leiser Pfiff drückt hier Staunen aus.'],
+ ['m','Was meint Opa mit dem letzten Satz?',['Geduld lohnt sich – und manchmal hilft ein glücklicher Umstand.','Man sollte nur bei Regen nach Fossilien suchen.','Jonas soll beim nächsten Mal früher aufstehen.','Fossilien findet man nur mit Brille.'],'Jonas hat lange gesucht (Geduld), der Regen hat zufällig geholfen.'],
+ ['m','In welcher Zeitform ist der Text geschrieben?',['Präteritum','Präsens','Perfekt','Futur I'],'verbrachte, regnete, zogen … – typische Erzählzeit.']]},
+
+/* ================= ENGLISCH ================= */
+{id:'en-tobe',s:'en',title:'to be & have got',
+ learn:[['to be','I <b>am</b> (I\'m) · you <b>are</b> (you\'re) · he/she/it <b>is</b> (he\'s) · we/you/they <b>are</b> (we\'re)<br>Verneinung: I\'m not · he isn\'t · they aren\'t<br>Frage: <b>Are</b> you …? <b>Is</b> she …?'],['have got','I/you/we/they <b>have got</b> (\'ve got) · he/she/it <b>has got</b> (\'s got)<br>Verneinung: haven\'t got / hasn\'t got · Frage: <b>Have</b> you got …? <b>Has</b> he got …?'],['Kurzantworten','Are you hungry? – Yes, I am. / No, I\'m not.<br>Has she got a pet? – Yes, she has. / No, she hasn\'t.']],
+ cards:[['ich bin','I am'],['er ist nicht','he isn\'t'],['Sind sie …?','Are they …?'],['sie hat (got)','she has got'],['wir haben nicht (got)','we haven\'t got'],['Hast du …? (got)','Have you got …?']],
+ tasks:[['i','I ___ eleven years old.','am|\'m','I am – Kurzform I\'m.'],['i','My sister ___ at school.','is','he/she/it → is.'],['i','We ___ best friends.','are|\'re','we → are.'],['i','He ___ hungry. (Verneinung von „is“, Kurzform)','isn\'t|is not','he is not → he isn\'t.'],['m','___ you from Halle?',['Are','Is','Am','Do'],'Fragen mit „to be“: Are you …?'],['m','Is Paul your brother? – Yes, he ___.',['is','does','has','are'],'Kurzantwort mit derselben Form: Yes, he is.'],
+ ['i','She ___ got a cat.','has','he/she/it → has got.'],['m','We ___ got two rabbits.',['have','has','are','do'],'we → have got.'],['m','I ___ got a bike. (Verneinung)',['haven\'t','hasn\'t','don\'t','aren\'t'],'I haven\'t got …'],['m','___ he got a brother?',['Has','Have','Is','Does'],'Frage: Has he got …?'],['m','Have you got a pet? – No, I ___.',['haven\'t','don\'t','am not','hasn\'t'],'Kurzantwort: No, I haven\'t.']]},
+{id:'en-simple',s:'en',title:'Simple present',
+ learn:[['Wann?','Für Gewohnheiten und Dinge, die regelmäßig passieren. Signalwörter: <b>always, usually, often, sometimes, never, every day, on Mondays</b>.'],['he, she, it – das s muss mit!','I play – he play<b>s</b> · watch → watch<b>es</b> · go → go<b>es</b> · fly → fl<b>ies</b> · have → <b>has</b>'],['Verneinung','I/you/we/they <b>don\'t</b> play · he/she/it <b>doesn\'t</b> play (ohne s!)'],['Fragen','<b>Do</b> you play …? · <b>Does</b> she play …? (ohne s!)<br>Kurzantwort: Yes, I do. / No, she doesn\'t.']],
+ cards:[['Signalwörter simple present','always, usually, often, sometimes, never, every …'],['he/she/it-Regel','an das Verb kommt ein -s'],['Verneinung bei he/she/it','doesn\'t + Verb ohne s'],['Frage bei he/she/it','Does …? + Verb ohne s'],['watch → he …','watches'],['fly → it …','flies']],
+ tasks:[['i','He ___ (play) football every Sunday.','plays','he → -s: plays.'],['i','She ___ (watch) TV after dinner.','watches','Nach ch kommt -es.'],['i','My dad ___ (go) to work by bus.','goes','go → goes.'],['i','The bird ___ (fly) south in autumn.','flies','Konsonant + y → -ies.'],['m','I ___ like spinach.',['don\'t','doesn\'t','not','am not'],'I → don\'t.'],['m','My brother ___ like spinach.',['doesn\'t','don\'t','isn\'t','not'],'he → doesn\'t.'],['i','She doesn\'t ___ (play) tennis.','play','Nach doesn\'t kein s mehr!'],['m','___ she live in Leipzig?',['Does','Do','Is','Has'],'Frage bei she → Does.'],['m','___ your parents work on Saturdays?',['Do','Does','Are','Have'],'they → Do.'],['m','Which word is a signal word for the simple present?',['usually','now','at the moment','look'],'„usually“ zeigt eine Gewohnheit.'],['m','Does Paul like pizza? – Yes, he ___.',['does','likes','is','do'],'Kurzantwort: Yes, he does.']]},
+{id:'en-progressive',s:'en',title:'Present progressive',
+ learn:[['Wann?','Für Dinge, die <b>gerade jetzt</b> passieren. Signalwörter: <b>now, at the moment, Look!, Listen!</b>'],['Bildung','am / is / are + Verb mit <b>-ing</b>: I am reading · she is playing · they are running'],['Schreibregeln','make → mak<b>ing</b> (stummes e fällt weg) · sit → si<b>tt</b>ing · swim → swi<b>mm</b>ing · run → ru<b>nn</b>ing (kurzer Vokal + Konsonant: verdoppeln)'],['Simple present oder progressive?','Every morning I <b>brush</b> my teeth. (Gewohnheit) – Look! The dog <b>is running</b> away. (jetzt)']],
+ cards:[['Signalwörter present progressive','now, at the moment, Look!, Listen!'],['Bildung present progressive','am/is/are + -ing'],['make + ing','making'],['swim + ing','swimming'],['sit + ing','sitting'],['write + ing','writing']],
+ tasks:[['i','Look! The dog ___ (run) across the street.','is running|\'s running','Look! → jetzt: is running (Doppel-n).'],['i','I ___ (read) a book at the moment.','am reading|\'m reading','at the moment → am reading.'],['i','They ___ (swim) in the lake now.','are swimming|\'re swimming','swim → swimming.'],['i','Schreibe die -ing-Form von „make“.','making','Stummes e fällt weg.'],['m','Every morning I ___ my teeth.',['brush','am brushing','brushing','brushes'],'every morning = Gewohnheit → simple present.'],['m','Listen! Somebody ___ the piano.',['is playing','plays','play','are playing'],'Listen! → gerade jetzt.'],['m','She usually ___ to school by bike.',['goes','is going','go','going'],'usually → simple present.'],['m','Be quiet, please! The baby ___.',['is sleeping','sleeps','sleep','are sleeping'],'Gerade jetzt → present progressive.']]},
+{id:'en-plural',s:'en',title:'Plural, Possessives & Pronouns',
+ learn:[['Plural','meist -s (book – books) · nach s, x, sh, ch: -es (box – boxes) · Konsonant + y: -ies (baby – babies)'],['Unregelmäßige Plurale','child – <b>children</b> · man – <b>men</b> · woman – <b>women</b> · foot – <b>feet</b> · tooth – <b>teeth</b> · mouse – <b>mice</b> · sheep – <b>sheep</b> · knife – <b>knives</b>'],['Possessive determiners','my · your · his · her · its · our · your · their'],['s-Genitiv','Paul<b>\'s</b> bike = Pauls Fahrrad · my parents<b>\'</b> car (Plural auf -s: nur Apostroph)']],
+ cards:[['child – Plural','children'],['man – Plural','men'],['woman – Plural','women'],['foot – Plural','feet'],['tooth – Plural','teeth'],['mouse – Plural','mice'],['sheep – Plural','sheep'],['knife – Plural','knives'],['unser','our'],['ihr (Plural)','their'],['sein (bei Tieren/Dingen)','its']],
+ tasks:[['i','Plural von „child“','children','unregelmäßig.'],['i','Plural von „box“','boxes','nach x: -es.'],['i','Plural von „baby“','babies','Konsonant + y → -ies.'],['i','Plural von „foot“','feet','unregelmäßig.'],['i','Plural von „mouse“','mice','unregelmäßig.'],['m','Plural von „sheep“',['sheep','sheeps','sheepes','sheepen'],'Bleibt gleich.'],['m','This is Paul. ___ bike is blue.',['His','Her','Its','Their'],'Paul → his.'],['m','The cat is eating ___ food.',['its','it\'s','his','their'],'its = sein (bei Tieren/Dingen). it\'s = it is!'],['m','Anna and Ben live in Halle. ___ house is big.',['Their','There','Our','His'],'Mehrere Personen → their.'],['m','Das ist Lenas Tasche.',['This is Lena\'s bag.','This is Lenas bag.','This is Lenas\' bag.','This is bag of Lena.'],'s-Genitiv mit Apostroph: Lena\'s.']]},
+{id:'en-questions',s:'en',title:'Question words & can',
+ learn:[['Question words','<b>Who</b> – wer · <b>What</b> – was · <b>Where</b> – wo/wohin · <b>When</b> – wann · <b>Why</b> – warum · <b>How</b> – wie · <b>How old</b> – wie alt · <b>How many</b> – wie viele · <b>How much</b> – wie viel (Preis) · <b>Whose</b> – wessen · <b>Which</b> – welche/r'],['can','I can swim. · She <b>can\'t</b> (cannot) dive. · <b>Can</b> you ride a horse? – Yes, I can. / No, I can\'t.<br>Kein -s bei he/she/it: he <b>can</b> swim.']],
+ cards:[['wer?','who?'],['warum?','why?'],['wessen?','whose?'],['wie viele?','how many?'],['wie viel kostet …?','how much is …?'],['wann?','when?'],['welche/r/s?','which?']],
+ tasks:[['m','___ is your birthday? – In May.',['When','Where','What','Who'],'Zeitangabe → When.'],['m','___ do you live? – In Halle.',['Where','When','Who','Which'],'Ort → Where.'],['m','___ old are you?',['How','What','Which','Who'],'How old …?'],['m','___ is your favourite subject? – English.',['What','Who','Where','How'],'Sache → What.'],['m','___ is that girl? – That\'s my cousin.',['Who','Whose','What','Which'],'Person → Who.'],['m','___ are you sad? – Because I lost my cap.',['Why','How','What','When'],'Because → Frage mit Why.'],['m','___ pets have you got? – Three.',['How many','How much','How old','Which'],'Zählbares → How many.'],['m','___ bag is this? – It\'s Paul\'s.',['Whose','Who','Who\'s','Which'],'Besitz → Whose.'],['m','___ is the ice cream? – One euro.',['How much','How many','What','Which'],'Preis → How much.'],['m','My brother ___ play the guitar very well.',['can','cans','can to','is can'],'can bekommt kein s.'],['m','Can you ride a horse? – No, I ___.',['can\'t','don\'t','am not','haven\'t'],'Kurzantwort mit can: No, I can\'t.']]},
+{id:'en-vok1',s:'en',title:'Vokabeln: School & Family',vok:true,
+ learn:[['So lernst du Vokabeln','Lerne in beide Richtungen. Sprich das Wort laut. Wiederhole schwierige Wörter am nächsten Tag noch einmal – genau das macht „Merken“ automatisch.']],
+ cards:[['das Lineal','ruler'],['der Radiergummi','rubber|eraser'],['der Spitzer','sharpener|pencil sharpener'],['das Federmäppchen','pencil case'],['das Heft','exercise book'],['die Hausaufgaben','homework'],['der Stundenplan','timetable'],['das Klassenzimmer','classroom'],['die Tafel','board'],['das Schulfach','subject'],['die Pause','break'],['die Großeltern','grandparents'],['die Tante','aunt'],['der Onkel','uncle'],['die Schwester','sister'],['der Bruder','brother'],['die Eltern','parents'],['der Zwilling','twin'],['das Haustier','pet'],['das Kaninchen','rabbit'],['der Wellensittich','budgie'],['die Schildkröte','tortoise|turtle']]},
+{id:'en-vok2',s:'en',title:'Vokabeln: Time, Days & Months',vok:true,
+ learn:[['Uhrzeit','It\'s three o\'clock (3:00) · quarter past three (3:15) · half past three (3:30!) · quarter to four (3:45) · ten past three (3:10) · twenty to four (3:40)<br><b>Achtung:</b> „halb vier“ = half past <b>three</b>!'],['Wochentage & Monate','werden im Englischen immer <b>großgeschrieben</b>: Monday, January …']],
+ cards:[['Montag','Monday'],['Dienstag','Tuesday'],['Mittwoch','Wednesday'],['Donnerstag','Thursday'],['Freitag','Friday'],['Samstag','Saturday'],['Sonntag','Sunday'],['Februar','February'],['März','March'],['Juli','July'],['August','August'],['Oktober','October'],['Dezember','December'],['halb vier','half past three'],['Viertel nach drei','quarter past three'],['Viertel vor acht','quarter to eight'],['das Wochenende','weekend'],['heute','today'],['morgen','tomorrow'],['gestern','yesterday']],
+ tasks:[['m','Wie sagt man 4:30 Uhr auf Englisch?',['half past four','half past five','half to five','half four'],'Im Englischen: halb nach vier = half past four.'],['m','Wie sagt man 7:45 Uhr auf Englisch?',['quarter to eight','quarter past seven','quarter to seven','three quarter eight'],'Viertel vor acht = quarter to eight.'],['m','Welche Schreibung ist richtig?',['Wednesday','Wensday','Wednsday','wednesday'],'Wednesday – mit d, groß.']]},
+
+/* ================= BIOLOGIE ================= */
+{id:'bio-leben',s:'bio',title:'Kennzeichen des Lebendigen',
+ learn:[['Alle Lebewesen …','… haben einen <b>Stoffwechsel</b> (nehmen Stoffe auf, wandeln sie um, geben Stoffe ab) · zeigen <b>Bewegung</b> · sind <b>reizbar</b> (reagieren auf Reize) · <b>wachsen und entwickeln sich</b> · <b>pflanzen sich fort</b>.'],['Nur wenn alle Kennzeichen zutreffen','… ist etwas ein Lebewesen. Eine Kerzenflamme „bewegt sich“ und „wächst“ – sie pflanzt sich aber nicht fort und ist nicht reizbar.'],['Ordnen','Lebewesen ordnet man nach gemeinsamen Merkmalen, z. B. Wirbeltiere (mit Wirbelsäule) und Wirbellose.'],['Die Lupe','Lupe nah ans Auge, dann den Gegenstand heranführen, bis das Bild scharf ist.']],
+ cards:[['5 Kennzeichen des Lebendigen','Stoffwechsel, Bewegung, Reizbarkeit, Wachstum/Entwicklung, Fortpflanzung'],['Stoffwechsel','Stoffe aufnehmen, umwandeln und abgeben'],['Reizbarkeit','auf Reize aus der Umwelt reagieren'],['Wirbeltiere','Tiere mit Wirbelsäule'],['Beispiel Reizbarkeit bei Pflanzen','Sonnenblume dreht sich zum Licht']],
+ tasks:[['m','Welches Kennzeichen zeigt eine Sonnenblume, die sich zum Licht dreht?',['Reizbarkeit','Fortpflanzung','Stoffwechsel','Wachstum'],'Sie reagiert auf den Reiz Licht.'],['m','Warum ist eine Kerzenflamme kein Lebewesen?',['Sie pflanzt sich nicht fort und ist nicht reizbar.','Sie bewegt sich nicht.','Sie verbraucht keine Stoffe.','Sie wird nicht größer.'],'Es müssen alle Kennzeichen zutreffen.'],['m','Ein Hase frisst Möhren und scheidet Kot aus. Welches Kennzeichen ist gemeint?',['Stoffwechsel','Bewegung','Reizbarkeit','Entwicklung'],'Stoffe aufnehmen, umwandeln, abgeben = Stoffwechsel.'],['w','Pflanzen sind keine Lebewesen, weil sie sich nicht fortbewegen.',false,'Pflanzen bewegen sich (z. B. Blätter zum Licht) und zeigen alle Kennzeichen.'],['m','Aus der Kaulquappe wird ein Frosch. Welches Kennzeichen?',['Entwicklung','Fortpflanzung','Reizbarkeit','Stoffwechsel'],'Gestaltwandel während des Lebens = Entwicklung.']]},
+{id:'bio-wirbeltiere',s:'bio',title:'Die fünf Wirbeltierklassen',
+ learn:[['Fische','Schuppen, Kiemenatmung, wechselwarm, Eier (Laich) im Wasser, Flossen.'],['Lurche (Amphibien)','nackte, feuchte Schleimhaut · Larven (Kaulquappen) atmen mit Kiemen, erwachsene Tiere mit Lunge und Haut · wechselwarm · Laich im Wasser. Beispiele: Frosch, Kröte, Molch.'],['Kriechtiere (Reptilien)','trockene Hornschuppen · Lunge · wechselwarm · Eier mit lederartiger Schale an Land. Beispiele: Eidechse, Schlange, Schildkröte.'],['Vögel','Federn · Lunge mit Luftsäcken · gleichwarm · Eier mit Kalkschale.'],['Säugetiere','Haare/Fell · Lunge · gleichwarm · meist lebendgebärend · Junge werden gesäugt.'],['Wechselwarm – gleichwarm','<b>Wechselwarm</b>: Körpertemperatur hängt von der Umgebung ab (Winterstarre). <b>Gleichwarm</b>: konstante Körpertemperatur.']],
+ cards:[['Körperbedeckung Fische','Schuppen'],['Körperbedeckung Lurche','nackte, feuchte Haut'],['Körperbedeckung Kriechtiere','Hornschuppen'],['Körperbedeckung Vögel','Federn'],['Körperbedeckung Säugetiere','Haare / Fell'],['gleichwarme Klassen','Vögel und Säugetiere'],['Atmung der Kaulquappe','Kiemen'],['Ist der Wal ein Fisch?','Nein – Säugetier (Lunge, säugt seine Jungen)'],['Ist die Blindschleiche eine Schlange?','Nein – eine beinlose Eidechse (Kriechtier)']],
+ tasks:[['m','Zu welcher Klasse gehört der Wal?',['Säugetiere','Fische','Lurche','Kriechtiere'],'Wale atmen mit Lunge und säugen ihre Jungen.'],['m','Zu welcher Klasse gehört der Molch?',['Lurche','Kriechtiere','Fische','Säugetiere'],'Feuchte Haut, Larven im Wasser → Lurch.'],['m','Zu welcher Klasse gehört die Fledermaus?',['Säugetiere','Vögel','Kriechtiere','Lurche'],'Fell, säugt die Jungen – sie kann aber fliegen.'],['m','Zu welcher Klasse gehört der Pinguin?',['Vögel','Säugetiere','Fische','Lurche'],'Federn und Eier mit Kalkschale – nur flugunfähig.'],['m','Welche Tiere sind gleichwarm?',['Vögel und Säugetiere','Fische und Lurche','Kriechtiere und Vögel','Lurche und Säugetiere'],'Nur Vögel und Säugetiere halten ihre Körpertemperatur konstant.'],['m','Wie atmet ein erwachsener Frosch?',['mit Lunge und Haut','nur mit Kiemen','nur mit der Haut','mit Kiemen und Lunge'],'Erwachsene Lurche: Lunge + Hautatmung.'],['m','Welche Eier haben eine lederartige Schale?',['die der Kriechtiere','die der Vögel','die der Fische','die der Lurche'],'Vogeleier: Kalkschale. Kriechtiere: lederartig.'],['w','Kriechtiere fallen im Winter in eine Winterstarre, weil sie wechselwarm sind.',true,'Bei Kälte sinkt ihre Körpertemperatur.'],['w','Die Blindschleiche ist eine Schlange.',false,'Sie ist eine beinlose Eidechse.']]},
+{id:'bio-anpassung',s:'bio',title:'Angepasstheit: Säuger, Vögel, Fische',
+ learn:[['Fortbewegung der Säugetiere','<b>Sohlengänger</b>: ganze Fußsohle (Mensch, Bär) · <b>Zehengänger</b>: auf den Zehen (Hund, Katze) · <b>Zehenspitzengänger</b>: auf Hufen (Pferd, Rind)'],['Gebisse','<b>Fleischfresser</b> (Hund, Katze): Fangzähne, Reißzähne · <b>Pflanzenfresser</b> (Rind): breite Backenzähne, Wiederkäuer mit 4 Mägen: Pansen, Netzmagen, Blättermagen, Labmagen · <b>Allesfresser</b> (Schwein, Mensch)'],['Vögel – gebaut fürs Fliegen','Leichtbau: hohle Röhrenknochen, Luftsäcke, Hornschnabel statt Zähne · Federn: Schwung-, Deck-, Daunenfedern · Brustmuskeln sehr kräftig · Stromlinienform'],['Fische – gebaut fürs Wasser','Stromlinienform, Schleimschicht, Flossen zum Steuern, <b>Schwimmblase</b> zum Schweben, <b>Seitenlinienorgan</b> zum Spüren von Strömungen']],
+ cards:[['Zehengänger','Hund, Katze'],['Sohlengänger','Mensch, Bär'],['Zehenspitzengänger','Pferd, Rind (Hufe)'],['Vier Mägen des Rindes','Pansen, Netzmagen, Blättermagen, Labmagen'],['Röhrenknochen beim Vogel','hohl → leicht'],['Daunenfedern','wärmen'],['Schwimmblase','Fisch kann im Wasser schweben'],['Seitenlinienorgan','spürt Wasserbewegungen'],['Vorfahr des Hundes','Wolf']],
+ tasks:[['m','Wozu dient die Schwimmblase der Fische?',['zum Schweben in einer Wassertiefe','zum Atmen unter Wasser','zum Verdauen der Nahrung','zum Hören von Geräuschen'],'Mit der Schwimmblase gleicht der Fisch seinen Auftrieb aus.'],['m','Wie heißen die Zähne, mit denen der Hund Fleisch zerschneidet?',['Reißzähne','Fangzähne','Schneidezähne','Mahlzähne'],'Fangzähne halten fest, Reißzähne zerschneiden.'],['m','Welches Tier ist ein Zehengänger?',['Katze','Bär','Pferd','Rind'],'Katzen laufen auf den Zehen.'],['m','Welche Federn halten den Vogel warm?',['Daunenfedern','Schwungfedern','Deckfedern','Schwanzfedern'],'Daunen sind weich und isolieren.'],['m','Warum haben Vögel hohle Knochen?',['Sie sparen Gewicht.','Sie speichern dort Nahrung.','Sie wachsen dadurch schneller.','Sie können so besser hören.'],'Leichtbau erleichtert das Fliegen.'],['m','Welcher Magen gehört NICHT zum Rind?',['Kropf','Pansen','Blättermagen','Labmagen'],'Der Kropf gehört zu Vögeln.'],['w','Das Rind ist ein Wiederkäuer.',true,'Es würgt Nahrung aus dem Pansen hoch und kaut sie erneut.']]},
+{id:'bio-skelett',s:'bio',title:'Skelett, Gelenke & Muskeln',
+ learn:[['Aufgaben des Skeletts','stützen, schützen (Schädel → Gehirn, Brustkorb → Herz und Lunge), bewegen'],['Wirbelsäule','doppelt S-förmig – federt Stöße ab. Zwischen den Wirbeln liegen die <b>Bandscheiben</b>.'],['Gelenke','<b>Kugelgelenk</b>: Schulter, Hüfte (in alle Richtungen) · <b>Scharniergelenk</b>: Knie, Ellenbogen, Finger (in eine Richtung) · <b>Sattelgelenk</b>: Daumen · <b>Drehgelenk</b>: zwischen 1. und 2. Halswirbel'],['Gegenspielerprinzip','Muskeln können nur ziehen. Im Oberarm: <b>Bizeps</b> beugt, <b>Trizeps</b> streckt. Sie arbeiten als Gegenspieler.'],['Gesund bleiben','aufrecht sitzen, Schulranzen richtig tragen, Bewegung, Sport']],
+ cards:[['Kugelgelenk','Schulter, Hüfte'],['Scharniergelenk','Knie, Ellenbogen, Finger'],['Sattelgelenk','Daumen'],['Bizeps','beugt den Arm'],['Trizeps','streckt den Arm'],['Form der Wirbelsäule','doppelte S-Form'],['Bandscheiben','Puffer zwischen den Wirbeln'],['Schädel schützt …','das Gehirn']],
+ tasks:[['m','Welche Art Gelenk ist das Kniegelenk?',['Scharniergelenk','Kugelgelenk','Sattelgelenk','Drehgelenk'],'Das Knie bewegt sich in nur einer Ebene.'],['m','Welche Art Gelenk ist das Schultergelenk?',['Kugelgelenk','Scharniergelenk','Sattelgelenk','Drehgelenk'],'Der Arm lässt sich in alle Richtungen bewegen.'],['m','Welcher Muskel beugt den Arm?',['Bizeps','Trizeps','Deltamuskel','Wadenmuskel'],'Der Bizeps zieht den Unterarm nach oben.'],['m','Warum braucht ein Gelenk zwei Muskeln?',['Muskeln können nur ziehen, nicht drücken.','Ein Muskel allein wäre zu schwer.','Damit der Knochen besser wächst.','Damit das Gelenk geschmiert wird.'],'Gegenspielerprinzip: Beuger und Strecker.'],['m','Welche Aufgabe hat die doppelte S-Form der Wirbelsäule?',['Sie federt Stöße ab.','Sie macht uns größer.','Sie schützt das Herz.','Sie bildet Blut.'],'Wie eine Feder fängt sie Erschütterungen ab.'],['w','Der Daumen hat ein Sattelgelenk.',true,'Darum kann man den Daumen den anderen Fingern gegenüberstellen.']]},
+{id:'bio-pflanzen',s:'bio',title:'Samenpflanzen: Bau, Blüte, Keimung',
+ learn:[['Pflanzenorgane','<b>Wurzel</b>: Halt, Wasser- und Mineralstoffaufnahme · <b>Sprossachse</b> (Stängel): trägt, leitet · <b>Laubblatt</b>: Fotosynthese · <b>Blüte</b>: Fortpflanzung'],['Fotosynthese','Mit Licht und Blattgrün (Chlorophyll) stellt die Pflanze aus Wasser und Kohlenstoffdioxid Traubenzucker her. Dabei entsteht Sauerstoff.'],['Blütenbau (von außen nach innen)','Kelchblätter · Kronblätter · Staubblätter (mit Staubbeutel → Pollen) · Stempel (Narbe, Griffel, Fruchtknoten)'],['Bestäubung & Befruchtung','<b>Bestäubung</b>: Pollen gelangt auf die Narbe (durch Insekten oder Wind). <b>Befruchtung</b>: Verschmelzung im Fruchtknoten → Samen und Frucht entstehen.'],['Keimung','braucht Wasser, Wärme und Sauerstoff (Luft). Licht ist für die Keimung nicht nötig, aber für das Wachstum danach.'],['Nachweise','Stärke: Iod-Kaliumiodid-Lösung färbt <b>blauschwarz</b>. Fett: Fettfleckprobe – durchscheinender Fleck auf Papier.']],
+ cards:[['Aufgabe der Wurzel','Halt, Wasser und Mineralstoffe aufnehmen'],['Was entsteht bei der Fotosynthese?','Traubenzucker und Sauerstoff'],['Was braucht die Fotosynthese?','Licht, Wasser, Kohlenstoffdioxid, Blattgrün'],['Teile des Stempels','Narbe, Griffel, Fruchtknoten'],['männlicher Blütenteil','Staubblatt'],['Bestäubung','Pollen gelangt auf die Narbe'],['Keimungsbedingungen','Wasser, Wärme, Sauerstoff'],['Stärkenachweis','Iod-Kaliumiodid-Lösung → blauschwarz'],['Fettnachweis','Fettfleckprobe']],
+ tasks:[['m','Welches Gas entsteht bei der Fotosynthese?',['Sauerstoff','Kohlenstoffdioxid','Stickstoff','Wasserstoff'],'Pflanzen geben Sauerstoff ab.'],['m','Wo entsteht nach der Befruchtung der Samen?',['im Fruchtknoten','im Staubbeutel','in der Narbe','im Kelchblatt'],'Aus dem Fruchtknoten wird die Frucht mit den Samen.'],['m','Was braucht ein Samen NICHT zum Keimen?',['Licht','Wasser','Wärme','Sauerstoff'],'Bohnen keimen auch im Dunkeln.'],['m','Wie färbt sich Stärke mit Iod-Kaliumiodid-Lösung?',['blauschwarz','rot','gelb','grün'],'Typischer Stärkenachweis, z. B. bei der Kartoffel.'],['m','Wo sitzt der Pollen?',['im Staubbeutel','im Fruchtknoten','auf dem Kelchblatt','im Griffel'],'Staubblätter bestehen aus Staubfaden und Staubbeutel.'],['m','Was ist Bestäubung?',['Pollen gelangt auf die Narbe.','Samen fallen auf den Boden.','Blätter nehmen Licht auf.','Die Wurzel nimmt Wasser auf.'],'Danach kann die Befruchtung folgen.'],['w','Ein Experiment protokolliert man mit Frage, Vermutung, Durchführung, Beobachtung und Auswertung.',true,'Das ist das Protokollschema.']]},
+{id:'bio-nahrung',s:'bio',title:'Nahrungsketten & Nutztiere',
+ learn:[['Nahrungskette','Gras → Kaninchen → Fuchs. Der Pfeil bedeutet „wird gefressen von“.<br><b>Erzeuger (Produzenten)</b>: Pflanzen. <b>Verbraucher (Konsumenten)</b>: Tiere.'],['Nutztiere','Rind (Milch, Fleisch, Leder), Schwein (Fleisch), Huhn (Eier, Fleisch), Schaf (Wolle). Artgerechte Haltung: genug Platz, Auslauf, Licht, Kontakt zu Artgenossen, passendes Futter.']],
+ cards:[['Erzeuger (Produzenten)','grüne Pflanzen'],['Verbraucher (Konsumenten)','Tiere'],['Pfeil in der Nahrungskette bedeutet','wird gefressen von'],['artgerechte Haltung','Platz, Auslauf, Licht, Artgenossen, passendes Futter']],
+ tasks:[['m','Welche Nahrungskette ist richtig?',['Gras → Kaninchen → Fuchs','Fuchs → Kaninchen → Gras','Kaninchen → Gras → Fuchs','Gras → Fuchs → Kaninchen'],'Am Anfang steht immer eine Pflanze.'],['m','Wer steht am Anfang jeder Nahrungskette?',['eine Pflanze','ein Pflanzenfresser','ein Raubtier','ein Pilz'],'Pflanzen sind die Erzeuger.'],['w','Hühner brauchen für eine artgerechte Haltung Auslauf und Sandbäder.',true,'Sie scharren und baden gern im Sand.']]},
+
+/* ================= GEOGRAFIE ================= */
+{id:'geo-erde',s:'geo',title:'Die Erde als Planet',
+ learn:[['Unser Sonnensystem','8 Planeten: Merkur, Venus, <b>Erde</b>, Mars, Jupiter, Saturn, Uranus, Neptun. Merksatz: <i>Mein Vater erklärt mir jeden Sonntag unseren Nachthimmel.</i>'],['Erdrotation','Die Erde dreht sich in <b>24 Stunden</b> einmal um sich selbst (von West nach Ost) → Tag und Nacht.'],['Erdrevolution','In etwa <b>365 Tagen</b> umläuft die Erde die Sonne. Weil die Erdachse schräg steht, gibt es Jahreszeiten.'],['Wichtige Linien','<b>Äquator</b>: teilt die Erde in Nord- und Südhalbkugel · <b>Nordpol und Südpol</b>: Endpunkte der Erdachse']],
+ cards:[['Anzahl Planeten','8'],['Größter Planet','Jupiter'],['Sonnennächster Planet','Merkur'],['Dauer einer Erdrotation','24 Stunden'],['Dauer eines Sonnenumlaufs','etwa 365 Tage'],['Warum gibt es Jahreszeiten?','weil die Erdachse schräg steht'],['Äquator','teilt die Erde in Nord- und Südhalbkugel'],['Der Mond umkreist die Erde in …','etwa einem Monat (27–29 Tage)']],
+ tasks:[['m','Was ist der Grund für Tag und Nacht?',['die Drehung der Erde um sich selbst','der Umlauf der Erde um die Sonne','die Bewegung des Mondes','die schräge Erdachse'],'Erdrotation: eine Drehung in 24 Stunden.'],['m','Warum gibt es Jahreszeiten?',['Die Erdachse steht schräg.','Die Erde ist im Sommer näher an der Sonne.','Die Sonne wird im Sommer heißer.','Der Mond verdeckt im Winter die Sonne.'],'Durch die Neigung bekommt mal die Nord-, mal die Südhalbkugel mehr Sonnenlicht.'],['m','Welcher Planet ist der Sonne am nächsten?',['Merkur','Venus','Mars','Erde'],'Merkur, Venus, Erde, Mars …'],['m','In welche Richtung dreht sich die Erde?',['von West nach Ost','von Ost nach West','von Nord nach Süd','von Süd nach Nord'],'Deshalb geht die Sonne im Osten auf.'],['w','Wenn bei uns Sommer ist, ist in Australien Winter.',true,'Nord- und Südhalbkugel haben entgegengesetzte Jahreszeiten.']]},
+{id:'geo-orientierung',s:'geo',title:'Gradnetz, Himmelsrichtungen & Karten',
+ learn:[['Himmelsrichtungen','N, O, S, W – dazwischen NO, SO, SW, NW. Die Sonne steht mittags im Süden. Kompassnadel zeigt nach Norden.'],['Gradnetz','<b>Breitenkreise</b>: parallel zum Äquator (0°) bis 90° N bzw. 90° S. <b>Längenhalbkreise (Meridiane)</b>: von Pol zu Pol, vom <b>Nullmeridian</b> (Greenwich bei London) bis 180° O bzw. W.'],['Karten','<b>Physische Karte</b>: Höhen (grün = Tiefland, gelb/braun = Gebirge), Flüsse, Städte. <b>Thematische Karte</b>: ein bestimmtes Thema (z. B. Klima, Bodenschätze). Die <b>Legende</b> erklärt die Zeichen.'],['Maßstab','1 : 100 000 → 1 cm auf der Karte = 100 000 cm = 1 km in Wirklichkeit. Großer Maßstab = viele Details, kleiner Ausschnitt.'],['Atlas','Im <b>Register</b> findest du einen Ort mit Seitenzahl und Planquadrat (z. B. 34 C3).']],
+ cards:[['Breitengrad des Äquators','0°'],['Nullmeridian','verläuft durch Greenwich bei London'],['Höchster Breitengrad','90° (die Pole)'],['Farbe Tiefland auf physischen Karten','grün'],['Legende','erklärt die Kartenzeichen'],['1 : 100 000 – 1 cm sind …','1 km'],['Register im Atlas','alphabetisches Ortsverzeichnis'],['Wo steht die Sonne mittags?','im Süden']],
+ tasks:[['m','Wo steht die Sonne bei uns um 12 Uhr mittags?',['im Süden','im Norden','im Osten','im Westen'],'Morgens Osten, mittags Süden, abends Westen.'],['m','Wodurch verläuft der Nullmeridian?',['Greenwich bei London','Berlin','Paris','den Nordpol und den Äquator'],'Er wurde 1884 festgelegt.'],['m','Was zeigt eine braune Farbe auf einer physischen Karte?',['Gebirge','Wüste','Tiefland','Städte'],'Je höher, desto dunkler das Braun.'],['m','Welche Karte zeigt die Bodenschätze Deutschlands?',['eine thematische Karte','eine physische Karte','ein Stadtplan','eine Wanderkarte'],'Thematische Karten zeigen ein bestimmtes Thema.'],['m','Welcher Maßstab zeigt mehr Einzelheiten?',['1 : 25 000','1 : 1 000 000','1 : 500 000','1 : 100 000'],'Je kleiner die Zahl hinter dem Doppelpunkt, desto größer der Maßstab und desto genauer.'],['w','Breitenkreise verlaufen von Pol zu Pol.',false,'Das sind die Längenhalbkreise (Meridiane).']]},
+{id:'geo-kontinente',s:'geo',title:'Kontinente & Ozeane',auto:true,
+ learn:[['7 Kontinente (nach Größe)','Asien · Afrika · Nordamerika · Südamerika · Antarktika · Europa · Australien (Australien und Ozeanien)'],['Ozeane','<b>Pazifik</b> (Pazifischer Ozean, größter) · <b>Atlantik</b> · <b>Indischer Ozean</b> · dazu Nord- und Südpolarmeer'],['Wasser und Land','Etwa 71 % der Erdoberfläche sind Wasser, nur 29 % Land. Deshalb nennt man die Erde den „blauen Planeten“.']],
+ cards:[['größter Kontinent','Asien'],['kleinster Kontinent','Australien'],['größter Ozean','Pazifik'],['Kontinent am Südpol','Antarktika'],['Ozean zwischen Europa und Amerika','Atlantik'],['Anteil Wasser an der Erdoberfläche','etwa 71 %'],['Kontinent mit Ägypten','Afrika'],['Kontinent mit Brasilien','Südamerika']],
+ tasks:[['m','Wie viele Kontinente gibt es?',['7','5','6','8'],'Asien, Afrika, Nordamerika, Südamerika, Antarktika, Europa, Australien.'],['m','Welcher Ozean liegt zwischen Afrika und Australien?',['Indischer Ozean','Pazifik','Atlantik','Nordpolarmeer'],'Der Indische Ozean liegt südlich von Asien.']]},
+{id:'geo-deutschland',s:'geo',title:'Deutschland: Landschaften & Flüsse',
+ learn:[['Großlandschaften (von Nord nach Süd)','Küste · <b>Norddeutsches Tiefland</b> · <b>Mittelgebirge</b> (z. B. Harz, Thüringer Wald, Erzgebirge) · <b>Alpenvorland</b> · <b>Alpen</b>'],['Höchste Berge','Zugspitze (2 962 m, Alpen) · Brocken (1 141 m, Harz – höchster Berg Norddeutschlands)'],['Flüsse','Rhein (längster Fluss Deutschlands) · Elbe · Donau (fließt nach Osten ins Schwarze Meer) · Saale (mündet in die Elbe)'],['Küste','<b>Nordsee</b>: Gezeiten (Ebbe und Flut wechseln etwa alle 6 Stunden), Wattenmeer · <b>Ostsee</b>: kaum Gezeiten'],['Mündungen','<b>Trichtermündung</b>: Gezeiten weiten die Mündung trichterförmig (Elbe, Weser) · <b>Delta</b>: Fluss teilt sich in viele Arme (Donau, Nil)'],['Nachbarländer (9)','Dänemark, Polen, Tschechien, Österreich, Schweiz, Frankreich, Luxemburg, Belgien, Niederlande']],
+ cards:[['höchster Berg Deutschlands','Zugspitze (2 962 m)'],['höchster Berg im Harz','Brocken (1 141 m)'],['längster Fluss Deutschlands','Rhein'],['Wechsel von Ebbe zu Flut','etwa alle 6 Stunden'],['Trichtermündung','Elbe, Weser'],['Deltamündung','Donau, Nil'],['Anzahl Nachbarländer','9'],['Meer mit starken Gezeiten','Nordsee'],['Saale mündet in die …','Elbe']],
+ tasks:[['m','Wie viele Nachbarländer hat Deutschland?',['9','7','8','10'],'Dänemark, Polen, Tschechien, Österreich, Schweiz, Frankreich, Luxemburg, Belgien, Niederlande.'],['m','Welches Land ist KEIN Nachbarland Deutschlands?',['Ungarn','Tschechien','Luxemburg','Dänemark'],'Ungarn grenzt an Österreich, nicht an Deutschland.'],['m','Zu welcher Großlandschaft gehört der Harz?',['Mittelgebirge','Norddeutsches Tiefland','Alpenvorland','Alpen'],'Der Harz ist ein Mittelgebirge.'],['m','In welche Richtung fließt die Donau?',['nach Osten','nach Norden','nach Westen','nach Süden'],'Sie mündet ins Schwarze Meer.'],['m','Wie heißt das Gebiet, das bei Ebbe trockenfällt?',['Watt','Delta','Bucht','Haff'],'Das Wattenmeer der Nordsee.'],['m','Welche Mündung hat die Elbe?',['Trichtermündung','Deltamündung','Steilmündung','gar keine'],'Die Gezeiten haben sie trichterförmig geweitet.']]},
+{id:'geo-laender',s:'geo',title:'Bundesländer & Hauptstädte',auto:true,
+ learn:[['16 Bundesländer','Deutschland ist ein Bundesstaat aus 16 Ländern. Hauptstadt Deutschlands: <b>Berlin</b>. Stadtstaaten: Berlin, Hamburg, Bremen.'],['Sachsen-Anhalt','Hauptstadt: <b>Magdeburg</b> an der Elbe · Halle (Saale) · Harz mit dem Brocken · <b>Magdeburger Börde</b> mit sehr fruchtbaren Schwarzerdeböden · Flüsse Elbe, Saale, Unstrut · Lutherstadt Wittenberg']],
+ cards:[['Baden-Württemberg','Stuttgart'],['Bayern','München'],['Brandenburg','Potsdam'],['Hessen','Wiesbaden'],['Mecklenburg-Vorpommern','Schwerin'],['Niedersachsen','Hannover'],['Nordrhein-Westfalen','Düsseldorf'],['Rheinland-Pfalz','Mainz'],['Saarland','Saarbrücken'],['Sachsen','Dresden'],['Sachsen-Anhalt','Magdeburg'],['Schleswig-Holstein','Kiel'],['Thüringen','Erfurt'],['Hamburg','Hamburg'],['Bremen','Bremen'],['Berlin','Berlin']],
+ tasks:[['m','Wofür ist die Magdeburger Börde bekannt?',['sehr fruchtbare Schwarzerdeböden','hohe Berge','große Seen','Braunkohle-Tagebaue'],'Die Börde hat einige der besten Böden Deutschlands.'],['m','Welche drei Bundesländer sind Stadtstaaten?',['Berlin, Hamburg, Bremen','Berlin, München, Hamburg','Hamburg, Bremen, Kiel','Berlin, Dresden, Bremen'],'Bei ihnen ist die Stadt selbst das Bundesland.']]},
+
+/* ================= GESCHICHTE ================= */
+{id:'ge-zeit',s:'ge',title:'Zeitrechnung & Quellen',gen:'jahrhundert',genShare:.45,
+ learn:[['Zeitrechnung','Unsere Zeitrechnung beginnt mit Christi Geburt. Vorher: <b>v. Chr.</b> (rückwärts gezählt), danach: <b>n. Chr.</b> Ein Jahr 0 gibt es nicht.'],['Jahrhunderte','1. Jahrhundert = Jahre 1–100 · 2. Jh. = 101–200 · Das Jahr 2026 liegt im 21. Jahrhundert.'],['Zeitstrahl','Ereignisse werden in der richtigen Reihenfolge auf einer Linie eingetragen. Gleiche Abstände für gleiche Zeitspannen!'],['Quellen','Zeugnisse aus der Vergangenheit: <b>gegenständlich</b> (Werkzeug, Münze), <b>schriftlich</b> (Brief, Urkunde), <b>bildlich</b> (Gemälde, Foto), <b>mündlich</b> (Erzählung von Zeitzeugen).<br><b>Darstellung</b>: Später geschrieben, z. B. Schulbuchtext.'],['Archäologie','Wissenschaft, die Funde im Boden ausgräbt und untersucht.']],
+ cards:[['v. Chr.','vor Christi Geburt'],['Jahre des 1. Jahrhunderts','1 bis 100'],['Jahrhundert von 2026','21. Jahrhundert'],['gegenständliche Quelle','z. B. Werkzeug, Münze, Gefäß'],['schriftliche Quelle','z. B. Brief, Urkunde, Tagebuch'],['Darstellung','später verfasst, z. B. Schulbuchtext'],['Archäologie','Ausgraben und Erforschen von Bodenfunden'],['Gibt es ein Jahr 0?','Nein']],
+ tasks:[['m','Was ist eine schriftliche Quelle?',['ein Brief aus dem Mittelalter','ein Faustkeil','ein Schulbuchtext über die Römer','eine Burgruine'],'Schulbuchtexte sind Darstellungen, keine Quellen.'],['m','Was ist eine Darstellung?',['ein Schulbuchtext über die Steinzeit','eine Münze aus Rom','eine Höhlenmalerei','eine Urkunde von Otto I.'],'Darstellungen werden später über die Vergangenheit verfasst.'],['m','Was war früher: 300 v. Chr. oder 200 v. Chr.?',['300 v. Chr.','200 v. Chr.','beide gleichzeitig','das lässt sich nicht sagen'],'Vor Christus zählt man rückwärts: 300 v. Chr. liegt weiter zurück.'],['w','Die Zeitrechnung beginnt mit dem Jahr 0.',false,'Auf 1 v. Chr. folgt direkt 1 n. Chr.']]},
+{id:'ge-urgeschichte',s:'ge',title:'Ur- und Frühgeschichte',
+ learn:[['Altsteinzeit','Menschen lebten als <b>Jäger und Sammler</b>, zogen umher (<b>Nomaden</b>), nutzten Feuer, Faustkeil, Speere. Höhlenmalereien zeigen Tiere.'],['Jungsteinzeit','<b>Neolithische Revolution</b>: Ackerbau und Viehzucht → Menschen werden <b>sesshaft</b>, bauen Langhäuser, töpfern, weben, schleifen Steinwerkzeuge.'],['Metallzeit','Kupfer → <b>Bronze</b> (Kupfer + Zinn) → <b>Eisen</b>. Handel und Handwerk nehmen zu.'],['Himmelsscheibe von Nebra','1999 bei Nebra in Sachsen-Anhalt gefunden, etwa 3 600 Jahre alt (Bronzezeit). Älteste bekannte konkrete Darstellung des Himmels. Heute im Landesmuseum für Vorgeschichte in Halle.'],['Ötzi','Gletschermumie, ca. 5 300 Jahre alt, 1991 in den Ötztaler Alpen gefunden. Hatte ein Kupferbeil dabei.']],
+ cards:[['Neolithische Revolution','Übergang zu Ackerbau, Viehzucht und Sesshaftigkeit'],['Nomaden','Menschen ohne festen Wohnsitz'],['Bronze besteht aus …','Kupfer und Zinn'],['Fundort Himmelsscheibe','Nebra (Sachsen-Anhalt)'],['Alter der Himmelsscheibe','etwa 3 600 Jahre'],['Wo ist die Himmelsscheibe heute?','Landesmuseum für Vorgeschichte Halle'],['Werkzeug der Altsteinzeit','Faustkeil'],['Ötzi – Alter','etwa 5 300 Jahre']],
+ tasks:[['m','Was veränderte sich in der Jungsteinzeit grundlegend?',['Die Menschen wurden sesshaft und betrieben Ackerbau.','Die Menschen lernten das Feuer kennen.','Die Menschen begannen mit Eisen zu arbeiten.','Die Menschen erfanden die Schrift.'],'Das nennt man neolithische Revolution.'],['m','Woraus besteht Bronze?',['Kupfer und Zinn','Eisen und Kupfer','Zinn und Silber','Eisen und Kohle'],'Diese Mischung (Legierung) ist härter als reines Kupfer.'],['m','Wo wurde die Himmelsscheibe gefunden?',['bei Nebra in Sachsen-Anhalt','bei Halle im Saaletal','im Harz bei Wernigerode','in den Ötztaler Alpen'],'Fundort: Mittelberg bei Nebra.'],['m','Wie lebten die Menschen in der Altsteinzeit?',['als Jäger und Sammler','als Bauern in Dörfern','als Händler in Städten','als Hirten in Langhäusern'],'Sie folgten den Tierherden.'],['m','In welche Reihenfolge gehören die Zeitalter?',['Altsteinzeit – Jungsteinzeit – Metallzeit','Jungsteinzeit – Altsteinzeit – Metallzeit','Metallzeit – Altsteinzeit – Jungsteinzeit','Altsteinzeit – Metallzeit – Jungsteinzeit'],'Stein → geschliffener Stein → Metall.'],['w','Höhlenmalereien zeigen vor allem Tiere.',true,'z. B. Wildpferde, Bisons, Mammuts.']]},
+{id:'ge-aegypten',s:'ge',title:'Ägypten – eine Hochkultur',
+ learn:[['Geschenk des Nils','Jedes Jahr trat der Nil über die Ufer (<b>Nilschwemme</b>) und hinterließ fruchtbaren Schlamm. Ägypten war eine <b>Flusstalkultur</b>.'],['Merkmale einer Hochkultur','Schrift · Verwaltung · Arbeitsteilung · Vorratswirtschaft · Religion mit Tempeln · große Bauwerke · Städte'],['Gesellschaft','Pharao (Gottkönig) – Wesir, Beamte, Priester – Schreiber – Handwerker, Händler – Bauern – Sklaven'],['Schrift','<b>Hieroglyphen</b> (Bildzeichen), geschrieben auf <b>Papyrus</b> oder in Stein gemeißelt. Schreiber hatten großes Ansehen.'],['Totenkult','Glaube an ein Leben nach dem Tod: Der Körper wurde zur <b>Mumie</b> gemacht. Pharaonen bekamen Pyramiden (z. B. Cheops-Pyramide in Gizeh) oder Felsengräber.']],
+ cards:[['Nilschwemme','jährliche Überschwemmung mit fruchtbarem Schlamm'],['Pharao','König Ägyptens, galt als Gott'],['Hieroglyphen','ägyptische Bilderschrift'],['Papyrus','Schreibmaterial aus der Papyruspflanze'],['Wesir','höchster Beamter nach dem Pharao'],['Größte Pyramide','Cheops-Pyramide in Gizeh'],['Vorratswirtschaft','Getreide speichern für schlechte Jahre'],['Flusstalkultur','Hochkultur an einem großen Fluss']],
+ tasks:[['m','Warum war die Nilschwemme wichtig?',['Sie brachte fruchtbaren Schlamm auf die Felder.','Sie schützte vor Feinden aus der Wüste.','Sie trieb die Mühlen an.','Sie spülte die Städte sauber.'],'Ohne Schlamm keine reichen Ernten.'],['m','Wer stand an der Spitze der ägyptischen Gesellschaft?',['der Pharao','der Wesir','der Hohepriester','der oberste Schreiber'],'Der Pharao galt als Sohn des Sonnengottes.'],['m','Was gehört NICHT zu den Merkmalen einer Hochkultur?',['Leben als Nomaden','Schrift','Arbeitsteilung','Verwaltung'],'Hochkulturen waren sesshaft mit Städten.'],['m','Warum wurden Tote mumifiziert?',['Der Körper sollte für das Leben nach dem Tod erhalten bleiben.','Man wollte Krankheiten erforschen.','So konnte man sie leichter transportieren.','Damit die Pyramiden schneller fertig wurden.'],'Glaube an ein Weiterleben im Jenseits.'],['m','Worauf schrieben die Ägypter?',['Papyrus','Pergament','Papier','Tontafeln'],'Papyrus wurde aus Schilfstängeln hergestellt.'],['w','Schreiber hatten im alten Ägypten ein hohes Ansehen.',true,'Nur wenige konnten lesen und schreiben.']]},
+{id:'ge-antike',s:'ge',title:'Griechen & Römer',
+ learn:[['Polis','Griechischer Stadtstaat mit eigenem Recht, z. B. Athen und Sparta.'],['Attische Demokratie','In Athen entschied die <b>Volksversammlung</b>. Mitbestimmen durften aber nur freie, erwachsene Männer mit athenischem Bürgerrecht – <b>Frauen, Sklaven und Fremde (Metöken) waren ausgeschlossen</b>.'],['Religion','Viele Götter (<b>Polytheismus</b>): Zeus, Hera, Athene, Poseidon … Wohnsitz: Olymp. Rat holte man sich beim <b>Orakel von Delphi</b>. Olympische Spiele seit 776 v. Chr. zu Ehren des Zeus.'],['Rom','Sage: Gründung <b>753 v. Chr.</b> durch Romulus und Remus. Erst Königreich, dann Republik, dann Kaiserreich (erster Kaiser: Augustus).'],['Römer und Germanen','<b>Limes</b>: Grenzwall gegen die Germanen. <b>Varusschlacht 9 n. Chr.</b>: Der Cheruskerfürst Arminius besiegt drei römische Legionen.']],
+ cards:[['Polis','griechischer Stadtstaat'],['Wer durfte in Athen mitbestimmen?','freie, erwachsene Männer mit Bürgerrecht'],['Polytheismus','Glaube an viele Götter'],['Göttervater der Griechen','Zeus'],['erste Olympische Spiele','776 v. Chr.'],['Gründung Roms (Sage)','753 v. Chr.'],['erster römischer Kaiser','Augustus'],['Limes','römischer Grenzwall'],['Varusschlacht','9 n. Chr.']],
+ tasks:[['m','Wer durfte in der attischen Demokratie NICHT abstimmen?',['Frauen','freie Bürger über 20','Handwerker mit Bürgerrecht','Bauern mit Bürgerrecht'],'Frauen, Sklaven und Metöken waren ausgeschlossen.'],['m','Was ist eine Polis?',['ein griechischer Stadtstaat','ein römischer Tempel','ein griechischer Gott','eine römische Legion'],'Athen und Sparta waren Poleis.'],['m','Wozu diente der Limes?',['als Grenze und Kontrolle gegenüber den Germanen','als Wasserleitung nach Rom','als Rennbahn für Wagenrennen','als Handelsstraße nach Ägypten'],'Ein befestigter Grenzwall mit Wachtürmen.'],['m','Wer besiegte in der Varusschlacht die Römer?',['Arminius','Augustus','Romulus','Varus'],'Varus war der unterlegene römische Feldherr.'],['m','Wen befragten die Griechen in Delphi?',['das Orakel','den Pharao','die Volksversammlung','den Kaiser'],'Die Priesterin Pythia sprach Weissagungen.'],['m','Wann wurde Rom laut Sage gegründet?',['753 v. Chr.','776 v. Chr.','9 n. Chr.','1 n. Chr.'],'„Sieben – fünf – drei, Rom schlüpft aus dem Ei.“']]}
+];
+
+/* ===== Lernbasis – App ===== */
+const LS='lernbasis_v1',LSPIN='lernbasis_pin';
+const INT=[0,1,2,4,8,16];
+const TITLES=['Einsteiger','Entdecker','Wissensjäger','Durchstarter','Profi','Meister','Champion','Legende'];
+const PRAISE=['Richtig!','Stark!','Genau!','Super!','Sauber gelöst!','Volltreffer!'];
+const OOPS=['Nicht ganz.','Knapp daneben.','Leider falsch.','Fast!'];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const today=(o=0)=>{const d=new Date();d.setDate(d.getDate()+o);return d.toISOString().slice(0,10)};
+const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const lsDel=k=>{try{localStorage.removeItem(k)}catch(e){}};
+
+function defState(){return {v:1,updated:0,name:'Henry',xp:0,streak:{last:'',n:0},days:{},tp:{},cards:{},tests:[],miss:{},custom:[],blitz:0,set:{ppin:'0000',goal:60,keys:[92,81,67,50,30]}}}
+function fix(o){const d=defState();o=Object.assign(d,o||{});o.set=Object.assign(defState().set,o.set||{});if(!Array.isArray(o.set.keys)||o.set.keys.length!==5)o.set.keys=[92,81,67,50,30];['days','tp','cards','miss'].forEach(k=>{if(!o[k]||typeof o[k]!=='object')o[k]={}});['tests','custom'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[]});return o}
+let S=(()=>{try{const j=JSON.parse(lsGet(LS));if(j)return fix(j)}catch(e){}return defState()})();
+let pushT=null;
+function save(){S.updated=Date.now();lsSet(LS,JSON.stringify(S));if(SYNC.on&&SYNC.pin){clearTimeout(pushT);pushT=setTimeout(push,1200)}}
+
+/* ---------- Sync mit api.php (nur auf dem Server) ---------- */
+const SYNC={on:false,pin:lsGet(LSPIN),st:'lokal'};
+async function api(a,body){const r=await fetch('api.php?a='+a,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body||{}),cache:'no-store'});return r.json()}
+async function syncInit(){
+ try{const r=await fetch('api.php?a=ping',{cache:'no-store'});const j=await r.json();SYNC.on=!!(j&&j.ok);SYNC.setup=!!(j&&j.setup)}catch(e){SYNC.on=false}
+ if(!SYNC.on){render();return}
+ if(!SYNC.pin){go('pin',{},true);return}
+ await pull();render();
+}
+async function pull(){
+ try{const j=await api('load',{pin:SYNC.pin});
+  if(j.err==='pin'){lsDel(LSPIN);SYNC.pin=null;go('pin',{},true);return}
+  const st=j.state;
+  if(st&&st.updated>S.updated){S=fix(st);lsSet(LS,JSON.stringify(S))}
+  else if(S.updated>(st?st.updated:0))await push();
+  SYNC.st='ok';
+ }catch(e){SYNC.st='offline'}
+}
+async function push(){try{const j=await api('save',{pin:SYNC.pin,state:S});SYNC.st=j.ok?'ok':'fehler'}catch(e){SYNC.st='offline'}}
+document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&SYNC.on&&SYNC.pin&&!['quiz','test','cards','blitz'].includes(view.n)){const u=S.updated;await pull();if(S.updated!==u)render()}});
+
+/* ---------- XP, Level, Serie ---------- */
+function lvl(){let x=S.xp,l=1,need=100;while(x>=need){x-=need;l++;need+=50}return {l,x,need,title:TITLES[Math.min(TITLES.length-1,Math.floor((l-1)/2))]}}
+function addXP(n){S.xp+=n;const d=today();S.days[d]=(S.days[d]||0)+n;if(S.streak.last!==d){S.streak.n=S.streak.last===today(-1)?S.streak.n+1:1;S.streak.last=d}}
+function streak(){return (S.streak.last===today()||S.streak.last===today(-1))?S.streak.n:0}
+
+/* ---------- Themen ---------- */
+const subj=id=>SUBJECTS.find(s=>s.id===id)||SUBJECTS[SUBJECTS.length-1];
+function customTopic(c){return {id:c.id,s:c.s||'eigen',title:c.title,custom:true,vok:c.kind==='vok',auto:true,la:c.la||'Deutsch',lb:c.lb||'Englisch',learn:c.learn?[['Merkwissen',esc(c.learn).replace(/\n/g,'<br>')]]:[],cards:(c.cards||[]).filter(x=>x[0]&&x[1])}}
+const allTopics=()=>TOPICS.concat(S.custom.map(customTopic));
+const topic=id=>allTopics().find(t=>t.id===id);
+const topicsOf=s=>allTopics().filter(t=>t.s===s);
+const first=a=>String(a).split('|')[0];
+
+function normTask(t,tid){if(!Array.isArray(t))return {...t,tid};const [k,q,a,ex,o]=t;return {t:k==='m'?'m':k==='w'?'w':'i',q,a,ex,cs:o==='cs',tid}}
+function cardTasks(tp){
+ const c=tp.cards||[],out=[];if(!c.length)return out;
+ const backs=c.map(x=>first(x[1])),fronts=c.map(x=>x[0]);
+ c.forEach(([f,b],i)=>{
+  const others=shuffle([...new Set(backs)].filter(x=>x!==backs[i])).slice(0,3);
+  if(tp.vok){
+   const fa=f.replace(/^(der|die|das) /i,'');
+   out.push({t:'i',q:`<span class="k">Übersetze ins ${tp.lb||'Englische'}</span><b>${esc(f)}</b>`,a:b,ex:`${esc(f)} = ${esc(b.split('|').join(' / '))}`,tid:tp.id});
+   out.push({t:'i',q:`<span class="k">Was heißt auf ${tp.la||'Deutsch'}?</span><b>${esc(first(b))}</b>`,a:f+'|'+fa,ex:`${esc(first(b))} = ${esc(f)}`,tid:tp.id});
+   if(others.length>=3)out.push({t:'m',q:`<span class="k">Was passt?</span><b>${esc(f)}</b>`,a:[first(b),...others],ex:`${esc(f)} = ${esc(first(b))}`,tid:tp.id});
+  }else{
+   const q=tp.id==='geo-laender'?`Wie heißt die Hauptstadt von <b>${esc(f)}</b>?`:`<span class="k">Was passt?</span>${esc(f)}`;
+   if(others.length>=2)out.push({t:'m',q,a:[first(b),...others],ex:`${esc(f)} → ${esc(first(b))}`,tid:tp.id});
+   else out.push({t:'i',q,a:b,ex:`${esc(f)} → ${esc(first(b))}`,tid:tp.id});
+  }
+ });return out;
+}
+const tkey=t=>t.q+'#'+(Array.isArray(t.a)?t.a[0]:t.a);
+function tasksFor(tp,n){
+ let st=(tp.tasks||[]).map(x=>normTask(x,tp.id));
+ if(tp.auto||tp.vok)st=st.concat(cardTasks(tp));
+ const miss=st.filter(t=>S.miss[tkey(t)]);const rest=shuffle(st.filter(t=>!S.miss[tkey(t)]));
+ st=shuffle(miss).concat(rest);
+ let gn=tp.gen?(st.length?Math.round(n*(tp.genShare||.7)):n):0;
+ let pick=st.slice(0,n-gn);
+ if(pick.length<n-gn&&tp.gen)gn=n-pick.length;
+ const out=pick.concat(Array.from({length:gn},()=>({...GEN[tp.gen](),tid:tp.id})));
+ return shuffle(out);
+}
+function cardsOf(tp){return (tp.cards||[]).map(([f,b])=>({key:tp.id+'|'+f,f,b,tid:tp.id,vok:tp.vok}))}
+const isDue=c=>{const s=S.cards[c.key];return s&&s.d<=today()};
+const isNew=c=>!S.cards[c.key];
+function topicScore(id){const t=S.tp[id];return t&&t.sc!=null?t.sc:null}
+
+/* ---------- Antworten prüfen ---------- */
+function norm(s,cs){s=String(s).replace(/[’‘`´]/g,"'").replace(/[„“”"]/g,'').replace(/\s+/g,' ').trim().replace(/[.!]+$/,'');return cs?s:s.toLowerCase()}
+const isNum=s=>/^-?\d+([.,]\d+)?$/.test(String(s).replace(/[\s ]/g,''));
+function toNum(s){s=String(s).replace(/[\s ]/g,'').replace('−','-');if(s.includes(','))s=s.replace(/\./g,'').replace(',','.');else if(/^-?\d{1,3}(\.\d{3})+/.test(s))s=s.replace(/\./g,'');const m=s.match(/^-?\d+(\.\d+)?/);return m?parseFloat(m[0]):NaN}
+function check(t,v){
+ if(v==null||v==='')return false;
+ if(t.t==='m')return v===t.a[0];
+ if(t.t==='w')return v===t.a;
+ return String(t.a).split('|').some(a=>{
+  if(isNum(a))return toNum(v)===toNum(a);
+  if(/^\d+\/\d+$/.test(a))return String(v).replace(/\s/g,'')===a;
+  return norm(v,t.cs)===norm(a,t.cs);
+ });
+}
+const showAns=t=>{if(t.t==='m')return t.a[0];if(t.t==='w')return t.a?'Stimmt':'Stimmt nicht';const a=first(t.a);return isNum(a)&&Number.isInteger(toNum(a))?fmt(toNum(a)):a};
+
+/* ---------- Router ---------- */
+let view={n:'home',p:{}};
+function go(n,p={},replace){view={n,p};try{history[replace?'replaceState':'pushState']({n,p:n==='quiz'||n==='test'||n==='cards'||n==='blitz'?{}:p},'')}catch(e){}render();scrollTo(0,0)}
+window.addEventListener('popstate',e=>{const st=e.state;if(!st){view={n:'home',p:{}};render();return}
+ if(['quiz','test','cards','blitz','result'].includes(st.n)){view={n:'home',p:{}};}else view=st;render()});
+function back(){history.length>1?history.back():go('home')}
+let toastT;function toast(m){let el=$('.toast');if(!el){el=document.createElement('div');el.className='toast';document.body.appendChild(el)}el.innerHTML=m;clearTimeout(toastT);toastT=setTimeout(()=>el.remove(),2200)}
+function hdr(title,color,extra=''){document.documentElement.style.setProperty('--sub',color||'#38bdf8');return `<div class="top"><button class="ib" onclick="back()" aria-label="Zurück">←</button><div class="ttl">${title}</div>${extra}</div>`}
+
+function render(){const v=VIEWS[view.n]||VIEWS.home;$('#app').innerHTML=v(view.p);const f=$('[autofocus]');if(f)setTimeout(()=>f.focus(),60)}
+
+const VIEWS={};
+/* ---------- Start ---------- */
+VIEWS.home=()=>{
+ document.documentElement.style.setProperty('--sub','#38bdf8');
+ const L=lvl(),dToday=S.days[today()]||0,goal=S.set.goal||60;
+ const due=allTopics().flatMap(cardsOf).filter(isDue).length;
+ const nMiss=Object.keys(S.miss).length;
+ const sync=SYNC.on?(SYNC.st==='ok'?'☁️ synchronisiert':'☁️ offline'):'📱 auf diesem Gerät';
+ return `<div class="top"><div class="ttl">Lernbasis</div><span class="pill">${sync}</span><button class="ib" onclick="go('eltern')" aria-label="Eltern">⚙️</button></div>
+ <div class="hero"><div class="row"><div class="lvl">${L.l}</div><div style="flex:1"><div style="font-size:1.25rem;font-weight:800">Hallo ${esc(S.name)}! 👋</div><div class="small" style="opacity:.85">Level ${L.l} · ${L.title} · ${L.x}/${L.need} XP</div><div class="bar"><i style="width:${Math.round(L.x/L.need*100)}%"></i></div></div></div>
+ <div class="stats"><span>🔥 ${streak()} ${streak()===1?'Tag':'Tage'} in Folge</span><span>🎯 Heute ${dToday}/${goal} XP${dToday>=goal?' ✅':''}</span><span>⭐ ${S.xp} XP gesamt</span></div></div>
+ <div class="acts">
+  <button class="act" onclick="go('train')"><span class="ic">💪</span><span><b>Trainieren</b><small>${nMiss?nMiss+' Fehler offen':'Schwächen & Blitzrechnen'}</small></span></button>
+  <button class="act" onclick="go('testsetup')"><span class="ic">📝</span><span><b>Test</b><small>Arbeit simulieren</small></span></button>
+  <button class="act" onclick="startCards(null)"><span class="ic">🧠</span><span><b>Merken</b><small>${due?due+' Karten fällig':'Karteikarten'}</small></span></button>
+  <button class="act" onclick="go('subject',{s:'eigen'})"><span class="ic">➕</span><span><b>Eigene Themen</b><small>${S.custom.length} angelegt</small></span></button>
+ </div>
+ <div class="sec">Fächer · Klasse 5</div>
+ <div class="grid">${SUBJECTS.filter(s=>s.id!=='eigen').map(s=>{const ts=topicsOf(s.id);const done=ts.filter(t=>(topicScore(t.id)||0)>=80).length;return `<button class="tile" style="--c:${s.color}" onclick="go('subject',{s:'${s.id}'})"><span class="ic">${s.icon}</span><span><b>${s.name}</b><br><small>${done}/${ts.length} Themen sicher</small></span></button>`}).join('')}</div>`;
+};
+/* ---------- Fach ---------- */
+VIEWS.subject=({s})=>{
+ const sb=subj(s),ts=topicsOf(s);
+ let h=hdr(sb.icon+' '+sb.name,sb.color);
+ if(s==='eigen')h+=`<button class="btn" onclick="go('edit',{})">➕ Neues Thema anlegen</button><p class="small mut">Lege eigene Themen an – z. B. Vokabeln aus dem Buch, Stoff für die nächste Arbeit oder Fächer wie Musik und Ethik. Du kannst ein eigenes Thema auch einem Fach zuordnen.</p>`;
+ if(!ts.length)h+=`<p class="mut center">Noch keine Themen.</p>`;
+ h+=`<div class="list">${ts.map(t=>{const sc=topicScore(t.id);const cs=cardsOf(t);const due=cs.filter(isDue).length;return `<button class="item" onclick="go('topic',{id:'${t.id}'})"><div class="ring" style="--p:${sc||0}"><span>${sc==null?'–':sc+'%'}</span></div><div class="t"><b>${esc(t.title)}</b>${t.custom?'<span class="badge">eigenes</span>':''}<small>${S.tp[t.id]?.l?'✓ gelernt · ':''}${cs.length} Karten${due?' · '+due+' fällig':''}</small></div><span class="mut">›</span></button>`}).join('')}</div>`;
+ if(ts.length)h+=`<button class="btn sec2" onclick="go('testsetup',{s:'${s}'})">📝 Test für ${sb.name} simulieren</button>`;
+ return h;
+};
+/* ---------- Thema ---------- */
+VIEWS.topic=({id})=>{
+ const t=topic(id);if(!t)return VIEWS.home();const sb=subj(t.s),cs=cardsOf(t),due=cs.filter(isDue).length,nw=cs.filter(isNew).length;const st=S.tp[id]||{};
+ const canPractice=(t.tasks&&t.tasks.length)||t.gen||((t.auto||t.vok)&&t.cards.length);
+ return hdr(esc(t.title),sb.color,t.custom?`<button class="ib" onclick="go('edit',{id:'${id}'})" aria-label="Bearbeiten">✏️</button>`:'')+
+ `<p class="small mut">${sb.icon} ${sb.name}${st.r!=null?` · ${st.r||0} richtig, ${st.w||0} falsch`:''}${topicScore(id)!=null?` · Sicherheit ${topicScore(id)} %`:''}</p>
+ <div class="modes">
+  <button class="mode" onclick="go('learn',{id:'${id}'})"><span class="ic">📘</span><b>Lernen</b><small>${t.learn?.length||0} Merkkästen${st.l?' ✓':''}</small></button>
+  <button class="mode" ${canPractice?`onclick="startQuiz('${id}')"`:'disabled style="opacity:.4"'}><span class="ic">✏️</span><b>Üben</b><small>10 Aufgaben mit Hilfe</small></button>
+  <button class="mode" ${cs.length?`onclick="startCards('${id}')"`:'disabled style="opacity:.4"'}><span class="ic">🧠</span><b>Merken</b><small>${cs.length?(due?due+' fällig · ':'')+nw+' neu':'keine Karten'}</small></button>
+  <button class="mode" ${canPractice?`onclick="startTest(['${id}'],10,0)"`:'disabled style="opacity:.4"'}><span class="ic">📝</span><b>Mini-Test</b><small>10 Fragen mit Note</small></button>
+ </div>`;
+};
+/* ---------- Lernen ---------- */
+VIEWS.learn=({id})=>{
+ const t=topic(id),sb=subj(t.s);
+ return hdr('📘 '+esc(t.title),sb.color)+(t.text?`<details class="text" open><summary>Lesetext</summary>${t.text}</details>`:'')+
+ (t.learn||[]).map(([h,x])=>`<div class="box"><h3>${h}</h3><div>${x}</div></div>`).join('')+
+ ((t.cards||[]).length?`<div class="sec">Das solltest du wissen</div><div class="box">${t.cards.slice(0,40).map(([f,b])=>`<div style="padding:4px 0;border-bottom:1px solid var(--line)"><b>${esc(f)}</b> – ${esc(b.split('|').join(' / '))}</div>`).join('')}</div>`:'')+
+ `<button class="btn" onclick="learned('${id}')">✓ Gelernt – jetzt üben</button>`;
+};
+function learned(id){const st=S.tp[id]||(S.tp[id]={});if(st.ld!==today()){addXP(20);st.ld=today();toast('+20 XP fürs Lernen 📘')}st.l=true;save();const t=topic(id);if((t.tasks&&t.tasks.length)||t.gen||((t.auto||t.vok)&&t.cards.length))startQuiz(id,true);else startCards(id)}
+
+/* ---------- Üben / Trainieren ---------- */
+function startQuiz(id,rep){const t=topic(id);const tasks=tasksFor(t,10);go('quiz',{title:t.title,color:subj(t.s).color,tasks,i:0,r:0,w:0,xp:0,retry:[],phase:1,tid:id,text:t.text},rep)}
+function startMix(tasks,title,color){if(!tasks.length){toast('Keine Aufgaben gefunden.');return}go('quiz',{title,color:color||'#38bdf8',tasks,i:0,r:0,w:0,xp:0,retry:[],phase:1})}
+VIEWS.quiz=p=>{
+ if(p.i>=p.tasks.length)return quizEnd(p);
+ const t=p.tasks[p.i];const pct=Math.round(p.i/p.tasks.length*100);const tp=topic(t.tid);
+ let h=hdr(esc(p.title),p.color,`<span class="pill">${p.i+1}/${p.tasks.length}</span>`)+`<div class="prog"><i style="width:${pct}%"></i></div>`;
+ if(p.phase===2)h+=`<p class="small" style="color:var(--warn)">🔁 Fehler-Runde: Versuch es noch einmal!</p>`;
+ if(tp&&tp.text)h+=`<details class="text"${p.i===0?' open':''}><summary>Lesetext anzeigen</summary>${tp.text}</details>`;
+ h+=`<div class="q">${t.q}</div>`+answerUI(t,p.ans,p.done);
+ if(p.done){const ok=p.ok;h+=`<div class="fb ${ok?'ok':'no'}"><b>${ok?'✅ '+PRAISE[p.i%PRAISE.length]:'❌ '+OOPS[p.i%OOPS.length]+' Richtig ist: '+esc(showAns(t))}</b>${t.ex?`<div class="small">${t.ex}</div>`:''}</div><button class="btn" id="nx" onclick="quizNext()" autofocus>Weiter →</button>`}
+ return h;
+};
+function answerUI(t,ans,done,testMode){
+ if(t.t==='m'){if(!t._o)t._o=shuffle(t.a);return `<div class="opts">${t._o.map((o,j)=>{let c='';if(done){if(o===t.a[0])c='ok';else if(o===ans)c='no'}else if(testMode&&o===ans)c='sel';return `<button class="opt ${c}" ${done?'disabled':''} onclick="${testMode?'testAns':'quizAns'}(${j})">${o}</button>`}).join('')}</div>`}
+ if(t.t==='w'){return `<div class="tf">${[true,false].map(v=>{let c='';if(done){if(v===t.a)c='ok';else if(v===ans)c='no'}else if(testMode&&v===ans)c='sel';return `<button class="opt ${c}" style="text-align:center" ${done?'disabled':''} onclick="${testMode?'testAns':'quizAns'}(${v})">${v?'👍 Stimmt':'👎 Stimmt nicht'}</button>`}).join('')}</div>`}
+ const num=isNum(first(t.a));
+ return `<div style="display:flex;gap:8px;align-items:center"><input id="ans" ${done?'disabled':''} value="${esc(ans||'')}" ${num?'inputmode="decimal"':''} autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Deine Antwort" ${!done?'autofocus':''} onkeydown="if(event.key==='Enter'){${testMode?'testIn()':'quizIn()'}}" ${testMode?'oninput="testIn(true)"':''}>${t.u?`<b>${t.u}</b>`:''}</div>${done||testMode?'':'<button class="btn" onclick="quizIn()">Prüfen</button>'}`;
+}
+function quizIn(){const v=$('#ans').value.trim();if(!v){toast('Gib zuerst eine Antwort ein.');return}quizAns(v,true)}
+function quizAns(j,raw){
+ const p=view.p;if(p.done)return;const t=p.tasks[p.i];let v=raw?j:(t.t==='m'?t._o[j]:j);
+ const ok=check(t,v);p.ans=v;p.done=true;p.ok=ok;const k=tkey(t);
+ const st=S.tp[t.tid]||(S.tp[t.tid]={});
+ if(ok){p.r++;st.r=(st.r||0)+1;const x=p.phase===2?5:10;p.xp+=x;addXP(x);delete S.miss[k]}
+ else{p.w++;st.w=(st.w||0)+1;S.miss[k]={...t,_o:undefined};if(p.phase===1&&p.tasks!==p.retry)p.retry.push({...t,_o:undefined});if(navigator.vibrate)try{navigator.vibrate(80)}catch(e){}}
+ const mk=Object.keys(S.miss);if(mk.length>80)delete S.miss[mk[0]];
+ save();render();
+}
+function quizNext(){const p=view.p;p.i++;p.done=false;p.ans='';render();scrollTo(0,0)}
+function quizEnd(p){
+ if(p.phase===1&&p.retry.length&&!p.noRetry){return hdr(esc(p.title),p.color)+`<div class="big">🔁</div><h2 class="center">${p.retry.length} ${p.retry.length===1?'Aufgabe':'Aufgaben'} noch nicht richtig</h2><p class="center mut">Hol dir die Punkte zurück! In der Fehler-Runde übst du genau diese Aufgaben noch einmal.</p><button class="btn" onclick="retryRound()">Fehler-Runde starten</button><button class="btn sec2" onclick="view.p.noRetry=true;render()">Überspringen</button>`}
+ if(!p.saved){p.saved=true;const first=p.r1??p.r;const tot=p.n1??p.tasks.length;const pct=Math.round(first/tot*100);if(p.tid){const st=S.tp[p.tid]||(S.tp[p.tid]={});st.sc=st.sc==null?pct:Math.round(st.sc*.5+pct*.5);st.last=today()}save()}
+ const tot=p.n1??p.tasks.length,first=p.r1??p.r,pct=Math.round(first/tot*100);
+ const em=pct>=90?'🏆':pct>=70?'🌟':pct>=50?'👍':'💪';
+ return hdr(esc(p.title),p.color)+`<div class="big">${em}</div><h2 class="center">${first} von ${tot} beim ersten Versuch richtig</h2><p class="center mut">+${p.xp} XP · ${pct>=90?'Hervorragend!':pct>=70?'Richtig gut!':pct>=50?'Ordentlich – dranbleiben!':'Übung macht den Meister. Schau dir noch einmal die Merkkästen an.'}</p>
+ ${p.tid?`<button class="btn" onclick="startQuiz('${p.tid}',true)">Noch eine Runde</button>`:`<button class="btn" onclick="go('train',{},true)">Weiter trainieren</button>`}
+ ${p.tid&&pct<70?`<button class="btn sec2" onclick="go('learn',{id:'${p.tid}'},true)">📘 Nochmal lernen</button>`:''}<button class="btn sec2" onclick="go('home',{},true)">Zur Startseite</button>`;
+}
+function retryRound(){const p=view.p;p.r1=p.r;p.n1=p.tasks.length;p.tasks=p.retry.map(t=>({...t,_o:undefined}));p.retry=[];p.i=0;p.phase=2;p.done=false;render()}
+
+/* ---------- Trainieren ---------- */
+VIEWS.train=()=>{
+ const nMiss=Object.keys(S.miss).length;
+ return hdr('💪 Trainieren','#f59e0b')+`<div class="list">
+ <button class="item" onclick="weakMix()"><span style="font-size:1.6rem">🎯</span><div class="t"><b>Schwächen-Mix</b><small>12 Aufgaben aus deinen unsichersten Themen</small></div>›</button>
+ <button class="item" ${nMiss?'onclick="missMix()"':'style="opacity:.5"'}><span style="font-size:1.6rem">🔁</span><div class="t"><b>Fehler wiederholen</b><small>${nMiss?nMiss+' Aufgaben, die du falsch hattest':'Keine offenen Fehler – super!'}</small></div>›</button>
+ <button class="item" onclick="startBlitz()"><span style="font-size:1.6rem">⚡</span><div class="t"><b>Blitzrechnen</b><small>60 Sekunden Kopfrechnen · Rekord: ${S.blitz||0}</small></div>›</button>
+ <button class="item" onclick="startCards(null)"><span style="font-size:1.6rem">🧠</span><div class="t"><b>Karteikarten wiederholen</b><small>alle fälligen Karten aus allen Fächern</small></div>›</button>
+ </div><div class="sec">Zufalls-Mix aus einem Fach</div><div class="chips">${SUBJECTS.filter(s=>topicsOf(s.id).length).map(s=>`<button class="chip" onclick="subjMix('${s.id}')">${s.icon} ${s.name}</button>`).join('')}</div>`;
+};
+function weakMix(){const ts=allTopics().filter(t=>(t.tasks&&t.tasks.length)||t.gen||((t.auto||t.vok)&&t.cards.length));
+ const scored=ts.map(t=>({t,sc:topicScore(t.id)})).sort((a,b)=>(a.sc??60)-(b.sc??60));
+ const sel=scored.slice(0,4).map(x=>x.t);startMix(shuffle(sel.flatMap(t=>tasksFor(t,3))),'Schwächen-Mix','#f59e0b')}
+function missMix(){startMix(shuffle(Object.values(S.miss)).slice(0,15).map(t=>({...t,_o:undefined})),'Fehler wiederholen','#f43f5e')}
+function subjMix(s){const ts=topicsOf(s).filter(t=>(t.tasks&&t.tasks.length)||t.gen||((t.auto||t.vok)&&t.cards.length));if(!ts.length){toast('Hier gibt es noch keine Aufgaben.');return}
+ const out=[];for(let i=0;i<12;i++)out.push(...tasksFor(ts[i%ts.length],1));startMix(shuffle(out),subj(s).name+'-Mix',subj(s).color)}
+
+/* ---------- Blitzrechnen ---------- */
+let blitzT=null;
+function startBlitz(){go('blitz',{});view.p={t:GEN.blitz(),r:0,w:0,end:Date.now()+60000,run:true};render();clearInterval(blitzT);blitzT=setInterval(()=>{const p=view.p;if(view.n!=='blitz'){clearInterval(blitzT);return}const left=Math.max(0,Math.ceil((p.end-Date.now())/1000));const el=$('#bt');if(el)el.textContent=left+' s';if(left<=0){clearInterval(blitzT);p.run=false;const x=p.r*2;addXP(x);if(p.r>(S.blitz||0)){S.blitz=p.r;p.rec=true}save();render()}},250)}
+VIEWS.blitz=p=>{
+ if(!p.t)return VIEWS.train();
+ if(!p.run)return hdr('⚡ Blitzrechnen','#f59e0b')+`<div class="big">${p.rec?'🏆':'⚡'}</div><h2 class="center">${p.r} richtig${p.w?`, ${p.w} falsch`:''}</h2><p class="center mut">${p.rec?'Neuer Rekord!':'Rekord: '+S.blitz} · +${p.r*2} XP</p><button class="btn" onclick="startBlitz()">Nochmal</button><button class="btn sec2" onclick="go('train',{},true)">Zurück</button>`;
+ return hdr('⚡ Blitzrechnen','#f59e0b',`<span class="pill timer" id="bt">60 s</span>`)+`<p class="center mut">✅ ${p.r} · ❌ ${p.w}</p><div class="q center" style="font-size:2rem">${p.t.q}</div><input id="ans" inputmode="numeric" autocomplete="off" autofocus onkeydown="if(event.key==='Enter')blitzIn()" style="font-size:1.6rem;text-align:center"><button class="btn" onclick="blitzIn()">OK</button>${p.last?`<p class="center small mut">${p.last}</p>`:''}`;
+};
+function blitzIn(){const p=view.p;const v=$('#ans').value.trim();if(!v)return;if(check(p.t,v)){p.r++;p.last='✅ '+p.t.q+' '+p.t.a}else{p.w++;p.last='❌ '+p.t.q+' '+p.t.a}p.t=GEN.blitz();render()}
+
+/* ---------- Merken (Karteikarten, Lernkartei mit 5 Fächern) ---------- */
+function startCards(id){
+ let cs;
+ if(id){const all=cardsOf(topic(id));cs=shuffle(all.filter(isDue)).concat(shuffle(all.filter(isNew)).slice(0,15));if(!cs.length)cs=shuffle(all).slice(0,15)}
+ else{cs=shuffle(allTopics().flatMap(cardsOf).filter(isDue)).slice(0,30);if(!cs.length){go('cardsempty');return}}
+ cs=cs.map(c=>({...c,rev:c.vok&&Math.random()<.5}));
+ const t=id?topic(id):null;go('cards',{cs,i:0,ok:0,no:0,title:t?t.title:'Alle fälligen Karten',color:t?subj(t.s).color:'#a855f7',tid:id});
+}
+VIEWS.cardsempty=()=>hdr('🧠 Merken','#a855f7')+`<div class="big">🎉</div><h2 class="center">Heute ist nichts fällig!</h2><p class="center mut">Neue Karten lernst du in jedem Thema über „Merken“. Wähle ein Fach:</p><div class="chips" style="justify-content:center">${SUBJECTS.filter(s=>topicsOf(s.id).some(t=>(t.cards||[]).length)).map(s=>`<button class="chip" onclick="go('subject',{s:'${s.id}'})">${s.icon} ${s.name}</button>`).join('')}</div>`;
+VIEWS.cards=p=>{
+ if(p.i>=p.cs.length){if(!p.saved){p.saved=true;save()}return hdr('🧠 '+esc(p.title),p.color)+`<div class="big">🧠</div><h2 class="center">${p.ok} gewusst · ${p.no} noch üben</h2><p class="center mut">Karten, die du wusstest, kommen erst in ein paar Tagen wieder. Die anderen morgen.</p>${p.tid?`<button class="btn" onclick="startQuiz('${p.tid}',true)">Jetzt mit Aufgaben üben</button>`:''}<button class="btn sec2" onclick="go('home',{},true)">Zur Startseite</button>`}
+ const c=p.cs[p.i],tp=topic(c.tid);const fr=c.rev?first(c.b):c.f,bk=c.rev?c.f:c.b.split('|').join(' / ');const box=S.cards[c.key]?.b||0;
+ return hdr('🧠 '+esc(p.title),p.color,`<span class="pill">${p.i+1}/${p.cs.length}</span>`)+`<div class="prog"><i style="width:${p.i/p.cs.length*100}%"></i></div>
+ <div class="card3d"><div class="flip ${p.flip?'on':''}" onclick="view.p.flip=!view.p.flip;render()"><div class="face"><small>${esc(tp?tp.title:'')} · Fach ${box}/5</small>${esc(fr)}<div class="small mut" style="margin-top:14px;font-weight:400">Tippen zum Umdrehen</div></div><div class="face b"><small>Antwort</small>${esc(bk)}</div></div></div>
+ ${p.flip?`<div class="row2"><button class="btn no" onclick="cardRate(false)">✗ Noch nicht</button><button class="btn ok" onclick="cardRate(true)">✓ Gewusst</button></div>`:`<button class="btn sec2" onclick="view.p.flip=true;render()">Antwort zeigen</button>`}`;
+};
+function cardRate(ok){const p=view.p,c=p.cs[p.i];const s=S.cards[c.key]||{b:0};
+ if(ok){s.b=Math.min(5,(s.b||0)+1);s.d=today(INT[s.b]);p.ok++;addXP(5)}else{s.b=1;s.d=today(1);p.no++;if(!c.again)p.cs.push({...c,again:true})}
+ S.cards[c.key]=s;p.i++;p.flip=false;save();render()}
+
+/* ---------- Test simulieren ---------- */
+VIEWS.testsetup=p=>{
+ p.s=p.s||'ma';const ts=topicsOf(p.s).filter(t=>(t.tasks&&t.tasks.length)||t.gen||((t.auto||t.vok)&&t.cards.length));
+ if(!p.sel||p.selS!==p.s){p.sel=ts.map(t=>t.id);p.selS=p.s}p.n=p.n||15;p.min=p.min??30;
+ const hist=S.tests.slice(-5).reverse();
+ return hdr('📝 Test simulieren','#38bdf8')+`<p class="small mut">Wie eine echte Arbeit: Du bekommst erst am Ende deine Auswertung und eine Note.</p>
+ <div class="sec">Fach</div><div class="chips">${SUBJECTS.filter(s=>topicsOf(s.id).length).map(s=>`<button class="chip ${p.s===s.id?'on':''}" onclick="view.p.s='${s.id}';render()">${s.icon} ${s.name}</button>`).join('')}</div>
+ <div class="sec">Themen <button class="pill" onclick="tsAll()">${p.sel.length===ts.length?'keine':'alle'}</button></div><div class="list">${ts.map(t=>`<label class="cb"><input type="checkbox" ${p.sel.includes(t.id)?'checked':''} onchange="tsTog('${t.id}')"><span>${esc(t.title)}</span></label>`).join('')||'<p class="mut">Keine Themen mit Aufgaben.</p>'}</div>
+ <div class="sec">Anzahl Aufgaben</div><div class="chips">${[10,15,20,30].map(n=>`<button class="chip ${p.n===n?'on':''}" onclick="view.p.n=${n};render()">${n}</button>`).join('')}</div>
+ <div class="sec">Zeit</div><div class="chips">${[0,15,30,45].map(n=>`<button class="chip ${p.min===n?'on':''}" onclick="view.p.min=${n};render()">${n?n+' Min.':'ohne Zeit'}</button>`).join('')}</div>
+ <button class="btn" ${p.sel.length?'':'disabled'} onclick="startTest(view.p.sel,view.p.n,view.p.min)">Test starten</button>
+ ${hist.length?`<div class="sec">Letzte Tests</div><div class="list">${hist.map(h=>`<div class="item"><b style="font-size:1.4rem;width:34px;text-align:center">${h.g}</b><div class="t">${esc(h.title)}<small>${h.d.split('-').reverse().join('.')} · ${h.r}/${h.n} richtig</small></div></div>`).join('')}</div>`:''}`;
+};
+function tsTog(id){const p=view.p;p.sel=p.sel.includes(id)?p.sel.filter(x=>x!==id):[...p.sel,id];render()}
+function tsAll(){const p=view.p;const ts=topicsOf(p.s).filter(t=>(t.tasks&&t.tasks.length)||t.gen||((t.auto||t.vok)&&t.cards.length));p.sel=p.sel.length===ts.length?[]:ts.map(t=>t.id);render()}
+let testT=null;
+function startTest(ids,n,min){
+ const ts=ids.map(topic).filter(Boolean);if(!ts.length)return;const per=Math.ceil(n/ts.length);
+ let tasks=shuffle(ts.flatMap(t=>tasksFor(t,per)));const seen=new Set();tasks=tasks.filter(t=>{const k=tkey(t);if(seen.has(k))return false;seen.add(k);return true}).slice(0,n);
+ const sb=subj(ts[0].s);const title=ts.length===1?ts[0].title:sb.name+'-Test';
+ go('test',{tasks,ans:[],i:0,start:Date.now(),end:min?Date.now()+min*60000:0,title,color:sb.color,s:ts[0].s});
+ clearInterval(testT);testT=setInterval(()=>{if(view.n!=='test'||view.p.fin){clearInterval(testT);return}const p=view.p;const el=$('#tt');const sec=p.end?Math.max(0,Math.round((p.end-Date.now())/1000)):Math.round((Date.now()-p.start)/1000);if(el)el.textContent=(p.end?'⏳ ':'⏱ ')+Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');if(p.end&&sec<=0){toast('⏰ Die Zeit ist um!');finishTest()}},500);
+}
+VIEWS.test=p=>{
+ if(p.fin)return testResult(p);
+ const t=p.tasks[p.i],tp=topic(t.tid);const done=p.ans.filter(a=>a!=null&&a!=='').length;
+ return hdr('📝 '+esc(p.title),p.color,`<span class="pill timer" id="tt">⏱</span>`)+
+ `<div class="nav">${p.tasks.map((_,j)=>`<button class="${j===p.i?'cur':''} ${p.ans[j]!=null&&p.ans[j]!==''?'done':''}" onclick="view.p.i=${j};render()">${j+1}</button>`).join('')}</div>
+ ${tp&&tp.text?`<details class="text"><summary>Lesetext anzeigen</summary>${tp.text}</details>`:''}
+ <div class="q"><span class="k">Aufgabe ${p.i+1} von ${p.tasks.length}</span>${t.q}</div>${answerUI(t,p.ans[p.i],false,true)}
+ <div class="row2" style="margin-top:6px"><button class="btn sec2" ${p.i?'':'disabled'} onclick="view.p.i--;render()">← Zurück</button><button class="btn sec2" ${p.i<p.tasks.length-1?'':'disabled'} onclick="view.p.i++;render()">Weiter →</button></div>
+ <button class="btn ${p.sure?'no':''}" onclick="finishTest(true)">${p.sure?`Wirklich abgeben? (${done}/${p.tasks.length} beantwortet)`:'Test abgeben'}</button>`;
+};
+function testAns(j){const p=view.p,t=p.tasks[p.i];p.ans[p.i]=t.t==='m'?t._o[j]:j;p.sure=false;if(t.t!=='i'&&p.i<p.tasks.length-1){render();setTimeout(()=>{if(view.p===p&&!p.fin){p.i++;render()}},250)}else render()}
+function testIn(soft){const p=view.p;p.ans[p.i]=$('#ans').value.trim();p.sure=false;if(!soft&&p.i<p.tasks.length-1){p.i++;render()}}
+function grade(pct){const k=S.set.keys||[92,81,67,50,30];for(let i=0;i<5;i++)if(pct>=k[i])return i+1;return 6}
+function finishTest(ask){const p=view.p;if(ask&&!p.sure){p.sure=true;render();return}
+ p.fin=true;clearInterval(testT);p.res=p.tasks.map((t,j)=>check(t,p.ans[j]));p.r=p.res.filter(Boolean).length;p.pct=Math.round(p.r/p.tasks.length*100);p.g=grade(p.pct);p.sec=Math.round((Date.now()-p.start)/1000);
+ p.tasks.forEach((t,j)=>{const st=S.tp[t.tid]||(S.tp[t.tid]={});if(p.res[j]){st.r=(st.r||0)+1;delete S.miss[tkey(t)]}else{st.w=(st.w||0)+1;S.miss[tkey(t)]={...t,_o:undefined}}});
+ const tids=[...new Set(p.tasks.map(t=>t.tid))];tids.forEach(id=>{const idx=p.tasks.map((t,j)=>t.tid===id?j:-1).filter(j=>j>=0);const pc=Math.round(idx.filter(j=>p.res[j]).length/idx.length*100);const st=S.tp[id];st.sc=st.sc==null?pc:Math.round(st.sc*.5+pc*.5)});
+ addXP(p.r*5+20);S.tests.push({d:today(),title:p.title,s:p.s,n:p.tasks.length,r:p.r,g:p.g,sec:p.sec});if(S.tests.length>100)S.tests.shift();save();render();scrollTo(0,0)}
+function testResult(p){
+ const col=['','#22c55e','#84cc16','#eab308','#f97316','#ef4444','#b91c1c'][p.g];
+ return hdr('📝 Auswertung',p.color)+`<p class="center mut" style="margin:0">${esc(p.title)}</p><div class="note" style="color:${col}">${p.g}</div><p class="center"><b>${p.r} von ${p.tasks.length} richtig (${p.pct} %)</b><br><span class="small mut">Zeit: ${Math.floor(p.sec/60)} min ${p.sec%60} s · Note als Richtwert · +${p.r*5+20} XP</span></p>
+ <button class="btn" onclick="go('testsetup',{s:'${p.s}'},true)">Neuer Test</button>${p.r<p.tasks.length?`<button class="btn sec2" onclick="missMix()">🔁 Fehler gleich üben</button>`:''}
+ <div class="sec">Alle Aufgaben</div>${p.tasks.map((t,j)=>`<div class="rev ${p.res[j]?'ok':'no'}"><div>${j+1}. ${t.q}</div><div class="small" style="margin-top:6px">${p.res[j]?'✅':'❌'} Deine Antwort: <b>${p.ans[j]==null||p.ans[j]===''?'–':esc(t.t==='w'?(p.ans[j]?'Stimmt':'Stimmt nicht'):p.ans[j])}</b>${p.res[j]?'':` · Richtig: <b>${esc(showAns(t))}</b>`}</div>${!p.res[j]&&t.ex?`<div class="small mut" style="margin-top:4px">${t.ex}</div>`:''}</div>`).join('')}`;
+}
+
+/* ---------- Eigene Themen ---------- */
+VIEWS.edit=p=>{
+ if(!p.d){const c=p.id?S.custom.find(x=>x.id===p.id):null;p.d=c?JSON.parse(JSON.stringify(c)):{id:'c_'+Date.now().toString(36),s:'eigen',title:'',kind:'qa',learn:'',la:'Deutsch',lb:'Englisch',cards:[['',''],['',''],['','']]};p.isNew=!c}
+ const d=p.d,vok=d.kind==='vok';
+ return hdr(p.isNew?'➕ Neues Thema':'✏️ Thema bearbeiten','#ec4899')+`
+ <label class="small mut">Titel</label><input value="${esc(d.title)}" placeholder="z. B. Vokabeln Unit 2 oder Musik: Instrumente" oninput="view.p.d.title=this.value">
+ <div class="row2" style="margin-top:10px"><div><label class="small mut">Fach</label><select onchange="view.p.d.s=this.value">${SUBJECTS.map(s=>`<option value="${s.id}" ${d.s===s.id?'selected':''}>${s.icon} ${s.name}</option>`).join('')}</select></div>
+ <div><label class="small mut">Art</label><select onchange="view.p.d.kind=this.value;render()"><option value="qa" ${!vok?'selected':''}>Frage & Antwort</option><option value="vok" ${vok?'selected':''}>Vokabeln</option></select></div></div>
+ ${vok?`<div class="row2" style="margin-top:10px"><div><label class="small mut">Sprache links</label><input value="${esc(d.la)}" oninput="view.p.d.la=this.value"></div><div><label class="small mut">Sprache rechts</label><input value="${esc(d.lb)}" oninput="view.p.d.lb=this.value"></div></div>`:''}
+ <label class="small mut" style="display:block;margin-top:10px">Merkwissen (optional – erscheint unter „Lernen“)</label><textarea oninput="view.p.d.learn=this.value" placeholder="Was man sich merken soll …">${esc(d.learn)}</textarea>
+ <div class="sec">${vok?'Vokabeln':'Karten'} (${d.cards.filter(c=>c[0]&&c[1]).length})</div>
+ <div class="ed small mut"><span>${vok?esc(d.la):'Frage / Begriff'}</span><span>${vok?esc(d.lb):'Antwort'}</span><span></span></div>
+ ${d.cards.map((c,i)=>`<div class="ed"><input value="${esc(c[0])}" oninput="view.p.d.cards[${i}][0]=this.value"><input value="${esc(c[1])}" oninput="view.p.d.cards[${i}][1]=this.value"><button onclick="view.p.d.cards.splice(${i},1);render()" aria-label="Löschen">🗑</button></div>`).join('')}
+ <button class="btn sec2" onclick="view.p.d.cards.push(['','']);render()">+ Zeile</button>
+ <details style="margin-top:10px"><summary class="small mut">Viele auf einmal einfügen</summary><p class="small mut">Eine Zeile pro Karte, getrennt mit = oder ; oder Tab.<br>Beispiel: <i>der Hund = dog</i>. Mehrere richtige Antworten mit | trennen: <i>Radiergummi = rubber|eraser</i></p><textarea id="bulk" placeholder="Wort = Übersetzung"></textarea><button class="btn sec2" onclick="bulkAdd()">Übernehmen</button></details>
+ <p class="small mut">Tipp: Für Übungs- und Testaufgaben mit Auswahlantworten brauchst du mindestens 4 Karten.</p>
+ <button class="btn" onclick="saveCustom()">💾 Speichern</button>${p.isNew?'':`<button class="btn ${p.del?'no':'sec2'}" onclick="delCustom()">${p.del?'Wirklich löschen?':'🗑 Thema löschen'}</button>`}`;
+};
+function bulkAdd(){const d=view.p.d;const lines=$('#bulk').value.split('\n').map(l=>l.split(/\s*(?:=|;|\t)\s*/)).filter(x=>x.length>=2&&x[0].trim()&&x[1].trim());d.cards=d.cards.filter(c=>c[0]||c[1]).concat(lines.map(x=>[x[0].trim(),x.slice(1).join(' ').trim()]));toast(lines.length+' Karten übernommen');render()}
+function saveCustom(){const p=view.p,d=p.d;d.title=d.title.trim();d.cards=d.cards.map(c=>[c[0].trim(),c[1].trim()]).filter(c=>c[0]&&c[1]);if(!d.title){toast('Bitte einen Titel eingeben.');return}if(!d.cards.length&&!d.learn.trim()){toast('Bitte mindestens eine Karte oder Merkwissen eingeben.');return}
+ const i=S.custom.findIndex(x=>x.id===d.id);if(i>=0)S.custom[i]=d;else S.custom.push(d);save();toast('Gespeichert ✓');go('topic',{id:d.id},true)}
+function delCustom(){const p=view.p;if(!p.del){p.del=true;render();return}S.custom=S.custom.filter(x=>x.id!==p.d.id);Object.keys(S.cards).forEach(k=>{if(k.startsWith(p.d.id+'|'))delete S.cards[k]});delete S.tp[p.d.id];save();toast('Gelöscht');go('subject',{s:'eigen'},true)}
+
+/* ---------- PIN (Gerät mit dem Server verbinden) ---------- */
+VIEWS.pin=p=>{p.v=p.v||'';return `<div style="padding-top:40px" class="center"><div class="big">🔐</div><h2>Lernbasis</h2><p class="mut">${SYNC.setup?'<b>Erster Start:</b> Lege jetzt einen 4-stelligen Code fest. Diesen Code gibst du später auf jedem Gerät ein.':'Gib deinen Code ein, damit dein Fortschritt auf Handy und Tablet gleich ist.'}</p><div class="dots">${[0,1,2,3].map(i=>`<i class="${i<p.v.length?'f':''}"></i>`).join('')}</div>${p.err?`<p style="color:var(--bad)">${p.err}</p>`:''}<div class="pinpad">${[1,2,3,4,5,6,7,8,9,'⌫',0,'✓'].map(k=>`<button onclick="pinKey('${k}')">${k}</button>`).join('')}</div></div>`};
+async function pinKey(k){const p=view.p;p.err='';if(k==='⌫')p.v=p.v.slice(0,-1);else if(k==='✓'||p.v.length>=4){}else p.v+=k;render();
+ if(p.v.length===4||k==='✓'){try{const j=await api('load',{pin:p.v});if(j.err){p.err=j.err==='warten'?'Zu viele Versuche – bitte 10 Minuten warten.':'Falscher Code.';p.v='';render();return}SYNC.setup=false;SYNC.pin=p.v;lsSet(LSPIN,p.v);const st=j.state;if(st&&st.updated>S.updated){S=fix(st);lsSet(LS,JSON.stringify(S))}else await push();SYNC.st='ok';go('home',{},true)}catch(e){p.err='Keine Verbindung.';p.v='';render()}}}
+
+/* ---------- Eltern-Bereich ---------- */
+VIEWS.eltern=p=>{
+ if(!p.ok){p.v=p.v||'';return hdr('👩‍👦 Eltern-Bereich','#64748b')+`<p class="center mut">Eltern-PIN eingeben</p><div class="dots">${[0,1,2,3].map(i=>`<i class="${i<p.v.length?'f':''}"></i>`).join('')}</div>${p.err?`<p class="center" style="color:var(--bad)">${p.err}</p>`:''}<div class="pinpad">${[1,2,3,4,5,6,7,8,9,'⌫',0,''].map(k=>`<button onclick="epin('${k}')">${k}</button>`).join('')}</div>${S.set.ppin==='0000'?'<p class="center small mut">Standard-PIN: 0000 – bitte danach ändern.</p>':''}`}
+ const rows=SUBJECTS.map(s=>{const ts=topicsOf(s.id);let r=0,w=0;ts.forEach(t=>{r+=S.tp[t.id]?.r||0;w+=S.tp[t.id]?.w||0});const sc=ts.map(t=>topicScore(t.id)).filter(x=>x!=null);return `<tr><td>${s.icon} ${s.name}</td><td>${r+w}</td><td>${r+w?Math.round(r/(r+w)*100)+' %':'–'}</td><td>${sc.length}/${ts.length}</td></tr>`}).join('');
+ const days=Array.from({length:14},(_,i)=>today(i-13));const mx=Math.max(30,...days.map(d=>S.days[d]||0));
+ const weak=allTopics().filter(t=>topicScore(t.id)!=null).sort((a,b)=>topicScore(a.id)-topicScore(b.id)).slice(0,5);
+ const k=S.set.keys;
+ return hdr('👩‍👦 Eltern-Bereich','#64748b')+`
+ <div class="sec">Aktivität (14 Tage, XP pro Tag)</div><div style="display:flex;gap:4px;align-items:flex-end;height:80px;background:var(--card);border-radius:14px;padding:10px">${days.map(d=>`<div title="${d}: ${S.days[d]||0} XP" style="flex:1;background:${(S.days[d]||0)>=S.set.goal?'#22c55e':'#38bdf8'};opacity:${S.days[d]?1:.15};height:${Math.max(4,(S.days[d]||0)/mx*100)}%;border-radius:4px"></div>`).join('')}</div>
+ <p class="small mut">Serie: ${streak()} Tage · Gesamt: ${S.xp} XP · Level ${lvl().l}</p>
+ <div class="sec">Fächer</div><table class="st"><tr><th>Fach</th><th>Aufg.</th><th>richtig</th><th>Themen</th></tr>${rows}</table>
+ ${weak.length?`<div class="sec">Unsicherste Themen</div>${weak.map(t=>`<div class="small">${subj(t.s).icon} ${esc(t.title)} – <b>${topicScore(t.id)} %</b></div>`).join('')}`:''}
+ <div class="sec">Letzte Tests</div>${S.tests.length?`<table class="st"><tr><th>Datum</th><th>Test</th><th>Erg.</th><th>Note</th></tr>${S.tests.slice(-10).reverse().map(h=>`<tr><td>${h.d.slice(5).split('-').reverse().join('.')}</td><td>${esc(h.title)}</td><td>${h.r}/${h.n}</td><td><b>${h.g}</b></td></tr>`).join('')}</table>`:'<p class="small mut">Noch keine Tests.</p>'}
+ <div class="sec">Einstellungen</div>
+ <label class="small mut">Name des Kindes</label><input value="${esc(S.name)}" onchange="S.name=this.value.trim()||'Henry';save()">
+ <div class="row2" style="margin-top:8px"><div><label class="small mut">Tagesziel (XP)</label><input type="number" inputmode="numeric" value="${S.set.goal}" onchange="S.set.goal=Math.max(10,+this.value||60);save()"></div><div><label class="small mut">Eltern-PIN (4 Ziffern)</label><input inputmode="numeric" maxlength="4" value="${esc(S.set.ppin)}" onchange="if(/^\\d{4}$/.test(this.value)){S.set.ppin=this.value;save();toast('PIN geändert')}else toast('Bitte 4 Ziffern')"></div></div>
+ <label class="small mut" style="display:block;margin-top:8px">Notenschlüssel (ab … % für Note 1 bis 5, darunter 6)</label><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">${k.map((v,i)=>`<input type="number" inputmode="numeric" value="${v}" title="Note ${i+1}" onchange="S.set.keys[${i}]=+this.value;save()">`).join('')}</div>
+ <div class="sec">Daten</div><p class="small mut">${SYNC.on?(SYNC.pin?'☁️ Fortschritt wird über den Leuchtturm zwischen allen Geräten synchronisiert.':'Server erreichbar, Gerät noch nicht verbunden.'):'📱 Fortschritt wird nur auf diesem Gerät gespeichert.'}</p>
+ <div class="row2"><button class="btn sec2" onclick="exportData()">⬇️ Sicherung</button><label class="btn sec2" style="cursor:pointer">⬆️ Laden<input type="file" accept=".json" style="display:none" onchange="importData(this.files[0])"></label></div>
+ ${SYNC.on&&SYNC.pin?`<button class="btn sec2" onclick="lsDel(LSPIN);SYNC.pin=null;go('pin',{},true)">Gerät abmelden</button>`:''}
+ <button class="btn ${p.rs?'no':'sec2'}" onclick="resetAll()">${p.rs?'Wirklich ALLES zurücksetzen?':'Fortschritt zurücksetzen'}</button>
+ <p class="small mut center" style="margin-top:20px">Inhalte orientiert am Fachlehrplan Gymnasium Sachsen-Anhalt (Schuljahrgänge 5/6).</p>`;
+};
+function epin(k){const p=view.p;p.err='';if(k==='⌫')p.v=p.v.slice(0,-1);else if(k!==''&&p.v.length<4)p.v+=k;if(p.v.length===4){if(p.v===S.set.ppin)p.ok=true;else{p.err='Falsche PIN';p.v=''}}render()}
+function exportData(){const b=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lernbasis-sicherung-'+today()+'.json';document.body.appendChild(a);a.click();a.remove()}
+function importData(f){if(!f)return;const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(!j||typeof j.xp!=='number')throw 0;S=fix(j);save();toast('Sicherung geladen ✓');render()}catch(e){toast('Datei konnte nicht gelesen werden.')}};r.readAsText(f)}
+function resetAll(){const p=view.p;if(!p.rs){p.rs=true;render();return}const keep={name:S.name,set:S.set,custom:S.custom};S=fix(keep);save();toast('Zurückgesetzt');go('home',{},true)}
+
+/* ---------- Start ---------- */
+try{history.replaceState({n:'home',p:{}},'')}catch(e){}
+render();syncInit();
+if('serviceWorker' in navigator&&location.protocol.startsWith('http')&&window.self===window.top){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+
+</script>
+</body>
+</html>

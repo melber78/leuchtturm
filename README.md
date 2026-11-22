@@ -20,3 +20,5 @@ Stundenplan für LRS-Kinder und Fördergruppen: `stundenplan.php` (Namen statt F
 Mein Tag (eigener Stundenplan + Tagespläne): `tagesplan.php` (Tag, Woche, Mein Stundenplan; Druck), gespeichert über `tagesplan-speichern.php` in `material-daten/tagesplan.json`. Sozialtraining/Lernangebot mit Klasse holen die Stunde automatisch aus dem jeweiligen Jahresplan, andere Stunden (auch Vertretung) werden pro Tag eingefügt.
 
 Rechtschreibung anwenden statt nur wissen: im LRS-Generator unter Symptomtraining (Serie `anwenden`, `RSA_*`/`rsaB_*` in `lrs.php`) und in der Stundenplanung (Symptom „rsa“). Satzvorrat mit Signalstellen in `RSA_SAETZE` – Schreibweise `{richtig|falsch|Werkzeug|Beweis}`.
+
+Lernbasis (Lern-App für Henry, Klasse 5 Gymnasium Sachsen-Anhalt): `lernbasis/` – eigene installierbare Web-App (PWA) mit eigenem 4-stelligen Code, ohne Leuchtturm-Login. Lernen, Üben, Merken (Karteikarten), Trainieren, Tests simulieren, eigene Themen, Eltern-Bereich. Lernstand + Code in `material-daten/lernbasis/` (Code vergessen: `code.php` dort löschen).
