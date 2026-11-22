@@ -749,6 +749,7 @@ function render(){applyTheme();const v=VIEWS[view.n]||VIEWS.home;$('#app').inner
 const VIEWS={};
 /* ---------- Start ---------- */
 VIEWS.home=()=>{
+ if(typeof ELTERN_OK!=='undefined')ELTERN_OK=false;
  document.documentElement.style.setProperty('--sub',(THEMES[S.theme]||THEMES.ozean).acc);
  const L=lvl(),dToday=S.days[today()]||0,goal=S.set.goal||60;
  const due=allTopics().flatMap(cardsOf).filter(isDue).length;
@@ -1012,12 +1013,14 @@ async function pinKey(k){const p=view.p;p.err='';if(k==='⌫')p.v=p.v.slice(0,-1
 
 /* ---------- Eltern-Bereich ---------- */
 VIEWS.eltern=p=>{
+ if(ELTERN_OK)p.ok=true;
  if(!p.ok){p.v=p.v||'';return hdr('👩‍👦 Eltern-Bereich','#64748b')+`<p class="center mut">Eltern-PIN eingeben</p><div class="dots">${[0,1,2,3].map(i=>`<i class="${i<p.v.length?'f':''}"></i>`).join('')}</div>${p.err?`<p class="center" style="color:var(--bad)">${p.err}</p>`:''}<div class="pinpad">${[1,2,3,4,5,6,7,8,9,'⌫',0,''].map(k=>`<button onclick="epin('${k}')">${k}</button>`).join('')}</div>${S.set.ppin==='0000'?'<p class="center small mut">Standard-PIN: 0000 – bitte danach ändern.</p>':''}`}
  const rows=SUBJECTS.map(s=>{const ts=topicsOf(s.id);let r=0,w=0;ts.forEach(t=>{r+=S.tp[t.id]?.r||0;w+=S.tp[t.id]?.w||0});const sc=ts.map(t=>topicScore(t.id)).filter(x=>x!=null);return `<tr><td>${s.icon} ${s.name}</td><td>${r+w}</td><td>${r+w?Math.round(r/(r+w)*100)+' %':'–'}</td><td>${sc.length}/${ts.length}</td></tr>`}).join('');
  const days=Array.from({length:14},(_,i)=>today(i-13));const mx=Math.max(30,...days.map(d=>S.days[d]||0));
  const weak=allTopics().filter(t=>topicScore(t.id)!=null).sort((a,b)=>topicScore(a.id)-topicScore(b.id)).slice(0,5);
  const k=S.set.keys;
  return hdr('👩‍👦 Eltern-Bereich','#64748b')+`
+ <button class="btn" onclick="go('abfrage',{})">🗣️ Henry abfragen</button>
  <div class="sec">Aktivität (14 Tage, XP pro Tag)</div><div style="display:flex;gap:4px;align-items:flex-end;height:80px;background:var(--card);border-radius:14px;padding:10px">${days.map(d=>`<div title="${d}: ${S.days[d]||0} XP" style="flex:1;background:${(S.days[d]||0)>=S.set.goal?'#22c55e':'#38bdf8'};opacity:${S.days[d]?1:.15};height:${Math.max(4,(S.days[d]||0)/mx*100)}%;border-radius:4px"></div>`).join('')}</div>
  <p class="small mut">Serie: ${streak()} Tage · Gesamt: ${S.xp} XP · Level ${lvl().l}</p>
  <div class="sec">Fächer</div><table class="st"><tr><th>Fach</th><th>Aufg.</th><th>richtig</th><th>Themen</th></tr>${rows}</table>
@@ -1034,7 +1037,7 @@ VIEWS.eltern=p=>{
  <button class="btn ${p.rs?'no':'sec2'}" onclick="resetAll()">${p.rs?'Wirklich ALLES zurücksetzen?':'Fortschritt zurücksetzen'}</button>
  <p class="small mut center" style="margin-top:20px">Inhalte orientiert am Fachlehrplan Gymnasium Sachsen-Anhalt (Schuljahrgänge 5/6).</p>`;
 };
-function epin(k){setTimeout(loadCron,50);const p=view.p;p.err='';if(k==='⌫')p.v=p.v.slice(0,-1);else if(k!==''&&p.v.length<4)p.v+=k;if(p.v.length===4){if(p.v===S.set.ppin)p.ok=true;else{p.err='Falsche PIN';p.v=''}}render()}
+function epin(k){setTimeout(loadCron,50);const p=view.p;p.err='';if(k==='⌫')p.v=p.v.slice(0,-1);else if(k!==''&&p.v.length<4)p.v+=k;if(p.v.length===4){if(p.v===S.set.ppin){p.ok=true;ELTERN_OK=true}else{p.err='Falsche PIN';p.v=''}}render()}
 function exportData(){const b=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lernbasis-sicherung-'+today()+'.json';document.body.appendChild(a);a.click();a.remove()}
 function importData(f){if(!f)return;const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(!j||typeof j.xp!=='number')throw 0;S=fix(j);save();toast('Sicherung geladen ✓');render()}catch(e){toast('Datei konnte nicht gelesen werden.')}};r.readAsText(f)}
 function resetAll(){const p=view.p;if(!p.rs){p.rs=true;render();return}const keep={name:S.name,set:S.set,custom:S.custom};S=fix(keep);save();toast('Zurückgesetzt');go('home',{},true)}
@@ -1121,6 +1124,51 @@ async function pushEnable(){
   lsSet('lb_push','1');toast('🔔 Erinnerung ist eingeschaltet');render();
  }catch(e){toast('Das hat nicht geklappt. Ist die App installiert und online?')}}
 async function pushTest(){try{const j=await api('testpush',{pin:SYNC.pin});toast(j.ok?`Gesendet an ${j.n} ${j.n===1?'Gerät':'Geräte'}`:'Fehler: '+(j.err||'unbekannt'))}catch(e){toast('Keine Verbindung')}}
+
+/* ===== Abfrage-Modus für Eltern (mündlich abfragen) ===== */
+let ELTERN_OK=false;
+VIEWS.abfrage=p=>{
+ if(!ELTERN_OK)return VIEWS.eltern({});
+ if(p.run)return abfrageRun(p);
+ p.s=p.s||'de';const ts=topicsOf(p.s).filter(t=>(t.cards||[]).length||(t.tasks||[]).length||t.gen||(t.th||[]).length);
+ if(!p.sel||p.selS!==p.s){p.sel=[];p.selS=p.s}p.n=p.n||15;p.opt=p.opt??false;
+ return hdr('🗣️ Abfragen','#64748b')+`<p class="small mut">Du siehst Frage und Lösung, Henry antwortet mündlich. Was er nicht weiß, kommt in seine Liste „Fehler wiederholen“.</p>
+ <div class="sec">Fach</div><div class="chips">${SUBJECTS.filter(s=>topicsOf(s.id).length).map(s=>`<button class="chip ${p.s===s.id?'on':''}" onclick="view.p.s='${s.id}';render()">${s.icon} ${s.name}</button>`).join('')}</div>
+ <div class="sec">Themen</div><div class="list">${ts.map(t=>`<label class="cb"><input type="checkbox" ${p.sel.includes(t.id)?'checked':''} onchange="abTog('${t.id}')"><span>${esc(t.title)}<br><small class="mut">${topicScore(t.id)==null?'noch nicht geübt':'Sicherheit '+topicScore(t.id)+' %'}</small></span></label>`).join('')}</div>
+ <div class="sec">Anzahl Fragen</div><div class="chips">${[10,15,20,30].map(n=>`<button class="chip ${p.n===n?'on':''}" onclick="view.p.n=${n};render()">${n}</button>`).join('')}</div>
+ <div class="sec">Antwortmöglichkeiten</div><div class="chips"><button class="chip ${!p.opt?'on':''}" onclick="view.p.opt=false;render()">frei antworten</button><button class="chip ${p.opt?'on':''}" onclick="view.p.opt=true;render()">vorlesen lassen (A, B, C, D)</button></div>
+ <button class="btn" ${p.sel.length?'':'disabled'} onclick="abStart()">Abfrage starten</button>`;
+};
+function abTog(id){const p=view.p;p.sel=p.sel.includes(id)?p.sel.filter(x=>x!==id):[...p.sel,id];render()}
+function abStart(){const p=view.p;const ts=p.sel.map(topic).filter(Boolean);const per=Math.ceil(p.n/ts.length);let qs=[];
+ ts.forEach(t=>{const cards=shuffle(cardsOf(t)).map(c=>({q:esc(c.f),ans:esc(c.b.split('|').join(' / ')),tid:t.id,card:c}));
+  const tasks=tasksFor(t,per).map(x=>({q:x.q,ans:esc(showAns(x)),ex:x.ex,opts:x.t==='m'?shuffle(x.a):null,tid:t.id,task:x}));
+  const nC=Math.min(cards.length,Math.round(per/2));qs.push(...shuffle(cards.slice(0,nC).concat(tasks.slice(0,per-nC))))});
+ const seen=new Set();qs=shuffle(qs).filter(q=>{const k=q.q+q.ans;if(seen.has(k))return false;seen.add(k);return true}).slice(0,p.n);
+ const sb=subj(ts[0].s);Object.assign(p,{run:true,qs,i:0,res:[],show:false,title:ts.length===1?ts[0].title:sb.name});render()}
+function abfrageRun(p){
+ if(p.i>=p.qs.length)return abfrageEnd(p);
+ const q=p.qs[p.i];
+ return hdr('🗣️ '+esc(p.title),'#64748b',`<span class="pill">${p.i+1}/${p.qs.length}</span>`)+`<div class="prog"><i style="width:${p.i/p.qs.length*100}%"></i></div>
+ ${topic(q.tid)&&topic(q.tid).text?`<details class="text"><summary>Lesetext (Henry darf ihn ansehen)</summary>${topic(q.tid).text}</details>`:''}<div class="q"><span class="k">${q.card?'Karteikarte – was weißt du dazu?':'Frage an Henry'}</span>${q.q}${p.opt&&q.opts?`<div class="small" style="margin-top:10px;line-height:1.7">${q.opts.map((o,j)=>`<b>${'ABCD'[j]})</b> ${o}`).join('<br>')}</div>`:''}</div>
+ ${p.show?`<div class="fb ok" style="background:#38bdf81a;border-color:#38bdf866"><b>Lösung: ${q.ans}</b>${q.ex?`<div class="small">${q.ex}</div>`:''}</div>`:`<button class="btn sec2" onclick="view.p.show=true;render()">👁 Lösung anzeigen</button>`}
+ <div class="row2" style="margin-top:6px"><button class="btn no" onclick="abRate(false)">✗ nicht gewusst</button><button class="btn ok" onclick="abRate(true)">✓ gewusst</button></div>
+ <button class="btn sec2" onclick="abRate(null)">Überspringen</button>`;
+}
+function abRate(ok){const p=view.p,q=p.qs[p.i];p.res[p.i]=ok;
+ if(ok!==null){const st=S.tp[q.tid]||(S.tp[q.tid]={});
+  if(q.task){const k=tkey(q.task);if(ok){st.r=(st.r||0)+1;S.done[k]=Date.now();delete S.miss[k]}else{st.w=(st.w||0)+1;S.miss[k]={...q.task,_o:undefined}}}
+  if(q.card){const s=S.cards[q.card.key]||{b:0};if(ok){s.b=Math.min(5,(s.b||0)+1);s.d=today(INT[s.b])}else{s.b=1;s.d=today()}S.cards[q.card.key]=s;if(ok)st.r=(st.r||0)+1;else st.w=(st.w||0)+1}}
+ p.i++;p.show=false;render();scrollTo(0,0)}
+function abfrageEnd(p){
+ const rated=p.res.filter(x=>x!==null),r=rated.filter(Boolean).length,n=rated.length,pct=n?Math.round(r/n*100):0,g=grade(pct);
+ if(!p.saved&&n){p.saved=true;S.tests.push({d:today(),title:'Abfrage: '+p.title,s:subj(topic(p.qs[0].tid).s).id,n,r,g,sec:0});addXP(r*5);
+  [...new Set(p.qs.map(q=>q.tid))].forEach(id=>{const idx=p.qs.map((q,j)=>q.tid===id&&p.res[j]!==null?j:-1).filter(j=>j>=0);if(!idx.length)return;const pc=Math.round(idx.filter(j=>p.res[j]).length/idx.length*100);const st=S.tp[id]||(S.tp[id]={});st.sc=st.sc==null?pc:Math.round(st.sc*.5+pc*.5)});save()}
+ const wrong=p.qs.filter((_,j)=>p.res[j]===false);
+ return hdr('🗣️ Auswertung','#64748b')+`<p class="center mut" style="margin:0">${esc(p.title)}</p><div class="note">${n?g:'–'}</div><p class="center"><b>${r} von ${n} gewusst (${pct} %)</b><br><span class="small mut">Henry bekommt +${r*5} XP und Münzen</span></p>
+ ${wrong.length?`<div class="sec">Nicht gewusst – zum Nachlernen</div>${wrong.map(q=>`<div class="rev no"><div>${q.q}</div><div class="small" style="margin-top:4px">Lösung: <b>${q.ans}</b></div></div>`).join('')}<p class="small mut">Henry übt diese Fragen jetzt unter „Trainieren → Fehler wiederholen“ und als fällige Karteikarten unter „Merken“.</p>`:'<p class="center">🏆 Alles gewusst!</p>'}
+ <button class="btn" onclick="go('abfrage',{s:'${subj(topic(p.qs[0].tid).s).id}'},true)">Neue Abfrage</button><button class="btn sec2" onclick="go('eltern',{ok:true},true)">Zum Eltern-Bereich</button>`;
+}
 
 /* ---------- Installieren ---------- */
 let INSTALL=null;
