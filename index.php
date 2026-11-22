@@ -113,6 +113,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-22", "Echte Konzentrationstests", "14 neue Aufmerksamkeits-Blätter in allen Stufen: Würfel-Test, Pauli-Test, Revisionstest, Kopfrechnen unter Belastung, Stroop, Stopp-Test, zwei Regeln gleichzeitig, Rückblick-Test, Zeichen-Suche, Korrektur lesen u. v. m. – ab Klasse 5 mit Takt und Auswertung, Zufallsmix nur noch mit echten Konzentrationstests.", "lrs.php"],
     ["2026-11-20", "Deutsch-Werkzeugkasten", "Alle Arbeitsblätter zu den Rechtschreibstrategien an einem Ort, sortiert nach Werkzeug: Mitsprechen, Schwingen, Kurz/lang, Verlängern, Ableiten, Groß/klein, Ersatzprobe, Merkwörter, Komma – ein Tipp und die Blätter sind da.", "lrs.php#werkzeug"],
     ["2026-11-20", "Rechtschreib-Werkstatt jetzt bis Klasse 8", "Neue Lehrgangs-Stufen 18–25 (Nominalisierung, ent-/end-, wieder/wider, seit/seid, Zeitangaben, Komma, Fremdwörter, höfliche Anrede) und Grundwortschatz Kl. 5/6 und 7/8 (häufige Fehlerwörter, Fremdwörter, Beruf, Argumentieren, -nis, -ung/-heit/-keit). Ab Klasse 5 automatisch sachlicher gestaltet.", "lrs.php"],
     ["2026-11-20", "Rechtschreib-Werkstatt ab Klasse 3", "Lehrgang in 17 Stufen (Mitsprechen, Silben, Nomen groß, Verlängern, Ableiten, doppelte Mitlaute, ck/tz, ie, Dehnungs-h, s/ss/ß … bis das/dass) und Grundwortschatz Kl. 3/4 in 18 Paketen – je 9 kindgerechte Blätter bis zur Lernkontrolle „Kann ich's?“. Im Generator unter Symptomtraining und in der Stundenplanung.", "lrs.php"],

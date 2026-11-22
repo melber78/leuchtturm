@@ -959,6 +959,44 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .std-akte .btn{ margin-top:0; }
 /* ---------- Aufmerksamkeit: Bilder-Blätter ---------- */
 .lt-bild{ display:inline-block; vertical-align:middle; flex:none; object-fit:contain; }
+/* Konzentrationstests (ax_) */
+.ax-w{ display:inline-grid; grid-template-columns:repeat(3, 1fr); grid-template-rows:repeat(3, 1fr); border:1.6px solid #2C3E55; border-radius:5px; padding:2px; box-sizing:border-box; flex:none; }
+.ax-w i{ border-radius:50%; background:#1E2A36; align-self:center; justify-self:center; }
+.ax-pauli{ display:grid; column-gap:2px; row-gap:0; align-items:center; }
+.ax-pz{ font-size:24px; font-weight:700; text-align:center; min-width:16px; }
+.ax-pk{ width:22px; height:24px; border:1.5px solid #8FA3B8; border-radius:4px; font-size:16px; display:flex; align-items:center; justify-content:center; margin-top:-2px; }
+.ax-op{ font-size:24px; font-weight:800; color:#1D5FA8; width:20px; }
+.ax-rev{ font-size:20px; font-weight:600; white-space:nowrap; padding:2px 4px; }
+.ax-karten{ display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
+.ax-klt{ display:flex; align-items:center; gap:8px; border:2px solid #E1E8EF; border-radius:12px; padding:6px 10px; font-size:21px; font-weight:600; justify-content:space-between; }
+.ax-klt > div{ display:flex; flex-direction:column; gap:2px; flex:1; }
+.ax-klt > div > div:first-child{ border-bottom:1.5px dashed #C9D6E3; }
+.ax-stroop{ font-weight:900; font-size:19px; letter-spacing:.5px; padding:1px 2px; }
+.ax-stroop-tafel{ display:grid; grid-template-columns:repeat(5, 1fr); gap:6px 10px; text-align:center; border:2px solid #E1E8EF; border-radius:12px; padding:8px; }
+.ax-stroop-tafel .ax-stroop{ font-size:22px; }
+.ax-paar{ font-size:21px; font-weight:700; font-family:monospace; padding:1px 3px; }
+.ax-nb{ font-size:24px; font-weight:700; font-family:monospace; min-width:18px; text-align:center; }
+.ax-sym{ display:inline-block; font-weight:800; font-family:Arial, sans-serif; line-height:1; width:1.05em; text-align:center; }
+.ax-ziele{ display:inline-flex; gap:6px; background:#EEF2F7; border-radius:8px; padding:4px 8px; flex:none; }
+.ax-trenn{ width:2px; align-self:stretch; background:#2C4A6E; flex:none; }
+.ax-such{ display:inline-flex; gap:12px; flex:1; justify-content:space-around; }
+.ax-jn{ display:inline-flex; gap:10px; font-size:15px; flex:none; } .ax-jn > span{ display:inline-flex; align-items:center; gap:4px; }
+.ax-anw{ display:flex; flex-direction:column; gap:18px; align-items:center; }
+.ax-feld{ display:grid; gap:0; flex:none; }
+.ax-feld > div{ border:1.5px solid #8FA3B8; margin:-0.75px; display:flex; align-items:center; justify-content:center; background:#fff; }
+.ax-kopf{ font-size:13px; color:#4A5866; display:flex; align-items:center; justify-content:center; font-weight:700; }
+.ax-fz{ font-size:28px; font-weight:700; }
+.ax-liste{ margin:0; padding-left:26px; font-size:18px; line-height:1.5; columns:2; column-gap:28px; width:100%; }
+.ax-liste li{ break-inside:avoid; }
+.ax-liste li{ margin-bottom:6px; }
+.ax-antw{ display:inline-flex; min-width:54px; height:28px; border-bottom:2px solid #1E2A36; align-items:center; justify-content:center; vertical-align:bottom; }
+.ax-satz{ font-size:20px; line-height:1.6; text-align:left; }
+.ax-pf{ font-size:28px; font-weight:700; line-height:1; font-family:Arial, sans-serif; }
+.ax-malen{ display:grid; margin:0 auto; border:2.5px solid #2C4A6E; }
+.ax-malen > div{ border:1px solid #9FB1C3; display:flex; align-items:center; justify-content:center; font-weight:700; text-align:center; line-height:1.1; }
+.ax-prot{ font-size:15px; gap:16px; }
+.ax-ziel{ display:block; text-align:center; line-height:1.45; }
+.ax-ziel .ax-w, .ax-ziel .fs-form{ vertical-align:middle; }
 .au-x{ position:relative; display:inline-flex; align-items:center; justify-content:center; }
 .au-xm{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:40px; line-height:1; }
 .au-zwei{ display:flex; flex-direction:column; gap:4px; flex:none; } .au-zwei > span{ display:flex; align-items:center; gap:4px; }
@@ -6103,8 +6141,7 @@ function fs_d2Zeichen(buchstabe, oben, unten){
 }
 
 function fsB_d2(ctx){
-    const st = Math.min(2, fs_st(ctx));
-    const pro = [12, 14, 16][st];
+    const pro = au_w(ax_n(ctx), [12, 12, 13, 14, 15, 16, 17, 18]);
     const zeile = i => {
         let html = "", treffer = 0;
         for (let k = 0; k < pro; k++){
@@ -6892,9 +6929,452 @@ function au_auftragsfilter(ctx){
     const regel = streng ? 'Markiere nur Aufträge mit Status FREI, gerader Kennzahl und einem Ort, der mit einem Vokal beginnt. Sortiere die markierten Kennzahlen anschließend von klein nach groß.' : 'Markiere nur Aufträge mit Status FREI und einem Ort, der mit einem Vokal beginnt. Zähle die markierten Aufträge.';
     return { titel: 'Auftragsfilter: mehrere Merkmale prüfen', html: `${ws_aufgabe(1, regel)}<table class='rs-tabelle'><thead><tr><th>Code</th><th>Uhrzeit</th><th>Status</th><th>Kennzahl</th><th>Ort</th><th>Auswahl</th></tr></thead><tbody>${zeilen.map(x => `<tr><td>${x.code}</td><td>${x.zeit}</td><td>${x.status}</td><td>${x.zahl}</td><td>${x.ort}</td><td>_____</td></tr>`).join('')}</tbody></table><p>${streng ? 'Kennzahlen sortiert: ______________________________________________' : 'Anzahl markierter Aufträge: ______'}</p>` };
 }
+
+/* ===============================================================
+   Aufmerksamkeit: echte Konzentrationstests (Tempo + Genauigkeit,
+   Hemmung, geteilte Aufmerksamkeit, Arbeitsgedächtnis) – für alle
+   Klassenstufen, bei den Großen deutlich anspruchsvoller.
+   =============================================================== */
+function ax_n(ctx){ return Math.min(7, au_niveau(ctx) + (fs_profi(ctx) ? 1 : 0)); }
+function ax_xs(html, gr = 26){ return `<span class="au-x">${html}<span class="fs-loes au-xm" style="font-size:${gr}px;">✗</span></span>`; }
+function ax_takt(n){ return au_w(n, [30, 25, 20, 20, 15, 15, 12, 10]); }
+function ax_protokoll(n, mitTakt = true){
+    return `<div class="fs-zeit ax-prot">${mitTakt ? `<span>Takt: alle <b>${ax_takt(n)} Sek.</b> nächste Reihe</span>` : ""}<span>bearbeitet:<span class="fs-l"></span></span><span>Fehler:<span class="fs-l"></span></span><span>Leistung:<span class="fs-l"></span></span></div>`;
+}
+const AX_TAKT_TEXT = "Auf das Signal „Weiter!“ springst du sofort in die nächste Reihe – auch wenn du noch nicht fertig bist. Arbeite so schnell du kannst, aber ohne Fehler.";
+function ax_auswahl(n, stufen){ return zufallsElement(stufen.filter(s => n >= s[0]).map(s => s[1])); }
+
+/* Würfel-Test (Bourdon) */
+const AX_AUGEN = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
+function ax_wuerfel(z, gr = 30){
+    const p = Math.max(4, Math.round(gr / 5.5));
+    return `<span class="ax-w" style="width:${gr}px; height:${gr}px;">${[...Array(9).keys()].map(k => AX_AUGEN[z].includes(k) ? `<i style="width:${p}px; height:${p}px;"></i>` : "<b></b>").join("")}</span>`;
+}
+function ax_wuerfelTest(ctx){
+    const n = ax_n(ctx), pro = au_w(n, [10, 12, 13, 14, 15, 16, 17, 18]), gr = au_w(n, [36, 34, 32, 30, 28, 27, 26, 25]);
+    const modus = ax_auswahl(n, [[0, "vier"], [2, "zwei"], [4, "nach2"], [4, "plus1"], [5, "summe7"], [6, "gleich"]]);
+    const R = {
+        vier: ["Streiche jeden Würfel mit <b>4</b> Augen durch.", ax_wuerfel(4, 34), (z, k) => z[k] === 4],
+        zwei: ["Streiche jeden Würfel mit <b>4</b> oder <b>6</b> Augen durch. Die 5 bleibt stehen!", ax_wuerfel(4, 34) + ax_wuerfel(6, 34), (z, k) => z[k] === 4 || z[k] === 6],
+        nach2: ["Streiche jede <b>4</b> durch, die <b>direkt nach einer 2</b> steht.", ax_wuerfel(2, 34) + ax_xs(ax_wuerfel(4, 34), 34), (z, k) => k > 0 && z[k] === 4 && z[k - 1] === 2],
+        plus1: ["Streiche jeden Würfel durch, der <b>genau ein Auge mehr</b> hat als sein linker Nachbar.", ax_wuerfel(3, 34) + ax_xs(ax_wuerfel(4, 34), 34), (z, k) => k > 0 && z[k] === z[k - 1] + 1],
+        summe7: ["Streiche jeden Würfel durch, der mit seinem linken Nachbarn zusammen <b>7</b> ergibt.", ax_wuerfel(5, 34) + ax_xs(ax_wuerfel(2, 34), 34), (z, k) => k > 0 && z[k] + z[k - 1] === 7],
+        gleich: ["Streiche jeden Würfel durch, der <b>genauso viele Augen</b> hat wie der Würfel <b>zwei Plätze vorher</b>.", ax_wuerfel(3, 34) + ax_wuerfel(5, 34) + ax_xs(ax_wuerfel(3, 34), 34), (z, k) => k > 1 && z[k] === z[k - 2]],
+    }[modus];
+    const zeile = i => {
+        const z = [...Array(pro)].map(() => zufallsZahl(1, 6));
+        for (let k = 1; k < pro; k++) if (Math.random() < 0.16){
+            if (modus === "nach2"){ z[k - 1] = 2; z[k] = 4; }
+            if (modus === "plus1"){ z[k] = Math.min(6, z[k - 1] + 1); }
+            if (modus === "summe7"){ z[k] = 7 - z[k - 1]; }
+            if (modus === "gleich" && k > 1){ z[k] = z[k - 2]; }
+        }
+        let t = 0;
+        const html = z.map((v, k) => { if (R[2](z, k)){ t++; return ax_xs(ax_wuerfel(v, gr), gr); } return ax_wuerfel(v, gr); }).join("");
+        return fs_zaehlreihe(i, html, t);
+    };
+    return { titel: "Würfel-Test", zeile, html: `
+        <div class="fs-ziel ax-ziel"><span>${R[0]}</span><span style="display:inline-flex; gap:4px;">${R[1]}</span></div>
+        ${ws_aufgabe(1, `Arbeite Reihe für Reihe von links nach rechts. Schreibe am Ende jeder Reihe auf, wie viele du durchgestrichen hast. ${n >= 3 ? AX_TAKT_TEXT : ""}`)}
+        ${n >= 3 ? ax_protokoll(n) : ""}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Pauli-Test: fortlaufend rechnen */
+function ax_pauli(ctx){
+    const n = ax_n(ctx), pro = au_w(n, [7, 8, 9, 10, 11, 12, 13, 13]);
+    const modus = n <= 1 ? "plusvoll" : n <= 4 ? "plus" : n <= 5 ? "wechsel" : ax_auswahl(n, [[6, "wechsel"], [6, "regel"]]);
+    const max = n <= 1 ? 5 : 9;
+    const text = {
+        plusvoll: "Rechne immer zwei Nachbarn zusammen und schreibe das Ergebnis in das Kästchen darunter.",
+        plus: "Rechne immer zwei Nachbarn zusammen. Schreibe nur die <b>Einer</b> des Ergebnisses ins Kästchen (7 + 8 = 15 → <b>5</b>).",
+        wechsel: "Reihen mit <b>+</b>: Nachbarn addieren, nur die Einer aufschreiben. Reihen mit <b>−</b>: die kleinere von der größeren Zahl abziehen.",
+        regel: "Ist die <b>linke</b> Zahl <b>gerade</b>, addierst du (nur die Einer aufschreiben). Ist sie <b>ungerade</b>, ziehst du die kleinere von der größeren ab.",
+    }[modus];
+    const zeile = i => {
+        const z = [...Array(pro)].map(() => zufallsZahl(1, max));
+        const minus = modus === "wechsel" && i % 2 === 1;
+        const erg = k => {
+            const a = z[k], b = z[k + 1];
+            if (modus === "plusvoll") return a + b;
+            if (minus || (modus === "regel" && a % 2)) return Math.abs(a - b);
+            return (a + b) % 10;
+        };
+        const zellen = z.map((v, k) => `<span class="ax-pz" style="grid-column:${2 * k + 1}; grid-row:1;">${v}</span>` + (k < pro - 1 ? `<span class="ax-pk" style="grid-column:${2 * k + 2}; grid-row:2;">${L(erg(k))}</span>` : "")).join("");
+        const zeichen = modus === "wechsel" ? `<span class="ax-op">${minus ? "−" : "+"}</span>` : "";
+        return `<div class="fs-reihe"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-reihe-inhalt" style="justify-content:flex-start; gap:8px;">${zeichen}<div class="ax-pauli" style="grid-template-columns:repeat(${2 * pro - 1}, auto);">${zellen}</div></div></div>`;
+    };
+    return { titel: n <= 1 ? "Rechen-Kette" : "Pauli-Test: fortlaufend rechnen", zeile, html: `
+        <div class="fs-ziel ax-ziel">${text}</div>
+        ${ws_aufgabe(1, `Arbeite Reihe für Reihe. ${n >= 2 ? AX_TAKT_TEXT : "Rechne ganz genau."}`)}
+        ${n >= 2 ? ax_protokoll(n) : ""}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Revisionstest: Rechnungen prüfen */
+function ax_revision(ctx){
+    const n = ax_n(ctx), proReihe = au_w(n, [3, 3, 3, 3, 3, 3, 3, 3]);
+    const aufgabe = () => {
+        let a, b, c, t, e;
+        if (n <= 1){ a = zufallsZahl(1, 5); b = zufallsZahl(1, 5); e = a + b; t = `${a} + ${b}`; }
+        else if (n <= 2){ a = zufallsZahl(2, 9); b = zufallsZahl(2, 9); e = a + b; t = `${a} + ${b}`; }
+        else if (n <= 3){ a = zufallsZahl(11, 49); b = zufallsZahl(2, 9); e = a + b; t = `${a} + ${b}`; }
+        else if (n <= 4){ a = zufallsZahl(2, 9); b = zufallsZahl(2, 9); c = zufallsZahl(2, 9); e = a + b + c; t = `${a} + ${b} + ${c}`; }
+        else if (n <= 5){ a = zufallsZahl(12, 69); b = zufallsZahl(12, 29); if (Math.random() < 0.5){ e = a + b; t = `${a} + ${b}`; } else { if (b > a) [a, b] = [b, a]; e = a - b; t = `${a} − ${b}`; } }
+        else { a = zufallsZahl(3, 9); b = zufallsZahl(3, 9); c = zufallsZahl(2, 19); if (Math.random() < 0.5){ e = a * b + c; t = `${a} · ${b} + ${c}`; } else { e = a * b - c; if (e < 0){ e = a * b + c; t = `${a} · ${b} + ${c}`; } else t = `${a} · ${b} − ${c}`; } }
+        const falsch = Math.random() < 0.35;
+        let zeig = e;
+        if (falsch){
+            const art = e >= 13 && n >= 3 ? zufallsElement(["eins", "zehn", "dreh"]) : "eins";
+            if (art === "eins") zeig = e + zufallsElement([-1, 1, n >= 4 ? 2 : 1]);
+            if (art === "zehn") zeig = e + zufallsElement([-10, 10]);
+            if (art === "dreh"){ const s = String(e); zeig = s.length === 2 && s[0] !== s[1] ? +(s[1] + s[0]) : e + 1; }
+            if (zeig < 0 || zeig === e) zeig = e + 1;
+        }
+        return { t, zeig, falsch };
+    };
+    const zeile = i => {
+        let f = 0;
+        const html = [...Array(proReihe)].map(() => { const x = aufgabe(); if (x.falsch) f++; const inner = `<span class="ax-rev">${x.t} = ${x.zeig}</span>`; return x.falsch ? ax_xs(inner, 34) : inner; }).join("");
+        return fs_zaehlreihe(i, html, f);
+    };
+    return { titel: "Rechnungen prüfen (Revisionstest)", zeile, html: `
+        <div class="fs-ziel ax-ziel">Prüfe jede Rechnung. Ist das Ergebnis <b>falsch</b>, streiche die Rechnung durch. Richtige bleiben stehen.</div>
+        ${ws_aufgabe(1, `Schreibe am Ende jeder Reihe auf, wie viele falsche Rechnungen du gefunden hast. ${n >= 3 ? AX_TAKT_TEXT : ""}`)}
+        ${n >= 3 ? ax_protokoll(n) : ""}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Konzentrations-Belastungs-Test: rechnen, merken, vergleichen */
+function ax_klt(ctx){
+    const n = ax_n(ctx);
+    const teile = n <= 4 ? 2 : 3, proReihe = 3;
+    const zeileRechnen = () => {
+        for (let v = 0; v < 50; v++){
+            const z = [...Array(teile)].map(() => zufallsZahl(2, 9)), ops = [...Array(teile - 1)].map(() => Math.random() < (n <= 4 ? 0.6 : 0.5) ? "+" : "−");
+            let e = z[0]; ops.forEach((o, k) => e = o === "+" ? e + z[k + 1] : e - z[k + 1]);
+            if (e >= 1 && e <= 25) return { t: z.map((x, k) => (k ? ` ${ops[k - 1]} ` : "") + x).join(""), e };
+        }
+        return { t: "4 + 3", e: 7 };
+    };
+    const regel = n >= 6
+        ? "Rechne beide Zeilen im Kopf. Ist das <b>obere</b> Ergebnis <b>größer</b>, ziehe das untere davon ab. Ist es <b>kleiner</b>, addiere beide. Sind beide <b>gleich</b>, schreibe 0."
+        : n >= 4 ? "Rechne beide Zeilen im Kopf und merke dir die Ergebnisse. Ziehe dann das kleinere vom größeren Ergebnis ab."
+        : "Rechne beide Zeilen im Kopf und merke dir die Ergebnisse. Zähle dann beide Ergebnisse zusammen.";
+    const ende = (a, b) => n >= 6 ? (a > b ? a - b : a < b ? a + b : 0) : n >= 4 ? Math.abs(a - b) : a + b;
+    const zeile = i => `<div class="ax-karten">${[...Array(proReihe)].map((_, k) => {
+        const o = zeileRechnen(), u = zeileRechnen();
+        return `<div class="ax-klt"><span class="fs-reihe-nr">${i * proReihe + k + 1}</span><div><div>${o.t}</div><div>${u.t}</div></div><span class="fs-zaehl au-klein" style="width:46px;">${L(ende(o.e, u.e))}</span></div>`;
+    }).join("")}</div>`;
+    return { titel: "Kopfrechnen unter Belastung", zeile, html: `
+        <div class="fs-ziel ax-ziel">${regel}</div>
+        ${ws_aufgabe(1, "Schreibe <b>nur das Endergebnis</b> ins Kästchen – keine Zwischenergebnisse, keine Notizen! Das trainiert, Dinge im Kopf zu behalten und trotzdem weiterzuarbeiten.")}
+        ${ax_protokoll(n, false)}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Farbe-Wort-Test (Stroop) */
+const AX_FARBEN = [{ w: "ROT", c: "#D02A2A" }, { w: "BLAU", c: "#1F5FC4" }, { w: "GRÜN", c: "#238A3E" }, { w: "GELB", c: "#D9A400" }];
+function ax_stroop(ctx){
+    const n = ax_n(ctx), pro = au_w(n, [5, 6, 6, 7, 7, 8, 8, 8]);
+    const modus = n >= 6 ? zufallsElement(["passt", "rot", "nachbar"]) : n >= 3 ? zufallsElement(["passt", "rot"]) : "passt";
+    const rotZiel = zufallsElement(AX_FARBEN);
+    const text = {
+        passt: "Kreise jedes Wort ein, bei dem <b>Wort und Schriftfarbe zusammenpassen</b> (z. B. <b style='color:#1F5FC4'>BLAU</b> in Blau).",
+        rot: `Streiche jedes Wort durch, das in <b style="color:${rotZiel.c}">dieser Farbe</b> geschrieben ist – egal, was dasteht.`,
+        nachbar: "Kreise jedes Wort ein, dessen <b>Schriftfarbe</b> zur <b>Bedeutung des Wortes links daneben</b> passt (Beispiel: <b style='color:#238A3E'>ROT</b> <b style='color:#D02A2A'>BLAU</b> → das zweite Wort ist rot geschrieben, links steht ROT → einkreisen).",
+    }[modus];
+    const zeile = i => {
+        const w = [...Array(pro)].map(() => { const a = zufallsElement(AX_FARBEN); let b = zufallsElement(AX_FARBEN); if (modus === "passt" && Math.random() < 0.25) b = a; return { a, b }; });
+        let t = 0;
+        const html = w.map((x, k) => {
+            const inner = `<span class="ax-stroop" style="color:${x.b.c};">${x.a.w}</span>`;
+            const treffer = modus === "passt" ? x.a === x.b : modus === "rot" ? x.b === rotZiel : (k > 0 && w[k - 1].a === x.b);
+            if (treffer){ t++; return modus === "rot" ? ax_xs(inner, 30) : LM(inner); }
+            return inner;
+        }).join("");
+        return fs_zaehlreihe(i, html, t);
+    };
+    const tafel = mische([...Array(20)].map(() => { const a = zufallsElement(AX_FARBEN); let b; do b = zufallsElement(AX_FARBEN); while (b === a); return { a, b }; }));
+    return { titel: "Farbe oder Wort? (Stroop)", zeile, html: `
+        ${ws_aufgabe(1, "Aufwärmen: Sage so schnell wie möglich laut die <b>Schriftfarbe</b> – nicht das Wort! Miss die Zeit.")}
+        <div class="ax-stroop-tafel">${tafel.map(x => `<span class="ax-stroop" style="color:${x.b.c};">${x.a.w}</span>`).join("")}</div>
+        <div class="fs-zeit"><span>Zeit:<span class="fs-l"></span>Sek.</span><span>Versprecher:<span class="fs-l"></span></span></div>
+        <div class="fs-ziel ax-ziel">${text}</div>
+        ${ws_aufgabe(2, "Arbeite Reihe für Reihe und schreibe die Anzahl ins Kästchen.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Stopp-Test: alles durchstreichen – außer … (Hemmung) */
+function ax_hemmung(ctx){
+    const n = ax_n(ctx), pro = au_w(n, [12, 14, 16, 18, 20, 22, 24, 26]);
+    const a = zufallsZahl(1, 9); let b; do b = zufallsZahl(1, 9); while (b === a);
+    const modus = n <= 2 ? "eins" : n <= 4 ? "zwei" : ax_auswahl(n, [[5, "zwei"], [5, "nach"], [6, "nachbar"]]);
+    const text = {
+        eins: `Streiche <b>jede</b> Zahl durch – <b>nur die ${a} nicht!</b> Die ${a} kreist du ein.`,
+        zwei: `Streiche <b>jede</b> Zahl durch – <b>außer ${a} und ${b}</b>. Diese kreist du ein.`,
+        nach: `Streiche <b>jede</b> Zahl durch – <b>außer</b> der Zahl, die <b>direkt nach einer ${a}</b> steht. Diese kreist du ein.`,
+        nachbar: `Streiche <b>jede</b> Zahl durch – <b>außer</b> Zahlen, die <b>genauso groß</b> sind wie ihr linker Nachbar. Diese kreist du ein.`,
+    }[modus];
+    const behalten = (z, k) => modus === "eins" ? z[k] === a : modus === "zwei" ? (z[k] === a || z[k] === b) : modus === "nach" ? (k > 0 && z[k - 1] === a) : (k > 0 && z[k] === z[k - 1]);
+    const zeile = i => {
+        const z = [...Array(pro)].map(() => zufallsZahl(1, 9));
+        if (modus === "nachbar") for (let k = 1; k < pro; k++) if (Math.random() < 0.15) z[k] = z[k - 1];
+        if (modus === "nach") for (let k = 0; k < pro - 1; k++) if (Math.random() < 0.08) z[k] = a;
+        let t = 0;
+        const html = z.map((v, k) => { const s = `<span class="au-ziffer">${v}</span>`; if (behalten(z, k)){ t++; return LM(s); } return ax_xs(s, 24); }).join("");
+        return fs_zaehlreihe(i, html, t);
+    };
+    return { titel: "Stopp-Test: nicht alles durchstreichen!", zeile, html: `
+        <div class="fs-ziel ax-ziel">${text}</div>
+        ${ws_aufgabe(1, `Dein Stift will automatisch weiterstreichen – halte rechtzeitig an! Schreibe ins Kästchen, wie viele Zahlen du eingekreist hast. ${n >= 3 ? AX_TAKT_TEXT : ""}`)}
+        ${n >= 3 ? ax_protokoll(n) : ""}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Doppel-Regel: zwei Regeln gleichzeitig */
+function ax_doppelregel(ctx){
+    const n = ax_n(ctx), pro = au_w(n, [8, 9, 10, 11, 12, 13, 14, 14]);
+    const VOK = "AEIOU", KONS = "BDFGHKLMNPRST";
+    const modus = n <= 4 ? "einfach" : n <= 5 ? "und" : "ausnahme";
+    const regeln = {
+        einfach: ["Kreise jedes Paar mit einem <b>Selbstlaut</b> (A, E, I, O, U) ein.", "Streiche jedes Paar mit einer <b>9</b> durch.", p => VOK.includes(p.b), p => p.z === 9],
+        und: ["Kreise ein: <b>Selbstlaut UND gerade Zahl</b>.", "Streiche durch: <b>Mitlaut UND Zahl größer als 6</b>.", p => VOK.includes(p.b) && p.z % 2 === 0, p => !VOK.includes(p.b) && p.z > 6],
+        ausnahme: ["Kreise ein: <b>Selbstlaut UND gerade Zahl</b>.", "Streiche durch: <b>Mitlaut UND Zahl größer als 6</b> – aber <b>nie</b>, wenn der Buchstabe ein <b>M</b> ist!", p => VOK.includes(p.b) && p.z % 2 === 0, p => !VOK.includes(p.b) && p.b !== "M" && p.z > 6],
+    }[modus];
+    const zeile = i => {
+        let ta = 0, tb = 0;
+        const html = [...Array(pro)].map(() => {
+            const p = { b: Math.random() < 0.4 ? zufallsElement(VOK.split("")) : (modus === "ausnahme" && Math.random() < 0.15 ? "M" : zufallsElement(KONS.split(""))), z: zufallsZahl(1, 9) };
+            const s = `<span class="ax-paar">${p.b}${p.z}</span>`;
+            if (regeln[2](p)){ ta++; return LM(s); }
+            if (regeln[3](p)){ tb++; return ax_xs(s, 30); }
+            return s;
+        }).join("");
+        return au_reihe(i, html, `<div class="au-zwei"><span>○<span class="fs-zaehl au-klein">${L(ta)}</span></span><span>✗<span class="fs-zaehl au-klein">${L(tb)}</span></span></div>`);
+    };
+    return { titel: "Zwei Regeln gleichzeitig", zeile, html: `
+        <div class="fs-ziel" style="flex-direction:column; align-items:flex-start; gap:4px;"><span>○ ${regeln[0]}</span><span>✗ ${regeln[1]}</span></div>
+        ${ws_aufgabe(1, `Prüfe jedes Paar auf <b>beide</b> Regeln. Schreibe rechts auf, wie oft du eingekreist (○) und durchgestrichen (✗) hast. ${n >= 4 ? AX_TAKT_TEXT : ""}`)}
+        ${n >= 4 ? ax_protokoll(n) : ""}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Rückblick-Test (n-back auf Papier) */
+function ax_nback(ctx){
+    const n = ax_n(ctx), pro = au_w(n, [10, 12, 13, 14, 16, 17, 18, 19]);
+    const abstand = n <= 2 ? 1 : n <= 5 ? 2 : 3;
+    const zeichen = (n <= 3 ? "BDKMRST" : "BDFKLMNRST").split("");
+    const zeile = i => {
+        const z = [...Array(pro)].map(() => zufallsElement(zeichen));
+        for (let k = abstand; k < pro; k++) if (Math.random() < 0.22) z[k] = z[k - abstand];
+        let t = 0;
+        const html = z.map((v, k) => { const s = `<span class="ax-nb">${v}</span>`; if (k >= abstand && z[k] === z[k - abstand]){ t++; return LM(s); } return s; }).join("");
+        return fs_zaehlreihe(i, html, t);
+    };
+    const bsp = { 1: "K <u>K</u>", 2: "R M <u>R</u>", 3: "S D B <u>S</u>" }[abstand];
+    return { titel: abstand === 1 ? "Doppelgänger in der Reihe" : `Rückblick-Test: ${abstand} zurück`, zeile, html: `
+        <div class="fs-ziel" style="flex-direction:column; gap:4px;"><span>Kreise jeden Buchstaben ein, der genauso ist wie der Buchstabe <b>${abstand === 1 ? "direkt davor" : abstand + " Plätze davor"}</b>.</span><span style="font-size:16px;">Beispiel: ${bsp}</span></div>
+        ${ws_aufgabe(1, `Decke die Reihe mit einem Blatt ab und schiebe es Buchstabe für Buchstabe nach rechts – so musst du dir die letzten Buchstaben ${abstand > 1 ? "merken" : "genau ansehen"}. Schreibe die Anzahl ins Kästchen.`)}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Zählen ohne Markieren: zwei Dinge gleichzeitig mitzählen */
+function ax_kopfzaehlen(ctx){
+    const n = ax_n(ctx), pro = au_w(n, [8, 10, 11, 12, 13, 14, 15, 16]), gr = au_w(n, [30, 28, 26, 26, 24, 24, 22, 22]);
+    const formen = mische(["kreis", "quadrat", "dreieck", "raute"]);
+    const A = { form: formen[0], farbe: FS_FARBEN[1] }, B = { form: formen[1], farbe: FS_FARBEN[0] };
+    const mitFarbe = n >= 4;
+    const passt = (x, ziel) => x.form === ziel.form && (!mitFarbe || x.farbe.c === ziel.farbe.c);
+    const zeile = i => {
+        let ta = 0, tb = 0;
+        const html = [...Array(pro)].map(() => {
+            const r = Math.random();
+            const x = r < 0.28 ? { ...A } : r < 0.56 ? { ...B } : { form: zufallsElement(mitFarbe ? formen : formen.slice(2)), farbe: zufallsElement(FS_FARBEN.slice(0, mitFarbe ? 4 : 2)) };
+            if (!mitFarbe){ if (x.form === A.form) x.farbe = A.farbe; if (x.form === B.form) x.farbe = B.farbe; }
+            if (passt(x, A)) ta++; else if (passt(x, B)) tb++;
+            return fs_f(x, gr);
+        }).join("");
+        return au_reihe(i, html, `<div class="au-zwei"><span>${fs_f(A, 18)}<span class="fs-zaehl au-klein">${L(ta)}</span></span><span>${fs_f(B, 18)}<span class="fs-zaehl au-klein">${L(tb)}</span></span></div>`);
+    };
+    return { titel: "Zählen nur mit den Augen", zeile, html: `
+        <div class="fs-ziel ax-ziel">Zähle gleichzeitig: ${fs_f(A, 30)} und ${fs_f(B, 30)}${mitFarbe ? " – <b>nur genau in dieser Farbe!</b>" : ""}</div>
+        ${ws_aufgabe(1, "Nicht markieren, nicht mit dem Finger zeigen! Zähle beide Formen in einem Durchgang nur mit den Augen und schreibe die zwei Zahlen rechts auf.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Zeichen-Suche: ist ein Ziel-Zeichen in der Reihe? (gedrehte Buchstaben) */
+const AX_LAGEN = ["", "rotate(90deg)", "rotate(180deg)", "rotate(270deg)", "scaleX(-1)", "scaleX(-1) rotate(90deg)", "scaleY(-1)", "scaleX(-1) rotate(270deg)"];
+function ax_zeichen(z, gr = 28){ return `<span class="ax-sym" style="font-size:${gr}px; transform:${AX_LAGEN[z.l] || "none"};">${z.b}</span>`; }
+function ax_symbolsuche(ctx){
+    const n = ax_n(ctx), ziele = n <= 2 ? 1 : 2, such = au_w(n, [4, 4, 5, 5, 6, 6, 7, 7]);
+    const BASIS = n <= 3 ? ["F", "G", "R", "J", "L", "P"] : ["F", "G", "R", "J", "L", "P", "4", "7", "Q", "K"];
+    const lagen = n <= 1 ? [0, 2] : n <= 3 ? [0, 1, 2, 3] : [0, 1, 2, 3, 4, 5, 6, 7];
+    const gleich = (a, b) => a.b === b.b && a.l === b.l;
+    const zeile = i => {
+        const b = mische(BASIS).slice(0, 2);
+        const zl = [...Array(ziele)].map((_, k) => ({ b: b[k % b.length], l: zufallsElement(lagen) }));
+        const drin = Math.random() < 0.5;
+        const liste = [...Array(such)].map(() => { let x; do x = { b: zufallsElement(n >= 3 ? b : BASIS), l: zufallsElement(lagen) }; while (zl.some(y => gleich(x, y))); return x; });
+        if (drin) liste[zufallsZahl(0, such - 1)] = { ...zufallsElement(zl) };
+        return `<div class="fs-reihe"><div class="fs-reihe-nr">${i + 1}</div><div class="fs-reihe-inhalt" style="gap:10px;"><span class="ax-ziele">${zl.map(z => ax_zeichen(z)).join("")}</span><span class="ax-trenn"></span><span class="ax-such">${liste.map(z => ax_zeichen(z)).join("")}</span><span class="ax-jn"><span>ja ${fs_kreuzBox(drin)}</span><span>nein ${fs_kreuzBox(!drin)}</span></span></div></div>`;
+    };
+    return { titel: "Zeichen-Suche", zeile, html: `
+        <div class="fs-ziel ax-ziel">Links ${ziele === 1 ? "steht ein Zeichen" : "stehen zwei Zeichen"}. Kommt ${ziele === 1 ? "es" : "eins davon"} <b>genau so</b> – gleich gedreht – rechts noch einmal vor? Kreuze <b>ja</b> oder <b>nein</b> an.</div>
+        ${ws_aufgabe(1, `Achtung: Gedrehte oder gespiegelte Zeichen zählen <b>nicht</b>! ${n >= 3 ? AX_TAKT_TEXT : ""}`)}
+        ${n >= 3 ? ax_protokoll(n) : ""}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Genau lesen und befolgen: Anweisungen an einem Zeichenfeld */
+function ax_anweisungen(ctx){
+    const n = ax_n(ctx), g = n <= 4 ? 5 : 6, anzahl = au_w(n, [6, 6, 7, 7, 8, 9, 10, 10]);
+    const VOK = "AEIOU";
+    const feld = [...Array(g * g)].map(() => Math.random() < 0.5 ? String(zufallsZahl(1, 9)) : zufallsElement("ABDEFGIKLMNORSTU".split("")));
+    const zelle = (r, c) => feld[r * g + c];
+    const istZahl = x => /\d/.test(x);
+    const kreis = new Set(), strich = new Set(), antworten = [];
+    const vorlagen = [
+        () => { const r = zufallsZahl(0, g - 1); [...Array(g).keys()].forEach(c => { if (!istZahl(zelle(r, c)) && VOK.includes(zelle(r, c))) kreis.add(r * g + c); }); return `Kreise in <b>Zeile ${r + 1}</b> alle <b>Selbstlaute</b> ein.`; },
+        () => { const c = zufallsZahl(0, g - 1); [...Array(g).keys()].forEach(r => { if (istZahl(zelle(r, c)) && +zelle(r, c) % 2 === 0) strich.add(r * g + c); }); return `Streiche in <b>Spalte ${c + 1}</b> alle <b>geraden Zahlen</b> durch.`; },
+        () => { const r = zufallsZahl(0, g - 1), k = zufallsZahl(4, 7); [...Array(g).keys()].forEach(c => { if (istZahl(zelle(r, c)) && +zelle(r, c) > k) kreis.add(r * g + c); }); return `Kreise in <b>Zeile ${r + 1}</b> alle Zahlen ein, die <b>größer als ${k}</b> sind.`; },
+        () => { const r = zufallsZahl(0, g - 1), c = zufallsZahl(0, g - 1); antworten.push(zelle(r, c)); return `Welches Zeichen steht in <b>Zeile ${r + 1}, Spalte ${c + 1}</b>? → ${ax_antwort(zelle(r, c))}`; },
+        () => { const z = zufallsElement(feld.filter(x => !istZahl(x))) || "A"; const t = feld.filter(x => x === z).length; return `Wie oft kommt der Buchstabe <b>${z}</b> im ganzen Feld vor? → ${ax_antwort(t)}`; },
+        () => { const r = zufallsZahl(0, g - 1); const s = [...Array(g).keys()].reduce((a, c) => a + (istZahl(zelle(r, c)) ? +zelle(r, c) : 0), 0); return `Wie groß ist die <b>Summe aller Zahlen in Zeile ${r + 1}</b>? → ${ax_antwort(s)}`; },
+        () => { const c = zufallsZahl(0, g - 1); const t = [...Array(g).keys()].filter(r => !istZahl(zelle(r, c))).length; return `Wie viele <b>Buchstaben</b> stehen in <b>Spalte ${c + 1}</b>? → ${ax_antwort(t)}`; },
+    ];
+    const schwer = [
+        () => { const r = zufallsZahl(0, g - 1); for (let c = 1; c < g; c++) if (istZahl(zelle(r, c)) && istZahl(zelle(r, c - 1)) && +zelle(r, c) > +zelle(r, c - 1)) strich.add(r * g + c); return `Streiche in <b>Zeile ${r + 1}</b> jede Zahl durch, die <b>größer</b> ist als die Zahl <b>direkt links</b> daneben.`; },
+        () => { const t = [...Array(g).keys()].filter(k => istZahl(zelle(k, k))).reduce((a, k) => a + +zelle(k, k), 0); return `Addiere alle Zahlen auf der <b>Diagonale</b> von oben links nach unten rechts. → ${ax_antwort(t)}`; },
+        () => { let t = 0; for (let r = 0; r < g; r++) for (let c = 1; c < g; c++) if (!istZahl(zelle(r, c)) && !istZahl(zelle(r, c - 1)) && VOK.includes(zelle(r, c)) && VOK.includes(zelle(r, c - 1))) t++; return `Wie oft stehen im Feld <b>zwei Selbstlaute direkt nebeneinander</b> (waagerecht)? → ${ax_antwort(t)}`; },
+    ];
+    // jede Art höchstens einmal, nur die einfachen dürfen (mit anderen Zahlen) wiederkommen
+    const reihe = [...mische(n >= 5 ? [...schwer, ...vorlagen] : vorlagen)];
+    while (reihe.length < anzahl) reihe.push(zufallsElement(vorlagen.slice(0, 4)));
+    const auftraege = [];
+    reihe.slice(0, anzahl).forEach(f => { for (let v = 0; v < 12; v++){ const a = f(); if (!auftraege.includes(a)){ auftraege.push(a); break; } } });
+    auftraege.splice(0, auftraege.length, ...mische(auftraege));
+    const gr = g === 5 ? 64 : 56;
+    const html = `<div class="ax-feld" style="grid-template-columns:28px repeat(${g}, ${gr}px); grid-auto-rows:${gr}px;"><span></span>${[...Array(g).keys()].map(c => `<span class="ax-kopf">${c + 1}</span>`).join("")}${[...Array(g).keys()].map(r => `<span class="ax-kopf">${r + 1}</span>` + [...Array(g).keys()].map(c => { const k = r * g + c, s = `<span class="ax-fz">${feld[k]}</span>`; return `<div>${kreis.has(k) ? LM(s) : strich.has(k) ? ax_xs(s, 34) : s}</div>`; }).join("")).join("")}</div>`;
+    return { titel: "Genau lesen – genau befolgen", html: `
+        ${ws_aufgabe(1, "Lies jede Anweisung ganz genau und führe sie im Feld aus. Zeilen gehen <b>waagerecht</b> (→), Spalten <b>senkrecht</b> (↓).")}
+        <div class="ax-anw">${html}<ol class="ax-liste">${auftraege.map(a => `<li>${a}</li>`).join("")}</ol></div>` };
+}
+function ax_antwort(x){ return `<span class="ax-antw">${L(x)}</span>`; }
+
+/* Korrektur lesen: falsch geschriebene Wörter finden */
+function ax_fehlerwort(w){
+    const k = w.length;
+    for (let v = 0; v < 20; v++){
+        const art = zufallsZahl(0, 3);
+        let f = w;
+        if (art === 0 && k >= 4){ const p = zufallsZahl(1, k - 3); if (w[p] !== w[p + 1]) f = w.slice(0, p) + w[p + 1] + w[p] + w.slice(p + 2); }
+        if (art === 1 && k >= 4){ const p = zufallsZahl(1, k - 2); f = w.slice(0, p) + w.slice(p + 1); }
+        if (art === 2 && k >= 3){ const p = zufallsZahl(1, k - 1); if (/[a-zäöü]/.test(w[p])) f = w.slice(0, p + 1) + w[p] + w.slice(p + 1); }
+        if (art === 3){ const T = { b: "d", d: "b", m: "n", n: "m", ie: "ei", ei: "ie", s: "ß", ck: "k", h: "" }; const key = Object.keys(T).find(x => w.slice(1).includes(x)); if (key){ const p = w.indexOf(key, 1); f = w.slice(0, p) + T[key] + w.slice(p + key.length); } }
+        if (f !== w && f.length >= 2) return f;
+    }
+    return w.length > 3 ? w.slice(0, -2) + w.slice(-1) + w.slice(-2, -1) : w + w.slice(-1);
+}
+function ax_korrektur(ctx){
+    const n = ax_n(ctx), stufe = n <= 2 ? 0 : n <= 4 ? 1 : n <= 5 ? 2 : 3;
+    const satz = fx_ziehen(FX_SAETZE[Math.min(stufe, FX_SAETZE.length - 1)].concat(stufe >= 2 ? FX_SAETZE[stufe - 1] : []));
+    const maxF = n <= 2 ? 1 : 2;
+    const zeile = i => {
+        const s = satz();
+        const teile = s.split(" ");
+        const kand = teile.map((t, k) => /^[A-Za-zÄÖÜäöüß]{3,}/.test(t) ? k : -1).filter(k => k >= 0);
+        const f = Math.min(kand.length, zufallsZahl(0, maxF));
+        const stellen = mische(kand).slice(0, f);
+        const html = teile.map((t, k) => {
+            if (!stellen.includes(k)){ return t; }
+            const m = /^([A-Za-zÄÖÜäöüß]+)(.*)$/.exec(t);
+            return LM(ax_fehlerwort(m[1])) + m[2];
+        }).join(" ");
+        return fs_zaehlreihe(i, `<span class="ax-satz">${html}</span>`, f);
+    };
+    return { titel: "Korrektur lesen", zeile, html: `
+        <div class="fs-ziel ax-ziel">In jedem Satz stecken <b>${maxF > 1 ? "0, 1 oder 2" : "0 oder 1"}</b> falsch geschriebene Wörter${n >= 4 ? " – Buchstaben vertauscht, vergessen oder doppelt" : ""}.</div>
+        ${ws_aufgabe(1, "Lies jeden Satz langsam Wort für Wort (mit dem Finger oder einem Lineal darunter). Kreise jedes falsch geschriebene Wort ein und schreibe die Anzahl ins Kästchen.")}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Pfeil-Test */
+const AX_PFEILE = ["←", "↑", "→", "↓", "↖", "↗", "↘", "↙"];
+const AX_PFEILNAME = { "←": "links", "↑": "oben", "→": "rechts", "↓": "unten", "↖": "links oben", "↗": "rechts oben", "↘": "rechts unten", "↙": "links unten" };
+function ax_pfeile(ctx){
+    const n = ax_n(ctx), pro = au_w(n, [9, 10, 11, 12, 13, 14, 14, 15]);
+    const vorrat = n <= 2 ? AX_PFEILE.slice(0, 4) : AX_PFEILE;
+    const modus = n <= 1 ? "eins" : n <= 3 ? zufallsElement(["eins", "zwei"]) : zufallsElement(["zwei", "gegen", "gleich"]);
+    const a = zufallsElement(vorrat); let b; do b = zufallsElement(vorrat); while (b === a);
+    const GEGEN = { "←": "→", "→": "←", "↑": "↓", "↓": "↑", "↖": "↘", "↘": "↖", "↗": "↙", "↙": "↗" };
+    const text = {
+        eins: `Streiche jeden Pfeil durch, der nach <b>${AX_PFEILNAME[a]}</b> zeigt: <span class="ax-pf">${a}</span>`,
+        zwei: `Kreise jeden Pfeil nach <b>${AX_PFEILNAME[a]}</b> <span class="ax-pf">${a}</span> ein und streiche jeden Pfeil nach <b>${AX_PFEILNAME[b]}</b> <span class="ax-pf">${b}</span> durch.`,
+        gegen: "Streiche jeden Pfeil durch, der genau in die <b>Gegenrichtung</b> seines linken Nachbarn zeigt (z. B. → ←).",
+        gleich: "Kreise jeden Pfeil ein, der in <b>dieselbe Richtung</b> zeigt wie sein linker Nachbar.",
+    }[modus];
+    const zeile = i => {
+        const z = [...Array(pro)].map(() => zufallsElement(vorrat));
+        for (let k = 1; k < pro; k++) if (Math.random() < 0.15){ if (modus === "gegen") z[k] = GEGEN[z[k - 1]]; if (modus === "gleich") z[k] = z[k - 1]; }
+        let t = 0;
+        const html = z.map((v, k) => {
+            const s = `<span class="ax-pf">${v}</span>`;
+            if ((modus === "eins" && v === b) || (modus === "zwei" && v === b) || (modus === "gegen" && k > 0 && v === GEGEN[z[k - 1]])){ if (modus !== "zwei") t++; return ax_xs(s, 28); }
+            if ((modus === "zwei" && v === a) || (modus === "gleich" && k > 0 && v === z[k - 1])){ t++; return LM(s); }
+            return s;
+        }).join("");
+        return fs_zaehlreihe(i, html, t);
+    };
+    // „eins“: Ziel ist a – oben als b verwendet → vereinheitlichen
+    if (modus === "eins") b = a;
+    return { titel: "Pfeil-Test", zeile, html: `
+        <div class="fs-ziel ax-ziel">${text}</div>
+        ${ws_aufgabe(1, `Arbeite Reihe für Reihe. Schreibe ins Kästchen, wie viele ${modus === "zwei" ? "du eingekreist" : modus === "gleich" ? "du eingekreist" : "du durchgestrichen"} hast. ${n >= 3 ? AX_TAKT_TEXT : ""}`)}
+        ${n >= 3 ? ax_protokoll(n) : ""}
+        <div class="fs-reihen fs-fuell"></div>` };
+}
+
+/* Rätselmalen: nur passende Felder ausmalen – ein Bild erscheint */
+const AX_BILDER = {
+    Herz: ["0110110", "1111111", "1111111", "1111111", "0111110", "0011100", "0001000"],
+    Stern: ["0001000", "0001000", "1111111", "0111110", "0011100", "0110110", "1100011"],
+    Haus: ["0001000", "0011100", "0111110", "1111111", "0110110", "0110110", "0111110"],
+    Pfeil: ["0001000", "0011100", "0111110", "1111111", "0011100", "0011100", "0011100"],
+    Tanne: ["0001000", "0011100", "0111110", "0011100", "0111110", "1111111", "0001000"],
+    Boot: ["0001000", "0001100", "0001110", "0001000", "1111111", "0111110", "0011100"],
+    Glocke: ["0001000", "0011100", "0111110", "0111110", "0111110", "1111111", "0001000"],
+    Kreuz: ["0011100", "0011100", "1111111", "1111111", "1111111", "0011100", "0011100"],
+    Schlüssel: ["0110000", "1001000", "1001111", "0110101", "0000101", "0000000", "0000000"],
+    Fisch: ["0000000", "0011100", "1111110", "0111111", "1111110", "0011100", "0000000"],
+};
+function ax_raetselmalen(ctx){
+    const n = ax_n(ctx);
+    const [name, muster] = zufallsElement(Object.entries(AX_BILDER));
+    const g = 7, an = muster.join("").split("").map(x => x === "1");
+    const regeln = [
+        [0, "alle Felder mit dem Buchstaben <b>A</b>", () => ["A", zufallsElement("EHMNRVW".split(""))]],
+        [1, "alle Felder mit einer <b>geraden</b> Zahl", () => [String(2 * zufallsZahl(1, 4)), String(2 * zufallsZahl(0, 4) + 1)]],
+        [2, "alle Felder, deren Ergebnis <b>10</b> ist", () => { const a = zufallsZahl(1, 9); let b, c; do { b = zufallsZahl(1, 9); c = zufallsZahl(1, 9); } while (b + c === 10); return [`${a}+${10 - a}`, `${b}+${c}`]; }],
+        [3, "alle Wörter mit <b>ie</b>", () => [zufallsElement(["Biene", "Brief", "Tier", "Spiel", "Wiese", "Ziel", "Lied", "Dieb", "Sieg", "Riese", "Knie", "Fliege"]), zufallsElement(["Bein", "Ei", "Seil", "Reise", "Wein", "Kino", "Igel", "Tiger", "Kreis", "Mais", "Leim", "Linie"])]],
+        [4, "alle Felder, deren Ergebnis <b>24</b> ist", () => [zufallsElement(["3·8", "4·6", "6·4", "8·3", "2·12", "30−6", "18+6", "48:2", "12·2", "20+4", "72:3", "96:4"]), zufallsElement(["4·5", "3·9", "5·5", "7·3", "6·5", "4·7", "30−5", "18+5", "48:3", "13·2", "20+3", "8·4"])]],
+        [5, "alle Zahlen, die durch <b>7</b> teilbar sind", () => [String(7 * zufallsZahl(2, 13)), String((() => { let x; do x = zufallsZahl(10, 99); while (x % 7 === 0); return x; })())]],
+        [6, "alle Zahlen mit der <b>Quersumme 9</b>", () => [zufallsElement(["18", "27", "36", "45", "54", "63", "72", "81", "90", "108", "117", "126", "135", "144", "153", "207", "306", "405"]), (() => { let x; do x = zufallsZahl(10, 199); while (String(x).split("").reduce((a, b) => a + +b, 0) === 9); return String(x); })()]],
+    ];
+    const r = zufallsElement(regeln.filter(x => Math.abs(x[0] - n) <= 1 && x[0] <= Math.max(n, 1)));
+    const gr = r[0] >= 4 ? 70 : 62;
+    const felder = an.map(innen => r[2]()[innen ? 0 : 1]);
+    const farbe = zufallsElement(["#E0574F", "#3E8EDB", "#46A35E", "#E2A72E", "#9B6BD3"]);
+    return { titel: "Rätselmalen", html: `
+        <div class="fs-ziel ax-ziel">Male ${r[1]} aus. Dann erscheint ein Bild!</div>
+        ${ws_aufgabe(1, "Prüfe jedes Feld einzeln – Reihe für Reihe. Male nur die passenden Felder an. Wenn du fertig bist: Was ist es?")}
+        <div class="ax-malen" style="grid-template-columns:repeat(${g}, ${gr}px); grid-auto-rows:${gr}px; font-size:${r[0] >= 4 ? 17 : 22}px;">${felder.map((f, k) => `<div class="${an[k] ? "fs-lfill" : ""}" style="${an[k] ? `--lf:${farbe}55;` : ""}">${f}</div>`).join("")}</div>
+        <div class="fs-zeit"><span>Das Bild zeigt:<span class="fs-l" style="width:180px;">${L(name)}</span></span></div>` };
+}
+
 /* ---------- Kataloge: welche Blätter es je Serie gibt ---------- */
 // bild: arbeitet mit Grafiken · ab/bis: Klassenstufen · gruppe: für die Auswahl
-const AU_GRUPPEN = { suchen: "Suchen & Konzentrieren", vergleichen: "Genau hinsehen & Vergleichen", logik: "Logik & Regeln", zeichnen: "Verfolgen & Zeichnen" };
+const AU_GRUPPEN = { konz: "Konzentrationstests: Tempo, Genauigkeit, Hemmung, Merken", suchen: "Suchen & Konzentrieren", vergleichen: "Genau hinsehen & Vergleichen", logik: "Logik & Regeln", zeichnen: "Verfolgen & Zeichnen", locker: "Zum Auflockern – kein echtes Konzentrationstraining" };
 const AU_KATALOG_GS = [
     { nr: "1", kurz: "Zahlentafel", name: "Zahlentafel", bau: fsA_zahlentafel, gruppe: "suchen" },
     { nr: "2", kurz: "Formen-Detektiv", name: "Formen-Detektiv", bau: fsA_formenDetektiv, gruppe: "suchen" },
@@ -6923,6 +7403,20 @@ const AU_KATALOG_GS = [
     { nr: "25", kurz: "Spiegelbild", name: "Spiegelbild ergänzen", bau: au_spiegelhaelfte, gruppe: "zeichnen" },
     { nr: "26", kurz: "Formen-Paare", name: "Formen-Paare: genau hinsehen", bau: au_formenpaare, gruppe: "suchen", ab: 2 },
     { nr: "27", kurz: "Formen-Merkfeld", name: "Formen-Merkfeld (sehen und erinnern)", bau: au_formengedachtnis, gruppe: "suchen", ab: 2 },
+    { nr: "28", kurz: "Würfel-Test", name: "Würfel-Test (Augen zählen und streichen)", bau: ax_wuerfelTest, gruppe: "konz" },
+    { nr: "29", kurz: "Rechen-Kette", name: "Rechen-Kette / Pauli-Test (fortlaufend rechnen)", bau: ax_pauli, gruppe: "konz" },
+    { nr: "30", kurz: "Rechnungen prüfen", name: "Rechnungen prüfen (falsche finden)", bau: ax_revision, gruppe: "konz", ab: 2 },
+    { nr: "31", kurz: "Kopfrechnen + Merken", name: "Kopfrechnen unter Belastung (rechnen, merken, vergleichen)", bau: ax_klt, gruppe: "konz", ab: 3 },
+    { nr: "32", kurz: "Farbe oder Wort?", name: "Farbe oder Wort? (Stroop)", bau: ax_stroop, gruppe: "konz", ab: 2 },
+    { nr: "33", kurz: "Stopp-Test", name: "Stopp-Test: alles streichen – außer …", bau: ax_hemmung, gruppe: "konz" },
+    { nr: "34", kurz: "Zwei Regeln", name: "Zwei Regeln gleichzeitig", bau: ax_doppelregel, gruppe: "konz", ab: 3 },
+    { nr: "35", kurz: "Rückblick-Test", name: "Doppelgänger / Rückblick-Test (Buchstaben merken)", bau: ax_nback, gruppe: "konz", ab: 2 },
+    { nr: "36", kurz: "Zählen mit den Augen", name: "Zählen nur mit den Augen (zwei Dinge gleichzeitig)", bau: ax_kopfzaehlen, gruppe: "konz" },
+    { nr: "37", kurz: "Zeichen-Suche", name: "Zeichen-Suche (gedrehte Zeichen)", bau: ax_symbolsuche, gruppe: "vergleichen", ab: 2 },
+    { nr: "38", kurz: "Genau befolgen", name: "Genau lesen – genau befolgen", bau: ax_anweisungen, gruppe: "logik", ab: 3 },
+    { nr: "39", kurz: "Korrektur lesen", name: "Korrektur lesen (falsche Wörter finden)", bau: ax_korrektur, gruppe: "vergleichen", ab: 3 },
+    { nr: "40", kurz: "Pfeil-Test", name: "Pfeil-Test", bau: ax_pfeile, gruppe: "suchen" },
+    { nr: "41", kurz: "Rätselmalen", name: "Rätselmalen (nur passende Felder)", bau: ax_raetselmalen, gruppe: "zeichnen" },
 ];
 const AU_KATALOG_5 = [
     { nr: "1", kurz: "Konzentrations-Test", name: "Konzentrations-Test (d2-Stil)", bau: fsB_d2, gruppe: "suchen" },
@@ -6930,21 +7424,35 @@ const AU_KATALOG_5 = [
     { nr: "8", kurz: "Rot-Schwarz-Tafel", name: "Rot-Schwarz-Tafel", bau: au_rotschwarz, gruppe: "suchen" },
     { nr: "9", kurz: "Zeichen-Zahlen-Test", name: "Zeichen-Zahlen-Test (auf Zeit)", bau: au_symbolzahl, gruppe: "suchen" },
     { nr: "6", kurz: "Codes vergleichen", name: "Codes vergleichen", bau: fsB_codes, gruppe: "vergleichen" },
-    { nr: "10", kurz: "Was ist anders?", name: "Was ist anders? (Bilder vergleichen)", bau: au_unterschiede, gruppe: "vergleichen", bild: true },
-    { nr: "11", kurz: "Wörter-Suchsel", name: "Wörter-Suchsel", bau: au_wortsuche, gruppe: "vergleichen" },
+    { nr: "10", kurz: "Was ist anders?", name: "Was ist anders? (Bilder vergleichen)", bau: au_unterschiede, gruppe: "locker", bild: true },
+    { nr: "11", kurz: "Wörter-Suchsel", name: "Wörter-Suchsel", bau: au_wortsuche, gruppe: "locker" },
     { nr: "5", kurz: "Wortschlangen", name: "Wortschlangen", bau: fsB_wortschlangen, gruppe: "vergleichen" },
     { nr: "2", kurz: "Geheimschrift", name: "Geheimschrift", bau: fsB_geheimschrift, gruppe: "logik" },
     { nr: "4", kurz: "Rechenketten", name: "Rechenketten", bau: fsB_rechenketten, gruppe: "logik" },
     { nr: "12", kurz: "Symbol-Rechnen", name: "Symbol-Rechnen", bau: au_symbolrechnen, gruppe: "logik", bild: true },
-    { nr: "13", kurz: "Sudoku", name: "Sudoku 6×6", bau: au_sudoku, gruppe: "logik", bild: true },
-    { nr: "14", kurz: "Begriff passt nicht", name: "Welcher Begriff passt nicht?", bau: au_passtNicht, gruppe: "logik" },
+    { nr: "13", kurz: "Sudoku", name: "Sudoku 6×6", bau: au_sudoku, gruppe: "locker", bild: true },
+    { nr: "14", kurz: "Begriff passt nicht", name: "Welcher Begriff passt nicht?", bau: au_passtNicht, gruppe: "locker" },
     { nr: "15", kurz: "Regelwechsel", name: "Regelwechsel", bau: au_regelwechsel, gruppe: "logik", bild: true },
     { nr: "3", kurz: "Zahlen-Buchstaben-Pfad", name: "Zahlen-Buchstaben-Pfad", bau: fsB_pfad, gruppe: "zeichnen" },
-    { nr: "16", kurz: "Linien-Wirrwarr", name: "Linien-Wirrwarr", bau: au_wirrwarr, gruppe: "zeichnen" },
-    { nr: "17", kurz: "Punktebild", name: "Punktebild abzeichnen", bau: au_punktebild, gruppe: "zeichnen" },
-    { nr: "18", kurz: "Spiegelbild", name: "Spiegelbild ergänzen", bau: au_spiegelhaelfte, gruppe: "zeichnen" },
+    { nr: "16", kurz: "Linien-Wirrwarr", name: "Linien-Wirrwarr", bau: au_wirrwarr, gruppe: "locker" },
+    { nr: "17", kurz: "Punktebild", name: "Punktebild abzeichnen", bau: au_punktebild, gruppe: "locker" },
+    { nr: "18", kurz: "Spiegelbild", name: "Spiegelbild ergänzen", bau: au_spiegelhaelfte, gruppe: "locker" },
     { nr: "19", kurz: "Code-Wache", name: "Code-Wache: genau prüfen", bau: au_codewache, gruppe: "suchen" },
     { nr: "20", kurz: "Auftragsfilter", name: "Auftragsfilter: mehrere Merkmale prüfen", bau: au_auftragsfilter, gruppe: "logik" },
+    { nr: "21", kurz: "Würfel-Test", name: "Würfel-Test (Bourdon)", bau: ax_wuerfelTest, gruppe: "konz" },
+    { nr: "22", kurz: "Pauli-Test", name: "Pauli-Test: fortlaufend rechnen", bau: ax_pauli, gruppe: "konz" },
+    { nr: "23", kurz: "Revisionstest", name: "Revisionstest: Rechnungen prüfen", bau: ax_revision, gruppe: "konz" },
+    { nr: "24", kurz: "Kopfrechnen unter Belastung", name: "Kopfrechnen unter Belastung (KLT-Format)", bau: ax_klt, gruppe: "konz" },
+    { nr: "25", kurz: "Stroop", name: "Farbe oder Wort? (Stroop)", bau: ax_stroop, gruppe: "konz" },
+    { nr: "26", kurz: "Stopp-Test", name: "Stopp-Test: Hemmung (alles außer …)", bau: ax_hemmung, gruppe: "konz" },
+    { nr: "27", kurz: "Zwei Regeln", name: "Zwei Regeln gleichzeitig (geteilte Aufmerksamkeit)", bau: ax_doppelregel, gruppe: "konz" },
+    { nr: "28", kurz: "n-zurück", name: "Rückblick-Test (2 bzw. 3 zurück)", bau: ax_nback, gruppe: "konz" },
+    { nr: "29", kurz: "Zählen mit den Augen", name: "Doppelt mitzählen ohne Markieren", bau: ax_kopfzaehlen, gruppe: "konz" },
+    { nr: "30", kurz: "Zeichen-Suche", name: "Zeichen-Suche (gedreht/gespiegelt)", bau: ax_symbolsuche, gruppe: "konz" },
+    { nr: "31", kurz: "Pfeil-Test", name: "Pfeil-Test (Richtung & Nachbar)", bau: ax_pfeile, gruppe: "konz" },
+    { nr: "32", kurz: "Genau befolgen", name: "Genau lesen – genau befolgen (Anweisungsfeld)", bau: ax_anweisungen, gruppe: "logik" },
+    { nr: "33", kurz: "Korrektur lesen", name: "Korrektur lesen", bau: ax_korrektur, gruppe: "vergleichen" },
+    { nr: "34", kurz: "Rätselmalen", name: "Rätselmalen (Teilbarkeit, Quersumme)", bau: ax_raetselmalen, gruppe: "locker" },
 ];
 const AU_KATALOG_56 = AU_KATALOG_5.map(b => ({ ...b, ab: 5, bis: 6 }));
 const AU_KATALOG_79 = AU_KATALOG_5.map(b => ({ ...b, ab: 7, bis: 9 }));
@@ -6958,7 +7466,7 @@ function au_optionenHtml(key, katalog){
             <button type="button" class="btn sekundaer klein" onclick="au_alle('${key}', true)">alle</button>
             <button type="button" class="btn sekundaer klein" onclick="au_alle('${key}', false)">keine</button>
         </div>
-        ${Object.entries(AU_GRUPPEN).map(([g, titel]) => `<div class="au-gruppe-titel">${titel}</div>
+        ${Object.entries(AU_GRUPPEN).filter(([g]) => katalog.some(b => b.gruppe === g)).map(([g, titel]) => `<div class="au-gruppe-titel">${titel}</div>
             <div class="fp-wahl">${katalog.filter(b => b.gruppe === g).map(b => `<label class="au-wahl-l"><input type="checkbox" class="au-blatt" data-serie="${key}" value="${b.nr}" onchange="au_zaehlen_(${"'" + key + "'"})"> ${ws_esc(b.name)}${b.bild ? ' <small title="mit Bildern">🖼️</small>' : ""}${b.ab ? ` <small>ab Kl. ${b.ab}</small>` : ""}</label>`).join("")}</div>`).join("")}
         <p class="beschreibung" style="margin:6px 0 0;">Alle Blätter passen sich an Klassenstufe und Schwierigkeit oben an. 🖼️ = mit Bildern. „Neu mischen“ erzeugt dieselben Blätter mit neuem Inhalt.</p>`;
 }
@@ -6982,7 +7490,15 @@ function au_klassePruefen(){
 }
 // gesunde Mischung: etwa halb mit, halb ohne Bilder, aus möglichst vielen Gruppen
 function au_mix(key, anzahl = 6){
-    const passend = fs_katalog(key).filter(au_passt);
+    const passend = fs_katalog(key).filter(b => au_passt(b) && b.gruppe !== "locker");
+    if (key !== "aufmerksamkeit"){
+        // ab Klasse 5: überwiegend echte Konzentrationstests
+        const konz = mische(passend.filter(b => b.gruppe === "konz")), rest = mische(passend.filter(b => b.gruppe !== "konz"));
+        const wahl = [...konz.slice(0, Math.min(4, anzahl)), ...rest].slice(0, anzahl);
+        document.querySelectorAll(`.au-blatt[data-serie="${key}"]`).forEach(cb => cb.checked = wahl.some(b => b.nr === cb.value));
+        au_zaehlen_(key);
+        return;
+    }
     const mit = mische(passend.filter(b => b.bild)), ohne = mische(passend.filter(b => !b.bild));
     const wahl = [];
     const gruppen = new Set();
@@ -9584,7 +10100,7 @@ function std_rezeptAusFormular(){
         let sk, nr, b = null;
         if (aufm === "zufall") sk = fp_serieVon("aufmerksamkeit");
         else { [sk, nr] = aufm.split(":"); b = fs_katalog(sk).find(x => x.nr === nr); }
-        const pool = fs_katalog(sk).filter(x => au_passt(x) && (x.nr !== "3" || !["aufmerksamkeit5", "aufmerksamkeit7"].includes(sk)));
+        const pool = fs_katalog(sk).filter(x => au_passt(x) && (aufm !== "zufall" || x.gruppe !== "locker") && (x.nr !== "3" || !["aufmerksamkeit5", "aufmerksamkeit7"].includes(sk)));
         const passend = pool.length ? pool : fs_katalog(sk), anzahl = std_anzahl("std-aufm-anzahl");
         if (aufm === "zufall"){
             const zuletzt = std_zuletztGenutzt(code || lt_wert("std-kind"), sk);
@@ -9678,7 +10194,7 @@ function std_alternativen(it, r){
     let pool = [];
     if (it.t === "fs"){
         const k = fs_katalog(it.s);
-        const passt = it.s.startsWith("aufmerksamkeit") ? k.filter(x => au_passt(x) && (x.nr !== "3" || !["aufmerksamkeit5", "aufmerksamkeit7"].includes(it.s))) : k;
+        const passt = it.s.startsWith("aufmerksamkeit") ? k.filter(x => au_passt(x) && x.gruppe !== "locker" && (x.nr !== "3" || !["aufmerksamkeit5", "aufmerksamkeit7"].includes(it.s))) : k;
         pool = (passt.length ? passt : k).map(b => ({ t: "fs", s: it.s, nr: b.nr }));
     }
     else if (it.t === "rs") pool = FS_SERIEN.rechtschreibung.blaetter.map(b => ({ t: "rs", k: it.k, nr: b.nr }));
