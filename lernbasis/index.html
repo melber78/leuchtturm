@@ -576,8 +576,8 @@ const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const lsDel=k=>{try{localStorage.removeItem(k)}catch(e){}};
 
-function defState(){return {v:1,updated:0,name:'Henry',xp:0,coins:0,avatar:'🙂',theme:'ozean',owned:{av:['🙂'],th:['ozean']},badges:{},st:{right:0,fixed:0,cards:0,tests:0,ones:0,perfect:0,combo:0},rewards:[{id:'w1',name:'15 Minuten extra Medienzeit',price:500},{id:'w2',name:'Lieblingsessen aussuchen',price:1200}],redeem:[],chest:'',streak:{last:'',n:0},days:{},tp:{},cards:{},tests:[],miss:{},done:{},custom:[],blitz:0,set:{ppin:'0000',goal:60,keys:[92,81,67,50,30],remind:'16:00'}}}
-function fix(o){const d=defState();if(o&&o.miss)Object.keys(o.miss).forEach(k=>{if(/^\d+ · \d+ − \d+ : \d+ =#/.test(k))delete o.miss[k]});o=Object.assign(d,o||{});o.set=Object.assign(defState().set,o.set||{});if(!Array.isArray(o.set.keys)||o.set.keys.length!==5)o.set.keys=[92,81,67,50,30];['days','tp','cards','miss','done','badges'].forEach(k=>{if(!o[k]||typeof o[k]!=='object')o[k]={}});['tests','custom','redeem','rewards'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[]});o.st=Object.assign(defState().st,o.st||{});o.owned=Object.assign(defState().owned,o.owned||{});return o}
+function defState(){return {v:1,updated:0,name:'Henry',xp:0,coins:0,avatar:'🙂',theme:'ozean',owned:{av:['🙂'],th:['ozean']},badges:{},st:{right:0,fixed:0,cards:0,tests:0,ones:0,perfect:0,combo:0},rewards:[{id:'w1',name:'15 Minuten extra Medienzeit',price:500},{id:'w2',name:'Lieblingsessen aussuchen',price:1200}],redeem:[],chest:'',streak:{last:'',n:0},days:{},tp:{},cards:{},tests:[],miss:{},done:{},custom:[],blitz:0,set:{ppin:'0000',goal:60,keys:[93,75,60,40,20],remind:'16:00'}}}
+function fix(o){const d=defState();if(o&&o.miss)Object.keys(o.miss).forEach(k=>{if(/^\d+ · \d+ − \d+ : \d+ =#/.test(k))delete o.miss[k]});o=Object.assign(d,o||{});o.set=Object.assign(defState().set,o.set||{});if(!Array.isArray(o.set.keys)||o.set.keys.length!==5||o.set.keys.join()==='92,81,67,50,30')o.set.keys=[93,75,60,40,20];['days','tp','cards','miss','done','badges'].forEach(k=>{if(!o[k]||typeof o[k]!=='object')o[k]={}});['tests','custom','redeem','rewards'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[]});o.st=Object.assign(defState().st,o.st||{});o.owned=Object.assign(defState().owned,o.owned||{});return o}
 let S=(()=>{try{const j=JSON.parse(lsGet(LS));if(j)return fix(j)}catch(e){}return defState()})();
 let pushT=null;
 function save(){checkBadges();const dk=Object.keys(S.done);if(dk.length>4000)dk.slice(0,dk.length-4000).forEach(k=>delete S.done[k]);S.updated=Date.now();lsSet(LS,JSON.stringify(S));if(SYNC.on&&SYNC.pin){clearTimeout(pushT);pushT=setTimeout(push,1200)}}
@@ -913,7 +913,7 @@ VIEWS.test=p=>{
 };
 function testAns(j){const p=view.p,t=p.tasks[p.i];p.ans[p.i]=t.t==='m'?t._o[j]:j;p.sure=false;if(t.t!=='i'&&p.i<p.tasks.length-1){render();setTimeout(()=>{if(view.p===p&&!p.fin){p.i++;render()}},250)}else render()}
 function testIn(soft){const p=view.p;if(!$('#ans'))return;p.ans[p.i]=$('#ans').value.trim();p.sure=false;if(!soft&&p.i<p.tasks.length-1){p.i++;render()}}
-function grade(pct){const k=S.set.keys||[92,81,67,50,30];for(let i=0;i<5;i++)if(pct>=k[i])return i+1;return 6}
+function grade(pct){const k=S.set.keys||[93,75,60,40,20];for(let i=0;i<5;i++)if(pct>=k[i])return i+1;return 6}
 function finishTest(ask){const p=view.p;if(ask&&!p.sure){p.sure=true;render();return}
  p.fin=true;clearInterval(testT);p.res=p.tasks.map((t,j)=>check(t,p.ans[j]));p.r=p.res.filter(Boolean).length;p.pct=Math.round(p.r/p.tasks.length*100);p.g=grade(p.pct);p.sec=Math.round((Date.now()-p.start)/1000);
  S.st.tests++;if(p.g===1)S.st.ones++;p.tasks.forEach((t,j)=>{const st=S.tp[t.tid]||(S.tp[t.tid]={});if(p.res[j]){st.r=(st.r||0)+1;S.st.right++;S.done[tkey(t)]=Date.now();delete S.miss[tkey(t)]}else{st.w=(st.w||0)+1;S.miss[tkey(t)]={...t,_o:undefined}}});
