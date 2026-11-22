@@ -1,6 +1,6 @@
 // Plaque Invaders – macht das Spiel installierbar und offline spielbar.
 // Neue Version: VERSION hochzählen, dann holt sich das Handy die neuen Dateien.
-const VERSION = "plaque-invaders-1";
+const VERSION = "plaque-invaders-2";
 const DATEIEN = ["./", "./index.html", "./manifest.php", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {

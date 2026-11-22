@@ -130,6 +130,50 @@ input[type=range]{ width:100%; accent-color:var(--cyan); }
 .schritt .gross{ font-size:70px; margin:6px 0; }
 .balken{ height:14px; border-radius:7px; background:#ffffff14; overflow:hidden; margin:12px 0; }
 .balken div{ height:100%; width:0; background:linear-gradient(90deg,var(--gruen),var(--cyan)); }
+
+/* Tages-Mission, Menü-Knöpfe */
+.tages{ width:min(100%,520px); display:flex; gap:12px; align-items:center; padding:12px 14px; margin:0 0 12px; }
+.tages .planet{ font-size:38px; line-height:1; filter:drop-shadow(0 0 10px #8b5cffaa); }
+.tages .t1{ font-family:var(--pixel); font-weight:900; font-size:11px; letter-spacing:.12em; color:var(--dim); text-transform:uppercase; }
+.tages .t2{ font-weight:900; font-size:16px; margin:2px 0; }
+.tages .t3{ font-size:13.5px; color:var(--gelb); font-weight:800; }
+.tages.geschafft{ box-shadow:inset 0 0 0 2px var(--gruen), 0 0 22px #3dff8b33; }
+.menue{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; justify-content:center; }
+.sp .best{ font-family:var(--pixel); font-weight:900; font-size:12px; color:var(--text); margin-top:4px; opacity:.85; }
+.sp .schiffchen{ display:block; margin:0 auto 2px; height:30px; image-rendering:pixelated; }
+.modus{ font-family:var(--pixel); font-weight:900; font-size:12px; letter-spacing:.1em; text-transform:uppercase; padding:4px 10px; border-radius:4px; margin-bottom:6px; }
+.modus.solo{ background:#29f0ff22; color:var(--cyan); }
+.modus.team{ background:#ff3ea522; color:var(--pink); }
+
+/* Bestenliste & Hangar */
+.tabs{ display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin:4px 0 12px; }
+.tabs button{ font-family:var(--pixel); font-weight:900; font-size:13px; letter-spacing:.06em; padding:9px 12px; border-radius:6px; background:#ffffff10; box-shadow:inset 0 0 0 2px #ffffff22; text-transform:uppercase; }
+.tabs button.an{ background:var(--cyan); color:var(--nacht); box-shadow:0 0 16px #29f0ff88; }
+.platz{ display:grid; grid-template-columns:36px 1fr auto; gap:8px; align-items:center; padding:9px 4px; border-bottom:1px solid #ffffff12; }
+.platz .nr{ font-family:var(--pixel); font-weight:900; font-size:18px; color:var(--dim); text-align:center; }
+.platz:nth-child(1) .nr{ color:#ffd23d; text-shadow:0 0 10px #ffd23d; } .platz:nth-child(2) .nr{ color:#d9e2ff; } .platz:nth-child(3) .nr{ color:#ff9f5a; }
+.platz .pkt{ font-family:var(--pixel); font-weight:900; font-size:19px; text-align:right; }
+.platz small{ color:var(--dim); font-size:12px; }
+.platz.neu{ background:#ffe14d14; border-radius:6px; }
+.zahlen{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-bottom:12px; text-align:center; font-family:var(--pixel); font-weight:900; }
+.zahlen div{ background:#ffffff0c; border-radius:6px; padding:8px 2px; }
+.zahlen b{ display:block; font-size:18px; }
+.zahlen small{ font-size:9.5px; color:var(--dim); letter-spacing:.06em; }
+.abzeichen{ display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:6px; }
+.abzeichen div{ font-size:13px; font-weight:800; padding:7px 9px; border-radius:6px; background:#ffe14d1c; box-shadow:inset 0 0 0 2px #ffe14d55; }
+.abzeichen div.zu{ background:#ffffff08; box-shadow:inset 0 0 0 2px #ffffff14; color:#ffffff55; }
+.schiffe{ display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; }
+.schiff{ border-radius:10px; padding:12px 8px 10px; background:#ffffff0c; box-shadow:inset 0 0 0 2px #ffffff22; text-align:center; position:relative; }
+.schiff img{ height:56px; image-rendering:pixelated; display:block; margin:0 auto 6px; }
+.schiff b{ display:block; font-size:14.5px; }
+.schiff small{ font-family:var(--pixel); font-weight:900; font-size:11px; color:var(--dim); }
+.schiff.an{ background:#29f0ff14; box-shadow:inset 0 0 0 3px var(--cyan), 0 0 22px #29f0ff55; }
+.schiff.zu img{ filter:grayscale(1) brightness(.35); }
+.schiff.zu b{ color:#ffffff66; }
+.schiff .schloss{ position:absolute; top:8px; right:10px; font-size:16px; }
+.freigeschaltet{ margin-top:8px; padding:10px 12px; border-radius:8px; background:#8b5cff22; box-shadow:inset 0 0 0 2px #8b5cff88; font-weight:800; display:flex; gap:10px; align-items:center; }
+.freigeschaltet img{ height:36px; image-rendering:pixelated; }
+.woche-name{ font-weight:900; font-size:14px; margin:10px 0 0; }
 </style>
 </head>
 <body>
@@ -140,10 +184,16 @@ input[type=range]{ width:100%; accent-color:var(--cyan); }
     <button class="icon-knopf" style="right:14px" data-zu="eltern" aria-label="Einstellungen">⚙️</button>
     <div class="logo"><span class="a">PLAQUE</span><span class="b">INVADERS</span></div>
     <div class="slogan">▶ Putzen = Feuer · Quatschen = Störsignal ◀</div>
-    <div class="rekord" id="rekord"></div>
-    <div class="titel" style="font-size:16px">Wer ist im Team?</div>
+    <div class="panel tages" id="tages"></div>
+    <div class="titel" style="font-size:16px">Wer putzt mit?</div>
     <div class="spieler" id="spielerListe"></div>
+    <div class="modus" id="modus"></div>
+    <div class="rekord" id="rekord"></div>
     <button class="knopf" id="losKnopf">▶ Mission starten</button>
+    <div class="menue">
+        <button class="knopf dunkel klein" data-zu="bestenliste">🏆 Bestenliste</button>
+        <button class="knopf dunkel klein" data-zu="hangar">🚀 Hangar</button>
+    </div>
     <button class="knopf dunkel klein" id="installKnopf">📲 Als App installieren</button>
     <div class="fuss">Das Mikrofon hört nur, wie es klingt – nichts wird aufgenommen oder gespeichert.</div>
 </section>
@@ -167,6 +217,7 @@ input[type=range]{ width:100%; accent-color:var(--cyan); }
 <!-- ERGEBNIS -->
 <section class="seite" id="ende">
     <div class="ergebnis-titel" id="endeTitel">MISSION ERFÜLLT</div>
+    <div class="modus" id="endeModus" style="text-align:center"></div>
     <div class="neuer-rekord" id="endeRekord" hidden>★ NEUER TEAM-REKORD ★</div>
     <div class="punkte" id="endePunkte">0</div>
     <div class="zahnsterne" id="endeSterne"></div>
@@ -176,12 +227,14 @@ input[type=range]{ width:100%; accent-color:var(--cyan); }
             <div><b id="stCombo">x1</b><small>MAX COMBO</small></div>
             <div><b id="stQuatsch">0</b><small>STÖRSIGNALE</small></div>
         </div>
+        <div class="tages" id="endeTages" style="padding:8px 0 4px;width:100%"></div>
         <div id="endeSpieler"></div>
         <div class="erfolge" id="endeErfolge"></div>
+        <div id="endeFrei"></div>
     </div>
     <div class="panel" style="margin-top:12px">
-        <div class="zeile"><b>Diese Woche</b><span class="dim" id="serie"></span></div>
-        <div class="woche" id="woche"></div>
+        <b>Diese Woche</b>
+        <div id="wochen"></div>
     </div>
     <div style="margin:16px 0 6px"><button class="knopf cyan" data-zu="start">▶ Weiter</button></div>
 </section>
@@ -243,6 +296,31 @@ input[type=range]{ width:100%; accent-color:var(--cyan); }
     </div>
 </section>
 
+<!-- BESTENLISTE -->
+<section class="seite" id="bestenliste">
+    <button class="icon-knopf" style="left:14px" data-zu="start" aria-label="Zurück">◀</button>
+    <div class="titel" style="margin-top:28px">🏆 Bestenliste</div>
+    <div class="tabs" id="listeTabs"></div>
+    <div class="panel" id="listeInhalt"></div>
+    <div style="margin:16px 0 6px"><button class="knopf cyan klein" data-zu="start">◀ Zurück</button></div>
+</section>
+
+<!-- HANGAR -->
+<section class="seite" id="hangar">
+    <button class="icon-knopf" style="left:14px" data-zu="start" aria-label="Zurück">◀</button>
+    <div class="titel" style="margin-top:28px">🚀 Hangar</div>
+    <div class="tabs" id="hangarTabs"></div>
+    <div class="panel">
+        <div class="dim" id="hangarInfo" style="margin-bottom:10px;text-align:center"></div>
+        <div class="schiffe" id="hangarSchiffe"></div>
+        <span class="feld">Laser-Farbe</span>
+        <div class="skins" id="hangarFarbe"></div>
+        <span class="feld">Pilot</span>
+        <div class="skins" id="hangarSkin"></div>
+    </div>
+    <div style="margin:16px 0 6px"><button class="knopf cyan klein" data-zu="start">✔ Fertig</button></div>
+</section>
+
 <!-- EINRICHTEN -->
 <section class="seite" id="einrichten">
     <div class="titel" style="margin-top:28px">Mikrofon einrichten</div>
@@ -264,23 +342,77 @@ const LS = "plaque-invaders";
 let D = { spieler: [], team: [], dauer: 120, strenge: 3, ton: true, kalib: null, rekord: 0 };
 try { Object.assign(D, JSON.parse(localStorage.getItem(LS) || "{}")); } catch (e) {}
 const speichern = () => { try { localStorage.setItem(LS, JSON.stringify(D)); } catch (e) {} };
+// Ältere Spielstände übernehmen: bisheriger Highscore wird Eintrag in der Team-Liste
+D.teamListe = D.teamListe || [];
+if (D.rekord && !D.teamListe.length) D.teamListe.push({ score: D.rekord, namen: ["bisheriger Rekord"], d: Date.now(), sterne: 0 });
+delete D.rekord;
+D.spieler.forEach(p => { p.erfolge = (p.erfolge || []).map(e => e === "boss" ? "boss0" : e); p.liste = p.liste || []; p.schiff = p.schiff || 0; p.erfolge = p.erfolge || []; p.tage = p.tage || {}; p.tagesAnzahl = p.tagesAnzahl || 0; });
+speichern();
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const SKINS = ["🤖", "👽", "🥷", "🐉", "🦖", "🦈", "🐺", "🦊", "🐼", "🦄", "🧙", "🧛", "🐸", "🐙", "🦁", "🐯"];
 const FARBEN = ["#29f0ff", "#ff3ea5", "#3dff8b", "#ffe14d", "#8b5cff", "#ff8a3d"];
-const RAENGE = ["Rookie", "Plaque-Jäger", "Karies-Killer", "Bürsten-Profi", "Schaum-Meister", "Laser-Elite", "Zahn-Legende", "Galaxie-Boss"];
+const RAENGE = ["Rookie", "Plaque-Jäger", "Karies-Killer", "Bürsten-Profi", "Schaum-Meister", "Laser-Elite", "Sternen-Kommandant", "Zahn-Legende", "Galaxie-Boss", "Universums-Held"];
 const xpFuerLevel = l => 150 * l + 50 * l * l;
 const levelVon = xp => { let l = 0; while (xp >= xpFuerLevel(l + 1)) l++; return l; };
-const rangVon = l => RAENGE[Math.min(RAENGE.length - 1, Math.floor(l / 2))];
+const rangVon = l => RAENGE[Math.min(RAENGE.length - 1, Math.floor(l / 3))];
 const tagKey = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+const zahl = n => Math.round(n || 0).toLocaleString("de-DE");
+
+/* Raumschiffe – werden mit dem Level freigeschaltet ("ab" = Level, wie angezeigt) */
+const SCHIFFE = [
+    { name: "Bürsten-Jet", ab: 1, muster: ["....X.X.X....", "....X.X.X....", "...XXXXXXX...", "...XXXXXXX...", ".....XXX.....", ".....XXX.....", ".....XXX.....", ".....XXX.....", ".....XXX....."] },
+    { name: "Zahnseide-Flitzer", ab: 3, muster: [".....X.....", "....XXX....", "....XXX....", "...XXXXX...", "..XX.X.XX..", ".XXXXXXXXX.", "XX..XXX..XX", "X...X.X...X"] },
+    { name: "Fluor-Falke", ab: 6, muster: [".....X.....", "....XXX....", "X...XXX...X", "XX.XXXXX.XX", "XXXXX.XXXXX", ".XXXXXXXXX.", "..XX...XX..", "..X.....X.."] },
+    { name: "Schaum-Kreuzer", ab: 10, muster: [".....X.....", "....XXX....", "...XX.XX...", "..XXXXXXX..", "X.XXXXXXX.X", "XXXXXXXXXXX", "XXX.XXX.XXX", "X...X.X...X"] },
+    { name: "Minz-Meteor", ab: 15, muster: ["....XXX....", "...XXXXX...", "...X.X.X...", "..XXXXXXX..", ".XXXXXXXXX.", "XX.XXXXX.XX", "X..XX.XX..X", "...X...X..."] },
+    { name: "Galaxie-Zerstörer", ab: 20, muster: ["......X......", ".....XXX.....", "..X..XXX..X..", "..XX.XXX.XX..", "XXXXXXXXXXXXX", "XX.XXX.XXX.XX", "XXXXXXXXXXXXX", ".X..XX.XX..X.", ".X...X.X...X."] },
+    { name: "Sternen-Phantom", ab: 25, muster: ["X.....X.....X", "XX...XXX...XX", ".XX.XXXXX.XX.", "..XXXX.XXXX..", "...XXXXXXX...", "..XXX.X.XXX..", ".XX..XXX..XX.", "XX....X....XX"] }
+];
+const UFO = ["....XXXXX....", "..XXXXXXXXX..", ".XX.XX.XX.XX.", "XXXXXXXXXXXXX", "..XXX...XXX..", "...X.....X..."];
+const BOSSE = [
+    { name: "KARIES-KÖNIG", farbe: "#ff4757", erfolg: "👑 Karies-König besiegt", muster: ["......XXXXXXX......", "...XXXXXXXXXXXXX...", "..XXXXXXXXXXXXXXX..", ".XXXX..XXXXX..XXXX.", "XXXX....XXX....XXXX", "XXXXX..XXXXX..XXXXX", "XXXXXXXXXXXXXXXXXXX", "XXX.X.X.X.X.X.X.XXX", ".XXXXXXXXXXXXXXXXX.", "..XXX.XXXXXXX.XXX..", "..XX...XX.XX...XX..", ".XX...XX...XX...XX.", "XX...............XX"] },
+    { name: "PLAQUE-KRAKE", farbe: "#c05cff", erfolg: "🐙 Plaque-Krake besiegt", muster: ["......XXXXXXX......", "....XXXXXXXXXXX....", "...XXXXXXXXXXXXX...", "..XXX..XXXXX..XXX..", "..XX....XXX....XX..", "..XXX..XXXXX..XXX..", "..XXXXXXXXXXXXXXX..", "...XXXX.....XXXX...", "..XX.XX.XXX.XX.XX..", ".XX..XX.X.X.XX..XX.", "XX..XX..X.X..XX..XX", "X..XX..XX.XX..XX..X", "..XX...X...X...XX.."] },
+    { name: "ZAHNSTEIN-GOLEM", farbe: "#ff9f1a", erfolg: "🗿 Zahnstein-Golem besiegt", muster: ["...XXXXXXXXXXXXX...", "..XXXXXXXXXXXXXXX..", ".XXX.XXXXXXXXX.XXX.", ".XX...XXXXXXX...XX.", ".XXX.XXXXXXXXX.XXX.", ".XXXXXXXXXXXXXXXXX.", "XXXXX.X.X.X.X.XXXXX", "XXXXXXXXXXXXXXXXXXX", "XX.XXXXXXXXXXXXX.XX", "XX..XXXXXXXXXXX..XX", "....XXXX...XXXX....", "...XXXXX...XXXXX...", "...XXXX.....XXXX..."] }
+];
+const PLANETEN = [
+    { name: "Planet Mintara", ico: "🪐", farbe: "#26166a" },
+    { name: "Fluor-Nebel", ico: "🌌", farbe: "#0f3a66" },
+    { name: "Kristall-Mond", ico: "🌙", farbe: "#3b1666" },
+    { name: "Zuckerwatte-Sektor", ico: "🍭", farbe: "#5a1450" },
+    { name: "Eis-Galaxie", ico: "🧊", farbe: "#123f5c" },
+    { name: "Lava-Station", ico: "🌋", farbe: "#4d1a1a" },
+    { name: "Asteroiden-Gürtel", ico: "☄️", farbe: "#2b2b52" }
+];
+const AUFGABEN = [
+    { id: "funk", text: "Funkstille – kein einziges Störsignal", test: s => s.quatsch === 0 },
+    { id: "combo", text: "Combo x4 erreichen", test: s => s.maxCombo >= 4, live: true },
+    { id: "ufo", text: "Das Goldzahn-UFO abschießen", test: s => s.ufos >= 1, live: true },
+    { id: "dauer", text: "30 Sekunden am Stück putzen", test: s => s.amStueckMax >= 30, live: true },
+    { id: "boss", text: "Den Boss mit höchstens 1 Störsignal besiegen", test: s => !!s.bossBesiegt && s.quatsch <= 1 }
+];
+const TAGES_XP = 150;
+// Tages-Mission: jeden Tag anders, für alle Kinder gleich
+function heuteMission(){
+    const k = tagKey(new Date()); let h = 7; for (const c of k) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    return { planet: PLANETEN[h % PLANETEN.length], boss: BOSSE[Math.floor(h / 7) % BOSSE.length], aufgabe: AUFGABEN[Math.floor(h / 49) % AUFGABEN.length] };
+}
+const ERFOLGE = [
+    ["erste", "🚀 Erste Mission"], ["still", "🤐 Funkstille"], ["combo5", "⚡ Hyper-Laser (x5)"], ["ufo", "🛸 Goldzahn-UFO erwischt"],
+    ["tages", "🪐 Tages-Mission geschafft"], ["tages10", "🌟 10 Tages-Missionen"], ["team", "🤝 Erste Team-Mission"],
+    ["boss0", BOSSE[0].erfolg], ["boss1", BOSSE[1].erfolg], ["boss2", BOSSE[2].erfolg],
+    ["serie3", "📅 3 Tage am Stück"], ["serie7", "🏅 7 Tage am Stück"], ["serie30", "💎 30 Tage am Stück"],
+    ["m25", "🎖️ 25 Missionen"], ["m100", "🏆 100 Missionen"], ["lv10", "⭐ Level 10"], ["lv20", "🌠 Level 20"]
+];
 
 let laeuft = false;
 function seite(id){
     document.querySelectorAll(".seite").forEach(s => s.classList.toggle("an", s.id === id));
-    ({ start: startZeigen, eltern: elternZeigen, neuerSpieler: neuerSpielerZeigen, einrichten: () => einrichten(0) })[id]?.();
+    ({ start: startZeigen, bestenliste: () => listeZeigen(listeTab), hangar: () => hangarZeigen(hangarSpieler), eltern: elternZeigen, neuerSpieler: neuerSpielerZeigen, einrichten: () => einrichten(0) })[id]?.();
 }
 document.addEventListener("click", ev => { const z = ev.target.closest("[data-zu]"); if (z) { if (laeuft) spielEnde(false); seite(z.dataset.zu); } });
 
 /* ---------------- Sternenhimmel ---------------- */
+let HEUTE = heuteMission();
 const sc = $("#sterne"), sx = sc.getContext("2d");
 let sterne = [];
 function sterneGroesse(){ sc.width = innerWidth * devicePixelRatio; sc.height = innerHeight * devicePixelRatio; sterne = Array.from({ length: 130 }, () => ({ x: Math.random(), y: Math.random(), z: .25 + Math.random() * .75 })); }
@@ -288,22 +420,75 @@ addEventListener("resize", sterneGroesse); sterneGroesse();
 (function sterneMalen(){
     sx.fillStyle = "#0b0820"; sx.fillRect(0, 0, sc.width, sc.height);
     const g = sx.createRadialGradient(sc.width * .5, sc.height * .15, 0, sc.width * .5, sc.height * .15, sc.height * .8);
-    g.addColorStop(0, "#26166a"); g.addColorStop(1, "#0b082000"); sx.fillStyle = g; sx.fillRect(0, 0, sc.width, sc.height);
+    g.addColorStop(0, HEUTE.planet.farbe); g.addColorStop(1, "#0b082000"); sx.fillStyle = g; sx.fillRect(0, 0, sc.width, sc.height);
     for (const s of sterne) { s.y += .0006 * s.z * (laeuft ? 4 : 1); if (s.y > 1) { s.y = 0; s.x = Math.random(); } sx.fillStyle = `rgba(255,255,255,${s.z})`; const r = s.z * 1.7 * devicePixelRatio; sx.fillRect(s.x * sc.width, s.y * sc.height, r, r); }
     requestAnimationFrame(sterneMalen);
 })();
 
 /* ---------------- Start / Team ---------------- */
+const schiffCache = {};
+function schiffBildUrl(nr, farbe){ const k = nr + farbe; if (!schiffCache[k]) schiffCache[k] = pixelBild(SCHIFFE[nr].muster, farbe, 6).toDataURL(); return schiffCache[k]; }
+const soloRekord = p => (p.liste && p.liste[0] ? p.liste[0].score : 0);
+const teamRekord = () => (D.teamListe[0] ? D.teamListe[0].score : 0);
+function tagesKarte(box, geschafftFuer){
+    const M = HEUTE;
+    box.classList.toggle("geschafft", !!geschafftFuer);
+    box.innerHTML = `<div class="planet">${M.planet.ico}</div><div><div class="t1">Tages-Mission · ${esc(M.planet.name)}</div><div class="t2">${geschafftFuer ? "✅ " : "🎯 "}${esc(M.aufgabe.text)}</div><div class="t3">${geschafftFuer ? "Geschafft! +" + TAGES_XP + " XP" : "+" + TAGES_XP + " XP · Boss heute: " + M.boss.name}</div></div>`;
+}
 function startZeigen(){
+    HEUTE = heuteMission();
     D.team = D.team.filter(i => i < D.spieler.length);
-    $("#rekord").textContent = D.rekord ? "TEAM-HIGHSCORE: " + D.rekord.toLocaleString("de-DE") : "";
+    tagesKarte($("#tages"), false);
     $("#spielerListe").innerHTML = D.spieler.map((p, i) => {
         const l = levelVon(p.xp || 0), von = xpFuerLevel(l), bis = xpFuerLevel(l + 1);
-        return `<button class="sp ${D.team.includes(i) ? "an" : ""}" data-i="${i}"><span class="lvl">LV ${l + 1}</span><span class="haken">✅</span><div class="skin">${p.skin}</div><div class="name" style="color:${p.farbe}">${esc(p.name)}</div><div class="rang">${rangVon(l)}</div><div class="xpbar"><div style="width:${((p.xp || 0) - von) / (bis - von) * 100}%"></div></div></button>`;
+        return `<button class="sp ${D.team.includes(i) ? "an" : ""}" data-i="${i}"><span class="lvl">LV ${l + 1}</span><span class="haken">✅</span><img class="schiffchen" src="${schiffBildUrl(p.schiff || 0, p.farbe)}" alt=""><div class="skin" style="font-size:40px">${p.skin}</div><div class="name" style="color:${p.farbe}">${esc(p.name)}</div><div class="rang">${rangVon(l)}</div><div class="best">🏆 ${soloRekord(p) ? zahl(soloRekord(p)) : "–"}</div><div class="xpbar"><div style="width:${((p.xp || 0) - von) / (bis - von) * 100}%"></div></div></button>`;
     }).join("") + `<button class="sp neu" data-zu="neuerSpieler"><span style="font-size:30px">＋</span>Spieler</button>`;
     $("#spielerListe").querySelectorAll("[data-i]").forEach(b => b.onclick = () => { const i = +b.dataset.i; D.team = D.team.includes(i) ? D.team.filter(x => x !== i) : [...D.team, i]; speichern(); startZeigen(); });
-    $("#losKnopf").disabled = !D.team.length;
-    $("#losKnopf").textContent = D.team.length > 1 ? "▶ Team-Mission starten" : "▶ Mission starten";
+    const n = D.team.length, m = $("#modus");
+    m.hidden = !n; m.className = "modus " + (n > 1 ? "team" : "solo");
+    m.textContent = n > 1 ? "🤝 Team-Mission · zählt für die Team-Wertung" : n ? "🎯 Solo-Mission · zählt für " + D.spieler[D.team[0]].name : "";
+    $("#rekord").textContent = n > 1 ? (teamRekord() ? "TEAM-REKORD: " + zahl(teamRekord()) : "") : n ? (soloRekord(D.spieler[D.team[0]]) ? "DEIN REKORD: " + zahl(soloRekord(D.spieler[D.team[0]])) : "") : "";
+    $("#losKnopf").disabled = !n;
+    $("#losKnopf").textContent = n > 1 ? "▶ Team-Mission starten" : "▶ Solo-Mission starten";
+}
+
+/* ---------------- Bestenliste ---------------- */
+let listeTab = "team";
+function listeZeigen(tab){
+    if (tab !== "team" && !D.spieler[tab]) tab = "team";
+    listeTab = tab;
+    $("#listeTabs").innerHTML = `<button data-t="team" class="${tab === "team" ? "an" : ""}">🤝 Team</button>` + D.spieler.map((p, i) => `<button data-t="${i}" class="${tab === i ? "an" : ""}">${p.skin} ${esc(p.name)}</button>`).join("");
+    $("#listeTabs").querySelectorAll("button").forEach(b => b.onclick = () => listeZeigen(b.dataset.t === "team" ? "team" : +b.dataset.t));
+    const datum = d => new Date(d).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit" });
+    const zaehne = n => n ? "🦷".repeat(n) : "";
+    const zeilen = (liste, mitNamen) => liste.length ? liste.map((e, k) => `<div class="platz${e.d === letzterEintrag ? " neu" : ""}"><span class="nr">${k + 1}</span><span>${mitNamen ? `<b>${esc(e.namen.join(" + "))}</b><br>` : ""}<small>${datum(e.d)} ${zaehne(e.sterne)}</small></span><span class="pkt">${zahl(e.score)}</span></div>`).join("") : `<p class="dim" style="text-align:center">Noch keine ${mitNamen ? "Team-" : "Solo-"}Mission.</p>`;
+    if (tab === "team") { $("#listeInhalt").innerHTML = `<div class="dim" style="text-align:center;margin-bottom:6px">Wenn mehrere zusammen putzen</div>` + zeilen(D.teamListe, true); return; }
+    const p = D.spieler[tab], l = levelVon(p.xp || 0), hat = new Set(p.erfolge || []);
+    $("#listeInhalt").innerHTML = `<div style="text-align:center;margin-bottom:10px"><div style="font-size:44px">${p.skin}</div><b style="color:${p.farbe};font-size:20px">${esc(p.name)}</b><div class="rang" style="font-family:var(--pixel);font-weight:900;color:var(--gelb);font-size:12px">LV ${l + 1} · ${rangVon(l).toUpperCase()}</div></div>
+        <div class="zahlen"><div><b>${p.missionen || 0}</b><small>MISSIONEN</small></div><div><b>${serieVon(p)}</b><small>TAGE SERIE</small></div><div><b>${p.besteSerie || serieVon(p)}</b><small>BESTE SERIE</small></div><div><b>${p.tagesAnzahl || 0}</b><small>TAGES-MISS.</small></div></div>
+        <div class="dim" style="text-align:center;margin-bottom:4px">Solo-Bestenliste</div>${zeilen(p.liste || [], false)}
+        <div class="dim" style="text-align:center;margin:14px 0 6px">Abzeichen ${hat.size} / ${ERFOLGE.length}</div>
+        <div class="abzeichen">${ERFOLGE.map(([id, t]) => `<div class="${hat.has(id) ? "" : "zu"}">${hat.has(id) ? t : "🔒 " + t.replace(/^\S+\s/, "")}</div>`).join("")}</div>`;
+}
+let letzterEintrag = null;
+
+/* ---------------- Hangar ---------------- */
+let hangarSpieler = 0;
+function hangarZeigen(i){
+    if (!D.spieler.length) { $("#hangarTabs").innerHTML = ""; $("#hangarInfo").textContent = "Lege zuerst einen Spieler an."; $("#hangarSchiffe").innerHTML = $("#hangarFarbe").innerHTML = $("#hangarSkin").innerHTML = ""; return; }
+    if (!D.spieler[i]) i = D.team[0] ?? 0;
+    hangarSpieler = i;
+    const p = D.spieler[i], lv = levelVon(p.xp || 0) + 1;
+    $("#hangarTabs").innerHTML = D.spieler.map((q, k) => `<button data-k="${k}" class="${k === i ? "an" : ""}">${q.skin} ${esc(q.name)}</button>`).join("");
+    $("#hangarTabs").querySelectorAll("button").forEach(b => b.onclick = () => hangarZeigen(+b.dataset.k));
+    const naechstes = SCHIFFE.find(s => s.ab > lv);
+    $("#hangarInfo").innerHTML = `Level ${lv}` + (naechstes ? ` · nächstes Schiff ab Level ${naechstes.ab}` : " · alle Schiffe freigeschaltet! 🌟");
+    $("#hangarSchiffe").innerHTML = SCHIFFE.map((s, k) => { const frei = lv >= s.ab; return `<button class="schiff ${k === (p.schiff || 0) ? "an" : ""} ${frei ? "" : "zu"}" data-s="${k}" ${frei ? "" : "disabled"}>${frei ? "" : '<span class="schloss">🔒</span>'}<img src="${schiffBildUrl(k, p.farbe)}" alt=""><b>${s.name}</b><small>${frei ? (k === (p.schiff || 0) ? "AUSGEWÄHLT" : "FREI") : "AB LEVEL " + s.ab}</small></button>`; }).join("");
+    $("#hangarSchiffe").querySelectorAll("button:not([disabled])").forEach(b => b.onclick = () => { p.schiff = +b.dataset.s; speichern(); hangarZeigen(i); });
+    $("#hangarFarbe").innerHTML = FARBEN.map(f => `<button class="${f === p.farbe ? "an" : ""}" data-f="${f}"><span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:${f};box-shadow:0 0 10px ${f}"></span></button>`).join("");
+    $("#hangarFarbe").querySelectorAll("button").forEach(b => b.onclick = () => { p.farbe = b.dataset.f; speichern(); hangarZeigen(i); });
+    $("#hangarSkin").innerHTML = SKINS.map(s => `<button class="${s === p.skin ? "an" : ""}" data-s="${s}">${s}</button>`).join("");
+    $("#hangarSkin").querySelectorAll("button").forEach(b => b.onclick = () => { p.skin = b.dataset.s; speichern(); hangarZeigen(i); });
 }
 $("#losKnopf").onclick = () => {
     if (!D.team.length) return;
@@ -327,7 +512,7 @@ function neuerSpielerZeigen(){
 }
 $("#neuOk").onclick = () => {
     const name = $("#neuName").value.trim(); if (!name) { $("#neuName").focus(); return; }
-    D.spieler.push({ name, skin: neu.skin, farbe: neu.farbe, xp: 0, tage: {}, erfolge: [], missionen: 0 });
+    D.spieler.push({ name, skin: neu.skin, farbe: neu.farbe, xp: 0, tage: {}, erfolge: [], missionen: 0, liste: [], schiff: 0, tagesAnzahl: 0 });
     D.team = [...D.team, D.spieler.length - 1]; speichern(); seite("start");
 };
 
@@ -346,9 +531,10 @@ function elternInhalt(){
     wahl("#wahlTon", [["an", "an"], ["aus", "aus"]], D.ton ? "an" : "aus", v => D.ton = v === "an");
     wahl("#wahlModus", [["klang", "nach Klang (genauer)"], ["laut", "nur Lautstärke (einfacher)"]], D.modus === "laut" ? "laut" : "klang", v => D.modus = v);
     $("#strenge").value = D.strenge; $("#strenge").oninput = e => { D.strenge = +e.target.value; speichern(); };
-    $("#spielerVerwaltung").innerHTML = D.spieler.length ? D.spieler.map((p, i) => `<div class="zeile"><span style="font-weight:800;font-size:18px">${p.skin} <span style="color:${p.farbe}">${esc(p.name)}</span> <small class="dim">LV ${levelVon(p.xp || 0) + 1} · ${p.xp || 0} XP</small></span><span><button data-null="${i}">XP auf 0</button> <button data-weg="${i}">Löschen</button></span></div>`).join("") : '<p class="dim">Noch keine Spieler.</p>';
+    $("#spielerVerwaltung").innerHTML = D.spieler.length ? D.spieler.map((p, i) => `<div class="zeile"><span style="font-weight:800;font-size:18px">${p.skin} <span style="color:${p.farbe}">${esc(p.name)}</span> <small class="dim">LV ${levelVon(p.xp || 0) + 1} · ${p.xp || 0} XP</small></span><span><button data-wechsel="${i}" style="background:${p.wechsel ? "#29f0ff22" : "#ffffff10"};color:${p.wechsel ? "var(--cyan)" : "var(--dim)"}">${p.wechsel ? "🔁 im Wechsel da" : "🏠 immer da"}</button> <button data-null="${i}">Zurücksetzen</button> <button data-weg="${i}">Löschen</button></span></div>`).join("") + '<p class="dim" style="margin-top:8px">🔁 „im Wechsel da“: Tage, an denen das Kind nicht da ist, unterbrechen seine Tage-Serie nicht.</p>' : '<p class="dim">Noch keine Spieler.</p>';
     $("#spielerVerwaltung").querySelectorAll("[data-weg]").forEach(b => b.onclick = () => { const i = +b.dataset.weg; if (confirm("„" + D.spieler[i].name + "“ löschen?")) { D.spieler.splice(i, 1); D.team = D.team.filter(x => x !== i).map(x => x > i ? x - 1 : x); speichern(); elternInhalt(); } });
-    $("#spielerVerwaltung").querySelectorAll("[data-null]").forEach(b => b.onclick = () => { const p = D.spieler[+b.dataset.null]; if (confirm("XP, Kalender und Erfolge von „" + p.name + "“ zurücksetzen?")) { p.xp = 0; p.tage = {}; p.erfolge = []; p.missionen = 0; speichern(); elternInhalt(); } });
+    $("#spielerVerwaltung").querySelectorAll("[data-null]").forEach(b => b.onclick = () => { const p = D.spieler[+b.dataset.null]; if (confirm("XP, Kalender, Bestenliste und Abzeichen von „" + p.name + "“ zurücksetzen?")) { Object.assign(p, { xp: 0, tage: {}, erfolge: [], missionen: 0, liste: [], schiff: 0, tagesAnzahl: 0, besteSerie: 0 }); speichern(); elternInhalt(); } });
+    $("#spielerVerwaltung").querySelectorAll("[data-wechsel]").forEach(b => b.onclick = () => { const p = D.spieler[+b.dataset.wechsel]; p.wechsel = !p.wechsel; speichern(); elternInhalt(); });
 }
 
 /* ---------------- Mikrofon-Test (Eltern) ---------------- */
@@ -477,7 +663,6 @@ const INVADER = [
     ["....XXX....", ".XXXXXXXXX.", "XXXXXXXXXXX", "XXX..X..XXX", "XXXXXXXXXXX", "..XX...XX..", ".XX.XXX.XX.", "XX.......XX"],
     ["...XXXXX...", "..XXXXXXX..", ".XX.XXX.XX.", ".XXXXXXXXX.", "..X.XXX.X..", ".X.......X.", "X.X.....X.X", ".X.......X."]
 ];
-const BOSS = ["......XXXXXXX......", "...XXXXXXXXXXXXX...", "..XXXXXXXXXXXXXXX..", ".XXXX..XXXXX..XXXX.", "XXXX....XXX....XXXX", "XXXXX..XXXXX..XXXXX", "XXXXXXXXXXXXXXXXXXX", "XXX.X.X.X.X.X.X.XXX", ".XXXXXXXXXXXXXXXXX.", "..XXX.XXXXXXX.XXX..", "..XX...XX.XX...XX..", ".XX...XX...XX...XX.", "XX...............XX"];
 const INV_FARBEN = ["#3dff8b", "#ff3ea5", "#ffe14d", "#8b5cff", "#29f0ff", "#ff8a3d"];
 const ZONEN = [["⬆", "OBEN LINKS"], ["⬆", "OBEN RECHTS"], ["⬇", "UNTEN RECHTS"], ["⬇", "UNTEN LINKS"]];
 function pixelBild(muster, farbe, g){
@@ -491,27 +676,34 @@ function pixelBild(muster, farbe, g){
 
 let S = null, schleife = null, raf = 0, wach = null;
 const fc = $("#feld"), fx = fc.getContext("2d");
-let FW = 0, FH = 0, PX = 4, BILDER = [], BOSS_BILD = null;
+let FW = 0, FH = 0, PX = 4, BILDER = [], BOSS_BILD = null, UFO_BILD = null;
 function feldGroesse(){
     const r = devicePixelRatio || 1; FW = innerWidth; FH = innerHeight;
     fc.width = FW * r; fc.height = FH * r; fx.setTransform(r, 0, 0, r, 0, 0);
     PX = Math.max(3, Math.min(7, Math.floor(Math.min(FW / 5 / 11 / 1.6, FH / 110))));
     BILDER = INV_FARBEN.map((f, k) => pixelBild(INVADER[k % INVADER.length], f, PX));
-    BOSS_BILD = pixelBild(BOSS, "#ff4757", Math.round(PX * 2.2));
+    BOSS_BILD = pixelBild(HEUTE.boss.muster, HEUTE.boss.farbe, Math.round(PX * 2.2));
+    UFO_BILD = pixelBild(UFO, "#ffd23d", Math.max(3, PX - 1));
+    if (S) S.kanonen.forEach(k => k.bild = pixelBild(SCHIFFE[k.p.schiff || 0].muster, k.p.farbe, Math.max(4, PX + 1)));
 }
 addEventListener("resize", () => { if (laeuft) feldGroesse(); });
 
 async function spielStart(){
     try { await mikrofonAn(); } catch (e) { alert(e.message || "Kein Zugriff aufs Mikrofon – bitte im Browser erlauben."); return; }
     try { wach = await navigator.wakeLock?.request("screen"); } catch (e) {}
-    seite("spiel"); feldGroesse(); grund = D.kalib ? D.kalib.still : null;
+    HEUTE = heuteMission();
+    seite("spiel"); grund = D.kalib ? D.kalib.still : null;
     const team = D.team.map(i => D.spieler[i]);
-    S = { team, putzzeit: 0, sektor: -1, score: 0, combo: 1, comboZeit: 0, maxCombo: 1, kills: 0, quatsch: 0, quatschIn: 0, stillSeit: 0, zustand: "still",
+    const proSek = D.dauer / 4;
+    S = { team, solo: team.length === 1, ufos: 0, ufo: null, amStueck: 0, amStueckMax: 0, tagesLive: false,
+          ufoPlan: [0, 1, 2].map(n => (n + .3 + Math.random() * .4) * proSek), ufoNr: 0, putzzeit: 0, sektor: -1, score: 0, combo: 1, comboZeit: 0, maxCombo: 1, kills: 0, quatsch: 0, quatschIn: 0, stillSeit: 0, zustand: "still",
           verlauf: [], inv: [], schuesse: [], teile: [], boss: null, wellenX: 0, wellenY: 0, wellenDir: 1, feuerTakt: 0, schussNr: 0,
           kanonen: team.map((p, k) => ({ p, x: (k + 1) / (team.length + 1), feuer: 0 })) };
+    feldGroesse();
     $("#hudScore").textContent = "0"; $("#hudCombo").textContent = "x1";
     laeuft = true;
     sektorStarten(0);
+    setTimeout(() => { if (laeuft === true && S) meldung("TAGES-MISSION<br><span style='font-size:.42em'>" + esc(HEUTE.aufgabe.text) + "</span>", "#ffe14d"); }, 1700);
     status("still", "🎯", "Bürsten an – Feuer frei!");
     let letzte = performance.now();
     schleife = setInterval(() => {
@@ -540,7 +732,8 @@ function sektorStarten(nr){
     if (nr === 3) {
         S.inv = [];
         S.boss = { hp: proSektor * PRO_SEKUNDE, max: proSektor * PRO_SEKUNDE, x: .5, y: .3, t: 0, treffer: 0 };
-        meldung("⚠ BOSS ⚠<br><span style='font-size:.5em'>KARIES-KÖNIG</span>", "#ff4757");
+        S.ufo = null;
+        meldung("⚠ BOSS ⚠<br><span style='font-size:.5em'>" + HEUTE.boss.name + "</span>", HEUTE.boss.farbe);
     } else {
         const anzahl = 15, hp = proSektor * PRO_SEKUNDE / anzahl;
         S.inv = [];
@@ -562,8 +755,10 @@ function logik(z, dt){
     const proSektor = D.dauer / 4;
     if (z === "putzen") {
         S.putzzeit += dt; S.stillSeit = 0; S.comboZeit += dt;
+        S.amStueck += dt; S.amStueckMax = Math.max(S.amStueckMax, S.amStueck);
+        if (S.ufoNr < 3 && S.sektor < 3 && S.putzzeit >= S.ufoPlan[S.ufoNr]) { S.ufoNr++; if (!S.ufo) ufoStarten(); }
         const neueCombo = S.comboZeit > 24 ? 5 : S.comboZeit > 16 ? 4 : S.comboZeit > 10 ? 3 : S.comboZeit > 5 ? 2 : 1;
-        if (neueCombo > S.combo) { S.combo = neueCombo; S.maxCombo = Math.max(S.maxCombo, S.combo); $("#hudCombo").textContent = "x" + S.combo; meldung("COMBO x" + S.combo + "!", "#ff3ea5"); }
+        if (neueCombo > S.combo) { S.combo = neueCombo; S.maxCombo = Math.max(S.maxCombo, S.combo); $("#hudCombo").textContent = "x" + S.combo; meldung("COMBO x" + S.combo + "!" + (S.combo === 3 ? "<br><span style='font-size:.5em'>DOPPEL-LASER</span>" : S.combo === 5 ? "<br><span style='font-size:.5em'>HYPER-LASER</span>" : ""), "#ff3ea5"); }
         S.feuerTakt += dt * PRO_SEKUNDE;
         while (S.feuerTakt >= 1) { S.feuerTakt -= 1; feuern(); }
         if (S.zustand !== "putzen") status("putzen", "🪥", "Feuer! Weiterputzen!");
@@ -572,19 +767,27 @@ function logik(z, dt){
     } else if (z === "quatschen") {
         S.quatschIn += dt;
         if (S.zustand !== "quatschen") status("quatschen", "📡", "Störsignal! Nicht quatschen!");
-        if (S.quatschIn >= 1.4) { S.quatschIn = 0; stoersignal(); }
+        if (S.quatschIn >= 1.4) { S.quatschIn = 0; S.amStueck = 0; stoersignal(); }
     } else {
         S.stillSeit += dt; S.quatschIn = Math.max(0, S.quatschIn - dt);
         if (S.stillSeit > 2.5) {
             if (S.zustand !== "still") status("still", "⚠", "Feuer aus – weiterputzen!");
             if (S.stillSeit > 4 && S.combo > 1) { S.combo = 1; S.comboZeit = 0; $("#hudCombo").textContent = "x1"; }
+            S.amStueck = 0;
         }
     }
+    if (!S.tagesLive && HEUTE.aufgabe.live && HEUTE.aufgabe.test(S)) { S.tagesLive = true; setTimeout(() => S && meldung("TAGES-MISSION<br>GESCHAFFT! ✅", "#3dff8b"), 900); piep(880, .15); }
     const rest = Math.max(0, D.dauer - S.putzzeit);
     $("#hudZeit").textContent = Math.floor(rest / 60) + ":" + String(Math.floor(rest % 60)).padStart(2, "0");
     $("#zeitbar").style.width = (S.putzzeit / D.dauer * 100) + "%";
 }
 function kanonenY(){ return FH - 200; }
+function ufoY(){ const bh = BILDER[0].height; return Math.min(kanonenY() - 90, 150 + S.wellenY + bh * 3.3 + 40); }
+function ufoStarten(){
+    const links = Math.random() < .5;
+    S.ufo = { x: links ? -.12 : 1.12, dir: links ? 1 : -1, hp: 8, treffer: 0, t: 0 };
+    meldung("🛸 GOLDZAHN-UFO!", "#ffd23d"); piep(1200, .1);
+}
 function feuern(){
     const k = S.kanonen[(S.schussNr++) % S.kanonen.length];
     const kx = k.x * FW, ky = kanonenY() - 24;
@@ -596,14 +799,24 @@ function feuern(){
         const v = lebend[0], p = invPos(v); ziel = { v, x: p.x, y: p.y };
     }
     k.feuer = .12;
-    S.schuesse.push({ x: kx, y: ky, zx: ziel.x, zy: ziel.y, t: 0, ziel, farbe: k.p.farbe });
+    const stufe = S.combo >= 5 ? 2 : S.combo >= 3 ? 1 : 0;
+    S.schuesse.push({ x: kx, y: ky, zx: ziel.x, zy: ziel.y, t: 0, ziel, farbe: k.p.farbe, stufe });
+    // Zusatzschuss aufs UFO (zählt nicht zur Putzzeit der Welle)
+    if (S.ufo && S.ufo.x > .05 && S.ufo.x < .95) {
+        const u = S.kanonen[(S.schussNr + 1) % S.kanonen.length];
+        S.schuesse.push({ x: u.x * FW, y: ky, zx: S.ufo.x * FW + S.ufo.dir * 30, zy: ufoY(), t: 0, ziel: { ufo: true }, farbe: "#ffd23d", stufe: 0 });
+    }
 }
 function treffer(s){
     const z = s.ziel;
-    if (z.boss) {
+    if (z.ufo) {
+        if (!S.ufo) return;
+        S.ufo.hp -= 1; S.ufo.treffer = .1; funken(s.zx, s.zy, "#ffd23d", 5);
+        if (S.ufo.hp <= 0) { explosion(S.ufo.x * FW, ufoY(), "#ffd23d", 70); S.score += 500 * S.combo; S.ufos++; S.ufo = null; meldung("UFO ABGESCHOSSEN!<br><span style='font-size:.5em'>+" + zahl(500 * S.combo) + "</span>", "#ffd23d"); knall(.5); }
+    } else if (z.boss) {
         if (!S.boss) return;
-        S.boss.hp -= 1; S.boss.treffer = .1; S.score += 15 * S.combo; funken(s.zx, s.zy, "#ff4757", 6);
-        if (S.boss.hp <= 0) { explosion(S.boss.x * FW, S.boss.y * FH, "#ff4757", 120); explosion(S.boss.x * FW, S.boss.y * FH, "#ffe14d", 60); S.score += 1000 * S.combo; S.kills++; S.bossBesiegt = true; S.boss = null; meldung("BOSS BESIEGT!", "#ffe14d"); knall(.7); }
+        S.boss.hp -= 1; S.boss.treffer = .1; S.score += 15 * S.combo; funken(s.zx, s.zy, HEUTE.boss.farbe, 6);
+        if (S.boss.hp <= 0) { explosion(S.boss.x * FW, S.boss.y * FH, HEUTE.boss.farbe, 120); explosion(S.boss.x * FW, S.boss.y * FH, "#ffe14d", 60); S.score += 1000 * S.combo; S.kills++; S.bossBesiegt = true; S.boss = null; meldung("BOSS BESIEGT!", "#ffe14d"); knall(.7); }
     } else if (z.v && z.v.lebt) {
         z.v.hp -= 1; z.v.treffer = .1; funken(s.zx, s.zy, INV_FARBEN[z.v.bild], 4);
         if (z.v.hp <= .001) { z.v.lebt = false; S.kills++; S.score += 100 * S.combo; explosion(s.zx, s.zy, INV_FARBEN[z.v.bild], 30); knall(.25); }
@@ -655,14 +868,30 @@ function zeichnen(dt){
         fx.drawImage(BOSS_BILD, -BOSS_BILD.width / 2, -BOSS_BILD.height / 2); fx.globalAlpha = 1; fx.restore();
         const bw = Math.min(FW * .7, 360), x0 = (FW - bw) / 2, y0 = B.y * FH + BOSS_BILD.height / 2 + 24;
         fx.fillStyle = "#ffffff22"; fx.fillRect(x0, y0, bw, 10);
-        fx.fillStyle = "#ff4757"; fx.shadowColor = "#ff4757"; fx.shadowBlur = 12; fx.fillRect(x0, y0, bw * Math.max(0, B.hp / B.max), 10); fx.shadowBlur = 0;
-        fx.font = "900 12px 'Courier New', monospace"; fx.fillStyle = "#ffb3ba"; fx.textAlign = "center"; fx.fillText("KARIES-KÖNIG", FW / 2, y0 - 6);
+        fx.fillStyle = HEUTE.boss.farbe; fx.shadowColor = HEUTE.boss.farbe; fx.shadowBlur = 12; fx.fillRect(x0, y0, bw * Math.max(0, B.hp / B.max), 10); fx.shadowBlur = 0;
+        fx.font = "900 12px 'Courier New', monospace"; fx.fillStyle = "#ffffffcc"; fx.textAlign = "center"; fx.fillText(HEUTE.boss.name, FW / 2, y0 - 6);
+    }
+    if (S.ufo) {
+        const U = S.ufo; U.t += dt; U.x += U.dir * dt * .16;
+        if (U.x < -.15 || U.x > 1.15) S.ufo = null;
+        else {
+            const ux = U.x * FW, uy = ufoY() + Math.sin(U.t * 5) * 4;
+            fx.save(); fx.translate(ux, uy);
+            if (U.treffer > 0) { U.treffer -= dt; fx.globalAlpha = .6; fx.translate((Math.random() - .5) * 5, 0); }
+            fx.drawImage(UFO_BILD, -UFO_BILD.width / 2, -UFO_BILD.height / 2);
+            fx.globalAlpha = .35 + Math.sin(U.t * 12) * .25; fx.fillStyle = "#ffd23d"; fx.fillRect(-UFO_BILD.width * .3, UFO_BILD.height / 2 - 2, UFO_BILD.width * .6, 3);
+            fx.restore();
+        }
     }
     for (let i = S.schuesse.length - 1; i >= 0; i--) {
         const s = S.schuesse[i]; s.t += dt * 4.5;
         const t1 = Math.min(1, s.t), t2 = Math.max(0, s.t - .2);
-        fx.strokeStyle = s.farbe; fx.lineWidth = 4; fx.shadowColor = s.farbe; fx.shadowBlur = 14; fx.lineCap = "round";
-        fx.beginPath(); fx.moveTo(s.x + (s.zx - s.x) * t2, s.y + (s.zy - s.y) * t2); fx.lineTo(s.x + (s.zx - s.x) * t1, s.y + (s.zy - s.y) * t1); fx.stroke(); fx.shadowBlur = 0;
+        fx.strokeStyle = s.farbe; fx.lineWidth = s.stufe === 2 ? 7 : 4; fx.shadowColor = s.farbe; fx.shadowBlur = s.stufe === 2 ? 24 : 14; fx.lineCap = "round";
+        const strahl = (ox, w, farbe) => { fx.strokeStyle = farbe; fx.lineWidth = w; fx.beginPath(); fx.moveTo(s.x + ox + (s.zx - s.x - ox) * t2, s.y + (s.zy - s.y) * t2); fx.lineTo(s.x + ox + (s.zx - s.x - ox) * t1, s.y + (s.zy - s.y) * t1); fx.stroke(); };
+        if (s.stufe >= 1) { strahl(-12, s.stufe === 2 ? 6 : 4, s.farbe); strahl(12, s.stufe === 2 ? 6 : 4, s.farbe); }
+        if (s.stufe !== 1) strahl(0, s.stufe === 2 ? 8 : 4, s.farbe);
+        if (s.stufe === 2) { fx.shadowBlur = 0; strahl(0, 3, "#ffffff"); }
+        fx.shadowBlur = 0;
         if (s.t >= 1) { S.schuesse.splice(i, 1); treffer(s); }
     }
     for (let i = S.teile.length - 1; i >= 0; i--) {
@@ -677,11 +906,9 @@ function zeichnen(dt){
         const kx = k.x * FW;
         if (k.feuer > 0) k.feuer -= dt;
         fx.save(); fx.translate(kx, ky);
-        fx.shadowColor = k.p.farbe; fx.shadowBlur = k.feuer > 0 ? 28 : 12; fx.fillStyle = k.p.farbe;
-        fx.fillRect(-7, 0, 14, 46);
-        fx.fillRect(-15, -16, 30, 18);
-        fx.fillStyle = "#ffffff"; for (let j = -11; j <= 11; j += 5.5) fx.fillRect(j - 1.5, -27 - (k.feuer > 0 ? 3 : 0), 3, 12);
-        fx.shadowBlur = 0;
+        const sb = k.bild, wipp = Math.sin(performance.now() / 300 + k.x * 9) * 2;
+        if (S.combo >= 3) { fx.globalAlpha = .5 + Math.random() * .3; fx.fillStyle = S.combo >= 5 ? "#ffffff" : k.p.farbe; fx.shadowColor = k.p.farbe; fx.shadowBlur = 18; fx.fillRect(-4, sb.height / 2 - 4 + wipp, 8, 14 + Math.random() * 12); fx.shadowBlur = 0; fx.globalAlpha = 1; }
+        fx.drawImage(sb, -sb.width / 2, -sb.height / 2 + wipp - (k.feuer > 0 ? 3 : 0));
         fx.font = "30px system-ui, sans-serif"; fx.textAlign = "center"; fx.fillText(k.p.skin, 0, 84);
         fx.font = "900 12px 'Courier New', monospace"; fx.fillStyle = k.p.farbe; fx.fillText(k.p.name.toUpperCase(), 0, 102);
         fx.restore();
@@ -697,48 +924,80 @@ function spielEnde(geschafft){
     if (!geschafft) { S = null; return; }
     const sterne = S.quatsch <= 1 ? 3 : S.quatsch <= 4 ? 2 : 1;
     S.score += sterne === 3 ? 500 : sterne === 2 ? 200 : 0;
-    const score = Math.round(S.score);
-    const rekord = score > (D.rekord || 0); if (rekord) D.rekord = score;
+    const tages = HEUTE.aufgabe.test(S);
+    if (tages) S.score += 300;
+    const score = Math.round(S.score), jetzt = Date.now();
+    letzterEintrag = jetzt;
+    // Wertung: allein → Solo-Liste des Kindes, zu mehreren → Team-Liste
+    const eintragen = (liste, e) => { liste.push(e); liste.sort((x, y) => y.score - x.score); liste.splice(10); return liste.indexOf(e); };
+    let platz, rekord;
+    if (S.solo) { const p = S.team[0]; p.liste = p.liste || []; platz = eintragen(p.liste, { score, d: jetzt, sterne }); }
+    else platz = eintragen(D.teamListe, { score, d: jetzt, sterne, namen: S.team.map(p => p.name) });
+    rekord = platz === 0;
     const heute = new Date(), tag = tagKey(heute), z = heute.getHours() < 14 ? "m" : "a";
-    const xp = 100 + sterne * 50 + Math.round(score / 40);
-    const zeilen = [], neueErfolge = [];
+    const xp = Math.round((100 + sterne * 40 + score / 120 + (tages ? TAGES_XP : 0)) * (S.solo ? 1 : 1.1));
+    const zeilen = [], neueErfolge = [], frei = [];
     for (const p of S.team) {
         const lvVorher = levelVon(p.xp || 0);
         p.xp = (p.xp || 0) + xp; p.missionen = (p.missionen || 0) + 1;
+        if (tages) p.tagesAnzahl = (p.tagesAnzahl || 0) + 1;
         p.tage = p.tage || {}; p.tage[tag] = p.tage[tag] || {}; p.tage[tag][z] = Math.max(p.tage[tag][z] || 0, sterne);
-        Object.keys(p.tage).sort().slice(0, -90).forEach(k => delete p.tage[k]);
+        Object.keys(p.tage).sort().slice(0, -120).forEach(k => delete p.tage[k]);
+        const serie = serieVon(p); p.besteSerie = Math.max(p.besteSerie || 0, serie);
         const lv = levelVon(p.xp);
         p.erfolge = p.erfolge || [];
-        const pruefe = (id, text, bed) => { if (bed && !p.erfolge.includes(id)) { p.erfolge.push(id); neueErfolge.push(text); } };
-        pruefe("erste", "🚀 Erste Mission", true);
-        pruefe("still", "🤐 Funkstille – kein Störsignal", S.quatsch === 0);
-        pruefe("boss", "👑 Karies-König besiegt", !!S.bossBesiegt);
-        pruefe("combo5", "🔥 Combo x5", S.maxCombo >= 5);
-        pruefe("serie3", "📅 3 Tage am Stück", serieVon(p) >= 3);
-        pruefe("serie7", "🏅 7 Tage am Stück", serieVon(p) >= 7);
-        pruefe("m25", "🎖️ 25 Missionen", p.missionen >= 25);
+        const pruefe = (id, bed) => { if (bed && !p.erfolge.includes(id)) { p.erfolge.push(id); neueErfolge.push(ERFOLGE.find(e => e[0] === id)[1]); } };
+        pruefe("erste", true);
+        pruefe("still", S.quatsch === 0);
+        pruefe("combo5", S.maxCombo >= 5);
+        pruefe("ufo", S.ufos > 0);
+        pruefe("tages", tages);
+        pruefe("tages10", p.tagesAnzahl >= 10);
+        pruefe("team", !S.solo);
+        pruefe("boss" + BOSSE.indexOf(HEUTE.boss), !!S.bossBesiegt);
+        pruefe("serie3", serie >= 3); pruefe("serie7", serie >= 7); pruefe("serie30", serie >= 30);
+        pruefe("m25", p.missionen >= 25); pruefe("m100", p.missionen >= 100);
+        pruefe("lv10", lv + 1 >= 10); pruefe("lv20", lv + 1 >= 20);
+        SCHIFFE.forEach((sch, k) => { if (sch.ab > lvVorher + 1 && sch.ab <= lv + 1) frei.push({ p, k }); });
         zeilen.push(`<div class="xp-zeile"><span class="skin">${p.skin}</span><div class="mitte"><b style="color:${p.farbe}">${esc(p.name)}</b> <span class="rang">LV ${lv + 1} · ${rangVon(lv).toUpperCase()}</span>${lv > lvVorher ? ` <span class="lvlup">LEVEL UP!</span>` : ""}<div class="xpbar"><div style="width:${(p.xp - xpFuerLevel(lv)) / (xpFuerLevel(lv + 1) - xpFuerLevel(lv)) * 100}%"></div></div></div><span class="plus">+${xp} XP</span></div>`);
     }
     speichern();
     const st = S; S = null;
     seite("ende");
     $("#endeTitel").textContent = sterne === 3 ? "PERFEKTE MISSION" : sterne === 2 ? "MISSION ERFÜLLT" : "GESCHAFFT";
-    $("#endeRekord").hidden = !rekord;
+    $("#endeModus").className = "modus " + (st.solo ? "solo" : "team");
+    $("#endeModus").textContent = st.solo ? "🎯 Solo · " + st.team[0].name : "🤝 Team · " + st.team.map(p => p.name).join(" + ");
+    $("#endeRekord").hidden = platz < 0 || platz > 2;
+    $("#endeRekord").textContent = rekord ? (st.solo ? "★ NEUER SOLO-REKORD ★" : "★ NEUER TEAM-REKORD ★") : "★ PLATZ " + (platz + 1) + " IN DER " + (st.solo ? "SOLO" : "TEAM") + "-BESTENLISTE ★";
     zaehlen($("#endePunkte"), score);
     $("#endeSterne").innerHTML = [0, 1, 2].map(k => `<span class="${k < sterne ? "" : "aus"}" style="animation-delay:${.3 + k * .25}s">🦷</span>`).join("");
-    $("#stInv").textContent = st.kills; $("#stCombo").textContent = "x" + st.maxCombo; $("#stQuatsch").textContent = st.quatsch;
+    $("#stInv").textContent = st.kills + (st.ufos ? " +🛸" : ""); $("#stCombo").textContent = "x" + st.maxCombo; $("#stQuatsch").textContent = st.quatsch;
+    tagesKarte($("#endeTages"), tages);
+    if (!tages) $("#endeTages").querySelector(".t3").textContent = "Diesmal nicht geschafft – nächste Mission!";
     $("#endeSpieler").innerHTML = zeilen.join("");
     $("#endeErfolge").innerHTML = [...new Set(neueErfolge)].map(t => `<span class="erfolg">${t}</span>`).join("");
-    wocheZeigen(st.team[0]);
+    $("#endeFrei").innerHTML = frei.map(f => `<div class="freigeschaltet"><img src="${schiffBildUrl(f.k, f.p.farbe)}" alt=""><span>🔓 ${esc(f.p.name)}: neues Schiff <b>${SCHIFFE[f.k].name}</b> – im Hangar auswählen!</span></div>`).join("");
+    $("#wochen").innerHTML = st.team.map(p => wocheHtml(p, st.team.length > 1)).join("");
     jingle(sterne);
 }
-function serieVon(p){ let n = 0; const d = new Date(); for (;;) { if (p.tage && p.tage[tagKey(d)]) { n++; d.setDate(d.getDate() - 1); } else break; } return n; }
-function wocheZeigen(p){
+function serieVon(p){
+    // Kinder „im Wechsel“: Tage ohne Mission werden übersprungen (bis zu 3 Wochen am Stück)
+    let n = 0, luecke = 0; const d = new Date();
+    for (let i = 0; i < 400; i++) {
+        if (p.tage && p.tage[tagKey(d)]) { n++; luecke = 0; }
+        else if (i === 0) {}                       // heute noch nicht geputzt – Serie läuft noch
+        else if (p.wechsel && ++luecke <= 21) {}
+        else break;
+        d.setDate(d.getDate() - 1);
+    }
+    return n;
+}
+function wocheHtml(p, mitName){
     const heute = new Date(), mo = new Date(heute); mo.setDate(heute.getDate() - ((heute.getDay() + 6) % 7));
     const tage = Array.from({ length: 7 }, (_, k) => { const d = new Date(mo); d.setDate(mo.getDate() + k); return d; });
     const zelle = (d, z) => { const w = (p.tage || {})[tagKey(d)]?.[z]; return `<div class="z${tagKey(d) === tagKey(heute) ? " heute" : ""}">${w ? (w === 3 ? "🦷" : "✓") : ""}</div>`; };
-    $("#woche").innerHTML = `<span></span>${["MO", "DI", "MI", "DO", "FR", "SA", "SO"].map(t => `<span>${t}</span>`).join("")}<span>☀️</span>${tage.map(d => zelle(d, "m")).join("")}<span>🌙</span>${tage.map(d => zelle(d, "a")).join("")}`;
-    const s = serieVon(p); $("#serie").textContent = s > 1 ? "🔥 " + s + " Tage Serie" : "";
+    const s = serieVon(p);
+    return `<div class="zeile woche-name"><span>${mitName ? p.skin + " " + esc(p.name) : ""}</span><span class="dim">${s > 1 ? "🔥 " + s + " Tage Serie" : ""}</span></div><div class="woche"><span></span>${["MO", "DI", "MI", "DO", "FR", "SA", "SO"].map(t => `<span>${t}</span>`).join("")}<span>☀️</span>${tage.map(d => zelle(d, "m")).join("")}<span>🌙</span>${tage.map(d => zelle(d, "a")).join("")}</div>`;
 }
 function zaehlen(el, ziel){ const t0 = performance.now(); (function f(){ const p = Math.min(1, (performance.now() - t0) / 1200); el.textContent = Math.round(ziel * (1 - Math.pow(1 - p, 3))).toLocaleString("de-DE"); if (p < 1) requestAnimationFrame(f); })(); }
 
