@@ -39,8 +39,12 @@ button{ font:inherit; border:0; cursor:pointer; color:inherit; }
 .icon-knopf{ position:absolute; top:max(12px, env(safe-area-inset-top)); width:44px; height:44px; border-radius:8px; background:#ffffff14; box-shadow:inset 0 0 0 2px #ffffff26; font-size:20px; }
 .panel{ background:linear-gradient(#1a1245ee,#120c33ee); border-radius:10px; padding:16px; width:min(100%,520px); box-shadow:inset 0 0 0 2px #8b5cff55, 0 0 30px #8b5cff22; }
 .dim{ color:var(--dim); font-size:14px; line-height:1.45; }
-#installKnopf{ display:none; margin-top:14px; }
-#installKnopf.an{ display:inline-block; }
+#installKnopf{ margin-top:14px; }
+#installKnopf.weg{ display:none; }
+.hilfe{ text-align:left; }
+.hilfe ol{ margin:6px 0 0; padding-left:22px; line-height:1.5; font-size:15px; }
+.hilfe li{ margin-bottom:6px; }
+.hilfe .k{ display:inline-block; background:#ffffff1a; border-radius:5px; padding:0 6px; font-weight:800; }
 .fuss{ margin-top:auto; padding-top:14px; color:#6f75a8; font-size:11.5px; text-align:center; }
 
 /* Spieler-Auswahl */
@@ -319,6 +323,27 @@ input[type=range]{ width:100%; accent-color:var(--cyan); }
         <div class="skins" id="hangarSkin"></div>
     </div>
     <div style="margin:16px 0 6px"><button class="knopf cyan klein" data-zu="start">✔ Fertig</button></div>
+</section>
+
+<!-- APP INSTALLIEREN (Anleitung) -->
+<section class="seite" id="installHilfe">
+    <div class="titel" style="margin-top:28px">📲 Als App installieren</div>
+    <div class="panel hilfe">
+        <b>In Chrome (Android)</b>
+        <ol>
+            <li>Oben rechts auf <span class="k">⋮</span> tippen.</li>
+            <li><span class="k">App installieren</span> oder <span class="k">Zum Startbildschirm hinzufügen</span> wählen.</li>
+            <li>Bei der Nachfrage <span class="k">Installieren</span> antippen.</li>
+        </ol>
+        <b style="display:block;margin-top:12px">In Samsung Internet</b>
+        <ol>
+            <li>Unten rechts auf <span class="k">≡</span> tippen.</li>
+            <li><span class="k">Seite hinzufügen zu</span> → <span class="k">Startbildschirm</span> wählen.</li>
+        </ol>
+        <p class="dim" style="margin-top:12px">Danach liegt „Plaque Invaders“ mit eigenem Symbol bei den Apps. Immer über dieses Symbol starten.</p>
+        <p class="dim">Steht im Menü nur „Öffnen“ oder „App öffnen“? Dann ist die App schon installiert.</p>
+    </div>
+    <div style="margin:16px 0 6px"><button class="knopf cyan klein" data-zu="start">◀ Zurück</button></div>
 </section>
 
 <!-- EINRICHTEN -->
@@ -1019,14 +1044,17 @@ document.addEventListener("visibilitychange", () => { if (document.hidden && lae
 
 /* ---------- Als App installieren (Android: Chrome bietet das an) ---------- */
 let installAngebot = null;
-window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installAngebot = e; $("#installKnopf").classList.add("an"); });
+const alsAppGeoeffnet = () => matchMedia("(display-mode: fullscreen), (display-mode: standalone)").matches || navigator.standalone === true;
+if (alsAppGeoeffnet()) $("#installKnopf").classList.add("weg");
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installAngebot = e; });
 $("#installKnopf").addEventListener("click", async () => {
-    if (!installAngebot) return;
+    if (!installAngebot) { seite("installHilfe"); return; }   // Browser bietet es nicht direkt an → Anleitung
     installAngebot.prompt();
-    try { await installAngebot.userChoice; } catch (e) {}
-    installAngebot = null; $("#installKnopf").classList.remove("an");
+    let ok = false; try { ok = (await installAngebot.userChoice).outcome === "accepted"; } catch (e) {}
+    installAngebot = null;
+    if (ok) $("#installKnopf").classList.add("weg");
 });
-window.addEventListener("appinstalled", () => { installAngebot = null; $("#installKnopf").classList.remove("an"); });
+window.addEventListener("appinstalled", () => { installAngebot = null; $("#installKnopf").classList.add("weg"); });
 if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js", { scope: "./" }).catch(() => {}));
 
 seite("start");
