@@ -9,7 +9,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Lernbasis">
-<link rel="manifest" href="manifest.php">
+<link rel="manifest" href="manifest.php" id="mf">
+<script>try{if(/[?&]eltern=1/.test(location.search)||localStorage.getItem("lb_mode")==="eltern"){document.getElementById("mf").href="eltern-manifest.php";document.title="Lernbasis Eltern"}}catch(e){}</script>
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
@@ -636,7 +637,7 @@ function defState(){return {v:1,updated:0,name:'Henry',xp:0,coins:0,avatar:'🙂
 function fix(o){const d=defState();if(o&&o.miss)Object.keys(o.miss).forEach(k=>{if(/^\d+ · \d+ − \d+ : \d+ =#/.test(k))delete o.miss[k]});o=Object.assign(d,o||{});o.set=Object.assign(defState().set,o.set||{});if(!Array.isArray(o.set.keys)||o.set.keys.length!==5||o.set.keys.join()==='92,81,67,50,30')o.set.keys=[93,75,60,40,20];['days','tp','cards','miss','done','badges'].forEach(k=>{if(!o[k]||typeof o[k]!=='object')o[k]={}});['tests','custom','redeem','rewards'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[]});o.st=Object.assign(defState().st,o.st||{});o.owned=Object.assign(defState().owned,o.owned||{});return o}
 let S=(()=>{try{const j=JSON.parse(lsGet(LS));if(j)return fix(j)}catch(e){}return defState()})();
 let pushT=null;
-function save(){checkBadges();const dk=Object.keys(S.done);if(dk.length>4000)dk.slice(0,dk.length-4000).forEach(k=>delete S.done[k]);S.updated=Date.now();lsSet(LS,JSON.stringify(S));if(SYNC.on&&SYNC.pin){clearTimeout(pushT);pushT=setTimeout(push,1200)}}
+function save(){if(PREVIEW)return;checkBadges();const dk=Object.keys(S.done);if(dk.length>4000)dk.slice(0,dk.length-4000).forEach(k=>delete S.done[k]);S.updated=Date.now();lsSet(LS,JSON.stringify(S));if(SYNC.on&&SYNC.pin){clearTimeout(pushT);pushT=setTimeout(push,1200)}}
 
 /* ---------- Sync mit api.php (nur auf dem Server) ---------- */
 const SYNC={on:false,pin:lsGet(LSPIN),st:'lokal'};
@@ -749,16 +750,18 @@ function render(){applyTheme();const v=VIEWS[view.n]||VIEWS.home;$('#app').inner
 const VIEWS={};
 /* ---------- Start ---------- */
 VIEWS.home=()=>{
- if(typeof ELTERN_OK!=='undefined')ELTERN_OK=false;
+ if(MODE==='eltern'&&!PREVIEW)return VIEWS.parent();
+ ELTERN_OK=false;
  document.documentElement.style.setProperty('--sub',(THEMES[S.theme]||THEMES.ozean).acc);
  const L=lvl(),dToday=S.days[today()]||0,goal=S.set.goal||60;
  const due=allTopics().flatMap(cardsOf).filter(isDue).length;
  const nMiss=Object.keys(S.miss).length;
  const sync=SYNC.on?(SYNC.st==='ok'?'☁️ synchronisiert':'☁️ offline'):'📱 auf diesem Gerät';
  return `<div class="top"><div class="ttl">Lernbasis</div><span class="pill">${sync}</span><button class="ib" onclick="go('eltern')" aria-label="Eltern">⚙️</button></div>
+ ${PREVIEW?`<div class="box" style="border-left-color:#14b8a6"><b>👀 Vorschau für Eltern</b><div class="small mut">Du siehst die App wie ${esc(S.name)}. Du kannst alles ausprobieren – es wird nichts gespeichert. Unter jedem Thema findest du „Aufgaben & Lösungen“.</div><button class="btn" onclick="endPreview()">← Zurück zur Eltern-App</button></div>`:''}
  <div class="hero"><div class="row"><button class="lvl av" onclick="go('shop')">${S.avatar||'🙂'}<i>${L.l}</i></button><div style="flex:1"><div style="font-size:1.25rem;font-weight:800">Hallo ${esc(S.name)}! 👋</div><div class="small" style="opacity:.85">Level ${L.l} · ${L.title} · ${L.x}/${L.need} XP</div><div class="bar"><i style="width:${Math.round(L.x/L.need*100)}%"></i></div></div></div>
- <div class="stats"><span>🔥 ${streak()} ${streak()===1?'Tag':'Tage'} in Folge</span><span>🎯 Heute ${dToday}/${goal} XP${dToday>=goal?' ✅':''}</span><button onclick="go('shop')">🪙 ${S.coins||0}</button><button onclick="go('badges')">🏅 ${Object.keys(S.badges).length}/${BADGES.length}</button></div></div>${SYNC.on&&SYNC.pin&&lsGet('lb_push')!=='1'&&'PushManager' in window?`<button class="item" style="margin-bottom:12px" onclick="pushEnable()"><span style="font-size:1.5rem">🔔</span><div class="t"><b>Tägliche Erinnerung einschalten</b><small>Damit deine Serie nicht reißt</small></div>›</button>`:''}
- ${typeof FOCUS!=='undefined'&&today()<=FOCUS.until?`<div class="box" style="border-left-color:#f43f5e"><h3 style="color:#fda4af">📌 ${FOCUS.title}</h3><div class="small mut" style="margin-bottom:8px">${FOCUS.until===today()?'Heute':FOCUS.until===today(1)?'Morgen':'Bald'} – so bist du vorbereitet:</div><div class="list">${FOCUS.ids.map(topic).filter(Boolean).map((t,i)=>`<button class="item" onclick="go('topic',{id:'${t.id}'})"><b style="width:22px">${i+1}.</b><div class="t">${esc(t.title)}<small>${topicScore(t.id)==null?'noch nicht geübt':'Sicherheit '+topicScore(t.id)+' %'}</small></div>›</button>`).join('')}<button class="btn" style="margin-top:4px" onclick="startTest(FOCUS.ids,20,30)">📝 Probe-Arbeit schreiben (20 Fragen, 30 Min.)</button></div></div>`:''}${isApp()?'':`<button class="item" style="margin-bottom:12px;border-color:var(--acc)" onclick="installApp()"><span style="font-size:1.5rem">📲</span><div class="t"><b>Lernbasis als App installieren</b><small>Eigenes Symbol auf dem Startbildschirm</small></div>›</button>`}<div class="acts">
+ <div class="stats"><span>🔥 ${streak()} ${streak()===1?'Tag':'Tage'} in Folge</span><span>🎯 Heute ${dToday}/${goal} XP${dToday>=goal?' ✅':''}</span><button onclick="go('shop')">🪙 ${S.coins||0}</button><button onclick="go('badges')">🏅 ${Object.keys(S.badges).length}/${BADGES.length}</button></div></div>${!PREVIEW&&MODE!=='eltern'&&SYNC.on&&SYNC.pin&&lsGet('lb_push')!=='1'&&'PushManager' in window?`<button class="item" style="margin-bottom:12px" onclick="pushEnable()"><span style="font-size:1.5rem">🔔</span><div class="t"><b>Tägliche Erinnerung einschalten</b><small>Damit deine Serie nicht reißt</small></div>›</button>`:''}
+ ${typeof FOCUS!=='undefined'&&today()<=FOCUS.until?`<div class="box" style="border-left-color:#f43f5e"><h3 style="color:#fda4af">📌 ${FOCUS.title}</h3><div class="small mut" style="margin-bottom:8px">${FOCUS.until===today()?'Heute':FOCUS.until===today(1)?'Morgen':'Bald'} – so bist du vorbereitet:</div><div class="list">${FOCUS.ids.map(topic).filter(Boolean).map((t,i)=>`<button class="item" onclick="go('topic',{id:'${t.id}'})"><b style="width:22px">${i+1}.</b><div class="t">${esc(t.title)}<small>${topicScore(t.id)==null?'noch nicht geübt':'Sicherheit '+topicScore(t.id)+' %'}</small></div>›</button>`).join('')}<button class="btn" style="margin-top:4px" onclick="startTest(FOCUS.ids,20,30)">📝 Probe-Arbeit schreiben (20 Fragen, 30 Min.)</button></div></div>`:''}${isApp()||PREVIEW?'':`<button class="item" style="margin-bottom:12px;border-color:var(--acc)" onclick="installApp()"><span style="font-size:1.5rem">📲</span><div class="t"><b>Lernbasis als App installieren</b><small>Eigenes Symbol auf dem Startbildschirm</small></div>›</button>`}<div class="acts">
   <button class="act" onclick="go('train')"><span class="ic">💪</span><span><b>Trainieren</b><small>${nMiss?nMiss+' Fehler offen':'Schwächen & Blitzrechnen'}</small></span></button>
   <button class="act" onclick="go('testsetup')"><span class="ic">📝</span><span><b>Test</b><small>Arbeit simulieren</small></span></button>
   <button class="act" onclick="startCards(null)"><span class="ic">🧠</span><span><b>Merken</b><small>${due?due+' Karten fällig':'Karteikarten'}</small></span></button>
@@ -785,6 +788,7 @@ VIEWS.topic=({id})=>{
  const canPractice=(t.tasks&&t.tasks.length)||t.gen||((t.auto||t.vok)&&t.cards.length);
  return hdr(esc(t.title),sb.color,t.custom?`<button class="ib" onclick="go('edit',{id:'${id}'})" aria-label="Bearbeiten">✏️</button>`:'')+
  `<p class="small mut">${sb.icon} ${sb.name}${st.r!=null?` · ${st.r||0} richtig, ${st.w||0} falsch`:''}${topicScore(id)!=null?` · Sicherheit ${topicScore(id)} %`:''}</p>
+ ${PREVIEW||MODE==='eltern'?`<button class="btn sec2" style="margin:0 0 10px" onclick="go('loesungen',{id:'${id}'})">📋 Alle Aufgaben & Lösungen ansehen</button>`:''}
  <div class="modes">
   <button class="mode" onclick="go('learn',{id:'${id}'})"><span class="ic">📘</span><b>Lernen</b><small>${t.learn?.length||0} Merkkästen${st.l?' ✓':''}</small></button>
   <button class="mode" ${canPractice?`onclick="startQuiz('${id}')"`:'disabled style="opacity:.4"'}><span class="ic">✏️</span><b>Üben</b><small>10 Aufgaben mit Hilfe</small></button>
@@ -1028,6 +1032,7 @@ VIEWS.eltern=p=>{
  <div class="sec">Letzte Tests</div>${S.tests.length?`<table class="st"><tr><th>Datum</th><th>Test</th><th>Erg.</th><th>Note</th></tr>${S.tests.slice(-10).reverse().map(h=>`<tr><td>${h.d.slice(5).split('-').reverse().join('.')}</td><td>${esc(h.title)}</td><td>${h.r}/${h.n}</td><td><b>${h.g}</b></td></tr>`).join('')}</table>`:'<p class="small mut">Noch keine Tests.</p>'}
  ${elternRewards()}${elternRemind()}
  <div class="sec">Einstellungen</div>
+ <label class="small mut">Dieses Gerät ist …</label><div class="chips" style="margin-bottom:10px"><button class="chip ${MODE==='kind'?'on':''}" onclick="setMode('kind')">🧒 Kinder-App (Henry)</button><button class="chip ${MODE==='eltern'?'on':''}" onclick="setMode('eltern')">👩 Eltern-App</button></div>
  <label class="small mut">Name des Kindes</label><input value="${esc(S.name)}" onchange="S.name=this.value.trim()||'Henry';save()">
  <div class="row2" style="margin-top:8px"><div><label class="small mut">Tagesziel (XP)</label><input type="number" inputmode="numeric" value="${S.set.goal}" onchange="S.set.goal=Math.max(10,+this.value||60);save()"></div><div><label class="small mut">Eltern-PIN (4 Ziffern)</label><input inputmode="numeric" maxlength="4" value="${esc(S.set.ppin)}" onchange="if(/^\\d{4}$/.test(this.value)){S.set.ppin=this.value;save();toast('PIN geändert')}else toast('Bitte 4 Ziffern')"></div></div>
  <label class="small mut" style="display:block;margin-top:8px">Notenschlüssel (ab … % für Note 1 bis 5, darunter 6)</label><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">${k.map((v,i)=>`<input type="number" inputmode="numeric" value="${v}" title="Note ${i+1}" onchange="S.set.keys[${i}]=+this.value;save()">`).join('')}</div>
@@ -1077,7 +1082,7 @@ const BADGES=[
 ];
 let CELEB=[];
 function celeb(icon,title,text,coins){if(coins)S.coins=(S.coins||0)+coins;CELEB.push({icon,title,text:text+(coins?` <b>+${coins} 🪙</b>`:'')})}
-function showCeleb(){if(!CELEB.length||$('.ov'))return;const c=CELEB[0];const el=document.createElement('div');el.className='ov';
+function showCeleb(){if(PREVIEW){CELEB=[];return}if(!CELEB.length||$('.ov'))return;const c=CELEB[0];const el=document.createElement('div');el.className='ov';
  el.innerHTML=`<div class="conf">${Array.from({length:40},(_,i)=>`<i style="left:${Math.random()*100}%;background:${['#fde047','#f472b6','#38bdf8','#4ade80','#fb923c','#a78bfa'][i%6]};animation-delay:${Math.random()*.8}s;animation-duration:${1.6+Math.random()*1.4}s"></i>`).join('')}</div><div class="ovc"><div class="ovi">${c.icon}</div><h2>${c.title}</h2><p>${c.text}</p><button class="btn">Weiter</button></div>`;
  el.onclick=()=>{el.remove();CELEB.shift();showCeleb()};document.body.appendChild(el);if(navigator.vibrate)try{navigator.vibrate([40,40,80])}catch(e){}}
 function checkBadges(){BADGES.forEach(([id,ic,n,d,f])=>{if(!S.badges[id]){let ok=false;try{ok=f(S)}catch(e){}if(ok){S.badges[id]=today();celeb(ic,'Abzeichen: '+n,d+'!',50)}}})}
@@ -1128,7 +1133,7 @@ async function pushTest(){try{const j=await api('testpush',{pin:SYNC.pin});toast
 /* ===== Abfrage-Modus für Eltern (mündlich abfragen) ===== */
 let ELTERN_OK=false;
 VIEWS.abfrage=p=>{
- if(!ELTERN_OK)return VIEWS.eltern({});
+ if(!ELTERN_OK)return VIEWS.eltern(view.p);
  if(p.run)return abfrageRun(p);
  p.s=p.s||'de';const ts=topicsOf(p.s).filter(t=>(t.cards||[]).length||(t.tasks||[]).length||t.gen||(t.th||[]).length);
  if(!p.sel||p.selS!==p.s){p.sel=[];p.selS=p.s}p.n=p.n||15;p.opt=p.opt??false;
@@ -1170,6 +1175,50 @@ function abfrageEnd(p){
  <button class="btn" onclick="go('abfrage',{s:'${subj(topic(p.qs[0].tid).s).id}'},true)">Neue Abfrage</button><button class="btn sec2" onclick="go('eltern',{ok:true},true)">Zum Eltern-Bereich</button>`;
 }
 
+/* ===== Eltern-App (Modus pro Gerät) + Vorschau des Kinderbereichs ===== */
+let MODE=(()=>{try{if(/[?&]eltern=1/.test(location.search)){localStorage.setItem('lb_mode','eltern')}return localStorage.getItem('lb_mode')||'kind'}catch(e){return /[?&]eltern=1/.test(location.search)?'eltern':'kind'}})();
+let PREVIEW=false,PREV_SNAP=null;
+function modeCache(){try{caches.open('lb-mode').then(c=>c.put('mode',new Response(MODE)))}catch(e){}}
+function setMode(m){MODE=m;lsSet('lb_mode',m);modeCache();if(m==='eltern'){ELTERN_OK=true;go('home',{},true)}else{ELTERN_OK=false;go('home',{},true)}}
+function startPreview(){PREV_SNAP=JSON.stringify(S);PREVIEW=true;CELEB=[];go('home')}
+function endPreview(){if(PREV_SNAP)S=fix(JSON.parse(PREV_SNAP));PREVIEW=false;PREV_SNAP=null;CELEB=[];go('home',{},true)}
+const kidName=()=>esc(S.name||'Henry');
+VIEWS.parent=()=>{
+ if(!ELTERN_OK)return VIEWS.eltern(view.p);
+ document.documentElement.style.setProperty('--sub','#14b8a6');
+ const d=today(),xp=S.days[d]||0,goal=S.set.goal||60,L=lvl();
+ const last=Object.keys(S.days).filter(k=>S.days[k]>0).sort().pop();
+ const open=(S.redeem||[]).filter(x=>!x.done).length;
+ const lastT=S.tests.slice(-3).reverse();
+ const week=Array.from({length:7},(_,i)=>today(i-6));
+ const wd=['So','Mo','Di','Mi','Do','Fr','Sa'];
+ const weak=allTopics().filter(t=>topicScore(t.id)!=null&&topicScore(t.id)<70).sort((a,b)=>topicScore(a.id)-topicScore(b.id)).slice(0,3);
+ const sync=SYNC.on?(SYNC.st==='ok'?'☁️ aktuell':'☁️ offline'):'📱 nur dieses Gerät';
+ return `<div class="top"><div class="ttl">Lernbasis · Eltern</div><span class="pill">${sync}</span><button class="ib" onclick="refreshParent()" aria-label="Aktualisieren">🔄</button></div>
+ <div class="hero" style="background:linear-gradient(135deg,#0f766e,#1e3a8a)"><div class="row"><div class="lvl av">${S.avatar||'🙂'}<i>${L.l}</i></div><div style="flex:1"><div style="font-size:1.2rem;font-weight:800">${xp>0?`✅ ${kidName()} hat heute gelernt`:`⏳ ${kidName()} hat heute noch nicht gelernt`}</div><div class="small" style="opacity:.85">${xp} von ${goal} XP Tagesziel${last&&xp===0?` · zuletzt am ${last.split('-').reverse().join('.')}`:''}</div><div class="bar"><i style="width:${Math.min(100,Math.round(xp/goal*100))}%"></i></div></div></div>
+ <div class="stats"><span>🔥 ${streak()} ${streak()===1?'Tag':'Tage'} Serie</span><span>⭐ Level ${L.l}</span><span>🪙 ${S.coins||0}</span><span>🏅 ${Object.keys(S.badges).length}/${BADGES.length}</span></div>
+ <div style="display:flex;gap:4px;margin-top:12px">${week.map(x=>{const v=S.days[x]||0;return `<div style="flex:1;text-align:center"><div style="height:34px;border-radius:8px;background:${v>=goal?'#22c55e':v>0?'#38bdf8':'#ffffff1a'};display:grid;place-items:center;font-size:.75rem;font-weight:700">${v||''}</div><small style="font-size:.7rem;opacity:.8">${wd[new Date(x+'T12:00').getDay()]}</small></div>`}).join('')}</div></div>
+ ${open?`<button class="item" style="border-color:#f59e0b;margin-bottom:12px" onclick="go('eltern',{})"><span style="font-size:1.5rem">🎁</span><div class="t"><b>${open} Belohnung${open>1?'en':''} eingelöst</b><small>${(S.redeem||[]).filter(x=>!x.done).map(x=>esc(x.name)).join(', ')}</small></div>›</button>`:''}
+ <div class="acts">
+  <button class="act" onclick="go('abfrage',{})"><span class="ic">🗣️</span><span><b>Abfragen</b><small>mündlich prüfen</small></span></button>
+  <button class="act" onclick="startPreview()"><span class="ic">👀</span><span><b>Inhalte ansehen</b><small>Kinderbereich als Vorschau</small></span></button>
+  <button class="act" onclick="go('eltern',{})"><span class="ic">📊</span><span><b>Fortschritt</b><small>Fächer, Tests, Belohnungen</small></span></button>
+  <button class="act" onclick="go('eltern',{})"><span class="ic">⚙️</span><span><b>Einstellungen</b><small>Erinnerung, Noten, PIN</small></span></button>
+ </div>
+ ${typeof FOCUS!=='undefined'&&today()<=FOCUS.until?`<div class="box" style="border-left-color:#f43f5e"><h3 style="color:#fda4af">📌 ${FOCUS.title}</h3>${FOCUS.ids.map(topic).filter(Boolean).map(t=>`<div class="small">${esc(t.title)} – <b>${topicScore(t.id)==null?'noch nicht geübt':topicScore(t.id)+' %'}</b></div>`).join('')}<button class="btn sec2" onclick="go('abfrage',{s:'${(topic(FOCUS.ids[0])||{s:'de'}).s}',sel:${JSON.stringify(FOCUS.ids).replace(/"/g,"'")},selS:'${(topic(FOCUS.ids[0])||{s:'de'}).s}'})">🗣️ Genau das abfragen</button></div>`:''}
+ ${weak.length?`<div class="sec">Hier hakt es noch</div>${weak.map(t=>`<div class="item"><span>${subj(t.s).icon}</span><div class="t">${esc(t.title)}<small>Sicherheit ${topicScore(t.id)} %</small></div><button class="pill" onclick="go('abfrage',{s:'${t.s}',sel:['${t.id}'],selS:'${t.s}'})">abfragen</button></div>`).join('')}`:''}
+ ${lastT.length?`<div class="sec">Letzte Tests</div>${lastT.map(h=>`<div class="item"><b style="font-size:1.3rem;width:30px;text-align:center">${h.g}</b><div class="t">${esc(h.title)}<small>${h.d.split('-').reverse().join('.')} · ${h.r}/${h.n} richtig</small></div></div>`).join('')}`:''}
+ ${SYNC.on&&SYNC.pin&&lsGet('lb_push')!=='1'&&'PushManager' in window?`<button class="item" style="margin-top:12px" onclick="pushEnable()"><span style="font-size:1.5rem">🔔</span><div class="t"><b>Benachrichtigung einschalten</b><small>Du bekommst Bescheid, wenn ${kidName()} bis zur Erinnerungszeit nicht gelernt hat</small></div>›</button>`:''}`;
+};
+async function refreshParent(){if(SYNC.on&&SYNC.pin){await pull();toast('Aktualisiert')}render()}
+VIEWS.loesungen=({id})=>{const t=topic(id);if(!t)return VIEWS.home();
+ const th=(t.th||[]).map(x=>normTask(x,t.id)),ap=(t.tasks||[]).map(x=>normTask(x,t.id)),ex=t.gen?Array.from({length:5},()=>GEN[t.gen]()):[];
+ const row=(x,lab)=>`<div class="rev ok"><div>${lab?`<span class="badge" style="background:#38bdf833;color:#7dd3fc">${lab}</span> `:''}${x.q}</div>${x.t==='m'?`<div class="small mut" style="margin-top:4px">Auswahl: ${x.a.map((o,j)=>j?esc(o):'<b style="color:#86efac">'+o+'</b>').join(' · ')}</div>`:`<div class="small" style="margin-top:4px">Lösung: <b style="color:#86efac">${esc(showAns(x))}</b></div>`}${x.ex?`<div class="small mut">${x.ex}</div>`:''}</div>`;
+ return hdr('📋 Aufgaben & Lösungen',subj(t.s).color)+`<p class="small mut">${esc(t.title)} – ${th.length} Theorie · ${ap.length} Anwendung · ${(t.cards||[]).length} Karteikarten${t.gen?' · dazu unbegrenzt neu erzeugte Rechenaufgaben (5 Beispiele unten)':''}</p>
+ ${t.text?`<details class="text"><summary>Lesetext</summary>${t.text}</details>`:''}
+ ${th.length?`<div class="sec">Theorie</div>${th.map(x=>row(x)).join('')}`:''}${ap.length?`<div class="sec">Anwendung</div>${ap.map(x=>row(x)).join('')}`:''}${ex.length?`<div class="sec">Beispiele (zufällig erzeugt)</div>${ex.map(x=>row(x)).join('')}`:''}
+ ${(t.cards||[]).length?`<div class="sec">Karteikarten</div><div class="box">${t.cards.map(([f,b])=>`<div style="padding:4px 0;border-bottom:1px solid var(--line)"><b>${esc(f)}</b> – ${esc(b.split('|').join(' / '))}</div>`).join('')}</div>`:''}`};
+
 /* ---------- Installieren ---------- */
 let INSTALL=null;
 const isApp=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
@@ -1182,6 +1231,8 @@ VIEWS.install=()=>{const ios=/iPad|iPhone|Macintosh/.test(navigator.userAgent)&&
  <div class="box"><h3>Steht dort nur „In Leuchtturm öffnen“?</h3>Dann ist auf diesem Handy schon die Leuchtturm-App installiert, und der Browser verwechselt die beiden. Im Menü ⋮ trotzdem <b>„Zum Startbildschirm hinzufügen“</b> wählen – die Lernbasis bekommt dann ihr eigenes Symbol. Hilft das nicht: die Adresse in <b>Samsung Internet</b> öffnen und dort hinzufügen.</div>`};
 /* ---------- Start ---------- */
 try{history.replaceState({n:'home',p:{}},'')}catch(e){}
+modeCache();
+if(MODE==='eltern'){const l=document.querySelector('link[rel=manifest]');if(l)l.href='eltern-manifest.php';document.title='Lernbasis Eltern';const ic=document.querySelector('link[rel=apple-touch-icon]');if(ic)ic.href='icon-eltern-192.png'}
 render();syncInit();
 if('serviceWorker' in navigator&&location.protocol.startsWith('http')&&window.self===window.top){navigator.serviceWorker.register('sw.js').catch(()=>{})}
 
