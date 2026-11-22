@@ -167,7 +167,7 @@ const GEN={
   const k=R(0,3);
   if(k===0){const a=R(2,30),b=R(2,9),c=R(2,9);return {t:'i',q:`${a} + ${b} · ${c} =`,a:String(a+b*c),ex:`Punkt vor Strich: erst ${b} · ${c} = ${b*c}, dann ${a} + ${b*c} = ${a+b*c}.`};}
   if(k===1){const a=R(2,15),b=R(2,15),c=R(2,9);return {t:'i',q:`(${a} + ${b}) · ${c} =`,a:String((a+b)*c),ex:`Klammern zuerst: ${a} + ${b} = ${a+b}, dann · ${c} = ${(a+b)*c}.`};}
-  if(k===2){const d=R(2,9),q=R(2,9),a=R(3,9),b=R(3,9);const v=a*b-d*q;if(v<0)return GEN.regeln();return {t:'i',q:`${a} · ${b} − ${d*q} : ${d} =`,a:String(v),ex:`Punkt vor Strich: ${a} · ${b} = ${a*b} und ${d*q} : ${d} = ${q}. Dann ${a*b} − ${q} = ${v}.`};}
+  if(k===2){const d=R(2,9),q=R(2,9),a=R(3,9),b=R(3,9);const v=a*b-q;if(v<0)return GEN.regeln();return {t:'i',q:`${a} · ${b} − ${d*q} : ${d} =`,a:String(v),ex:`Punkt vor Strich: ${a} · ${b} = ${a*b} und ${d*q} : ${d} = ${q}. Dann ${a*b} − ${q} = ${v}.`};}
   const a=R(50,99),b=R(10,40),c=R(2,8);return {t:'i',q:`${a} − (${b} − ${c}) =`,a:String(a-(b-c)),ex:`Klammer zuerst: ${b} − ${c} = ${b-c}. Dann ${a} − ${b-c} = ${a-(b-c)}.`};
  },
  potenzen(){
@@ -525,7 +525,7 @@ const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const lsDel=k=>{try{localStorage.removeItem(k)}catch(e){}};
 
 function defState(){return {v:1,updated:0,name:'Henry',xp:0,streak:{last:'',n:0},days:{},tp:{},cards:{},tests:[],miss:{},custom:[],blitz:0,set:{ppin:'0000',goal:60,keys:[92,81,67,50,30]}}}
-function fix(o){const d=defState();o=Object.assign(d,o||{});o.set=Object.assign(defState().set,o.set||{});if(!Array.isArray(o.set.keys)||o.set.keys.length!==5)o.set.keys=[92,81,67,50,30];['days','tp','cards','miss'].forEach(k=>{if(!o[k]||typeof o[k]!=='object')o[k]={}});['tests','custom'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[]});return o}
+function fix(o){const d=defState();if(o&&o.miss)Object.keys(o.miss).forEach(k=>{if(/^\d+ · \d+ − \d+ : \d+ =#/.test(k))delete o.miss[k]});o=Object.assign(d,o||{});o.set=Object.assign(defState().set,o.set||{});if(!Array.isArray(o.set.keys)||o.set.keys.length!==5)o.set.keys=[92,81,67,50,30];['days','tp','cards','miss'].forEach(k=>{if(!o[k]||typeof o[k]!=='object')o[k]={}});['tests','custom'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[]});return o}
 let S=(()=>{try{const j=JSON.parse(lsGet(LS));if(j)return fix(j)}catch(e){}return defState()})();
 let pushT=null;
 function save(){S.updated=Date.now();lsSet(LS,JSON.stringify(S));if(SYNC.on&&SYNC.pin){clearTimeout(pushT);pushT=setTimeout(push,1200)}}
