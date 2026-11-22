@@ -28,7 +28,7 @@ h1{font-size:1.5rem}h2{font-size:1.25rem}h3{font-size:1.05rem}
 .top .ttl{flex:1;font-weight:700;font-size:1.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ib{width:42px;height:42px;border-radius:12px;background:var(--card);display:grid;place-items:center;font-size:1.2rem;flex:none}
 .pill{font-size:.8rem;padding:4px 10px;border-radius:99px;background:var(--card);color:var(--mut);white-space:nowrap}
-.hero{background:linear-gradient(135deg,#1e3a8a,#6d28d9);border-radius:24px;padding:18px;margin:6px 0 14px;box-shadow:0 10px 30px #0006}
+.hero{background:var(--hero,linear-gradient(135deg,#1e3a8a,#6d28d9));border-radius:24px;padding:18px;margin:6px 0 14px;box-shadow:0 10px 30px #0006}
 .hero .row{display:flex;align-items:center;gap:12px}
 .lvl{width:56px;height:56px;border-radius:16px;background:#ffffff22;display:grid;place-items:center;font-weight:800;font-size:1.3rem;flex:none}
 .bar{height:10px;border-radius:99px;background:#ffffff26;overflow:hidden;margin-top:8px}
@@ -124,6 +124,31 @@ sup{font-size:.7em}
 .paper{position:relative;height:300px;margin-top:10px;border-radius:14px;background:#fdfdfb;background-image:linear-gradient(#cbd5e6 1px,transparent 1px),linear-gradient(90deg,#cbd5e6 1px,transparent 1px);background-size:22px 22px;overflow:hidden}
 .paper canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
 @media(min-width:700px){.paper{height:380px}}
+
+.lvl.av{position:relative;font-size:2rem;width:62px;height:62px}
+.lvl.av i{position:absolute;right:-6px;bottom:-6px;font-style:normal;font-size:.8rem;font-weight:800;background:#fde047;color:#422006;border-radius:99px;min-width:24px;height:24px;display:grid;place-items:center;padding:0 5px;border:2px solid #0b1324}
+.stats button{background:#ffffff1f;padding:6px 10px;border-radius:12px;font-size:.85rem}
+.combo{margin-top:8px;font-weight:800;color:#fdba74;animation:pop .3s}
+.coins{text-align:center;font-size:2rem;font-weight:900;margin:6px 0 2px;color:#fde047}
+.shopg{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+.shopi{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.shopi span{font-size:2rem;line-height:1.1}.shopi small{color:var(--mut);font-size:.75rem}
+.shopi.on{border-color:var(--acc);background:#ffffff10}
+.shopg.th{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
+.shopi .sw{width:100%;height:42px;border-radius:10px;display:block}
+.warnb{background:#f59e0b;color:#1f1300}
+.badgeg{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.bdg{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center}
+.bdg span{font-size:2.2rem;display:block}.bdg b{display:block;margin:4px 0 2px}.bdg small{color:var(--mut);font-size:.75rem}
+.bdg.lock{opacity:.45;filter:grayscale(1)}
+.ov{position:fixed;inset:0;z-index:100;background:#020617cc;display:grid;place-items:center;padding:20px;animation:pop .25s}
+.ovc{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:26px 22px;text-align:center;max-width:360px;width:100%;position:relative;z-index:2;box-shadow:0 20px 60px #000a}
+.ovi{font-size:4.5rem;animation:bounce 1s infinite alternate}
+@keyframes bounce{to{transform:translateY(-8px) scale(1.06)}}
+.conf{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:1}
+.conf i{position:absolute;top:-20px;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+@media(prefers-reduced-motion:reduce){.conf{display:none}.ovi{animation:none}}
 
 </style>
 </head>
@@ -510,6 +535,33 @@ const TOPICS=[
  tasks:[['m','Wer durfte in der attischen Demokratie NICHT abstimmen?',['Frauen','freie Bürger über 20','Handwerker mit Bürgerrecht','Bauern mit Bürgerrecht'],'Frauen, Sklaven und Metöken waren ausgeschlossen.'],['m','Was ist eine Polis?',['ein griechischer Stadtstaat','ein römischer Tempel','ein griechischer Gott','eine römische Legion'],'Athen und Sparta waren Poleis.'],['m','Wozu diente der Limes?',['als Grenze und Kontrolle gegenüber den Germanen','als Wasserleitung nach Rom','als Rennbahn für Wagenrennen','als Handelsstraße nach Ägypten'],'Ein befestigter Grenzwall mit Wachtürmen.'],['m','Wer besiegte in der Varusschlacht die Römer?',['Arminius','Augustus','Romulus','Varus'],'Varus war der unterlegene römische Feldherr.'],['m','Wen befragten die Griechen in Delphi?',['das Orakel','den Pharao','die Volksversammlung','den Kaiser'],'Die Priesterin Pythia sprach Weissagungen.'],['m','Wann wurde Rom laut Sage gegründet?',['753 v. Chr.','776 v. Chr.','9 n. Chr.','1 n. Chr.'],'„Sieben – fünf – drei, Rom schlüpft aus dem Ei.“']]}
 ];
 
+/* ===== Theoriefragen (Regeln, Fachbegriffe, Formeln) – ca. 1/3 der Aufgaben in Mathe, Deutsch, Englisch ===== */
+const TH={
+'ma-zahlen':[['m','Wie heißt eine Zahl mit 9 Nullen?',['Milliarde','Million','Billion','Billiarde'],'Million: 6 Nullen · Milliarde: 9 · Billion: 12.'],['m','Welche Stelle steht direkt links neben der Zehntausenderstelle?',['Hunderttausender','Tausender','Millionen','Zehnmillionen'],'E, Z, H, T, ZT, HT, M – links neben ZT steht HT.'],['m','Auf welche Ziffer schaust du beim Runden auf Tausender?',['auf die Hunderterziffer','auf die Tausenderziffer','auf die Zehnerziffer','auf die Einerziffer'],'Immer auf die Ziffer rechts neben der Rundungsstelle.'],['w','Beim Runden wird bei der Ziffer 5 abgerundet.',false,'Bei 5, 6, 7, 8, 9 wird aufgerundet.'],['m','Welche römische Zahl ist falsch geschrieben?',['IIII','XL','CM','XIX'],'Höchstens drei gleiche Zeichen hintereinander – 4 schreibt man IV.'],['m','Wie heißt die Zahl, die um 1 kleiner ist?',['Vorgänger','Nachfolger','Gegenzahl','Differenz'],'Vorgänger = Zahl − 1.']],
+'ma-rechnen':[['m','Wie heißen die Zahlen, die man addiert?',['Summanden','Faktoren','Minuenden','Divisoren'],'Summand + Summand = Summe.'],['m','Wie heißt das Ergebnis einer Multiplikation?',['Produkt','Summe','Quotient','Faktor'],'Faktor · Faktor = Produkt.'],['m','In 84 : 7 = 12 heißt die 84 …',['Dividend','Divisor','Quotient','Faktor'],'Dividend : Divisor = Quotient.'],['m','In 50 − 18 = 32 heißt die 18 …',['Subtrahend','Minuend','Differenz','Summand'],'Minuend − Subtrahend = Differenz.'],['m','Wozu dient ein Überschlag?',['um zu prüfen, ob das Ergebnis ungefähr stimmen kann','um das genaue Ergebnis schneller zu finden','um Überträge zu vermeiden','um die Aufgabe ordentlicher aufzuschreiben'],'Überschlag = grobe Kontrolle mit gerundeten Zahlen.'],['m','Wie schreibst du Zahlen für die schriftliche Addition untereinander?',['Einer unter Einer, Zehner unter Zehner usw.','erste Ziffer unter erster Ziffer, linksbündig','die größere Zahl immer unten','die Zahl mit mehr Stellen immer rechts'],'Stellengerecht – von rechts ausgerichtet.'],['m','Wie lautet die Probe zu 96 : 8 = 12?',['12 · 8 = 96','96 · 8 = 768','96 − 12 = 84','12 + 8 = 20'],'Die Umkehraufgabe der Division ist die Multiplikation.']],
+'ma-regeln':[['m','Was rechnest du in 4 + 6 · 2 zuerst?',['6 · 2','4 + 6','4 + 2','alles von links nach rechts'],'Punkt vor Strich.'],['m','Was rechnest du in 20 − 8 − 3 zuerst?',['20 − 8','8 − 3','beides gleichzeitig','egal, das Ergebnis bleibt gleich'],'Gleichrangige Rechnungen von links nach rechts. (20 − 5 wäre falsch!)'],['w','Für die Division gilt das Vertauschungsgesetz.',false,'12 : 4 = 3, aber 4 : 12 ist etwas anderes.'],['m','Welche Gleichung zeigt das Verbindungsgesetz?',['(3 + 5) + 2 = 3 + (5 + 2)','3 + 5 = 5 + 3','3 · (5 + 2) = 3 · 5 + 3 · 2','3 + 5 + 2 = 2 + 5 + 3'],'Die Klammern werden verschoben, die Reihenfolge bleibt.'],['m','Welche Rechnung zeigt das Verteilungsgesetz?',['4 · (10 + 3) = 4 · 10 + 4 · 3','4 · 10 · 3 = 4 · 3 · 10','(4 + 10) + 3 = 4 + (10 + 3)','4 · 13 = 13 · 4'],'Der Faktor wird auf beide Summanden verteilt.']],
+'ma-potenzen':[['m','Wie heißt die große Zahl unten in 5³?',['Basis','Exponent','Potenzwert','Faktor'],'5 ist die Basis, 3 der Exponent.'],['m','Wie schreibt man 6 · 6 · 6 · 6 als Potenz?',['6⁴','4⁶','6 · 4','24'],'Basis 6, viermal als Faktor → Exponent 4.'],['m','Was bedeutet 10⁵?',['eine 1 mit 5 Nullen','eine 5 mit 10 Nullen','10 · 5','fünf Zehner'],'10⁵ = 100 000.'],['w','3² und 2³ haben denselben Wert.',false,'3² = 9, aber 2³ = 8.'],['m','Wie viel ist 0³?',['0','3','1','30'],'0 · 0 · 0 = 0.']],
+'ma-teilbarkeit':[['m','Was ist eine Primzahl?',['eine Zahl mit genau zwei Teilern: 1 und sich selbst','eine Zahl, die nur durch 1 teilbar ist','jede ungerade Zahl','eine Zahl, die durch keine Zahl teilbar ist'],'Darum ist 1 keine Primzahl (nur ein Teiler).'],['m','Wie groß ist die Quersumme von 3 847?',['22','21','23','24'],'3 + 8 + 4 + 7 = 22.'],['m','Welche Regel gilt für die Teilbarkeit durch 4?',['Die letzten zwei Ziffern bilden eine durch 4 teilbare Zahl.','Die Quersumme ist durch 4 teilbar.','Die letzte Ziffer ist 4 oder 8.','Die Zahl ist gerade.'],'z. B. 1 316 → 16 ist durch 4 teilbar.'],['m','Wofür steht ggT?',['größter gemeinsamer Teiler','größter gerader Teiler','gemeinsamer ganzer Teil','größtes gemeinsames Teilprodukt'],'ggT von 12 und 18 ist 6.'],['m','Wofür steht kgV?',['kleinstes gemeinsames Vielfaches','kleinster gemeinsamer Vorgänger','kleinster gerader Vielfacher','kleinstes geteiltes Verhältnis'],'kgV von 4 und 6 ist 12.'],['w','Jede durch 9 teilbare Zahl ist auch durch 3 teilbar.',true,'9 = 3 · 3.'],['w','Jede gerade Zahl ist durch 4 teilbar.',false,'6 ist gerade, aber nicht durch 4 teilbar.'],['m','Welche Menge enthält alle Teiler von 12?',['{1, 2, 3, 4, 6, 12}','{2, 3, 4, 6}','{1, 2, 3, 4, 6}','{12, 24, 36, 48}'],'1 und die Zahl selbst gehören immer dazu. {12, 24 …} sind Vielfache.']],
+'ma-groessen':[['m','Welche Umrechnungszahl gilt bei Flächeneinheiten (z. B. m² → dm²)?',['100','10','1 000','60'],'Bei Flächen immer 100.'],['m','Welche Umrechnungszahl gilt zwischen m und dm?',['10','100','1 000','60'],'1 m = 10 dm.'],['m','Welche Einheit ist eine Flächeneinheit?',['Hektar','Kilogramm','Tonne','Kilometer'],'1 ha = 10 000 m².'],['m','Was bedeutet der Maßstab 1 : 50 000?',['1 cm auf der Karte sind 500 m in Wirklichkeit','1 cm auf der Karte sind 50 km in Wirklichkeit','1 cm auf der Karte sind 5 km in Wirklichkeit','1 m auf der Karte sind 50 km in Wirklichkeit'],'50 000 cm = 500 m.'],['w','Zwischen Stunden und Minuten ist die Umrechnungszahl 100.',false,'1 h = 60 min.'],['m','Wie viele Sekunden hat eine Stunde?',['3 600','360','6 000','1 440'],'60 · 60 = 3 600.']],
+'ma-gleichungen':[['m','Welche Umkehraufgabe löst x − 15 = 40?',['x = 40 + 15','x = 40 − 15','x = 15 − 40','x = 40 : 15'],'Umkehrung von − ist +.'],['m','Welche Umkehraufgabe löst 7 · x = 56?',['x = 56 : 7','x = 56 · 7','x = 56 − 7','x = 7 : 56'],'Umkehrung von · ist :.'],['m','Was ist eine Variable?',['ein Platzhalter für eine unbekannte Zahl','immer die Zahl 10','ein besonderes Rechenzeichen','das Ergebnis einer Gleichung'],'Meist schreibt man x.'],['m','Was prüfst du bei der Probe?',['ob die eingesetzte Lösung eine wahre Aussage ergibt','ob die Aufgabe richtig abgeschrieben ist','ob x größer als 0 ist','ob x eine gerade Zahl ist'],'Lösung einsetzen – stimmt beide Seiten überein?'],['w','Bei x + 9 = 20 ist x = 29.',false,'x = 20 − 9 = 11.']],
+'ma-geometrie':[['m','Was hat eine Strecke?',['einen Anfangs- und einen Endpunkt','nur einen Anfangspunkt','weder Anfang noch Ende','genau einen rechten Winkel'],'z. B. die Strecke AB.'],['m','Was hat ein Strahl?',['einen Anfangspunkt, aber kein Ende','einen Anfangs- und einen Endpunkt','weder Anfang noch Ende','zwei Anfangspunkte'],'Wie ein Lichtstrahl aus einer Taschenlampe.'],['m','Wie nennt man zwei Geraden, die sich im rechten Winkel schneiden?',['senkrecht zueinander','parallel zueinander','gestreckt zueinander','symmetrisch zueinander'],'Zeichen: ⊥'],['m','Wie groß ist ein gestreckter Winkel?',['180°','90°','360°','270°'],'Die Schenkel bilden eine gerade Linie.'],['m','Wie heißt ein Winkel zwischen 90° und 180°?',['stumpfer Winkel','spitzer Winkel','überstumpfer Winkel','gestreckter Winkel'],'stumpf: größer als 90°, kleiner als 180°.'],['m','Was gibt die erste Zahl bei P(5|2) an?',['wie weit nach rechts (x-Wert)','wie weit nach oben (y-Wert)','den Abstand zum Ursprung','die Nummer des Punktes'],'Erst rechts (x), dann hoch (y).'],['m','Welches Zeichen bedeutet „ist parallel zu“?',['∥','⊥','∠','≈'],'⊥ heißt senkrecht, ∠ Winkel, ≈ ungefähr.']],
+'ma-flaeche':[['m','Wie berechnet man den Umfang eines Rechtecks?',['u = 2 · a + 2 · b','u = a · b','u = a + b','u = 4 · a · b'],'Alle vier Seiten zusammen.'],['m','Wie berechnet man den Flächeninhalt eines Quadrats?',['A = a · a','A = 4 · a','A = 2 · a','A = a + a'],'4 · a wäre der Umfang.'],['m','In welcher Einheit gibt man ein Volumen an?',['cm³','cm²','cm','m'],'Kubik = hoch 3.'],['m','Wie viele Flächen hat ein Würfel?',['6','8','12','4'],'Ecken: 8 · Kanten: 12 · Flächen: 6.'],['m','Was ist ein Würfelnetz?',['die aufgeklappte Oberfläche, aus der man den Würfel falten kann','eine Schrägbild-Zeichnung des Würfels','die Kanten des Würfels als Drahtmodell','ein Würfel, der aus Quadern besteht'],'Ein Würfel hat 11 verschiedene Netze.'],['w','Ein Quadrat ist ein besonderes Rechteck.',true,'Es hat vier rechte Winkel – und zusätzlich vier gleich lange Seiten.']],
+'ma-daten':[['m','Was ist das arithmetische Mittel?',['Summe aller Werte geteilt durch ihre Anzahl','der mittlere Wert der geordneten Liste','der häufigste Wert','größter minus kleinster Wert'],'Auch: Durchschnitt.'],['m','Was ist der Median?',['der mittlere Wert der der Größe nach geordneten Liste','Summe aller Werte geteilt durch ihre Anzahl','der häufigste Wert','größter minus kleinster Wert'],'Auch: Zentralwert.'],['m','Was ist der Modalwert?',['der häufigste Wert','der mittlere Wert der geordneten Liste','der größte Wert','größter minus kleinster Wert'],'Er kommt am öftesten vor.'],['m','Was ist die Spannweite?',['größter minus kleinster Wert','der häufigste Wert','Summe aller Werte','der mittlere Wert der geordneten Liste'],'Sie zeigt, wie weit die Werte auseinanderliegen.'],['m','Womit zählst du beim Beobachten am schnellsten mit?',['mit einer Strichliste','mit einem Säulendiagramm','mit dem Mittelwert','mit einem Koordinatensystem'],'Jeder Strich ist ein Ereignis, fünf als Bündel.']],
+'ma-brueche':[['m','Wie heißt die Zahl unter dem Bruchstrich?',['Nenner','Zähler','Teiler','Quotient'],'Der Nenner „nennt“, in wie viele Teile geteilt wird.'],['m','Was bedeutet Kürzen?',['Zähler und Nenner durch dieselbe Zahl teilen','nur den Zähler verkleinern','von Zähler und Nenner dieselbe Zahl abziehen','den Nenner durch den Zähler teilen'],'Der Wert bleibt gleich.'],['w','Beim Erweitern ändert sich der Wert eines Bruchs.',false,'1/2 = 2/4 = 4/8 – gleicher Wert.'],['m','Wie viel Prozent sind 3/4?',['75 %','34 %','25 %','70 %'],'3/4 = 75/100.'],['m','Welcher Bruch hat den Wert 1/2?',['4/8','2/3','3/5','5/12'],'4/8 mit 4 gekürzt = 1/2.']],
+'de-wortarten':[['m','Woran erkennst du ein Nomen?',['Man kann einen Artikel davorsetzen.','Es steht immer am Satzanfang.','Es lässt sich steigern.','Es endet immer auf -en.'],'Artikelprobe: der/die/das.'],['m','Wie heißen die Steigerungsstufen der Adjektive?',['Positiv – Komparativ – Superlativ','Präsens – Präteritum – Perfekt','Singular – Plural – Dual','Nominativ – Genitiv – Dativ'],'groß – größer – am größten.'],['m','Welche Wörter sind Possessivpronomen?',['mein, dein, sein','ich, du, er','der, die, das','und, oder, aber'],'Sie zeigen Besitz an.'],['m','Was tun Konjunktionen?',['Sie verbinden Wörter oder Sätze.','Sie ersetzen Nomen.','Sie beschreiben Eigenschaften.','Sie geben eine Lage im Raum an.'],'und, oder, aber, weil, dass …'],['m','Wie nennt man das Beugen eines Verbs nach der Person?',['konjugieren','deklinieren','steigern','nominalisieren'],'ich lese, du liest, er liest …']],
+'de-nomen':[['m','Mit welcher Frage findest du den Dativ?',['Wem?','Wen oder was?','Wessen?','Wer oder was?'],'Dativ = Wem-Fall.'],['m','Mit welcher Frage findest du den Akkusativ?',['Wen oder was?','Wem?','Wessen?','Wer oder was?'],'Akkusativ = Wen-Fall.'],['m','Was bedeutet „Numerus“?',['Einzahl oder Mehrzahl','das grammatische Geschlecht','der Fall eines Nomens','die Zeitform'],'Singular / Plural.'],['m','Welche drei Genera gibt es?',['Maskulinum, Femininum, Neutrum','Singular, Plural, Dual','Nominativ, Dativ, Akkusativ','Subjekt, Prädikat, Objekt'],'der, die, das.']],
+'de-zeiten':[['m','Wie bildet man das Perfekt?',['haben oder sein + Partizip II','werden + Infinitiv','hatte oder war + Partizip II','Verbstamm + -te'],'ich habe gespielt, ich bin gelaufen.'],['m','Wie bildet man das Futur I?',['werden + Infinitiv','haben + Partizip II','sein + Infinitiv','wollen + Infinitiv'],'ich werde spielen.'],['m','Wie bildet man das Plusquamperfekt?',['hatte oder war + Partizip II','haben oder sein + Partizip II','werden + Partizip II','würde + Infinitiv'],'ich hatte gespielt.'],['m','Was unterscheidet starke von schwachen Verben?',['Starke Verben ändern im Präteritum den Stammvokal.','Starke Verben haben immer mehr Buchstaben.','Schwache Verben gibt es nur im Präsens.','Starke Verben stehen immer am Satzende.'],'singen – sang (stark), spielen – spielte (schwach).'],['m','Wofür benutzt man das Plusquamperfekt?',['für etwas, das vor einem anderen vergangenen Ereignis geschah','für etwas, das gerade jetzt passiert','für Pläne in der Zukunft','für höfliche Bitten'],'Nachdem er gegessen hatte, ging er los.']],
+'de-satzglieder':[['m','Was zeigt die Umstellprobe?',['welche Wörter zusammen ein Satzglied bilden','welche Wortart ein Wort hat','in welcher Zeitform der Satz steht','wo ein Komma fehlt'],'Was zusammen wandert, ist ein Satzglied.'],['m','An welcher Stelle steht das Prädikat im Aussagesatz?',['an zweiter Satzgliedstelle','immer am Satzanfang','immer am Satzende','an dritter Satzgliedstelle'],'Verbzweitstellung.'],['m','Mit welcher Frage findest du eine Adverbiale des Grundes?',['Warum?','Wann?','Wo?','Wie?'],'Wann = Zeit, Wo = Ort, Wie = Art und Weise.'],['m','Welche Satzglieder braucht fast jeder Satz?',['Subjekt und Prädikat','Dativ- und Akkusativobjekt','Adverbiale der Zeit und des Ortes','Prädikat und Dativobjekt'],'Wer tut was?']],
+'de-rechtschreibung':[['m','Wann schreibt man ss?',['nach einem kurzen Vokal','nach einem langen Vokal','nach au, ei oder eu','am Wortanfang'],'Fluss, essen, Kuss.'],['m','Wie prüfst du, ob „das“ oder „dass“ richtig ist?',['Passt „dieses“ oder „welches“, schreibt man „das“.','Steht ein Komma davor, schreibt man immer „dass“.','Am Satzanfang schreibt man immer „dass“.','Nach einem Nomen schreibt man immer „dass“.'],'Vorsicht: Auch vor „das“ kann ein Komma stehen!'],['m','Woran erkennst du ein nominalisiertes Verb?',['an einem Begleiter wie „das“, „beim“ oder „zum“','daran, dass es am Satzende steht','an der Endung -lich','daran, dass es sich steigern lässt'],'beim Schwimmen, das Lesen.'],['m','Wie prüfst du, ob am Wortende s oder ß steht?',['Wort verlängern, z. B. Plural bilden (Gras → Gräser)','das Wort rückwärts lesen','einen Artikel davorsetzen','das Wort großschreiben'],'Beim Verlängern hörst du, ob das s summt.']],
+'de-zeichen':[['m','Welches Zeichen steht nach einem vorangestellten Begleitsatz?',['Doppelpunkt','Komma','Punkt','Semikolon'],'Er sagt: „…“'],['m','Was steht nach der wörtlichen Rede, wenn der Begleitsatz folgt?',['ein Komma nach dem schließenden Anführungszeichen','ein Punkt in der wörtlichen Rede','ein Doppelpunkt','gar kein Satzzeichen'],'„Komm her“, rief sie.'],['m','Vor welchen Wörtern steht immer ein Komma?',['aber, sondern, weil, dass','und, oder, sowie','der, die, das','in, an, auf'],'Bei und/oder in Aufzählungen nicht.']],
+'en-tobe':[['m','Welche Form von „to be“ gehört zu he, she, it?',['is','are','am','be'],'he is, she is, it is.'],['m','Wie bildet man Fragen mit „to be“?',['Die Form von „to be“ steht vor dem Subjekt.','Man setzt „do“ an den Anfang.','Man hängt ein -s an das Subjekt.','Man setzt „not“ ans Ende.'],'Are you …? Is he …?'],['m','Wie lautet die Kurzform von „has not got“?',['hasn\'t got','haven\'t got','isn\'t got','doesn\'t got'],'he hasn\'t got a bike.']],
+'en-simple':[['m','Wann benutzt man das simple present?',['für Gewohnheiten und regelmäßige Handlungen','für Dinge, die gerade jetzt passieren','für Dinge, die gestern passiert sind','nur für Fragen'],'Signalwörter: always, often, every day …'],['m','Was passiert mit dem Verb bei he, she, it?',['Es bekommt ein -s.','Es bekommt -ing.','Es bleibt immer gleich.','Es bekommt -ed.'],'„He, she, it – das s muss mit!“'],['m','Wie verneint man bei he, she, it?',['doesn\'t + Verb ohne s','don\'t + Verb mit s','isn\'t + Verb','not + Verb mit s'],'She doesn\'t play.']],
+'en-progressive':[['m','Wann benutzt man das present progressive?',['für Dinge, die gerade jetzt passieren','für Gewohnheiten','für Dinge in der Vergangenheit','für Fähigkeiten'],'Look! He is running.'],['m','Wie bildet man das present progressive?',['am/is/are + Verb mit -ing','do/does + Verb','Verb + -s','have/has + Verb'],'I am reading.'],['m','Welche Wörter sind Signalwörter für das present progressive?',['now, at the moment, look','always, often, never','every day, usually','yesterday, last week'],'Sie zeigen: genau jetzt.']],
+'en-plural':[['m','Wann bekommt ein Nomen im Plural -es?',['nach s, x, sh, ch','nach jedem Vokal','nach y','nach t'],'boxes, dishes, watches.'],['m','Was wird im Plural aus -y nach einem Konsonanten?',['-ies','-ys','-yes','das y bleibt'],'baby → babies.'],['m','Was ist der Unterschied zwischen „its“ und „it\'s“?',['its = sein/ihr (Besitz), it\'s = it is','its = it is, it\'s = Besitz','Beide bedeuten dasselbe.','it\'s ist der Plural von its.'],'The dog wags its tail. It\'s funny.']],
+'en-questions':[['m','Wann fragst du mit „How many“?',['nach einer Anzahl (zählbar)','nach dem Preis','nach dem Alter','nach der Uhrzeit'],'How many pets …? How much is …?'],['m','Was gilt für „can“ bei he, she, it?',['Es bekommt kein -s.','Es bekommt ein -s.','Man sagt dann „cans“ nur in Fragen.','Man benutzt stattdessen „is can“.'],'He can swim.']]
+};
+TOPICS.forEach(t=>{if(TH[t.id])t.th=TH[t.id]});
+
 /* ===== Lernbasis – App ===== */
 const LS='lernbasis_v1',LSPIN='lernbasis_pin';
 const INT=[0,1,2,4,8,16];
@@ -524,11 +576,11 @@ const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const lsDel=k=>{try{localStorage.removeItem(k)}catch(e){}};
 
-function defState(){return {v:1,updated:0,name:'Henry',xp:0,streak:{last:'',n:0},days:{},tp:{},cards:{},tests:[],miss:{},custom:[],blitz:0,set:{ppin:'0000',goal:60,keys:[92,81,67,50,30]}}}
-function fix(o){const d=defState();if(o&&o.miss)Object.keys(o.miss).forEach(k=>{if(/^\d+ · \d+ − \d+ : \d+ =#/.test(k))delete o.miss[k]});o=Object.assign(d,o||{});o.set=Object.assign(defState().set,o.set||{});if(!Array.isArray(o.set.keys)||o.set.keys.length!==5)o.set.keys=[92,81,67,50,30];['days','tp','cards','miss'].forEach(k=>{if(!o[k]||typeof o[k]!=='object')o[k]={}});['tests','custom'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[]});return o}
+function defState(){return {v:1,updated:0,name:'Henry',xp:0,coins:0,avatar:'🙂',theme:'ozean',owned:{av:['🙂'],th:['ozean']},badges:{},st:{right:0,fixed:0,cards:0,tests:0,ones:0,perfect:0,combo:0},rewards:[{id:'w1',name:'15 Minuten extra Medienzeit',price:500},{id:'w2',name:'Lieblingsessen aussuchen',price:1200}],redeem:[],chest:'',streak:{last:'',n:0},days:{},tp:{},cards:{},tests:[],miss:{},done:{},custom:[],blitz:0,set:{ppin:'0000',goal:60,keys:[92,81,67,50,30],remind:'16:00'}}}
+function fix(o){const d=defState();if(o&&o.miss)Object.keys(o.miss).forEach(k=>{if(/^\d+ · \d+ − \d+ : \d+ =#/.test(k))delete o.miss[k]});o=Object.assign(d,o||{});o.set=Object.assign(defState().set,o.set||{});if(!Array.isArray(o.set.keys)||o.set.keys.length!==5)o.set.keys=[92,81,67,50,30];['days','tp','cards','miss','done','badges'].forEach(k=>{if(!o[k]||typeof o[k]!=='object')o[k]={}});['tests','custom','redeem','rewards'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[]});o.st=Object.assign(defState().st,o.st||{});o.owned=Object.assign(defState().owned,o.owned||{});return o}
 let S=(()=>{try{const j=JSON.parse(lsGet(LS));if(j)return fix(j)}catch(e){}return defState()})();
 let pushT=null;
-function save(){S.updated=Date.now();lsSet(LS,JSON.stringify(S));if(SYNC.on&&SYNC.pin){clearTimeout(pushT);pushT=setTimeout(push,1200)}}
+function save(){checkBadges();const dk=Object.keys(S.done);if(dk.length>4000)dk.slice(0,dk.length-4000).forEach(k=>delete S.done[k]);S.updated=Date.now();lsSet(LS,JSON.stringify(S));if(SYNC.on&&SYNC.pin){clearTimeout(pushT);pushT=setTimeout(push,1200)}}
 
 /* ---------- Sync mit api.php (nur auf dem Server) ---------- */
 const SYNC={on:false,pin:lsGet(LSPIN),st:'lokal'};
@@ -553,7 +605,7 @@ document.addEventListener('visibilitychange',async()=>{if(document.visibilitySta
 
 /* ---------- XP, Level, Serie ---------- */
 function lvl(){let x=S.xp,l=1,need=100;while(x>=need){x-=need;l++;need+=50}return {l,x,need,title:TITLES[Math.min(TITLES.length-1,Math.floor((l-1)/2))]}}
-function addXP(n){S.xp+=n;const d=today();S.days[d]=(S.days[d]||0)+n;if(S.streak.last!==d){S.streak.n=S.streak.last===today(-1)?S.streak.n+1:1;S.streak.last=d}}
+function addXP(n){const l0=lvl().l;S.xp+=n;S.coins=(S.coins||0)+n;const d=today();S.days[d]=(S.days[d]||0)+n;if(S.streak.last!==d){S.streak.n=S.streak.last===today(-1)?S.streak.n+1:1;S.streak.last=d}const L=lvl();if(L.l>l0)celeb('⬆️','Level '+L.l+'!','Du bist jetzt „'+L.title+'“.',L.l*20);chestCheck()}
 function streak(){return (S.streak.last===today()||S.streak.last===today(-1))?S.streak.n:0}
 
 /* ---------- Themen ---------- */
@@ -583,15 +635,27 @@ function cardTasks(tp){
  });return out;
 }
 const tkey=t=>t.q+'#'+(Array.isArray(t.a)?t.a[0]:t.a);
-function tasksFor(tp,n){
- let st=(tp.tasks||[]).map(x=>normTask(x,tp.id));
- if(tp.auto||tp.vok)st=st.concat(cardTasks(tp));
- const miss=st.filter(t=>S.miss[tkey(t)]);const rest=shuffle(st.filter(t=>!S.miss[tkey(t)]));
- st=shuffle(miss).concat(rest);
- let gn=tp.gen?(st.length?Math.round(n*(tp.genShare||.7)):n):0;
- let pick=st.slice(0,n-gn);
- if(pick.length<n-gn&&tp.gen)gn=n-pick.length;
- const out=pick.concat(Array.from({length:gn},()=>({...GEN[tp.gen](),tid:tp.id})));
+function ordered(list){const miss=[],fresh=[],done=[];list.forEach(t=>{const k=tkey(t);if(S.miss[k])miss.push(t);else if(S.done[k])done.push(t);else fresh.push(t)});done.sort((x,y)=>S.done[tkey(x)]-S.done[tkey(y)]);return {list:shuffle(miss).concat(shuffle(fresh)).concat(done),nNew:miss.length+fresh.length}}
+function genFresh(tp,seen){let t;for(let i=0;i<15;i++){t={...GEN[tp.gen](),tid:tp.id};const k=tkey(t);if(!S.done[k]&&!seen.has(k))break}seen.add(tkey(t));return t}
+/* Mischung: ca. 1/3 Theorie, 2/3 Anwendung. Neue und falsche Aufgaben zuerst, richtig gelöste erst, wenn nichts Neues mehr da ist. */
+function tasksFor(tp,n,thN){
+ const seen=new Set();
+ const th=ordered((tp.th||[]).map(x=>({...normTask(x,tp.id),th:true})));
+ let ap=(tp.tasks||[]).map(x=>normTask(x,tp.id));if(tp.auto||tp.vok)ap=ap.concat(cardTasks(tp));
+ const apO=ordered(ap);
+ if(!tp.gen&&thN==null){const fr=th.nNew+apO.nNew;if(fr>=4&&fr<n)n=fr;else if(fr<4&&(th.list.length+apO.list.length)>=4)tp._again=true}
+ let nTh=thN!=null?thN:(th.list.length?Math.round(n*(tp.thShare||1/3)):0);
+ if(tp.gen&&nTh>th.nNew)nTh=th.nNew;
+ nTh=Math.min(nTh,th.list.length,n);
+ const out=th.list.slice(0,nTh);
+ const rest=n-out.length;let nStat=rest,gn=0;
+ if(tp.gen){gn=apO.list.length?Math.round(rest*(tp.genShare||.7)):rest;nStat=rest-gn;if(nStat>apO.nNew){gn+=nStat-apO.nNew;nStat=apO.nNew}}
+ out.push(...apO.list.slice(0,nStat));
+ for(let i=0;i<gn;i++)out.push(genFresh(tp,seen));
+ if(out.length<n)out.push(...th.list.slice(nTh,nTh+n-out.length));
+ const isD=t=>!!S.done[tkey(t)]&&!S.miss[tkey(t)];const used=new Set(out.map(tkey));
+ const spare=[...th.list,...apO.list].filter(t=>!isD(t)&&!used.has(tkey(t)));
+ for(let i=0;i<out.length&&spare.length;i++)if(isD(out[i]))out[i]=spare.shift();
  return shuffle(out);
 }
 function cardsOf(tp){return (tp.cards||[]).map(([f,b])=>({key:tp.id+'|'+f,f,b,tid:tp.id,vok:tp.vok}))}
@@ -624,24 +688,26 @@ function back(){history.length>1?history.back():go('home')}
 let toastT;function toast(m){let el=$('.toast');if(!el){el=document.createElement('div');el.className='toast';document.body.appendChild(el)}el.innerHTML=m;clearTimeout(toastT);toastT=setTimeout(()=>el.remove(),2200)}
 function hdr(title,color,extra=''){document.documentElement.style.setProperty('--sub',color||'#38bdf8');return `<div class="top"><button class="ib" onclick="back()" aria-label="Zurück">←</button><div class="ttl">${title}</div>${extra}</div>`}
 
-function render(){const v=VIEWS[view.n]||VIEWS.home;$('#app').innerHTML=v(view.p);initPaper();const f=$('[autofocus]');if(f)setTimeout(()=>f.focus(),60)}
+function render(){applyTheme();const v=VIEWS[view.n]||VIEWS.home;$('#app').innerHTML=v(view.p);initPaper();showCeleb();const f=$('[autofocus]');if(f)setTimeout(()=>f.focus(),60)}
 
 const VIEWS={};
 /* ---------- Start ---------- */
 VIEWS.home=()=>{
- document.documentElement.style.setProperty('--sub','#38bdf8');
+ document.documentElement.style.setProperty('--sub',(THEMES[S.theme]||THEMES.ozean).acc);
  const L=lvl(),dToday=S.days[today()]||0,goal=S.set.goal||60;
  const due=allTopics().flatMap(cardsOf).filter(isDue).length;
  const nMiss=Object.keys(S.miss).length;
  const sync=SYNC.on?(SYNC.st==='ok'?'☁️ synchronisiert':'☁️ offline'):'📱 auf diesem Gerät';
  return `<div class="top"><div class="ttl">Lernbasis</div><span class="pill">${sync}</span><button class="ib" onclick="go('eltern')" aria-label="Eltern">⚙️</button></div>
- <div class="hero"><div class="row"><div class="lvl">${L.l}</div><div style="flex:1"><div style="font-size:1.25rem;font-weight:800">Hallo ${esc(S.name)}! 👋</div><div class="small" style="opacity:.85">Level ${L.l} · ${L.title} · ${L.x}/${L.need} XP</div><div class="bar"><i style="width:${Math.round(L.x/L.need*100)}%"></i></div></div></div>
- <div class="stats"><span>🔥 ${streak()} ${streak()===1?'Tag':'Tage'} in Folge</span><span>🎯 Heute ${dToday}/${goal} XP${dToday>=goal?' ✅':''}</span><span>⭐ ${S.xp} XP gesamt</span></div></div>
+ <div class="hero"><div class="row"><button class="lvl av" onclick="go('shop')">${S.avatar||'🙂'}<i>${L.l}</i></button><div style="flex:1"><div style="font-size:1.25rem;font-weight:800">Hallo ${esc(S.name)}! 👋</div><div class="small" style="opacity:.85">Level ${L.l} · ${L.title} · ${L.x}/${L.need} XP</div><div class="bar"><i style="width:${Math.round(L.x/L.need*100)}%"></i></div></div></div>
+ <div class="stats"><span>🔥 ${streak()} ${streak()===1?'Tag':'Tage'} in Folge</span><span>🎯 Heute ${dToday}/${goal} XP${dToday>=goal?' ✅':''}</span><button onclick="go('shop')">🪙 ${S.coins||0}</button><button onclick="go('badges')">🏅 ${Object.keys(S.badges).length}/${BADGES.length}</button></div></div>${SYNC.on&&SYNC.pin&&lsGet('lb_push')!=='1'&&'PushManager' in window?`<button class="item" style="margin-bottom:12px" onclick="pushEnable()"><span style="font-size:1.5rem">🔔</span><div class="t"><b>Tägliche Erinnerung einschalten</b><small>Damit deine Serie nicht reißt</small></div>›</button>`:''}
  <div class="acts">
   <button class="act" onclick="go('train')"><span class="ic">💪</span><span><b>Trainieren</b><small>${nMiss?nMiss+' Fehler offen':'Schwächen & Blitzrechnen'}</small></span></button>
   <button class="act" onclick="go('testsetup')"><span class="ic">📝</span><span><b>Test</b><small>Arbeit simulieren</small></span></button>
   <button class="act" onclick="startCards(null)"><span class="ic">🧠</span><span><b>Merken</b><small>${due?due+' Karten fällig':'Karteikarten'}</small></span></button>
   <button class="act" onclick="go('subject',{s:'eigen'})"><span class="ic">➕</span><span><b>Eigene Themen</b><small>${S.custom.length} angelegt</small></span></button>
+  <button class="act" onclick="go('shop')"><span class="ic">🛍️</span><span><b>Shop</b><small>${S.coins||0} Münzen</small></span></button>
+  <button class="act" onclick="go('badges')"><span class="ic">🏅</span><span><b>Abzeichen</b><small>${Object.keys(S.badges).length} von ${BADGES.length}</small></span></button>
  </div>
  <div class="sec">Fächer · Klasse 5</div>
  <div class="grid">${SUBJECTS.filter(s=>s.id!=='eigen').map(s=>{const ts=topicsOf(s.id);const done=ts.filter(t=>(topicScore(t.id)||0)>=80).length;return `<button class="tile" style="--c:${s.color}" onclick="go('subject',{s:'${s.id}'})"><span class="ic">${s.icon}</span><span><b>${s.name}</b><br><small>${done}/${ts.length} Themen sicher</small></span></button>`}).join('')}</div>`;
@@ -680,7 +746,7 @@ VIEWS.learn=({id})=>{
 function learned(id){const st=S.tp[id]||(S.tp[id]={});if(st.ld!==today()){addXP(20);st.ld=today();toast('+20 XP fürs Lernen 📘')}st.l=true;save();const t=topic(id);if((t.tasks&&t.tasks.length)||t.gen||((t.auto||t.vok)&&t.cards.length))startQuiz(id,true);else startCards(id)}
 
 /* ---------- Üben / Trainieren ---------- */
-function startQuiz(id,rep){const t=topic(id);const tasks=tasksFor(t,10);go('quiz',{title:t.title,color:subj(t.s).color,tasks,i:0,r:0,w:0,xp:0,retry:[],phase:1,tid:id,text:t.text},rep)}
+function startQuiz(id,rep){const t=topic(id);t._again=false;const tasks=tasksFor(t,10);if(t._again)setTimeout(()=>toast('🏁 Alle Aufgaben dieses Themas geschafft – jetzt kommt die Wiederholung!'),300);go('quiz',{title:t.title,color:subj(t.s).color,tasks,i:0,r:0,w:0,xp:0,retry:[],phase:1,tid:id,text:t.text},rep)}
 function startMix(tasks,title,color){if(!tasks.length){toast('Keine Aufgaben gefunden.');return}go('quiz',{title,color:color||'#38bdf8',tasks,i:0,r:0,w:0,xp:0,retry:[],phase:1})}
 VIEWS.quiz=p=>{
  if(p.i>=p.tasks.length)return quizEnd(p);
@@ -689,7 +755,7 @@ VIEWS.quiz=p=>{
  if(p.phase===2)h+=`<p class="small" style="color:var(--warn)">🔁 Fehler-Runde: Versuch es noch einmal!</p>`;
  if(tp&&tp.text)h+=`<details class="text"${p.i===0?' open':''}><summary>Lesetext anzeigen</summary>${tp.text}</details>`;
  h+=`<div class="q">${t.q}</div>`+answerUI(t,p.ans,p.done);
- if(p.done){const ok=p.ok;h+=`<div class="fb ${ok?'ok':'no'}"><b>${ok?'✅ '+PRAISE[p.i%PRAISE.length]:'❌ '+OOPS[p.i%OOPS.length]+' Richtig ist: '+esc(showAns(t))}</b>${t.ex?`<div class="small">${t.ex}</div>`:''}</div><button class="btn" id="nx" onclick="quizNext()" autofocus>Weiter →</button>`}
+ if(p.done){const ok=p.ok;h+=`<div class="fb ${ok?'ok':'no'}"><b>${ok?'✅ '+PRAISE[p.i%PRAISE.length]:'❌ '+OOPS[p.i%OOPS.length]+' Richtig ist: '+esc(showAns(t))}</b>${t.ex?`<div class="small">${t.ex}</div>`:''}${ok&&p.cmsg?`<div class="combo">${p.cmsg}</div>`:''}</div><button class="btn" id="nx" onclick="quizNext()" autofocus>Weiter →</button>`}
  return h;
 };
 function answerUI(t,ans,done,testMode){
@@ -707,15 +773,15 @@ function quizAns(j,raw){
  const p=view.p;if(p.done)return;const t=p.tasks[p.i];let v=raw?j:(t.t==='m'?t._o[j]:j);
  const ok=check(t,v);p.ans=v;p.done=true;p.ok=ok;const k=tkey(t);
  const st=S.tp[t.tid]||(S.tp[t.tid]={});
- if(ok){p.r++;st.r=(st.r||0)+1;const x=p.phase===2?5:10;p.xp+=x;addXP(x);delete S.miss[k]}
- else{p.w++;st.w=(st.w||0)+1;S.miss[k]={...t,_o:undefined};if(p.phase===1&&p.tasks!==p.retry)p.retry.push({...t,_o:undefined});if(navigator.vibrate)try{navigator.vibrate(80)}catch(e){}}
+ if(ok){p.r++;st.r=(st.r||0)+1;S.st.right++;if(S.miss[k])S.st.fixed++;S.done[k]=Date.now();const x=p.phase===2?5:10;p.xp+=x;addXP(x);delete S.miss[k];p.combo=(p.combo||0)+1;if(p.combo>S.st.combo)S.st.combo=p.combo;if([3,5,10,15,20,30].includes(p.combo)){const b=p.combo*2;p.xp+=b;addXP(b);p.cmsg=`🔥 ${p.combo}er-Combo! +${b} Bonus`}else p.cmsg=''}
+ else{p.combo=0;p.cmsg='';p.w++;st.w=(st.w||0)+1;S.miss[k]={...t,_o:undefined};if(p.phase===1&&p.tasks!==p.retry)p.retry.push({...t,_o:undefined});if(navigator.vibrate)try{navigator.vibrate(80)}catch(e){}}
  const mk=Object.keys(S.miss);if(mk.length>80)delete S.miss[mk[0]];
  save();render();
 }
 function quizNext(){const p=view.p;p.i++;p.done=false;p.ans='';render();scrollTo(0,0)}
 function quizEnd(p){
  if(p.phase===1&&p.retry.length&&!p.noRetry){return hdr(esc(p.title),p.color)+`<div class="big">🔁</div><h2 class="center">${p.retry.length} ${p.retry.length===1?'Aufgabe':'Aufgaben'} noch nicht richtig</h2><p class="center mut">Hol dir die Punkte zurück! In der Fehler-Runde übst du genau diese Aufgaben noch einmal.</p><button class="btn" onclick="retryRound()">Fehler-Runde starten</button><button class="btn sec2" onclick="view.p.noRetry=true;render()">Überspringen</button>`}
- if(!p.saved){p.saved=true;const first=p.r1??p.r;const tot=p.n1??p.tasks.length;const pct=Math.round(first/tot*100);if(p.tid){const st=S.tp[p.tid]||(S.tp[p.tid]={});st.sc=st.sc==null?pct:Math.round(st.sc*.5+pct*.5);st.last=today()}save()}
+ if(!p.saved){p.saved=true;const first=p.r1??p.r;const tot=p.n1??p.tasks.length;const pct=Math.round(first/tot*100);if(p.tid){const st=S.tp[p.tid]||(S.tp[p.tid]={});st.sc=st.sc==null?pct:Math.round(st.sc*.5+pct*.5);st.last=today()}if(first===tot&&tot>=5){S.st.perfect++;addXP(20);p.xp+=20}save()}
  const tot=p.n1??p.tasks.length,first=p.r1??p.r,pct=Math.round(first/tot*100);
  const em=pct>=90?'🏆':pct>=70?'🌟':pct>=50?'👍':'💪';
  return hdr(esc(p.title),p.color)+`<div class="big">${em}</div><h2 class="center">${first} von ${tot} beim ersten Versuch richtig</h2><p class="center mut">+${p.xp} XP · ${pct>=90?'Hervorragend!':pct>=70?'Richtig gut!':pct>=50?'Ordentlich – dranbleiben!':'Übung macht den Meister. Schau dir noch einmal die Merkkästen an.'}</p>
@@ -807,7 +873,7 @@ VIEWS.cards=p=>{
  ${p.flip?`<div class="row2"><button class="btn no" onclick="cardRate(false)">✗ Noch nicht</button><button class="btn ok" onclick="cardRate(true)">✓ Gewusst</button></div>`:`<button class="btn sec2" onclick="view.p.flip=true;render()">Antwort zeigen</button>`}`;
 };
 function cardRate(ok){const p=view.p,c=p.cs[p.i];const s=S.cards[c.key]||{b:0};
- if(ok){s.b=Math.min(5,(s.b||0)+1);s.d=today(INT[s.b]);p.ok++;addXP(5)}else{s.b=1;s.d=today(1);p.no++;if(!c.again)p.cs.push({...c,again:true})}
+ if(ok){s.b=Math.min(5,(s.b||0)+1);s.d=today(INT[s.b]);p.ok++;S.st.cards++;addXP(5)}else{s.b=1;s.d=today(1);p.no++;if(!c.again)p.cs.push({...c,again:true})}
  S.cards[c.key]=s;p.i++;p.flip=false;save();render()}
 
 /* ---------- Test simulieren ---------- */
@@ -827,8 +893,10 @@ function tsTog(id){const p=view.p;p.sel=p.sel.includes(id)?p.sel.filter(x=>x!==i
 function tsAll(){const p=view.p;const ts=topicsOf(p.s).filter(t=>(t.tasks&&t.tasks.length)||t.gen||((t.auto||t.vok)&&t.cards.length));p.sel=p.sel.length===ts.length?[]:ts.map(t=>t.id);render()}
 let testT=null;
 function startTest(ids,n,min){
- const ts=ids.map(topic).filter(Boolean);if(!ts.length)return;const per=Math.ceil(n/ts.length);
- let tasks=shuffle(ts.flatMap(t=>tasksFor(t,per)));const seen=new Set();tasks=tasks.filter(t=>{const k=tkey(t);if(seen.has(k))return false;seen.add(k);return true}).slice(0,n);
+ const ts=ids.map(topic).filter(Boolean);if(!ts.length)return;
+ const per={},thp={};ts.forEach(t=>{per[t.id]=0;thp[t.id]=0});for(let i=0;i<n;i++)per[ts[i%ts.length].id]++;
+ const tsTh=ts.filter(t=>t.th&&t.th.length);const nTh=tsTh.length?Math.round(n/3):0;for(let i=0;i<nTh;i++){const t=tsTh[i%tsTh.length];if(thp[t.id]<per[t.id])thp[t.id]++}
+ let tasks=shuffle(ts.flatMap(t=>per[t.id]?tasksFor(t,per[t.id],thp[t.id]):[]));const seen=new Set();tasks=tasks.filter(t=>{const k=tkey(t);if(seen.has(k))return false;seen.add(k);return true}).slice(0,n);
  const sb=subj(ts[0].s);const title=ts.length===1?ts[0].title:sb.name+'-Test';
  go('test',{tasks,ans:[],i:0,start:Date.now(),end:min?Date.now()+min*60000:0,title,color:sb.color,s:ts[0].s});
  clearInterval(testT);testT=setInterval(()=>{if(view.n!=='test'||view.p.fin){clearInterval(testT);return}const p=view.p;const el=$('#tt');const sec=p.end?Math.max(0,Math.round((p.end-Date.now())/1000)):Math.round((Date.now()-p.start)/1000);if(el)el.textContent=(p.end?'⏳ ':'⏱ ')+Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');if(p.end&&sec<=0){toast('⏰ Die Zeit ist um!');finishTest()}},500);
@@ -848,14 +916,14 @@ function testIn(soft){const p=view.p;if(!$('#ans'))return;p.ans[p.i]=$('#ans').v
 function grade(pct){const k=S.set.keys||[92,81,67,50,30];for(let i=0;i<5;i++)if(pct>=k[i])return i+1;return 6}
 function finishTest(ask){const p=view.p;if(ask&&!p.sure){p.sure=true;render();return}
  p.fin=true;clearInterval(testT);p.res=p.tasks.map((t,j)=>check(t,p.ans[j]));p.r=p.res.filter(Boolean).length;p.pct=Math.round(p.r/p.tasks.length*100);p.g=grade(p.pct);p.sec=Math.round((Date.now()-p.start)/1000);
- p.tasks.forEach((t,j)=>{const st=S.tp[t.tid]||(S.tp[t.tid]={});if(p.res[j]){st.r=(st.r||0)+1;delete S.miss[tkey(t)]}else{st.w=(st.w||0)+1;S.miss[tkey(t)]={...t,_o:undefined}}});
+ S.st.tests++;if(p.g===1)S.st.ones++;p.tasks.forEach((t,j)=>{const st=S.tp[t.tid]||(S.tp[t.tid]={});if(p.res[j]){st.r=(st.r||0)+1;S.st.right++;S.done[tkey(t)]=Date.now();delete S.miss[tkey(t)]}else{st.w=(st.w||0)+1;S.miss[tkey(t)]={...t,_o:undefined}}});
  const tids=[...new Set(p.tasks.map(t=>t.tid))];tids.forEach(id=>{const idx=p.tasks.map((t,j)=>t.tid===id?j:-1).filter(j=>j>=0);const pc=Math.round(idx.filter(j=>p.res[j]).length/idx.length*100);const st=S.tp[id];st.sc=st.sc==null?pc:Math.round(st.sc*.5+pc*.5)});
- addXP(p.r*5+20);S.tests.push({d:today(),title:p.title,s:p.s,n:p.tasks.length,r:p.r,g:p.g,sec:p.sec});if(S.tests.length>100)S.tests.shift();save();render();scrollTo(0,0)}
+ addXP(p.r*5+20);if(p.g<=2)celeb(p.g===1?'🥇':'🥈','Note '+p.g+'!','Stark geschrieben – '+p.r+' von '+p.tasks.length+' richtig.',p.g===1?100:50);S.tests.push({d:today(),title:p.title,s:p.s,n:p.tasks.length,r:p.r,g:p.g,sec:p.sec});if(S.tests.length>100)S.tests.shift();save();render();scrollTo(0,0)}
 function testResult(p){
  const col=['','#22c55e','#84cc16','#eab308','#f97316','#ef4444','#b91c1c'][p.g];
  return hdr('📝 Auswertung',p.color)+`<p class="center mut" style="margin:0">${esc(p.title)}</p><div class="note" style="color:${col}">${p.g}</div><p class="center"><b>${p.r} von ${p.tasks.length} richtig (${p.pct} %)</b><br><span class="small mut">Zeit: ${Math.floor(p.sec/60)} min ${p.sec%60} s · Note als Richtwert · +${p.r*5+20} XP</span></p>
  <button class="btn" onclick="go('testsetup',{s:'${p.s}'},true)">Neuer Test</button>${p.r<p.tasks.length?`<button class="btn sec2" onclick="missMix()">🔁 Fehler gleich üben</button>`:''}
- <div class="sec">Alle Aufgaben</div>${p.tasks.map((t,j)=>`<div class="rev ${p.res[j]?'ok':'no'}"><div>${j+1}. ${t.q}</div><div class="small" style="margin-top:6px">${p.res[j]?'✅':'❌'} Deine Antwort: <b>${p.ans[j]==null||p.ans[j]===''?'–':esc(t.t==='w'?(p.ans[j]?'Stimmt':'Stimmt nicht'):p.ans[j])}</b>${p.res[j]?'':` · Richtig: <b>${esc(showAns(t))}</b>`}</div>${!p.res[j]&&t.ex?`<div class="small mut" style="margin-top:4px">${t.ex}</div>`:''}</div>`).join('')}`;
+ <div class="sec">Alle Aufgaben</div>${p.tasks.map((t,j)=>`<div class="rev ${p.res[j]?'ok':'no'}"><div>${j+1}. ${t.th?'<span class="badge" style="background:#38bdf833;color:#7dd3fc">Theorie</span> ':''}${t.q}</div><div class="small" style="margin-top:6px">${p.res[j]?'✅':'❌'} Deine Antwort: <b>${p.ans[j]==null||p.ans[j]===''?'–':esc(t.t==='w'?(p.ans[j]?'Stimmt':'Stimmt nicht'):p.ans[j])}</b>${p.res[j]?'':` · Richtig: <b>${esc(showAns(t))}</b>`}</div>${!p.res[j]&&t.ex?`<div class="small mut" style="margin-top:4px">${t.ex}</div>`:''}</div>`).join('')}`;
 }
 
 /* ---------- Eigene Themen ---------- */
@@ -899,6 +967,7 @@ VIEWS.eltern=p=>{
  <div class="sec">Fächer</div><table class="st"><tr><th>Fach</th><th>Aufg.</th><th>richtig</th><th>Themen</th></tr>${rows}</table>
  ${weak.length?`<div class="sec">Unsicherste Themen</div>${weak.map(t=>`<div class="small">${subj(t.s).icon} ${esc(t.title)} – <b>${topicScore(t.id)} %</b></div>`).join('')}`:''}
  <div class="sec">Letzte Tests</div>${S.tests.length?`<table class="st"><tr><th>Datum</th><th>Test</th><th>Erg.</th><th>Note</th></tr>${S.tests.slice(-10).reverse().map(h=>`<tr><td>${h.d.slice(5).split('-').reverse().join('.')}</td><td>${esc(h.title)}</td><td>${h.r}/${h.n}</td><td><b>${h.g}</b></td></tr>`).join('')}</table>`:'<p class="small mut">Noch keine Tests.</p>'}
+ ${elternRewards()}${elternRemind()}
  <div class="sec">Einstellungen</div>
  <label class="small mut">Name des Kindes</label><input value="${esc(S.name)}" onchange="S.name=this.value.trim()||'Henry';save()">
  <div class="row2" style="margin-top:8px"><div><label class="small mut">Tagesziel (XP)</label><input type="number" inputmode="numeric" value="${S.set.goal}" onchange="S.set.goal=Math.max(10,+this.value||60);save()"></div><div><label class="small mut">Eltern-PIN (4 Ziffern)</label><input inputmode="numeric" maxlength="4" value="${esc(S.set.ppin)}" onchange="if(/^\\d{4}$/.test(this.value)){S.set.ppin=this.value;save();toast('PIN geändert')}else toast('Bitte 4 Ziffern')"></div></div>
@@ -909,10 +978,93 @@ VIEWS.eltern=p=>{
  <button class="btn ${p.rs?'no':'sec2'}" onclick="resetAll()">${p.rs?'Wirklich ALLES zurücksetzen?':'Fortschritt zurücksetzen'}</button>
  <p class="small mut center" style="margin-top:20px">Inhalte orientiert am Fachlehrplan Gymnasium Sachsen-Anhalt (Schuljahrgänge 5/6).</p>`;
 };
-function epin(k){const p=view.p;p.err='';if(k==='⌫')p.v=p.v.slice(0,-1);else if(k!==''&&p.v.length<4)p.v+=k;if(p.v.length===4){if(p.v===S.set.ppin)p.ok=true;else{p.err='Falsche PIN';p.v=''}}render()}
+function epin(k){setTimeout(loadCron,50);const p=view.p;p.err='';if(k==='⌫')p.v=p.v.slice(0,-1);else if(k!==''&&p.v.length<4)p.v+=k;if(p.v.length===4){if(p.v===S.set.ppin)p.ok=true;else{p.err='Falsche PIN';p.v=''}}render()}
 function exportData(){const b=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='lernbasis-sicherung-'+today()+'.json';document.body.appendChild(a);a.click();a.remove()}
 function importData(f){if(!f)return;const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(!j||typeof j.xp!=='number')throw 0;S=fix(j);save();toast('Sicherung geladen ✓');render()}catch(e){toast('Datei konnte nicht gelesen werden.')}};r.readAsText(f)}
 function resetAll(){const p=view.p;if(!p.rs){p.rs=true;render();return}const keep={name:S.name,set:S.set,custom:S.custom};S=fix(keep);save();toast('Zurückgesetzt');go('home',{},true)}
+
+
+/* ===== Belohnungssystem: Münzen, Shop, Abzeichen, Feiern, Erinnerungen ===== */
+const AVATARS=[['🙂',0],['🦊',150],['🐺',150],['🦉',150],['🐸',150],['🦅',250],['🦈',250],['🐯',250],['🦁',300],['🐙',300],['🐲',450],['🚀',450],['🤖',450],['🥷',600],['🧙',600],['👽',700],['🦖',800],['👑',1200]];
+const THEMES={
+ ozean:{n:'Ozean',acc:'#38bdf8',hero:'linear-gradient(135deg,#1e3a8a,#6d28d9)',p:0},
+ vulkan:{n:'Vulkan',acc:'#fb923c',hero:'linear-gradient(135deg,#7f1d1d,#ea580c)',p:400},
+ dschungel:{n:'Dschungel',acc:'#4ade80',hero:'linear-gradient(135deg,#064e3b,#65a30d)',p:400},
+ arktis:{n:'Arktis',acc:'#67e8f9',hero:'linear-gradient(135deg,#0e7490,#475569)',p:600},
+ galaxie:{n:'Galaxie',acc:'#e879f9',hero:'linear-gradient(135deg,#312e81,#a21caf)',p:700},
+ gold:{n:'Gold',acc:'#fbbf24',hero:'linear-gradient(135deg,#78350f,#ca8a04)',p:1500}
+};
+const BADGES=[
+ ['erste','👣','Erste Schritte','Die erste Aufgabe richtig gelöst',s=>s.st.right>=1],
+ ['r50','🎯','Treffsicher','50 Aufgaben richtig',s=>s.st.right>=50],
+ ['r250','🏹','Scharfschütze','250 Aufgaben richtig',s=>s.st.right>=250],
+ ['r1000','💎','Wissensdiamant','1 000 Aufgaben richtig',s=>s.st.right>=1000],
+ ['s3','🔥','Dranbleiber','3 Tage in Folge gelernt',s=>streak()>=3],
+ ['s7','🔥','Wochen-Held','7 Tage in Folge gelernt',s=>streak()>=7],
+ ['s30','🌋','Unaufhaltsam','30 Tage in Folge gelernt',s=>streak()>=30],
+ ['perfekt','✨','Fehlerfrei','Eine Übungsrunde ohne Fehler',s=>s.st.perfect>=1],
+ ['combo10','⚡','Combo-König','10 richtige Antworten hintereinander',s=>s.st.combo>=10],
+ ['test1','📝','Prüfling','Den ersten Test geschrieben',s=>s.st.tests>=1],
+ ['eins','🥇','Glatte Eins','Einen Test mit Note 1',s=>s.st.ones>=1],
+ ['eins5','🏆','Einser-Sammler','Fünf Tests mit Note 1',s=>s.st.ones>=5],
+ ['fixer','🔧','Fehlerjäger','20 Fehler verbessert',s=>s.st.fixed>=20],
+ ['karten','🧠','Gedächtnis-Profi','100 Karteikarten gewusst',s=>s.st.cards>=100],
+ ['blitz','⚡','Blitzrechner','20 Aufgaben im Blitzrechnen',s=>(s.blitz||0)>=20],
+ ['lvl5','⭐','Aufsteiger','Level 5 erreicht',s=>lvl().l>=5],
+ ['lvl10','🌟','Superstar','Level 10 erreicht',s=>lvl().l>=10],
+ ['fach','🎓','Fach-Meister','Alle Themen eines Fachs zu mindestens 80 % sicher',s=>SUBJECTS.some(sb=>{const ts=topicsOf(sb.id);return ts.length>2&&ts.every(t=>(topicScore(t.id)||0)>=80)})],
+ ['eigen','🛠️','Selbermacher','Ein eigenes Thema angelegt',s=>s.custom.length>=1],
+ ['shop','🛍️','Sammler','Etwas im Shop gekauft',s=>(s.owned.av.length+s.owned.th.length)>2]
+];
+let CELEB=[];
+function celeb(icon,title,text,coins){if(coins)S.coins=(S.coins||0)+coins;CELEB.push({icon,title,text:text+(coins?` <b>+${coins} 🪙</b>`:'')})}
+function showCeleb(){if(!CELEB.length||$('.ov'))return;const c=CELEB[0];const el=document.createElement('div');el.className='ov';
+ el.innerHTML=`<div class="conf">${Array.from({length:40},(_,i)=>`<i style="left:${Math.random()*100}%;background:${['#fde047','#f472b6','#38bdf8','#4ade80','#fb923c','#a78bfa'][i%6]};animation-delay:${Math.random()*.8}s;animation-duration:${1.6+Math.random()*1.4}s"></i>`).join('')}</div><div class="ovc"><div class="ovi">${c.icon}</div><h2>${c.title}</h2><p>${c.text}</p><button class="btn">Weiter</button></div>`;
+ el.onclick=()=>{el.remove();CELEB.shift();showCeleb()};document.body.appendChild(el);if(navigator.vibrate)try{navigator.vibrate([40,40,80])}catch(e){}}
+function checkBadges(){BADGES.forEach(([id,ic,n,d,f])=>{if(!S.badges[id]){let ok=false;try{ok=f(S)}catch(e){}if(ok){S.badges[id]=today();celeb(ic,'Abzeichen: '+n,d+'!',50)}}})}
+function chestCheck(){const g=S.set.goal||60;if((S.days[today()]||0)>=g&&S.chest!==today()){S.chest=today();const c=R(40,90);celeb('🎁','Tagesziel geschafft!','Du hast die Schatztruhe geöffnet:',c)}}
+function applyTheme(){const t=THEMES[S.theme]||THEMES.ozean;const r=document.documentElement.style;r.setProperty('--acc',t.acc);r.setProperty('--hero',t.hero);const m=document.querySelector('meta[name=theme-color]');if(m)m.content='#0b1324'}
+
+VIEWS.shop=p=>{
+ const rw=S.rewards||[],open=(S.redeem||[]).filter(x=>!x.done);
+ return hdr('🛍️ Shop',THEMES[S.theme]?.acc)+`<div class="coins">🪙 ${S.coins||0} Münzen</div><p class="small mut center">Münzen bekommst du für jede richtige Antwort, Abzeichen und die tägliche Schatztruhe.</p>
+ ${rw.length?`<div class="sec">Echte Belohnungen</div><div class="list">${rw.map(x=>`<div class="item"><span style="font-size:1.6rem">🎁</span><div class="t"><b>${esc(x.name)}</b><small>${x.price} Münzen</small></div><button class="pill ${p.buy===x.id?'warnb':''}" ${S.coins>=x.price?`onclick="redeem('${x.id}')"`:'disabled style="opacity:.45"'}>${p.buy===x.id?'Sicher?':'Einlösen'}</button></div>`).join('')}</div>`:''}
+ ${open.length?`<div class="sec">Eingelöst – zeig es Mama</div>${open.map(x=>`<div class="small">⏳ ${esc(x.name)} <span class="mut">(${x.d.split('-').reverse().join('.')})</span></div>`).join('')}`:''}
+ <div class="sec">Avatare</div><div class="shopg">${AVATARS.map(([a,pr])=>{const own=S.owned.av.includes(a);return `<button class="shopi ${S.avatar===a?'on':''}" onclick="buyAv('${a}',${pr})"><span>${a}</span><small>${S.avatar===a?'aktiv':own?'wählen':pr+' 🪙'}</small></button>`}).join('')}</div>
+ <div class="sec">Farbwelten</div><div class="shopg th">${Object.entries(THEMES).map(([k,t])=>{const own=S.owned.th.includes(k);return `<button class="shopi ${S.theme===k?'on':''}" onclick="buyTh('${k}')"><span class="sw" style="background:${t.hero}"></span><b class="small">${t.n}</b><small>${S.theme===k?'aktiv':own?'wählen':t.p+' 🪙'}</small></button>`}).join('')}</div>`;
+};
+function buyAv(a,pr){if(!S.owned.av.includes(a)){if((S.coins||0)<pr){toast(`Dir fehlen noch ${pr-S.coins} Münzen.`);return}S.coins-=pr;S.owned.av.push(a);toast('Gekauft! '+a)}S.avatar=a;save();render()}
+function buyTh(k){const t=THEMES[k];if(!S.owned.th.includes(k)){if((S.coins||0)<t.p){toast(`Dir fehlen noch ${t.p-S.coins} Münzen.`);return}S.coins-=t.p;S.owned.th.push(k);toast('Farbwelt '+t.n+' gekauft!')}S.theme=k;applyTheme();save();render()}
+function redeem(id){const p=view.p,x=S.rewards.find(r=>r.id===id);if(!x)return;if(p.buy!==id){p.buy=id;render();return}p.buy=null;if(S.coins<x.price)return;S.coins-=x.price;S.redeem.push({id:'r'+Date.now(),name:x.name,price:x.price,d:today(),done:false});celeb('🎁','Eingelöst!',`„${esc(x.name)}“ – zeig das Mama oder Papa.`);save();render()}
+VIEWS.badges=()=>{const n=Object.keys(S.badges).length;return hdr('🏅 Abzeichen',THEMES[S.theme]?.acc)+`<p class="center mut">${n} von ${BADGES.length} gesammelt</p><div class="badgeg">${BADGES.map(([id,ic,nm,d])=>{const h=S.badges[id];return `<div class="bdg ${h?'':'lock'}"><span>${h?ic:'🔒'}</span><b>${nm}</b><small>${d}${h?'<br>✓ '+h.split('-').reverse().join('.'):''}</small></div>`}).join('')}</div>`};
+
+/* ---------- Eltern: Belohnungen + Erinnerung ---------- */
+function elternRewards(){const rw=S.rewards||[],open=(S.redeem||[]).filter(x=>!x.done);
+ return `<div class="sec">Echte Belohnungen (Henry löst sie im Shop ein)</div>
+ ${open.length?open.map(x=>`<div class="item"><span>⏳</span><div class="t"><b>${esc(x.name)}</b><small>eingelöst am ${x.d.split('-').reverse().join('.')} · ${x.price} Münzen</small></div><button class="pill" onclick="redeemDone('${x.id}')">✓ erledigt</button></div>`).join(''):'<p class="small mut">Nichts offen.</p>'}
+ ${rw.map((x,i)=>`<div class="ed"><input value="${esc(x.name)}" onchange="S.rewards[${i}].name=this.value;save()"><input type="number" inputmode="numeric" value="${x.price}" onchange="S.rewards[${i}].price=Math.max(1,+this.value||1);save()"><button onclick="S.rewards.splice(${i},1);save();render()">🗑</button></div>`).join('')}
+ <button class="btn sec2" onclick="S.rewards.push({id:'w'+Date.now(),name:'Neue Belohnung',price:500});save();render()">+ Belohnung</button>
+ <p class="small mut">Richtwert: Für ein gutes Lerntag-Pensum gibt es etwa 150–250 Münzen.</p>`}
+function redeemDone(id){const x=S.redeem.find(r=>r.id===id);if(x){x.done=true;save();render()}}
+function elternRemind(){
+ const can=SYNC.on&&SYNC.pin;const on=lsGet('lb_push')==='1';
+ return `<div class="sec">Tägliche Erinnerung</div>${can?`<p class="small mut">Kommt nur, wenn Henry an dem Tag noch nichts gelernt hat. Muss auf jedem Gerät einmal eingeschaltet werden (App vorher installieren).</p>
+ <div class="row2"><div><label class="small mut">Uhrzeit</label><input type="time" value="${esc(S.set.remind||'16:00')}" onchange="S.set.remind=this.value||'16:00';save()"></div><div><label class="small mut">Dieses Gerät</label><button class="btn sec2" style="margin:0" onclick="pushEnable()">${on?'🔔 an – erneuern':'🔔 einschalten'}</button></div></div>
+ <button class="btn sec2" onclick="pushTest()">Test-Erinnerung an alle Geräte senden</button>
+ <details style="margin-top:8px"><summary class="small mut">Zeitsteuerung einrichten (einmalig)</summary><p class="small mut">Damit die Erinnerung pünktlich kommt, muss der Server regelmäßig angestoßen werden. Lege bei IONOS unter „Cronjobs“ (oder kostenlos bei cron-job.org) einen Aufruf <b>alle 15 Minuten</b> mit dieser Adresse an:</p><input readonly id="cronurl" value="${esc(VIEWS._cron||'wird geladen …')}" onclick="this.select()"><button class="btn sec2" onclick="cpCron()">Adresse kopieren</button></details>`:'<p class="small mut">Erinnerungen gehen nur in der installierten App im Leuchtturm.</p>'}`}
+async function loadCron(){if(!SYNC.on||!SYNC.pin||VIEWS._cron)return;try{const j=await api('cronkey',{pin:SYNC.pin});if(j.key){VIEWS._cron=location.href.split('#')[0].replace(/[^/]*$/,'')+'api.php?a=cron&key='+j.key;const el=$('#cronurl');if(el)el.value=VIEWS._cron}}catch(e){}}
+function cpCron(){const el=$('#cronurl');el.select();try{navigator.clipboard.writeText(el.value).then(()=>toast('Kopiert ✓'),()=>document.execCommand('copy'))}catch(e){document.execCommand('copy')}}
+function b64u8(s){s=s.replace(/-/g,'+').replace(/_/g,'/');s+='='.repeat((4-s.length%4)%4);const r=atob(s);return Uint8Array.from(r,c=>c.charCodeAt(0))}
+async function pushEnable(){
+ if(!('serviceWorker' in navigator)||!('PushManager' in window)||!('Notification' in window)){toast('Erinnerungen gehen nur in der installierten App (auf dem iPad: vom Home-Bildschirm aus öffnen).');return}
+ try{const perm=await Notification.requestPermission();if(perm!=='granted'){toast('Benachrichtigungen wurden nicht erlaubt – in den Einstellungen des Geräts freigeben.');return}
+  const reg=await navigator.serviceWorker.ready;const j=await api('vapid',{pin:SYNC.pin});if(!j.key)throw 0;
+  let sub=await reg.pushManager.getSubscription();if(sub){try{await sub.unsubscribe()}catch(e){}}
+  sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64u8(j.key)});
+  const r=await api('sub',{pin:SYNC.pin,sub:sub.toJSON(),dev:navigator.userAgent.slice(0,120)});if(!r.ok)throw 0;
+  lsSet('lb_push','1');toast('🔔 Erinnerung ist eingeschaltet');render();
+ }catch(e){toast('Das hat nicht geklappt. Ist die App installiert und online?')}}
+async function pushTest(){try{const j=await api('testpush',{pin:SYNC.pin});toast(j.ok?`Gesendet an ${j.n} ${j.n===1?'Gerät':'Geräte'}`:'Fehler: '+(j.err||'unbekannt'))}catch(e){toast('Keine Verbindung')}}
 
 /* ---------- Start ---------- */
 try{history.replaceState({n:'home',p:{}},'')}catch(e){}
