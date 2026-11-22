@@ -6,7 +6,7 @@ header("Content-Type: application/manifest+json; charset=utf-8");
   "name": "Plaque Invaders – Zahnputz-Spiel",
   "short_name": "Plaque Invaders",
   "description": "Zähneputzen als Weltraum-Spiel: Putzen feuert, Quatschen stört.",
-  "id": "./",
+  "id": "plaque-invaders",
   "start_url": "./",
   "scope": "./",
   "display": "fullscreen",

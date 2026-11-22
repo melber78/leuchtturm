@@ -72,10 +72,21 @@ button{ font:inherit; border:0; cursor:pointer; color:inherit; }
 #hudScore{ color:var(--gelb); text-shadow:0 0 8px #ffe14d88; }
 #hudCombo{ color:var(--pink); text-shadow:0 0 8px #ff3ea588; }
 .hud .x{ pointer-events:auto; width:40px; height:40px; border-radius:6px; background:#ffffff14; box-shadow:inset 0 0 0 2px #ffffff26; font-size:18px; }
-.sektor{ position:absolute; left:50%; transform:translateX(-50%); top:calc(max(10px, env(safe-area-inset-top)) + 58px); z-index:2; font-family:var(--pixel); font-weight:900; text-align:center; pointer-events:none; }
+.sektor{ position:absolute; left:50%; transform:translateX(-50%); top:calc(max(10px, env(safe-area-inset-top)) + 70px); z-index:2; font-family:var(--pixel); font-weight:900; text-align:center; pointer-events:none; }
 .sektor .s1{ font-size:11px; color:var(--dim); letter-spacing:.14em; }
-.sektor .s2{ font-size:20px; color:var(--cyan); text-shadow:0 0 8px #29f0ff88; letter-spacing:.06em; white-space:nowrap; }
-.zeitbar{ position:absolute; left:12px; right:12px; top:calc(max(10px, env(safe-area-inset-top)) + 108px); height:8px; border-radius:4px; background:#ffffff18; overflow:hidden; z-index:2; }
+.sektor .s2{ font-size:20px; color:var(--cyan); text-shadow:0 0 8px #29f0ff88; letter-spacing:.06em; white-space:nowrap; display:flex; align-items:center; justify-content:center; gap:8px; }
+.sektor .s2 svg{ flex:none; }
+.sektor{ width:calc(100vw - 24px); max-width:520px; }
+.sektor .s3{ margin-top:6px; display:inline-block; background:#0b0820c8; border-radius:6px; padding:5px 12px; box-shadow:inset 0 0 0 2px #ffe14d66; }
+.sektor .s3 small{ display:block; margin-top:1px; }
+.sektor .s3 b{ font-size:15px; color:var(--gelb); letter-spacing:.06em; }
+.sektor .s3 small{ font-family:system-ui,sans-serif; font-weight:700; font-size:12.5px; color:var(--text); }
+.sektor .s3 i{ display:inline-block; width:8px; height:8px; border-radius:50%; background:#ffffff30; margin-left:2px; }
+.sektor .s3 i.an{ background:var(--gelb); box-shadow:0 0 6px var(--gelb); }
+.sektor .s3.neu{ animation:schrittNeu .6s ease-out; }
+@keyframes schrittNeu{ 0%{ transform:scale(1.35); box-shadow:inset 0 0 0 2px var(--gelb), 0 0 24px var(--gelb); } 100%{ transform:scale(1); } }
+.sektor .s4{ font-family:system-ui,sans-serif; font-size:11.5px; color:var(--dim); font-weight:700; margin-top:3px; }
+.zeitbar{ position:absolute; left:12px; right:12px; top:calc(max(10px, env(safe-area-inset-top)) + 58px); height:8px; border-radius:4px; background:#ffffff18; overflow:hidden; z-index:2; }
 .zeitbar div{ height:100%; width:0; background:linear-gradient(90deg,var(--gruen),var(--cyan)); box-shadow:0 0 10px var(--cyan); }
 .zeitbar span{ position:absolute; top:0; bottom:0; width:2px; background:#0b0820; }
 .meldung{ position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); z-index:3; font-family:var(--pixel); font-weight:900; text-align:center; pointer-events:none; text-transform:uppercase; letter-spacing:.06em; opacity:0; width:94vw; line-height:1.05; }
@@ -211,7 +222,7 @@ input[type=range]{ width:100%; accent-color:var(--cyan); }
         <div class="box" style="text-align:right"><div class="lab">ZEIT</div><div class="wert" id="hudZeit">2:00</div></div>
         <button class="x" id="abbrechen" aria-label="Abbrechen">✕</button>
     </div>
-    <div class="sektor"><div class="s1" id="sektorNr">SEKTOR 1/4</div><div class="s2" id="sektorName">⬆ OBEN LINKS</div></div>
+    <div class="sektor"><div class="s1" id="sektorNr">SEKTOR 1/4</div><div class="s2"><span id="sektorMund"></span><span id="sektorName">OBEN LINKS</span></div><div class="s4" id="sektorTipp"></div><div class="s3" id="schritt3"></div></div>
     <div class="zeitbar"><div id="zeitbar"></div><span style="left:25%"></span><span style="left:50%"></span><span style="left:75%"></span></div>
     <div class="meldung" id="meldung"></div>
     <div class="pegel"><div id="pegel"></div></div>
@@ -341,7 +352,7 @@ input[type=range]{ width:100%; accent-color:var(--cyan); }
             <li><span class="k">Seite hinzufügen zu</span> → <span class="k">Startbildschirm</span> wählen.</li>
         </ol>
         <p class="dim" style="margin-top:12px">Danach liegt „Plaque Invaders“ mit eigenem Symbol bei den Apps. Immer über dieses Symbol starten.</p>
-        <p class="dim">Steht im Menü nur „Öffnen“ oder „App öffnen“? Dann ist die App schon installiert.</p>
+        <p class="dim">Steht im Menü nur <b>„In Leuchtturm öffnen“</b>? Dann ist auf dem Handy schon die Leuchtturm-App installiert und der Browser verwechselt die beiden. Im Menü <span class="k">⋮</span> trotzdem <span class="k">Zum Startbildschirm hinzufügen</span> wählen – Plaque Invaders bekommt dann ein eigenes Symbol. Hilft das nicht: die Adresse in Samsung Internet öffnen und dort hinzufügen.</p>
     </div>
     <div style="margin:16px 0 6px"><button class="knopf cyan klein" data-zu="start">◀ Zurück</button></div>
 </section>
@@ -689,7 +700,25 @@ const INVADER = [
     ["...XXXXX...", "..XXXXXXX..", ".XX.XXX.XX.", ".XXXXXXXXX.", "..X.XXX.X..", ".X.......X.", "X.X.....X.X", ".X.......X."]
 ];
 const INV_FARBEN = ["#3dff8b", "#ff3ea5", "#ffe14d", "#8b5cff", "#29f0ff", "#ff8a3d"];
+// Putz-Reihenfolge: 4 Bereiche (je ein Viertel der Zeit), in jedem Bereich Außen-, Innen- und Kauflächen.
+// „Links“ und „rechts“ sind immer von dir aus gesehen (nicht wie im Spiegel).
 const ZONEN = [["⬆", "OBEN LINKS"], ["⬆", "OBEN RECHTS"], ["⬇", "UNTEN RECHTS"], ["⬇", "UNTEN LINKS"]];
+const SCHRITTE3 = [
+    ["AUSSEN", "Bürste schräg ans Zahnfleisch, kleine Kreise"],
+    ["INNEN", "von Rot nach Weiß auswischen"],
+    ["KAUFLÄCHEN", "oben drauf schrubben – hin und her"]
+];
+// Mini-Mund: oben = Oberkiefer, unten = Unterkiefer, links/rechts von dir aus
+function mundSvg(nr){
+    const f = k => k === nr ? "#29f0ff" : "#ffffff26";
+    // Bereich 0 = oben links, 1 = oben rechts, 2 = unten rechts, 3 = unten links
+    return `<svg width="38" height="30" viewBox="0 0 38 30" aria-hidden="true"><path d="M3 13 Q3 2 18 2 L18 13 Z" fill="${f(0)}"/><path d="M35 13 Q35 2 20 2 L20 13 Z" fill="${f(1)}"/><path d="M35 17 Q35 28 20 28 L20 17 Z" fill="${f(2)}"/><path d="M3 17 Q3 28 18 28 L18 17 Z" fill="${f(3)}"/></svg>`;
+}
+function schrittZeigen(nr){
+    const el = $("#schritt3");
+    el.innerHTML = `<b>${nr + 1}. ${SCHRITTE3[nr][0]} <span>${[0, 1, 2].map(k => `<i class="${k <= nr ? "an" : ""}"></i>`).join("")}</span></b><small>${SCHRITTE3[nr][1]}</small>`;
+    el.classList.remove("neu"); void el.offsetWidth; el.classList.add("neu");
+}
 function pixelBild(muster, farbe, g){
     const c = document.createElement("canvas"), w = muster[0].length, h = muster.length, rand = g * 2;
     c.width = w * g + rand * 2; c.height = h * g + rand * 2;
@@ -753,10 +782,13 @@ function sektorStarten(nr){
     S.sektor = nr;
     const proSektor = D.dauer / 4;
     $("#sektorNr").textContent = nr === 3 ? "SEKTOR 4/4 · BOSS" : "SEKTOR " + (nr + 1) + "/4";
-    $("#sektorName").textContent = ZONEN[nr][0] + " " + ZONEN[nr][1];
+    $("#sektorName").textContent = ZONEN[nr][1];
+    $("#sektorMund").innerHTML = mundSvg(nr);
+    $("#sektorTipp").textContent = (nr < 2 ? "Oberkiefer" : "Unterkiefer") + " " + (nr === 0 || nr === 3 ? "links" : "rechts") + " von dir aus · hinten bis vorne";
+    S.schritt3 = 0; schrittZeigen(0);
     if (nr === 3) {
         S.inv = [];
-        S.boss = { hp: proSektor * PRO_SEKUNDE, max: proSektor * PRO_SEKUNDE, x: .5, y: .3, t: 0, treffer: 0 };
+        S.boss = { hp: proSektor * PRO_SEKUNDE, max: proSektor * PRO_SEKUNDE, x: .5, y: .36, t: 0, treffer: 0 };
         S.ufo = null;
         meldung("⚠ BOSS ⚠<br><span style='font-size:.5em'>" + HEUTE.boss.name + "</span>", HEUTE.boss.farbe);
     } else {
@@ -772,7 +804,7 @@ function invPos(v){
     const b = BILDER[0], bw = b.width, bh = b.height, abst = bw * 1.15;
     const breite = 4 * abst + bw;
     const x0 = (FW - breite) / 2 + S.wellenX * Math.max(0, Math.min(50, (FW - breite) / 2 - 10));
-    const y0 = 150 + S.wellenY;
+    const y0 = 232 + S.wellenY;
     return { x: x0 + v.c * abst + bw / 2, y: y0 + v.r * bh * 1.05 + bh / 2 };
 }
 function logik(z, dt){
@@ -788,6 +820,7 @@ function logik(z, dt){
         while (S.feuerTakt >= 1) { S.feuerTakt -= 1; feuern(); }
         if (S.zustand !== "putzen") status("putzen", "🪥", "Feuer! Weiterputzen!");
         if (S.putzzeit >= (S.sektor + 1) * proSektor && S.sektor < 3) sektorStarten(S.sektor + 1);
+        else { const sn = Math.min(2, Math.floor((S.putzzeit - S.sektor * proSektor) / (proSektor / 3))); if (sn > S.schritt3) { S.schritt3 = sn; schrittZeigen(sn); piep(660, .08); if (navigator.vibrate) navigator.vibrate(40); } }
         if (S.putzzeit >= D.dauer) { setTimeout(() => spielEnde(true), 900); laeuft = "endet"; }
     } else if (z === "quatschen") {
         S.quatschIn += dt;
@@ -807,7 +840,7 @@ function logik(z, dt){
     $("#zeitbar").style.width = (S.putzzeit / D.dauer * 100) + "%";
 }
 function kanonenY(){ return FH - 200; }
-function ufoY(){ const bh = BILDER[0].height; return Math.min(kanonenY() - 90, 150 + S.wellenY + bh * 3.3 + 40); }
+function ufoY(){ const bh = BILDER[0].height; return Math.min(kanonenY() - 90, 232 + S.wellenY + bh * 3.3 + 40); }
 function ufoStarten(){
     const links = Math.random() < .5;
     S.ufo = { x: links ? -.12 : 1.12, dir: links ? 1 : -1, hp: 8, treffer: 0, t: 0 };
