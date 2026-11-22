@@ -111,6 +111,19 @@ details.text summary{font-weight:700;cursor:pointer}
 table.st{width:100%;border-collapse:collapse;font-size:.9rem}table.st td,table.st th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
 .badge{font-size:.7rem;background:#ec489933;color:#f9a8d4;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:middle}
 sup{font-size:.7em}
+.colg{display:grid;gap:4px;justify-content:center;margin:10px 0 12px}
+.cc{height:50px;display:grid;place-items:center;font:700 1.55rem ui-monospace,Menlo,monospace;border-radius:9px}
+.cc.in{background:var(--bg2);border:2px solid var(--line);cursor:pointer}
+.cc.cy{height:30px;font-size:.95rem;color:var(--warn)}
+.cc.sel{border-color:var(--acc);background:#38bdf826;box-shadow:0 0 0 3px #38bdf833}
+.cc.ok{border-color:var(--ok);background:#22c55e22}.cc.no{border-color:var(--bad);background:#f43f5e22}
+.cline{grid-column:1/-1;height:3px;background:var(--txt);border-radius:2px;margin:2px 0}
+.kp{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;max-width:460px;margin:0 auto}
+.kp button{height:54px;border-radius:12px;background:var(--card2);border:1px solid var(--line);font-size:1.35rem;font-weight:700}
+.kp button.small{font-size:.7rem;line-height:1.1}
+.paper{position:relative;height:300px;margin-top:10px;border-radius:14px;background:#fdfdfb;background-image:linear-gradient(#cbd5e6 1px,transparent 1px),linear-gradient(90deg,#cbd5e6 1px,transparent 1px);background-size:22px 22px;overflow:hidden}
+.paper canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+@media(min-width:700px){.paper{height:380px}}
 
 </style>
 </head>
@@ -142,10 +155,10 @@ const GEN={
  },
  rechnen(){
   const k=R(0,4);
-  if(k===0){const a=R(10000,899999),b=R(1000,99999);return {t:'i',q:`${fmt(a)} + ${fmt(b)} =`,a:String(a+b),ex:`Schriftlich untereinander addieren, Überträge nicht vergessen. Ergebnis: ${fmt(a+b)}.`};}
-  if(k===1){const a=R(20000,999999),b=R(1000,a-1000);return {t:'i',q:`${fmt(a)} − ${fmt(b)} =`,a:String(a-b),ex:`Schriftlich subtrahieren (Ergänzungsverfahren). Probe: ${fmt(a-b)} + ${fmt(b)} = ${fmt(a)}.`};}
-  if(k===2){const a=R(102,989),b=R(12,89);return {t:'i',q:`${a} · ${b} =`,a:String(a*b),ex:`${a} · ${Math.floor(b/10)*10} = ${fmt(a*Math.floor(b/10)*10)} und ${a} · ${b%10} = ${fmt(a*(b%10))}. Zusammen: ${fmt(a*b)}.`};}
-  if(k===3){const d=R(3,9),q=R(112,1999);return {t:'i',q:`${fmt(d*q)} : ${d} =`,a:String(q),ex:`Schriftlich dividieren. Probe: ${q} · ${d} = ${fmt(d*q)}.`};}
+  if(k===0){const a=R(10000,899999),b=R(1000,99999);return {t:'i',col:{a,b,op:'+'},q:`Rechne schriftlich: <b>${fmt(a)} + ${fmt(b)}</b>`,a:String(a+b),ex:`Schriftlich untereinander addieren, Überträge nicht vergessen. Ergebnis: ${fmt(a+b)}.`};}
+  if(k===1){const a=R(20000,999999),b=R(1000,a-1000);return {t:'i',col:{a,b,op:'−'},q:`Rechne schriftlich: <b>${fmt(a)} − ${fmt(b)}</b>`,a:String(a-b),ex:`Schriftlich subtrahieren (Ergänzungsverfahren). Probe: ${fmt(a-b)} + ${fmt(b)} = ${fmt(a)}.`};}
+  if(k===2){const a=R(102,989),b=R(12,89);return {t:'i',q:`Rechne schriftlich: <b>${a} · ${b}</b>`,a:String(a*b),ex:`${a} · ${Math.floor(b/10)*10} = ${fmt(a*Math.floor(b/10)*10)} und ${a} · ${b%10} = ${fmt(a*(b%10))}. Zusammen: ${fmt(a*b)}.`};}
+  if(k===3){const d=R(3,9),q=R(112,1999);return {t:'i',q:`Rechne schriftlich: <b>${fmt(d*q)} : ${d}</b>`,a:String(q),ex:`Schriftlich dividieren. Probe: ${q} · ${d} = ${fmt(d*q)}.`};}
   const a=R(1100,9800),b=R(1100,9800),op=pick(['+','·']);
   if(op==='+'){const c=Math.round(a/1000)*1000+Math.round(b/1000)*1000;return mcNum(`Überschlage: <b>${fmt(a)} + ${fmt(b)}</b> ist ungefähr …`,fmt(c),[fmt(c+1000),fmt(c-1000),fmt(c*10)],`Runde beide Zahlen auf Tausender: ${fmt(Math.round(a/1000)*1000)} + ${fmt(Math.round(b/1000)*1000)} = ${fmt(c)}.`);}
   const x=R(21,89),y=R(21,89),c=Math.round(x/10)*10*Math.round(y/10)*10;return mcNum(`Überschlage: <b>${x} · ${y}</b> ist ungefähr …`,fmt(c),[fmt(c*10),fmt(Math.round(c/10)),fmt(c+1000)],`Runde auf Zehner: ${Math.round(x/10)*10} · ${Math.round(y/10)*10} = ${fmt(c)}.`);
@@ -611,7 +624,7 @@ function back(){history.length>1?history.back():go('home')}
 let toastT;function toast(m){let el=$('.toast');if(!el){el=document.createElement('div');el.className='toast';document.body.appendChild(el)}el.innerHTML=m;clearTimeout(toastT);toastT=setTimeout(()=>el.remove(),2200)}
 function hdr(title,color,extra=''){document.documentElement.style.setProperty('--sub',color||'#38bdf8');return `<div class="top"><button class="ib" onclick="back()" aria-label="Zurück">←</button><div class="ttl">${title}</div>${extra}</div>`}
 
-function render(){const v=VIEWS[view.n]||VIEWS.home;$('#app').innerHTML=v(view.p);const f=$('[autofocus]');if(f)setTimeout(()=>f.focus(),60)}
+function render(){const v=VIEWS[view.n]||VIEWS.home;$('#app').innerHTML=v(view.p);initPaper();const f=$('[autofocus]');if(f)setTimeout(()=>f.focus(),60)}
 
 const VIEWS={};
 /* ---------- Start ---------- */
@@ -680,12 +693,16 @@ VIEWS.quiz=p=>{
  return h;
 };
 function answerUI(t,ans,done,testMode){
+ if(t.col)return colUI(t,done,testMode);
+ return answerUI0(t,ans,done,testMode)+paperUI(t);
+}
+function answerUI0(t,ans,done,testMode){
  if(t.t==='m'){if(!t._o)t._o=shuffle(t.a);return `<div class="opts">${t._o.map((o,j)=>{let c='';if(done){if(o===t.a[0])c='ok';else if(o===ans)c='no'}else if(testMode&&o===ans)c='sel';return `<button class="opt ${c}" ${done?'disabled':''} onclick="${testMode?'testAns':'quizAns'}(${j})">${o}</button>`}).join('')}</div>`}
  if(t.t==='w'){return `<div class="tf">${[true,false].map(v=>{let c='';if(done){if(v===t.a)c='ok';else if(v===ans)c='no'}else if(testMode&&v===ans)c='sel';return `<button class="opt ${c}" style="text-align:center" ${done?'disabled':''} onclick="${testMode?'testAns':'quizAns'}(${v})">${v?'👍 Stimmt':'👎 Stimmt nicht'}</button>`}).join('')}</div>`}
  const num=isNum(first(t.a));
- return `<div style="display:flex;gap:8px;align-items:center"><input id="ans" ${done?'disabled':''} value="${esc(ans||'')}" ${num?'inputmode="decimal"':''} autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Deine Antwort" ${!done?'autofocus':''} onkeydown="if(event.key==='Enter'){${testMode?'testIn()':'quizIn()'}}" ${testMode?'oninput="testIn(true)"':''}>${t.u?`<b>${t.u}</b>`:''}</div>${done||testMode?'':'<button class="btn" onclick="quizIn()">Prüfen</button>'}`;
+ return `<div style="display:flex;gap:8px;align-items:center"><input id="ans" ${done?'disabled':''} value="${esc(ans||'')}" ${num?'inputmode="decimal"':''} autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Deine Antwort" ${!done&&!view.p.paper?'autofocus':''} onkeydown="if(event.key==='Enter'){${testMode?'testIn()':'quizIn()'}}" ${testMode?'oninput="testIn(true)"':''}>${t.u?`<b>${t.u}</b>`:''}</div>${done||testMode?'':'<button class="btn" onclick="quizIn()">Prüfen</button>'}`;
 }
-function quizIn(){const v=$('#ans').value.trim();if(!v){toast('Gib zuerst eine Antwort ein.');return}quizAns(v,true)}
+function quizIn(){const t=view.p.tasks[view.p.i];const v=t.col?colVal(t):$('#ans').value.trim();if(t.col&&v==='?'){toast('Da fehlt noch eine Ziffer im Ergebnis.');return}if(!v){toast('Gib zuerst eine Antwort ein.');return}quizAns(v,true)}
 function quizAns(j,raw){
  const p=view.p;if(p.done)return;const t=p.tasks[p.i];let v=raw?j:(t.t==='m'?t._o[j]:j);
  const ok=check(t,v);p.ans=v;p.done=true;p.ok=ok;const k=tkey(t);
@@ -706,6 +723,45 @@ function quizEnd(p){
  ${p.tid&&pct<70?`<button class="btn sec2" onclick="go('learn',{id:'${p.tid}'},true)">📘 Nochmal lernen</button>`:''}<button class="btn sec2" onclick="go('home',{},true)">Zur Startseite</button>`;
 }
 function retryRound(){const p=view.p;p.r1=p.r;p.n1=p.tasks.length;p.tasks=p.retry.map(t=>({...t,_o:undefined}));p.retry=[];p.i=0;p.phase=2;p.done=false;render()}
+
+/* ---------- Schriftlich rechnen in Kästchen ---------- */
+function colInit(t){if(t._c)return t._c;const A=String(t.col.a),B=String(t.col.b),n=Math.max(A.length,B.length)+1;t._c={n,r:Array(n).fill(''),c:Array(n).fill(''),row:'r',i:n-1};return t._c}
+function colVal(t){const c=colInit(t);const s=c.r.map(x=>x===''?' ':x).join('').trim();if(!s||s.includes(' '))return s?'?':'';return s.replace(/^0+(?=\d)/,'')}
+function colUI(t,done,testMode){
+ const c=colInit(t),n=c.n,A=String(t.col.a).padStart(n,' '),B=String(t.col.b).padStart(n,' ');const res=String(first(t.a)).padStart(n,' ');
+ const cell=(row,i)=>{const v=c[row][i];let cl='cc in'+(row==='c'?' cy':'');if(!done&&c.row===row&&c.i===i)cl+=' sel';if(done&&row==='r'){cl+=(v===(res[i]===' '?'':res[i]))?' ok':' no'}return `<div class="${cl}" ${done?'':`onclick="colSel('${row}',${i})"`}>${v}</div>`};
+ let h=`<div class="colg" style="grid-template-columns:repeat(${n+1},minmax(0,46px))">`;
+ h+=`<div class="cc"></div>`+[...A].map(d=>`<div class="cc">${d.trim()}</div>`).join('');
+ h+=`<div class="cc">${t.col.op}</div>`+[...B].map(d=>`<div class="cc">${d.trim()}</div>`).join('');
+ h+=`<div class="cc cy mut" style="font-size:.6rem">Ü</div>`+Array.from({length:n},(_,i)=>cell('c',i)).join('');
+ h+=`<div class="cline"></div><div class="cc">=</div>`+Array.from({length:n},(_,i)=>cell('r',i)).join('')+`</div>`;
+ if(!done){h+=`<p class="small mut center" style="margin:0 0 6px">Von rechts nach links rechnen. Tippe ein Kästchen an, um es zu ändern – das „Ü“-Feld ist für Überträge.</p><div class="kp">${[1,2,3,4,5,6,7,8,9,0].map(d=>`<button onclick="colKey('${d}')">${d}</button>`).join('')}<button onclick="colKey('del')">⌫</button><button onclick="colKey('clr')" class="small">Alles<br>löschen</button></div>`;
+  if(!testMode)h+=`<button class="btn" onclick="quizIn()">Prüfen</button>`}
+ return h;
+}
+function colTask(){const p=view.p;return p.tasks[p.i]}
+function colSel(row,i){const c=colInit(colTask());c.row=row;c.i=i;render()}
+function colKey(k){const t=colTask(),c=colInit(t);
+ if(k==='clr'){c.r.fill('');c.c.fill('');c.row='r';c.i=c.n-1}
+ else if(k==='del'){if(c[c.row][c.i]!=='')c[c.row][c.i]='';else if(c.i<c.n-1){c.i++;c[c.row][c.i]=''}}
+ else{c[c.row][c.i]=k;if(c.row==='r'&&c.i>0)c.i--;else if(c.row==='c'){c.row='r'}}
+ if(view.n==='test'){view.p.ans[view.p.i]=colVal(t);view.p.sure=false}
+ render()}
+
+/* ---------- Rechenpapier (Karopapier zum Draufschreiben) ---------- */
+function paperUI(t){if(!t.tid||!String(t.tid).startsWith('ma-'))return '';const on=view.p.paper;
+ return `<button class="btn sec2" onclick="view.p.paper=!view.p.paper;render()">✏️ Rechenpapier ${on?'ausblenden':'zeigen'}</button>${on?`<div class="paper"><canvas id="paper"></canvas></div><div class="row2"><button class="btn sec2" onclick="paperUndo()">↶ Zurück</button><button class="btn sec2" onclick="paperClear()">🧽 Wegwischen</button></div>`:''}`}
+let PAPER={strokes:[],key:null};
+function initPaper(){const cv=$('#paper');if(!cv)return;const t=view.p.tasks&&view.p.tasks[view.p.i];const key=t?tkey(t)+view.p.i:'';if(PAPER.key!==key){PAPER={strokes:[],key}}
+ const dpr=window.devicePixelRatio||1,r=cv.getBoundingClientRect();cv.width=r.width*dpr;cv.height=r.height*dpr;const g=cv.getContext('2d');g.scale(dpr,dpr);g.lineCap='round';g.lineJoin='round';g.lineWidth=2.6;g.strokeStyle='#1e3a8a';
+ const redraw=()=>{g.clearRect(0,0,r.width,r.height);PAPER.strokes.forEach(s=>{g.beginPath();s.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));if(s.length===1)g.lineTo(s[0][0]+.1,s[0][1]);g.stroke()})};redraw();
+ let cur=null;const pos=e=>{const b=cv.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top]};
+ cv.onpointerdown=e=>{cv.setPointerCapture(e.pointerId);cur=[pos(e)];PAPER.strokes.push(cur);redraw()};
+ cv.onpointermove=e=>{if(!cur)return;cur.push(pos(e));const s=cur;g.beginPath();g.moveTo(s[s.length-2][0],s[s.length-2][1]);g.lineTo(s[s.length-1][0],s[s.length-1][1]);g.stroke()};
+ cv.onpointerup=cv.onpointercancel=()=>{cur=null};
+ PAPER.redraw=redraw}
+function paperClear(){PAPER.strokes=[];PAPER.redraw&&PAPER.redraw()}
+function paperUndo(){PAPER.strokes.pop();PAPER.redraw&&PAPER.redraw()}
 
 /* ---------- Trainieren ---------- */
 VIEWS.train=()=>{
@@ -788,7 +844,7 @@ VIEWS.test=p=>{
  <button class="btn ${p.sure?'no':''}" onclick="finishTest(true)">${p.sure?`Wirklich abgeben? (${done}/${p.tasks.length} beantwortet)`:'Test abgeben'}</button>`;
 };
 function testAns(j){const p=view.p,t=p.tasks[p.i];p.ans[p.i]=t.t==='m'?t._o[j]:j;p.sure=false;if(t.t!=='i'&&p.i<p.tasks.length-1){render();setTimeout(()=>{if(view.p===p&&!p.fin){p.i++;render()}},250)}else render()}
-function testIn(soft){const p=view.p;p.ans[p.i]=$('#ans').value.trim();p.sure=false;if(!soft&&p.i<p.tasks.length-1){p.i++;render()}}
+function testIn(soft){const p=view.p;if(!$('#ans'))return;p.ans[p.i]=$('#ans').value.trim();p.sure=false;if(!soft&&p.i<p.tasks.length-1){p.i++;render()}}
 function grade(pct){const k=S.set.keys||[92,81,67,50,30];for(let i=0;i<5;i++)if(pct>=k[i])return i+1;return 6}
 function finishTest(ask){const p=view.p;if(ask&&!p.sure){p.sure=true;render();return}
  p.fin=true;clearInterval(testT);p.res=p.tasks.map((t,j)=>check(t,p.ans[j]));p.r=p.res.filter(Boolean).length;p.pct=Math.round(p.r/p.tasks.length*100);p.g=grade(p.pct);p.sec=Math.round((Date.now()-p.start)/1000);
