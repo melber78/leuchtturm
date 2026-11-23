@@ -283,6 +283,7 @@ const SUBJECTS=[
  {id:'bio',name:'Biologie',icon:'🌿',color:'#22c55e'},
  {id:'geo',name:'Geografie',icon:'🌍',color:'#06b6d4'},
  {id:'ge',name:'Geschichte',icon:'🏛️',color:'#f59e0b'},
+ {id:'rel',name:'Religion',icon:'🕊️',color:'#14b8a6'},
  {id:'eigen',name:'Eigene Themen',icon:'⭐',color:'#ec4899'}
 ];
 const WA=['Nomen','Verb','Adjektiv','Artikel','Pronomen','Präposition','Konjunktion','Adverb'];
@@ -776,7 +777,7 @@ VIEWS.home=()=>{
 VIEWS.subject=({s})=>{
  const sb=subj(s),ts=topicsOf(s);
  let h=hdr(sb.icon+' '+sb.name,sb.color);
- if(s==='en'||s==='eigen')h+=`<button class="btn" style="background:#8b5cf6;color:#fff" onclick="go('vokfoto',{})">📷 Vokabeln aus dem Heft übernehmen</button>`;
+ h+=`<button class="btn" style="background:${sb.color};color:#fff" onclick="go('vokfoto',{s:'${s==='eigen'?'en':s}'})">📷 ${s==='en'?'Vokabeln aus dem Heft übernehmen':'Aus dem Heft übernehmen'}</button>`;
  if(s==='eigen')h+=`<button class="btn" onclick="go('edit',{})">➕ Neues Thema anlegen</button><p class="small mut">Lege eigene Themen an – z. B. Vokabeln aus dem Buch, Stoff für die nächste Arbeit oder Fächer wie Musik und Ethik. Du kannst ein eigenes Thema auch einem Fach zuordnen.</p>`;
  if(!ts.length)h+=`<p class="mut center">Noch keine Themen.</p>`;
  h+=`<div class="list">${ts.map(t=>{const sc=topicScore(t.id);const cs=cardsOf(t);const due=cs.filter(isDue).length;return `<button class="item" onclick="go('topic',{id:'${t.id}'})"><div class="ring" style="--p:${sc||0}"><span>${sc==null?'–':sc+'%'}</span></div><div class="t"><b>${esc(t.title)}</b>${t.custom?'<span class="badge">eigenes</span>':''}<small>${S.tp[t.id]?.l?'✓ gelernt · ':''}${cs.length} Karten${due?' · '+due+' fällig':''}</small></div><span class="mut">›</span></button>`}).join('')}</div>`;
@@ -1194,21 +1195,27 @@ function parseVok(txt){
  if(a<b)pairs=pairs.map(([x,y])=>[y,x]);
  return pairs;
 }
-VIEWS.vokfoto=p=>hdr('📷 Vokabeln aus dem Heft','#8b5cf6')+`
- <div class="box"><h3>1. Foto machen</h3>Vokabelheft-Seite <b>gerade von oben</b> fotografieren, mit gutem Licht. Ordentliche Schrift wird besser erkannt.</div>
+VIEWS.vokfoto=p=>{p.s=p.s||'en';p.k=p.k||(p.s==='en'?'vok':'notiz');const sb=subj(p.s);return hdr('📷 Aus dem Heft übernehmen',sb.color)+`
+ <div class="chips" style="margin-bottom:10px"><button class="chip ${p.k==='vok'?'on':''}" onclick="view.p.k='vok';view.p.txt=$('#vokin').value;render()">📒 Vokabeln</button><button class="chip ${p.k==='notiz'?'on':''}" onclick="view.p.k='notiz';view.p.txt=$('#vokin').value;render()">📝 Hefter-Eintrag</button></div>
+ <label class="small mut">Fach</label><select style="margin-bottom:10px" onchange="view.p.s=this.value;view.p.txt=$('#vokin').value;render()">${SUBJECTS.map(s=>`<option value="${s.id}" ${p.s===s.id?'selected':''}>${s.icon} ${s.name}</option>`).join('')}</select>
+ <div class="box"><h3>1. Foto machen</h3>Die Heftseite <b>gerade von oben</b> fotografieren, mit gutem Licht. Ordentliche Schrift wird besser erkannt.</div>
  <div class="box"><h3>2. Text aus dem Foto kopieren</h3><b>Samsung:</b> Foto in der <b>Galerie</b> öffnen → unten rechts auf das <b>„T“</b> tippen → <b>„Alle auswählen“</b> → <b>„Kopieren“</b>.<br><b>Andere Handys:</b> Foto teilen → <b>Google Lens</b> → „Text“ → „Alles auswählen“ → „Kopieren“.</div>
  <div class="box"><h3>3. Hier einfügen</h3>Lange ins Feld drücken → <b>„Einfügen“</b>.
- <textarea id="vokin" style="min-height:160px;margin-top:8px" placeholder="z. B.&#10;ruler   das Lineal&#10;rubber   der Radiergummi">${esc(p.txt||'')}</textarea>
- <button class="btn" onclick="vokParse()">Vokabeln erkennen →</button></div>
- <p class="small mut">Im nächsten Schritt siehst du die Liste und kannst Fehler verbessern, bevor gespeichert wird.</p>`;
-function vokParse(){const txt=$('#vokin').value;view.p.txt=txt;const pairs=parseVok(txt);if(!pairs.length){toast('Keine Vokabeln gefunden – ist Text eingefügt?');return}
- const d=new Date();go('edit',{isNew:true,d:{id:'c_'+Date.now().toString(36),s:'en',title:'Vokabeln vom '+d.getDate()+'.'+(d.getMonth()+1)+'.',kind:'vok',learn:'',la:'Deutsch',lb:'Englisch',cards:pairs}});setTimeout(()=>toast(`${pairs.length} Vokabeln erkannt – bitte kurz prüfen`),300)}
+ <textarea id="vokin" style="min-height:160px;margin-top:8px" placeholder="${p.k==='vok'?'z. B.&#10;ruler   das Lineal&#10;rubber   der Radiergummi':'z. B.&#10;Altes Testament: erster Teil der Bibel&#10;Prophet – Mensch, der im Auftrag Gottes spricht'}">${esc(p.txt||'')}</textarea>
+ <button class="btn" onclick="vokParse()">${p.k==='vok'?'Vokabeln erkennen →':'Übernehmen →'}</button></div>
+ <p class="small mut">${p.k==='vok'?'Im nächsten Schritt siehst du die Liste und kannst Fehler verbessern, bevor gespeichert wird.':'Der ganze Text wird zum Merkwissen unter „Lernen“. Zeilen wie „Begriff: Erklärung“ oder „Begriff – Erklärung“ werden zu Karteikarten. Fehlende Karten kannst du im nächsten Schritt selbst ergänzen.'}</p>`};
+function parseNotiz(txt){const out=[];txt.split(/\r?\n/).forEach(l=>{l=l.replace(/^[\s•·*\d.)]+(?=\S)/,'').trim();const m=l.match(/^([^:=–—]{2,60}?)\s*(?::|=|\s[–—-]\s)\s*(.{3,})$/);if(m)out.push([m[1].trim(),m[2].trim()])});return out}
+function vokParse(){const p=view.p,txt=$('#vokin').value;p.txt=txt;if(!txt.trim()){toast('Bitte zuerst den Text einfügen.');return}const d=new Date(),dat=d.getDate()+'.'+(d.getMonth()+1)+'.';
+ if(p.k==='vok'){const pairs=parseVok(txt);if(!pairs.length){toast('Keine Vokabeln gefunden – ist Text eingefügt?');return}
+  go('edit',{isNew:true,d:{id:'c_'+Date.now().toString(36),s:p.s,title:'Vokabeln vom '+dat,kind:'vok',learn:'',la:'Deutsch',lb:p.s==='en'?'Englisch':'Fremdsprache',cards:pairs}});setTimeout(()=>toast(`${pairs.length} Vokabeln erkannt – bitte kurz prüfen`),300);return}
+ const cards=parseNotiz(txt);const first=txt.split(/\r?\n/).map(x=>x.trim()).find(x=>x)||'';
+ go('edit',{isNew:true,d:{id:'c_'+Date.now().toString(36),s:p.s,title:(first.length<50?first:subj(p.s).name+' vom '+dat),kind:'qa',learn:txt.trim(),la:'Deutsch',lb:'Englisch',cards:cards.length?cards:[['','']]}});setTimeout(()=>toast(cards.length?`${cards.length} Karteikarten erkannt – Titel und Karten kurz prüfen`:'Als Merkwissen übernommen – Karteikarten kannst du jetzt ergänzen'),300)}
 function vokSwap(){const d=view.p.d;d.cards=d.cards.map(([x,y])=>[y,x]);render()}
 
 /* ===== Eltern-App (Modus pro Gerät) + Vorschau des Kinderbereichs ===== */
 let MODE=(()=>{try{if(/[?&]eltern=1/.test(location.search)){localStorage.setItem('lb_mode','eltern')}return localStorage.getItem('lb_mode')||'kind'}catch(e){return /[?&]eltern=1/.test(location.search)?'eltern':'kind'}})();
 let PREVIEW=false,PREV_SNAP=null;
-function modeCache(){try{caches.open('lb-mode').then(c=>c.put('mode',new Response(MODE)))}catch(e){}}
+function modeCache(){try{if(!location.protocol.startsWith('http'))return;caches.open('lb-mode').then(c=>c.put('mode',new Response(MODE))).catch(()=>{})}catch(e){}}
 function setMode(m){MODE=m;lsSet('lb_mode',m);modeCache();if(m==='eltern'){ELTERN_OK=true;go('home',{},true)}else{ELTERN_OK=false;go('home',{},true)}}
 function startPreview(){PREV_SNAP=JSON.stringify(S);PREVIEW=true;CELEB=[];go('home')}
 function endPreview(){if(PREV_SNAP)S=fix(JSON.parse(PREV_SNAP));PREVIEW=false;PREV_SNAP=null;CELEB=[];go('home',{},true)}
