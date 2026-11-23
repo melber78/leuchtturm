@@ -98,6 +98,38 @@ body{
 .neu-eintrag span{ flex:1; font-size:13px; color:#55636b; }
 .neu-eintrag i{ color:var(--gold); }
 @media (max-width:650px){ .neu-eintrag{ flex-wrap:wrap; } .neu-eintrag b{ width:100%; } }
+
+/* Neue Startseite */
+.portal{ margin:28px auto 50px !important; }
+.portal-header{ margin-bottom:16px !important; }
+.portal-header h1{ font-size:28px !important; }
+.portal-icon{ width:56px !important; height:56px !important; font-size:24px !important; border-radius:16px !important; }
+.suche{ display:flex; align-items:center; gap:10px; background:white; border-radius:16px; box-shadow:var(--schatten); padding:4px 14px; margin:12px 0; }
+.suche i{ color:var(--meer); }
+.suche input{ flex:1; border:0; outline:0; font:700 16px "Nunito",sans-serif; padding:10px 0; background:none; color:var(--text); min-width:0; }
+.suche button{ border:0; background:none; color:#9aa5ad; font-size:18px; cursor:pointer; }
+.such-leer{ text-align:center; color:#7c8a85; font-weight:800; }
+.neu .neu-eintrag.mehr{ display:none; } .neu.alle .neu-eintrag.mehr{ display:flex; }
+.neu-mehr{ border:0; background:none; color:#8a5a00; font:800 14px "Nunito",sans-serif; cursor:pointer; padding:8px 4px 0; }
+details.bereich{ background:white; border-radius:20px; box-shadow:var(--schatten); margin:14px 0; overflow:hidden; }
+details.bereich > summary{ list-style:none; cursor:pointer; display:flex; align-items:center; gap:10px; padding:16px 20px; font:900 18px "Nunito",sans-serif; color:var(--nacht); }
+details.bereich > summary::-webkit-details-marker{ display:none; }
+details.bereich > summary > i:first-child{ color:var(--meer); width:24px; text-align:center; }
+details.bereich .zahl{ font-size:12px; font-weight:800; color:#7c8a85; background:#eef2f5; border-radius:999px; padding:2px 9px; }
+details.bereich .pfeil{ margin-left:auto; color:#9aa5ad; transition:.2s; }
+details.bereich[open] .pfeil{ transform:rotate(180deg); }
+.untergruppe{ padding:0 20px 14px; }
+.untergruppe h3{ margin:4px 0 8px; font:900 12px "Nunito",sans-serif; text-transform:uppercase; letter-spacing:.08em; color:#8a9aa5; }
+.kacheln{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:10px; }
+.kachel{ display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text); background:#f6f8fa; border-radius:14px; padding:12px 14px; border:2px solid transparent; transition:.15s; min-width:0; }
+.kachel:hover{ border-color:#cfe2ef; background:#fff; transform:translateY(-2px); }
+.kachel > i{ font-size:22px; color:var(--meer); width:30px; text-align:center; flex:none; }
+.kachel span{ display:flex; flex-direction:column; min-width:0; }
+.kachel b{ font-size:15px; font-weight:900; color:var(--nacht); }
+.kachel small{ font-size:12.5px; color:#6f7d86; font-weight:600; line-height:1.3; }
+.kachel.haupt{ background:linear-gradient(135deg,#eef6fb,#fff); border-color:#d5e6f1; }
+.kachel.versteckt, .untergruppe.versteckt, details.bereich.versteckt{ display:none; }
+@media (max-width:520px){ .kacheln{ grid-template-columns:1fr 1fr; gap:8px; } .kachel{ flex-direction:column; align-items:flex-start; gap:6px; padding:10px 12px; } .kachel small{ display:none; } .kachel b{ font-size:14px; line-height:1.2; } .neu-eintrag span{ display:none; } .neu-eintrag{ padding:8px 12px; } .portal-header p{ display:none; } details.bereich > summary{ padding:14px 16px; font-size:17px; } .untergruppe{ padding:0 14px 12px; } }
 </style>
 </head>
 <body>
@@ -151,149 +183,96 @@ $NEU = [
 ];
 $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strtotime("-21 days")));
 ?>
-<?php if ($neuAktuell): ?>
-<section class="neu" id="neu" data-stand="<?= htmlspecialchars($neuAktuell[0][0]) ?>" hidden>
-    <div class="neu-kopf"><span><i class="fa-solid fa-star"></i> Neu im Leuchtturm</span><button type="button" onclick="neuWeg()" title="Ausblenden"><i class="fa-solid fa-xmark"></i></button></div>
-    <?php foreach ($neuAktuell as [$datum, $titel, $text, $link]): ?>
-        <a class="neu-eintrag" href="<?= htmlspecialchars($link) ?>"><b><?= htmlspecialchars($titel) ?></b><span><?= $text ?></span><i class="fa-solid fa-arrow-right"></i></a>
-    <?php endforeach; ?>
-</section>
-<?php endif; ?>
+
+
+<?php
+// Startseite: Bereiche → Untergruppen → Kacheln [Link, Symbol, Titel, Text, haupt?]
+$BEREICHE = [
+    ["lrs", "fa-pen-nib", "LRS-Förderung", [
+        ["Kinder &amp; Stunden", [
+            ["trainingshefte.php", "fa-user-graduate", "Kinder-Akten", "Pro Kind (nur Kürzel): Förderplan, Trainingsheft, Lernbox &amp; Stunden", true],
+            ["lrs.php#stunde", "fa-layer-group", "Stunde planen", "Stundenplanung für 1 oder 2 Kinder mit allen Blättern"],
+            ["lrs-timer.php", "fa-stopwatch", "Stunden-Timer", "Phasen der LRS-Stunde mit Zeit im Blick"],
+            ["stundenplan.php", "fa-table-cells", "Stundenplan mit Namen", "Wochenplan der LRS-Kinder (nur lokal)"],
+        ]],
+        ["Arbeitsblätter", [
+            ["lrs.php", "fa-wand-magic-sparkles", "Material-Generator", "Aufmerksamkeit, Funktion, Lesen, Symptomtraining", true],
+            ["lrs.php#werkzeug", "fa-toolbox", "Deutsch-Werkzeugkasten", "Alle Blätter zu den Rechtschreibstrategien"],
+            ["materialien.php", "fa-folder-open", "Materialien", "Gespeicherte und eigene Blätter"],
+        ]],
+        ["Diagnostik", [
+            ["anamnese.php", "fa-clipboard-user", "Anamnesebogen", "Elterngespräch ausfüllen oder leer drucken"],
+            ["gutachten.php", "fa-file-signature", "Gutachten", "Förderdiagnostik-Gutachten (nur lokal)"],
+        ]],
+    ]],
+    ["gs", "fa-people-group", "Grundschule", [
+        ["Stunden", [
+            ["sozial-stunden.php", "fa-calendar-week", "Sozialtraining", "36 fertige Stunden mit Jahresplan – Kl. 1/2 und 3/4", true],
+            ["sozial-stunden.php?bereich=lernangebot", "fa-seedling", "Lernangebot", "40-Minuten-Stunden Deutsch, Mathe &amp; Lernen lernen", true],
+            ["sozial-stunden.php?bereich=vertretung", "fa-shuffle", "Vertretungsstunden", "Fertige Stunden für Kl. 1–4, auch Englisch"],
+        ]],
+        ["Werkzeuge", [
+            ["sozialtraining.php", "fa-lightbulb", "Sozialtraining-Generator", "Methodenpool &amp; Vorlagen"],
+            ["ella-quiz.php", "fa-graduation-cap", "Ella-Quiz", "Üben nach Klasse, Fach und Thema – auch an der Tafel"],
+        ]],
+    ]],
+    ["tafel", "fa-chalkboard", "Tafelbilder", [
+        ["Tagesstart &amp; Klassenführung", [
+            ["tafelbilder.php#morgen", "fa-sun", "Guten Morgen! (Kl. 1–4)", "Datum, Wetter, Stundenplan, Auspacken", true],
+            ["tafelbilder.php#morgen-sek", "fa-mug-hot", "Guten Morgen! (Kl. 5–9)", "Stundenplan, A-/B-Woche, Termine, Impuls"],
+            ["tafelbilder.php#pause", "fa-bell", "Pause vorbei!", "Klingel, Checkliste und Countdown"],
+            ["tafelbilder.php#leise", "fa-tree", "Leise-Wald", "Leise arbeiten mit dem Mikrofon"],
+        ]],
+        ["Erklären &amp; Üben", [
+            ["tafelbilder.php#buchstabenkurs", "fa-pen-fancy", "Buchstabenkurs", "Nachspuren und schreiben in der Lineatur"],
+            ["tafelbilder.php#einmaleins", "fa-table-cells-large", "Das große 1 × 1", "Interaktive Tabelle, Blitzrechnen gegen Ella"],
+            ["tafelbilder.php#brueche", "fa-chart-pie", "Brüche (Kl. 5/6)", "Bild, Merksatz und Rechenweg zum Aufdecken"],
+            ["tafelbilder.php", "fa-chalkboard", "Alle Tafelbilder", "Übersicht aller Tafelbilder"],
+        ]],
+    ]],
+    ["familie", "fa-house", "Familie", [
+        ["", [
+            ["lernbasis/", "fa-book-open-reader", "Lernbasis", "Lern-App für die 5. Klasse"],
+            ["zahnputz/", "fa-tooth", "Zahnputz-Spiel", "Gemeinsam Zähne putzen"],
+        ]],
+    ]],
+];
+?>
 
 <a href="tagesplan.php" class="heute-karte">
 <i class="fa-solid fa-calendar-day"></i>
-<span><b>Mein Tag</b><small>Stundenplan, Tagesplan &amp; Woche – mit den geplanten Stunden aus dem Jahresplan</small></span>
+<span><b>Mein Tag</b><small>Stundenplan, Tagesplan &amp; Woche – mit den geplanten Stunden</small></span>
 <i class="fa-solid fa-arrow-right"></i>
 </a>
 
-<h2 class="gruppe"><i class="fa-solid fa-pen-nib"></i> LRS-Förderung</h2>
-<section class="portal-grid">
+<div class="suche"><i class="fa-solid fa-magnifying-glass"></i><input type="search" id="suche" placeholder="Suchen, z. B. Gutachten, Brüche, Vertretung …" autocomplete="off" oninput="suchen(this.value)"><button type="button" id="sucheWeg" onclick="suchen(''); document.getElementById('suche').value=''" hidden><i class="fa-solid fa-xmark"></i></button></div>
+<p class="such-leer" id="suchLeer" hidden>Nichts gefunden.</p>
 
-<a href="trainingshefte.php" class="portal-card haupt">
-<i class="fa-solid fa-user-graduate"></i>
-<h2>Kinder-Akten</h2>
-<p>Pro Kind (nur Kürzel): Förderplan mit Lesetraining, Förderpaket, Trainingsheft, Lernbox &amp; Stunden</p>
-</a>
-
-<a href="lrs.php#werkzeug" class="portal-card">
-<i class="fa-solid fa-toolbox"></i>
-<h2>Deutsch-Werkzeugkasten</h2>
-<p>Alle Blätter zu den Rechtschreibstrategien – nach Werkzeug sortiert</p>
-</a>
-
-<a href="lrs.php" class="portal-card">
-<i class="fa-solid fa-wand-magic-sparkles"></i>
-<h2>Material-Generator</h2>
-<p>Arbeitsblätter nach AFS – Aufmerksamkeit, Funktion, Lesen, Rechtschreiben</p>
-</a>
-
-<a href="anamnese.php" class="portal-card">
-<i class="fa-solid fa-clipboard-user"></i>
-<h2>Anamnesebogen</h2>
-<p>Elterngespräch digital ausfüllen oder leer drucken – mit Übergabe ins Gutachten</p>
-</a>
-
-<a href="gutachten.php" class="portal-card">
-<i class="fa-solid fa-file-signature"></i>
-<h2>Gutachten</h2>
-<p>Förderdiagnostik-Gutachten erstellen (lokal, nicht gespeichert)</p>
-</a>
-
-<a href="lrs-timer.php" class="portal-card">
-<i class="fa-solid fa-stopwatch"></i>
-<h2>Stunden-Timer</h2>
-<p>Phasen der LRS-Stunde mit Zeit im Blick – Ankommen bis Abschluss</p>
-</a>
-
-<a href="stundenplan.php" class="portal-card">
-<i class="fa-solid fa-table-cells"></i>
-<h2>Stundenplan</h2>
-<p>Wochenplan mit den Namen der Kinder (lokal, nicht gespeichert)</p>
-</a>
-
-<a href="materialien.php" class="portal-card">
-<i class="fa-solid fa-folder-open"></i>
-<h2>Materialien</h2>
-<p>Gespeicherte und eigene Blätter hochladen &amp; einordnen</p>
-</a>
-
+<?php if ($neuAktuell): ?>
+<section class="neu" id="neu" data-stand="<?= htmlspecialchars($neuAktuell[0][0]) ?>" hidden>
+    <div class="neu-kopf"><span><i class="fa-solid fa-star"></i> Neu im Leuchtturm</span><button type="button" onclick="neuWeg()" title="Ausblenden"><i class="fa-solid fa-xmark"></i></button></div>
+    <?php foreach ($neuAktuell as $nr => [$datum, $titel, $text, $link]): ?>
+        <a class="neu-eintrag<?= $nr >= 3 ? " mehr" : "" ?>" href="<?= htmlspecialchars($link) ?>"><b><?= htmlspecialchars($titel) ?></b><span><?= $text ?></span><i class="fa-solid fa-arrow-right"></i></a>
+    <?php endforeach; ?>
+    <?php if (count($neuAktuell) > 3): ?><button type="button" class="neu-mehr" onclick="this.closest('.neu').classList.toggle('alle'); this.textContent = this.closest('.neu').classList.contains('alle') ? 'weniger anzeigen' : '+ <?= count($neuAktuell) - 3 ?> weitere Neuigkeiten'">+ <?= count($neuAktuell) - 3 ?> weitere Neuigkeiten</button><?php endif; ?>
 </section>
+<?php endif; ?>
 
-<h2 class="gruppe"><i class="fa-solid fa-people-group"></i> Grundschule: Sozialtraining, Lernangebot &amp; Vertretung</h2>
-<section class="portal-grid">
-
-<a href="sozial-stunden.php" class="portal-card haupt">
-<i class="fa-solid fa-calendar-week"></i>
-<h2>Sozialtraining-Stunden</h2>
-<p>36 fertige Stunden, Jahresplan, Präsentation &amp; Material – Kl. 1/2 und 3/4</p>
-</a>
-
-<a href="sozial-stunden.php?bereich=lernangebot" class="portal-card haupt">
-<i class="fa-solid fa-seedling"></i>
-<h2>Lernangebot</h2>
-<p>40-Minuten-Stunden Deutsch, Mathe &amp; Lernen lernen – Planer, Tafel &amp; Arbeitsblätter</p>
-</a>
-
-<a href="sozial-stunden.php?bereich=vertretung" class="portal-card">
-<i class="fa-solid fa-shuffle"></i>
-<h2>Vertretungsstunden</h2>
-<p>Fertige 40-Minuten-Stunden für Kl. 1–4 mit Zufallsauswahl</p>
-</a>
-
-<a href="sozialtraining.php" class="portal-card">
-<i class="fa-solid fa-lightbulb"></i>
-<h2>Sozialtraining-Generator</h2>
-<p>Methodenpool &amp; Vorlagen</p>
-</a>
-
-</section>
-
-<h2 class="gruppe"><i class="fa-solid fa-chalkboard"></i> Tafelbilder</h2>
-<section class="portal-grid">
-
-<a href="tafelbilder.php#buchstabenkurs" class="portal-card haupt">
-<i class="fa-solid fa-pen-fancy"></i>
-<h2>Buchstabenkurs</h2>
-<p>Buchstaben in der Lineatur nachspuren und schreiben – Druck- oder Grundschrift, direkt mit dem Tafelstift</p>
-</a>
-
-<a href="tafelbilder.php#morgen" class="portal-card haupt">
-<i class="fa-solid fa-sun"></i>
-<h2>Guten Morgen!</h2>
-<p>Tagesstart an der Tafel: Datum, Wetter, Stundenplan, Auspacken, Hinweise</p>
-</a>
-
-<a href="ella-quiz.php" class="portal-card">
-<i class="fa-solid fa-graduation-cap"></i>
-<h2>Ella-Quiz</h2>
-<p>Üben nach Klasse 1–4, Fach und Thema – allein am Gerät oder an der Tafel gegen Ella</p>
-</a>
-
-<a href="tafelbilder.php#brueche" class="portal-card">
-<i class="fa-solid fa-chart-pie"></i>
-<h2>Brüche (Kl. 5/6)</h2>
-<p>Erklär-Tafel: Bild, Merksatz und Rechenweg zum Aufdecken – gemischte Zahlen, Kürzen, Plus/Minus, Mal/Geteilt</p>
-</a>
-
-<a href="tafelbilder.php#pause" class="portal-card">
-<i class="fa-solid fa-bell"></i>
-<h2>Pause vorbei!</h2>
-<p>Klingel und Checkliste: alles wegräumen, an den Platz – wir fangen an</p>
-</a>
-
-<a href="tafelbilder.php#leise" class="portal-card">
-<i class="fa-solid fa-tree"></i>
-<h2>Leise-Wald</h2>
-<p>Leise arbeiten: Überraschung am Ende, Pssst-Eule, Stille-Sterne oder Tiere live</p>
-</a>
-
-<a href="tafelbilder.php" class="portal-card">
-<i class="fa-solid fa-chalkboard"></i>
-<h2>Alle Tafelbilder</h2>
-<p>Für die digitale Tafel – öffnen, Vollbild an, hineinschreiben</p>
-</a>
-
-</section>
+<?php foreach ($BEREICHE as [$id, $icon, $titel, $gruppen]): ?>
+<details class="bereich" data-id="<?= $id ?>"<?= $id === "familie" ? "" : " open" ?>>
+    <summary><i class="fa-solid <?= $icon ?>"></i> <?= $titel ?><span class="zahl"><?= array_sum(array_map(fn($g) => count($g[1]), $gruppen)) ?></span><i class="fa-solid fa-chevron-down pfeil"></i></summary>
+    <?php foreach ($gruppen as [$gTitel, $kacheln]): ?>
+    <div class="untergruppe">
+        <?php if ($gTitel): ?><h3><?= $gTitel ?></h3><?php endif; ?>
+        <div class="kacheln">
+        <?php foreach ($kacheln as $k): ?>
+            <a href="<?= htmlspecialchars($k[0]) ?>" class="kachel<?= !empty($k[4]) ? " haupt" : "" ?>"><i class="fa-solid <?= $k[1] ?>"></i><span><b><?= $k[2] ?></b><small><?= $k[3] ?></small></span></a>
+        <?php endforeach; ?>
+        </div>
+    </div>
+    <?php endforeach; ?>
+</details>
+<?php endforeach; ?>
 
 <div class="portal-footer">
 <a href="update.php"><i class="fa-solid fa-cloud-arrow-down"></i> Updates</a> &nbsp;·&nbsp; <a href="zugaenge.php"><i class="fa-solid fa-user-clock"></i> Gast-Zugänge</a> &nbsp;·&nbsp; <a href="logout.php"><i class="fa-solid fa-right-from-bracket"></i> Abmelden</a>
@@ -302,6 +281,35 @@ $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strt
 </div>
 
 <script>
+
+// Bereiche auf-/zuklappen merken
+document.querySelectorAll("details.bereich").forEach(d => {
+    try { const z = JSON.parse(localStorage.getItem("lt-bereiche") || "{}"); if (d.dataset.id in z) d.open = z[d.dataset.id]; } catch (e) {}
+    d.addEventListener("toggle", () => { if (document.getElementById("suche").value) return; try { const z = JSON.parse(localStorage.getItem("lt-bereiche") || "{}"); z[d.dataset.id] = d.open; localStorage.setItem("lt-bereiche", JSON.stringify(z)); } catch (e) {} });
+});
+// Suche über alle Kacheln
+let offenVorher = null;
+function suchen(text){
+    const q = text.trim().toLowerCase();
+    const bereiche = [...document.querySelectorAll("details.bereich")];
+    if (q && !offenVorher) offenVorher = bereiche.map(d => d.open);
+    let treffer = 0;
+    bereiche.forEach((d, i) => {
+        let imBereich = 0;
+        d.querySelectorAll(".untergruppe").forEach(u => {
+            let n = 0;
+            u.querySelectorAll(".kachel").forEach(k => { const ok = !q || k.textContent.toLowerCase().includes(q); k.classList.toggle("versteckt", !ok); if (ok) n++; });
+            u.classList.toggle("versteckt", !n); imBereich += n;
+        });
+        d.classList.toggle("versteckt", !imBereich);
+        if (q) d.open = true; else if (offenVorher) d.open = offenVorher[i];
+        treffer += imBereich;
+    });
+    if (!q) offenVorher = null;
+    document.getElementById("suchLeer").hidden = !q || treffer > 0;
+    document.getElementById("sucheWeg").hidden = !q;
+    const neu = document.getElementById("neu"); if (neu) neu.style.display = q ? "none" : "";
+}
 // „Neu“-Kasten: bleibt weg, bis es wieder etwas Neues gibt
 (function(){
     const box = document.getElementById("neu");

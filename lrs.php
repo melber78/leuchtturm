@@ -13095,6 +13095,7 @@ mat_knoepfeEinfuegen();
 fs_init();
 wz_init();
 if (location.hash === "#werkzeug") setTimeout(wz_oeffnen, 50);
+else if (location.hash.length > 1){ const tabH = document.querySelector(`.tabs .tab[data-bereich="${location.hash.slice(1).replace(/[^a-z]/g, "")}"]`); if (tabH) setTimeout(() => tabH.click(), 50); }
 // Aufmerksamkeit: Startauswahl (gemischt) und Klassenstufen-Filter
 ["aufmerksamkeit", "aufmerksamkeit5", "aufmerksamkeit7"].forEach(k => au_mix(k));
 au_klassePruefen();
