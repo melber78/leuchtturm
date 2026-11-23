@@ -197,6 +197,7 @@ body{ background:#f6f2ea; }
 .mg-info-box{ background:#e9f7ee; color:#1d5c38; border-radius:14px; padding:12px 16px; font-weight:700; margin-bottom:8px; }
 .mg-tadr{ font:800 20px "Nunito",sans-serif; color:#1d5fa8; margin:4px 0 8px; user-select:all; }
 .mg-tcode{ font:900 34px/1.2 monospace; letter-spacing:.12em; color:#16324a; background:#fff8e1; border:2px dashed #e0b84d; border-radius:12px; display:inline-block; padding:4px 16px; margin:4px 0 8px; user-select:all; }
+.mg-anl{ border:2px solid #e3e9ef; border-radius:12px; padding:10px 14px; margin:8px 0; font-size:16px; line-height:1.45; } .mg-anl.an{ border-color:#2e9e5b; background:#e9f7ee; }
 .mg-tafellink{ background:#fff; border-radius:12px; padding:10px 14px; margin-top:8px; font-weight:600; } .mg-tafellink ol{ margin:6px 0; padding-left:20px; } .mg-tafellink li{ margin-bottom:6px; }
 @keyframes mgSonne{ to{ transform:rotate(360deg); } }
 .mg-uhr{ font:900 clamp(24px,min(3.2vw,5.5vh),58px) "Nunito",sans-serif; color:#16324a; background:white; border-radius:20px; padding:.15em .6em; box-shadow:0 6px 18px rgba(22,50,74,.1); font-variant-numeric:tabular-nums; }
@@ -601,6 +602,7 @@ body{ background:#f6f2ea; }
         <button class="tb-k rund" onclick="tafelMorgen.schliessen()" title="Zurück zur Übersicht"><i class="fa-solid fa-arrow-left"></i></button>
         <span class="mg-titel">Guten Morgen!</span>
         <span class="tb-luft"></span>
+        <?php if (defined("LT_TAFEL_APP")): ?><button class="tb-k" id="mgInstall" onclick="tafelMorgen.installieren()" title="Als App auf dieser Tafel installieren" hidden>📲 Als App installieren</button><?php endif; ?>
         <button class="tb-k" onclick="tafelMorgen.bearbeiten()" title="Klasse, Stundenplan, Material, Hinweise"><i class="fa-solid fa-pen"></i> Bearbeiten</button>
         <button class="tb-k rund" onclick="vollbild()" title="Vollbild"><i class="fa-solid fa-expand"></i></button>
     </div>

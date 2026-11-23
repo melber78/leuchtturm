@@ -846,6 +846,23 @@ function aufraeumen(k){ const grenze = iso(new Date((Date.now() + zeitVersatz) -
     Object.keys(k.aenderungen || {}).forEach(t => { if (t < grenze) delete k.aenderungen[t]; });
     k.termine = (k.termine || []).filter(t => t.d >= grenze); }
 
+/* ---------- Tafel-App installieren ---------- */
+let installAngebot = null;
+const alsApp = () => window.matchMedia("(display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui)").matches || navigator.standalone;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installAngebot = e; const b = document.getElementById("mgInstall"); if (b && !alsApp()) b.hidden = false; });
+window.addEventListener("appinstalled", () => { installAngebot = null; const b = document.getElementById("mgInstall"); if (b) b.hidden = true; });
+async function installieren(){
+    if (installAngebot) { installAngebot.prompt(); try { await installAngebot.userChoice; } catch (x) {} installAngebot = null; return; }
+    const ua = navigator.userAgent, edge = /Edg\//.test(ua), android = /Android/.test(ua), chrome = /Chrome\//.test(ua) && !edge;
+    overlay(`<h2>📲 Morgentafel auf der Tafel einrichten</h2>
+        <div class="mg-info-box" style="background:#eef4fb;color:#16324a">Je nach Tafel heißt der Menüpunkt etwas anders. Wichtig ist nur: Die Seite soll als Symbol auf der Tafel liegen.</div>
+        <div class="mg-anl ${edge ? "an" : ""}"><b>Microsoft Edge</b> (Windows): oben rechts <b>⋯</b> → <b>Apps</b> → <b>„Diese Website als App installieren“</b> → Installieren.</div>
+        <div class="mg-anl ${chrome && !android ? "an" : ""}"><b>Google Chrome</b> (Windows): oben rechts <b>⋮</b> → <b>„Streamen, speichern und teilen“</b> → <b>„Seite als App installieren …“</b> (in älteren Versionen direkt: „Guten Morgen installieren“).</div>
+        <div class="mg-anl ${android ? "an" : ""}"><b>Android-Tafel</b> (z. B. mit eigenem Tafel-Browser oder Chrome): Menü <b>⋮</b> → <b>„Zum Startbildschirm hinzufügen“</b> bzw. <b>„App installieren“</b>. Fehlt der Punkt: als <b>Lesezeichen</b> speichern oder die Seite als <b>Startseite</b> des Browsers festlegen.</div>
+        <div class="mg-anl"><b>Geht gar nichts?</b> Kein Problem – dann diese Seite einfach offen lassen oder als Lesezeichen bzw. Startseite speichern und mit <b>⤢ Vollbild</b> (oben rechts oder Taste <b>F11</b>) anzeigen. Die Tafel bleibt freigeschaltet, auch ohne App.</div>
+        <div class="mg-reihe" style="margin-top:12px"><button class="mg-k" data-zu>OK</button></div>`);
+}
+
 /* ---------- Tafel-Links: die Morgentafel als eigene App auf der digitalen Tafel ---------- */
 async function tafelApi(daten){
     const r = await fetch("morgen/zugang.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json", "X-CSRF": window.TAFEL_CSRF || "" }, body: JSON.stringify(daten) });
@@ -865,7 +882,7 @@ function tafelLinks(p, k){
             aus.innerHTML = `<div class="mg-tafellink"><b>So geht's auf der Tafel:</b>
                 <ol><li>Auf der Tafel im Browser diese Adresse eintippen:<div class="mg-tadr">${esc(j.adresse)}</div></li>
                 <li>Den Tafel-Code eingeben:<div class="mg-tcode">${esc(j.code)}</div></li>
-                <li>In Chrome oder Edge in der Adresszeile auf <b>„App installieren“</b> (Symbol 🖥️⬇) tippen – oder im Menü ⋮ → <b>„Guten Morgen installieren“</b>. Fertig: Das Symbol <b>„Guten Morgen“</b> öffnet die Morgentafel im Vollbild.</li></ol>
+                <li>Oben auf der Tafel auf <b>„📲 Als App installieren“</b> tippen – dort steht genau, wie es auf diesem Gerät geht. Fertig: Das Symbol <b>„Guten Morgen“</b> öffnet die Morgentafel im Vollbild.</li></ol>
                 <small class="mg-hilfe">Der Code gilt nur für die Morgentafel und muss auf jeder Tafel nur einmal eingegeben werden. Groß-/Kleinschreibung und Bindestrich sind egal.</small></div>`;
         } catch (x) { alert("Keine Verbindung zum Leuchtturm."); }
     });
@@ -902,11 +919,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // Bildschirm nicht ausgehen lassen, solange die Tafel offen ist
         const wach = () => { try { if (navigator.wakeLock && document.visibilityState === "visible") navigator.wakeLock.request("screen").catch(() => {}); } catch (x) {} };
         wach(); document.addEventListener("visibilitychange", wach);
+        const ib = document.getElementById("mgInstall"); if (ib && !alsApp()) ib.hidden = false;
         // einmal pro Stunde neu laden: Änderungen vom Handy (Termine, Hinweise) kommen so auf die Tafel
         setInterval(() => { if (!document.getElementById("mgEditor").classList.contains("an") && !document.querySelector(".mg-overlay")) location.reload(); }, 60 * 60 * 1000);
     }
     else if (location.hash === "#morgen") oeffnen(); else if (location.hash === "#morgen-sek") oeffnen("sek");
     window.addEventListener("hashchange", () => { if (location.hash === "#morgen") oeffnen(); else if (location.hash === "#morgen-sek") oeffnen("sek"); });
 });
-window.tafelMorgen = { oeffnen, schliessen, bearbeiten: () => bearbeiten(), startklar: art => { oeffnen(); setTimeout(() => startGross(art), 150); } };
+window.tafelMorgen = { installieren, oeffnen, schliessen, bearbeiten: () => bearbeiten(), startklar: art => { oeffnen(); setTimeout(() => startGross(art), 150); } };
 })();
