@@ -95,7 +95,7 @@ const CSS = `
 }
 `;
 
-const TABS = [["verstehen", "🔵 Verstehen"], ["reihe", "⭐ Kernaufgaben & Nachbarn"], ["tricks", "💡 Tricks"], ["geteilt", "➗ Geteilt"], ["familie", "🏠 Aufgabenfamilie"], ["ueben", "⚡ Üben"], ["gross", "🔢 Das große 1 × 1"]];
+const TABS = [["tabelle", "📋 1 × 1-Tabelle"], ["verstehen", "🔵 Verstehen"], ["reihe", "⭐ Kernaufgaben & Nachbarn"], ["tricks", "💡 Tricks"], ["geteilt", "➗ Geteilt"], ["familie", "🏠 Aufgabenfamilie"], ["ueben", "⚡ Üben"], ["gross", "🔢 Das große 1 × 1"]];
 const KERN = [1, 2, 5, 10];
 const z = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
 const zufall = l => l[Math.floor(Math.random() * l.length)];
@@ -107,7 +107,7 @@ function aufbauen(){
     el = document.createElement("div"); el.id = "ew";
     el.innerHTML = `<div class="ew-leiste">
             <button class="tb-k rund" data-x="zu" title="Zurück zur Übersicht"><i class="fa-solid fa-arrow-left"></i></button>
-            <span class="ew-titel">Einmaleins-Werkstatt</span>
+            <span class="ew-titel">Einmaleins</span>
             <span class="ew-punkte" id="ewPunkte"><span><i id="ewNa">Klasse</i> <b id="ewPk">0</b></span><span><i id="ewNb">🦉 Ella</i> <b id="ewPe">0</b></span></span>
             <span class="tb-luft"></span>
             <button class="tb-k rund" data-x="voll" title="Vollbild"><i class="fa-solid fa-expand"></i></button>
@@ -329,7 +329,10 @@ function schrittListe(liste, n){ return `<div class="ew-schritte">${liste.map((s
 
 /* ---------- Steuerung ---------- */
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function tabsHtml(){ return TABS.map(([k, n]) => `<button class="ew-tab ${k === S.tab ? "an" : ""}" data-tab="${k}">${n}</button>`).join(""); }
 function zeichnen(){
+    if (S.tab === "tabelle"){ if (window.tafelEinmaleins) window.tafelEinmaleins.oeffnen({ tabs: tabsHtml() }); return; }
+    if (window.tafelEinmaleins) window.tafelEinmaleins.verstecken();
     el.querySelectorAll(".ew-tab").forEach(t => t.classList.toggle("an", t.dataset.tab === S.tab));
     el.querySelector("#ewPunkte").classList.toggle("an", S.tab === "ueben");
     if (window.tbSeiten){ const [sa, sb] = window.tbSeiten(); el.querySelector("#ewNa").textContent = sa; el.querySelector("#ewNb").textContent = sb; }

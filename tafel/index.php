@@ -12,6 +12,7 @@ require __DIR__ . "/bausteine.php";
 
 $pfad = rtrim(dirname(dirname($_SERVER["SCRIPT_NAME"])), "/\\") . "/";
 $b = (string)($_GET["b"] ?? "");
+if ($b === "werkstatt") $b = "einmaleins";   // früher eigenes Tafelbild – jetzt Teil des Einmaleins
 if (!isset(LT_BAUSTEINE[$b])) $b = "";
 $zurueck = "./" . ($b ? "?b=" . $b : "");
 $fehler = "";

@@ -235,7 +235,7 @@ function panel(){
             <div class="ee-leer">Die Reihe steht in der Tabelle zweimal: als Zeile und als Spalte. Tippe noch einmal auf die ${reihe}, um alles wieder zu zeigen.</div>`;
         return;
     }
-    p.innerHTML = `<div class="ee-aufgabe" style="font-size:clamp(34px,6vmin,80px);">Das 1 × 1</div>
+    p.innerHTML = `<div class="ee-aufgabe" style="font-size:clamp(34px,6vmin,80px);">Das kleine 1 × 1</div>
         <div class="ee-leer"><b>Tippe auf ein Feld:</b> Die Aufgabe erscheint groß – mit Tauschaufgabe, Rechentrick und Punktefeld.<br><br>
         <b>Tippe auf eine Zahl am Rand:</b> Die ganze Reihe leuchtet auf.<br><br>
         <b>Verdecken</b> oder <b>Lücken</b>: Die Kinder rechnen, dann wird angetippt und aufgedeckt.<br><br>
@@ -323,19 +323,32 @@ function klick(e){
 function alleZu(){ zustand.zu.clear(); for (let i = 1; i <= zustand.bis; i++) for (let j = 1; j <= zustand.bis; j++) zustand.zu.add(key(i, j)); }
 function punkteZeigen(){ if (window.tbSeiten){ const [sa, sb] = window.tbSeiten(); el.querySelector("#eeNa").textContent = sa; el.querySelector("#eeNb").textContent = sb; } el.querySelector("#eePk").textContent = zustand.punkte.k; el.querySelector("#eePe").textContent = zustand.punkte.e; }
 
-function oeffnen(){
+// eingebettet = Teil der Einmaleins-Tafel (tafel-1x1.js): eigene Reiterleiste, Schließen schließt alles
+let eingebettet = false;
+function oeffnen(opt){
     aufbauen();
+    eingebettet = !!(opt && opt.tabs);
+    let tabs = el.querySelector(".ew-tabs");
+    if (eingebettet){
+        if (!tabs){ tabs = document.createElement("div"); tabs.className = "ew-tabs"; el.querySelector(".ee-leiste").after(tabs);
+            tabs.addEventListener("click", ev => { const b = ev.target.closest("[data-tab]"); if (b && b.dataset.tab !== "tabelle"){ ev.stopPropagation(); el.classList.remove("an"); window.tafel1x1.oeffnen(b.dataset.tab); } }); }
+        tabs.innerHTML = opt.tabs;
+        el.querySelector(".ee-titel").textContent = "Einmaleins";
+    } else if (tabs) tabs.remove();
     el.classList.add("an");
     const ue = document.getElementById("uebersicht"); if (ue) ue.style.display = "none";
-    history.replaceState(null, "", "#einmaleins");
+    if (!eingebettet) history.replaceState(null, "", "#einmaleins");
     gitter();
     requestAnimationFrame(groesse);
 }
 function schliessen(){
     el.classList.remove("an");
+    if (eingebettet && window.tafel1x1){ eingebettet = false; return window.tafel1x1.schliessen(); }
     const ue = document.getElementById("uebersicht"); if (ue) ue.style.display = "";
     history.replaceState(null, "", location.pathname);
 }
-window.tafelEinmaleins = { oeffnen, schliessen };
-document.addEventListener("DOMContentLoaded", () => { if (location.hash === "#einmaleins") oeffnen(); });
+function verstecken(){ if (el) el.classList.remove("an"); }
+window.tafelEinmaleins = { oeffnen, schliessen, verstecken };
+// alte Adresse #einmaleins: öffnet die Einmaleins-Tafel mit der Tabelle
+document.addEventListener("DOMContentLoaded", () => { if (location.hash === "#einmaleins") { if (window.tafel1x1) window.tafel1x1.oeffnen("tabelle"); else oeffnen(); } });
 })();
