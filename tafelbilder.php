@@ -1,4 +1,4 @@
-<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs", "leise", "einmaleins"]; require __DIR__ . "/gast-zugang.php"; ?>
+<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs", "leise", "einmaleins", "brueche"]; require __DIR__ . "/gast-zugang.php"; ?>
 <?php
 if (empty($_SESSION["tafel_csrf"])) $_SESSION["tafel_csrf"] = bin2hex(random_bytes(16));
 // Gespeicherte Tafelbild-Einstellungen (Morgentafel …) – Gäste haben eigene Daten
@@ -458,6 +458,14 @@ body{ background:#f6f2ea; }
 .k-start .mini-raster{ display:flex; gap:8px; }
 .k-start .mini-raster i{ width:52px; height:46px; background:white; border-radius:10px; box-shadow:0 3px 8px rgba(22,50,74,.08); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:22px; }
 .k-ee{ background:linear-gradient(135deg,#fff3d1,#e2f0ff); }
+.tb-gruppe{ grid-column:1/-1; font:900 14px "Nunito",sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#8a7a60; margin:6px 0 -8px 4px; }
+.k-br{ background:linear-gradient(135deg,#e7eef6,#f4f6f9); }
+.mini-br{ display:flex; align-items:center; gap:22px; }
+.mini-br svg{ width:104px; height:104px; }
+.mini-bz{ display:flex; align-items:center; gap:4px; font:900 46px "Nunito",sans-serif; color:#16324a; }
+.mini-bz > span{ display:flex; flex-direction:column; align-items:center; font-size:30px; line-height:1.05; }
+.mini-bz i{ font-style:normal; padding:0 4px; }
+.mini-bz i:first-child{ border-bottom:4px solid #16324a; }
 .mini-ee{ display:grid; grid-template-columns:repeat(4, 34px); grid-auto-rows:28px; gap:3px; background:#c9d6e3; border:3px solid #16324a; border-radius:10px; overflow:hidden; font:900 15px "Nunito",sans-serif; }
 .mini-ee b, .mini-ee i{ display:flex; align-items:center; justify-content:center; font-style:normal; }
 .mini-ee b{ background:#16324a; color:#ffd77a; } .mini-ee b:first-child{ background:#f2a93b; color:#16324a; }
@@ -471,6 +479,14 @@ body{ background:#f6f2ea; }
     <a class="zurueck" href="<?= $LT_GAST ? "gast.php" : "index.php" ?>"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
     <div class="tb-banner"><h1>Tafelbilder</h1><p>Für die digitale Tafel: öffnen, Vollbild an – und mit dem Tafelstift direkt hineinschreiben.</p><span class="kreide">Aa · 1 2 3 · ☀</span></div>
     <div class="kacheln">
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")): ?>
+        <div class="tb-gruppe">Höhere Klassen</div>
+        <button class="kachel" type="button" onclick="tafelBrueche.oeffnen()">
+            <div class="k-buehne k-br"><div class="mini-br"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="#fff" stroke="#16324a" stroke-width="5"/><path d="M60 60 L60 8 A52 52 0 1 1 8 60 Z" fill="#3d7ea6" stroke="#16324a" stroke-width="4" stroke-linejoin="round"/><line x1="60" y1="8" x2="60" y2="112" stroke="#16324a" stroke-width="4"/><line x1="8" y1="60" x2="112" y2="60" stroke="#16324a" stroke-width="4"/></svg><span class="mini-bz"><b>2</b><span><i>3</i><i>4</i></span></span></div></div>
+            <div class="k-text"><h2>Brüche</h2><p>Erklär-Tafel mit Bild und Rechenweg zum Aufdecken: Was ist ein Bruch, gemischte Zahlen, Erweitern &amp; Kürzen, Vergleichen, Zahlenstrahl, Plus/Minus, Mal/Geteilt.</p><div class="k-tags"><span>Mathe</span><span>Kl. 5/6</span></div></div>
+        </button>
+        <div class="tb-gruppe">Grundschule</div>
+<?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
         <button class="kachel" type="button" onclick="tafelMorgen.oeffnen()">
             <div class="k-buehne k-morgen"><div class="mini-gruss"><span>☀️</span>Guten Morgen!</div><div class="mini-raster"><i>📅</i><i>🔢</i><i>🎒</i><i>⭐</i></div></div>
@@ -605,6 +621,7 @@ window.TB_ERLAUBT = <?= json_encode(["buchstabenkurs" => !$LT_GAST || lt_gastDar
 <script src="tafel-morgen.js?v=<?= @filemtime(__DIR__ . "/tafel-morgen.js") ?>"></script>
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
 <script src="lernangebot-tafel.js?v=<?= @filemtime(__DIR__ . "/lernangebot-tafel.js") ?: 1 ?>"></script>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")): ?><script src="tafel-brueche.js?v=<?= @filemtime(__DIR__ . "/tafel-brueche.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "einmaleins")): ?><script src="tafel-einmaleins.js?v=<?= @filemtime(__DIR__ . "/tafel-einmaleins.js") ?: 1 ?>"></script><?php endif; ?>
 <script>
 // Leise-Wald direkt aus den Tafelbildern (auch über tafelbilder.php#leise-ende usw.)

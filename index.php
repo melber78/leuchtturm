@@ -113,6 +113,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-23", "Tafelbild „Brüche“ für Klasse 5/6", "Erklär-Tafel mit Bild, Merksatz und Rechenweg zum Aufdecken: Was ist ein Bruch, gemischte Zahlen, Erweitern & Kürzen, Vergleichen, Zahlenstrahl, Plus/Minus, Mal/Geteilt – mit Zufallsbeispielen und eigener Aufgabe.", "tafelbilder.php#brueche"],
     ["2026-11-22", "Echte Konzentrationstests", "14 neue Aufmerksamkeits-Blätter in allen Stufen: Würfel-Test, Pauli-Test, Revisionstest, Kopfrechnen unter Belastung, Stroop, Stopp-Test, zwei Regeln gleichzeitig, Rückblick-Test, Zeichen-Suche, Korrektur lesen u. v. m. – ab Klasse 5 mit Takt und Auswertung, Zufallsmix nur noch mit echten Konzentrationstests.", "lrs.php"],
     ["2026-11-20", "Deutsch-Werkzeugkasten", "Alle Arbeitsblätter zu den Rechtschreibstrategien an einem Ort, sortiert nach Werkzeug: Mitsprechen, Schwingen, Kurz/lang, Verlängern, Ableiten, Groß/klein, Ersatzprobe, Merkwörter, Komma – ein Tipp und die Blätter sind da.", "lrs.php#werkzeug"],
     ["2026-11-20", "Rechtschreib-Werkstatt jetzt bis Klasse 8", "Neue Lehrgangs-Stufen 18–25 (Nominalisierung, ent-/end-, wieder/wider, seit/seid, Zeitangaben, Komma, Fremdwörter, höfliche Anrede) und Grundwortschatz Kl. 5/6 und 7/8 (häufige Fehlerwörter, Fremdwörter, Beruf, Argumentieren, -nis, -ung/-heit/-keit). Ab Klasse 5 automatisch sachlicher gestaltet.", "lrs.php"],
@@ -265,6 +266,12 @@ $neuAktuell = array_values(array_filter($NEU, fn($n) => strtotime($n[0]) >= strt
 <i class="fa-solid fa-graduation-cap"></i>
 <h2>Ella-Quiz</h2>
 <p>Üben nach Klasse 1–4, Fach und Thema – allein am Gerät oder an der Tafel gegen Ella</p>
+</a>
+
+<a href="tafelbilder.php#brueche" class="portal-card">
+<i class="fa-solid fa-chart-pie"></i>
+<h2>Brüche (Kl. 5/6)</h2>
+<p>Erklär-Tafel: Bild, Merksatz und Rechenweg zum Aufdecken – gemischte Zahlen, Kürzen, Plus/Minus, Mal/Geteilt</p>
 </a>
 
 <a href="tafelbilder.php#pause" class="portal-card">
