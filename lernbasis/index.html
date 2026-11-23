@@ -786,6 +786,7 @@ VIEWS.home=()=>{
   <button class="act" onclick="go('testsetup')"><span class="ic">📝</span><span><b>Test</b><small>Arbeit simulieren</small></span></button>
   <button class="act" onclick="startCards(null)"><span class="ic">🧠</span><span><b>Merken</b><small>${due?due+' Karten fällig':'Karteikarten'}</small></span></button>
   <button class="act" onclick="go('subject',{s:'eigen'})"><span class="ic">➕</span><span><b>Eigene Themen</b><small>${S.custom.length} angelegt</small></span></button>
+  <button class="act" onclick="go('bilderliste')"><span class="ic">🖼️</span><span><b>Anschauen</b><small>${Object.values(BILDER).reduce((n,l)=>n+l.length,0)} Erklärbilder</small></span></button>
   <button class="act" onclick="go('shop')"><span class="ic">🛍️</span><span><b>Shop</b><small>${S.coins||0} Münzen</small></span></button>
   <button class="act" onclick="go('badges')"><span class="ic">🏅</span><span><b>Abzeichen</b><small>${Object.keys(S.badges).length} von ${BADGES.length}</small></span></button>
  </div>
@@ -1445,6 +1446,8 @@ B('ge-zeit',{t:'Zeitstrahl',init:()=>({e:3}),ctl:()=>[{k:'e',l:'Ereignis',opts:E
    merke:'Vor Christi Geburt zählt man <b>rückwärts</b> (v. Chr.), danach vorwärts (n. Chr.). Ein Jahr 0 gibt es nicht. Das <b>1. Jahrhundert</b> umfasst die Jahre 1 bis 100.',
    steps:[`${yy} ${y<0?'v. Chr.':'n. Chr.'} liegt ${y<0?'<b>links</b> von Christi Geburt':'<b>rechts</b> von Christi Geburt'}.`,`Jahrhundert: ${yy} → <b>${jh}. Jahrhundert ${y<0?'v. Chr.':'n. Chr.'}</b>`,`Das ist ungefähr <b>${fmt(ago)} Jahre</b> her.`]}}});
 
+VIEWS.bilderliste=()=>hdr('🖼️ Anschauen','#38bdf8')+`<p class="small mut">Bilder zum Ausprobieren: Zahlen verändern, Schritte aufdecken, neue Beispiele.</p>`+SUBJECTS.map(sb=>{const ts=TOPICS.filter(t=>t.s===sb.id&&BILDER[t.id]);if(!ts.length)return '';return `<div class="sec">${sb.icon} ${sb.name}</div><div class="list">${ts.flatMap(t=>BILDER[t.id].map((b,i)=>`<button class="item" onclick="go('bild',{id:'${t.id}',i:${i}})"><div class="t"><b>${b.t}</b><small>${esc(t.title)}</small></div>›</button>`)).join('')}</div>`}).join('');
+
 /* ===== Abfrage-Modus für Eltern (mündlich abfragen) ===== */
 let ELTERN_OK=false;
 VIEWS.abfrage=p=>{
@@ -1575,6 +1578,7 @@ VIEWS.parent=()=>{
  <div class="acts">
   <button class="act" onclick="go('abfrage',{})"><span class="ic">🗣️</span><span><b>Abfragen</b><small>mündlich prüfen</small></span></button>
   <button class="act" onclick="startPreview()"><span class="ic">👀</span><span><b>Inhalte ansehen</b><small>Kinderbereich als Vorschau</small></span></button>
+  <button class="act" onclick="go('bilderliste')"><span class="ic">🖼️</span><span><b>Erklärbilder</b><small>alle ${Object.values(BILDER).reduce((n,l)=>n+l.length,0)} ansehen</small></span></button>
   <button class="act" onclick="go('eltern',{})"><span class="ic">📊</span><span><b>Fortschritt</b><small>Fächer, Tests, Belohnungen</small></span></button>
   <button class="act" onclick="go('eltern',{})"><span class="ic">⚙️</span><span><b>Einstellungen</b><small>Erinnerung, Noten, PIN</small></span></button>
  </div>
