@@ -57,7 +57,7 @@ const SEK_FAECHER = {
     ethik: { n: "Ethik", e: "🤝", f: "#7e57c2", m: ["hefter"] }, sport: { n: "Sport", e: "🏃", f: "#f4511e", m: ["sportzeug"] },
     technik: { n: "Technik", e: "🔧", f: "#6d4c41", m: [] }, wirtschaft: { n: "Wirtschaft", e: "📊", f: "#00838f", m: ["hefter"] },
     sozialkunde: { n: "Sozialkunde", e: "🗳️", f: "#5c6bc0", m: ["hefter"] }, lernbuero: { n: "Lernbüro", e: "🗂️", f: "#2f7d6d", m: ["lernpfad"] },
-    hwi: { n: "HWi", e: "🍳", f: "#d9822b", m: ["hefter"] }, it: { n: "IT", e: "🖥️", f: "#37474f", m: [] }, klassenleiter: { n: "Klassenleiterstunde", e: "🗣️", f: "#78909c", m: [] },
+    hwi: { n: "HWi", e: "🍳", f: "#d9822b", m: ["hefter"] }, it: { n: "IT", e: "🖥️", f: "#37474f", m: [] }, lernwerkstatt: { n: "Lernwerkstatt", e: "🛠️", f: "#7b5ea7", m: [] }, klassenleiter: { n: "Klassenleiterstunde", e: "🗣️", f: "#78909c", m: [] },
 };
 const SEK_MATERIAL = { hefter: { e: "🗂️", n: "Hefter" }, taschenrechner: { e: "🧮", n: "Taschenrechner" }, geodreieck: { e: "📐", n: "Geodreieck" }, zirkel: { e: "⭕", n: "Zirkel" },
     atlas: { e: "🗺️", n: "Atlas" }, sportzeug: { e: "👟", n: "Sportzeug" }, laptop: { e: "💻", n: "Laptop" }, vokabelheft: { e: "📒", n: "Vokabelheft" } };
@@ -143,6 +143,8 @@ if (!D.katalog.faecher || Array.isArray(D.katalog.faecher)) D.katalog.faecher = 
 if (!D.katalog.material || Array.isArray(D.katalog.material)) D.katalog.material = kopie(DEF_MATERIAL);
 FAECHER = D.katalog.faecher; MATERIAL = D.katalog.material;
 // Fächer und Material für Klasse 5–9 einmal ergänzen
+// Lernwerkstatt nachträglich ergänzen
+if (!D.katalog.lw) { if (!FAECHER.lernwerkstatt) FAECHER.lernwerkstatt = kopie(SEK_FAECHER.lernwerkstatt); D.katalog.lw = true; }
 // HWi und IT nachträglich ergänzen
 if (!D.katalog.hwi) { ["hwi", "it"].forEach(f => { if (!FAECHER[f]) FAECHER[f] = kopie(SEK_FAECHER[f]); }); D.katalog.hwi = true; }
 // Lernbüro nachträglich ergänzen
