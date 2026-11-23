@@ -10,6 +10,7 @@ $e = json_decode((string)file_get_contents("php://input"), true) ?: [];
 $liste = lt_tafelnLesen();
 $aktion = $e["aktion"] ?? "liste";
 $basis = (!empty($_SERVER["HTTPS"]) ? "https" : "http") . "://" . $_SERVER["HTTP_HOST"] . rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\") . "/";
+if (($e["ziel"] ?? "") === "tafel") $basis = preg_replace("#morgen/$#", "tafel/", $basis);
 if ($aktion === "neu") {
     $k = lt_neuerCode();
     $name = mb_substr(trim((string)($e["name"] ?? "")), 0, 40) ?: "Tafel";

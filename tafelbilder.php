@@ -10,20 +10,25 @@ $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESC
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<?php $TAFEL_APP = defined("LT_TAFEL_APP"); if ($TAFEL_APP): ?><base href="../"><?php endif; ?>
+<?php $TAFEL_APP = defined("LT_TAFEL_APP"); $TB_B = defined("LT_TAFEL_BAUSTEIN") ? LT_TAFEL_BAUSTEIN : ""; if ($TB_B) require_once __DIR__ . "/tafel/bausteine.php";
+$TB_APPDIR = $TB_B ? "tafel/" : "morgen/"; $TB_ICON = $TB_B ? "tafel/icons/" . $TB_B . "-192.png" : "morgen/icon-192.png"; $TB_NAME = $TB_B ? LT_BAUSTEINE[$TB_B][0] : "Guten Morgen!";
+if ($TAFEL_APP): ?><base href="../">
+<script>/* Tafel-App: Adresse bleibt immer gleich (Tafelbilder ändern sonst die Adresse) – und das Tafelbild startet sofort */
+(function(){ var r = history.replaceState.bind(history), u = location.pathname + location.search; history.replaceState = function(s, t){ r(s, t, u + location.hash); }; history.pushState = function(s, t){ r(s, t, u + location.hash); };
+<?php if ($TB_B): ?> r(null, "", u + <?= json_encode(LT_BAUSTEINE[$TB_B][2]) ?>);<?php endif; ?> })();</script><?php endif; ?>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
-<link rel="manifest" href="<?= $TAFEL_APP ? "morgen/manifest.php" : "manifest.php" ?>">
+<link rel="manifest" href="<?= $TAFEL_APP ? $TB_APPDIR . "manifest.php" . ($TB_B ? "?b=" . $TB_B : "") : "manifest.php" ?>">
 <meta name="theme-color" content="#16324a">
-<link rel="apple-touch-icon" href="<?= $TAFEL_APP ? "morgen/icon-192.png" : "app-icon-192.png" ?>">
-<link rel="icon" type="image/png" href="<?= $TAFEL_APP ? "morgen/icon-192.png" : "app-icon-192.png" ?>">
+<link rel="apple-touch-icon" href="<?= $TAFEL_APP ? $TB_ICON : "app-icon-192.png" ?>">
+<link rel="icon" type="image/png" href="<?= $TAFEL_APP ? $TB_ICON : "app-icon-192.png" ?>">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="<?= $TAFEL_APP ? "Guten Morgen" : "Leuchtturm" ?>">
-<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("<?= $TAFEL_APP ? "morgen/sw.js" : "sw.js" ?>").catch(function(){});</script>
+<meta name="apple-mobile-web-app-title" content="<?= $TAFEL_APP ? htmlspecialchars($TB_NAME) : "Leuchtturm" ?>">
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("<?= $TAFEL_APP ? $TB_APPDIR . "sw.js" : "sw.js" ?>").catch(function(){});</script>
 
-<title><?= $TAFEL_APP ? "Guten Morgen!" : "Tafelbilder · Leuchtturm" ?></title>
+<title><?= $TAFEL_APP ? htmlspecialchars($TB_NAME) : "Tafelbilder · Leuchtturm" ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Patrick+Hand&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <!--
@@ -46,7 +51,17 @@ body{ background:#f6f2ea; }
   background:radial-gradient(circle at 85% 20%, rgba(255,255,255,.12), transparent 40%), linear-gradient(135deg,#2f6a50,#1f4a37); box-shadow:0 0 0 8px #8a5a2e, 0 14px 30px rgba(60,40,10,.18); }
 .tb-banner h1{ margin:0 0 6px; font:900 clamp(28px,4vw,42px) "Nunito",sans-serif; letter-spacing:-.01em; }
 .tb-banner p{ margin:0; font-weight:700; opacity:.85; font-size:16px; max-width:640px; }
-@media (max-width:640px){ .tb-banner{ padding:24px 22px; } .tb-banner .kreide{ display:none; } .kacheln{ grid-template-columns:1fr; } }
+@media (max-width:640px){ .tb-banner{ padding:24px 22px; } .tb-inst-knopf{ margin-top:14px; font:900 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:10px 18px; background:rgba(255,255,255,.18); color:#fffdf5; cursor:pointer; position:relative; z-index:1; }
+.tb-inst-box{ max-width:720px; }
+.tb-inst-schritte{ font-size:16px; line-height:1.5; padding-left:22px; }
+.tb-inst-neu{ display:flex; gap:8px; flex-wrap:wrap; } .tb-inst-neu input{ flex:1; min-width:200px; font:700 16px "Nunito",sans-serif; padding:10px 12px; border:2px solid #d8dee5; border-radius:12px; }
+.tb-inst-neu button, .tb-inst-z button{ font:900 15px "Nunito",sans-serif; border:0; border-radius:12px; padding:10px 16px; background:#16324a; color:#fff; cursor:pointer; }
+.tb-inst-z button{ background:#f1ece2; color:#16324a; padding:6px 12px; }
+.tb-inst-code{ background:#fff8e1; border:2px dashed #e0b84d; border-radius:14px; padding:12px 16px; margin-top:12px; display:flex; flex-direction:column; gap:6px; font-weight:700; }
+.tb-inst-code b{ display:block; } .tb-inst-code .adr{ font-size:20px; color:#1d5fa8; user-select:all; } .tb-inst-code .code{ font:900 34px monospace; letter-spacing:.12em; user-select:all; }
+#tbInstListe h3{ margin:16px 0 6px; font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:#7c8a85; }
+.tb-inst-z{ display:flex; justify-content:space-between; align-items:center; background:#f6f8fa; border-radius:12px; padding:8px 12px; margin-bottom:6px; }
+.tb-banner .kreide{ display:none; } .kacheln{ grid-template-columns:1fr; } }
 .tb-banner .kreide{ position:absolute; right:30px; bottom:18px; font:400 34px "Patrick Hand","Andika",sans-serif; opacity:.25; transform:rotate(-4deg); }
 .kacheln{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:22px; }
 .kachel{ background:white; border-radius:26px; box-shadow:0 10px 28px rgba(60,40,10,.08); padding:0; text-decoration:none; color:var(--text); transition:transform .2s, box-shadow .2s; cursor:pointer; border:0; text-align:left; font:inherit; overflow:hidden; display:flex; flex-direction:column; }
@@ -512,13 +527,56 @@ body{ background:#f6f2ea; }
 .mini-ee i{ background:white; color:#16324a; } .mini-ee i.w{ background:#f2a93b; }
 @media (max-width:900px){ .mg-sg-liste{ grid-template-columns:1fr; } .mg-iw{ grid-template-columns:repeat(auto-fill,minmax(46px,1fr)); } }
 </style>
-<?php if ($TAFEL_APP): ?><style>#uebersicht{ display:none !important; } #morgen .mg-leiste > .tb-k.rund:first-child{ display:none; }</style><?php endif; ?>
+<?php if ($TAFEL_APP && !$TB_B): ?><style>#uebersicht{ display:none !important; } #morgen .mg-leiste > .tb-k.rund:first-child{ display:none; }</style><?php endif; ?>
+<?php if ($TB_B): ?><style>
+/* Tafel-App mit einem Tafelbild: Übersicht zeigt nur dieses eine (wenn man es schließt) */
+#uebersicht .tb-gruppe, #uebersicht .kachel.tb-fremd, #uebersicht .zurueck{ display:none !important; }
+#morgen .mg-leiste > .tb-k.rund:first-child{ display:none; }
+.tb-app-inst{ position:fixed; left:12px; bottom:12px; z-index:60; font:900 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:10px 16px; background:#16324a; color:#fff; box-shadow:0 6px 18px rgba(0,0,0,.25); cursor:pointer; opacity:.85; }
+.tb-app-inst:hover{ opacity:1; }
+</style><?php endif; ?>
 </head>
 <body<?= $TAFEL_APP ? ' class="tafel-app"' : '' ?>>
 
 <div class="uebersicht" id="uebersicht">
     <a class="zurueck" href="<?= $LT_GAST ? "gast.php" : "index.php" ?>"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
-    <div class="tb-banner"><h1>Tafelbilder</h1><p>Für die digitale Tafel: öffnen, Vollbild an – und mit dem Tafelstift direkt hineinschreiben.</p><span class="kreide">Aa · 1 2 3 · ☀</span></div>
+    <div class="tb-banner"><h1>Tafelbilder</h1><p>Für die digitale Tafel: öffnen, Vollbild an – und mit dem Tafelstift direkt hineinschreiben.</p><span class="kreide">Aa · 1 2 3 · ☀</span>
+<?php if (!$TAFEL_APP && !empty($_SESSION["leuchtturm_eingeloggt"])): ?>        <button type="button" class="tb-inst-knopf" onclick="tafelnVerwalten()">📺 Auf Tafeln installieren</button><?php endif; ?></div>
+<?php if (!$TAFEL_APP && !empty($_SESSION["leuchtturm_eingeloggt"])): ?>
+<div id="tbInst" class="lw-wahl" onclick="if (event.target === this) this.classList.remove('an')">
+  <div class="lw-wahl-box tb-inst-box">
+    <div class="lw-wahl-kopf"><div><h2>📺 Tafelbilder auf Tafeln installieren</h2><small>Jedes Tafelbild bekommt auf der Tafel sein eigenes Symbol – ohne Login, ohne Zugriff auf den Rest des Leuchtturms.</small></div><button type="button" onclick="document.getElementById('tbInst').classList.remove('an')" title="Schließen">✕</button></div>
+    <ol class="tb-inst-schritte">
+      <li>Hier einen <b>Tafel-Code</b> erstellen (einmal pro Tafel).</li>
+      <li>Auf der Tafel im Browser <b id="tbInstAdr">…/tafel</b> öffnen und den Code eingeben.</li>
+      <li>Auf der Tafel erscheint die Liste aller Tafelbilder: eins antippen → unten links <b>„📲 Installieren“</b>. Für jedes Tafelbild, das auf die Tafel soll, wiederholen.</li>
+    </ol>
+    <div class="tb-inst-neu"><input id="tbInstName" placeholder="Name der Tafel, z. B. Raum 204" maxlength="40"><button type="button" onclick="tafelCodeNeu()">Tafel-Code erstellen</button></div>
+    <div id="tbInstAus"></div>
+    <div id="tbInstListe"></div>
+  </div>
+</div>
+<script>
+async function tafelApi(d){ const r = await fetch("morgen/zugang.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json", "X-CSRF": window.TAFEL_CSRF || "" }, body: JSON.stringify(Object.assign({ ziel: "tafel" }, d)) }); return r.json(); }
+const tbEsc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function tafelListe(l){
+    document.getElementById("tbInstListe").innerHTML = (l || []).length ? `<h3>Freigeschaltete Tafeln</h3>` + l.map(t => `<div class="tb-inst-z"><span>📺 <b>${tbEsc(t.name)}</b> <small>seit ${tbEsc(new Date(t.erstellt + "T12:00:00").toLocaleDateString("de-DE"))}</small></span><button type="button" onclick="tafelSperren('${tbEsc(t.id)}')">sperren</button></div>`).join("") : "";
+}
+async function tafelnVerwalten(){
+    document.getElementById("tbInst").classList.add("an");
+    document.getElementById("tbInstAdr").textContent = location.host + location.pathname.replace(/[^\/]*$/, "") + "tafel";
+    try { const j = await tafelApi({ aktion: "liste" }); if (j.ok) tafelListe(j.liste); } catch (x) {}
+}
+async function tafelCodeNeu(){
+    const name = document.getElementById("tbInstName").value.trim() || "Tafel";
+    try { const j = await tafelApi({ aktion: "neu", name }); if (!j.ok) return alert(j.fehler || "Nicht möglich.");
+        tafelListe(j.liste);
+        document.getElementById("tbInstAus").innerHTML = `<div class="tb-inst-code"><div>Auf der Tafel öffnen:<b class="adr">${tbEsc(j.adresse.replace(/\/$/, ""))}</b></div><div>Tafel-Code:<b class="code">${tbEsc(j.code)}</b></div></div>`;
+    } catch (x) { alert("Keine Verbindung zum Leuchtturm."); }
+}
+async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbilder dort funktionieren dann nicht mehr.")) return; const j = await tafelApi({ aktion: "loeschen", id }); if (j.ok) tafelListe(j.liste); }
+</script>
+<?php endif; ?>
     <div class="kacheln">
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen")): ?>
         <div class="tb-gruppe">Höhere Klassen</div>
@@ -559,7 +617,7 @@ body{ background:#f6f2ea; }
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "einmaleins")): ?>
         <button class="kachel" type="button" onclick="tafelEinmaleins.oeffnen()">
             <div class="k-buehne k-ee"><div class="mini-ee"><b>·</b><b>1</b><b>2</b><b>3</b><b>1</b><i>1</i><i>2</i><i>3</i><b>2</b><i>2</i><i class="w">4</i><i>6</i><b>3</b><i>3</i><i>6</i><i>9</i></div></div>
-            <div class="k-text"><h2>Das kleine 1 × 1</h2><p>Die 1×1-Tabelle zum Antippen: Reihen leuchten auf, Aufgaben mit Tauschaufgabe, Rechentrick und Punktefeld, verdecken und aufdecken – und Blitzrechnen Klasse gegen Ella.</p><div class="k-tags"><span>interaktiv</span><span>Kl. 2–4</span></div></div>
+            <div class="k-text"><h2>Das kleine 1 × 1</h2><p>Die 1×1-Tabelle zum Antippen: Reihen leuchten auf, Aufgaben mit Tauschaufgabe, Rechentrick und Punktefeld, verdecken und aufdecken – und Blitzrechnen (Klasse gegen Ella oder Team gegen Team).</p><div class="k-tags"><span>interaktiv</span><span>Kl. 2–4</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "einmaleins")): ?>
@@ -684,8 +742,22 @@ body{ background:#f6f2ea; }
 window.TAFEL_DATEN = <?= json_encode($tbDaten, $JSON) ?>;
 window.TAFEL_CSRF = <?= json_encode($_SESSION["tafel_csrf"]) ?>;
 window.TAFEL_SERVERZEIT = <?= round(microtime(true) * 1000) ?>; window.TAFEL_GELADEN = Date.now();
-window.TB_ERLAUBT = <?= json_encode(["buchstabenkurs" => !$TAFEL_APP && (!$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs")), "morgen" => !$LT_GAST || lt_gastDarf($LT_GAST, "morgen")]) ?>;
-window.TAFEL_APP = <?= $TAFEL_APP ? json_encode(["klasse" => (string)LT_TAFEL_APP]) : "null" ?>;
+window.TB_ERLAUBT = <?= json_encode(["buchstabenkurs" => (!$TAFEL_APP || $TB_B === "buchstabenkurs") && (!$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs")), "morgen" => !$LT_GAST || lt_gastDarf($LT_GAST, "morgen")]) ?>;
+window.TAFEL_APP = <?= $TAFEL_APP ? json_encode(["klasse" => (string)LT_TAFEL_APP, "baustein" => $TB_B]) : "null" ?>;
+<?php if ($TB_B): ?>
+document.addEventListener("DOMContentLoaded", () => {
+    // nur die Kachel dieses Tafelbilds
+    const erkennung = <?= json_encode(LT_BAUSTEINE[$TB_B][3]) ?>;
+    document.querySelectorAll("#uebersicht .kachel").forEach(k => { if (!(k.getAttribute("onclick") || "").includes(erkennung)) k.classList.add("tb-fremd"); });
+    const ban = document.querySelector("#uebersicht .tb-banner"); if (ban) ban.innerHTML = `<h1>${<?= json_encode($TB_NAME) ?>}</h1><p>Zum Öffnen unten antippen.</p>`;
+    // Installieren-Knopf, solange es noch keine App ist
+    const app = window.matchMedia("(display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui)").matches || navigator.standalone;
+    if (!app && window.tafelMorgen && tafelMorgen.installieren) { const k = document.createElement("button"); k.className = "tb-app-inst"; k.textContent = "📲 Installieren"; k.title = "Dieses Tafelbild als App auf der Tafel installieren"; k.onclick = () => tafelMorgen.installieren(); document.body.appendChild(k); window.addEventListener("appinstalled", () => k.remove()); }
+    // Bildschirm wach halten
+    const wach = () => { try { if (navigator.wakeLock && document.visibilityState === "visible") navigator.wakeLock.request("screen").catch(() => {}); } catch (x) {} };
+    wach(); document.addEventListener("visibilitychange", wach);
+});
+<?php endif; ?>
 window.TAFEL_LINKS_ERLAUBT = <?= json_encode(!$TAFEL_APP && !empty($_SESSION["leuchtturm_eingeloggt"])) ?>;
 </script>
 <script src="tafel-impulse.js?v=<?= @filemtime(__DIR__ . "/tafel-impulse.js") ?>"></script>

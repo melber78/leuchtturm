@@ -905,17 +905,19 @@ function oeffnen(stufe){
     zeichnen(); wetterLaden();
     if (klasse().beispiel) setTimeout(() => bearbeiten("klasse"), 400);
 }
-function schliessen(){ if (window.TAFEL_APP) return; document.getElementById("morgen").classList.remove("an"); document.getElementById("uebersicht").style.display = ""; history.replaceState(null, "", location.pathname); }
+function schliessen(){ if (window.TAFEL_APP && /^(morgen|morgen-sek|)$/.test(window.TAFEL_APP.baustein || "")) return; document.getElementById("morgen").classList.remove("an"); document.getElementById("uebersicht").style.display = ""; history.replaceState(null, "", location.pathname); }
 document.addEventListener("DOMContentLoaded", () => {
     const w = document.getElementById("morgen"); if (!w) return;
     w.addEventListener("click", klick);
     let letzteMinute = -1;   // jede Minute neu zeichnen: Stundenwechsel, blasse Stunden, Material der Stunde
     setInterval(() => { if (!w.classList.contains("an")) return; uhr(); const m = jetztD().getMinutes(); if (m !== letzteMinute) { if (letzteMinute >= 0) zeichnen(); letzteMinute = m; } }, 1000);
     setInterval(() => { if (w.classList.contains("an")) wetterLaden(); }, 30 * 60 * 1000);
-    if (window.TAFEL_APP) {
-        // Tafel-App: immer die Morgentafel – mit der Klasse, für die der Tafel-Link erstellt wurde
-        if (window.TAFEL_APP.klasse && D.klassen.some(k => k.id === window.TAFEL_APP.klasse)) D.aktiv = window.TAFEL_APP.klasse;
-        oeffnen();
+    // Tafel-App: Klasse, für die der Tafel-Code erstellt wurde
+    if (window.TAFEL_APP && window.TAFEL_APP.klasse && D.klassen.some(k => k.id === window.TAFEL_APP.klasse)) D.aktiv = window.TAFEL_APP.klasse;
+    const tb = window.TAFEL_APP ? (window.TAFEL_APP.baustein || "morgen-alt") : "";
+    if (tb === "morgen-alt" || tb === "morgen" || tb === "morgen-sek") {
+        // Tafel-App: immer die Morgentafel
+        if (tb === "morgen-alt") oeffnen(); else oeffnen(window.TAFEL_APP.klasse ? undefined : (tb === "morgen-sek" ? "sek" : "gs"));
         // Bildschirm nicht ausgehen lassen, solange die Tafel offen ist
         const wach = () => { try { if (navigator.wakeLock && document.visibilityState === "visible") navigator.wakeLock.request("screen").catch(() => {}); } catch (x) {} };
         wach(); document.addEventListener("visibilitychange", wach);
@@ -923,7 +925,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // einmal pro Stunde neu laden: Änderungen vom Handy (Termine, Hinweise) kommen so auf die Tafel
         setInterval(() => { if (!document.getElementById("mgEditor").classList.contains("an") && !document.querySelector(".mg-overlay")) location.reload(); }, 60 * 60 * 1000);
     }
-    else if (location.hash === "#morgen") oeffnen(); else if (location.hash === "#morgen-sek") oeffnen("sek");
+    else if (!tb && location.hash === "#morgen") oeffnen(); else if (!tb && location.hash === "#morgen-sek") oeffnen("sek");
     window.addEventListener("hashchange", () => { if (location.hash === "#morgen") oeffnen(); else if (location.hash === "#morgen-sek") oeffnen("sek"); });
 });
 window.tafelMorgen = { installieren, oeffnen, schliessen, bearbeiten: () => bearbeiten(), startklar: art => { oeffnen(); setTimeout(() => startGross(art), 150); } };

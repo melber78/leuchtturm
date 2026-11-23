@@ -145,6 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-23", "Tafelbilder einzeln auf Tafeln installieren", "Tafelbilder → „📺 Auf Tafeln installieren“: Tafel-Code erstellen, auf der Tafel …/tafel öffnen – jedes Tafelbild bekommt dort sein eigenes Symbol, ohne Login.", "tafelbilder.php"],
     ["2026-11-23", "Einmaleins-Werkstatt", "Neue Tafelbilder zum 1 × 1: verstehen im Punktefeld, Kernaufgaben & Nachbarn, 14 Tricks (z. B. 9er-Finger-Trick), Geteilt mit Aufteilen/Verteilen und Rest, Aufgabenfamilie, Üben Klasse gegen Ella – und das echte große 1 × 1 (11–20). Die bisherige Tabelle heißt jetzt „Das kleine 1 × 1“.", "tafelbilder.php#1x1-verstehen"],
     ["2026-11-23", "Morgentafel als eigene App auf der Tafel", "Guten Morgen → Bearbeiten → Klasse → „📺 Auf der Tafel installieren“: Die Tafel bekommt nur die Morgentafel als App – ohne Login und ohne Zugriff auf den Rest des Leuchtturms.", "tafelbilder.php#morgen-sek"],
     ["2026-11-23", "Guten Morgen! für die Großen", "Eigene Tagesstart-Tafel für Kl. 5–9: sachlich, Stundenplan mit Uhrzeiten, A-/B-Woche, Termine (Tests, Abgaben) mit Countdown und jeden Tag ein Impuls – Wort des Tages, Denk-Nuss, Wusstest du?, Redewendung.", "tafelbilder.php#morgen-sek"],
