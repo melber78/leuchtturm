@@ -172,6 +172,13 @@ body{ background:#f6f2ea; }
 .mg-tliste li:not(.bald) .mg-tw{ color:#1d5fa8; }
 .mg-tw small{ font-weight:700; color:#7c8a95; font-size:.75em; }
 .mg-tt{ font:800 clamp(13px,min(1.35vw,2.3vh),25px)/1.2 "Nunito",sans-serif; color:#1c2b39; overflow-wrap:anywhere; }
+.mg-tliste li{ cursor:pointer; border-left:6px solid var(--ff, #c9d6e3); }
+#morgen.sek .mg-termine{ flex:2.2 !important; }
+#morgen.sek .mg-wetter{ flex:.8 !important; }
+.mg-karte.eng .mg-tliste li{ padding:.3vh .5vw; } .mg-karte.eng .mg-tt, .mg-karte.eng .mg-tw{ font-size:clamp(11px,min(1.1vw,1.9vh),20px); }
+.mg-tdialog select, .mg-tdialog input{ font:700 17px "Nunito",sans-serif !important; padding:8px 10px !important; border:2px solid #d8dee5 !important; border-radius:10px !important; }
+.mg-tdialog .mg-felder select, .mg-tdialog .mg-felder input{ width:100%; }
+.mg-tt{ display:flex; flex-direction:column; } .mg-twer{ font:700 .78em "Nunito",sans-serif; color:#5b6f84; margin-top:2px; }
 .mg-impuls{ background:linear-gradient(135deg,#ffffff,#eef4fb); justify-content:center; }
 .mg-imp-gross{ font:900 clamp(22px,min(2.6vw,4.4vh),50px)/1.1 "Nunito",sans-serif; color:#1d5fa8; margin-bottom:.6vh; overflow-wrap:anywhere; }
 .mg-imp-gross.klein{ font-size:clamp(17px,min(1.9vw,3.2vh),36px); }

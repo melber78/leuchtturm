@@ -342,12 +342,63 @@ function impulsKarte(d){
     if (im.art === "denk") inhalt = `<div class="mg-imp-text gross">${esc(im.x[0])}</div><div class="mg-imp-loes">${impulsAuf ? "💡 " + esc(im.x[1]) : `<button class="mg-k hell klein" data-impuls>Lösung zeigen</button>`}</div>`;
     return `<section class="mg-karte mg-impuls mg-imp-${im.art}"><h2>${T[0]} ${T[1]}</h2>${inhalt}</section>`;
 }
+const TERMIN_ARTEN = { test: ["📝", "Test"], ka: ["📄", "Klassenarbeit"], lk: ["✅", "Leistungskontrolle"], abgabe: ["📥", "Abgabe"], vortrag: ["🎤", "Vortrag"], nach: ["🔁", "Nachschreiben"], ausflug: ["🚌", "Ausflug"], sonst: ["📌", "Termin"] };
+function terminBild(x){ return x.a && TERMIN_ARTEN[x.a] ? TERMIN_ARTEN[x.a][0] : (x.e || "📝"); }
+function terminText(x){
+    if (!x.a) return x.t || "";
+    const art = TERMIN_ARTEN[x.a] ? TERMIN_ARTEN[x.a][1] : "", fach = x.f ? fachInfo(x.f).n : "";
+    return (fach ? fach + " · " : "") + art + (x.t ? ": " + x.t : "");
+}
 function termineKarte(k, d){
     const t = termineBald(k, d);
-    return `<section class="mg-karte mg-termine"><h2 class="mg-h2-knopf">📅 Termine<button class="mg-k hell klein" data-bearbeiten="termine" title="Termine eintragen">＋</button></h2>
-        ${t.length ? `<ul class="mg-tliste">${t.map(x => `<li class="${x.tage <= 1 ? "bald" : ""}"><span class="mg-tw">${esc(x.wann)}<small>${esc(x.datum)}</small></span><span class="mg-tt">${esc(x.e || "📝")} ${esc(x.t)}</span></li>`).join("")}</ul>`
-          : `<div class="mg-leer klein">Keine Tests oder Abgaben in Sicht 🙂</div>`}
+    return `<section class="mg-karte mg-termine"><h2 class="mg-h2-knopf">📅 Tests &amp; Termine<button class="mg-k hell klein" data-termin="neu" title="Test oder Termin eintragen">＋</button></h2>
+        ${t.length ? `<ul class="mg-tliste">${t.map(x => `<li class="${x.tage <= 1 ? "bald" : ""}" data-termin="${esc(x.id)}" ${x.f ? `style="--ff:${esc(fachInfo(x.f).f)}"` : ""}><span class="mg-tw">${esc(x.wann)}<small>${esc(x.datum)}</small></span><span class="mg-tt">${terminBild(x)} ${esc(terminText(x))}${x.w ? `<small class="mg-twer">✍️ ${esc(x.w)}</small>` : ""}</span></li>`).join("")}</ul>`
+          : `<div class="mg-leer klein">Keine Tests oder Abgaben in Sicht 🙂<br><button class="mg-k hell klein" data-termin="neu" style="margin-top:8px">＋ eintragen</button></div>`}
     </section>`;
+}
+// Nächster Schultag mit diesem Fach laut Stundenplan
+function naechsteStunde(k, f){
+    for (let i = 1; i <= 28; i++){ const d = tag(); d.setDate(d.getDate() + i); const wt = d.getDay(); if (wt && wt < 6 && (k.plan[wt] || []).some(s => s && s.f === f)) return iso(d); }
+    return "";
+}
+// Test oder Termin direkt an der Tafel eintragen / ändern
+function terminDialog(id){
+    const k = klasse(); k.termine = k.termine || [];
+    const alt = k.termine.find(x => x.id === id);
+    const x = alt ? Object.assign({ a: "sonst", f: "", w: "" }, alt) : { id: neueId(), a: "test", f: "", t: "", w: "", d: "" };
+    if (alt && !alt.a){ x.a = "sonst"; }
+    const imPlan = [...new Set(Object.values(k.plan || {}).flat().filter(s => s && s.f).map(s => s.f))];
+    const fachOpt = `<option value="">– kein Fach –</option>` + [...imPlan, ...Object.keys(FAECHER).filter(f => !imPlan.includes(f))].map(f => `<option value="${f}" ${f === x.f ? "selected" : ""}>${fachInfo(f).e} ${esc(fachInfo(f).n)}</option>`).join("");
+    const plus = n => { const d = tag(); d.setDate(d.getDate() + n); return iso(d); };
+    const o = overlay(`<div class="mg-tdialog"><h2>${alt ? "✏️ Termin ändern" : "📅 Test oder Termin eintragen"}</h2>
+        <label>Was?</label><div class="mg-reihe mg-wrap" data-arten>${Object.entries(TERMIN_ARTEN).map(([a, v]) => `<button type="button" class="mg-chip ${a === x.a ? "an" : ""}" data-art="${a}">${v[0]} ${v[1]}</button>`).join("")}</div>
+        <div class="mg-felder" style="margin-top:10px">
+          <div><label>Fach</label><select data-tf>${fachOpt}</select></div>
+          <div><label>Thema / Was genau?</label><input data-tt value="${esc(alt && !alt.a ? alt.t : x.t || "")}" maxlength="80" placeholder="z. B. Brüche, Buchvorstellung"></div>
+        </div>
+        <label style="margin-top:10px">Wann?</label>
+        <div class="mg-reihe mg-wrap"><input type="date" data-td value="${esc(x.d || plus(7))}" min="${iso(tag())}" style="font-size:18px">
+          <button type="button" class="mg-k hell klein" data-plus="1">morgen</button><button type="button" class="mg-k hell klein" data-plus="7">in 1 Woche</button><button type="button" class="mg-k hell klein" data-plus="14">in 2 Wochen</button>
+          <button type="button" class="mg-k hell klein" data-naechste hidden></button></div>
+        <label style="margin-top:10px">Wer schreibt?</label>
+        <div class="mg-reihe mg-wrap"><button type="button" class="mg-chip ${!x.w ? "an" : ""}" data-alle>alle</button><input data-tw value="${esc(x.w || "")}" maxlength="80" placeholder="z. B. Gruppe A, Kurs Englisch E, Nachschreiber: Ben, Lea" style="flex:1; min-width:220px"></div>
+        <div class="mg-reihe" style="margin-top:16px"><button class="mg-k" data-tok>✓ Speichern</button>${alt ? `<button class="mg-k rot" data-tloesch>🗑 Löschen</button>` : ""}<button class="mg-k hell" data-zu>Abbrechen</button></div></div>`);
+    const fSel = o.querySelector("[data-tf]"), dIn = o.querySelector("[data-td]"), nb = o.querySelector("[data-naechste]"), wIn = o.querySelector("[data-tw]"), alleB = o.querySelector("[data-alle]");
+    const naechsteZeigen = () => { const f = fSel.value, n = f ? naechsteStunde(k, f) : ""; nb.hidden = !n; if (n){ nb.dataset.datum = n; nb.textContent = `nächste ${fachInfo(f).n}-Stunde (${new Date(n + "T12:00:00").toLocaleDateString("de-DE", { weekday: "short", day: "numeric", month: "numeric" })})`; } };
+    naechsteZeigen();
+    fSel.addEventListener("change", naechsteZeigen);
+    o.querySelectorAll("[data-art]").forEach(b => b.addEventListener("click", () => { x.a = b.dataset.art; o.querySelectorAll("[data-art]").forEach(c => c.classList.toggle("an", c === b)); }));
+    o.querySelectorAll("[data-plus]").forEach(b => b.addEventListener("click", () => { dIn.value = plus(+b.dataset.plus); }));
+    nb.addEventListener("click", () => { dIn.value = nb.dataset.datum; });
+    alleB.addEventListener("click", () => { wIn.value = ""; alleB.classList.add("an"); });
+    wIn.addEventListener("input", () => alleB.classList.toggle("an", !wIn.value.trim()));
+    o.querySelector("[data-tok]").addEventListener("click", () => {
+        if (!dIn.value) { alert("Bitte ein Datum wählen."); return; }
+        const neu = { id: x.id, a: x.a, f: fSel.value, t: o.querySelector("[data-tt]").value.trim(), w: wIn.value.trim(), d: dIn.value };
+        if (alt) Object.keys(alt).forEach(key => delete alt[key]), Object.assign(alt, neu); else k.termine.push(neu);
+        o.remove(); speichern(); zeichnen(); if (document.getElementById("mgEditor").classList.contains("an")) bearbeiten("termine");
+    });
+    const lo = o.querySelector("[data-tloesch]"); if (lo) lo.addEventListener("click", () => { k.termine = k.termine.filter(y => y.id !== x.id); o.remove(); speichern(); zeichnen(); if (document.getElementById("mgEditor").classList.contains("an")) bearbeiten("termine"); });
 }
 
 function zeichnen(){
@@ -379,7 +430,7 @@ function zeichnen(){
             <div class="mg-bdw-reihe">${liste.map(b => { const an = ANLAUT[b];
                 return `<div class="mg-bdw-teil" data-bdw="${esc(b)}"><div class="mg-bdw-b ${b.length > 1 ? "lang" : ""}">${esc(grossK(b))}<span>${esc(b)}</span></div>
                 ${an ? `<div class="mg-bdw-bild"><span>${an[0]}</span><b>${wortMarkiert(an[1], b)}</b></div>` : ""}</div>`; }).join("")}</div></section>`; })() : ""}
-        <section class="mg-karte mg-wetter ${k.buchstabe && !sek ? "kompakt" : ""}" data-wetter>
+        <section class="mg-karte mg-wetter ${(k.buchstabe && !sek) || sek ? "kompakt" : ""}" data-wetter>
           <h2>Das Wetter</h2>
           ${wi ? `<div class="mg-wbild">${wi[0]}</div><div class="mg-wtext">${esc(wi[1])}${w.jetzt != null && !klein ? ` · ${w.jetzt} °C` : ""}</div>
             ${w.max != null ? `<div class="mg-temp">${klein ? `🌡️ ${w.jetzt != null ? w.jetzt : w.max} Grad` : `↓ ${w.min} °C &nbsp; ↑ ${w.max} °C`}</div>` : ""}
@@ -538,7 +589,8 @@ function uhr(){
 
 /* ---------- Bedienung auf der Tafel ---------- */
 function klick(ev){
-    const t = ev.target.closest("[data-impuls],[data-tag],[data-wetter],[data-ding],[data-bearbeiten],[data-bdw],[data-aendern],[data-stunde],[data-startart],[data-startgross]"); if (!t) return;
+    const t = ev.target.closest("[data-termin],[data-impuls],[data-tag],[data-wetter],[data-ding],[data-bearbeiten],[data-bdw],[data-aendern],[data-stunde],[data-startart],[data-startgross]"); if (!t) return;
+    if (t.dataset.termin) { terminDialog(t.dataset.termin === "neu" ? "" : t.dataset.termin); return; }
     if (t.hasAttribute("data-impuls")) { impulsAuf = true; zeichnen(); return; }
     if (t.dataset.startart) { startModus = t.dataset.startart; zeichnen(); return; }
     if (t.dataset.startgross) { startGross(t.dataset.startgross); return; }
@@ -655,10 +707,9 @@ function bearbeiten(r){
             <button class="mg-k hell" data-mweg="${m}" title="entfernen">✕</button></div>`).join("")}
         </div><button class="mg-k hell" data-mplus style="margin-top:8px">+ Neues Material</button>`;
     } else if (reiter === "termine") {
-        const heute = iso(tag());
-        html += `<div class="mg-info-box">📅 <b>Termine</b> wie Tests, Klassenarbeiten, Abgaben oder Ausflüge. Die Tafel zeigt die nächsten fünf mit „heute“, „morgen“ oder Wochentag – vergangene verschwinden von allein.</div>
-        <div class="mg-neuhinweis"><input class="mg-emoji" id="mgTE" value="📝" maxlength="8"><input id="mgTT" placeholder="z. B. Mathe-Test: Brüche" maxlength="80"><input type="date" id="mgTD" value="${heute}" min="${heute}"><button class="mg-k" data-tplus>+ Eintragen</button></div>
-        <div class="mg-liste" style="margin-top:8px">${(k.termine || []).slice().sort((a, b) => a.d < b.d ? -1 : 1).map(x => `<div class="mg-reihe mg-eintrag"><span style="font-size:24px">${esc(x.e)}</span><b style="min-width:90px">${new Date(x.d + "T12:00:00").toLocaleDateString("de-DE", { weekday: "short", day: "numeric", month: "numeric" })}</b><span style="flex:1">${esc(x.t)}</span><button class="mg-k hell" data-tweg="${x.id}" title="entfernen">✕</button></div>`).join("") || `<p class="mg-hilfe">Noch keine Termine.</p>`}</div>
+        html += `<div class="mg-info-box">📅 <b>Tests &amp; Termine</b> – Tests, Klassenarbeiten, Abgaben, Vorträge, Ausflüge. Mit Fach, Datum und wer schreibt (alle, eine Gruppe oder Nachschreiber). Die Tafel zeigt die nächsten fünf mit „heute“, „morgen“ oder Wochentag – vergangene verschwinden von allein. Eintragen geht auch direkt an der Tafel mit ＋.</div>
+        <button class="mg-k" data-termin="neu">＋ Test oder Termin eintragen</button>
+        <div class="mg-liste" style="margin-top:8px">${(k.termine || []).slice().sort((a, b) => a.d < b.d ? -1 : 1).map(x => `<div class="mg-reihe mg-eintrag" data-termin="${esc(x.id)}" style="cursor:pointer"><span style="font-size:24px">${terminBild(x)}</span><b style="min-width:90px">${new Date(x.d + "T12:00:00").toLocaleDateString("de-DE", { weekday: "short", day: "numeric", month: "numeric" })}</b><span style="flex:1">${esc(terminText(x))}${x.w ? ` <small class="mg-hilfe">✍️ ${esc(x.w)}</small>` : ""}</span><span class="mg-k hell klein">✏️</span></div>`).join("") || `<p class="mg-hilfe">Noch keine Termine.</p>`}</div>
         <label style="margin-top:16px">A-/B-Woche</label>
         <select data-feld="ab"><option value="" ${!k.ab ? "selected" : ""}>nicht anzeigen</option><option value="gerade" ${k.ab === "gerade" ? "selected" : ""}>A-Woche = gerade Kalenderwoche</option><option value="ungerade" ${k.ab === "ungerade" ? "selected" : ""}>A-Woche = ungerade Kalenderwoche</option></select>
         <small class="mg-hilfe">Diese Woche ist KW ${kw(tag())} (${kw(tag()) % 2 ? "ungerade" : "gerade"}).</small>
@@ -707,8 +758,6 @@ function bearbeiten(r){
 function editorAktivieren(p, k){
     const neu = () => { speichern(); bearbeiten(); zeichnen(); };
     iconKnoepfe(p);
-    const tp = p.querySelector("[data-tplus]"); if (tp) tp.addEventListener("click", () => { const t = p.querySelector("#mgTT").value.trim(), dd = p.querySelector("#mgTD").value; if (!t || !dd) return; (k.termine = k.termine || []).push({ id: neueId(), e: p.querySelector("#mgTE").value || "📝", t, d: dd }); neu(); });
-    p.querySelectorAll("[data-tweg]").forEach(b => b.addEventListener("click", () => { k.termine = k.termine.filter(x => x.id !== b.dataset.tweg); neu(); }));
     const iz = p.querySelector("[data-impzeigen]"); if (iz) iz.addEventListener("change", () => { k.impuls = iz.checked; speichern(); zeichnen(); });
     const sz = p.querySelector("[data-szeigen]"); if (sz) sz.addEventListener("change", () => { k.startZeigen = sz.checked; speichern(); zeichnen(); });
     p.querySelectorAll("[data-se],[data-st]").forEach(i => i.addEventListener("change", () => { const [art, n] = (i.dataset.se || i.dataset.st).split("|"); k[art][+n][i.dataset.se ? "e" : "t"] = i.value.trim(); speichern(); zeichnen(); }));
