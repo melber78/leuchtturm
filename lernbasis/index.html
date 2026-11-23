@@ -776,6 +776,7 @@ VIEWS.home=()=>{
 VIEWS.subject=({s})=>{
  const sb=subj(s),ts=topicsOf(s);
  let h=hdr(sb.icon+' '+sb.name,sb.color);
+ if(s==='en'||s==='eigen')h+=`<button class="btn" style="background:#8b5cf6;color:#fff" onclick="go('vokfoto',{})">📷 Vokabeln aus dem Heft übernehmen</button>`;
  if(s==='eigen')h+=`<button class="btn" onclick="go('edit',{})">➕ Neues Thema anlegen</button><p class="small mut">Lege eigene Themen an – z. B. Vokabeln aus dem Buch, Stoff für die nächste Arbeit oder Fächer wie Musik und Ethik. Du kannst ein eigenes Thema auch einem Fach zuordnen.</p>`;
  if(!ts.length)h+=`<p class="mut center">Noch keine Themen.</p>`;
  h+=`<div class="list">${ts.map(t=>{const sc=topicScore(t.id);const cs=cardsOf(t);const due=cs.filter(isDue).length;return `<button class="item" onclick="go('topic',{id:'${t.id}'})"><div class="ring" style="--p:${sc||0}"><span>${sc==null?'–':sc+'%'}</span></div><div class="t"><b>${esc(t.title)}</b>${t.custom?'<span class="badge">eigenes</span>':''}<small>${S.tp[t.id]?.l?'✓ gelernt · ':''}${cs.length} Karten${due?' · '+due+' fällig':''}</small></div><span class="mut">›</span></button>`}).join('')}</div>`;
@@ -989,6 +990,7 @@ function testResult(p){
 
 /* ---------- Eigene Themen ---------- */
 VIEWS.edit=p=>{
+ if(p.d&&p.isNew===undefined)p.isNew=true;
  if(!p.d){const c=p.id?S.custom.find(x=>x.id===p.id):null;p.d=c?JSON.parse(JSON.stringify(c)):{id:'c_'+Date.now().toString(36),s:'eigen',title:'',kind:'qa',learn:'',la:'Deutsch',lb:'Englisch',cards:[['',''],['',''],['','']]};p.isNew=!c}
  const d=p.d,vok=d.kind==='vok';
  return hdr(p.isNew?'➕ Neues Thema':'✏️ Thema bearbeiten','#ec4899')+`
@@ -997,7 +999,7 @@ VIEWS.edit=p=>{
  <div><label class="small mut">Art</label><select onchange="view.p.d.kind=this.value;render()"><option value="qa" ${!vok?'selected':''}>Frage & Antwort</option><option value="vok" ${vok?'selected':''}>Vokabeln</option></select></div></div>
  ${vok?`<div class="row2" style="margin-top:10px"><div><label class="small mut">Sprache links</label><input value="${esc(d.la)}" oninput="view.p.d.la=this.value"></div><div><label class="small mut">Sprache rechts</label><input value="${esc(d.lb)}" oninput="view.p.d.lb=this.value"></div></div>`:''}
  <label class="small mut" style="display:block;margin-top:10px">Merkwissen (optional – erscheint unter „Lernen“)</label><textarea oninput="view.p.d.learn=this.value" placeholder="Was man sich merken soll …">${esc(d.learn)}</textarea>
- <div class="sec">${vok?'Vokabeln':'Karten'} (${d.cards.filter(c=>c[0]&&c[1]).length})</div>
+ <div class="sec">${vok?'Vokabeln':'Karten'} (${d.cards.filter(c=>c[0]&&c[1]).length}) ${vok?`<button class="pill" onclick="vokSwap()">⇄ Spalten tauschen</button>`:''}</div>
  <div class="ed small mut"><span>${vok?esc(d.la):'Frage / Begriff'}</span><span>${vok?esc(d.lb):'Antwort'}</span><span></span></div>
  ${d.cards.map((c,i)=>`<div class="ed"><input value="${esc(c[0])}" oninput="view.p.d.cards[${i}][0]=this.value"><input value="${esc(c[1])}" oninput="view.p.d.cards[${i}][1]=this.value"><button onclick="view.p.d.cards.splice(${i},1);render()" aria-label="Löschen">🗑</button></div>`).join('')}
  <button class="btn sec2" onclick="view.p.d.cards.push(['','']);render()">+ Zeile</button>
@@ -1174,6 +1176,34 @@ function abfrageEnd(p){
  ${wrong.length?`<div class="sec">Nicht gewusst – zum Nachlernen</div>${wrong.map(q=>`<div class="rev no"><div>${q.q}</div><div class="small" style="margin-top:4px">Lösung: <b>${q.ans}</b></div></div>`).join('')}<p class="small mut">Henry übt diese Fragen jetzt unter „Trainieren → Fehler wiederholen“ und als fällige Karteikarten unter „Merken“.</p>`:'<p class="center">🏆 Alles gewusst!</p>'}
  <button class="btn" onclick="go('abfrage',{s:'${subj(topic(p.qs[0].tid).s).id}'},true)">Neue Abfrage</button><button class="btn sec2" onclick="go('eltern',{ok:true},true)">Zum Eltern-Bereich</button>`;
 }
+
+/* ===== Vokabeln aus dem Heft (Foto → Texterkennung des Geräts → einfügen) ===== */
+const DE_HINT=/^(der|die|das|ein|eine)\s|[äöüßÄÖÜ]|(ung|heit|keit|schaft|chen|lein|en|ern|eln)$/;
+const EN_HINT=/^(to|a|an|the)\s|(ing|tion|ly|ous|ful|th|w|y)$|\b(is|are|you|my|your)\b/;
+function vokScore(w){w=w.trim();let s=0;if(DE_HINT.test(w))s+=2;if(/^[A-ZÄÖÜ]/.test(w)&&!/^(I|I'm)\b/.test(w))s+=.5;if(EN_HINT.test(w.toLowerCase()))s-=2;return s}
+function parseVok(txt){
+ const lines=txt.split(/\r?\n/).map(l=>l.replace(/^[\s•·\-–*\d.)]+(?=\S)/,'').trim()).filter(l=>l&&l.length<120);
+ let pairs=[];const sep=/\s*(?:=|;|\t|\s[-–—:]\s|\s{3,})\s*/;
+ const art=/^(.+?)\s+((?:der|die|das|ein|eine)\s.+)$/,art2=/^((?:der|die|das|ein|eine)\s\S+)\s+(.+)$/;
+ for(let i=0;i<lines.length;i++){const l=lines[i];if(sep.test(l))continue;let m=l.match(art2);if(m&&!/^(der|die|das|ein|eine)\s/.test(m[2])&&/^[a-z]/.test(m[2])&&!/(en|ern|eln)$/.test(m[2])){lines[i]=m[1]+' = '+m[2];continue}m=l.match(art);if(m&&/^[a-z]/.test(m[1])&&!/(en|ern|eln)$/.test(m[1]))lines[i]=m[1]+' = '+m[2]}
+ const withSep=lines.filter(l=>sep.test(l)).length;
+ if(withSep>=lines.length*.6){lines.forEach(l=>{const m=l.split(sep);if(m.length>=2&&m[0]&&m[1])pairs.push([m[0].trim(),m.slice(1).join(' ').trim()])})}
+ else{for(let i=0;i+1<lines.length;i+=2)pairs.push([lines[i],lines[i+1]])}
+ // Welche Seite ist Deutsch? → in die erste Spalte
+ let a=0,b=0;pairs.forEach(([x,y])=>{a+=vokScore(x);b+=vokScore(y)});
+ if(a<b)pairs=pairs.map(([x,y])=>[y,x]);
+ return pairs;
+}
+VIEWS.vokfoto=p=>hdr('📷 Vokabeln aus dem Heft','#8b5cf6')+`
+ <div class="box"><h3>1. Foto machen</h3>Vokabelheft-Seite <b>gerade von oben</b> fotografieren, mit gutem Licht. Ordentliche Schrift wird besser erkannt.</div>
+ <div class="box"><h3>2. Text aus dem Foto kopieren</h3><b>Samsung:</b> Foto in der <b>Galerie</b> öffnen → unten rechts auf das <b>„T“</b> tippen → <b>„Alle auswählen“</b> → <b>„Kopieren“</b>.<br><b>Andere Handys:</b> Foto teilen → <b>Google Lens</b> → „Text“ → „Alles auswählen“ → „Kopieren“.</div>
+ <div class="box"><h3>3. Hier einfügen</h3>Lange ins Feld drücken → <b>„Einfügen“</b>.
+ <textarea id="vokin" style="min-height:160px;margin-top:8px" placeholder="z. B.&#10;ruler   das Lineal&#10;rubber   der Radiergummi">${esc(p.txt||'')}</textarea>
+ <button class="btn" onclick="vokParse()">Vokabeln erkennen →</button></div>
+ <p class="small mut">Im nächsten Schritt siehst du die Liste und kannst Fehler verbessern, bevor gespeichert wird.</p>`;
+function vokParse(){const txt=$('#vokin').value;view.p.txt=txt;const pairs=parseVok(txt);if(!pairs.length){toast('Keine Vokabeln gefunden – ist Text eingefügt?');return}
+ const d=new Date();go('edit',{isNew:true,d:{id:'c_'+Date.now().toString(36),s:'en',title:'Vokabeln vom '+d.getDate()+'.'+(d.getMonth()+1)+'.',kind:'vok',learn:'',la:'Deutsch',lb:'Englisch',cards:pairs}});setTimeout(()=>toast(`${pairs.length} Vokabeln erkannt – bitte kurz prüfen`),300)}
+function vokSwap(){const d=view.p.d;d.cards=d.cards.map(([x,y])=>[y,x]);render()}
 
 /* ===== Eltern-App (Modus pro Gerät) + Vorschau des Kinderbereichs ===== */
 let MODE=(()=>{try{if(/[?&]eltern=1/.test(location.search)){localStorage.setItem('lb_mode','eltern')}return localStorage.getItem('lb_mode')||'kind'}catch(e){return /[?&]eltern=1/.test(location.search)?'eltern':'kind'}})();
