@@ -794,12 +794,12 @@ VIEWS.home=()=>{
 };
 /* ---------- Fach ---------- */
 VIEWS.subject=({s})=>{
- const sb=subj(s),ts=topicsOf(s);
+ const sb=subj(s),ts=sortedTopics(s);
  let h=hdr(sb.icon+' '+sb.name,sb.color);
  h+=s==='en'?`<div class="row2"><button class="btn" style="background:${sb.color};color:#fff" onclick="go('vokfoto',{s:'en',k:'vok'})">📷 Vokabeln</button><button class="btn" style="background:${sb.color};color:#fff" onclick="go('vokfoto',{s:'en',k:'notiz'})">📷 Grammatik</button></div>`:`<button class="btn" style="background:${sb.color};color:#fff" onclick="go('vokfoto',{s:'${s==='eigen'?'en':s}'})">📷 Aus dem Heft übernehmen</button>`;
  if(s==='eigen')h+=`<button class="btn" onclick="go('edit',{})">➕ Neues Thema anlegen</button><p class="small mut">Lege eigene Themen an – z. B. Vokabeln aus dem Buch, Stoff für die nächste Arbeit oder Fächer wie Musik und Ethik. Du kannst ein eigenes Thema auch einem Fach zuordnen.</p>`;
  if(!ts.length)h+=`<p class="mut center">Noch keine Themen.</p>`;
- h+=`<div class="list">${ts.map(t=>{const sc=topicScore(t.id);const cs=cardsOf(t);const due=cs.filter(isDue).length;return `<button class="item" onclick="go('topic',{id:'${t.id}'})"><div class="ring" style="--p:${sc||0}"><span>${sc==null?'–':sc+'%'}</span></div><div class="t"><b>${esc(t.title)}</b>${t.custom?'<span class="badge">eigenes</span>':''}<small>${S.tp[t.id]?.l?'✓ gelernt · ':''}${cs.length} Karten${due?' · '+due+' fällig':''}</small></div><span class="mut">›</span></button>`}).join('')}</div>`;
+ h+=`<div class="list">${ts.map(t=>{const sc=topicScore(t.id);const cs=cardsOf(t);const due=cs.filter(isDue).length;return `<button class="item" ${t.sub?'style="margin-left:22px;width:calc(100% - 22px)"':''} onclick="go('topic',{id:'${t.id}'})">${t.sub?'<span class="mut">↳</span>':''}<div class="ring" style="--p:${sc||0}"><span>${sc==null?'–':sc+'%'}</span></div><div class="t"><b>${esc(t.title)}</b>${t.custom?'<span class="badge">eigenes</span>':''}<small>${S.tp[t.id]?.l?'✓ gelernt · ':''}${cs.length} Karten${due?' · '+due+' fällig':''}</small></div><span class="mut">›</span></button>`}).join('')}</div>`;
  if(ts.length)h+=`<button class="btn sec2" onclick="go('testsetup',{s:'${s}'})">📝 Test für ${sb.name} simulieren</button>`;
  return h;
 };
@@ -1014,15 +1014,19 @@ VIEWS.edit=p=>{
  if(p.d&&p.isNew===undefined)p.isNew=true;
  if(!p.d){const c=p.id?S.custom.find(x=>x.id===p.id):null;p.d=c?JSON.parse(JSON.stringify(c)):{id:'c_'+Date.now().toString(36),s:'eigen',title:'',kind:'qa',learn:'',la:'Deutsch',lb:'Englisch',cards:[['',''],['',''],['','']]};p.isNew=!c}
  const d=p.d,vok=d.kind==='vok';
+ if(p.isNew&&!p.checked&&d.cards.some(c=>c[0]&&c[1])){p.checked=true;p.removed=cleanImport(d)}
+ const dm=dupIndex(d.s,d.id),mt=p.isNew?mergeTarget(d):null;
  return hdr(p.isNew?'➕ Neues Thema':'✏️ Thema bearbeiten','#ec4899')+`
  <label class="small mut">Titel</label><input value="${esc(d.title)}" placeholder="z. B. Vokabeln Unit 2 oder Musik: Instrumente" oninput="view.p.d.title=this.value">
  <div class="row2" style="margin-top:10px"><div><label class="small mut">Fach</label><select onchange="view.p.d.s=this.value">${SUBJECTS.map(s=>`<option value="${s.id}" ${d.s===s.id?'selected':''}>${s.icon} ${s.name}</option>`).join('')}</select></div>
  <div><label class="small mut">Art</label><select onchange="view.p.d.kind=this.value;render()"><option value="qa" ${!vok?'selected':''}>Frage & Antwort</option><option value="vok" ${vok?'selected':''}>Vokabeln</option></select></div></div>
  ${vok?`<div class="row2" style="margin-top:10px"><div><label class="small mut">Sprache links</label><input value="${esc(d.la)}" oninput="view.p.d.la=this.value"></div><div><label class="small mut">Sprache rechts</label><input value="${esc(d.lb)}" oninput="view.p.d.lb=this.value"></div></div>`:''}
  <label class="small mut" style="display:block;margin-top:10px">Merkwissen (optional – erscheint unter „Lernen“)</label><textarea oninput="view.p.d.learn=this.value" placeholder="Was man sich merken soll …">${esc(d.learn)}</textarea>
+ ${p.removed&&p.removed.length?`<div class="box" style="border-left-color:#f59e0b"><b>${p.removed.length} ${p.removed.length===1?'Eintrag war':'Einträge waren'} schon vorhanden und ${p.removed.length===1?'wurde':'wurden'} weggelassen:</b><div class="small mut" style="margin-top:4px">${p.removed.slice(0,12).map(r=>`${esc(r[0])} → schon in „${esc(r[2])}“`).join('<br>')}${p.removed.length>12?'<br>…':''}</div><button class="btn sec2" onclick="readdRemoved()">Trotzdem übernehmen</button></div>`:''}
+ ${mt?`<div class="box" style="border-left-color:#22c55e"><b>Passt zu deinem Thema „${esc(mt.title)}“</b><div class="small mut">Statt ein neues Thema anzulegen, kannst du die Karten dort anhängen. Doppelte werden übersprungen.</div><button class="btn" onclick="mergeInto('${mt.id}')">➕ Zu „${esc(mt.title)}“ hinzufügen</button></div>`:''}
  <div class="sec">${vok?'Vokabeln':'Karten'} (${d.cards.filter(c=>c[0]&&c[1]).length}) ${vok?`<button class="pill" onclick="vokSwap()">⇄ Spalten tauschen</button>`:''}</div>
  <div class="ed small mut"><span>${vok?esc(d.la):'Frage / Begriff'}</span><span>${vok?esc(d.lb):'Antwort'}</span><span></span></div>
- ${d.cards.map((c,i)=>`<div class="ed"><input value="${esc(c[0])}" oninput="view.p.d.cards[${i}][0]=this.value"><input value="${esc(c[1])}" oninput="view.p.d.cards[${i}][1]=this.value"><button onclick="view.p.d.cards.splice(${i},1);render()" aria-label="Löschen">🗑</button></div>`).join('')}
+ ${d.cards.map((c,i)=>{const w=!p.forceDup&&c[0]&&dupOf(dm,c[0],c[1],vok);return `<div class="ed"><input value="${esc(c[0])}" oninput="view.p.d.cards[${i}][0]=this.value" ${w?'style="border-color:#f59e0b"':''}><input value="${esc(c[1])}" oninput="view.p.d.cards[${i}][1]=this.value"><button onclick="view.p.d.cards.splice(${i},1);render()" aria-label="Löschen">🗑</button></div>${w?`<div class="small" style="color:#fbbf24;margin:-2px 0 6px">⚠️ schon in „${esc(w)}“</div>`:''}`}).join('')}
  <button class="btn sec2" onclick="view.p.d.cards.push(['','']);render()">+ Zeile</button>
  <details style="margin-top:10px"><summary class="small mut">Viele auf einmal einfügen</summary><p class="small mut">Eine Zeile pro Karte, getrennt mit = oder ; oder Tab.<br>Beispiel: <i>der Hund = dog</i>. Mehrere richtige Antworten mit | trennen: <i>Radiergummi = rubber|eraser</i></p><textarea id="bulk" placeholder="Wort = Übersetzung"></textarea><button class="btn sec2" onclick="bulkAdd()">Übernehmen</button></details>
  <p class="small mut">Tipp: Für Übungs- und Testaufgaben mit Auswahlantworten brauchst du mindestens 4 Karten.</p>
@@ -1030,7 +1034,9 @@ VIEWS.edit=p=>{
 };
 function bulkAdd(){const d=view.p.d;const lines=$('#bulk').value.split('\n').map(l=>l.split(/\s*(?:=|;|\t)\s*/)).filter(x=>x.length>=2&&x[0].trim()&&x[1].trim());d.cards=d.cards.filter(c=>c[0]||c[1]).concat(lines.map(x=>[x[0].trim(),x.slice(1).join(' ').trim()]));toast(lines.length+' Karten übernommen');render()}
 function saveCustom(){const p=view.p,d=p.d;d.title=d.title.trim();d.cards=d.cards.map(c=>[c[0].trim(),c[1].trim()]).filter(c=>c[0]&&c[1]);if(!d.title){toast('Bitte einen Titel eingeben.');return}if(!d.cards.length&&!d.learn.trim()){toast('Bitte mindestens eine Karte oder Merkwissen eingeben.');return}
- const i=S.custom.findIndex(x=>x.id===d.id);if(i>=0)S.custom[i]=d;else S.custom.push(d);save();toast('Gespeichert ✓');go('topic',{id:d.id},true)}
+ const seen=new Set();const before=d.cards.length;d.cards=d.cards.filter(c=>{const k=nkey(c[0]);if(seen.has(k))return false;seen.add(k);return true});
+ if(p.isNew&&S.custom.some(x=>x.id!==d.id&&x.s===d.s&&nkey(x.title)===nkey(d.title)))d.title+=' ('+new Date().getDate()+'.'+(new Date().getMonth()+1)+'.)';
+ const i=S.custom.findIndex(x=>x.id===d.id);if(i>=0)S.custom[i]=d;else S.custom.push(d);save();toast(before>d.cards.length?`Gespeichert ✓ (${before-d.cards.length} doppelte entfernt)`:'Gespeichert ✓');go('topic',{id:d.id},true)}
 function delCustom(){const p=view.p;if(!p.del){p.del=true;render();return}S.custom=S.custom.filter(x=>x.id!==p.d.id);Object.keys(S.cards).forEach(k=>{if(k.startsWith(p.d.id+'|'))delete S.cards[k]});delete S.tp[p.d.id];save();toast('Gelöscht');go('subject',{s:'eigen'},true)}
 
 /* ---------- PIN (Gerät mit dem Server verbinden) ---------- */
@@ -1483,6 +1489,30 @@ function abfrageEnd(p){
  ${wrong.length?`<div class="sec">Nicht gewusst – zum Nachlernen</div>${wrong.map(q=>`<div class="rev no"><div>${q.q}</div><div class="small" style="margin-top:4px">Lösung: <b>${q.ans}</b></div></div>`).join('')}<p class="small mut">Henry übt diese Fragen jetzt unter „Trainieren → Fehler wiederholen“ und als fällige Karteikarten unter „Merken“.</p>`:'<p class="center">🏆 Alles gewusst!</p>'}
  <button class="btn" onclick="go('abfrage',{s:'${subj(topic(p.qs[0].tid).s).id}'},true)">Neue Abfrage</button><button class="btn sec2" onclick="go('eltern',{ok:true},true)">Zum Eltern-Bereich</button>`;
 }
+
+/* ===== Doppelte erkennen & eigene Themen sinnvoll einsortieren ===== */
+const STOP=new Set(['der','die','das','den','dem','des','ein','eine','und','oder','the','a','an','to','von','vom','mit','für','im','in','am','auf','zu','zum','zur','is','are','klasse','thema','vokabeln','teil','seite']);
+const nkey=s=>String(s||'').toLowerCase().split('|')[0].replace(/[„“"'’.,;:!?()]/g,' ').replace(/^\s*(der|die|das|ein|eine|the|a|an|to)\s+/,'').replace(/\s+/g,' ').trim();
+const words=s=>String(s||'').toLowerCase().replace(/[^a-zäöüß0-9 ]/g,' ').split(/\s+/).filter(w=>w.length>=4&&!STOP.has(w));
+/* Wo gibt es diese Karte im Fach schon? (Vorder- ODER Rückseite gleich bei Vokabeln, sonst Vorderseite) */
+function dupIndex(s,exceptId){const m=new Map();topicsOf(s).forEach(t=>{if(t.id===exceptId)return;(t.cards||[]).forEach(([f,b])=>{m.set('f:'+nkey(f),t.title);if(t.vok)b.split('|').forEach(x=>m.set('b:'+nkey(x),t.title))});(t.tasks||[]).concat(t.th||[]).forEach(x=>{if(Array.isArray(x))m.set('q:'+nkey(String(x[1]).replace(/<[^>]+>/g,'')),t.title)})});return m}
+function dupOf(m,f,b,vok){return m.get('f:'+nkey(f))||(vok&&m.get('b:'+nkey(b)))||m.get('q:'+nkey(f))||null}
+/* Bereinigt eine neue Kartenliste: doppelt im Fach + doppelt in sich selbst */
+function cleanImport(d){const m=dupIndex(d.s,d.id),seen=new Set(),keep=[],removed=[];
+ d.cards.forEach(c=>{if(!c[0]||!c[1]){keep.push(c);return}const k=nkey(c[0]);const w=seen.has(k)?'diesem Import':dupOf(m,c[0],c[1],d.kind==='vok');if(w){removed.push([c[0],c[1],w])}else{seen.add(k);keep.push(c)}});
+ d.cards=keep;return removed}
+/* Passendes bestehendes eigenes Thema zum Anhängen finden */
+function mergeTarget(d){const w=new Set(words(d.title));let best=null,bs=0;S.custom.forEach(c=>{if(c.id===d.id||c.s!==d.s||c.kind!==d.kind)return;let sc=words(c.title).filter(x=>w.has(x)).length;if(nkey(c.title)===nkey(d.title))sc+=5;if(sc>bs){bs=sc;best=c}});return bs>=1?best:null}
+/* Lehrplan-Thema, zu dem ein eigenes Thema passt */
+function relatedBuiltin(c){const w=new Set(words(c.title+' '+(c.cards||[]).slice(0,6).map(x=>x[0]).join(' ')));let best=null,bs=0;TOPICS.filter(t=>t.s===c.s).forEach(t=>{const sc=words(t.title).filter(x=>w.has(x)).length;if(sc>bs){bs=sc;best=t}});return best?best.id:null}
+function sortedTopics(s){const built=TOPICS.filter(t=>t.s===s),cust=S.custom.filter(c=>(c.s||'eigen')===s).map(customTopic);const out=[],used=new Set();
+ built.forEach(t=>{out.push(t);cust.filter(c=>!used.has(c.id)&&relatedBuiltin(S.custom.find(x=>x.id===c.id))===t.id).sort((a,b)=>a.title.localeCompare(b.title,'de')).forEach(c=>{used.add(c.id);out.push(Object.assign({},c,{sub:true}))})});
+ cust.filter(c=>!used.has(c.id)).sort((a,b)=>a.title.localeCompare(b.title,'de')).forEach(c=>out.push(c));return out}
+function mergeInto(targetId){const p=view.p,d=p.d,t=S.custom.find(x=>x.id===targetId);if(!t)return;
+ const m=dupIndex(d.s,null);const add=d.cards.filter(c=>c[0]&&c[1]&&!(t.cards||[]).some(x=>nkey(x[0])===nkey(c[0])));
+ t.cards=(t.cards||[]).concat(add);if(d.learn&&d.learn.trim()&&!(t.learn||'').includes(d.learn.trim()))t.learn=((t.learn||'')+'\n\n'+d.learn.trim()).trim();
+ save();toast(`${add.length} neue Karten zu „${t.title}“ hinzugefügt ✓`);go('topic',{id:t.id},true)}
+function readdRemoved(){const p=view.p;p.d.cards=p.d.cards.filter(c=>c[0]||c[1]).concat(p.removed.map(r=>[r[0],r[1]]));p.removed=[];p.forceDup=true;render()}
 
 /* ===== Vokabeln aus dem Heft (Foto → Texterkennung des Geräts → einfügen) ===== */
 const DE_HINT=/^(der|die|das|ein|eine)\s|[äöüßÄÖÜ]|(ung|heit|keit|schaft|chen|lein|en|ern|eln)$/;
