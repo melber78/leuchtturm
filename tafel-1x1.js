@@ -14,6 +14,7 @@ const CSS = `
 .ew-titel{ font-weight:900; font-size:19px; color:#7c6a4f; margin-right:4px; }
 .ew-punkte{ display:none; gap:8px; font-weight:900; font-size:17px; }
 .ew-punkte.an{ display:flex; }
+.ew-punkte i{ font-style:normal; }
 .ew-punkte span{ background:white; border-radius:999px; padding:5px 13px; color:#16324a; box-shadow:0 3px 10px rgba(22,50,74,.1); }
 .ew-tabs{ display:flex; gap:6px; overflow-x:auto; padding:0 14px 10px; scrollbar-width:none; flex:none; }
 .ew-tabs::-webkit-scrollbar{ display:none; }
@@ -107,7 +108,7 @@ function aufbauen(){
     el.innerHTML = `<div class="ew-leiste">
             <button class="tb-k rund" data-x="zu" title="Zurück zur Übersicht"><i class="fa-solid fa-arrow-left"></i></button>
             <span class="ew-titel">Einmaleins-Werkstatt</span>
-            <span class="ew-punkte" id="ewPunkte"><span>Klasse <b id="ewPk">0</b></span><span>🦉 Ella <b id="ewPe">0</b></span></span>
+            <span class="ew-punkte" id="ewPunkte"><span><i id="ewNa">Klasse</i> <b id="ewPk">0</b></span><span><i id="ewNb">🦉 Ella</i> <b id="ewPe">0</b></span></span>
             <span class="tb-luft"></span>
             <button class="tb-k rund" data-x="voll" title="Vollbild"><i class="fa-solid fa-expand"></i></button>
         </div>
@@ -288,16 +289,17 @@ function ueAufgabe(){
 function ueben(B, P){
     const u = S.ue;
     if (!u.aufgabe) u.aufgabe = ueAufgabe();
-    const x = u.aufgabe;
+    const x = u.aufgabe, [sa, sb] = window.tbSeiten ? window.tbSeiten() : ["Klasse", "🦉 Ella"];
     B.innerHTML = `<div class="ew-blitz">${x.luecke ? x.t : `${x.t} = ${u.zeigen ? `<span class="ew-rot">${x.e}</span>` : `<span class="ew-rot">?</span>`}`}</div>
         ${x.luecke && u.zeigen ? `<div class="ew-gross ew-rot">${x.e}</div>` : ""}
         ${x.gross && u.zeigen ? `<div class="ew-mittel">${x.gross[0]} · ${x.gross[1]} = 10 · ${x.gross[1]} + ${x.gross[0] - 10} · ${x.gross[1]} = ${10 * x.gross[1]} + ${(x.gross[0] - 10) * x.gross[1]}</div>` : ""}
-        <div class="ew-knoepfe" style="justify-content:center">${u.zeigen ? `<button class="ew-k gruen" data-ue="k">✓ Punkt für die Klasse</button><button class="ew-k lila" data-ue="e">🦉 Punkt für Ella</button>` : `<button class="ew-k gold" data-ue="zeigen">Lösung zeigen</button>`}<button class="ew-k" data-ue="weiter">Nächste ▶</button></div>
-        <div class="ew-info">Aufgabe ${u.n + 1} · Klasse ${u.punkte.k} : ${u.punkte.e} Ella</div>`;
+        <div class="ew-knoepfe" style="justify-content:center">${u.zeigen ? `<button class="ew-k gruen" data-ue="k">✓ Punkt für ${sa === "Klasse" ? "die Klasse" : sa}</button><button class="ew-k lila" data-ue="e">Punkt für ${sb === "Lehrkraft" ? "die Lehrkraft" : sb}</button>` : `<button class="ew-k gold" data-ue="zeigen">Lösung zeigen</button>`}<button class="ew-k" data-ue="weiter">Nächste ▶</button></div>
+        <div class="ew-info">Aufgabe ${u.n + 1} · ${sa} ${u.punkte.k} : ${u.punkte.e} ${sb}</div>`;
     P.innerHTML = `<div class="ew-h">Was üben?</div><div class="ew-chips">${UE_ARTEN.map(([k, n]) => `<button class="ew-chip ${u.art === k ? "an" : ""}" data-ueart="${k}">${n}</button>`).join("")}</div>
         <div class="ew-h">Reihen</div><div class="ew-chips">${[...Array(10).keys()].map(i => `<button class="ew-chip ${u.reihen.includes(i + 1) ? "an" : ""}" data-uereihe="${i + 1}">${i + 1}</button>`).join("")}</div>
         <div class="ew-knoepfe"><button class="ew-k" data-uealle="1">alle</button><button class="ew-k" data-uealle="schwer">nur schwere (3, 4, 6, 7, 8, 9)</button><button class="ew-k" data-uealle="0">↺ Punkte auf 0</button></div>
-        <div class="ew-merke"><b>So geht's</b>Die Aufgabe steht groß an der Tafel. Wer sie zuerst richtig sagt, holt den Punkt – für die Klasse oder für Eule Ella 🦉. Erst dann „Lösung zeigen“.</div>`;
+        <div class="ew-h">Wer spielt?</div><div class="ew-chips">${Object.entries(window.TB_GEGNER || {}).map(([k, v]) => `<button class="ew-chip ${window.tbGegner() === k ? "an" : ""}" data-gegner="${k}">${v[2]}</button>`).join("")}</div>
+        <div class="ew-merke"><b>So geht's</b>${sb.includes("Ella") ? "Die Aufgabe steht groß an der Tafel. Wer sie zuerst richtig sagt, holt den Punkt – für die Klasse oder für Eule Ella 🦉." : sa === "Team A" ? "Die Klasse ist in zwei Teams geteilt. Abwechselnd ist ein Team dran – richtig gelöst gibt einen Punkt." : "Die Klasse spielt gegen dich: Wer zuerst richtig antwortet, bekommt den Punkt."} Erst dann „Lösung zeigen“.</div>`;
 }
 
 /* ---------- 7 · Das große 1 × 1 (11–20 mal 1–10) ---------- */
@@ -330,6 +332,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;",
 function zeichnen(){
     el.querySelectorAll(".ew-tab").forEach(t => t.classList.toggle("an", t.dataset.tab === S.tab));
     el.querySelector("#ewPunkte").classList.toggle("an", S.tab === "ueben");
+    if (window.tbSeiten){ const [sa, sb] = window.tbSeiten(); el.querySelector("#ewNa").textContent = sa; el.querySelector("#ewNb").textContent = sb; }
     el.querySelector("#ewPk").textContent = S.ue.punkte.k; el.querySelector("#ewPe").textContent = S.ue.punkte.e;
     const B = el.querySelector("#ewB"), P = el.querySelector("#ewP");
     ({ verstehen, reihe, tricks, geteilt, familie, ueben, gross: grosses })[S.tab](B, P);
@@ -342,9 +345,10 @@ function maxSchritte(){
     return 0;
 }
 function klick(e){
-    const t = e.target.closest("[data-x],[data-tab],[data-st],[data-schritt],[data-reihe],[data-zeile],[data-trick],[data-gtart],[data-gtrest],[data-ue],[data-ueart],[data-uereihe],[data-uealle],[data-gr],[data-gx]");
+    const t = e.target.closest("[data-gegner],[data-x],[data-tab],[data-st],[data-schritt],[data-reihe],[data-zeile],[data-trick],[data-gtart],[data-gtrest],[data-ue],[data-ueart],[data-uereihe],[data-uealle],[data-gr],[data-gx]");
     if (!t) return;
     const d = t.dataset;
+    if (d.gegner){ window.tbGegner(d.gegner); return zeichnen(); }
     if (d.tab){ S.tab = d.tab; S.schritt = 0; history.replaceState(null, "", location.pathname + location.search + "#1x1-" + S.tab); return zeichnen(); }
     if (d.st){
         const k = d.st, x = +d.d;

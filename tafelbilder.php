@@ -569,7 +569,7 @@ body{ background:#f6f2ea; }
     ["tricks", "💡", "1 × 1 Tricks", "Verdoppeln, Hälfte von 10 ·, 9er-Finger-Trick, Quadratzahlen, Tauschen, Teilen mit Rest …"],
     ["geteilt", "➗", "Geteilt verstehen", "Aufteilen und Verteilen im Punktefeld, Probe mit der Malaufgabe, auch mit Rest."],
     ["familie", "🏠", "Aufgabenfamilie", "Rechenhaus: drei Zahlen – vier Aufgaben (Tausch- und Umkehraufgaben)."],
-    ["ueben", "⚡", "1 × 1 üben", "Mal, Geteilt, Lücken, gemischt, mit Rest – Reihen wählen, Klasse gegen Ella."],
+    ["ueben", "⚡", "1 × 1 üben", "Mal, Geteilt, Lücken, gemischt, mit Rest – Reihen wählen, Klasse gegen Ella oder Team A gegen Team B."],
     ["gross", "🔢", "Das große 1 × 1", "11 · 1 bis 20 · 10 mit dem Zerlege-Trick: 14 · 6 = 60 + 24."],
 ] as [$tab, $sym, $titel, $text]): ?>
         <button class="kachel" type="button" onclick="tafel1x1.oeffnen('<?= $tab ?>')">
@@ -693,6 +693,12 @@ window.TAFEL_LINKS_ERLAUBT = <?= json_encode(!$TAFEL_APP && !empty($_SESSION["le
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
 <script src="lernangebot-tafel.js?v=<?= @filemtime(__DIR__ . "/lernangebot-tafel.js") ?: 1 ?>"></script>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")): ?><script src="tafel-brueche.js?v=<?= @filemtime(__DIR__ . "/tafel-brueche.js") ?: 1 ?>"></script><?php endif; ?>
+<script>
+// Wer spielt gegen wen? (Blitzrechnen/Üben) – Eule Ella für die Kleinen, Teams oder Lehrkraft für die Großen
+window.TB_GEGNER = { ella: ["Klasse", "🦉 Ella", "Klasse gegen Ella"], teams: ["Team A", "Team B", "Team A gegen Team B"], lehrkraft: ["Klasse", "Lehrkraft", "Klasse gegen Lehrkraft"] };
+window.tbGegner = function(neu){ try { if (neu) localStorage.setItem("tb_gegner", neu); return window.TB_GEGNER[localStorage.getItem("tb_gegner")] ? localStorage.getItem("tb_gegner") : "ella"; } catch (x) { return "ella"; } };
+window.tbSeiten = function(){ return window.TB_GEGNER[window.tbGegner()]; };
+</script>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "einmaleins")): ?><script src="tafel-einmaleins.js?v=<?= @filemtime(__DIR__ . "/tafel-einmaleins.js") ?: 1 ?>"></script><script src="tafel-1x1.js?v=<?= @filemtime(__DIR__ . "/tafel-1x1.js") ?: 1 ?>"></script><?php endif; ?>
 <script>
 // Leise-Wald direkt aus den Tafelbildern (auch über tafelbilder.php#leise-ende usw.)

@@ -15,6 +15,7 @@ const CSS = `
 #ee.gruen .tb-k{ background:rgba(255,255,255,.14); color:#fff7e6; }
 .ee-punkte{ display:none; gap:10px; align-items:center; font-weight:900; font-size:18px; }
 .ee-punkte.an{ display:flex; }
+.ee-punkte i{ font-style:normal; }
 .ee-punkte span{ background:white; border-radius:999px; padding:6px 14px; color:#16324a; box-shadow:0 3px 10px rgba(22,50,74,.1); }
 .ee-haupt{ flex:1; min-height:0; display:flex; gap:2vmin; padding:0 2vmin 2vmin; align-items:stretch; justify-content:center; }
 .ee-gitter-box{ flex:none; display:flex; align-items:center; justify-content:center; }
@@ -106,8 +107,8 @@ function aufbauen(){
             <button class="tb-k" data-a="luecken" title="Zufällige Lücken"><i class="fa-solid fa-shuffle"></i><span class="ee-txt"> Lücken</span></button>
             <button class="tb-k" data-a="kern" title="Kernaufgaben ×1, ×2, ×5, ×10 färben"><i class="fa-solid fa-star"></i><span class="ee-txt"> Kernaufgaben</span></button>
             <button class="tb-k" data-a="quadrat" title="Quadratzahlen (1·1, 2·2 …) färben"><i class="fa-solid fa-square"></i><span class="ee-txt"> Quadratzahlen</span></button>
-            <button class="tb-k" data-a="blitz" title="Blitzrechnen: Klasse gegen Ella"><i class="fa-solid fa-bolt"></i><span class="ee-txt"> Blitzrechnen</span></button>
-            <span class="ee-punkte" id="eePunkte"><span>Klasse <b id="eePk">0</b></span><span>🦉 Ella <b id="eePe">0</b></span></span>
+            <button class="tb-k" data-a="blitz" title="Blitzrechnen mit Punkten"><i class="fa-solid fa-bolt"></i><span class="ee-txt"> Blitzrechnen</span></button>
+            <span class="ee-punkte" id="eePunkte"><span><i id="eeNa">Klasse</i> <b id="eePk">0</b></span><span><i id="eeNb">🦉 Ella</i> <b id="eePe">0</b></span></span>
             <span class="tb-luft"></span>
             <button class="tb-k rund" data-a="menue" title="Einstellungen"><i class="fa-solid fa-sliders"></i></button>
             <button class="tb-k rund" data-a="voll" title="Vollbild"><i class="fa-solid fa-expand"></i></button>
@@ -117,6 +118,8 @@ function aufbauen(){
             <div class="reihe" data-wahl="bis"><button data-w="5">bis 5 · 5</button><button data-w="10">bis 10 · 10</button></div>
             <h4>Hintergrund</h4>
             <div class="reihe" data-wahl="hg"><button data-w="hell">hell</button><button data-w="gruen">Kreidetafel grün</button></div>
+            <h4>Blitzrechnen: Wer spielt?</h4>
+            <div class="reihe" data-wahl="gegner"><button data-w="ella">Klasse gegen Ella</button><button data-w="teams">Team A gegen Team B</button><button data-w="lehrkraft">Klasse gegen Lehrkraft</button></div>
             <h4>Zurücksetzen</h4>
             <div class="reihe"><button data-a="neu">Häkchen und Punkte löschen</button></div>
         </div>
@@ -182,7 +185,7 @@ function markieren(){
     });
     el.querySelectorAll("#eeMenue [data-wahl]").forEach(r => r.querySelectorAll("button").forEach(b => {
         const w = r.dataset.wahl;
-        b.classList.toggle("an", w === "bis" ? +b.dataset.w === zustand.bis : (b.dataset.w === "gruen") === el.classList.contains("gruen"));
+        b.classList.toggle("an", w === "bis" ? +b.dataset.w === zustand.bis : w === "gegner" ? (window.tbGegner && window.tbGegner() === b.dataset.w) : (b.dataset.w === "gruen") === el.classList.contains("gruen"));
     }));
     panel();
 }
@@ -236,7 +239,7 @@ function panel(){
         <div class="ee-leer"><b>Tippe auf ein Feld:</b> Die Aufgabe erscheint groß – mit Tauschaufgabe, Rechentrick und Punktefeld.<br><br>
         <b>Tippe auf eine Zahl am Rand:</b> Die ganze Reihe leuchtet auf.<br><br>
         <b>Verdecken</b> oder <b>Lücken</b>: Die Kinder rechnen, dann wird angetippt und aufgedeckt.<br><br>
-        <b>Blitzrechnen</b>: Klasse gegen Ella 🦉 – richtig gelöste Aufgaben bekommen ein ✓ in der Tabelle.</div>`;
+        <b>Blitzrechnen</b>: ${(window.tbSeiten ? window.tbSeiten()[2] : "Klasse gegen Ella")} – richtig gelöste Aufgaben bekommen ein ✓ in der Tabelle.</div>`;
 }
 
 function blitzNeu(){
@@ -254,14 +257,15 @@ function blitzNeu(){
     blitzZeigen(false);
 }
 function blitzZeigen(loesung){
+    const [sa, sb] = window.tbSeiten ? window.tbSeiten() : ["Klasse", "🦉 Ella"];
     const [a, b] = zustand.blitz, box = el.querySelector("#eeBlitz .ee-blitz-box");
     const offen = (() => { let n = 0; for (let i = 1; i <= zustand.bis; i++) for (let j = 1; j <= zustand.bis; j++) if ((!zustand.reihe || i === zustand.reihe || j === zustand.reihe) && !zustand.geschafft.has(key(i, j))) n++; return n; })();
     box.innerHTML = `<div class="frage">${a} · ${b} = <span class="erg">${loesung ? a * b : "?"}</span></div>
         <div class="knoepfe">${loesung
-            ? `<button class="k" data-blitz="klasse">✓ Punkt für die Klasse</button><button class="e" data-blitz="ella">🦉 Punkt für Ella</button>`
+            ? `<button class="k" data-blitz="klasse">✓ Punkt für ${sa === "Klasse" ? "die Klasse" : sa}</button><button class="e" data-blitz="ella">Punkt für ${sb === "Lehrkraft" ? "die Lehrkraft" : sb}</button>`
             : `<button class="l" data-blitz="loesung">Lösung zeigen</button>`}
             <button data-blitz="ende">Beenden</button></div>
-        <div class="info">${zustand.reihe ? `Nur die ${zustand.reihe}er-Reihe · ` : ""}noch ${offen} Aufgaben ohne ✓ · Klasse ${zustand.punkte.k} : ${zustand.punkte.e} Ella</div>`;
+        <div class="info">${zustand.reihe ? `Nur die ${zustand.reihe}er-Reihe · ` : ""}noch ${offen} Aufgaben ohne ✓ · ${sa} ${zustand.punkte.k} : ${zustand.punkte.e} ${sb}</div>`;
     el.querySelector("#eeBlitz").classList.add("an");
 }
 
@@ -280,6 +284,7 @@ function klick(e){
     }
     if (t.dataset.w){
         const r = t.closest("[data-wahl]").dataset.wahl;
+        if (r === "gegner"){ window.tbGegner && window.tbGegner(t.dataset.w); punkteZeigen(); markieren(); return; }
         if (r === "bis"){ zustand.bis = +t.dataset.w; zustand.wahl = zustand.reihe = null; if (zustand.modus === "verdecken") alleZu(); gitter(); groesse(); }
         else { el.classList.toggle("gruen", t.dataset.w === "gruen"); markieren(); }
         return;
@@ -312,11 +317,11 @@ function klick(e){
     }
     if (a === "kern"){ zustand.kern = !zustand.kern; return markieren(); }
     if (a === "quadrat"){ zustand.quadrat = !zustand.quadrat; return markieren(); }
-    if (a === "blitz"){ el.querySelector("#eePunkte").classList.add("an"); return blitzNeu(); }
+    if (a === "blitz"){ el.querySelector("#eePunkte").classList.add("an"); punkteZeigen(); return blitzNeu(); }
     if (a === "neu"){ zustand.geschafft.clear(); zustand.punkte = { k: 0, e: 0 }; punkteZeigen(); el.querySelector("#eeMenue").classList.remove("an"); return markieren(); }
 }
 function alleZu(){ zustand.zu.clear(); for (let i = 1; i <= zustand.bis; i++) for (let j = 1; j <= zustand.bis; j++) zustand.zu.add(key(i, j)); }
-function punkteZeigen(){ el.querySelector("#eePk").textContent = zustand.punkte.k; el.querySelector("#eePe").textContent = zustand.punkte.e; }
+function punkteZeigen(){ if (window.tbSeiten){ const [sa, sb] = window.tbSeiten(); el.querySelector("#eeNa").textContent = sa; el.querySelector("#eeNb").textContent = sb; } el.querySelector("#eePk").textContent = zustand.punkte.k; el.querySelector("#eePe").textContent = zustand.punkte.e; }
 
 function oeffnen(){
     aufbauen();
