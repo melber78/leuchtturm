@@ -857,7 +857,7 @@ const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const lsDel=k=>{try{localStorage.removeItem(k)}catch(e){}};
 
-function defState(){return {v:1,updated:0,name:'Henry',xp:0,coins:0,avatar:'🙂',theme:'ozean',owned:{av:['🙂'],th:['ozean']},badges:{},st:{right:0,fixed:0,cards:0,tests:0,ones:0,perfect:0,combo:0},rewards:[{id:'w1',name:'15 Minuten extra Medienzeit',price:500},{id:'w2',name:'Lieblingsessen aussuchen',price:1200}],redeem:[],chest:'',streak:{last:'',n:0},days:{},tp:{},cards:{},tests:[],miss:{},done:{},custom:[],blitz:0,set:{ppin:'0000',goal:60,keys:[93,75,60,40,20],remind:'16:00'}}}
+function defState(){return {v:1,updated:0,name:'Henry',xp:0,coins:0,avatar:'🙂',theme:'ozean',owned:{av:['🙂'],th:['ozean']},badges:{},st:{right:0,fixed:0,cards:0,tests:0,ones:0,perfect:0,combo:0},rewards:[{id:'w1',name:'15 Minuten extra Medienzeit',price:500},{id:'w2',name:'Lieblingsessen aussuchen',price:1200}],redeem:[],chest:'',streak:{last:'',n:0},days:{},tp:{},cards:{},tests:[],miss:{},done:{},custom:[],blitz:0,set:{ppin:'0000',goal:40,xpf:1,keys:[93,75,60,40,20],remind:'16:00'}}}
 function fix(o){const d=defState();if(o&&o.miss)Object.keys(o.miss).forEach(k=>{if(/^\d+ · \d+ − \d+ : \d+ =#/.test(k))delete o.miss[k]});o=Object.assign(d,o||{});o.set=Object.assign(defState().set,o.set||{});if(!Array.isArray(o.set.keys)||o.set.keys.length!==5||o.set.keys.join()==='92,81,67,50,30')o.set.keys=[93,75,60,40,20];['days','tp','cards','miss','done','badges'].forEach(k=>{if(!o[k]||typeof o[k]!=='object')o[k]={}});['tests','custom','redeem','rewards'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[]});o.st=Object.assign(defState().st,o.st||{});o.owned=Object.assign(defState().owned,o.owned||{});return o}
 let S=(()=>{try{const j=JSON.parse(lsGet(LS));if(j)return fix(j)}catch(e){}return defState()})();
 let pushT=null;
@@ -885,8 +885,8 @@ async function push(){try{const j=await api('save',{pin:SYNC.pin,state:S});SYNC.
 document.addEventListener('visibilitychange',async()=>{if(document.visibilityState==='visible'&&SYNC.on&&SYNC.pin&&!['quiz','test','cards','blitz'].includes(view.n)){const u=S.updated;await pull();if(S.updated!==u)render()}});
 
 /* ---------- XP, Level, Serie ---------- */
-function lvl(){let x=S.xp,l=1,need=100;while(x>=need){x-=need;l++;need+=50}return {l,x,need,title:TITLES[Math.min(TITLES.length-1,Math.floor((l-1)/2))]}}
-function addXP(n){const l0=lvl().l;S.xp+=n;S.coins=(S.coins||0)+n;const d=today();S.days[d]=(S.days[d]||0)+n;if(S.streak.last!==d){S.streak.n=S.streak.last===today(-1)?S.streak.n+1:1;S.streak.last=d}const L=lvl();if(L.l>l0)celeb('⬆️','Level '+L.l+'!','Du bist jetzt „'+L.title+'“.',L.l*20);chestCheck()}
+function lvl(){let x=S.xp,l=1,need=150;while(x>=need){x-=need;l++;need+=100}return {l,x,need,title:TITLES[Math.min(TITLES.length-1,Math.floor((l-1)/2))]}}
+function addXP(n){n=Math.max(1,Math.round(n*(S.set.xpf||1)));const l0=lvl().l;S.xp+=n;S.coins=(S.coins||0)+n;const d=today();S.days[d]=(S.days[d]||0)+n;if(S.streak.last!==d){S.streak.n=S.streak.last===today(-1)?S.streak.n+1:1;S.streak.last=d}const L=lvl();if(L.l>l0)celeb('⬆️','Level '+L.l+'!','Du bist jetzt „'+L.title+'“.',L.l*5);chestCheck()}
 function streak(){return (S.streak.last===today()||S.streak.last===today(-1))?S.streak.n:0}
 
 /* ---------- Themen ---------- */
@@ -1033,11 +1033,11 @@ VIEWS.learn=({id})=>{
  ((t.cards||[]).length?`<div class="sec">Das solltest du wissen</div><div class="box">${t.cards.slice(0,40).map(([f,b])=>`<div style="padding:4px 0;border-bottom:1px solid var(--line)"><b>${esc(f)}</b> – ${esc(b.split('|').join(' / '))}</div>`).join('')}</div>`:'')+
  (BILDER[id]?`<button class="btn sec2" onclick="go('bild',{id:'${id}',i:0})">🖼️ Mit Bildern anschauen</button>`:'')+`<button class="btn" onclick="learned('${id}')">✓ Gelernt – jetzt üben</button>`;
 };
-function learned(id){const st=S.tp[id]||(S.tp[id]={});if(st.ld!==today()){addXP(20);st.ld=today();toast('+20 XP fürs Lernen 📘')}st.l=true;save();const t=topic(id);if((t.tasks&&t.tasks.length)||t.gen||((t.auto||t.vok)&&t.cards.length))startQuiz(id,true);else startCards(id)}
+function learned(id){const st=S.tp[id]||(S.tp[id]={});if(st.ld!==today()){addXP(5);st.ld=today();toast('+5 XP fürs Lernen 📘')}st.l=true;save();const t=topic(id);if((t.tasks&&t.tasks.length)||t.gen||((t.auto||t.vok)&&t.cards.length))startQuiz(id,true);else startCards(id)}
 
 /* ---------- Üben / Trainieren ---------- */
-function startQuiz(id,rep){const t=topic(id);t._again=false;const tasks=tasksFor(t,10);if(t._again)setTimeout(()=>toast('🏁 Alle Aufgaben dieses Themas geschafft – jetzt kommt die Wiederholung!'),300);go('quiz',{title:t.title,color:subj(t.s).color,tasks,i:0,r:0,w:0,xp:0,retry:[],phase:1,tid:id,text:t.text},rep)}
-function startMix(tasks,title,color){if(!tasks.length){toast('Keine Aufgaben gefunden.');return}go('quiz',{title,color:color||'#38bdf8',tasks,i:0,r:0,w:0,xp:0,retry:[],phase:1})}
+function startQuiz(id,rep){const t=topic(id);t._again=false;const tasks=tasksFor(t,10);if(t._again)setTimeout(()=>toast('🏁 Alle Aufgaben dieses Themas geschafft – jetzt kommt die Wiederholung!'),300);go('quiz',{x0:S.xp,title:t.title,color:subj(t.s).color,tasks,i:0,r:0,w:0,xp:0,retry:[],phase:1,tid:id,text:t.text},rep)}
+function startMix(tasks,title,color){if(!tasks.length){toast('Keine Aufgaben gefunden.');return}go('quiz',{x0:S.xp,title,color:color||'#38bdf8',tasks,i:0,r:0,w:0,xp:0,retry:[],phase:1})}
 VIEWS.quiz=p=>{
  if(p.i>=p.tasks.length)return quizEnd(p);
  const t=p.tasks[p.i];const pct=Math.round(p.i/p.tasks.length*100);const tp=topic(t.tid);
@@ -1063,7 +1063,7 @@ function quizAns(j,raw){
  const p=view.p;if(p.done)return;const t=p.tasks[p.i];let v=raw?j:(t.t==='m'?t._o[j]:j);
  const ok=check(t,v);p.ans=v;p.done=true;p.ok=ok;const k=tkey(t);
  const st=S.tp[t.tid]||(S.tp[t.tid]={});
- if(ok){p.r++;st.r=(st.r||0)+1;S.st.right++;if(S.miss[k])S.st.fixed++;S.done[k]=Date.now();const x=p.phase===2?5:10;p.xp+=x;addXP(x);delete S.miss[k];p.combo=(p.combo||0)+1;if(p.combo>S.st.combo)S.st.combo=p.combo;if([3,5,10,15,20,30].includes(p.combo)){const b=p.combo*2;p.xp+=b;addXP(b);p.cmsg=`🔥 ${p.combo}er-Combo! +${b} Bonus`}else p.cmsg=''}
+ if(ok){p.r++;st.r=(st.r||0)+1;S.st.right++;if(S.miss[k])S.st.fixed++;const wasDone=!!S.done[k];S.done[k]=Date.now();const x=p.phase===2||wasDone?1:3;p.xp+=x;addXP(x);delete S.miss[k];p.combo=(p.combo||0)+1;if(p.combo>S.st.combo)S.st.combo=p.combo;if([5,10,20].includes(p.combo)){const b={5:3,10:5,20:10}[p.combo];p.xp+=b;addXP(b);p.cmsg=`🔥 ${p.combo}er-Combo! +${b} Bonus`}else p.cmsg=''}
  else{p.combo=0;p.cmsg='';p.w++;st.w=(st.w||0)+1;S.miss[k]={...t,_o:undefined};if(p.phase===1&&p.tasks!==p.retry)p.retry.push({...t,_o:undefined});if(navigator.vibrate)try{navigator.vibrate(80)}catch(e){}}
  const mk=Object.keys(S.miss);if(mk.length>80)delete S.miss[mk[0]];
  save();render();
@@ -1071,10 +1071,10 @@ function quizAns(j,raw){
 function quizNext(){const p=view.p;p.i++;p.done=false;p.ans='';render();scrollTo(0,0)}
 function quizEnd(p){
  if(p.phase===1&&p.retry.length&&!p.noRetry){return hdr(esc(p.title),p.color)+`<div class="big">🔁</div><h2 class="center">${p.retry.length} ${p.retry.length===1?'Aufgabe':'Aufgaben'} noch nicht richtig</h2><p class="center mut">Hol dir die Punkte zurück! In der Fehler-Runde übst du genau diese Aufgaben noch einmal.</p><button class="btn" onclick="retryRound()">Fehler-Runde starten</button><button class="btn sec2" onclick="view.p.noRetry=true;render()">Überspringen</button>`}
- if(!p.saved){p.saved=true;const first=p.r1??p.r;const tot=p.n1??p.tasks.length;const pct=Math.round(first/tot*100);if(p.tid){const st=S.tp[p.tid]||(S.tp[p.tid]={});st.sc=st.sc==null?pct:Math.round(st.sc*.5+pct*.5);st.last=today()}if(first===tot&&tot>=5){S.st.perfect++;addXP(20);p.xp+=20}save()}
+ if(!p.saved){p.saved=true;const first=p.r1??p.r;const tot=p.n1??p.tasks.length;const pct=Math.round(first/tot*100);if(p.tid){const st=S.tp[p.tid]||(S.tp[p.tid]={});st.sc=st.sc==null?pct:Math.round(st.sc*.5+pct*.5);st.last=today()}if(first===tot&&tot>=5){S.st.perfect++;addXP(10);p.xp+=10}save()}
  const tot=p.n1??p.tasks.length,first=p.r1??p.r,pct=Math.round(first/tot*100);
  const em=pct>=90?'🏆':pct>=70?'🌟':pct>=50?'👍':'💪';
- return hdr(esc(p.title),p.color)+`<div class="big">${em}</div><h2 class="center">${first} von ${tot} beim ersten Versuch richtig</h2><p class="center mut">+${p.xp} XP · ${pct>=90?'Hervorragend!':pct>=70?'Richtig gut!':pct>=50?'Ordentlich – dranbleiben!':'Übung macht den Meister. Schau dir noch einmal die Merkkästen an.'}</p>
+ return hdr(esc(p.title),p.color)+`<div class="big">${em}</div><h2 class="center">${first} von ${tot} beim ersten Versuch richtig</h2><p class="center mut">+${p.x0!=null?S.xp-p.x0:p.xp} XP · ${pct>=90?'Hervorragend!':pct>=70?'Richtig gut!':pct>=50?'Ordentlich – dranbleiben!':'Übung macht den Meister. Schau dir noch einmal die Merkkästen an.'}</p>
  ${p.tid?`<button class="btn" onclick="startQuiz('${p.tid}',true)">Noch eine Runde</button>`:`<button class="btn" onclick="go('train',{},true)">Weiter trainieren</button>`}
  ${p.tid&&pct<70?`<button class="btn sec2" onclick="go('learn',{id:'${p.tid}'},true)">📘 Nochmal lernen</button>`:''}<button class="btn sec2" onclick="go('home',{},true)">Zur Startseite</button>`;
 }
@@ -1138,10 +1138,10 @@ function subjMix(s){const ts=topicsOf(s).filter(t=>(t.tasks&&t.tasks.length)||t.
 
 /* ---------- Blitzrechnen ---------- */
 let blitzT=null;
-function startBlitz(){go('blitz',{});view.p={t:GEN.blitz(),r:0,w:0,end:Date.now()+60000,run:true};render();clearInterval(blitzT);blitzT=setInterval(()=>{const p=view.p;if(view.n!=='blitz'){clearInterval(blitzT);return}const left=Math.max(0,Math.ceil((p.end-Date.now())/1000));const el=$('#bt');if(el)el.textContent=left+' s';if(left<=0){clearInterval(blitzT);p.run=false;const x=p.r*2;addXP(x);if(p.r>(S.blitz||0)){S.blitz=p.r;p.rec=true}save();render()}},250)}
+function startBlitz(){go('blitz',{});view.p={t:GEN.blitz(),r:0,w:0,end:Date.now()+60000,run:true};render();clearInterval(blitzT);blitzT=setInterval(()=>{const p=view.p;if(view.n!=='blitz'){clearInterval(blitzT);return}const left=Math.max(0,Math.ceil((p.end-Date.now())/1000));const el=$('#bt');if(el)el.textContent=left+' s';if(left<=0){clearInterval(blitzT);p.run=false;const x=Math.floor(p.r/2);if(x)addXP(x);if(p.r>(S.blitz||0)){S.blitz=p.r;p.rec=true}save();render()}},250)}
 VIEWS.blitz=p=>{
  if(!p.t)return VIEWS.train();
- if(!p.run)return hdr('⚡ Blitzrechnen','#f59e0b')+`<div class="big">${p.rec?'🏆':'⚡'}</div><h2 class="center">${p.r} richtig${p.w?`, ${p.w} falsch`:''}</h2><p class="center mut">${p.rec?'Neuer Rekord!':'Rekord: '+S.blitz} · +${p.r*2} XP</p><button class="btn" onclick="startBlitz()">Nochmal</button><button class="btn sec2" onclick="go('train',{},true)">Zurück</button>`;
+ if(!p.run)return hdr('⚡ Blitzrechnen','#f59e0b')+`<div class="big">${p.rec?'🏆':'⚡'}</div><h2 class="center">${p.r} richtig${p.w?`, ${p.w} falsch`:''}</h2><p class="center mut">${p.rec?'Neuer Rekord!':'Rekord: '+S.blitz} · +${Math.floor(p.r/2)} XP</p><button class="btn" onclick="startBlitz()">Nochmal</button><button class="btn sec2" onclick="go('train',{},true)">Zurück</button>`;
  return hdr('⚡ Blitzrechnen','#f59e0b',`<span class="pill timer" id="bt">60 s</span>`)+`<p class="center mut">✅ ${p.r} · ❌ ${p.w}</p><div class="q center" style="font-size:2rem">${p.t.q}</div><input id="ans" inputmode="numeric" autocomplete="off" autofocus onkeydown="if(event.key==='Enter')blitzIn()" style="font-size:1.6rem;text-align:center"><button class="btn" onclick="blitzIn()">OK</button>${p.last?`<p class="center small mut">${p.last}</p>`:''}`;
 };
 function blitzIn(){const p=view.p;const v=$('#ans').value.trim();if(!v)return;if(check(p.t,v)){p.r++;p.last='✅ '+p.t.q+' '+p.t.a}else{p.w++;p.last='❌ '+p.t.q+' '+p.t.a}p.t=GEN.blitz();render()}
@@ -1163,7 +1163,7 @@ VIEWS.cards=p=>{
  ${p.flip?`<div class="row2"><button class="btn no" onclick="cardRate(false)">✗ Noch nicht</button><button class="btn ok" onclick="cardRate(true)">✓ Gewusst</button></div>`:`<button class="btn sec2" onclick="view.p.flip=true;render()">Antwort zeigen</button>`}`;
 };
 function cardRate(ok){const p=view.p,c=p.cs[p.i];const s=S.cards[c.key]||{b:0};
- if(ok){s.b=Math.min(5,(s.b||0)+1);s.d=today(INT[s.b]);p.ok++;S.st.cards++;addXP(5)}else{s.b=1;s.d=today(1);p.no++;if(!c.again)p.cs.push({...c,again:true})}
+ if(ok){s.b=Math.min(5,(s.b||0)+1);s.d=today(INT[s.b]);p.ok++;S.st.cards++;addXP(1)}else{s.b=1;s.d=today(1);p.no++;if(!c.again)p.cs.push({...c,again:true})}
  S.cards[c.key]=s;p.i++;p.flip=false;save();render()}
 
 /* ---------- Test simulieren ---------- */
@@ -1208,10 +1208,10 @@ function finishTest(ask){const p=view.p;if(ask&&!p.sure){p.sure=true;render();re
  p.fin=true;clearInterval(testT);p.res=p.tasks.map((t,j)=>check(t,p.ans[j]));p.r=p.res.filter(Boolean).length;p.pct=Math.round(p.r/p.tasks.length*100);p.g=grade(p.pct);p.sec=Math.round((Date.now()-p.start)/1000);
  S.st.tests++;if(p.g===1)S.st.ones++;p.tasks.forEach((t,j)=>{const st=S.tp[t.tid]||(S.tp[t.tid]={});if(p.res[j]){st.r=(st.r||0)+1;S.st.right++;S.done[tkey(t)]=Date.now();delete S.miss[tkey(t)]}else{st.w=(st.w||0)+1;S.miss[tkey(t)]={...t,_o:undefined}}});
  const tids=[...new Set(p.tasks.map(t=>t.tid))];tids.forEach(id=>{const idx=p.tasks.map((t,j)=>t.tid===id?j:-1).filter(j=>j>=0);const pc=Math.round(idx.filter(j=>p.res[j]).length/idx.length*100);const st=S.tp[id];st.sc=st.sc==null?pc:Math.round(st.sc*.5+pc*.5)});
- addXP(p.r*5+20);if(p.g<=2)celeb(p.g===1?'🥇':'🥈','Note '+p.g+'!','Stark geschrieben – '+p.r+' von '+p.tasks.length+' richtig.',p.g===1?100:50);S.tests.push({d:today(),title:p.title,s:p.s,n:p.tasks.length,r:p.r,g:p.g,sec:p.sec});if(S.tests.length>100)S.tests.shift();save();render();scrollTo(0,0)}
+ p.xpg=p.r*2+({1:15,2:8,3:3}[p.g]||0);addXP(p.xpg);if(p.g<=2)celeb(p.g===1?'🥇':'🥈','Note '+p.g+'!','Stark geschrieben – '+p.r+' von '+p.tasks.length+' richtig.',p.g===1?25:10);S.tests.push({d:today(),title:p.title,s:p.s,n:p.tasks.length,r:p.r,g:p.g,sec:p.sec});if(S.tests.length>100)S.tests.shift();save();render();scrollTo(0,0)}
 function testResult(p){
  const col=['','#22c55e','#84cc16','#eab308','#f97316','#ef4444','#b91c1c'][p.g];
- return hdr('📝 Auswertung',p.color)+`<p class="center mut" style="margin:0">${esc(p.title)}</p><div class="note" style="color:${col}">${p.g}</div><p class="center"><b>${p.r} von ${p.tasks.length} richtig (${p.pct} %)</b><br><span class="small mut">Zeit: ${Math.floor(p.sec/60)} min ${p.sec%60} s · Note als Richtwert · +${p.r*5+20} XP</span></p>
+ return hdr('📝 Auswertung',p.color)+`<p class="center mut" style="margin:0">${esc(p.title)}</p><div class="note" style="color:${col}">${p.g}</div><p class="center"><b>${p.r} von ${p.tasks.length} richtig (${p.pct} %)</b><br><span class="small mut">Zeit: ${Math.floor(p.sec/60)} min ${p.sec%60} s · Note als Richtwert · +${p.xpg||0} XP</span></p>
  <button class="btn" onclick="go('testsetup',{s:'${p.s}'},true)">Neuer Test</button>${p.r<p.tasks.length?`<button class="btn sec2" onclick="missMix()">🔁 Fehler gleich üben</button>`:''}
  <div class="sec">Alle Aufgaben</div>${p.tasks.map((t,j)=>`<div class="rev ${p.res[j]?'ok':'no'}"><div>${j+1}. ${t.th?'<span class="badge" style="background:#38bdf833;color:#7dd3fc">Theorie</span> ':''}${t.q}</div><div class="small" style="margin-top:6px">${p.res[j]?'✅':'❌'} Deine Antwort: <b>${p.ans[j]==null||p.ans[j]===''?'–':esc(t.t==='w'?(p.ans[j]?'Stimmt':'Stimmt nicht'):p.ans[j])}</b>${p.res[j]?'':` · Richtig: <b>${esc(showAns(t))}</b>`}</div>${!p.res[j]&&t.ex?`<div class="small mut" style="margin-top:4px">${t.ex}</div>`:''}</div>`).join('')}`;
 }
@@ -1271,6 +1271,7 @@ VIEWS.eltern=p=>{
  <label class="small mut">Dieses Gerät ist …</label><div class="chips" style="margin-bottom:10px"><button class="chip ${MODE==='kind'?'on':''}" onclick="setMode('kind')">🧒 Kinder-App (Henry)</button><button class="chip ${MODE==='eltern'?'on':''}" onclick="setMode('eltern')">👩 Eltern-App</button></div>
  <label class="small mut">Name des Kindes</label><input value="${esc(S.name)}" onchange="S.name=this.value.trim()||'Henry';save()">
  <div class="row2" style="margin-top:8px"><div><label class="small mut">Tagesziel (XP)</label><input type="number" inputmode="numeric" value="${S.set.goal}" onchange="S.set.goal=Math.max(10,+this.value||60);save()"></div><div><label class="small mut">Eltern-PIN (4 Ziffern)</label><input inputmode="numeric" maxlength="4" value="${esc(S.set.ppin)}" onchange="if(/^\\d{4}$/.test(this.value)){S.set.ppin=this.value;save();toast('PIN geändert')}else toast('Bitte 4 Ziffern')"></div></div>
+ <label class="small mut" style="display:block;margin-top:8px">Punkte-Tempo (XP und Münzen)</label><div class="chips">${[[0.5,'langsam'],[1,'normal'],[1.5,'schneller']].map(([v,l])=>`<button class="chip ${(S.set.xpf||1)===v?'on':''}" onclick="S.set.xpf=${v};save();render()">${l}</button>`).join('')}</div>
  <label class="small mut" style="display:block;margin-top:8px">Notenschlüssel (ab … % für Note 1 bis 5, darunter 6)</label><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">${k.map((v,i)=>`<input type="number" inputmode="numeric" value="${v}" title="Note ${i+1}" onchange="S.set.keys[${i}]=+this.value;save()">`).join('')}</div>
  <div class="sec">Daten</div><p class="small mut">${SYNC.on?(SYNC.pin?'☁️ Fortschritt wird über den Leuchtturm zwischen allen Geräten synchronisiert.':'Server erreichbar, Gerät noch nicht verbunden.'):'📱 Fortschritt wird nur auf diesem Gerät gespeichert.'}</p>
  <div class="row2"><button class="btn sec2" onclick="exportData()">⬇️ Sicherung</button><label class="btn sec2" style="cursor:pointer">⬆️ Laden<input type="file" accept=".json" style="display:none" onchange="importData(this.files[0])"></label></div>
@@ -1321,8 +1322,8 @@ function celeb(icon,title,text,coins){if(coins)S.coins=(S.coins||0)+coins;CELEB.
 function showCeleb(){if(PREVIEW){CELEB=[];return}if(!CELEB.length||$('.ov'))return;const c=CELEB[0];const el=document.createElement('div');el.className='ov';
  el.innerHTML=`<div class="conf">${Array.from({length:40},(_,i)=>`<i style="left:${Math.random()*100}%;background:${['#fde047','#f472b6','#38bdf8','#4ade80','#fb923c','#a78bfa'][i%6]};animation-delay:${Math.random()*.8}s;animation-duration:${1.6+Math.random()*1.4}s"></i>`).join('')}</div><div class="ovc"><div class="ovi">${c.icon}</div><h2>${c.title}</h2><p>${c.text}</p><button class="btn">Weiter</button></div>`;
  el.onclick=()=>{el.remove();CELEB.shift();showCeleb()};document.body.appendChild(el);if(navigator.vibrate)try{navigator.vibrate([40,40,80])}catch(e){}}
-function checkBadges(){BADGES.forEach(([id,ic,n,d,f])=>{if(!S.badges[id]){let ok=false;try{ok=f(S)}catch(e){}if(ok){S.badges[id]=today();celeb(ic,'Abzeichen: '+n,d+'!',50)}}})}
-function chestCheck(){const g=S.set.goal||60;if((S.days[today()]||0)>=g&&S.chest!==today()){S.chest=today();const c=R(40,90);celeb('🎁','Tagesziel geschafft!','Du hast die Schatztruhe geöffnet:',c)}}
+function checkBadges(){BADGES.forEach(([id,ic,n,d,f])=>{if(!S.badges[id]){let ok=false;try{ok=f(S)}catch(e){}if(ok){S.badges[id]=today();celeb(ic,'Abzeichen: '+n,d+'!',20)}}})}
+function chestCheck(){const g=S.set.goal||60;if((S.days[today()]||0)>=g&&S.chest!==today()){S.chest=today();const c=R(10,25);celeb('🎁','Tagesziel geschafft!','Du hast die Schatztruhe geöffnet:',c)}}
 function applyTheme(){const t=THEMES[S.theme]||THEMES.ozean;const r=document.documentElement.style;r.setProperty('--acc',t.acc);r.setProperty('--hero',t.hero);const m=document.querySelector('meta[name=theme-color]');if(m)m.content='#0b1324'}
 
 VIEWS.shop=p=>{
@@ -1344,7 +1345,7 @@ function elternRewards(){const rw=S.rewards||[],open=(S.redeem||[]).filter(x=>!x
  ${open.length?open.map(x=>`<div class="item"><span>⏳</span><div class="t"><b>${esc(x.name)}</b><small>eingelöst am ${x.d.split('-').reverse().join('.')} · ${x.price} Münzen</small></div><button class="pill" onclick="redeemDone('${x.id}')">✓ erledigt</button></div>`).join(''):'<p class="small mut">Nichts offen.</p>'}
  ${rw.map((x,i)=>`<div class="ed"><input value="${esc(x.name)}" onchange="S.rewards[${i}].name=this.value;save()"><input type="number" inputmode="numeric" value="${x.price}" onchange="S.rewards[${i}].price=Math.max(1,+this.value||1);save()"><button onclick="S.rewards.splice(${i},1);save();render()">🗑</button></div>`).join('')}
  <button class="btn sec2" onclick="S.rewards.push({id:'w'+Date.now(),name:'Neue Belohnung',price:500});save();render()">+ Belohnung</button>
- <p class="small mut">Richtwert: Für ein gutes Lerntag-Pensum gibt es etwa 150–250 Münzen.</p>`}
+ <p class="small mut">Richtwert: Ein gründlicher Lerntag bringt etwa 40–70 Münzen (Punkte-Tempo „normal“).</p>`}
 function redeemDone(id){const x=S.redeem.find(r=>r.id===id);if(x){x.done=true;save();render()}}
 function elternRemind(){
  const can=SYNC.on&&SYNC.pin;const on=lsGet('lb_push')==='1';
@@ -1382,7 +1383,7 @@ function bSet(k,v){const {b,s}=bCur();s[k]=v;s.k=0;if(b.fix)b.fix(s);render()}
 function bStep(k,d){const {b,s}=bCur();const c=(b.ctl?b.ctl(s):[]).find(x=>x.k===k);let v=s[k]+d;if(c){if(v<c.min)v=c.min;if(v>c.max)v=c.max}s[k]=v;s.k=0;if(b.fix)b.fix(s,d);render()}
 function bNeu(){const {b,s,key}=bCur();const n=Object.assign({k:0},b.neu?b.neu(s):b.init());if(b.fix)b.fix(n);BST[key]=n;render()}
 function bNext(all){const {b,s,key}=bCur();const n=(b.draw(s).steps||[]).length;s.k=all?n:Math.min(n,s.k+1);
- if(s.k>=n&&!PREVIEW){if(S.bvd!==today()){S.bvd=today();S.bv=[]}if(!(S.bv||[]).includes(key)){S.bv=(S.bv||[]).concat(key);addXP(5);save();toast('+5 XP fürs Anschauen 🖼️')}}render()}
+ if(s.k>=n&&!PREVIEW){if(S.bvd!==today()){S.bvd=today();S.bv=[]}if(!(S.bv||[]).includes(key)){S.bv=(S.bv||[]).concat(key);addXP(2);save();toast('+2 XP fürs Anschauen 🖼️')}}render()}
 VIEWS.bild=p=>{
  const list=BILDER[p.id];const t=topic(p.id);if(!list||!t)return VIEWS.home();const i=p.i||0,b=list[i],key=p.id+'#'+i;
  if(!BST[key]){BST[key]=Object.assign({k:0},b.init());if(b.fix)b.fix(BST[key])}
@@ -1766,10 +1767,10 @@ function abRate(ok){const p=view.p,q=p.qs[p.i];p.res[p.i]=ok;
  p.i++;p.show=false;render();scrollTo(0,0)}
 function abfrageEnd(p){
  const rated=p.res.filter(x=>x!==null),r=rated.filter(Boolean).length,n=rated.length,pct=n?Math.round(r/n*100):0,g=grade(pct);
- if(!p.saved&&n){p.saved=true;S.tests.push({d:today(),title:'Abfrage: '+p.title,s:subj(topic(p.qs[0].tid).s).id,n,r,g,sec:0});addXP(r*5);
+ if(!p.saved&&n){p.saved=true;S.tests.push({d:today(),title:'Abfrage: '+p.title,s:subj(topic(p.qs[0].tid).s).id,n,r,g,sec:0});addXP(r*2);
   [...new Set(p.qs.map(q=>q.tid))].forEach(id=>{const idx=p.qs.map((q,j)=>q.tid===id&&p.res[j]!==null?j:-1).filter(j=>j>=0);if(!idx.length)return;const pc=Math.round(idx.filter(j=>p.res[j]).length/idx.length*100);const st=S.tp[id]||(S.tp[id]={});st.sc=st.sc==null?pc:Math.round(st.sc*.5+pc*.5)});save()}
  const wrong=p.qs.filter((_,j)=>p.res[j]===false);
- return hdr('🗣️ Auswertung','#64748b')+`<p class="center mut" style="margin:0">${esc(p.title)}</p><div class="note">${n?g:'–'}</div><p class="center"><b>${r} von ${n} gewusst (${pct} %)</b><br><span class="small mut">Henry bekommt +${r*5} XP und Münzen</span></p>
+ return hdr('🗣️ Auswertung','#64748b')+`<p class="center mut" style="margin:0">${esc(p.title)}</p><div class="note">${n?g:'–'}</div><p class="center"><b>${r} von ${n} gewusst (${pct} %)</b><br><span class="small mut">Henry bekommt +${r*2} XP und Münzen</span></p>
  ${wrong.length?`<div class="sec">Nicht gewusst – zum Nachlernen</div>${wrong.map(q=>`<div class="rev no"><div>${q.q}</div><div class="small" style="margin-top:4px">Lösung: <b>${q.ans}</b></div></div>`).join('')}<p class="small mut">Henry übt diese Fragen jetzt unter „Trainieren → Fehler wiederholen“ und als fällige Karteikarten unter „Merken“.</p>`:'<p class="center">🏆 Alles gewusst!</p>'}
  <button class="btn" onclick="go('abfrage',{s:'${subj(topic(p.qs[0].tid).s).id}'},true)">Neue Abfrage</button><button class="btn sec2" onclick="go('eltern',{ok:true},true)">Zum Eltern-Bereich</button>`;
 }
