@@ -11,12 +11,12 @@ $liste = lt_tafelnLesen();
 $aktion = $e["aktion"] ?? "liste";
 $basis = (!empty($_SERVER["HTTPS"]) ? "https" : "http") . "://" . $_SERVER["HTTP_HOST"] . rtrim(dirname($_SERVER["SCRIPT_NAME"]), "/\\") . "/";
 if ($aktion === "neu") {
-    $k = bin2hex(random_bytes(20));
+    $k = lt_neuerCode();
     $name = mb_substr(trim((string)($e["name"] ?? "")), 0, 40) ?: "Tafel";
     $klasse = preg_match('/^[a-z0-9]{1,20}$/i', (string)($e["klasse"] ?? "")) ? $e["klasse"] : "";
     $liste[] = ["id" => bin2hex(random_bytes(6)), "name" => $name, "klasse" => $klasse, "hash" => lt_tafelHash($k), "erstellt" => date("Y-m-d")];
     if (!lt_tafelnSchreiben($liste)) antwort(false, ["fehler" => "Konnte nicht gespeichert werden."]);
-    antwort(true, ["link" => $basis . "?k=" . $k, "liste" => array_map(fn($t) => array_diff_key($t, ["hash" => 1]), $liste)]);
+    antwort(true, ["code" => $k, "adresse" => preg_replace("#^https?://#", "", $basis), "link" => $basis . "?c=" . str_replace("-", "", $k), "liste" => array_map(fn($t) => array_diff_key($t, ["hash" => 1]), $liste)]);
 }
 if ($aktion === "loeschen") {
     $liste = array_values(array_filter($liste, fn($t) => ($t["id"] ?? "") !== ($e["id"] ?? "")));

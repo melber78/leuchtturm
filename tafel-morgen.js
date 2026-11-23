@@ -856,11 +856,10 @@ function tafelLinks(p, k){
             if (!j.ok) { alert(j.fehler || "Nicht möglich."); return; }
             zeigen(j.liste);
             aus.innerHTML = `<div class="mg-tafellink"><b>So geht's auf der Tafel:</b>
-                <ol><li>Diesen Link <b>auf der Tafel</b> öffnen (z. B. per E-Mail an dich schicken oder abtippen):<div class="mg-reihe" style="margin:6px 0"><input value="${esc(j.link)}" readonly style="flex:1; font-size:13px" onclick="this.select()"><button class="mg-k hell klein" data-kopie>Kopieren</button></div></li>
-                <li>In Chrome oder Edge in der Adresszeile auf <b>„App installieren“</b> (Symbol 🖥️⬇) tippen – oder im Menü ⋮ → <b>„Guten Morgen installieren“</b>.</li>
-                <li>Fertig: Auf der Tafel gibt es jetzt das Symbol <b>„Guten Morgen“</b>. Es öffnet direkt die Morgentafel im Vollbild.</li></ol>
-                <small class="mg-hilfe">Der Link gilt nur für die Morgentafel. Wenn du ihn nicht mehr brauchst, kannst du die Tafel unten jederzeit sperren.</small></div>`;
-            aus.querySelector("[data-kopie]").addEventListener("click", () => { const i = aus.querySelector("input"); i.select(); try { navigator.clipboard.writeText(i.value); } catch (x) { document.execCommand("copy"); } });
+                <ol><li>Auf der Tafel im Browser diese Adresse eintippen:<div class="mg-tadr">${esc(j.adresse)}</div></li>
+                <li>Den Tafel-Code eingeben:<div class="mg-tcode">${esc(j.code)}</div></li>
+                <li>In Chrome oder Edge in der Adresszeile auf <b>„App installieren“</b> (Symbol 🖥️⬇) tippen – oder im Menü ⋮ → <b>„Guten Morgen installieren“</b>. Fertig: Das Symbol <b>„Guten Morgen“</b> öffnet die Morgentafel im Vollbild.</li></ol>
+                <small class="mg-hilfe">Der Code gilt nur für die Morgentafel und muss auf jeder Tafel nur einmal eingegeben werden. Groß-/Kleinschreibung und Bindestrich sind egal.</small></div>`;
         } catch (x) { alert("Keine Verbindung zum Leuchtturm."); }
     });
 }

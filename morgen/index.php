@@ -9,14 +9,21 @@ if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 require_once __DIR__ . "/../gast-zugang-pruefen.php";
 
 $pfad = rtrim(dirname(dirname($_SERVER["SCRIPT_NAME"])), "/\\") . "/";
-// Freischalt-Link: Schlüssel als Cookie merken (400 Tage) und ohne Schlüssel in der Adresse neu laden
-if (isset($_GET["k"])) {
-    $t = lt_tafelZugang((string)$_GET["k"]);
-    if ($t) {
-        setcookie("lt_tafel", (string)$_GET["k"], ["expires" => time() + 400 * 86400, "path" => $pfad, "secure" => !empty($_SERVER["HTTPS"]), "httponly" => true, "samesite" => "Lax"]);
-        $_COOKIE["lt_tafel"] = (string)$_GET["k"];
+// Freischalten: Tafel-Code eintippen (oder Link mit ?c=CODE bzw. alter ?k=…) – Code als Cookie merken (400 Tage)
+$fehler = "";
+$eingabe = $_POST["code"] ?? ($_GET["c"] ?? ($_GET["k"] ?? null));
+if ($eingabe !== null) {
+    if (lt_tafelVersuche() >= 8) $fehler = "Zu viele falsche Versuche. Bitte in 15 Minuten noch einmal.";
+    else {
+        $t = lt_tafelZugang((string)$eingabe);
+        if ($t) {
+            $code = lt_tafelNorm((string)$eingabe);
+            setcookie("lt_tafel", $code, ["expires" => time() + 400 * 86400, "path" => $pfad, "secure" => !empty($_SERVER["HTTPS"]), "httponly" => true, "samesite" => "Lax"]);
+            header("Location: ./"); exit;
+        }
+        lt_tafelVersuche(true);
+        $fehler = "Dieser Code stimmt nicht – oder die Tafel wurde gesperrt.";
     }
-    header("Location: ./" . ($t ? "" : "?ungueltig=1")); exit;
 }
 $tafel = lt_tafelZugang();
 if ($tafel) {
@@ -31,9 +38,12 @@ if (!$tafel && empty($_SESSION["leuchtturm_eingeloggt"])) { ?>
 <style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#fff8e8,#eef6fb);font-family:"Nunito",system-ui,sans-serif;color:#16324a}
 .box{background:#fff;border-radius:24px;box-shadow:0 10px 30px rgba(22,50,74,.12);padding:32px 36px;max-width:560px;margin:20px}h1{margin:0 0 10px;font-size:30px}p,li{font-size:17px;line-height:1.5}.rot{color:#a3261c;font-weight:800}</style></head>
 <body><div class="box"><h1>☀️ Guten Morgen!</h1>
-<?php if (isset($_GET["ungueltig"])): ?><p class="rot">Dieser Tafel-Link ist ungültig oder wurde gesperrt.</p><?php endif; ?>
-<p>Diese Tafel ist noch nicht freigeschaltet.</p>
-<ol><li>Im Leuchtturm die Guten-Morgen-Tafel öffnen.</li><li><b>Bearbeiten → Klasse → „📺 Auf der Tafel installieren“</b> antippen.</li><li>Den Tafel-Link <b>hier auf der Tafel</b> öffnen.</li></ol>
+<p>Tafel-Code eingeben:</p>
+<form method="post" action="./"><input name="code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z. B. KR7M-4XPT" maxlength="12" autofocus
+ style="font:800 34px/1 monospace;letter-spacing:.12em;text-transform:uppercase;width:100%;box-sizing:border-box;padding:14px 16px;border:3px solid #c9d6e3;border-radius:16px;text-align:center">
+<button style="margin-top:14px;width:100%;font:900 20px system-ui,sans-serif;padding:14px;border:0;border-radius:16px;background:#16324a;color:#fff;cursor:pointer">Tafel freischalten</button></form>
+<?php if ($fehler): ?><p class="rot"><?= htmlspecialchars($fehler) ?></p><?php endif; ?>
+<p style="font-size:15px;color:#5b6f84">Den Code bekommst du im Leuchtturm: Guten Morgen → Bearbeiten → Klasse → „📺 Auf der Tafel installieren“.</p>
 </div></body></html>
 <?php exit; }
 
