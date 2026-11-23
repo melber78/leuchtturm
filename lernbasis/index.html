@@ -151,6 +151,23 @@ sup{font-size:.7em}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
 @media(prefers-reduced-motion:reduce){.conf{display:none}.ovi{animation:none}}
 
+.bildk{background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:12px;margin-bottom:8px}
+.binfo{text-align:center;margin:4px 0 10px;line-height:1.5}
+.bctls{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.bctl>span,.bst>span{display:block;font-size:.8rem;color:var(--mut);margin-bottom:4px}
+.bst{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 8px}
+.bst>span{flex:1;margin:0 0 0 6px;font-size:.9rem}
+.bst button{width:44px;height:44px;border-radius:12px;background:var(--card2);font-size:1.4rem;font-weight:800}
+.bst b{min-width:76px;text-align:center;font-size:1.1rem}
+.bsteps{margin:0 0 6px;padding-left:22px}
+.bsteps li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:6px;animation:pop .25s}
+.bsteps li.zu{color:var(--mut);opacity:.5;animation:none}
+.umst{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;justify-content:center;padding:6px 0}
+.sgl{position:relative;display:inline-flex;flex-direction:column;align-items:center;background:var(--card2);border:2px solid var(--line);border-radius:12px;padding:8px 12px;font-size:1.15rem;font-weight:700;transition:all .3s}
+.sgl small{font-size:.65rem;font-weight:600;color:var(--mut);margin-top:2px}
+.sgl i{position:absolute;top:-16px;font-size:.6rem;font-style:normal;color:#f87171}
+.bigsent{font-size:1.6rem;font-weight:800;text-align:center;padding:24px 6px}
+
 </style>
 </head>
 <body>
@@ -791,6 +808,7 @@ VIEWS.topic=({id})=>{
  return hdr(esc(t.title),sb.color,t.custom?`<button class="ib" onclick="go('edit',{id:'${id}'})" aria-label="Bearbeiten">✏️</button>`:'')+
  `<p class="small mut">${sb.icon} ${sb.name}${st.r!=null?` · ${st.r||0} richtig, ${st.w||0} falsch`:''}${topicScore(id)!=null?` · Sicherheit ${topicScore(id)} %`:''}</p>
  ${PREVIEW||MODE==='eltern'?`<button class="btn sec2" style="margin:0 0 10px" onclick="go('loesungen',{id:'${id}'})">📋 Alle Aufgaben & Lösungen ansehen</button>`:''}
+ ${BILDER[id]?`<button class="item" style="margin-bottom:10px;border-color:${sb.color}" onclick="go('bild',{id:'${id}',i:0})"><span style="font-size:1.6rem">🖼️</span><div class="t"><b>Anschauen</b><small>${BILDER[id].map(x=>x.t).join(' · ')}</small></div>›</button>`:''}
  <div class="modes">
   <button class="mode" onclick="go('learn',{id:'${id}'})"><span class="ic">📘</span><b>Lernen</b><small>${t.learn?.length||0} Merkkästen${st.l?' ✓':''}</small></button>
   <button class="mode" ${canPractice?`onclick="startQuiz('${id}')"`:'disabled style="opacity:.4"'}><span class="ic">✏️</span><b>Üben</b><small>10 Aufgaben mit Hilfe</small></button>
@@ -804,7 +822,7 @@ VIEWS.learn=({id})=>{
  return hdr('📘 '+esc(t.title),sb.color)+(t.text?`<details class="text" open><summary>Lesetext</summary>${t.text}</details>`:'')+
  (t.learn||[]).map(([h,x])=>`<div class="box"><h3>${h}</h3><div>${x}</div></div>`).join('')+
  ((t.cards||[]).length?`<div class="sec">Das solltest du wissen</div><div class="box">${t.cards.slice(0,40).map(([f,b])=>`<div style="padding:4px 0;border-bottom:1px solid var(--line)"><b>${esc(f)}</b> – ${esc(b.split('|').join(' / '))}</div>`).join('')}</div>`:'')+
- `<button class="btn" onclick="learned('${id}')">✓ Gelernt – jetzt üben</button>`;
+ (BILDER[id]?`<button class="btn sec2" onclick="go('bild',{id:'${id}',i:0})">🖼️ Mit Bildern anschauen</button>`:'')+`<button class="btn" onclick="learned('${id}')">✓ Gelernt – jetzt üben</button>`;
 };
 function learned(id){const st=S.tp[id]||(S.tp[id]={});if(st.ld!==today()){addXP(20);st.ld=today();toast('+20 XP fürs Lernen 📘')}st.l=true;save();const t=topic(id);if((t.tasks&&t.tasks.length)||t.gen||((t.auto||t.vok)&&t.cards.length))startQuiz(id,true);else startCards(id)}
 
@@ -1132,6 +1150,292 @@ async function pushEnable(){
   lsSet('lb_push','1');toast('🔔 Erinnerung ist eingeschaltet');render();
  }catch(e){toast('Das hat nicht geklappt. Ist die App installiert und online?')}}
 async function pushTest(){try{const j=await api('testpush',{pin:SYNC.pin});toast(j.ok?`Gesendet an ${j.n} ${j.n===1?'Gerät':'Geräte'}`:'Fehler: '+(j.err||'unbekannt'))}catch(e){toast('Keine Verbindung')}}
+
+/* ===== Erklärbilder („Anschauen“): Bild + Regler + Merke + Schritt-für-Schritt ===== */
+const BILDER={},BST={};
+function B(id,def){(BILDER[id]=BILDER[id]||[]).push(def)}
+const BC={b:'#38bdf8',g:'#4ade80',y:'#fde047',o:'#fb923c',p:'#f472b6',v:'#a78bfa',r:'#f87171',m:'#94a3b8',t:'#e2e8f0',d:'#334155',bg:'#0f1a30'};
+const sv=(w,h,inner)=>`<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block" font-family="system-ui,-apple-system,sans-serif">${inner}</svg>`;
+const T=(x,y,s,o={})=>`<text x="${x}" y="${y}" text-anchor="${o.a||'middle'}" dominant-baseline="${o.bl||'middle'}" font-size="${o.s||14}" font-weight="${o.w||700}" fill="${o.c||BC.t}" ${o.x||''}>${s}</text>`;
+const Rc=(x,y,w,h,f,o={})=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.r??4}" fill="${f}" stroke="${o.st||'none'}" stroke-width="${o.sw||1}" ${o.x||''}/>`;
+const Ln=(x1,y1,x2,y2,c=BC.m,w=2,o='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" ${o}/>`;
+const Ci=(x,y,r,f,o='')=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${f}" ${o}/>`;
+const STELLEN=['Einer','Zehner','Hunderter','Tausender','Zehntausender','Hunderttausender','Millionen'];
+
+function bCur(){const p=view.p,list=BILDER[p.id],i=p.i||0,key=p.id+'#'+i;return {b:list[i],s:BST[key],key}}
+function bSet(k,v){const {b,s}=bCur();s[k]=v;s.k=0;if(b.fix)b.fix(s);render()}
+function bStep(k,d){const {b,s}=bCur();const c=(b.ctl?b.ctl(s):[]).find(x=>x.k===k);let v=s[k]+d;if(c){if(v<c.min)v=c.min;if(v>c.max)v=c.max}s[k]=v;s.k=0;if(b.fix)b.fix(s,d);render()}
+function bNeu(){const {b,s,key}=bCur();const n=Object.assign({k:0},b.neu?b.neu(s):b.init());if(b.fix)b.fix(n);BST[key]=n;render()}
+function bNext(all){const {b,s,key}=bCur();const n=(b.draw(s).steps||[]).length;s.k=all?n:Math.min(n,s.k+1);
+ if(s.k>=n&&!PREVIEW){if(S.bvd!==today()){S.bvd=today();S.bv=[]}if(!(S.bv||[]).includes(key)){S.bv=(S.bv||[]).concat(key);addXP(5);save();toast('+5 XP fürs Anschauen 🖼️')}}render()}
+VIEWS.bild=p=>{
+ const list=BILDER[p.id];const t=topic(p.id);if(!list||!t)return VIEWS.home();const i=p.i||0,b=list[i],key=p.id+'#'+i;
+ if(!BST[key]){BST[key]=Object.assign({k:0},b.init());if(b.fix)b.fix(BST[key])}
+ const s=BST[key],o=b.draw(s),steps=o.steps||[],sb=subj(t.s);
+ const ctl=(b.ctl?b.ctl(s):[]).map(c=>c.opts?`<div class="bctl"><span>${c.l}</span><div class="chips">${c.opts.map(([v,l])=>`<button class="chip ${s[c.k]===v?'on':''}" onclick='bSet("${c.k}",${JSON.stringify(v)})'>${l}</button>`).join('')}</div></div>`
+  :`<div class="bst"><span>${c.l}</span><button onclick="bStep('${c.k}',-${c.st||1})" aria-label="weniger">−</button><b>${c.f?c.f(s[c.k]):s[c.k]}</b><button onclick="bStep('${c.k}',${c.st||1})" aria-label="mehr">+</button></div>`).join('');
+ return hdr('🖼️ '+esc(t.title),sb.color)+
+ (list.length>1?`<div class="chips" style="margin-bottom:10px">${list.map((x,j)=>`<button class="chip ${j===i?'on':''}" onclick="go('bild',{id:'${p.id}',i:${j}},true)">${x.t}</button>`).join('')}</div>`:`<h3 style="margin-top:0">${b.t}</h3>`)+
+ `<div class="bildk">${o.pic}</div>${o.info?`<div class="binfo">${o.info}</div>`:''}
+ ${ctl?`<div class="bctls">${ctl}</div>`:''}
+ ${o.merke?`<div class="box"><h3>Merke</h3>${o.merke}</div>`:''}
+ ${steps.length?`<div class="sec">${o.stepTitle||'Schritt für Schritt'}</div><ol class="bsteps">${steps.map((x,j)=>`<li class="${j<s.k?'':'zu'}">${j<s.k?x:'…'}</li>`).join('')}</ol>
+ <div class="row2">${s.k<steps.length?`<button class="btn" style="margin-top:4px" onclick="bNext()">Schritt ${s.k+1} zeigen</button><button class="btn sec2" style="margin-top:4px" onclick="bNext(true)">Alle zeigen</button>`:`<button class="btn sec2" style="margin-top:4px;grid-column:1/-1" onclick="bSet('k',0)">↺ Wieder verdecken</button>`}</div>`:''}
+ ${b.neu?`<button class="btn sec2" onclick="bNeu()">🎲 Neues Beispiel</button>`:''}`;
+};
+
+/* ---------- Hilfen für schriftliches Rechnen ---------- */
+function colGrid(rows,cols,o={}){ // rows: [{cells:[...], y, c, s}], cells right-aligned over cols
+ const cw=o.cw||30,x0=o.x0??((360-cols*cw)/2);let s='';
+ rows.forEach(r=>{const cs=r.cells;cs.forEach((ch,j)=>{if(ch===''||ch==null)return;const col=cols-cs.length+j+(r.shift?-r.shift:0);s+=T(x0+col*cw+cw/2,r.y,ch,{s:r.s||24,c:r.c||BC.t,w:r.w||800})})});
+ return {svg:s,x0,cw};
+}
+
+/* ================= MATHE ================= */
+B('ma-zahlen',{t:'Stellenwerttafel',init:()=>({n:R(1000000,9999999)}),neu:()=>({n:R(1000000,9999999)}),
+ draw(s){const d=String(s.n).split(''),H=['M','HT','ZT','T','H','Z','E'],col=i=>i===0?BC.v:i<4?BC.b:BC.g;const cw=46,x0=(360-7*cw)/2;
+  let p='';H.forEach((h,i)=>{p+=Rc(x0+i*cw+2,10,cw-4,30,col(i)+'33',{r:8})+T(x0+i*cw+cw/2,25,h,{s:15,c:col(i)});p+=Rc(x0+i*cw+2,46,cw-4,50,BC.d,{r:8})+T(x0+i*cw+cw/2,72,d[i],{s:28,w:900})});
+  if(s.k>=1){[[0,1,'Millionen',BC.v],[1,4,'Tausender',BC.b],[4,7,'Einer',BC.g]].forEach(([a,e,l,c])=>{p+=Ln(x0+a*cw+6,108,x0+e*cw-6,108,c,3)+T(x0+(a+e)*cw/2,124,l,{s:13,c})})}
+  const g=[d[0],d.slice(1,4).join(''),d.slice(4).join('')];const terms=d.map((x,i)=>x==='0'?null:`${x}·${fmt(10**(6-i))}`).filter(Boolean);
+  return {pic:sv(360,134,p),info:`<b style="font-size:1.6rem">${fmt(s.n)}</b>`,
+   merke:'Jede Stelle ist <b>10-mal so viel wert</b> wie die Stelle rechts daneben. Große Zahlen liest du in <b>Dreiergruppen von rechts</b>.',
+   steps:[`Von rechts in Dreiergruppen teilen: <b>${g[0]} | ${g[1]} | ${g[2]}</b>`,`Lesen: <b>${+g[0]} Millionen ${+g[1]} Tausend ${+g[2]}</b>`,`Zerlegen: ${terms.join(' + ')}`]}}});
+B('ma-zahlen',{t:'Runden am Zahlenstrahl',init:()=>({n:R(1000,99999),st:100}),neu:s=>({n:R(1000,99999),st:s.st}),
+ ctl:()=>[{k:'st',l:'Runden auf',opts:[[10,'Zehner'],[100,'Hunderter'],[1000,'Tausender']]}],
+ draw(s){const st=s.st,lo=Math.floor(s.n/st)*st,hi=lo+st,mid=lo+st/2,r=Math.round(s.n/st)*st,dig=Math.floor(s.n/(st/10))%10,X=v=>30+(v-lo)/st*300;
+  let p=Ln(20,70,340,70,BC.t,3);for(let i=0;i<=10;i++){const x=30+i*30;p+=Ln(x,i%5?62:56,x,i%5?78:84,BC.m,2)}
+  p+=T(30,100,fmt(lo),{s:13})+T(330,100,fmt(hi),{s:13})+(s.k>=1?Ln(180,40,180,95,BC.y,2,'stroke-dasharray="4 4"')+T(180,30,'Mitte '+fmt(mid),{s:12,c:BC.y}):'');
+  p+=Ci(X(s.n),70,8,BC.p)+T(X(s.n),118,fmt(s.n),{s:15,c:BC.p});
+  if(s.k>=3)p+=`<path d="M${X(s.n)} 52 Q ${(X(s.n)+X(r))/2} 22 ${X(r)} 52" fill="none" stroke="${BC.g}" stroke-width="3" marker-end="url(#ar)"/>`;
+  const name={10:'Zehner',100:'Hunderter',1000:'Tausender'}[st],sub={10:'Einer',100:'Zehner',1000:'Hunderter'}[st];
+  return {pic:sv(360,130,`<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="${BC.g}"/></marker></defs>`+p),info:`Runde <b>${fmt(s.n)}</b> auf ${name}`,
+   merke:'Schau auf die Ziffer <b>rechts neben</b> der Rundungsstelle: 0–4 → abrunden, 5–9 → aufrunden. Auf dem Zahlenstrahl: Welcher Nachbar ist näher?',
+   steps:[`${fmt(s.n)} liegt zwischen <b>${fmt(lo)}</b> und <b>${fmt(hi)}</b>. Die Mitte ist ${fmt(mid)}.`,`Die ${sub}ziffer ist <b>${dig}</b> → ${dig>=5?'aufrunden':'abrunden'}.`,`${fmt(s.n)} ≈ <b>${fmt(r)}</b>`]}}});
+
+function addSteps(a,b){const A=String(a),Bs=String(b),sum=String(a+b),n=sum.length;let c=0;const res=[],car=[],txt=[];
+ for(let i=0;i<n;i++){const da=+(A[A.length-1-i]||0),db=+(Bs[Bs.length-1-i]||0);const tot=da+db+c;
+  if(i>=A.length&&i>=Bs.length){res.push(String(c));txt.push(`Übertrag <b>${c}</b> vorne hinschreiben.`);c=0;continue}
+  txt.push(`${STELLEN[i]}: ${da} + ${db}${c?' + 1 (Übertrag)':''} = ${tot} → schreibe <b>${tot%10}</b>${tot>=10?', Übertrag <b>1</b>':''}`);res.push(String(tot%10));c=tot>=10?1:0;car.push(c)}
+ return {res,car,txt,n}}
+B('ma-rechnen',{t:'Plus',init:()=>({a:R(1000,9999),b:R(100,9999)}),neu:()=>({a:R(1000,9999),b:R(100,9999)}),
+ draw(s){const st=addSteps(s.a,s.b),n=st.n+1;const A=String(s.a).split(''),Bs=String(s.b).split('');
+  const rows=[{cells:A,y:30},{cells:['+',...Array(n-1-Bs.length).fill(''),...Bs].slice(-(n)),y:66},
+   {cells:Array.from({length:st.n},(_,j)=>{const i=st.n-1-j;return i>=1&&i<=s.k&&st.car[i-1]?'1':''}),y:94,s:15,c:BC.o},
+   {cells:Array.from({length:st.n},(_,j)=>{const i=st.n-1-j;return i<s.k?st.res[i]:''}),y:126,c:BC.g}];
+  const g=colGrid(rows,n);return {pic:sv(360,146,g.svg+Ln(g.x0,108,g.x0+n*g.cw,108,BC.t,3)),
+   merke:'Stellengerecht untereinander schreiben: <b>Einer unter Einer</b>. Von <b>rechts nach links</b> rechnen, Überträge klein in die nächste Spalte.',steps:st.txt}}});
+B('ma-rechnen',{t:'Minus',init:()=>{const a=R(5000,9999);return {a,b:R(1000,a-1000)}},neu:()=>{const a=R(5000,9999);return {a,b:R(1000,a-1000)}},
+ draw(s){const A=String(s.a),Bs=String(s.b).padStart(A.length,' '),n=A.length;let c=0;const res=[],car=[],txt=[];
+  for(let i=0;i<n;i++){const t=+A[n-1-i],db=+(Bs[n-1-i].trim()||0),u=db+c;let r,nc;if(u<=t){r=t-u;nc=0;txt.push(`${STELLEN[i]}: ${db}${c?' + 1 (Übertrag) = '+u:''} – ergänze bis ${t}: <b>${r}</b>`)}else{r=t+10-u;nc=1;txt.push(`${STELLEN[i]}: ${db}${c?' + 1 (Übertrag) = '+u:''} – ergänze bis 1${t}: <b>${r}</b>, Übertrag <b>1</b>`)}res.push(String(r));car.push(nc);c=nc}
+  const N=n+1,rows=[{cells:A.split(''),y:30},{cells:['−',...Bs.split('').map(x=>x.trim())],y:66},
+   {cells:Array.from({length:n},(_,j)=>{const i=n-1-j;return i>=1&&i<=s.k&&car[i-1]?'1':''}),y:94,s:15,c:BC.o},
+   {cells:Array.from({length:n},(_,j)=>{const i=n-1-j;return i<s.k?res[i]:''}),y:126,c:BC.g}];
+  const g=colGrid(rows,N);return {pic:sv(360,146,g.svg+Ln(g.x0,108,g.x0+N*g.cw,108,BC.t,3)),
+   merke:'<b>Ergänzungsverfahren</b>: Von der unteren Zahl bis zur oberen ergänzen. Reicht es nicht, nimmst du 10 dazu und schreibst den Übertrag <b>unten</b> in die nächste Spalte.',steps:txt.concat([`Probe: ${fmt(s.a-s.b)} + ${fmt(s.b)} = ${fmt(s.a)} ✓`])}}});
+B('ma-rechnen',{t:'Mal',init:()=>({a:R(102,989),b:R(2,9)*10+R(2,9)}),neu:()=>({a:R(102,989),b:R(2,9)*10+R(2,9)}),
+ draw(s){const A=String(s.a),b1=Math.floor(s.b/10),b2=s.b%10,p1=s.a*b1,p2=s.a*b2,W=A.length+3;
+  const rows=[{cells:[...A,'·',String(b1),String(b2)],y:28}];
+  if(s.k>=1)rows.push({cells:String(p1).split(''),y:68,shift:1,c:BC.b});if(s.k>=2)rows.push({cells:String(p2).split(''),y:100,c:BC.p});if(s.k>=3)rows.push({cells:String(s.a*s.b).split(''),y:148,c:BC.g});
+  const g=colGrid(rows,W,{cw:28});return {pic:sv(360,166,g.svg+Ln(g.x0-28,46,g.x0+W*28,46,BC.t,3)+(s.k>=3?Ln(g.x0-28,124,g.x0+W*28,124,BC.t,3)+T(g.x0-14,100,'+',{s:22,c:BC.m}):'')),
+   merke:'Die erste Zahl mit <b>jeder Ziffer</b> der zweiten Zahl malnehmen. Das Ergebnis endet immer <b>unter der Ziffer</b>, mit der du gerade rechnest. Dann addieren.',
+   steps:[`${s.a} · <b>${b1}</b> = ${fmt(p1)} – endet unter der ${b1} (Zehner!)`,`${s.a} · <b>${b2}</b> = ${fmt(p2)} – endet unter der ${b2}`,`Addieren: <b>${fmt(s.a*s.b)}</b>`,`Überschlag: ${Math.round(s.a/100)*100} · ${Math.round(s.b/10)*10} = ${fmt(Math.round(s.a/100)*100*Math.round(s.b/10)*10)} – passt!`]}}});
+B('ma-rechnen',{t:'Geteilt',init:()=>{const d=R(3,9);return {d,q:R(102,999)}},neu:()=>{const d=R(3,9);return {d,q:R(102,999)}},
+ draw(s){const D=String(s.d*s.q),d=s.d;let cur=0,started=false,qs='';const st=[];
+  for(let i=0;i<D.length;i++){cur=cur*10+ +D[i];if(!started&&cur<d&&i<D.length-1)continue;started=true;const qd=Math.floor(cur/d),pr=qd*d,rem=cur-pr;st.push({i,cur,qd,pr,rem});qs+=qd;cur=rem}
+  const cw=24,x0=40;let p='';[...D].forEach((ch,j)=>p+=T(x0+j*cw+cw/2,24,ch,{s:24,w:900}));
+  p+=T(x0+D.length*cw+18,24,':',{s:24})+T(x0+D.length*cw+40,24,d,{s:24,w:900})+T(x0+D.length*cw+64,24,'=',{s:24})+T(x0+D.length*cw+84,24,qs.slice(0,s.k),{s:24,w:900,a:'start',c:BC.g});
+  let y=52;st.slice(0,s.k).forEach((o,j)=>{const curS=String(o.cur),prS=String(o.pr),remS=String(o.rem);
+   if(j>0){curS.split('').forEach((ch,m)=>p+=T(x0+(o.i-curS.length+1+m)*cw+cw/2,y,ch,{s:20,c:BC.t}));y+=26}
+   p+=T(x0+(o.i-prS.length+1)*cw-6,y,'−',{s:18,c:BC.m});prS.split('').forEach((ch,m)=>p+=T(x0+(o.i-prS.length+1+m)*cw+cw/2,y,ch,{s:20,c:BC.p}));
+   p+=Ln(x0+(o.i-Math.max(prS.length,curS.length)+1)*cw,y+13,x0+(o.i+1)*cw,y+13,BC.t,2);y+=28;
+   if(j===st.length-1)remS.split('').forEach((ch,m)=>p+=T(x0+(o.i-remS.length+1+m)*cw+cw/2,y,ch,{s:20,c:BC.o}))});
+  const txt=st.map((o,j)=>{const nx=st[j+1];return `${o.cur} : ${d} = <b>${o.qd}</b> (denn ${o.qd} · ${d} = ${o.pr}), Rest ${o.rem}${nx?` → nächste Ziffer runterholen: <b>${nx.cur}</b>`:''}`});
+  return {pic:sv(360,Math.max(90,y+30),p),merke:'Von <b>links</b> beginnen: Wie oft passt der Divisor hinein? Malnehmen, abziehen, nächste Ziffer <b>runterholen</b>. Am Ende muss der Rest 0 sein.',
+   steps:txt.concat([`Probe: ${fmt(s.q)} · ${d} = ${fmt(s.q*d)} ✓`])}}});
+B('ma-potenzen',{t:'Quadratzahlen',init:()=>({n:6}),ctl:()=>[{k:'n',l:'Seitenlänge',min:1,max:15}],
+ draw(s){const n=s.n,sz=Math.min(22,240/n);const x0=(360-n*sz)/2;let p='';for(let r=0;r<n;r++)for(let c=0;c<n;c++)p+=Rc(x0+c*sz+1,10+r*sz+1,sz-2,sz-2,(s.k>=1&&r===0)?BC.y:BC.b,{r:2});
+  return {pic:sv(360,n*sz+20,p),info:`<b style="font-size:1.5rem">${n}² = ${n} · ${n} = ${n*n}</b>`,merke:'Eine <b>Quadratzahl</b> entsteht, wenn man eine Zahl mit sich selbst malnimmt. Die Kästchen bilden genau ein Quadrat.',
+   steps:[`Eine Reihe hat <b>${n}</b> Kästchen (gelb).`,`Es gibt <b>${n}</b> solche Reihen.`,`${n} · ${n} = <b>${n*n}</b> – kurz: ${n}²`]}}});
+B('ma-teilbarkeit',{t:'Teiler als Rechtecke',init:()=>({n:12}),ctl:()=>[{k:'n',l:'Zahl',min:2,max:36}],
+ draw(s){const n=s.n,pr=[];for(let r=1;r*r<=n;r++)if(n%r===0)pr.push([r,n/r]);const dv=[...new Set(pr.flat())].sort((a,b)=>a-b);
+  const dot=Math.min(10,320/n);let y=6,p='';pr.forEach(([r,c],j)=>{if(j<=s.k||s.k>=pr.length){p+=T(20,y+8,`${r} Reihe${r>1?'n':''} × ${c}`,{s:12,a:'start',c:BC.m});for(let i=0;i<r;i++)for(let k=0;k<c;k++)p+=Ci(20+k*dot+dot/2,y+20+i*dot+dot/2,dot*.38,j%2?BC.g:BC.b)}y+=r*dot+30});
+  const prim=pr.length===1;return {pic:sv(360,y+4,p),info:`<b>T<sub>${n}</sub> = {${dv.join(', ')}}</b>${prim?' · <b style="color:#fde047">Primzahl!</b>':''}`,
+   merke:'Jedes Rechteck aus Punkten zeigt ein <b>Teiler-Paar</b>. Gibt es nur das lange 1-Reihen-Rechteck, ist die Zahl eine <b>Primzahl</b>.',
+   steps:pr.map(([r,c])=>`${r} · ${c} = ${n} → <b>${r}</b> und <b>${c}</b> sind Teiler`).concat([prim?`Nur 1 und ${n} – also ist ${n} eine <b>Primzahl</b>.`:`${n} hat ${dv.length} Teiler – keine Primzahl.`])}}});
+const TREPPE={len:{n:'Länge',u:['km','m','dm','cm','mm'],f:[1000,10,10,10]},mas:{n:'Masse',u:['t','kg','g','mg'],f:[1000,1000,1000]},fl:{n:'Fläche',u:['km²','ha','a','m²','dm²','cm²','mm²'],f:[100,100,100,100,100,100]},zeit:{n:'Zeit',u:['d','h','min','s'],f:[24,60,60]}};
+function trNeu(a){const t=TREPPE[a];const fr=R(0,t.u.length-2),to=R(fr+1,Math.min(t.u.length-1,fr+2));return {a,fr,to,v:R(2,9)}}
+B('ma-groessen',{t:'Einheitentreppe',init:()=>trNeu('len'),neu:s=>trNeu(s.a),ctl:()=>[{k:'a',l:'Größe',opts:Object.entries(TREPPE).map(([k,t])=>[k,t.n])}],fix(s){const t=TREPPE[s.a];if(s.to>=t.u.length||s.fr>=s.to)Object.assign(s,trNeu(s.a),{k:s.k})},
+ draw(s){const t=TREPPE[s.a],n=t.u.length,w=Math.min(64,330/n),h=22;let p='';
+  t.u.forEach((u,i)=>{const x=15+i*w,y=12+i*h,act=i>=s.fr&&i<=s.fr+s.k&&i<=s.to;p+=Rc(x,y,w-4,34,act?BC.g+'55':BC.d,{r:8,st:act?BC.g:'none',sw:2})+T(x+(w-4)/2,y+17,u,{s:15});
+   if(i<n-1)p+=T(x+w-8,y+46,'·'+fmt(t.f[i]),{s:11,c:BC.o,a:'end'})});
+  let v=s.v;const st=[];for(let i=s.fr;i<s.to;i++){const nv=v*t.f[i];st.push(`${fmt(v)} ${t.u[i]} = ${fmt(v)} · ${fmt(t.f[i])} = <b>${fmt(nv)} ${t.u[i+1]}</b> (eine Stufe runter)`);v=nv}
+  return {pic:sv(360,12+n*h+46,p),info:`Wandle um: <b>${s.v} ${t.u[s.fr]} = ? ${t.u[s.to]}</b>`,
+   merke:`Treppe <b>runter</b> → <b>mal</b> Umrechnungszahl (die Zahl wird größer). Treppe <b>hoch</b> → <b>geteilt</b> (die Zahl wird kleiner).${s.a==='fl'?' Bei Flächen ist die Umrechnungszahl immer <b>100</b>.':''}`,steps:st}}});
+B('ma-groessen',{t:'Maßstab',init:()=>({m:25000,cm:4}),ctl:()=>[{k:'m',l:'Maßstab 1 :',opts:[[10000,'10 000'],[25000,'25 000'],[50000,'50 000'],[100000,'100 000']]},{k:'cm',l:'Karte (cm)',min:1,max:10}],
+ draw(s){const real=s.cm*s.m/100;let p=T(10,16,'Karte',{s:12,a:'start',c:BC.m});for(let i=0;i<s.cm;i++)p+=Rc(10+i*34,26,32,16,i%2?BC.b:BC.t,{r:2});
+  p+=T(10+s.cm*34+6,34,s.cm+' cm',{s:13,a:'start'});p+=T(10,70,'Wirklichkeit',{s:12,a:'start',c:BC.m})+Rc(10,80,s.cm*34-2,16,BC.g,{r:3})+T(10+s.cm*34+6,88,real>=1000?dez(real/1000)+' km':fmt(real)+' m',{s:13,a:'start'});
+  return {pic:sv(360,110,p),info:`Maßstab <b>1 : ${fmt(s.m)}</b>`,merke:`1 cm auf der Karte sind ${fmt(s.m)} cm in Wirklichkeit.`,
+   steps:[`1 cm auf der Karte = ${fmt(s.m)} cm = <b>${fmt(s.m/100)} m</b>`,`${s.cm} cm · ${fmt(s.m/100)} m = <b>${fmt(real)} m</b>${real>=1000?' = <b>'+dez(real/1000)+' km</b>':''}`]}}});
+function waageNeu(op){if(op==='+'){const x=R(2,30),a=R(2,20);return {op,x,a,b:x+a}}const a=R(2,5),x=R(2,9);return {op,x,a,b:a*x}}
+B('ma-gleichungen',{t:'Gleichung als Waage',init:()=>waageNeu('+'),neu:s=>waageNeu(s.op),ctl:()=>[{k:'op',l:'Art',opts:[['+','x + a = b'],['·','a · x = b']]}],fix(s){if(s.b==null||(s.op==='+'?s.b!==s.x+s.a:s.b!==s.a*s.x))Object.assign(s,waageNeu(s.op))},
+ draw(s){const solved=s.k>=2;let p=`<polygon points="180,150 165,175 195,175" fill="${BC.m}"/>`+Ln(60,150,300,150,BC.t,4)+Ln(80,150,80,128,BC.m,2)+Ln(280,150,280,128,BC.m,2)+Rc(40,118,80,10,BC.m,{r:3})+Rc(240,118,80,10,BC.m,{r:3});
+  const box=(x,y,l,c)=>Rc(x,y,30,30,c,{r:6})+T(x+15,y+15,l,{s:14,c:'#0b1324'});
+  if(s.op==='+'){p+=box(48,86,'x',BC.y);if(!solved)p+=box(84,86,s.a,BC.o);p+=box(262,86,solved?s.x:s.b,BC.b)}
+  else{const n=solved?1:s.a;for(let i=0;i<n;i++)p+=box(40+(i%3)*28-(n>1?0:-12),86-Math.floor(i/3)*32,'x',BC.y);p+=box(262,86,solved?s.x:s.b,BC.b)}
+  const eq=s.op==='+'?`x + ${s.a} = ${s.b}`:`${s.a} · x = ${s.b}`;
+  return {pic:sv(360,185,p),info:`<b style="font-size:1.4rem">${eq}</b>`,merke:'Eine Gleichung ist wie eine <b>Waage im Gleichgewicht</b>. Was du auf einer Seite machst, musst du auch auf der anderen Seite machen.',
+   steps:s.op==='+'?[`Links liegen x und ${s.a}, rechts ${s.b}. Beide Seiten sind gleich schwer.`,`Nimm auf <b>beiden</b> Seiten ${s.a} weg: rechts bleibt ${s.b} − ${s.a}.`,`x = <b>${s.x}</b>`,`Probe: ${s.x} + ${s.a} = ${s.b} ✓`]
+   :[`Links liegen ${s.a}-mal x, rechts ${s.b}. Beide Seiten sind gleich schwer.`,`Teile <b>beide</b> Seiten durch ${s.a}: ${s.b} : ${s.a}.`,`x = <b>${s.x}</b>`,`Probe: ${s.a} · ${s.x} = ${s.b} ✓`]}}});
+function wArt(w){return w===0?'Nullwinkel':w<90?'spitzer Winkel':w===90?'rechter Winkel':w<180?'stumpfer Winkel':w===180?'gestreckter Winkel':w<360?'überstumpfer Winkel':'Vollwinkel'}
+B('ma-geometrie',{t:'Winkel',init:()=>({w:45}),ctl:()=>[{k:'w',l:'Größe',min:0,max:360,st:15,f:v=>v+'°'}],
+ draw(s){const cx=180,cy=110,L=100,a=s.w*Math.PI/180,x2=cx+L*Math.cos(a),y2=cy-L*Math.sin(a),r=38,ex=cx+r*Math.cos(a),ey=cy-r*Math.sin(a);
+  const arc=s.w>=360?Ci(cx,cy,r,'none',`stroke="${BC.y}" stroke-width="4"`):s.w>0?`<path d="M${cx+r} ${cy} A ${r} ${r} 0 ${s.w>180?1:0} 0 ${ex} ${ey}" fill="${BC.y}33" stroke="${BC.y}" stroke-width="3"/>`:'';
+  let p=arc+Ln(cx,cy,cx+L,cy,BC.t,4)+Ln(cx,cy,x2,y2,BC.b,4)+Ci(cx,cy,5,BC.t);if(s.w===90)p+=Rc(cx,cy-14,14,14,'none',{st:BC.y,sw:2,r:0})+Ci(cx+6,cy-6,2,BC.y);
+  p+=T(cx+(r+18)*Math.cos(a/2),cy-(r+18)*Math.sin(a/2),s.w+'°',{s:15,c:BC.y});
+  return {pic:sv(360,220,p),info:`<b style="font-size:1.4rem">${s.w}° – ${wArt(s.w)}</b>`,
+   merke:'spitz: unter 90° · recht: genau 90° · stumpf: zwischen 90° und 180° · gestreckt: 180° · überstumpf: zwischen 180° und 360° · Vollwinkel: 360°',
+   steps:[`Ein Winkel besteht aus einem <b>Scheitelpunkt</b> und zwei <b>Schenkeln</b>.`,`Gemessen wird gegen den Uhrzeigersinn vom unteren Schenkel aus.`,`${s.w}° ist ein <b>${wArt(s.w)}</b>.`]}}});
+B('ma-geometrie',{t:'Koordinatensystem',init:()=>({x:3,y:5}),neu:()=>({x:R(0,8),y:R(0,8)}),ctl:()=>[{k:'x',l:'x (rechts)',min:0,max:8},{k:'y',l:'y (hoch)',min:0,max:8}],
+ draw(s){const g=30,x0=50,y0=280;let p='';for(let i=0;i<=8;i++){p+=Ln(x0+i*g,y0,x0+i*g,y0-8*g,BC.d,1)+Ln(x0,y0-i*g,x0+8*g,y0-i*g,BC.d,1)+T(x0+i*g,y0+14,i,{s:11,c:BC.m})+T(x0-12,y0-i*g,i,{s:11,c:BC.m})}
+  p+=Ln(x0,y0,x0+8*g+14,y0,BC.t,2)+Ln(x0,y0,x0,y0-8*g-14,BC.t,2)+T(x0+8*g+20,y0,'x',{s:13})+T(x0,y0-8*g-22,'y',{s:13});
+  const px=x0+s.x*g,py=y0-s.y*g;if(s.k>=1)p+=Ln(x0,y0-3,px,y0-3,BC.o,4);if(s.k>=2)p+=Ln(px,y0,px,py,BC.g,4);if(s.k>=3||s.k===0)p+=Ci(px,py,7,BC.p)+T(px+10,py-12,`P(${s.x}|${s.y})`,{s:13,c:BC.p,a:'start'});
+  return {pic:sv(360,300,p),info:`<b style="font-size:1.4rem">P(${s.x}|${s.y})</b>`,merke:'Erst <b>x</b> nach rechts, dann <b>y</b> nach oben. Merksatz: „Erst durch den Flur, dann die Treppe hoch.“',
+   steps:[`Starte im Ursprung (0|0) und gehe <b>${s.x}</b> nach rechts.`,`Gehe dann <b>${s.y}</b> nach oben.`,`Dort liegt der Punkt <b>P(${s.x}|${s.y})</b>.`]}}});
+B('ma-flaeche',{t:'Rechteck',init:()=>({a:6,b:4}),ctl:()=>[{k:'a',l:'Länge a',min:1,max:12,f:v=>v+' cm'},{k:'b',l:'Breite b',min:1,max:8,f:v=>v+' cm'}],
+ draw(s){const sz=Math.min(26,320/s.a,180/s.b),x0=(360-s.a*sz)/2;let p='';for(let r=0;r<s.b;r++)for(let c=0;c<s.a;c++)p+=Rc(x0+c*sz,10+r*sz,sz,sz,s.k>=2?BC.b+'55':BC.d,{r:0,st:BC.bg,sw:1});
+  p+=Rc(x0,10,s.a*sz,s.b*sz,'none',{r:0,st:s.k>=1?BC.o:BC.t,sw:s.k>=1?4:2})+T(180,10+s.b*sz+16,'a = '+s.a+' cm',{s:13})+T(x0-8,10+s.b*sz/2,'b = '+s.b,{s:13,a:'end'});
+  return {pic:sv(360,s.b*sz+34,p),info:`u = <b>${2*(s.a+s.b)} cm</b> · A = <b>${s.a*s.b} cm²</b>`,merke:'<b>Umfang</b> = einmal außen herum: u = 2 · a + 2 · b<br><b>Flächeninhalt</b> = Anzahl der Kästchen: A = a · b',
+   steps:[`Umfang (orange): ${s.a} + ${s.b} + ${s.a} + ${s.b} = 2 · ${s.a} + 2 · ${s.b} = <b>${2*(s.a+s.b)} cm</b>`,`Fläche: ${s.b} Reihen mit je ${s.a} Kästchen (1 cm²)`,`A = ${s.a} · ${s.b} = <b>${s.a*s.b} cm²</b>`]}}});
+B('ma-flaeche',{t:'Quader',init:()=>({a:4,b:3,c:2}),ctl:()=>[{k:'a',l:'Länge a',min:1,max:6},{k:'b',l:'Breite b',min:1,max:6},{k:'c',l:'Höhe c',min:1,max:6}],
+ draw(s){const {a,b,c}=s,u=Math.min(30,220/(a+b+c)),P=(x,y,z)=>[(x-y)*u*.866,(x+y)*u*.5-z*u];
+  const pts=[P(0,0,0),P(a,0,0),P(0,b,0),P(a,b,0),P(0,0,c),P(a,0,c),P(0,b,c),P(a,b,c)];const xs=pts.map(q=>q[0]),ys=pts.map(q=>q[1]),mx=Math.min(...xs),my=Math.min(...ys),W=Math.max(...xs)-mx,H=Math.max(...ys)-my,ox=(360-W)/2-mx,oy=14-my;
+  const Q=(x,y,z)=>{const q=P(x,y,z);return (q[0]+ox).toFixed(1)+','+(q[1]+oy).toFixed(1)};const poly=(ps,f)=>`<polygon points="${ps.map(q=>Q(...q)).join(' ')}" fill="${f}" stroke="${BC.bg}" stroke-width="1.5"/>`;
+  let p='';const top=s.k>=1?BC.y:BC.b;
+  for(let i=0;i<a;i++)for(let j=0;j<b;j++)p+=poly([[i,j,c],[i+1,j,c],[i+1,j+1,c],[i,j+1,c]],top);
+  for(let j=0;j<b;j++)for(let z=0;z<c;z++)p+=poly([[a,j,z],[a,j+1,z],[a,j+1,z+1],[a,j,z+1]],'#0e7490');
+  for(let i=0;i<a;i++)for(let z=0;z<c;z++)p+=poly([[i,b,z],[i+1,b,z],[i+1,b,z+1],[i,b,z+1]],'#1d4ed8');
+  return {pic:sv(360,H+30,p),info:`V = <b>${a*b*c} cm³</b> · O = <b>${2*(a*b+a*c+b*c)} cm²</b>`,merke:'<b>Volumen</b>: Wie viele Würfel passen hinein? V = a · b · c<br><b>Oberfläche</b>: alle 6 Flächen zusammen: O = 2 · (a·b + a·c + b·c)',
+   steps:[`Eine Schicht (gelb) hat ${a} · ${b} = <b>${a*b}</b> Würfel.`,`Es gibt <b>${c}</b> Schichten übereinander.`,`V = ${a} · ${b} · ${c} = <b>${a*b*c} cm³</b>`,`O = 2 · (${a*b} + ${a*c} + ${b*c}) = <b>${2*(a*b+a*c+b*c)} cm²</b>`]}}});
+const TAGE=['Mo','Di','Mi','Do','Fr','Sa','So'];
+B('ma-daten',{t:'Säulendiagramm & Kennwerte',init:()=>({l:Array.from({length:7},()=>R(1,10))}),neu:()=>({l:Array.from({length:7},()=>R(1,10))}),
+ draw(s){const l=s.l,sum=l.reduce((a,b)=>a+b,0),mw=sum/7,so=[...l].sort((a,b)=>a-b),med=so[3],mx=Math.max(...l),mn=Math.min(...l);
+  const cnt={};l.forEach(v=>cnt[v]=(cnt[v]||0)+1);const top=Math.max(...Object.values(cnt));const modes=top>1?Object.keys(cnt).filter(k=>cnt[k]===top).map(Number):[];
+  const H=150,y0=170,sc=H/10,bw=34;let p='';for(let v=0;v<=10;v+=2)p+=Ln(40,y0-v*sc,345,y0-v*sc,BC.d,1)+T(30,y0-v*sc,v,{s:10,c:BC.m});
+  l.forEach((v,i)=>{const x=50+i*42;let f=BC.b;if(s.k>=2&&v===med)f=BC.v;if(s.k>=3&&modes.includes(v))f=BC.p;p+=Rc(x,y0-v*sc,bw,v*sc,f,{r:4})+T(x+bw/2,y0-v*sc-9,v,{s:12})+T(x+bw/2,y0+12,TAGE[i],{s:11,c:BC.m})});
+  if(s.k>=5)p+=Ln(40,y0-mw*sc,345,y0-mw*sc,BC.y,3,'stroke-dasharray="6 4"')+T(345,y0-mw*sc-10,'Ø '+dez(Math.round(mw*10)/10),{s:12,c:BC.y,a:'end'});
+  return {pic:sv(360,190,p),info:'Punkte beim Training pro Tag',merke:'Median = Mitte der <b>geordneten</b> Liste · Modalwert = häufigster Wert · Spannweite = größter − kleinster Wert · Mittelwert = Summe : Anzahl',
+   steps:[`Der Größe nach ordnen: ${so.join(', ')}`,`<b>Median</b> (lila): der 4. von 7 Werten = <b>${med}</b>`,modes.length?`<b>Modalwert</b> (pink): <b>${modes.join(' und ')}</b> kommt ${top}-mal vor`:'<b>Modalwert</b>: Jeder Wert kommt nur einmal vor – es gibt keinen.',`<b>Spannweite</b>: ${mx} − ${mn} = <b>${mx-mn}</b>`,`<b>Mittelwert</b> (gelbe Linie): ${sum} : 7 ≈ <b>${dez(Math.round(mw*10)/10)}</b>`]}}});
+B('ma-brueche',{t:'Bruch als Kreis & Streifen',init:()=>({z:3,n:4,f:1}),ctl:()=>[{k:'z',l:'Zähler',min:0,max:12},{k:'n',l:'Nenner',min:2,max:12},{k:'f',l:'erweitern mit',min:1,max:4}],fix(s){if(s.z>s.n)s.z=s.n},
+ draw(s){const {z,n,f}=s,cx=90,cy=95,r=75;let p='';for(let i=0;i<n;i++){const a1=-Math.PI/2+i*2*Math.PI/n,a2=a1+2*Math.PI/n;const x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1),x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2);
+  p+=`<path d="M${cx} ${cy} L${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 ${n===1?1:0} 1 ${x2.toFixed(1)} ${y2.toFixed(1)} Z" fill="${i<z?BC.o:BC.d}" stroke="${BC.bg}" stroke-width="2"/>`}
+  const N=n*f,Z=z*f,bw=150/N;for(let i=0;i<N;i++)p+=Rc(190+i*bw,60,bw,70,i<Z?BC.o:BC.d,{r:0,st:BC.bg,sw:1.5});
+  p+=Rc(190,60,150,70,'none',{r:0,st:BC.t,sw:2})+T(265,150,`${Z}/${N}`,{s:16})+T(cx,185,`${z}/${n}`,{s:16});
+  const g=gcd(z,n)||1;return {pic:sv(360,200,p),info:`<b style="font-size:1.4rem">${z}/${n}${f>1?` = ${Z}/${N}`:''}</b>${z&&g>1?` · gekürzt: ${z/g}/${n/g}`:''}`,
+   merke:'<b>Nenner</b>: in wie viele gleiche Teile geteilt wird. <b>Zähler</b>: wie viele Teile genommen werden. Beim <b>Erweitern</b> werden die Teile kleiner, aber es bleibt gleich viel gefärbt.',
+   steps:[`Das Ganze wird in <b>${n}</b> gleiche Teile geteilt (Nenner).`,`<b>${z}</b> Teile sind gefärbt (Zähler).`,f>1?`Erweitert mit ${f}: jedes Teil wird in ${f} kleinere geteilt → <b>${Z}/${N}</b> – gleich viel Fläche!`:'Stelle „erweitern mit“ höher – was passiert mit dem Streifen?',`Das sind ungefähr <b>${Math.round(z/n*100)} %</b> des Ganzen.`]}}});
+
+/* ===== Erklärbilder: Deutsch, Englisch, Biologie, Geografie, Geschichte ===== */
+const SGF={'Subjekt':BC.b,'Prädikat':BC.r,'Dativobjekt':BC.g,'Akkusativobjekt':BC.y,'Adverbiale der Zeit':BC.v,'Adverbiale des Ortes':BC.v,'Adverbiale der Art und Weise':BC.v,'Adverbiale des Grundes':BC.v};
+const UMST=[
+ {g:[['am Morgen','Adverbiale der Zeit'],['trinkt','Prädikat'],['Opa Karl','Subjekt'],['einen Kaffee','Akkusativobjekt']],o:[[0,1,2,3],[2,1,0,3],[3,1,2,0]]},
+ {g:[['Paul','Subjekt'],['schenkt','Prädikat'],['seiner Schwester','Dativobjekt'],['morgen','Adverbiale der Zeit'],['ein Buch','Akkusativobjekt']],o:[[0,1,2,3,4],[3,1,0,2,4],[4,1,0,2,3],[2,1,0,3,4]]},
+ {g:[['wegen des Regens','Adverbiale des Grundes'],['spielen','Prädikat'],['die Kinder','Subjekt'],['im Haus','Adverbiale des Ortes']],o:[[0,1,2,3],[2,1,3,0],[3,1,2,0]]},
+ {g:[['Lena','Subjekt'],['singt','Prädikat'],['heute','Adverbiale der Zeit'],['laut','Adverbiale der Art und Weise']],o:[[0,1,2,3],[2,1,0,3],[3,1,0,2]]}];
+const cap=x=>x.charAt(0).toUpperCase()+x.slice(1);
+B('de-satzglieder',{t:'Umstellprobe',init:()=>({si:0,v:0}),neu:s=>({si:(s.si+1)%UMST.length,v:0}),ctl:s=>[{k:'v',l:'Umstellen',min:0,max:UMST[s.si].o.length-1,f:v=>'Version '+(v+1)}],
+ draw(s){const u=UMST[s.si],ord=u.o[s.v];const col=s.k>=2;
+  const pic=`<div class="umst">${ord.map((gi,pos)=>{const [w,r]=u.g[gi];const t=pos===0?cap(w):w;return `<span class="sgl" style="${col?`background:${SGF[r]}33;border-color:${SGF[r]}`:''}">${t}${col?`<small>${r}</small>`:''}${pos===1?'<i>Stelle 2</i>':''}</span>`}).join('')}<b>.</b></div>`;
+  return {pic,merke:'Wörter, die beim <b>Umstellen</b> immer zusammenbleiben, bilden ein <b>Satzglied</b>. Das Prädikat (gebeugtes Verb) bleibt im Aussagesatz immer an <b>Stelle 2</b>.',
+   steps:[`Tippe bei „Umstellen“ auf + und beobachte: Welche Wörter wandern immer zusammen?`,`Der Satz hat <b>${u.g.length} Satzglieder</b>. „${u.g.find(x=>x[1]==='Prädikat')[0]}“ bleibt an Stelle 2.`,`Jetzt siehst du die Satzglieder in Farbe: ${u.g.map(([w,r])=>`„${w}“ = ${r}`).join(' · ')}`]}}});
+const ZF_V={spielen:{ich:['spiele','spielte','habe gespielt','hatte gespielt','werde spielen'],er:['spielt','spielte','hat gespielt','hatte gespielt','wird spielen']},
+ gehen:{ich:['gehe','ging','bin gegangen','war gegangen','werde gehen'],er:['geht','ging','ist gegangen','war gegangen','wird gehen']},
+ singen:{ich:['singe','sang','habe gesungen','hatte gesungen','werde singen'],er:['singt','sang','hat gesungen','hatte gesungen','wird singen']},
+ lesen:{ich:['lese','las','habe gelesen','hatte gelesen','werde lesen'],er:['liest','las','hat gelesen','hatte gelesen','wird lesen']},
+ schreiben:{ich:['schreibe','schrieb','habe geschrieben','hatte geschrieben','werde schreiben'],er:['schreibt','schrieb','hat geschrieben','hatte geschrieben','wird schreiben']}};
+B('de-zeiten',{t:'Zeitstrahl der Zeitformen',init:()=>({v:'spielen',pe:'ich'}),ctl:()=>[{k:'v',l:'Verb',opts:Object.keys(ZF_V).map(v=>[v,v])},{k:'pe',l:'Person',opts:[['ich','ich'],['er','er/sie/es']]}],
+ draw(s){const f=ZF_V[s.v][s.pe],pr=s.pe==='ich'?'ich':'er';
+  const pts=[[62,22,'Plusquamperfekt',3,BC.v,0],[175,22,'Präteritum',1,BC.b,1],[140,128,'Perfekt',2,BC.g,2],[262,128,'Präsens',0,BC.y,3],[300,22,'Futur I',4,BC.o,4]];
+  let p=Ln(10,104,348,104,BC.t,3)+`<polygon points="350,104 340,98 340,110" fill="${BC.t}"/>`+Ln(262,92,262,116,BC.y,4)+T(262,82,'jetzt',{s:11,c:BC.y})+T(60,118,'Vergangenheit',{s:10,c:BC.m})+T(335,118,'Zukunft',{s:10,c:BC.m,a:'end'});
+  pts.forEach(([x,y,l,i,c,j])=>{const shown=s.k>j||s.k>=5;p+=T(x,y,l,{s:11,c})+Rc(x-57,y+9,114,24,shown?c+'33':BC.d,{r:6,st:c,sw:shown?1.5:0})+T(x,y+21,shown?pr+' '+f[i]:'?',{s:10.5,c:shown?BC.t:BC.m})+Ln(x,y<100?y+33:y-2,x,y<100?98:110,c,1,'stroke-dasharray="3 3"')});
+  return {pic:sv(360,170,p),merke:'Präsens = jetzt · Präteritum & Perfekt = vorbei · Plusquamperfekt = noch <b>vor</b> dem Vorbei · Futur I = kommt noch',
+   steps:[`<b>Plusquamperfekt</b>: hatte/war + Partizip II → ${pr} ${f[3]}`,`<b>Präteritum</b> (schriftliches Erzählen): ${pr} ${f[1]}`,`<b>Perfekt</b> (beim Sprechen): haben/sein + Partizip II → ${pr} ${f[2]}`,`<b>Präsens</b>: ${pr} ${f[0]}`,`<b>Futur I</b>: werden + Infinitiv → ${pr} ${f[4]}`]}}});
+const WAF={Nomen:BC.b,Verb:BC.r,Adjektiv:BC.g,Artikel:BC.m,Pronomen:BC.v,Präposition:BC.o,Konjunktion:BC.p,Adverb:BC.y};
+const WAS=[[['Der','Artikel'],['kleine','Adjektiv'],['Hund','Nomen'],['bellt','Verb'],['laut','Adjektiv'],[',',''],['weil','Konjunktion'],['er','Pronomen'],['Hunger','Nomen'],['hat','Verb']],
+ [['Meine','Pronomen'],['Schwester','Nomen'],['liest','Verb'],['heute','Adverb'],['ein','Artikel'],['spannendes','Adjektiv'],['Buch','Nomen']],
+ [['Wir','Pronomen'],['fahren','Verb'],['mit','Präposition'],['dem','Artikel'],['Zug','Nomen'],['nach','Präposition'],['Halle','Nomen']],
+ [['Das','Artikel'],['Laufen','Nomen'],['macht','Verb'],['Paul','Nomen'],['und','Konjunktion'],['mir','Pronomen'],['großen','Adjektiv'],['Spaß','Nomen']]];
+B('de-wortarten',{t:'Wortarten in Farbe',init:()=>({si:0}),neu:s=>({si:(s.si+1)%WAS.length}),
+ draw(s){const w=WAS[s.si].filter(x=>x[1]);let n=0;
+  const pic=`<div class="umst">${WAS[s.si].map(([x,a])=>{if(!a)return `<b style="margin-left:-6px">,</b>`;const sh=n++<s.k;return `<span class="sgl" style="${sh?`background:${WAF[a]}33;border-color:${WAF[a]}`:''}">${x}${sh?`<small>${a}</small>`:'<small>?</small>'}</span>`}).join('')}<b>.</b></div>
+  <div class="chips" style="margin-top:8px;justify-content:center">${Object.entries(WAF).map(([k,c])=>`<span class="pill" style="background:${c}33;color:${BC.t}">${k}</span>`).join('')}</div>`;
+  return {pic,merke:'Überlege bei jedem Wort erst selbst, dann aufdecken. Tipp: Artikelprobe (Nomen), Personprobe (Verb), Steigerungsprobe (Adjektiv).',stepTitle:'Wort für Wort',
+   steps:w.map(([x,a])=>`<b>${x}</b> – ${a}`)}}});
+const ENZ=['twelve','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'],ENM={5:'five',10:'ten',20:'twenty',25:'twenty-five'};
+function enTime(h,m){const nx=h%12+1;if(m===0)return `It's ${ENZ[h]} o'clock.`;if(m===15)return `It's quarter past ${ENZ[h]}.`;if(m===30)return `It's half past ${ENZ[h]}.`;if(m===45)return `It's quarter to ${ENZ[nx]}.`;return m<30?`It's ${ENM[m]} past ${ENZ[h]}.`:`It's ${ENM[60-m]} to ${ENZ[nx]}.`}
+function deTime(h,m){const nx=h%12+1;if(m===0)return `${h} Uhr`;if(m===15)return `Viertel nach ${h}`;if(m===30)return `halb ${nx}`;if(m===45)return `Viertel vor ${nx}`;return m<30?`${m} nach ${h}`:`${60-m} vor ${nx}`}
+B('en-vok2',{t:'What time is it?',init:()=>({h:3,m:30}),neu:()=>({h:R(1,12),m:R(0,11)*5}),ctl:()=>[{k:'h',l:'Stunde',min:1,max:12},{k:'m',l:'Minuten',min:0,max:55,st:5}],
+ draw(s){const cx=180,cy=110,r=95;let p=Ci(cx,cy,r,'#f8fafc')+Ci(cx,cy,r,'none',`stroke="${BC.b}" stroke-width="5"`);
+  for(let i=1;i<=12;i++){const a=i*Math.PI/6;p+=T(cx+(r-18)*Math.sin(a),cy-(r-18)*Math.cos(a),i,{s:15,c:'#0f172a'})}
+  for(let i=0;i<60;i++){const a=i*Math.PI/30,l=i%5?4:8;p+=Ln(cx+(r-4)*Math.sin(a),cy-(r-4)*Math.cos(a),cx+(r-4-l)*Math.sin(a),cy-(r-4-l)*Math.cos(a),'#475569',i%5?1:2)}
+  if(s.k>=2){p+=`<path d="M${cx} ${cy-r+30} A ${r-30} ${r-30} 0 0 1 ${cx} ${cy+r-30}" fill="none" stroke="${BC.g}" stroke-width="10" opacity=".35"/>`+T(cx+r-45,cy+r-20,'past',{s:12,c:'#15803d'})+T(cx-r+45,cy+r-20,'to',{s:12,c:'#b91c1c'})}
+  const ha=((s.h%12)+s.m/60)*Math.PI/6,ma=s.m*Math.PI/30;p+=Ln(cx,cy,cx+50*Math.sin(ha),cy-50*Math.cos(ha),'#0f172a',7)+Ln(cx,cy,cx+78*Math.sin(ma),cy-78*Math.cos(ma),BC.r,4)+Ci(cx,cy,6,'#0f172a');
+  const dig=`${s.h}:${String(s.m).padStart(2,'0')}`;
+  return {pic:sv(360,220,p),info:`<b style="font-size:1.3rem">${dig}</b> · <span class="mut">${deTime(s.h,s.m)}</span><br><b style="font-size:1.3rem;color:#fde047">${s.k>=3||s.k===0?enTime(s.h,s.m):'It\'s …'}</b>`,
+   merke:'Rechte Hälfte der Uhr: <b>past</b> (nach) · linke Hälfte: <b>to</b> (vor). <b>Achtung:</b> „halb vier“ heißt <b>half past three</b>!',
+   steps:[`Der lange Zeiger steht auf ${s.m} Minuten.`,s.m===0?'Genau auf der 12 → o\'clock':s.m<=30?`Rechte Hälfte → <b>past</b> die Stunde ${s.h}`:`Linke Hälfte → <b>to</b> die nächste Stunde ${s.h%12+1}`,`<b>${enTime(s.h,s.m)}</b>`]}}});
+const EN_V={play:'plays',watch:'watches',go:'goes',fly:'flies',have:'has',do:'does',read:'reads',kiss:'kisses',cry:'cries',swim:'swims'};
+const EN_R={play:'normal: + s',watch:'nach ch: + es',go:'nach o: + es',fly:'Konsonant + y → ies',have:'unregelmäßig: has',do:'nach o: + es',read:'normal: + s',kiss:'nach ss: + es',cry:'Konsonant + y → ies',swim:'normal: + s'};
+B('en-simple',{t:'he, she, it – das s muss mit!',init:()=>({v:'watch',p:'he'}),ctl:()=>[{k:'p',l:'Person',opts:['I','you','he','she','it','we','they'].map(x=>[x,x])},{k:'v',l:'Verb',opts:Object.keys(EN_V).map(x=>[x,x])}],
+ draw(s){const third=['he','she','it'].includes(s.p);const f=third?EN_V[s.v]:s.v;const base=s.v;let shown=f;
+  if(third&&f!==base&&f.startsWith(base.replace(/y$/,'')))shown=`${f.slice(0,base.replace(/y$/,'').length)}<span style="color:#fde047;text-decoration:underline">${f.slice(base.replace(/y$/,'').length)}</span>`;else if(third)shown=`<span style="color:#fde047;text-decoration:underline">${f}</span>`;
+  const neg=third?`${s.p} doesn't ${base}`:`${s.p} don't ${base}`,q=third?`Does ${s.p} ${base} …?`:`Do ${s.p} ${base} …?`;
+  return {pic:`<div class="bigsent">${cap(s.p)} ${shown} every day.</div>`,info:third?`<b>${EN_R[s.v]}</b>`:'Bei I, you, we, they bleibt das Verb gleich.',
+   merke:'Bei <b>he, she, it</b> bekommt das Verb im simple present ein <b>-s</b>. Nach s, ss, sh, ch, x, o: <b>-es</b>. Konsonant + y: <b>-ies</b>.',
+   steps:[`Verneinung: <b>${neg}</b>${third?' – das s wandert zu does!':''}`,`Frage: <b>${q}</b>`,`Signalwörter: always, usually, often, sometimes, never, every day`]}}});
+const WT={Fische:['🐟','Schuppen','Kiemen','wechselwarm','Eier (Laich) im Wasser','Hering, Forelle, Hai'],Lurche:['🐸','nackte, feuchte Haut','Larve: Kiemen · erwachsen: Lunge und Haut','wechselwarm','Laich im Wasser','Frosch, Kröte, Molch'],
+ Kriechtiere:['🦎','Hornschuppen','Lunge','wechselwarm','Eier mit lederartiger Schale an Land','Eidechse, Schlange, Schildkröte'],Vögel:['🐦','Federn','Lunge mit Luftsäcken','gleichwarm','Eier mit Kalkschale','Amsel, Pinguin, Adler'],Säugetiere:['🐻','Haare / Fell','Lunge','gleichwarm','meist lebend geboren, Junge werden gesäugt','Hund, Wal, Fledermaus']};
+B('bio-wirbeltiere',{t:'Wirbeltiere vergleichen',init:()=>({c:'Lurche'}),ctl:()=>[{k:'c',l:'Klasse',opts:Object.keys(WT).map(k=>[k,WT[k][0]+' '+k])}],
+ draw(s){const w=WT[s.c],L=['Körperbedeckung','Atmung','Körpertemperatur','Fortpflanzung','Beispiele'];
+  return {pic:`<div class="center" style="font-size:4rem;line-height:1.2">${w[0]}</div><h2 class="center" style="margin:0 0 6px">${s.c}</h2><table class="st">${L.map((l,i)=>`<tr><th>${l}</th><td>${i<s.k?w[i+1]:'<span class="mut">❓ erst überlegen</span>'}</td></tr>`).join('')}</table>`,
+   merke:'Nur <b>Vögel</b> und <b>Säugetiere</b> sind gleichwarm. Fische und Lurche legen ihren Laich ins Wasser.',stepTitle:'Überlegen – dann aufdecken',steps:L.map((l,i)=>`${l}: <b>${w[i+1]}</b>`)}}});
+B('bio-pflanzen',{t:'Aufbau einer Blüte',init:()=>({}),
+ draw(s){const L=[['Kronblatt','lockt Insekten mit Farbe und Duft an',BC.p,60,40,95,110],['Kelchblatt','schützt die Knospe',BC.g,50,262,140,224],['Staubblatt (Staubbeutel)','bildet den Pollen – männlich',BC.y,310,60,232,115],['Narbe','fängt den Pollen auf',BC.y,310,105,190,104],['Griffel','verbindet Narbe und Fruchtknoten',BC.g,310,150,184,135],['Fruchtknoten','enthält die Samenanlagen – hier entsteht die Frucht',BC.o,310,205,200,190]];
+  let p=Ln(180,215,180,290,'#16a34a',6);
+  p+=`<ellipse cx="105" cy="140" rx="32" ry="72" transform="rotate(-38 105 140)" fill="#f472b6"/><ellipse cx="255" cy="140" rx="32" ry="72" transform="rotate(38 255 140)" fill="#f472b6"/>`;
+  p+=`<ellipse cx="140" cy="222" rx="34" ry="11" transform="rotate(20 140 222)" fill="#16a34a"/><ellipse cx="220" cy="222" rx="34" ry="11" transform="rotate(-20 220 222)" fill="#16a34a"/>`;
+  p+=Ln(166,200,128,118,'#e5e7eb',3)+Ln(194,200,232,118,'#e5e7eb',3)+`<ellipse cx="127" cy="112" rx="7" ry="11" fill="#facc15"/><ellipse cx="233" cy="112" rx="7" ry="11" fill="#facc15"/>`;
+  p+=`<ellipse cx="180" cy="192" rx="22" ry="26" fill="#84cc16"/>`+Ln(180,168,180,112,'#65a30d',6)+`<ellipse cx="180" cy="106" rx="12" ry="7" fill="#d9f99d"/>`;
+  L.forEach(([n,,c,tx,ty,px,py],i)=>{if(i<s.k){const left=tx<180,lab=n.replace(' (Staubbeutel)','');p+=Ln(left?8:352,ty,px,py,BC.t,1.2,'opacity=".7"')+T(left?8:352,ty-9,lab,{s:12,a:left?'start':'end',c:BC.t})+Ci(px,py,3,BC.t)}});
+  return {pic:sv(360,295,p),merke:'Von außen nach innen: <b>Kelchblätter – Kronblätter – Staubblätter – Stempel</b>. Der Stempel besteht aus <b>Narbe, Griffel und Fruchtknoten</b>.',stepTitle:'Teile beschriften',
+   steps:L.map(([n,f])=>`<b>${n}</b>: ${f}`).concat(['<b>Bestäubung</b>: Pollen gelangt auf die Narbe. <b>Befruchtung</b>: im Fruchtknoten → Samen und Frucht entstehen.'])}}});
+const ORTE=[['Magdeburg',52,12],['New York',41,-74],['Sydney',-34,151],['Kapstadt',-34,18],['Rio de Janeiro',-23,-43],['Tokio',36,140]];
+B('geo-orientierung',{t:'Gradnetz der Erde',init:()=>({o:0}),ctl:()=>[{k:'o',l:'Ort',opts:ORTE.map((x,i)=>[i,x[0]])}],
+ draw(s){const [n,la,lo]=ORTE[s.o],cx=180,cy=140,R=115,l0=lo,rad=Math.PI/180;let p=Ci(cx,cy,R,'#0c4a6e')+Ci(cx,cy,R,'none',`stroke="${BC.b}" stroke-width="2"`);
+  for(let f=-60;f<=60;f+=30){const y=cy-R*Math.sin(f*rad),hw=R*Math.cos(f*rad);p+=Ln(cx-hw,y,cx+hw,y,f===0?BC.r:'#7dd3fc',f===0?3:1)}
+  for(let m=-180;m<180;m+=30){const d=((m-l0+540)%360)-180;if(Math.abs(d)>90)continue;let path='';for(let f=-90;f<=90;f+=10){const x=cx+R*Math.cos(f*rad)*Math.sin(d*rad),y=cy-R*Math.sin(f*rad);path+=(f===-90?'M':'L')+x.toFixed(1)+' '+y.toFixed(1)}p+=`<path d="${path}" fill="none" stroke="${m===0?BC.y:'#7dd3fc'}" stroke-width="${m===0?3:1}"/>`}
+  const py=cy-R*Math.sin(la*rad);p+=Ci(cx,py,7,BC.p)+T(cx+12,py-12,n,{s:13,a:'start',c:'#fff'})+T(cx,cy-R-10,'Nordpol',{s:11,c:BC.m})+T(cx,cy+R+12,'Südpol',{s:11,c:BC.m});
+  const ns=la>=0?'N':'S',ew=lo>=0?'O':'W';
+  return {pic:sv(360,272,p),info:`<b style="font-size:1.3rem">${n}: ${Math.abs(la)}° ${ns}, ${Math.abs(lo)}° ${ew}</b>`,merke:'<b style="color:#f87171">Äquator</b> = 0°. Breitenkreise zählen bis 90° nach Norden (N) und Süden (S). Der <b style="color:#fde047">Nullmeridian</b> (Greenwich) = 0°. Längenhalbkreise zählen bis 180° nach Osten (O) und Westen (W).',
+   steps:[`${n} liegt ${la>=0?'nördlich':'südlich'} vom Äquator → <b>${Math.abs(la)}° ${ns}</b> (Breite)`,`${n} liegt ${lo>=0?'östlich':'westlich'} vom Nullmeridian → <b>${Math.abs(lo)}° ${ew}</b> (Länge)`,`Man nennt immer zuerst die Breite, dann die Länge.`]}}});
+B('geo-erde',{t:'Tag und Nacht',init:()=>({h:12}),ctl:()=>[{k:'h',l:'Uhrzeit',min:0,max:23,f:v=>v+' Uhr'}],
+ draw(s){const cx=210,cy=120,r=80,th=(180+(s.h-12)*15)*Math.PI/180,mx=cx+r*Math.cos(th),my=cy-r*Math.sin(th),day=Math.cos(th)<-0.05,dawn=Math.abs(Math.cos(th))<=0.05;
+  let p=Ci(30,120,26,BC.y);for(let i=0;i<8;i++){const a=i*Math.PI/4;p+=Ln(30+32*Math.cos(a),120+32*Math.sin(a),30+42*Math.cos(a),120+42*Math.sin(a),BC.y,3)}
+  for(let i=-2;i<=2;i++)p+=Ln(70,120+i*30,cx-r-6,120+i*30,BC.y+'55',2,'stroke-dasharray="6 6"');
+  p+=Ci(cx,cy,r,'#2563eb')+`<path d="M${cx} ${cy-r} A ${r} ${r} 0 0 1 ${cx} ${cy+r} Z" fill="#0b1324" opacity=".75"/>`+Ci(cx,cy,6,BC.t)+T(cx,cy+r+16,'Blick von oben auf den Nordpol',{s:10,c:BC.m});
+  p+=Ci(mx,my,9,BC.p)+T(Math.max(60,Math.min(320,mx)),my<cy?my-18:my+20,'Deutschland',{s:12,c:BC.p});
+  return {pic:sv(360,225,p),info:`<b style="font-size:1.3rem">${s.h} Uhr: ${dawn?(s.h<12?'🌅 Sonnenaufgang':'🌇 Sonnenuntergang'):day?'☀️ Tag':'🌙 Nacht'}</b>`,
+   merke:'Die Erde dreht sich in <b>24 Stunden</b> einmal um sich selbst (Erdrotation). Die Hälfte, die zur Sonne zeigt, hat <b>Tag</b>, die andere <b>Nacht</b>.',
+   steps:['Die Sonne beleuchtet immer nur eine Hälfte der Erde.','Weil sich die Erde dreht, wandert Deutschland mal auf die helle, mal auf die dunkle Seite.','Die Erde dreht sich von <b>West nach Ost</b> – darum geht die Sonne im <b>Osten</b> auf.']}}});
+const EVENTS=[[-2560,'Cheops-Pyramide'],[-1600,'Himmelsscheibe von Nebra'],[-776,'1. Olympische Spiele'],[-753,'Gründung Roms (Sage)'],[9,'Varusschlacht'],[800,'Kaiserkrönung Karls des Großen'],[1517,'Luthers Thesen'],[1990,'Deutsche Einheit']];
+B('ge-zeit',{t:'Zeitstrahl',init:()=>({e:3}),ctl:()=>[{k:'e',l:'Ereignis',opts:EVENTS.map((x,i)=>[i,x[1]])}],
+ draw(s){const [y,n]=EVENTS[s.e],X=v=>20+(v+3000)/5100*320;let p=Ln(15,90,345,90,BC.t,3)+`<polygon points="345,90 335,84 335,96" fill="${BC.t}"/>`+Ln(X(0),70,X(0),110,BC.y,3)+T(X(0),124,'Christi Geburt',{s:11,c:BC.y});
+  for(let v=-3000;v<=2000;v+=1000)if(v)p+=Ln(X(v),84,X(v),96,BC.m,2)+T(X(v),108,v<0?-v+' v.':v,{s:10,c:BC.m});
+  EVENTS.forEach(([v],i)=>p+=Ci(X(v),90,i===s.e?8:4,i===s.e?BC.p:BC.m));p+=T(Math.min(300,Math.max(60,X(y))),50,n,{s:13,c:BC.p})+Ln(X(y),60,X(y),82,BC.p,2);
+  p+=T(80,150,'← vor Christus (v. Chr.)',{s:11,c:BC.m})+T(280,150,'nach Christus (n. Chr.) →',{s:11,c:BC.m});
+  const yy=Math.abs(y),jh=Math.ceil(yy/100),ago=y<0?2026+yy-1:2026-y;
+  return {pic:sv(360,165,p),info:`<b style="font-size:1.3rem">${yy} ${y<0?'v. Chr.':'n. Chr.'}</b> · ${n}`,
+   merke:'Vor Christi Geburt zählt man <b>rückwärts</b> (v. Chr.), danach vorwärts (n. Chr.). Ein Jahr 0 gibt es nicht. Das <b>1. Jahrhundert</b> umfasst die Jahre 1 bis 100.',
+   steps:[`${yy} ${y<0?'v. Chr.':'n. Chr.'} liegt ${y<0?'<b>links</b> von Christi Geburt':'<b>rechts</b> von Christi Geburt'}.`,`Jahrhundert: ${yy} → <b>${jh}. Jahrhundert ${y<0?'v. Chr.':'n. Chr.'}</b>`,`Das ist ungefähr <b>${fmt(ago)} Jahre</b> her.`]}}});
 
 /* ===== Abfrage-Modus für Eltern (mündlich abfragen) ===== */
 let ELTERN_OK=false;
