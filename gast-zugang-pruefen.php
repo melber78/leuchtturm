@@ -64,3 +64,24 @@ function lt_neuerCode(){
     return substr($c, 0, 4) . "-" . substr($c, 4);
 }
 function lt_codeHash($code){ return hash("sha256", "leuchtturm-gast|" . strtoupper(preg_replace('/[^A-Za-z0-9]/', "", (string)$code))); }
+
+/* ---------- Tafel-Zugang: eine digitale Tafel darf NUR die Guten-Morgen-Tafel öffnen ----------
+   Melanie erstellt im Leuchtturm einen Tafel-Link (morgen/?k=…). Die Tafel bekommt damit
+   ein langlebiges Cookie und sieht ausschließlich die Morgentafel (mit Melanies Daten). */
+function lt_tafelDatei(){ return __DIR__ . "/material-daten/gaeste/tafeln.json"; }
+function lt_tafelnLesen(){ $f = lt_tafelDatei(); $d = file_exists($f) ? json_decode((string)file_get_contents($f), true) : null; return is_array($d) ? $d : []; }
+function lt_tafelnSchreiben($liste){
+    $f = lt_tafelDatei();
+    if (!is_dir(dirname($f))) mkdir(dirname($f), 0775, true);
+    if (!file_exists(dirname($f) . "/.htaccess")) @file_put_contents(dirname($f) . "/.htaccess", "Require all denied\nDeny from all\n");
+    return file_put_contents($f, json_encode(array_values($liste), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX) !== false;
+}
+function lt_tafelHash($k){ return hash("sha256", "leuchtturm-tafel|" . (string)$k); }
+// Gültiger Tafel-Zugang dieses Geräts (oder null)
+function lt_tafelZugang($schluessel = null){
+    $k = $schluessel ?? ($_COOKIE["lt_tafel"] ?? "");
+    if (!is_string($k) || !preg_match('/^[a-f0-9]{40}$/', $k)) return null;
+    $h = lt_tafelHash($k);
+    foreach (lt_tafelnLesen() as $t) if (hash_equals($t["hash"] ?? "", $h) && empty($t["gesperrt"])) return $t;
+    return null;
+}

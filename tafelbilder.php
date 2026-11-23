@@ -10,19 +10,20 @@ $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESC
 <!DOCTYPE html>
 <html lang="de">
 <head>
+<?php $TAFEL_APP = defined("LT_TAFEL_APP"); if ($TAFEL_APP): ?><base href="../"><?php endif; ?>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
-<link rel="manifest" href="manifest.php">
+<link rel="manifest" href="<?= $TAFEL_APP ? "morgen/manifest.php" : "manifest.php" ?>">
 <meta name="theme-color" content="#16324a">
-<link rel="apple-touch-icon" href="app-icon-192.png">
-<link rel="icon" type="image/png" href="app-icon-192.png">
+<link rel="apple-touch-icon" href="<?= $TAFEL_APP ? "morgen/icon-192.png" : "app-icon-192.png" ?>">
+<link rel="icon" type="image/png" href="<?= $TAFEL_APP ? "morgen/icon-192.png" : "app-icon-192.png" ?>">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Leuchtturm">
-<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});</script>
+<meta name="apple-mobile-web-app-title" content="<?= $TAFEL_APP ? "Guten Morgen" : "Leuchtturm" ?>">
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("<?= $TAFEL_APP ? "morgen/sw.js" : "sw.js" ?>").catch(function(){});</script>
 
-<title>Tafelbilder · Leuchtturm</title>
+<title><?= $TAFEL_APP ? "Guten Morgen!" : "Tafelbilder · Leuchtturm" ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Patrick+Hand&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <!--
@@ -194,6 +195,7 @@ body{ background:#f6f2ea; }
 .mg-sonne.dreht{ animation:mgSonne 12s linear infinite; }
 .mg-warnung{ background:#fdecea; color:#a3261c; font-weight:900; border-radius:14px; padding:8px 14px; margin-bottom:8px; }
 .mg-info-box{ background:#e9f7ee; color:#1d5c38; border-radius:14px; padding:12px 16px; font-weight:700; margin-bottom:8px; }
+.mg-tafellink{ background:#fff; border-radius:12px; padding:10px 14px; margin-top:8px; font-weight:600; } .mg-tafellink ol{ margin:6px 0; padding-left:20px; } .mg-tafellink li{ margin-bottom:6px; }
 @keyframes mgSonne{ to{ transform:rotate(360deg); } }
 .mg-uhr{ font:900 clamp(24px,min(3.2vw,5.5vh),58px) "Nunito",sans-serif; color:#16324a; background:white; border-radius:20px; padding:.15em .6em; box-shadow:0 6px 18px rgba(22,50,74,.1); font-variant-numeric:tabular-nums; }
 .mg-raster{ flex:1; display:grid; grid-template-columns:minmax(0,27fr) minmax(0,40fr) minmax(0,33fr); gap:1.4vw; min-height:0; }
@@ -507,8 +509,9 @@ body{ background:#f6f2ea; }
 .mini-ee i{ background:white; color:#16324a; } .mini-ee i.w{ background:#f2a93b; }
 @media (max-width:900px){ .mg-sg-liste{ grid-template-columns:1fr; } .mg-iw{ grid-template-columns:repeat(auto-fill,minmax(46px,1fr)); } }
 </style>
+<?php if ($TAFEL_APP): ?><style>#uebersicht{ display:none !important; } #morgen .mg-leiste > .tb-k.rund:first-child{ display:none; }</style><?php endif; ?>
 </head>
-<body>
+<body<?= $TAFEL_APP ? ' class="tafel-app"' : '' ?>>
 
 <div class="uebersicht" id="uebersicht">
     <a class="zurueck" href="<?= $LT_GAST ? "gast.php" : "index.php" ?>"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
@@ -661,7 +664,9 @@ body{ background:#f6f2ea; }
 window.TAFEL_DATEN = <?= json_encode($tbDaten, $JSON) ?>;
 window.TAFEL_CSRF = <?= json_encode($_SESSION["tafel_csrf"]) ?>;
 window.TAFEL_SERVERZEIT = <?= round(microtime(true) * 1000) ?>; window.TAFEL_GELADEN = Date.now();
-window.TB_ERLAUBT = <?= json_encode(["buchstabenkurs" => !$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs"), "morgen" => !$LT_GAST || lt_gastDarf($LT_GAST, "morgen")]) ?>;
+window.TB_ERLAUBT = <?= json_encode(["buchstabenkurs" => !$TAFEL_APP && (!$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs")), "morgen" => !$LT_GAST || lt_gastDarf($LT_GAST, "morgen")]) ?>;
+window.TAFEL_APP = <?= $TAFEL_APP ? json_encode(["klasse" => (string)LT_TAFEL_APP]) : "null" ?>;
+window.TAFEL_LINKS_ERLAUBT = <?= json_encode(!$TAFEL_APP && !empty($_SESSION["leuchtturm_eingeloggt"])) ?>;
 </script>
 <script src="tafel-impulse.js?v=<?= @filemtime(__DIR__ . "/tafel-impulse.js") ?>"></script>
 <script src="tafel-morgen.js?v=<?= @filemtime(__DIR__ . "/tafel-morgen.js") ?>"></script>

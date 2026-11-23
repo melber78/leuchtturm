@@ -669,10 +669,13 @@ function bearbeiten(r){
         <div class="mg-felder">
           <div><label>Name der Klasse</label><input data-feld="name" value="${esc(k.name)}" maxlength="20"></div>
           <div><label>Klassenstufe (Darstellung)</label><select data-feld="stufe"><option value="12" ${k.stufe === "12" ? "selected" : ""}>Klasse 1/2 – große Bilder, wenig Text</option><option value="34" ${k.stufe === "34" ? "selected" : ""}>Klasse 3/4 – mit Uhrzeiten und Temperaturen</option><option value="sek" ${k.stufe === "sek" ? "selected" : ""}>Klasse 5–9 – sachlich, mit Terminen und Impuls des Tages</option></select></div>
-          <div style="grid-column:1/-1"><label>Anrede in der Begrüßung</label><input data-feld="anrede" value="${esc(k.anrede || "")}" maxlength="60" placeholder="liebe Klasse ${esc(k.name)}"><small class="mg-hilfe">Die Begrüßung passt sich der Uhrzeit an: bis 10 Uhr „Guten Morgen, …“, bis 17 Uhr „Guten Tag, …“, danach „Guten Abend, …“. Leer = „liebe Klasse ${esc(k.name)}“. Beispiel: „ihr Füchse“.</small></div>
+          <div style="grid-column:1/-1"><label>Anrede in der Begrüßung</label><input data-feld="anrede" value="${esc(k.anrede || "")}" maxlength="60" placeholder="${k.stufe === "sek" ? esc(k.name) : "liebe Klasse " + esc(k.name)}"><small class="mg-hilfe">Die Begrüßung passt sich der Uhrzeit an: bis 10 Uhr „Guten Morgen, …“, bis 17 Uhr „Guten Tag, …“, danach „Guten Abend, …“. Leer = „liebe Klasse ${esc(k.name)}“. Beispiel: „ihr Füchse“.</small></div>
           <div><label>Buchstaben der Woche (leer = Feld ausblenden)</label><div class="mg-reihe"><input data-feld="buchstabe" value="${esc(k.buchstabe || "")}" maxlength="24" placeholder="z. B. m, a" style="flex:1">${kursBuchstabe() ? `<button class="mg-k hell" data-ausKurs>+ aus dem Buchstabenkurs: ${esc(kursBuchstabe())}</button>` : ""}</div><small class="mg-hilfe">Mehrere mit Komma trennen (bis zu 4), z. B. „m, a“ oder „ei, sch“. Antippen eines Buchstabens auf der Tafel öffnet ihn im Buchstabenkurs.</small></div>
           <div><label>Ort fürs Wetter</label><div class="mg-reihe"><input data-ort value="${esc((k.ort || {}).name || "")}" style="flex:1"><button class="mg-k hell" data-ortsuche>suchen</button></div><small class="mg-hilfe" id="mgOrt">${k.ort && k.ort.lat ? `📍 ${esc(k.ort.name)} (${(+k.ort.lat).toFixed(2)}, ${(+k.ort.lon).toFixed(2)})` : ""}</small></div>
         </div>
+        ${window.TAFEL_LINKS_ERLAUBT ? `<div class="mg-info-box" style="margin-top:14px; background:#eef4fb; color:#16324a;">📺 <b>Auf der Tafel installieren</b> – die Tafel zeigt dann <b>nur diese Morgentafel</b> (Klasse ${esc(k.name)}), ohne Login und ohne Zugriff auf den Rest des Leuchtturms. Termine und Hinweise, die du am Handy einträgst, erscheinen dort automatisch.
+            <div class="mg-reihe" style="margin-top:8px"><input data-tafelname placeholder="Name der Tafel, z. B. Raum 204" maxlength="40" style="flex:1"><button class="mg-k" data-tafelneu>Tafel-Link erstellen</button></div>
+            <div data-tafelausgabe></div><div data-tafelliste style="margin-top:8px"></div></div>` : ""}
         ${D.klassen.length > 1 ? `<button class="mg-k rot" data-loeschen>🗑 Klasse ${esc(k.name)} löschen</button>` : ""}`;
     } else if (reiter === "plan") {
         html += `<div class="mg-info-box">🗓️ <b>Das ist euer Wochen-Stundenplan.</b> Einmal ausfüllen – er wird im Leuchtturm gespeichert und gilt jede Woche. Die Tafel zeigt automatisch den Plan des heutigen Wochentags.</div>
@@ -758,6 +761,7 @@ function bearbeiten(r){
 function editorAktivieren(p, k){
     const neu = () => { speichern(); bearbeiten(); zeichnen(); };
     iconKnoepfe(p);
+    if (p.querySelector("[data-tafelliste]")) tafelLinks(p, k);
     const iz = p.querySelector("[data-impzeigen]"); if (iz) iz.addEventListener("change", () => { k.impuls = iz.checked; speichern(); zeichnen(); });
     const sz = p.querySelector("[data-szeigen]"); if (sz) sz.addEventListener("change", () => { k.startZeigen = sz.checked; speichern(); zeichnen(); });
     p.querySelectorAll("[data-se],[data-st]").forEach(i => i.addEventListener("change", () => { const [art, n] = (i.dataset.se || i.dataset.st).split("|"); k[art][+n][i.dataset.se ? "e" : "t"] = i.value.trim(); speichern(); zeichnen(); }));
@@ -835,6 +839,32 @@ function aufraeumen(k){ const grenze = iso(new Date((Date.now() + zeitVersatz) -
     Object.keys(k.aenderungen || {}).forEach(t => { if (t < grenze) delete k.aenderungen[t]; });
     k.termine = (k.termine || []).filter(t => t.d >= grenze); }
 
+/* ---------- Tafel-Links: die Morgentafel als eigene App auf der digitalen Tafel ---------- */
+async function tafelApi(daten){
+    const r = await fetch("morgen/zugang.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json", "X-CSRF": window.TAFEL_CSRF || "" }, body: JSON.stringify(daten) });
+    return r.json();
+}
+function tafelLinks(p, k){
+    const liste = p.querySelector("[data-tafelliste]"), aus = p.querySelector("[data-tafelausgabe]");
+    const zeigen = l => { liste.innerHTML = (l || []).length ? `<small class="mg-hilfe">Freigeschaltete Tafeln:</small>` + l.map(t => `<div class="mg-reihe mg-eintrag"><span>📺</span><b style="flex:1">${esc(t.name)}</b><small class="mg-hilfe">${esc((D.klassen.find(x => x.id === t.klasse) || {}).name || "")} · seit ${esc(new Date(t.erstellt + "T12:00:00").toLocaleDateString("de-DE"))}</small><button class="mg-k hell klein" data-tafelweg="${esc(t.id)}" title="Diese Tafel sperren">sperren</button></div>`).join("") : "";
+        liste.querySelectorAll("[data-tafelweg]").forEach(b => b.addEventListener("click", async () => { if (!confirm("Diese Tafel sperren? Sie zeigt die Morgentafel dann nicht mehr.")) return; const j = await tafelApi({ aktion: "loeschen", id: b.dataset.tafelweg }); if (j.ok) zeigen(j.liste); })); };
+    tafelApi({ aktion: "liste" }).then(j => { if (j.ok) zeigen(j.liste); }).catch(() => {});
+    p.querySelector("[data-tafelneu]").addEventListener("click", async () => {
+        const name = p.querySelector("[data-tafelname]").value.trim() || "Tafel " + k.name;
+        try {
+            const j = await tafelApi({ aktion: "neu", name, klasse: k.id });
+            if (!j.ok) { alert(j.fehler || "Nicht möglich."); return; }
+            zeigen(j.liste);
+            aus.innerHTML = `<div class="mg-tafellink"><b>So geht's auf der Tafel:</b>
+                <ol><li>Diesen Link <b>auf der Tafel</b> öffnen (z. B. per E-Mail an dich schicken oder abtippen):<div class="mg-reihe" style="margin:6px 0"><input value="${esc(j.link)}" readonly style="flex:1; font-size:13px" onclick="this.select()"><button class="mg-k hell klein" data-kopie>Kopieren</button></div></li>
+                <li>In Chrome oder Edge in der Adresszeile auf <b>„App installieren“</b> (Symbol 🖥️⬇) tippen – oder im Menü ⋮ → <b>„Guten Morgen installieren“</b>.</li>
+                <li>Fertig: Auf der Tafel gibt es jetzt das Symbol <b>„Guten Morgen“</b>. Es öffnet direkt die Morgentafel im Vollbild.</li></ol>
+                <small class="mg-hilfe">Der Link gilt nur für die Morgentafel. Wenn du ihn nicht mehr brauchst, kannst du die Tafel unten jederzeit sperren.</small></div>`;
+            aus.querySelector("[data-kopie]").addEventListener("click", () => { const i = aus.querySelector("input"); i.select(); try { navigator.clipboard.writeText(i.value); } catch (x) { document.execCommand("copy"); } });
+        } catch (x) { alert("Keine Verbindung zum Leuchtturm."); }
+    });
+}
+
 /* ---------- Öffnen / Schließen ---------- */
 function oeffnen(stufe){
     if (window.TB_ERLAUBT && !window.TB_ERLAUBT.morgen) return;
@@ -846,20 +876,30 @@ function oeffnen(stufe){
     } else if (stufe === "gs" && klasse().stufe === "sek") { const g = D.klassen.find(x => x.stufe !== "sek"); if (g) { D.aktiv = g.id; speichern(); } }
     const w = document.getElementById("morgen");
     w.classList.add("an"); document.getElementById("uebersicht").style.display = "none";
-    history.replaceState(null, "", klasse().stufe === "sek" ? "#morgen-sek" : "#morgen");
+    if (!window.TAFEL_APP) history.replaceState(null, "", location.pathname + location.search + (klasse().stufe === "sek" ? "#morgen-sek" : "#morgen"));
     D.klassen.forEach(aufraeumen);
     if (autoGerueckt) { autoGerueckt = false; speichern(); }
     zeichnen(); wetterLaden();
     if (klasse().beispiel) setTimeout(() => bearbeiten("klasse"), 400);
 }
-function schliessen(){ document.getElementById("morgen").classList.remove("an"); document.getElementById("uebersicht").style.display = ""; history.replaceState(null, "", location.pathname); }
+function schliessen(){ if (window.TAFEL_APP) return; document.getElementById("morgen").classList.remove("an"); document.getElementById("uebersicht").style.display = ""; history.replaceState(null, "", location.pathname); }
 document.addEventListener("DOMContentLoaded", () => {
     const w = document.getElementById("morgen"); if (!w) return;
     w.addEventListener("click", klick);
     let letzteMinute = -1;   // jede Minute neu zeichnen: Stundenwechsel, blasse Stunden, Material der Stunde
     setInterval(() => { if (!w.classList.contains("an")) return; uhr(); const m = jetztD().getMinutes(); if (m !== letzteMinute) { if (letzteMinute >= 0) zeichnen(); letzteMinute = m; } }, 1000);
     setInterval(() => { if (w.classList.contains("an")) wetterLaden(); }, 30 * 60 * 1000);
-    if (location.hash === "#morgen") oeffnen(); else if (location.hash === "#morgen-sek") oeffnen("sek");
+    if (window.TAFEL_APP) {
+        // Tafel-App: immer die Morgentafel – mit der Klasse, für die der Tafel-Link erstellt wurde
+        if (window.TAFEL_APP.klasse && D.klassen.some(k => k.id === window.TAFEL_APP.klasse)) D.aktiv = window.TAFEL_APP.klasse;
+        oeffnen();
+        // Bildschirm nicht ausgehen lassen, solange die Tafel offen ist
+        const wach = () => { try { if (navigator.wakeLock && document.visibilityState === "visible") navigator.wakeLock.request("screen").catch(() => {}); } catch (x) {} };
+        wach(); document.addEventListener("visibilitychange", wach);
+        // einmal pro Stunde neu laden: Änderungen vom Handy (Termine, Hinweise) kommen so auf die Tafel
+        setInterval(() => { if (!document.getElementById("mgEditor").classList.contains("an") && !document.querySelector(".mg-overlay")) location.reload(); }, 60 * 60 * 1000);
+    }
+    else if (location.hash === "#morgen") oeffnen(); else if (location.hash === "#morgen-sek") oeffnen("sek");
     window.addEventListener("hashchange", () => { if (location.hash === "#morgen") oeffnen(); else if (location.hash === "#morgen-sek") oeffnen("sek"); });
 });
 window.tafelMorgen = { oeffnen, schliessen, bearbeiten: () => bearbeiten(), startklar: art => { oeffnen(); setTimeout(() => startGross(art), 150); } };
