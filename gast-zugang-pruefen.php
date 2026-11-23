@@ -6,7 +6,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 // Alle Bereiche, die einzeln für Gäste freigegeben werden können (Gruppe => [Schlüssel => Name])
 const LT_GAST_GRUPPEN = [
     "Grundschule" => ["sozial" => "Sozialtraining", "lernangebot" => "Lernangebot (mit Arbeitsblatt-Generator)", "quiz" => "Ella-Quiz (Üben nach Klasse & Fach)", "vertretung" => "Vertretungsstunden"],
-    "Tafelbilder" => ["morgen" => "Guten Morgen! (Tagesstart)", "buchstabenkurs" => "Buchstabenkurs", "leise" => "Leise-Wald (alle 4 Arten)", "einmaleins" => "Das große 1×1 (interaktiv)", "brueche" => "Brüche (Kl. 5/6)"],
+    "Tafelbilder" => ["morgen" => "Guten Morgen! (Tagesstart)", "buchstabenkurs" => "Buchstabenkurs", "leise" => "Leise-Wald (alle 4 Arten)", "einmaleins" => "Einmaleins: kleines & großes 1×1, Werkstatt", "brueche" => "Brüche (Kl. 5/6)"],
     "LRS-Förderung" => ["lrs" => "Material-Generator", "akten" => "Kinder-Akten", "gutachten" => "Gutachten", "anamnese" => "Anamnesebogen", "materialien" => "Materialien", "timer" => "Stunden-Timer", "stundenplan" => "Stundenplan"],
     "Planung" => ["tagesplan" => "Mein Tag (eigener Stundenplan & Tagesplan)"],
 ];

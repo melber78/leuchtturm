@@ -1,5 +1,5 @@
 /* ===============================================================
-   Tafelbild: Die große 1×1-Tabelle
+   Tafelbild: Die kleine 1×1-Tabelle (1 · 1 bis 10 · 10)
    Antippen · Reihen · Kernaufgaben · Verdecken/Lücken · Blitzrechnen (Klasse gegen Ella)
    =============================================================== */
 (function(){

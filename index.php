@@ -145,6 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-23", "Einmaleins-Werkstatt", "Neue Tafelbilder zum 1 × 1: verstehen im Punktefeld, Kernaufgaben & Nachbarn, 14 Tricks (z. B. 9er-Finger-Trick), Geteilt mit Aufteilen/Verteilen und Rest, Aufgabenfamilie, Üben Klasse gegen Ella – und das echte große 1 × 1 (11–20). Die bisherige Tabelle heißt jetzt „Das kleine 1 × 1“.", "tafelbilder.php#1x1-verstehen"],
     ["2026-11-23", "Morgentafel als eigene App auf der Tafel", "Guten Morgen → Bearbeiten → Klasse → „📺 Auf der Tafel installieren“: Die Tafel bekommt nur die Morgentafel als App – ohne Login und ohne Zugriff auf den Rest des Leuchtturms.", "tafelbilder.php#morgen-sek"],
     ["2026-11-23", "Guten Morgen! für die Großen", "Eigene Tagesstart-Tafel für Kl. 5–9: sachlich, Stundenplan mit Uhrzeiten, A-/B-Woche, Termine (Tests, Abgaben) mit Countdown und jeden Tag ein Impuls – Wort des Tages, Denk-Nuss, Wusstest du?, Redewendung.", "tafelbilder.php#morgen-sek"],
     ["2026-11-23", "Tafelbild „Brüche“ für Klasse 5/6", "Erklär-Tafel mit Bild, Merksatz und Rechenweg zum Aufdecken: Was ist ein Bruch, gemischte Zahlen, Erweitern & Kürzen, Vergleichen, Zahlenstrahl, Plus/Minus, Mal/Geteilt – mit Zufallsbeispielen und eigener Aufgabe.", "tafelbilder.php#brueche"],
@@ -156,7 +157,7 @@ $NEU = [
     ["2026-11-19", "Wochenhausaufgabe für die Eltern", "Statt Elternblatt: sechs Übungen für den Familienalltag (Frühstück, Unterwegs, Einkaufen, Küche, Abend …) passend zu dem, was in der Stunde geübt wurde – mit Wochenraster Mo–So zum Ankreuzen und Rückmeldung. In der Stundenplanung unter „Dazu“ ankreuzen; bei 2 Kindern bekommt jedes sein eigenes Blatt.", "lrs.php"],
     ["2026-11-18", "Zusammenfassung für die Kinder", "Zu jeder Stunde (Sozialtraining, Vertretung, Lernangebot) gibt es jetzt „Das habe ich heute gelernt“ zum Drucken: Merksatz und die wichtigsten Punkte, bei Englisch mit Vokabeln – ein A4-Blatt pro Kind.", "sozial-stunden.php"],
     ["2026-11-17", "Vertretung Englisch (Kl. 3/4)", "10 fertige Englischstunden: My family, Colours, Numbers, Animals, My body, Clothes, Food, School things, Weather & days, Christmas – mit Aussprachehilfe, Wortkarten zum Anhören, What's this? und Right or wrong? an der Tafel, Spiel und Arbeitsblatt.", "sozial-stunden.php?bereich=vertretung"],
-    ["2026-11-17", "Das große 1×1 als Tafelbild", "Interaktive 1×1-Tabelle: Feld antippen → Aufgabe groß mit Tauschaufgabe, Rechentrick und Punktefeld; Reihen leuchten auf; verdecken, Lücken, Kernaufgaben, Quadratzahlen – und Blitzrechnen Klasse gegen Ella.", "tafelbilder.php#einmaleins"],
+    ["2026-11-17", "Das kleine 1×1 als Tafelbild", "Interaktive 1×1-Tabelle: Feld antippen → Aufgabe groß mit Tauschaufgabe, Rechentrick und Punktefeld; Reihen leuchten auf; verdecken, Lücken, Kernaufgaben, Quadratzahlen – und Blitzrechnen Klasse gegen Ella.", "tafelbilder.php#einmaleins"],
     ["2026-11-17", "b/d-Training", "Neue Reihe im Funktionstraining (Optische Differenzierung): Bett-Trick, Suchbild, Zählen, Lückenwörter, richtiges Wort finden, Bach oder Dach?, Sätze, Blitzlesen, Diktat und Sortieren – von leicht bis Profi mit p/q-Verwechslern. In der Stundenplanung unter Funktionstraining wählbar.", "lrs.php"],
     ["2026-11-16", "Funktionstraining: viel mehr Abwechslung & Profi-Stufe", "38 neue Blattarten (z. B. Abschreibfehler, Gedreht oder gespiegelt?, Laute zählen, Lang oder kurz?, Einkaufszettel, Tierkonzert, Koordinaten, Weg aufschreiben), neue Schwierigkeit „Profi (sehr schwer)“, großer Wortschatz – und die Stundenplanung meidet Blätter, die das Kind zuletzt hatte.", "lrs.php"],
     ["2026-11-16", "Stunden verschieben", "In der Kinder-Akte geplante Stunden mit einem Tipp auf ein anderes Datum legen – gemeinsame Stunden mit 2 Kindern auf Wunsch gleich mit.", "trainingshefte.php"],
@@ -226,7 +227,9 @@ $BEREICHE = [
         ]],
         ["Erklären &amp; Üben", [
             ["tafelbilder.php#buchstabenkurs", "fa-pen-fancy", "Buchstabenkurs", "Nachspuren und schreiben in der Lineatur"],
-            ["tafelbilder.php#einmaleins", "fa-table-cells-large", "Das große 1 × 1", "Interaktive Tabelle, Blitzrechnen gegen Ella"],
+            ["tafelbilder.php#einmaleins", "fa-table-cells-large", "Das kleine 1 × 1", "Interaktive Tabelle, Blitzrechnen gegen Ella"],
+            ["tafelbilder.php#1x1-verstehen", "fa-lightbulb", "Einmaleins-Werkstatt", "Verstehen, Tricks, Geteilt, Aufgabenfamilie, Üben"],
+            ["tafelbilder.php#1x1-gross", "fa-calculator", "Das große 1 × 1", "11 · 1 bis 20 · 10 mit dem Zerlege-Trick"],
             ["tafelbilder.php#brueche", "fa-chart-pie", "Brüche (Kl. 5/6)", "Bild, Merksatz und Rechenweg zum Aufdecken"],
         ]],
     ]],

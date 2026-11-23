@@ -559,8 +559,24 @@ body{ background:#f6f2ea; }
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "einmaleins")): ?>
         <button class="kachel" type="button" onclick="tafelEinmaleins.oeffnen()">
             <div class="k-buehne k-ee"><div class="mini-ee"><b>·</b><b>1</b><b>2</b><b>3</b><b>1</b><i>1</i><i>2</i><i>3</i><b>2</b><i>2</i><i class="w">4</i><i>6</i><b>3</b><i>3</i><i>6</i><i>9</i></div></div>
-            <div class="k-text"><h2>Das große 1 × 1</h2><p>Die 1×1-Tabelle zum Antippen: Reihen leuchten auf, Aufgaben mit Tauschaufgabe, Rechentrick und Punktefeld, verdecken und aufdecken – und Blitzrechnen Klasse gegen Ella.</p><div class="k-tags"><span>interaktiv</span><span>Kl. 2–4</span></div></div>
+            <div class="k-text"><h2>Das kleine 1 × 1</h2><p>Die 1×1-Tabelle zum Antippen: Reihen leuchten auf, Aufgaben mit Tauschaufgabe, Rechentrick und Punktefeld, verdecken und aufdecken – und Blitzrechnen Klasse gegen Ella.</p><div class="k-tags"><span>interaktiv</span><span>Kl. 2–4</span></div></div>
         </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "einmaleins")): ?>
+<?php foreach ([
+    ["verstehen", "🔵", "1 × 1 verstehen", "Punktefeld Schritt für Schritt: Plusaufgabe, Malaufgabe, Tauschaufgabe und Geteiltaufgabe."],
+    ["reihe", "⭐", "Kernaufgaben &amp; Nachbarn", "Jede Reihe aus 1 ·, 2 ·, 5 ·, 10 · ableiten – mit Rechenwegen zum Aufdecken."],
+    ["tricks", "💡", "1 × 1 Tricks", "Verdoppeln, Hälfte von 10 ·, 9er-Finger-Trick, Quadratzahlen, Tauschen, Teilen mit Rest …"],
+    ["geteilt", "➗", "Geteilt verstehen", "Aufteilen und Verteilen im Punktefeld, Probe mit der Malaufgabe, auch mit Rest."],
+    ["familie", "🏠", "Aufgabenfamilie", "Rechenhaus: drei Zahlen – vier Aufgaben (Tausch- und Umkehraufgaben)."],
+    ["ueben", "⚡", "1 × 1 üben", "Mal, Geteilt, Lücken, gemischt, mit Rest – Reihen wählen, Klasse gegen Ella."],
+    ["gross", "🔢", "Das große 1 × 1", "11 · 1 bis 20 · 10 mit dem Zerlege-Trick: 14 · 6 = 60 + 24."],
+] as [$tab, $sym, $titel, $text]): ?>
+        <button class="kachel" type="button" onclick="tafel1x1.oeffnen('<?= $tab ?>')">
+            <div class="k-buehne k-ee" style="font-size:54px;"><?= $sym ?></div>
+            <div class="k-text"><h2><?= $titel ?></h2><p><?= $text ?></p><div class="k-tags"><span>Einmaleins-Werkstatt</span><span>Kl. <?= $tab === "gross" ? "4–6" : "2–4" ?></span></div></div>
+        </button>
+<?php endforeach; ?>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs")): ?>
         <button class="kachel" type="button" onclick="kursOeffnen()">
@@ -677,7 +693,7 @@ window.TAFEL_LINKS_ERLAUBT = <?= json_encode(!$TAFEL_APP && !empty($_SESSION["le
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
 <script src="lernangebot-tafel.js?v=<?= @filemtime(__DIR__ . "/lernangebot-tafel.js") ?: 1 ?>"></script>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")): ?><script src="tafel-brueche.js?v=<?= @filemtime(__DIR__ . "/tafel-brueche.js") ?: 1 ?>"></script><?php endif; ?>
-<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "einmaleins")): ?><script src="tafel-einmaleins.js?v=<?= @filemtime(__DIR__ . "/tafel-einmaleins.js") ?: 1 ?>"></script><?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "einmaleins")): ?><script src="tafel-einmaleins.js?v=<?= @filemtime(__DIR__ . "/tafel-einmaleins.js") ?: 1 ?>"></script><script src="tafel-1x1.js?v=<?= @filemtime(__DIR__ . "/tafel-1x1.js") ?: 1 ?>"></script><?php endif; ?>
 <script>
 // Leise-Wald direkt aus den Tafelbildern (auch über tafelbilder.php#leise-ende usw.)
 function leiseStarten(modus){ if (window.lernTafel) window.lernTafel.starten("leise", { modus }); }
