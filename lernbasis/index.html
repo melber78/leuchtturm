@@ -707,8 +707,7 @@ function cardTasks(tp){
    const others2=shuffle([...new Set(c.filter(x=>!/___/.test(x[0])).map(x=>first(x[1])))].filter(x=>x!==first(b))).slice(0,3);
    const q=tp.id==='geo-laender'?`Wie heißt die Hauptstadt von <b>${esc(f)}</b>?`:`<span class="k">Was passt?</span>${esc(f)}`;
    if(others2.length>=2){out.push({t:'m',q,a:[first(b),...others2],ex:`${esc(f)} → ${esc(first(b))}`,tid:tp.id});return}
-   if(others.length>=2)out.push({t:'m',q,a:[first(b),...others],ex:`${esc(f)} → ${esc(first(b))}`,tid:tp.id});
-   else out.push({t:'i',q,a:b,ex:`${esc(f)} → ${esc(first(b))}`,tid:tp.id});
+   out.push({t:'i',q,a:b,ex:`${esc(f)} → ${esc(first(b))}`,tid:tp.id});
   }
  });return out;
 }
