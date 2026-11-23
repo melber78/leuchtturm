@@ -227,7 +227,6 @@ $BEREICHE = [
             ["tafelbilder.php#buchstabenkurs", "fa-pen-fancy", "Buchstabenkurs", "Nachspuren und schreiben in der Lineatur"],
             ["tafelbilder.php#einmaleins", "fa-table-cells-large", "Das große 1 × 1", "Interaktive Tabelle, Blitzrechnen gegen Ella"],
             ["tafelbilder.php#brueche", "fa-chart-pie", "Brüche (Kl. 5/6)", "Bild, Merksatz und Rechenweg zum Aufdecken"],
-            ["tafelbilder.php", "fa-chalkboard", "Alle Tafelbilder", "Übersicht aller Tafelbilder"],
         ]],
     ]],
     ["familie", "fa-house", "Familie", [
