@@ -49,6 +49,21 @@ const DEF_MATERIAL = {
     tablet: { e: "📱", n: "Tablet" }, woerterbuch: { e: "📕", n: "Wörterbuch" },
 };
 const DEF_IMMER = ["verhaltenshefter", "federmappe", "hausaufgabenheft"];
+// Klasse 5–9: weitere Fächer, Material und Startklar-Listen
+const SEK_FAECHER = {
+    geschichte: { n: "Geschichte", e: "🏛️", f: "#8d6e63", m: ["hefter"] }, geografie: { n: "Geografie", e: "🌍", f: "#00897b", m: ["hefter", "atlas"] },
+    biologie: { n: "Biologie", e: "🧬", f: "#43a047", m: ["hefter"] }, physik: { n: "Physik", e: "⚛️", f: "#3949ab", m: ["hefter", "taschenrechner"] },
+    chemie: { n: "Chemie", e: "🧪", f: "#8e24aa", m: ["hefter"] }, informatik: { n: "Informatik", e: "💻", f: "#455a64", m: [] },
+    ethik: { n: "Ethik", e: "🤝", f: "#7e57c2", m: ["hefter"] }, sport: { n: "Sport", e: "🏃", f: "#f4511e", m: ["sportzeug"] },
+    technik: { n: "Technik", e: "🔧", f: "#6d4c41", m: [] }, wirtschaft: { n: "Wirtschaft", e: "📊", f: "#00838f", m: ["hefter"] },
+    sozialkunde: { n: "Sozialkunde", e: "🗳️", f: "#5c6bc0", m: ["hefter"] }, klassenleiter: { n: "Klassenleiterstunde", e: "🗣️", f: "#78909c", m: [] },
+};
+const SEK_MATERIAL = { hefter: { e: "🗂️", n: "Hefter" }, taschenrechner: { e: "🧮", n: "Taschenrechner" }, geodreieck: { e: "📐", n: "Geodreieck" }, zirkel: { e: "⭕", n: "Zirkel" },
+    atlas: { e: "🗺️", n: "Atlas" }, sportzeug: { e: "👟", n: "Sportzeug" }, laptop: { e: "💻", n: "Laptop" }, vokabelheft: { e: "📒", n: "Vokabelheft" } };
+const SEK_IMMER = ["federmappe", "hausaufgabenheft"];
+const SEK_TAGSTART = [{ e: "📵", t: "Handy aus und in die Tasche" }, { e: "🧥", t: "Jacke an den Haken" }, { e: "📔", t: "Hausaufgaben bereitlegen" }, { e: "🗓️", t: "Termine checken: Test? Abgabe?" }, { e: "🪑", t: "Platz frei – startklar sitzen" }];
+const SEK_STUNDESTART = [{ e: "🧹", t: "Tisch frei bis auf das Material" }, { e: "📚", t: "Hefter und Material der Stunde raus" }, { e: "📵", t: "Handy weg" }, { e: "👀", t: "Ruhe – Blick nach vorn" }];
+const SEK_ENDE = [{ e: "📔", t: "Hausaufgaben notieren" }, { e: "🧹", t: "Platz aufräumen, Stuhl hoch" }];
 // In der letzten Stunde (abhakbar, bearbeitbar)
 const DEF_ENDE = [{ e: "🚦", t: "Verhaltenshefter schreiben" }, { e: "✍️", t: "Verhaltenshefter von der Lehrkraft unterschreiben lassen" }, { e: "🧹", t: "Klassendienste erledigen" }];
 // Startklar: Was die Kinder vor dem Tag bzw. vor jeder Stunde erledigen (abhakbar, bearbeitbar)
@@ -105,6 +120,11 @@ const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")
 function kw(d){ const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); const tag = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - tag); const j = new Date(Date.UTC(t.getUTCFullYear(), 0, 1)); return Math.ceil(((t - j) / 864e5 + 1) / 7); }
 
 function neueKlasse(name, stufe){
+    if (stufe === "sek") { const k = neueKlasse(name, "34"); k.stufe = "sek"; k.immer = SEK_IMMER.slice(); k.v2 = true;
+        k.tagStart = SEK_TAGSTART.map(x => Object.assign({ id: neueId() }, x)); k.stundeStart = SEK_STUNDESTART.map(x => Object.assign({ id: neueId() }, x));
+        k.ende = SEK_ENDE.map(x => Object.assign({ id: neueId() }, x)); k.impuls = true; k.termine = [];
+        k.pausen = [{ nach: 1, name: "Pause", e: "☕" }, { nach: 3, name: "Hofpause", e: "🚶" }, { nach: 5, name: "Mittagspause", e: "🍽️" }];
+        k.material = { mathe: ["hefter", "taschenrechner", "geodreieck"], deutsch: ["hefter"], englisch: ["hefter", "vokabelheft"] }; return k; }
     return { id: neueId(), name: name || "1a", stufe: stufe || "12", lehrkraft: "", anrede: "", ort: { name: "Weißenfels", lat: 51.2, lon: 11.97 },
         zeiten: ZEITEN.map(z => z.slice()), pausen: PAUSEN.map(p => Object.assign({}, p)),
         plan: { 1: [], 2: [], 3: [], 4: [], 5: [] }, material: {}, extra: {}, immer: DEF_IMMER.slice(), hinweise: [] };
@@ -121,12 +141,15 @@ if (!D.katalog || typeof D.katalog !== "object") D.katalog = {};
 if (!D.katalog.faecher || Array.isArray(D.katalog.faecher)) D.katalog.faecher = kopie(DEF_FAECHER);
 if (!D.katalog.material || Array.isArray(D.katalog.material)) D.katalog.material = kopie(DEF_MATERIAL);
 FAECHER = D.katalog.faecher; MATERIAL = D.katalog.material;
+// Fächer und Material für Klasse 5–9 einmal ergänzen
+if (!D.katalog.sek) { Object.entries(SEK_FAECHER).forEach(([key, f]) => { if (!FAECHER[key]) FAECHER[key] = kopie(f); }); Object.entries(SEK_MATERIAL).forEach(([key, m]) => { if (!MATERIAL[key]) MATERIAL[key] = kopie(m); }); D.katalog.sek = true; }
 if (!D.katalog.v2) { if (!MATERIAL.verhaltenshefter) MATERIAL.verhaltenshefter = kopie(DEF_MATERIAL.verhaltenshefter); D.katalog.v2 = true; }
 // Frühere Namen umstellen (Federtasche → Federmappe, Wochenplan → Lernpfad, Lesezeit → Lernangebot)
 const UMBENANNT = { federtasche: "federmappe", wochenplan: "lernpfad" };
 D.klassen.forEach(k => {
     if (!Array.isArray(k.immer) || k.immer.join() === "federmappe,hausaufgabenheft,postmappe") k.immer = DEF_IMMER.slice();
-    if (!k.v2) { if (!k.immer.includes("verhaltenshefter")) k.immer.unshift("verhaltenshefter"); k.v2 = true; }
+    if (!k.v2 && k.stufe !== "sek") { if (!k.immer.includes("verhaltenshefter")) k.immer.unshift("verhaltenshefter"); k.v2 = true; }
+    if (!Array.isArray(k.termine)) k.termine = [];
     if (!Array.isArray(k.ende)) k.ende = DEF_ENDE.map(x => Object.assign({ id: neueId() }, x));
     if (!Array.isArray(k.dienste)) k.dienste = [];
     if (!Array.isArray(k.tagStart)) k.tagStart = DEF_TAGSTART.map(x => Object.assign({ id: neueId() }, x));
@@ -272,7 +295,7 @@ function materialJetzt(k, d){
     const letzte = bezug === stunden[stunden.length - 1] && stunden.length > 1;
     // „Zum Tagesbeginn“ nur bis die 1. Stunde anfängt – danach läuft die Karte mit dem Stundenplan mit
     if (bezug === stunden[0] && bezug.status !== "jetzt") return { titel: "Zum Tagesbeginn", e: "🌅", liste: vereint(immer, extra, fachMaterial(k, bezug.f)), stunde: bezug };
-    return { titel: fachInfo(bezug.f).n, e: fachInfo(bezug.f).e, liste: vereint(fachMaterial(k, bezug.f), letzte && MATERIAL.verhaltenshefter ? ["verhaltenshefter"] : []), stunde: bezug, letzte };
+    return { titel: fachInfo(bezug.f).n, e: fachInfo(bezug.f).e, liste: vereint(fachMaterial(k, bezug.f), letzte && k.stufe !== "sek" && MATERIAL.verhaltenshefter ? ["verhaltenshefter"] : []), stunde: bezug, letzte };
 }
 function hinweiseHeute(k, d){
     const t = iso(d), wt = String(d.getDay());
@@ -285,13 +308,53 @@ function tageszeit(){
     if (m < 17 * 60) return ["Guten Tag", "☀️"];
     return ["Guten Abend", "🌙"];
 }
-function anrede(k){ return k.anrede || "liebe Klasse " + k.name; }
+function anrede(k){ return k.anrede || (k.stufe === "sek" ? k.name : "liebe Klasse " + k.name); }
 function gruss(k){ const a = anrede(k).replace(/[!.]+$/, ""); return tageszeit()[0] + ", " + a + "!"; }
+
+// A-/B-Woche aus der Kalenderwoche (k.ab = "gerade" oder "ungerade": in diesen Wochen ist A-Woche)
+function abWoche(k, d){ if (!k.ab) return ""; const g = kw(d) % 2 === 0; return (k.ab === "gerade") === g ? "A" : "B"; }
+// Kommende Termine (Tests, Abgaben …) mit „heute / morgen / in 3 Tagen“
+function termineBald(k, d){
+    const h = iso(d);
+    return (k.termine || []).filter(t => t.d >= h).sort((a, b) => a.d < b.d ? -1 : 1).slice(0, 5).map(t => {
+        const tage = Math.round((new Date(t.d + "T12:00:00") - new Date(h + "T12:00:00")) / 864e5);
+        const wd = TAGE[new Date(t.d + "T12:00:00").getDay()];
+        return Object.assign({ tage, wann: tage === 0 ? "heute" : tage === 1 ? "morgen" : tage < 7 ? wd : "in " + tage + " Tagen", datum: new Date(t.d + "T12:00:00").toLocaleDateString("de-DE", { day: "numeric", month: "numeric" }) }, t);
+    });
+}
+// Impuls des Tages: jeden Schultag eine andere Art und ein anderer Inhalt (für alle Tafeln gleich)
+let impulsAuf = false, impulsTag = "";
+function impulsHeute(d){
+    const I = window.TAFEL_IMPULSE; if (!I) return null;
+    const n = Math.floor(new Date(iso(d) + "T12:00:00").getTime() / 864e5);
+    const arten = ["wort", "denk", "wissen", "rede"], art = arten[n % 4], liste = I[art] || [];
+    if (!liste.length) return null;
+    const x = liste[Math.floor(n / 4) % liste.length];
+    return { art, x };
+}
+function impulsKarte(d){
+    const im = impulsHeute(d); if (!im) return "";
+    const T = { wort: ["💬", "Wort des Tages"], denk: ["🧩", "Denk-Nuss"], wissen: ["💡", "Wusstest du?"], rede: ["🗨️", "Redewendung"] }[im.art];
+    let inhalt = "";
+    if (im.art === "wort") inhalt = `<div class="mg-imp-gross">${esc(im.x[0])}</div><div class="mg-imp-text">${esc(im.x[1])}</div>`;
+    if (im.art === "wissen") inhalt = `<div class="mg-imp-text gross">${esc(im.x)}</div>`;
+    if (im.art === "rede") inhalt = `<div class="mg-imp-gross klein">„${esc(im.x[0])}“</div><div class="mg-imp-text">${impulsAuf ? "= " + esc(im.x[1]) : "Was bedeutet das? <button class=\"mg-k hell klein\" data-impuls>Auflösen</button>"}</div>`;
+    if (im.art === "denk") inhalt = `<div class="mg-imp-text gross">${esc(im.x[0])}</div><div class="mg-imp-loes">${impulsAuf ? "💡 " + esc(im.x[1]) : `<button class="mg-k hell klein" data-impuls>Lösung zeigen</button>`}</div>`;
+    return `<section class="mg-karte mg-impuls mg-imp-${im.art}"><h2>${T[0]} ${T[1]}</h2>${inhalt}</section>`;
+}
+function termineKarte(k, d){
+    const t = termineBald(k, d);
+    return `<section class="mg-karte mg-termine"><h2 class="mg-h2-knopf">📅 Termine<button class="mg-k hell klein" data-bearbeiten="termine" title="Termine eintragen">＋</button></h2>
+        ${t.length ? `<ul class="mg-tliste">${t.map(x => `<li class="${x.tage <= 1 ? "bald" : ""}"><span class="mg-tw">${esc(x.wann)}<small>${esc(x.datum)}</small></span><span class="mg-tt">${esc(x.e || "📝")} ${esc(x.t)}</span></li>`).join("")}</ul>`
+          : `<div class="mg-leer klein">Keine Tests oder Abgaben in Sicht 🙂</div>`}
+    </section>`;
+}
 
 function zeichnen(){
     const wurzel = document.getElementById("morgen"); if (!wurzel || !wurzel.classList.contains("an")) return;
-    const k = klasse(), d = tag(), klein = k.stufe === "12", wt = d.getDay();
-    wurzel.classList.toggle("klein", klein);
+    const k = klasse(), d = tag(), klein = k.stufe === "12", sek = k.stufe === "sek", wt = d.getDay();
+    wurzel.classList.toggle("klein", klein); wurzel.classList.toggle("sek", sek);
+    if (sek && impulsTag !== iso(d)) { impulsAuf = false; impulsTag = iso(d); }
     const st = stundenHeute(k, d), ab = ablauf(k, d), mj = materialJetzt(k, d), mat = mj.liste, hin = hinweiseHeute(k, d);
     const w = wetterHeute(), wi = w ? WETTER[w.art] : null, kl = kleidung(w), jz = JAHRESZEIT(d.getMonth());
     const pausen = k.pausen || [];
@@ -299,7 +362,7 @@ function zeichnen(){
     const istHeute = tagVersatz === 0;
     document.getElementById("mgInhalt").innerHTML = `
     <div class="mg-warnung" id="mgWarnung" ${speicherFehler ? "" : "hidden"}>${speicherFehler ? "⚠ Nicht im Leuchtturm gespeichert: " + esc(speicherFehler) : ""}</div>
-    <div class="mg-gruss"><span class="mg-sonne ${tageszeit()[1] === "☀️" ? "dreht" : ""}">${wochenende ? "🎈" : tageszeit()[1]}</span><h1>${esc(gruss(k))}</h1>${k.sdw ? `<div class="mg-sdw" title="${esc(k.sdwTitel || "Schüler der Woche")}"><span>⭐</span><div><small>${esc(k.sdwTitel || "Schüler der Woche")}</small><b>${esc(k.sdw)}</b></div></div>` : ""}<div class="mg-uhr" id="mgUhr"></div></div>
+    <div class="mg-gruss">${sek ? "" : `<span class="mg-sonne ${tageszeit()[1] === "☀️" ? "dreht" : ""}">${wochenende ? "🎈" : tageszeit()[1]}</span>`}<h1>${esc(gruss(k))}</h1>${k.sdw ? `<div class="mg-sdw" title="${esc(k.sdwTitel || "Schüler der Woche")}"><span>⭐</span><div><small>${esc(k.sdwTitel || "Schüler der Woche")}</small><b>${esc(k.sdw)}</b></div></div>` : ""}<div class="mg-uhr" id="mgUhr"></div></div>
     <div class="mg-raster">
       <div class="mg-spalte">
         <section class="mg-karte mg-datum" style="--tf:${TAGE_FARBE[wt]}">
@@ -307,16 +370,16 @@ function zeichnen(){
           <div class="mg-wtag">${TAGE[wt]}</div>
           <div class="mg-tagzahl"><b>${d.getDate()}.</b> <span>${MONATE[d.getMonth()]}${klein ? "" : " " + d.getFullYear()}</span></div>
           ${klein ? `<div class="mg-woche">${[1, 2, 3, 4, 5].map(i => `<span class="${i === wt ? "an" : ""}" style="--tf:${TAGE_FARBE[i]}">${TAGE[i].slice(0, 2)}</span>`).join("")}</div>${k.buchstabe ? "" : `<div class="mg-jz"><span>${jz[0]}</span>${jz[1]}</div>`}`
-                  : `<div class="mg-info">${jz[0]} ${jz[1]} · Kalenderwoche ${kw(d)}</div>`}
+                  : `<div class="mg-info">${sek ? "" : jz[0] + " " + jz[1] + " · "}Kalenderwoche ${kw(d)}${abWoche(k, d) ? ` · <b class="mg-ab">${abWoche(k, d)}-Woche</b>` : ""}</div>`}
           ${!istHeute ? `<button class="mg-heute" data-tag="0">↺ zurück zu heute</button>` : ""}
         </section>
-        ${k.buchstabe ? (() => { const liste = buchstabenDerWoche(k), mehr = liste.length > 1;
+        ${k.buchstabe && !sek ? (() => { const liste = buchstabenDerWoche(k), mehr = liste.length > 1;
             return `<section class="mg-karte mg-bdw ${mehr ? "mehrere n" + liste.length : ""}" title="Antippen: im Buchstabenkurs üben">
             <h2>${mehr ? "Buchstaben der Woche" : "Buchstabe der Woche"}</h2>
             <div class="mg-bdw-reihe">${liste.map(b => { const an = ANLAUT[b];
                 return `<div class="mg-bdw-teil" data-bdw="${esc(b)}"><div class="mg-bdw-b ${b.length > 1 ? "lang" : ""}">${esc(grossK(b))}<span>${esc(b)}</span></div>
                 ${an ? `<div class="mg-bdw-bild"><span>${an[0]}</span><b>${wortMarkiert(an[1], b)}</b></div>` : ""}</div>`; }).join("")}</div></section>`; })() : ""}
-        <section class="mg-karte mg-wetter ${k.buchstabe ? "kompakt" : ""}" data-wetter>
+        <section class="mg-karte mg-wetter ${k.buchstabe && !sek ? "kompakt" : ""}" data-wetter>
           <h2>Das Wetter</h2>
           ${wi ? `<div class="mg-wbild">${wi[0]}</div><div class="mg-wtext">${esc(wi[1])}${w.jetzt != null && !klein ? ` · ${w.jetzt} °C` : ""}</div>
             ${w.max != null ? `<div class="mg-temp">${klein ? `🌡️ ${w.jetzt != null ? w.jetzt : w.max} Grad` : `↓ ${w.min} °C &nbsp; ↑ ${w.max} °C`}</div>` : ""}
@@ -327,6 +390,7 @@ function zeichnen(){
           <h2>${klein ? "Denk daran!" : "Heute beachten"}</h2>
           ${hin.length ? `<ul class="mg-hinweise">${hin.map(h => `<li><span>${esc(h.e || "📢")}</span>${esc(h.t)}</li>`).join("")}</ul>` : `<div class="mg-leer klein">Heute nichts Besonderes 🙂</div>`}
         </section>
+        ${sek || (k.termine || []).length ? termineKarte(k, d) : ""}
       </div>
       <section class="mg-karte mg-plan">
         <h2 class="mg-h2-knopf">${klein ? "Unser Tag" : "Stundenplan"}${!wochenende ? `<button class="mg-k hell klein" data-aendern="0" title="Vertretung, Ausfall oder zusätzliche Stunde – nur für ${istHeute ? "heute" : "diesen Tag"}">✏️ ${istHeute ? "Heute" : "Tag"} ändern</button>` : ""}</h2>
@@ -350,6 +414,7 @@ function zeichnen(){
             : `<div class="mg-leer klein">${mj.stunde ? "Nichts Besonderes – Federmappe reicht 🙂" : "–"}</div>`}
           ${mj.letzte && (k.ende || []).length ? `<div class="mg-schluss"><h3>${mj.schluss ? "Vor dem Nachhausegehen" : "In der letzten Stunde"}</h3>${k.ende.map(x => { const key = "ende|" + x.id; return `<button class="mg-check ${abgehakt[key] ? "ok" : ""}" data-ding="${key}"><span>${esc(x.e)}</span>${esc(x.t)}</button>`; }).join("")}</div>` : ""}
         </section>
+        ${sek && k.impuls !== false ? impulsKarte(d) : ""}
         ${k.diensteZeigen && (k.dienste || []).length ? `<section class="mg-karte mg-dienste"><h2>Klassendienste</h2><div class="mg-dliste">${k.dienste.map(x => `<div class="mg-dienst"><span>${esc(x.e)}</span><div><small>${esc(x.n)}</small><b>${esc(x.kind || "–")}</b></div></div>`).join("")}</div></section>` : ""}
       </div>
     </div>`;
@@ -473,7 +538,8 @@ function uhr(){
 
 /* ---------- Bedienung auf der Tafel ---------- */
 function klick(ev){
-    const t = ev.target.closest("[data-tag],[data-wetter],[data-ding],[data-bearbeiten],[data-bdw],[data-aendern],[data-stunde],[data-startart],[data-startgross]"); if (!t) return;
+    const t = ev.target.closest("[data-impuls],[data-tag],[data-wetter],[data-ding],[data-bearbeiten],[data-bdw],[data-aendern],[data-stunde],[data-startart],[data-startgross]"); if (!t) return;
+    if (t.hasAttribute("data-impuls")) { impulsAuf = true; zeichnen(); return; }
     if (t.dataset.startart) { startModus = t.dataset.startart; zeichnen(); return; }
     if (t.dataset.startgross) { startGross(t.dataset.startgross); return; }
     if (t.dataset.aendern !== undefined || t.dataset.stunde) { tagAendern(+(t.dataset.stunde || 0)); return; }
@@ -542,7 +608,7 @@ function bearbeiten(r){
     if (r) reiter = r;
     const p = document.getElementById("mgEditor"); p.classList.add("an");
     const k = klasse();
-    const R = { klasse: "🏫 Klasse", plan: "🗓️ Stundenplan", material: "🎒 Auspacken", startklar: "✅ Startklar", dienste: "🧹 Dienste & Schüler der Woche", faecher: "📚 Fächer", hinweise: "📢 Hinweise" };
+    const R = { klasse: "🏫 Klasse", plan: "🗓️ Stundenplan", material: "🎒 Auspacken", startklar: "✅ Startklar", termine: "📅 Termine & Impuls", dienste: "🧹 Dienste & Schüler der Woche", faecher: "📚 Fächer", hinweise: "📢 Hinweise" };
     const fachOpt = sel => `<option value="">–</option>` + Object.entries(FAECHER).map(([key, f]) => `<option value="${key}" ${key === sel ? "selected" : ""}>${f.e} ${esc(f.n)}</option>`).join("");
     let html = `<div class="mg-ed-kopf"><div class="mg-reiter">${Object.entries(R).map(([key, n]) => `<button class="${key === reiter ? "an" : ""}" data-reiter="${key}">${n}</button>`).join("")}</div>
         <span id="mgStatus" class="mg-status">${speicherFehler ? "⚠ " + esc(speicherFehler) : ungesichert ? "" : "✓ gespeichert"}</span><button class="mg-k" data-schliessen>✓ Fertig</button></div><div class="mg-ed-inhalt">`;
@@ -550,7 +616,7 @@ function bearbeiten(r){
         html += `<label>Klasse</label><div class="mg-reihe">${D.klassen.map(x => `<button class="mg-chip ${x.id === k.id ? "an" : ""}" data-klasse="${x.id}">${esc(x.name)}</button>`).join("")}<button class="mg-chip" data-neu>+ neue Klasse</button></div>
         <div class="mg-felder">
           <div><label>Name der Klasse</label><input data-feld="name" value="${esc(k.name)}" maxlength="20"></div>
-          <div><label>Klassenstufe (Darstellung)</label><select data-feld="stufe"><option value="12" ${k.stufe === "12" ? "selected" : ""}>Klasse 1/2 – große Bilder, wenig Text</option><option value="34" ${k.stufe === "34" ? "selected" : ""}>Klasse 3/4 – mit Uhrzeiten und Temperaturen</option></select></div>
+          <div><label>Klassenstufe (Darstellung)</label><select data-feld="stufe"><option value="12" ${k.stufe === "12" ? "selected" : ""}>Klasse 1/2 – große Bilder, wenig Text</option><option value="34" ${k.stufe === "34" ? "selected" : ""}>Klasse 3/4 – mit Uhrzeiten und Temperaturen</option><option value="sek" ${k.stufe === "sek" ? "selected" : ""}>Klasse 5–9 – sachlich, mit Terminen und Impuls des Tages</option></select></div>
           <div style="grid-column:1/-1"><label>Anrede in der Begrüßung</label><input data-feld="anrede" value="${esc(k.anrede || "")}" maxlength="60" placeholder="liebe Klasse ${esc(k.name)}"><small class="mg-hilfe">Die Begrüßung passt sich der Uhrzeit an: bis 10 Uhr „Guten Morgen, …“, bis 17 Uhr „Guten Tag, …“, danach „Guten Abend, …“. Leer = „liebe Klasse ${esc(k.name)}“. Beispiel: „ihr Füchse“.</small></div>
           <div><label>Buchstaben der Woche (leer = Feld ausblenden)</label><div class="mg-reihe"><input data-feld="buchstabe" value="${esc(k.buchstabe || "")}" maxlength="24" placeholder="z. B. m, a" style="flex:1">${kursBuchstabe() ? `<button class="mg-k hell" data-ausKurs>+ aus dem Buchstabenkurs: ${esc(kursBuchstabe())}</button>` : ""}</div><small class="mg-hilfe">Mehrere mit Komma trennen (bis zu 4), z. B. „m, a“ oder „ei, sch“. Antippen eines Buchstabens auf der Tafel öffnet ihn im Buchstabenkurs.</small></div>
           <div><label>Ort fürs Wetter</label><div class="mg-reihe"><input data-ort value="${esc((k.ort || {}).name || "")}" style="flex:1"><button class="mg-k hell" data-ortsuche>suchen</button></div><small class="mg-hilfe" id="mgOrt">${k.ort && k.ort.lat ? `📍 ${esc(k.ort.name)} (${(+k.ort.lat).toFixed(2)}, ${(+k.ort.lon).toFixed(2)})` : ""}</small></div>
@@ -588,6 +654,15 @@ function bearbeiten(r){
             ${x.farbe ? `<input type="color" data-mfarbe="${m}" value="${esc(x.farbe)}">` : ""}
             <button class="mg-k hell" data-mweg="${m}" title="entfernen">✕</button></div>`).join("")}
         </div><button class="mg-k hell" data-mplus style="margin-top:8px">+ Neues Material</button>`;
+    } else if (reiter === "termine") {
+        const heute = iso(tag());
+        html += `<div class="mg-info-box">📅 <b>Termine</b> wie Tests, Klassenarbeiten, Abgaben oder Ausflüge. Die Tafel zeigt die nächsten fünf mit „heute“, „morgen“ oder Wochentag – vergangene verschwinden von allein.</div>
+        <div class="mg-neuhinweis"><input class="mg-emoji" id="mgTE" value="📝" maxlength="8"><input id="mgTT" placeholder="z. B. Mathe-Test: Brüche" maxlength="80"><input type="date" id="mgTD" value="${heute}" min="${heute}"><button class="mg-k" data-tplus>+ Eintragen</button></div>
+        <div class="mg-liste" style="margin-top:8px">${(k.termine || []).slice().sort((a, b) => a.d < b.d ? -1 : 1).map(x => `<div class="mg-reihe mg-eintrag"><span style="font-size:24px">${esc(x.e)}</span><b style="min-width:90px">${new Date(x.d + "T12:00:00").toLocaleDateString("de-DE", { weekday: "short", day: "numeric", month: "numeric" })}</b><span style="flex:1">${esc(x.t)}</span><button class="mg-k hell" data-tweg="${x.id}" title="entfernen">✕</button></div>`).join("") || `<p class="mg-hilfe">Noch keine Termine.</p>`}</div>
+        <label style="margin-top:16px">A-/B-Woche</label>
+        <select data-feld="ab"><option value="" ${!k.ab ? "selected" : ""}>nicht anzeigen</option><option value="gerade" ${k.ab === "gerade" ? "selected" : ""}>A-Woche = gerade Kalenderwoche</option><option value="ungerade" ${k.ab === "ungerade" ? "selected" : ""}>A-Woche = ungerade Kalenderwoche</option></select>
+        <small class="mg-hilfe">Diese Woche ist KW ${kw(tag())} (${kw(tag()) % 2 ? "ungerade" : "gerade"}).</small>
+        ${k.stufe === "sek" ? `<label style="margin-top:16px">Impuls des Tages</label><label class="mg-schalter"><input type="checkbox" data-impzeigen ${k.impuls !== false ? "checked" : ""}> Jeden Tag im Wechsel: Wort des Tages, Denk-Nuss, Wusstest du?, Redewendung</label>` : ""}`;
     } else if (reiter === "startklar") {
         const liste = (art, titel, hilfe) => `<label>${titel}</label><p class="mg-hilfe" style="margin:0 0 6px">${hilfe}</p>
         <div class="mg-liste">${(k[art] || []).map((x, i) => `<div class="mg-reihe mg-eintrag"><input class="mg-emoji" data-se="${art}|${i}" value="${esc(x.e)}" maxlength="8"><input data-st="${art}|${i}" value="${esc(x.t)}" maxlength="80" style="flex:1" placeholder="z. B. Jacke aufhängen"><button class="mg-k hell" data-shoch="${art}|${i}" title="nach oben" ${i ? "" : "disabled"}>↑</button><button class="mg-k hell" data-sweg="${art}|${i}" title="entfernen">✕</button></div>`).join("")}</div>
@@ -632,6 +707,9 @@ function bearbeiten(r){
 function editorAktivieren(p, k){
     const neu = () => { speichern(); bearbeiten(); zeichnen(); };
     iconKnoepfe(p);
+    const tp = p.querySelector("[data-tplus]"); if (tp) tp.addEventListener("click", () => { const t = p.querySelector("#mgTT").value.trim(), dd = p.querySelector("#mgTD").value; if (!t || !dd) return; (k.termine = k.termine || []).push({ id: neueId(), e: p.querySelector("#mgTE").value || "📝", t, d: dd }); neu(); });
+    p.querySelectorAll("[data-tweg]").forEach(b => b.addEventListener("click", () => { k.termine = k.termine.filter(x => x.id !== b.dataset.tweg); neu(); }));
+    const iz = p.querySelector("[data-impzeigen]"); if (iz) iz.addEventListener("change", () => { k.impuls = iz.checked; speichern(); zeichnen(); });
     const sz = p.querySelector("[data-szeigen]"); if (sz) sz.addEventListener("change", () => { k.startZeigen = sz.checked; speichern(); zeichnen(); });
     p.querySelectorAll("[data-se],[data-st]").forEach(i => i.addEventListener("change", () => { const [art, n] = (i.dataset.se || i.dataset.st).split("|"); k[art][+n][i.dataset.se ? "e" : "t"] = i.value.trim(); speichern(); zeichnen(); }));
     p.querySelectorAll("[data-sweg]").forEach(b => b.addEventListener("click", () => { const [art, n] = b.dataset.sweg.split("|"); k[art].splice(+n, 1); neu(); }));
@@ -705,14 +783,21 @@ function buchstabenDerWoche(k){ return [...new Set(String(k.buchstabe || "").toL
 function kursBuchstabe(){ try { return (JSON.parse(localStorage.getItem("tb_buchstabenkurs") || "{}").aktuell) || ""; } catch (x) { return ""; } }
 // Alte Tages-Hinweise (älter als 2 Wochen) entfernen
 function aufraeumen(k){ const grenze = iso(new Date((Date.now() + zeitVersatz) - 14 * 864e5)); k.hinweise = (k.hinweise || []).filter(h => !/^\d{4}-/.test(h.wann) || h.wann >= grenze);
-    Object.keys(k.aenderungen || {}).forEach(t => { if (t < grenze) delete k.aenderungen[t]; }); }
+    Object.keys(k.aenderungen || {}).forEach(t => { if (t < grenze) delete k.aenderungen[t]; });
+    k.termine = (k.termine || []).filter(t => t.d >= grenze); }
 
 /* ---------- Öffnen / Schließen ---------- */
-function oeffnen(){
+function oeffnen(stufe){
     if (window.TB_ERLAUBT && !window.TB_ERLAUBT.morgen) return;
+    // Kachel „für die Großen“: eine Klasse 5–9 wählen – gibt es noch keine, wird eine angelegt
+    if (stufe === "sek" && klasse().stufe !== "sek") {
+        let s = D.klassen.find(x => x.stufe === "sek");
+        if (!s) { s = neueKlasse("7a", "sek"); s.beispiel = true; D.klassen.push(s); }
+        D.aktiv = s.id; speichern();
+    } else if (stufe === "gs" && klasse().stufe === "sek") { const g = D.klassen.find(x => x.stufe !== "sek"); if (g) { D.aktiv = g.id; speichern(); } }
     const w = document.getElementById("morgen");
     w.classList.add("an"); document.getElementById("uebersicht").style.display = "none";
-    history.replaceState(null, "", "#morgen");
+    history.replaceState(null, "", klasse().stufe === "sek" ? "#morgen-sek" : "#morgen");
     D.klassen.forEach(aufraeumen);
     if (autoGerueckt) { autoGerueckt = false; speichern(); }
     zeichnen(); wetterLaden();
@@ -725,8 +810,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let letzteMinute = -1;   // jede Minute neu zeichnen: Stundenwechsel, blasse Stunden, Material der Stunde
     setInterval(() => { if (!w.classList.contains("an")) return; uhr(); const m = jetztD().getMinutes(); if (m !== letzteMinute) { if (letzteMinute >= 0) zeichnen(); letzteMinute = m; } }, 1000);
     setInterval(() => { if (w.classList.contains("an")) wetterLaden(); }, 30 * 60 * 1000);
-    if (location.hash === "#morgen") oeffnen();
-    window.addEventListener("hashchange", () => { if (location.hash === "#morgen") oeffnen(); });
+    if (location.hash === "#morgen") oeffnen(); else if (location.hash === "#morgen-sek") oeffnen("sek");
+    window.addEventListener("hashchange", () => { if (location.hash === "#morgen") oeffnen(); else if (location.hash === "#morgen-sek") oeffnen("sek"); });
 });
 window.tafelMorgen = { oeffnen, schliessen, bearbeiten: () => bearbeiten(), startklar: art => { oeffnen(); setTimeout(() => startGross(art), 150); } };
 })();

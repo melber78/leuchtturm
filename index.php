@@ -113,6 +113,7 @@ body{
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-23", "Guten Morgen! für die Großen", "Eigene Tagesstart-Tafel für Kl. 5–9: sachlich, Stundenplan mit Uhrzeiten, A-/B-Woche, Termine (Tests, Abgaben) mit Countdown und jeden Tag ein Impuls – Wort des Tages, Denk-Nuss, Wusstest du?, Redewendung.", "tafelbilder.php#morgen-sek"],
     ["2026-11-23", "Tafelbild „Brüche“ für Klasse 5/6", "Erklär-Tafel mit Bild, Merksatz und Rechenweg zum Aufdecken: Was ist ein Bruch, gemischte Zahlen, Erweitern & Kürzen, Vergleichen, Zahlenstrahl, Plus/Minus, Mal/Geteilt – mit Zufallsbeispielen und eigener Aufgabe.", "tafelbilder.php#brueche"],
     ["2026-11-22", "Echte Konzentrationstests", "14 neue Aufmerksamkeits-Blätter in allen Stufen: Würfel-Test, Pauli-Test, Revisionstest, Kopfrechnen unter Belastung, Stroop, Stopp-Test, zwei Regeln gleichzeitig, Rückblick-Test, Zeichen-Suche, Korrektur lesen u. v. m. – ab Klasse 5 mit Takt und Auswertung, Zufallsmix nur noch mit echten Konzentrationstests.", "lrs.php"],
     ["2026-11-20", "Deutsch-Werkzeugkasten", "Alle Arbeitsblätter zu den Rechtschreibstrategien an einem Ort, sortiert nach Werkzeug: Mitsprechen, Schwingen, Kurz/lang, Verlängern, Ableiten, Groß/klein, Ersatzprobe, Merkwörter, Komma – ein Tipp und die Blätter sind da.", "lrs.php#werkzeug"],

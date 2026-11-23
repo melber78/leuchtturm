@@ -150,6 +150,34 @@ body{ background:#f6f2ea; }
 /* ---------- Guten Morgen! (Tagesstart) ---------- */
 #morgen{ position:fixed; inset:0; display:none; flex-direction:column; z-index:10; background:linear-gradient(160deg,#fff8e8 0%,#eef6fb 100%); color:#1f2d36; font-family:"Nunito",sans-serif; user-select:none; }
 #morgen.an{ display:flex; }
+/* Klasse 5–9: sachlicher */
+#morgen.sek{ background:linear-gradient(160deg,#eef2f6 0%,#e2e9f1 100%); color:#1c2b39; }
+#morgen.sek .mg-titel{ color:#4b5e72; }
+#morgen.sek .mg-gruss h1{ color:#1c2b39; letter-spacing:-.01em; }
+#morgen.sek .mg-karte{ border-radius:16px; box-shadow:0 4px 14px rgba(28,43,57,.08); }
+#morgen.sek .mg-karte h2{ color:#5b6f84; letter-spacing:.08em; }
+#morgen.sek .mg-uhr{ border-radius:12px; }
+#morgen.sek .mg-stunden li{ border-radius:10px; background:#f3f6f9; }
+#morgen.sek .mg-fe{ font-size:clamp(20px,min(2.2vw,3.8vh),40px); }
+#morgen.sek .mg-achtung{ background:#fff7e0; }
+#morgen.sek .mg-ding{ border-radius:12px; }
+#morgen.sek .mg-ding span{ font-size:clamp(22px,min(2.5vw,4.2vh),46px); }
+#morgen.sek .mg-datum{ border-top-width:6px; }
+.mg-ab{ background:#1c2b39; color:#fff; border-radius:6px; padding:.05em .45em; }
+.mg-termine{ flex:1.2 !important; }
+.mg-tliste{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.6vh; }
+.mg-tliste li{ display:flex; align-items:center; gap:.8vw; background:#f3f6f9; border-radius:10px; padding:.5vh .7vw; }
+.mg-tliste li.bald{ background:#fdecea; }
+.mg-tw{ font:900 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#a3261c; min-width:5.2em; display:flex; flex-direction:column; line-height:1.1; }
+.mg-tliste li:not(.bald) .mg-tw{ color:#1d5fa8; }
+.mg-tw small{ font-weight:700; color:#7c8a95; font-size:.75em; }
+.mg-tt{ font:800 clamp(13px,min(1.35vw,2.3vh),25px)/1.2 "Nunito",sans-serif; color:#1c2b39; overflow-wrap:anywhere; }
+.mg-impuls{ background:linear-gradient(135deg,#ffffff,#eef4fb); justify-content:center; }
+.mg-imp-gross{ font:900 clamp(22px,min(2.6vw,4.4vh),50px)/1.1 "Nunito",sans-serif; color:#1d5fa8; margin-bottom:.6vh; overflow-wrap:anywhere; }
+.mg-imp-gross.klein{ font-size:clamp(17px,min(1.9vw,3.2vh),36px); }
+.mg-imp-text{ font:700 clamp(14px,min(1.45vw,2.5vh),27px)/1.35 "Nunito",sans-serif; color:#2c3e50; }
+.mg-imp-text.gross{ font-size:clamp(15px,min(1.6vw,2.7vh),30px); font-weight:800; }
+.mg-imp-loes{ margin-top:1vh; font:900 clamp(15px,min(1.6vw,2.7vh),30px) "Nunito",sans-serif; color:#2e7d32; }
 .mg-leiste{ display:flex; gap:8px; align-items:center; padding:8px 16px; }
 .mg-titel{ font-weight:900; color:#7c6a4f; font-size:17px; }
 #mgInhalt{ flex:1; display:flex; flex-direction:column; padding:0 1.6vw 1.6vh; min-height:0; }
@@ -479,16 +507,26 @@ body{ background:#f6f2ea; }
     <a class="zurueck" href="<?= $LT_GAST ? "gast.php" : "index.php" ?>"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
     <div class="tb-banner"><h1>Tafelbilder</h1><p>Für die digitale Tafel: öffnen, Vollbild an – und mit dem Tafelstift direkt hineinschreiben.</p><span class="kreide">Aa · 1 2 3 · ☀</span></div>
     <div class="kacheln">
-<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")): ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen")): ?>
         <div class="tb-gruppe">Höhere Klassen</div>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
+        <button class="kachel" type="button" onclick="tafelMorgen.oeffnen('sek')">
+            <div class="k-buehne k-morgen" style="background:linear-gradient(135deg,#e9eef4,#d6e1ec);"><div class="mini-gruss" style="color:#1c2b39;">Guten Morgen, 7b!</div><div class="mini-raster"><i>📅</i><i>🧩</i><i>🗂️</i><i>A/B</i></div></div>
+            <div class="k-text"><h2>Guten Morgen! (Kl. 5–9)</h2><p>Sachlicher Tagesstart für die Großen: Stundenplan mit Uhrzeiten, A-/B-Woche, Termine (Tests, Abgaben) mit Countdown und jeden Tag ein Impuls – Wort des Tages, Denk-Nuss, Wusstest du?, Redewendung.</p><div class="k-tags"><span>Stundenanfang</span><span>Kl. 5–9</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")): ?>
         <button class="kachel" type="button" onclick="tafelBrueche.oeffnen()">
             <div class="k-buehne k-br"><div class="mini-br"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="#fff" stroke="#16324a" stroke-width="5"/><path d="M60 60 L60 8 A52 52 0 1 1 8 60 Z" fill="#3d7ea6" stroke="#16324a" stroke-width="4" stroke-linejoin="round"/><line x1="60" y1="8" x2="60" y2="112" stroke="#16324a" stroke-width="4"/><line x1="8" y1="60" x2="112" y2="60" stroke="#16324a" stroke-width="4"/></svg><span class="mini-bz"><b>2</b><span><i>3</i><i>4</i></span></span></div></div>
             <div class="k-text"><h2>Brüche</h2><p>Erklär-Tafel mit Bild und Rechenweg zum Aufdecken: Was ist ein Bruch, gemischte Zahlen, Erweitern &amp; Kürzen, Vergleichen, Zahlenstrahl, Plus/Minus, Mal/Geteilt.</p><div class="k-tags"><span>Mathe</span><span>Kl. 5/6</span></div></div>
         </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen")): ?>
         <div class="tb-gruppe">Grundschule</div>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
-        <button class="kachel" type="button" onclick="tafelMorgen.oeffnen()">
+        <button class="kachel" type="button" onclick="tafelMorgen.oeffnen('gs')">
             <div class="k-buehne k-morgen"><div class="mini-gruss"><span>☀️</span>Guten Morgen!</div><div class="mini-raster"><i>📅</i><i>🔢</i><i>🎒</i><i>⭐</i></div></div>
             <div class="k-text"><h2>Guten Morgen!</h2><p>Der Tagesstart auf einen Blick: Datum, Wetter, Stundenplan, was auspacken, was beachten.</p><div class="k-tags"><span>Stundenanfang</span><span>Kl. 1–4</span></div></div>
         </button>
@@ -618,6 +656,7 @@ window.TAFEL_CSRF = <?= json_encode($_SESSION["tafel_csrf"]) ?>;
 window.TAFEL_SERVERZEIT = <?= round(microtime(true) * 1000) ?>; window.TAFEL_GELADEN = Date.now();
 window.TB_ERLAUBT = <?= json_encode(["buchstabenkurs" => !$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs"), "morgen" => !$LT_GAST || lt_gastDarf($LT_GAST, "morgen")]) ?>;
 </script>
+<script src="tafel-impulse.js?v=<?= @filemtime(__DIR__ . "/tafel-impulse.js") ?>"></script>
 <script src="tafel-morgen.js?v=<?= @filemtime(__DIR__ . "/tafel-morgen.js") ?>"></script>
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
 <script src="lernangebot-tafel.js?v=<?= @filemtime(__DIR__ . "/lernangebot-tafel.js") ?: 1 ?>"></script>
