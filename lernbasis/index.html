@@ -1826,7 +1826,7 @@ VIEWS.vokfoto=p=>{p.s=p.s||'en';p.k=p.k||(p.s==='en'?'vok':'notiz');const sb=sub
  <div class="box"><h3>1. Foto aufnehmen</h3>Seite <b>gerade von oben</b> und bei gutem Licht fotografieren. Die App liest den Text selbst aus.
  <div class="row" style="display:flex;gap:8px;margin-top:10px"><button class="btn" style="flex:1" onclick="$('#ocrcam').click()">📷 Foto aufnehmen</button><button class="btn sec2" style="flex:1" onclick="$('#ocrgal').click()">🖼️ Aus Galerie</button></div>
  <input id="ocrcam" type="file" accept="image/*" capture="environment" hidden onchange="ocrRun(this)"><input id="ocrgal" type="file" accept="image/*" hidden onchange="ocrRun(this)">
- <div id="ocrst" class="small mut" style="margin-top:8px"></div>
+ <div id="ocrcrop"></div><div id="ocrst" class="small mut" style="margin-top:8px"></div>
  <details style="margin-top:8px"><summary class="small">✍️ Handschrift wird schlecht erkannt?</summary><p class="small">Bei Handschrift ist die Texterkennung des Handys besser:<br><b>Samsung:</b> Foto in der <b>Galerie</b> öffnen → unten rechts auf das <b>„T“</b> → <b>„Alle auswählen“</b> → <b>„Kopieren“</b>.<br><b>Andere Handys:</b> Foto teilen → <b>Google Lens</b> → „Text“ → „Alles auswählen“ → „Kopieren“.<br>Dann unten ins Feld einfügen.</p></details></div>
  <div class="box"><h3>2. Text prüfen</h3>Hier steht der erkannte Text. Verbessere Fehler direkt im Feld. Du kannst auch Text einfügen (lange ins Feld drücken → „Einfügen“).
  <textarea id="vokin" style="min-height:160px;margin-top:8px" placeholder="${p.k==='vok'?'z. B.&#10;ruler   das Lineal&#10;rubber   der Radiergummi':(p.s==='en'?'z. B.&#10;simple past: Vergangenheit, Signalwort yesterday&#10;She *played* football yesterday.&#10;We *went* to Berlin last week.':'z. B.&#10;Altes Testament: erster Teil der Bibel&#10;Prophet – Mensch, der im Auftrag Gottes spricht')}">${esc(p.txt||'')}</textarea>
@@ -1842,27 +1842,53 @@ function vokSwap(){const d=view.p.d;d.cards=d.cards.map(([x,y])=>[y,x]);render()
 
 /* ===== Texterkennung direkt in der App (Tesseract, läuft auf dem Gerät, kostenlos) ===== */
 const OCR_JS='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
-let OCR={w:null,lang:'',busy:false};
+let OCR={w:null,lang:'',busy:false,img:null,rot:0,sel:null};
+function ocrSet(t){const e=$('#ocrst');if(e)e.innerHTML=t}
 function ocrLoad(){if(window.Tesseract)return Promise.resolve();return new Promise((ok,no)=>{const sc=document.createElement('script');sc.src=OCR_JS;sc.onload=ok;sc.onerror=()=>no(new Error('net'));document.head.appendChild(sc)})}
-function ocrImg(file){return new Promise((ok,no)=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{const M=2200,f=Math.min(1,M/Math.max(im.width,im.height)),w=Math.round(im.width*f),h=Math.round(im.height*f),c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(im,0,0,w,h);URL.revokeObjectURL(u);
- // Graustufen + Kontrast strecken: hilft bei Heftpapier und Schatten
+function ocrFile(file){return new Promise((ok,no)=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{const c=document.createElement('canvas'),M=3200,f=Math.min(1,M/Math.max(im.width,im.height));c.width=Math.round(im.width*f);c.height=Math.round(im.height*f);c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c)};im.onerror=()=>{URL.revokeObjectURL(u);no(new Error('img'))};im.src=u})}
+function ocrRotated(){const im=OCR.img,r=OCR.rot%4;if(!r)return im;const c=document.createElement('canvas');c.width=r%2?im.height:im.width;c.height=r%2?im.width:im.height;const x=c.getContext('2d');x.translate(c.width/2,c.height/2);x.rotate(r*Math.PI/2);x.drawImage(im,-im.width/2,-im.height/2);return c}
+async function ocrRun(inp){const file=inp.files&&inp.files[0];inp.value='';if(!file||OCR.busy)return;
+ try{ocrSet('⏳ Bild wird geladen …');OCR.img=await ocrFile(file);OCR.rot=0;OCR.sel=null;ocrCropUI();ocrSet('');ocrLoad().catch(()=>{})}catch(e){ocrSet('😕 Das Bild konnte nicht geöffnet werden.')}}
+/* Ausschnitt wählen: mit dem Finger einen Rahmen um die Vokabeln/den Text ziehen */
+function ocrCropUI(){const box=$('#ocrcrop');if(!box)return;const src=ocrRotated();OCR.src=src;
+ box.innerHTML=`<div class="small" style="margin:10px 0 6px"><b>Ziehe mit dem Finger einen Rahmen</b> nur um den Teil, der übernommen werden soll (z. B. nur die Vokabelliste, ohne Bilder und Kästen).</div>
+ <canvas id="ocrcv" style="width:100%;border-radius:10px;touch-action:none;display:block;background:#000"></canvas>
+ <div style="display:flex;gap:8px;margin-top:8px"><button class="btn sec2" style="flex:1" onclick="OCR.rot++;OCR.sel=null;ocrCropUI()">↻ Drehen</button><button class="btn sec2" style="flex:1" onclick="OCR.sel=null;ocrDraw()">Ganze Seite</button></div>
+ <button class="btn" style="margin-top:8px" onclick="ocrGo()">🔎 Text auslesen</button>
+ <button class="btn sec2" style="margin-top:6px" onclick="OCR.img=null;$('#ocrcrop').innerHTML=''">Abbrechen</button>`;
+ const cv=$('#ocrcv'),W=Math.min(1200,src.width),f=W/src.width;cv.width=W;cv.height=Math.round(src.height*f);OCR.f=f;ocrDraw();
+ let st=null;const pt=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*cv.width/r.width,(e.clientY-r.top)*cv.height/r.height]};
+ cv.onpointerdown=e=>{cv.setPointerCapture(e.pointerId);st=pt(e);OCR.sel=null};
+ cv.onpointermove=e=>{if(!st)return;const q=pt(e);OCR.sel=[Math.min(st[0],q[0]),Math.min(st[1],q[1]),Math.abs(q[0]-st[0]),Math.abs(q[1]-st[1])];ocrDraw()};
+ cv.onpointerup=cv.onpointercancel=()=>{st=null;if(OCR.sel&&(OCR.sel[2]<20||OCR.sel[3]<20)){OCR.sel=null;ocrDraw()}};
+ setTimeout(()=>cv.scrollIntoView({behavior:'smooth',block:'center'}),50)}
+function ocrDraw(){const cv=$('#ocrcv');if(!cv)return;const x=cv.getContext('2d');x.drawImage(OCR.src,0,0,cv.width,cv.height);const s=OCR.sel;if(!s)return;
+ x.fillStyle='rgba(0,0,0,.55)';x.fillRect(0,0,cv.width,s[1]);x.fillRect(0,s[1]+s[3],cv.width,cv.height-s[1]-s[3]);x.fillRect(0,s[1],s[0],s[3]);x.fillRect(s[0]+s[2],s[1],cv.width-s[0]-s[2],s[3]);
+ x.strokeStyle='#38bdf8';x.lineWidth=Math.max(2,cv.width/300);x.strokeRect(s[0],s[1],s[2],s[3])}
+/* Ausschnitt in voller Auflösung, passend skaliert, Graustufen + Kontrast */
+function ocrPrep(){const src=OCR.src,f=OCR.f,s=OCR.sel?OCR.sel.map(v=>v/f):[0,0,src.width,src.height];
+ const L=Math.max(s[2],s[3]),k=Math.min(2.5,Math.max(.4,2200/L)),w=Math.round(s[2]*k),h=Math.round(s[3]*k),c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(src,s[0],s[1],s[2],s[3],0,0,w,h);
  const d=x.getImageData(0,0,w,h),a=d.data,hist=new Array(256).fill(0);for(let i=0;i<a.length;i+=4){const g=(a[i]*.299+a[i+1]*.587+a[i+2]*.114)|0;a[i]=g;hist[g]++}
  let n=0,lo=0,hi=255;const T=w*h*.02;for(lo=0;lo<255&&(n+=hist[lo])<T;lo++);n=0;for(hi=255;hi>0&&(n+=hist[hi])<T;hi--);const r=Math.max(1,hi-lo);
- for(let i=0;i<a.length;i+=4){const g=Math.max(0,Math.min(255,(a[i]-lo)*255/r));a[i]=a[i+1]=a[i+2]=g}x.putImageData(d,0,0);ok(c)};im.onerror=()=>{URL.revokeObjectURL(u);no(new Error('img'))};im.src=u})}
-async function ocrRun(inp){const file=inp.files&&inp.files[0];inp.value='';if(!file||OCR.busy)return;const st=$('#ocrst'),set=t=>{const e=$('#ocrst');if(e)e.innerHTML=t};
- const p=view.p,lang=(p.s==='en'||p.k==='vok')?'deu+eng':'deu';OCR.busy=true;
- try{set('⏳ Bild wird vorbereitet …');const cv=await ocrImg(file);
-  if(!OCR.w||OCR.lang!==lang){set('⏳ Texterkennung wird geladen … (nur beim ersten Mal etwas länger)');await ocrLoad();if(OCR.w){try{await OCR.w.terminate()}catch(e){}}
-   OCR.w=await Tesseract.createWorker(lang,1,{logger:m=>{if(m.status==='recognizing text')set('🔎 Text wird gelesen … '+Math.round(m.progress*100)+' %');else if(/load|initializ/.test(m.status))set('⏳ Texterkennung wird geladen … '+Math.round((m.progress||0)*100)+' %')}});
-   await OCR.w.setParameters({preserve_interword_spaces:'1'});OCR.lang=lang}
-  set('🔎 Text wird gelesen …');const {data}=await OCR.w.recognize(cv);
-  const lines=(data.lines||[]).filter(l=>l.confidence>=35).map(l=>l.text.replace(/[|_]{2,}/g,' ').replace(/ {3,}/g,'   ').replace(/\s+$/,'')).filter(l=>l.trim().length>1);
-  const txt=lines.length?lines.join('\n'):(data.text||'').trim();const conf=Math.round(data.confidence||0);
-  if(!txt){set('😕 Kein Text erkannt. Bei Handschrift hilft die Anleitung unten („Handschrift …“).');OCR.busy=false;return}
-  const ta=$('#vokin');ta.value=(ta.value.trim()?ta.value.replace(/\s+$/,'')+'\n':'')+txt;p.txt=ta.value;
-  set(conf<60?`⚠️ Text erkannt, aber unsicher (${conf} %). Bitte im Feld genau prüfen. Bei Handschrift ist die Anleitung unten oft besser.`:`✅ ${lines.length||1} Zeilen erkannt. Bitte kurz prüfen und Fehler verbessern. Für eine weitere Seite einfach noch ein Foto machen.`);
+ for(let i=0;i<a.length;i+=4){const g=Math.max(0,Math.min(255,(a[i]-lo)*255/r));a[i]=a[i+1]=a[i+2]=g}x.putImageData(d,0,0);return c}
+/* Aufräumen: Lautschrift, Aufzählungszeichen, Störzeichen */
+function ocrClean(l){return l.replace(/\s+$/,'').replace(/\[[^\]\)]{0,30}[\]\)]|\{[^}]{0,25}\}|\([^)]{0,30}[:'ˈəɪʊ][^)]{0,30}\)|\/[^\/\s]{1,20}\//g,' ').replace(/[©®™•●■□▪◆★☐✓✔]/g,' ').replace(/[|_]{2,}/g,' ')
+ .replace(/([a-zäöü])B(?=[a-zäöü]|\b)/g,'$1ß').replace(/^[^A-Za-zÄÖÜäöüß0-9„"'(¿¡]+/,'').replace(/\s+[^\sA-Za-zÄÖÜäöüß0-9.,!?;:'"“”„)…\/–—-]{1,2}(?=\s|$)/g,' ').replace(/ {3,}/g,'   ').replace(/ ?\/ ?/g,' / ').replace(/^ +| +$/g,'')}
+async function ocrGo(){if(OCR.busy||!OCR.img)return;const p=view.p,vok=p.k==='vok',lang=(p.s==='en'||vok)?'deu+eng':'deu';OCR.busy=true;
+ try{const cv=ocrPrep();
+  if(!OCR.w||OCR.lang!==lang){ocrSet('⏳ Texterkennung wird geladen … (nur beim ersten Mal etwas länger)');await ocrLoad();if(OCR.w){try{await OCR.w.terminate()}catch(e){}}
+   OCR.w=await Tesseract.createWorker(lang,1,{logger:m=>{if(m.status==='recognizing text')ocrSet('🔎 Text wird gelesen … '+Math.round(m.progress*100)+' %');else if(/load|initializ/.test(m.status))ocrSet('⏳ Texterkennung wird geladen … '+Math.round((m.progress||0)*100)+' %')}});OCR.lang=lang}
+  // Vokabeln: Zeile für Zeile über die Spalten lesen (PSM 6) – Hefter: Textblöcke automatisch (PSM 3)
+  await OCR.w.setParameters({preserve_interword_spaces:'1',tessedit_pageseg_mode:vok?'6':'3'});
+  ocrSet('🔎 Text wird gelesen …');const {data}=await OCR.w.recognize(cv);
+  const lines=(data.lines||[]).filter(l=>l.confidence>=40).map(l=>ocrClean(l.text)).filter(l=>/[A-Za-zÄÖÜäöüß]{2}/.test(l));
+  const conf=Math.round(data.confidence||0);
+  if(!lines.length){ocrSet('😕 Kein Text erkannt. Rahmen enger ziehen oder bei Handschrift die Anleitung unten nutzen.');OCR.busy=false;return}
+  const ta=$('#vokin');ta.value=(ta.value.trim()?ta.value.replace(/\s+$/,'')+'\n':'')+lines.join('\n');p.txt=ta.value;
+  OCR.img=null;$('#ocrcrop').innerHTML='';
+  ocrSet(conf<65?`⚠️ Text erkannt, aber unsicher (${conf} %). Bitte im Feld genau prüfen. Tipp: Rahmen nur um die Liste ziehen. Bei Handschrift ist die Anleitung unten oft besser.`:`✅ ${lines.length} Zeilen erkannt. Bitte kurz prüfen und Fehler verbessern. Für eine weitere Seite einfach noch ein Foto machen.`);
   ta.scrollIntoView({behavior:'smooth',block:'center'})}
- catch(e){set(e&&e.message==='net'?'📶 Keine Internetverbindung. Beim ersten Mal muss die Texterkennung einmal geladen werden.':'😕 Das hat nicht geklappt. Bitte noch einmal versuchen.')}
+ catch(e){ocrSet(e&&e.message==='net'?'📶 Keine Internetverbindung. Beim ersten Mal muss die Texterkennung einmal geladen werden.':'😕 Das hat nicht geklappt. Bitte noch einmal versuchen.')}
  OCR.busy=false}
 
 /* ===== Eltern-App (Modus pro Gerät) + Vorschau des Kinderbereichs ===== */
