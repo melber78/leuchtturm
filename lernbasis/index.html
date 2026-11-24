@@ -1270,6 +1270,8 @@ VIEWS.eltern=p=>{
  ${weak.length?`<div class="sec">Unsicherste Themen</div>${weak.map(t=>`<div class="small">${subj(t.s).icon} ${esc(t.title)} – <b>${topicScore(t.id)} %</b></div>`).join('')}`:''}
  <div class="sec">Letzte Tests</div>${S.tests.length?`<table class="st"><tr><th>Datum</th><th>Test</th><th>Erg.</th><th>Note</th></tr>${S.tests.slice(-10).reverse().map(h=>`<tr><td>${h.d.slice(5).split('-').reverse().join('.')}</td><td>${esc(h.title)}</td><td>${h.r}/${h.n}</td><td><b>${h.g}</b></td></tr>`).join('')}</table>`:'<p class="small mut">Noch keine Tests.</p>'}
  ${elternRewards()}${elternRemind()}
+ <div class="sec">📥 Inhalte importieren</div><p class="small mut" style="margin:0 0 6px">Code einfügen, den Claude im Chat erstellt hat (beginnt mit „LB1:“). Die Themen erscheinen bei Henry im passenden Fach, Doppeltes wird aussortiert.</p>
+ <textarea id="lbimp" style="min-height:70px" placeholder="LB1:…"></textarea><button class="btn sec2" onclick="lbImportUI('lbimp')">Importieren</button><div id="lbimpr" class="small" style="margin-top:6px"></div>
  <div class="sec">Einstellungen</div>
  <label class="small mut">Dieses Gerät ist …</label><div class="chips" style="margin-bottom:10px"><button class="chip ${MODE==='kind'?'on':''}" onclick="setMode('kind')">🧒 Kinder-App (Henry)</button><button class="chip ${MODE==='eltern'?'on':''}" onclick="setMode('eltern')">👩 Eltern-App</button></div>
  <label class="small mut">Name des Kindes</label><input value="${esc(S.name)}" onchange="S.name=this.value.trim()||'Henry';save()">
@@ -1802,6 +1804,22 @@ function mergeInto(targetId){const p=view.p,d=p.d,t=S.custom.find(x=>x.id===targ
  t.cards=(t.cards||[]).concat(add);if(d.learn&&d.learn.trim()&&!(t.learn||'').includes(d.learn.trim()))t.learn=((t.learn||'')+'\n\n'+d.learn.trim()).trim();
  save();toast(`${add.length} neue Karten zu „${t.title}“ hinzugefügt ✓`);go('topic',{id:t.id},true)}
 function readdRemoved(){const p=view.p;p.d.cards=p.d.cards.filter(c=>c[0]||c[1]).concat(p.removed.map(r=>[r[0],r[1]]));p.removed=[];p.forceDup=true;render()}
+/* ===== Import-Code (z. B. von Claude abgetippte Buchseiten) – Inhalt steht nur in Henrys Daten, nicht im öffentlichen Code ===== */
+async function lbDecode(code){const b=atob(code.replace(/^\s*LB1:/,'').replace(/\s+/g,'')),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
+ const st=new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'));return JSON.parse(await new Response(st).text())}
+async function lbImport(code){let data;try{data=await lbDecode(code)}catch(e){toast('Der Code ist unvollständig. Bitte den ganzen Block kopieren.');return false}
+ if(PREVIEW){toast('In der Vorschau wird nichts gespeichert.');return false}
+ const msg=[];let nAdd=0,nDup=0;
+ (data.topics||[]).forEach((x,i)=>{const s=x.s||'en',vok=x.kind!=='qa';
+  const d={id:'c_'+Date.now().toString(36)+i,s,title:x.t,kind:vok?'vok':'qa',learn:x.learn||'',la:x.la||'Deutsch',lb:x.lb||'Englisch',cards:(x.c||[]).map(c=>vok?[c[1],c[0]]:c)};
+  const old=S.custom.find(c=>c.s===s&&nkey(c.title)===nkey(d.title));
+  const removed=cleanImport(old?Object.assign(d,{id:old.id}):d);nDup+=removed.length;
+  if(old){const add=d.cards.filter(c=>c[0]&&c[1]&&!(old.cards||[]).some(y=>nkey(y[0])===nkey(c[0])));old.cards=(old.cards||[]).concat(add);nAdd+=add.length;msg.push(`„${old.title}“: +${add.length}`)}
+  else if(d.cards.length){S.custom.push(d);nAdd+=d.cards.length;msg.push(`„${d.title}“: ${d.cards.length}`)}});
+ save();toast(`✓ ${nAdd} Karten übernommen${nDup?` · ${nDup} waren schon vorhanden`:''}`);
+ return msg.join(' · ')+(nDup?` · ${nDup} doppelte weggelassen`:'')}
+async function lbImportUI(id){const el=$('#'+id),v=(el&&el.value||'').trim();if(!/^LB1:/.test(v)){toast('Bitte den Code einfügen, der mit „LB1:“ beginnt.');return}
+ const r=await lbImport(v);if(r!==false){el.value='';const o=$('#'+id+'r');if(o)o.innerHTML='✅ '+esc(r)}}
 
 /* ===== Vokabeln aus dem Heft (Foto → Texterkennung des Geräts → einfügen) ===== */
 const DE_HINT=/^(der|die|das|ein|eine)\s|[äöüßÄÖÜ]|(ung|heit|keit|schaft|chen|lein|en|ern|eln)$/;
@@ -1833,7 +1851,7 @@ VIEWS.vokfoto=p=>{p.s=p.s||'en';p.k=p.k||(p.s==='en'?'vok':'notiz');const sb=sub
  <button class="btn" onclick="vokParse()">${p.k==='vok'?'Vokabeln erkennen →':'Übernehmen →'}</button></div>
  <p class="small mut">${p.k==='vok'?'Im nächsten Schritt siehst du die Liste und kannst Fehler verbessern, bevor gespeichert wird.':'Der ganze Text wird zum Merkwissen unter „Lernen“. Zeilen wie „Begriff: Erklärung“ oder „Begriff – Erklärung“ werden zu Karteikarten. <b>Lückensätze:</b> Setze das gesuchte Wort in Sternchen, z. B. <i>She *plays* football.</i> → „She ___ football.“ Fehlende Karten kannst du im nächsten Schritt selbst ergänzen.'}</p>`};
 function parseNotiz(txt){const out=[];txt.split(/\r?\n/).forEach(l=>{l=l.replace(/^[\s•·\d.)]+(?=\S)/,'').replace(/^\*\s+/,'').trim();const gap=l.match(/\*([^*]+)\*/);if(gap){out.push([l.replace(/\*([^*]+)\*/,'___').replace(/\*/g,''),gap[1].trim()]);return}const m=l.match(/^([^:=–—]{2,60}?)\s*(?::|=|\s[–—-]\s)\s*(.{3,})$/);if(m)out.push([m[1].trim(),m[2].trim()])});return out}
-function vokParse(){const p=view.p,txt=$('#vokin').value;p.txt=txt;if(!txt.trim()){toast('Bitte zuerst den Text einfügen.');return}const d=new Date(),dat=d.getDate()+'.'+(d.getMonth()+1)+'.';
+function vokParse(){const p=view.p,txt=$('#vokin').value;p.txt=txt;if(/^\s*LB1:/.test(txt)){lbImport(txt).then(r=>{if(r!==false){p.txt='';go('subject',{s:p.s||'en'},true)}});return}if(!txt.trim()){toast('Bitte zuerst den Text einfügen.');return}const d=new Date(),dat=d.getDate()+'.'+(d.getMonth()+1)+'.';
  if(p.k==='vok'){const pairs=parseVok(txt);if(!pairs.length){toast('Keine Vokabeln gefunden – ist Text eingefügt?');return}
   go('edit',{isNew:true,d:{id:'c_'+Date.now().toString(36),s:p.s,title:'Vokabeln vom '+dat,kind:'vok',learn:'',la:'Deutsch',lb:p.s==='en'?'Englisch':'Fremdsprache',cards:pairs}});setTimeout(()=>toast(`${pairs.length} Vokabeln erkannt – bitte kurz prüfen`),300);return}
  const cards=parseNotiz(txt);const first=(txt.split(/\r?\n/).map(x=>x.trim()).find(x=>x&&!/\*/.test(x))||'').replace(/[:.]$/,'');
