@@ -378,6 +378,48 @@ const VERHALTEN = {
     krake: { art: "treib", v: .025, g: 1 }, qualle: { art: "treib", v: .02, g: .8 }, krebs: { art: "sand", v: .06, g: .7 }
 };
 const FLIEGT = a => a === "flieg" || a === "flatter";
+// Quatsch-Wald: eigene, frei erfundene Quatsch-Wesen (Name, Art, Bild)
+const Q_AUGE = (x, y, r = 7) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="#222" stroke-width="2"/><circle cx="${x + 1.5}" cy="${y + 1}" r="${r * .45}" fill="#222"/>`;
+const Q_MUND = (x, y, w = 14) => `<path d="M${x - w / 2} ${y} Q${x} ${y + w * .7} ${x + w / 2} ${y}" stroke="#222" stroke-width="3" fill="#ff8a80" stroke-linecap="round"/>`;
+const Q_SVG = inner => `<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+const QUATSCH_WESEN = {
+    q_toast: ["Brummi Toastflieger", "flieg", Q_SVG(`<line x1="64" y1="22" x2="64" y2="10" stroke="#555" stroke-width="4"/><ellipse cx="44" cy="9" rx="20" ry="5" fill="#e53935"/><ellipse cx="84" cy="9" rx="20" ry="5" fill="#1e88e5"/>
+        <path d="M24 56 C18 30 44 22 64 30 C84 22 110 30 104 56 L100 110 Q64 118 28 110 Z" fill="#d49a4a"/><path d="M32 58 C28 38 48 32 64 38 C80 32 100 38 96 58 L93 102 Q64 108 35 102 Z" fill="#f5d38c"/>
+        ${Q_AUGE(50, 66)}${Q_AUGE(78, 66)}${Q_MUND(64, 84, 18)}<path d="M18 80 l-10 -6 M110 80 l10 -6" stroke="#d49a4a" stroke-width="5" stroke-linecap="round"/>`)],
+    q_gurke: ["Gurki Rollschuh", "lauf", Q_SVG(`<path d="M50 14 C70 8 84 18 84 36 L86 92 C86 104 46 106 44 92 L42 36 C42 24 44 16 50 14Z" fill="#43a047"/><g fill="#2e7d32"><circle cx="54" cy="34" r="3"/><circle cx="74" cy="48" r="3"/><circle cx="56" cy="62" r="3"/><circle cx="76" cy="80" r="3"/></g>
+        ${Q_AUGE(56, 42, 8)}${Q_AUGE(74, 42, 8)}${Q_MUND(65, 58, 16)}<rect x="36" y="100" width="24" height="8" rx="4" fill="#e91e63"/><rect x="70" y="100" width="24" height="8" rx="4" fill="#e91e63"/>
+        <g fill="#333"><circle cx="40" cy="114" r="5"/><circle cx="56" cy="114" r="5"/><circle cx="74" cy="114" r="5"/><circle cx="90" cy="114" r="5"/></g>`)],
+    q_pudding: ["Wabbel Wackelpudding", "huepf", Q_SVG(`<ellipse cx="64" cy="112" rx="50" ry="8" fill="#eee"/><path d="M22 108 L30 52 Q64 30 98 52 L106 108 Z" fill="#7cb342" opacity=".92"/><path d="M30 52 Q64 30 98 52 Q64 64 30 52Z" fill="#9ccc65"/>
+        <circle cx="64" cy="32" r="9" fill="#e53935"/><path d="M64 23 q4 -10 12 -10" stroke="#388e3c" stroke-width="3" fill="none"/>${Q_AUGE(50, 74, 8)}${Q_AUGE(78, 74, 8)}${Q_MUND(64, 92, 20)}<ellipse cx="40" cy="66" rx="4" ry="10" fill="#fff" opacity=".5"/>`)],
+    q_socke: ["Socki Schnorchel", "huepf", Q_SVG(`<path d="M46 10 L82 10 L84 76 C84 84 90 86 100 90 C114 96 112 118 94 118 L52 118 C40 118 42 100 44 90 Z" fill="#ff7043"/><g fill="#fff"><rect x="46" y="22" width="38" height="7"/><rect x="46" y="38" width="38" height="7"/></g>
+        <rect x="46" y="52" width="40" height="18" rx="8" fill="#29b6f6" stroke="#0277bd" stroke-width="3"/>${Q_AUGE(57, 61, 5)}${Q_AUGE(75, 61, 5)}<path d="M88 58 L96 58 L96 26" stroke="#ffeb3b" stroke-width="6" fill="none" stroke-linecap="round"/>${Q_MUND(66, 82, 14)}`)],
+    q_kaktus: ["Kaktus Klatschi", "lauf", Q_SVG(`<path d="M48 120 L48 30 C48 16 80 16 80 30 L80 120 Z" fill="#388e3c"/><path d="M48 70 L30 70 C22 70 22 58 22 50 L22 40" stroke="#388e3c" stroke-width="14" fill="none" stroke-linecap="round"/><path d="M80 62 L98 62 C106 62 106 50 106 42 L106 32" stroke="#388e3c" stroke-width="14" fill="none" stroke-linecap="round"/>
+        <rect x="46" y="40" width="36" height="12" rx="6" fill="#212121"/><rect x="48" y="42" width="14" height="8" rx="4" fill="#26c6da"/><rect x="66" y="42" width="14" height="8" rx="4" fill="#26c6da"/>${Q_MUND(64, 64, 16)}<circle cx="64" cy="18" r="8" fill="#f06292"/><circle cx="22" cy="34" r="5" fill="#f8bbd0"/><circle cx="106" cy="26" r="5" fill="#f8bbd0"/>`)],
+    q_ananas: ["Ananas Astronaut", "flieg", Q_SVG(`<g fill="#43a047"><path d="M64 34 L54 6 L64 18 L74 4 L72 22 L88 12 Z"/></g><ellipse cx="64" cy="76" rx="30" ry="38" fill="#fbc02d"/><path d="M40 56 L88 100 M88 56 L40 100 M38 76 L90 76" stroke="#f57f17" stroke-width="3"/>
+        <circle cx="64" cy="70" r="40" fill="#b3e5fc" opacity=".35" stroke="#fff" stroke-width="4"/>${Q_AUGE(54, 70)}${Q_AUGE(74, 70)}${Q_MUND(64, 88, 14)}<path d="M40 112 l-8 12 M88 112 l8 12" stroke="#ff7043" stroke-width="6" stroke-linecap="round"/>`)],
+    q_brezel: ["Brezel Brummbär", "lauf", Q_SVG(`<circle cx="36" cy="30" r="12" fill="#a1662f"/><circle cx="92" cy="30" r="12" fill="#a1662f"/><path d="M64 110 C20 110 14 50 40 44 C62 40 64 70 64 70 C64 70 66 40 88 44 C114 50 108 110 64 110Z" fill="none" stroke="#a1662f" stroke-width="16"/>
+        <path d="M44 100 L84 60 M84 100 L44 60" stroke="#a1662f" stroke-width="12"/><g fill="#fff"><circle cx="40" cy="80" r="2"/><circle cx="88" cy="86" r="2"/><circle cx="62" cy="104" r="2"/><circle cx="72" cy="50" r="2"/></g>${Q_AUGE(54, 72, 6)}${Q_AUGE(74, 72, 6)}${Q_MUND(64, 86, 10)}`)],
+    q_kuehlschrank: ["Kalle Kühlschrank", "lauf", Q_SVG(`<rect x="34" y="8" width="60" height="96" rx="10" fill="#eceff1" stroke="#90a4ae" stroke-width="3"/><line x1="34" y1="44" x2="94" y2="44" stroke="#90a4ae" stroke-width="3"/><rect x="82" y="18" width="5" height="16" rx="2" fill="#90a4ae"/><rect x="82" y="52" width="5" height="22" rx="2" fill="#90a4ae"/>
+        ${Q_AUGE(52, 26)}${Q_AUGE(70, 26)}${Q_MUND(62, 64, 22)}<rect x="40" y="80" width="12" height="10" rx="2" fill="#ef5350"/><circle cx="72" cy="86" r="5" fill="#ffca28"/><path d="M48 104 L44 122 M80 104 L84 122" stroke="#455a64" stroke-width="6" stroke-linecap="round"/>`)],
+    q_schnecke: ["Spaghetti Schnecki", "kriech", Q_SVG(`<path d="M10 108 C30 112 90 112 112 104 C116 96 106 92 96 94 L30 98 C18 98 8 100 10 108Z" fill="#ffcc80"/>
+        <circle cx="64" cy="70" r="30" fill="#fff3c4"/><path d="M64 70 m-24 0 a24 24 0 1 0 48 0 a20 20 0 1 0 -40 0 a16 16 0 1 0 32 0 a12 12 0 1 0 -24 0 a8 8 0 1 0 16 0" fill="none" stroke="#f9a825" stroke-width="5"/><circle cx="56" cy="50" r="7" fill="#c62828"/><circle cx="78" cy="78" r="6" fill="#c62828"/>
+        <path d="M100 96 L104 70 M110 96 L116 72" stroke="#ffcc80" stroke-width="4"/>${Q_AUGE(104, 68, 5)}${Q_AUGE(116, 70, 5)}`)],
+    q_donut: ["Donut Zackosaurus", "huepf", Q_SVG(`<g fill="#7e57c2"><path d="M30 34 l8 -18 l6 18Z"/><path d="M50 24 l8 -20 l8 20Z"/><path d="M72 24 l8 -18 l6 20Z"/><path d="M92 36 l10 -14 l2 20Z"/></g><circle cx="64" cy="72" r="46" fill="#d7a26b"/><circle cx="64" cy="72" r="42" fill="#f48fb1"/><circle cx="64" cy="72" r="13" fill="#fff8e1" stroke="#d7a26b" stroke-width="3"/>
+        <g stroke-width="4" stroke-linecap="round"><path d="M34 54 l6 4" stroke="#fff176"/><path d="M90 50 l-6 5" stroke="#81d4fa"/><path d="M40 92 l7 -3" stroke="#a5d6a7"/><path d="M88 94 l-6 -4" stroke="#fff"/></g>${Q_AUGE(46, 70, 6)}${Q_AUGE(82, 70, 6)}${Q_MUND(64, 98, 14)}`)],
+    q_banane: ["Bananen-Bummbumm", "huepf", Q_SVG(`<path d="M30 20 C20 60 40 104 90 112 C98 112 100 104 92 100 C58 90 46 60 50 22 Z" fill="#fdd835" stroke="#f9a825" stroke-width="3"/><path d="M30 20 l4 -10 l14 4 l2 10" fill="#795548"/>
+        ${Q_AUGE(48, 60, 6)}${Q_AUGE(60, 70, 6)}${Q_MUND(60, 86, 12)}<ellipse cx="98" cy="74" rx="18" ry="12" fill="#e53935"/><rect x="80" y="74" width="36" height="16" fill="#e53935"/><ellipse cx="98" cy="74" rx="18" ry="6" fill="#ffe0b2"/><line x1="82" y1="50" x2="96" y2="70" stroke="#795548" stroke-width="4"/>`)],
+    q_wolke: ["Wuschel Turnschuhwolke", "flatter", Q_SVG(`<path d="M28 82 C10 82 10 58 28 56 C26 34 54 28 62 42 C70 24 100 28 98 50 C118 50 118 82 98 82 Z" fill="#fff" stroke="#b0bec5" stroke-width="3"/>${Q_AUGE(52, 60)}${Q_AUGE(76, 60)}${Q_MUND(64, 72, 14)}
+        <path d="M44 82 L44 100 M84 82 L84 100" stroke="#b0bec5" stroke-width="4"/><path d="M32 100 L52 100 Q54 112 44 112 L30 112 Q26 104 32 100Z" fill="#ef5350"/><path d="M76 100 L96 100 Q98 112 88 112 L74 112 Q70 104 76 100Z" fill="#42a5f5"/>`)],
+};
+const QUATSCH_TIERE = Object.keys(QUATSCH_WESEN);
+const QUAKI = Q_SVG(`<path d="M44 30 l6 -18 l10 12 l8 -16 l8 16 l10 -12 l6 18 Z" fill="#ffd600" stroke="#f9a825" stroke-width="2"/><circle cx="50" cy="20" r="3" fill="#e53935"/><circle cx="68" cy="14" r="3" fill="#1e88e5"/><circle cx="84" cy="20" r="3" fill="#43a047"/>
+    <ellipse cx="66" cy="92" rx="48" ry="28" fill="#ffeb3b"/><circle cx="64" cy="52" r="26" fill="#ffeb3b"/><path d="M86 56 Q104 54 108 62 Q100 70 86 66Z" fill="#ff9800"/>${Q_AUGE(62, 46, 8)}<path d="M30 86 Q48 76 60 90" stroke="#fbc02d" stroke-width="5" fill="none" stroke-linecap="round"/>`);
+function quatschAnmelden(){
+    if (!window.LT_BILDER) window.LT_BILDER = {};
+    Object.entries(QUATSCH_WESEN).forEach(([k, [n, art, svg]]) => { if (!window.LT_BILDER[k]) window.LT_BILDER[k] = [n, "quatsch", svg]; });
+    if (!window.LT_BILDER.q_quaki) window.LT_BILDER.q_quaki = ["Quietsch-König Quaki", "quatsch", QUAKI];
+}
+Object.entries(QUATSCH_WESEN).forEach(([k, [, art]]) => { VERHALTEN[k] = { art, v: art === "kriech" ? .02 : art === "flieg" || art === "flatter" ? .09 : .12, g: k === "q_kuehlschrank" ? 1.2 : .95 }; });
 // Gezeichneter Wald (Himmel, Sonne, Hügel, Tannen und Laubbäume in drei Ebenen, Blumenwiese)
 const WOLKE = `<svg viewBox="0 0 220 90"><g fill="#fff"><ellipse cx="70" cy="58" rx="58" ry="26"/><ellipse cx="118" cy="42" rx="46" ry="34"/><ellipse cx="160" cy="60" rx="44" ry="24"/><rect x="40" y="58" width="150" height="26" rx="13"/></g></svg>`;
 function WALD_SVG(){
@@ -413,13 +455,14 @@ W.leise = {
     optionen: [
         { k: "minuten", label: "Alle Tiere nach", zeigen: e => e.modus === "zuschauen", werte: [[1, "1 Min. Ruhe"], [2, "2 Min. Ruhe"], [3, "3 Min. Ruhe"], [5, "5 Min. Ruhe"], [10, "10 Min. Ruhe"]] },
         { k: "tiere", label: "Tiere", zeigen: e => e.modus === "zuschauen", werte: [[6, "6 Tiere"], [9, "9 Tiere"], [12, "12 Tiere"]] },
+        { k: "welt", label: "Welt", zeigen: e => e.thema !== "meer", werte: [["wald", "🌳 Wald mit Tieren"], ["quatsch", "🤪 Quatsch-Wald"]] },
         { k: "modus", label: "Art", werte: [["ende", "Überraschung am Ende"], ["melden", "Pssst-Eule"], ["sterne", "Stille-Sterne sammeln"], ["zuschauen", "Tiere kommen live (zum Zuschauen)"]] },
         { k: "ueberraschung", label: "Überraschung", zeigen: e => e.modus === "ende", werte: [["tiere", "🦊 Tiere kommen"], ["konfetti", "🎉 Konfetti-Party"], ["ballons", "🎈 Luftballons"], ["pokal", "🏆 Pokal"], ["zufall", "🎲 Zufall"]] },
         { k: "belohnung", label: "Belohnungstier (wenn alle Tiere da sind)", zeigen: e => e.modus === "zuschauen" || (e.modus === "ende" && ["tiere", "zufall", undefined].includes(e.ueberraschung)),
-          werte: [["zufall", "🏅 Belohnung: 🎲 Zufall"], ["loewe", "🏅 Belohnung: 🦁 Löwe"], ["trex", "🏅 Belohnung: 🦖 T-Rex"], ["papagei", "🏅 Belohnung: 🦜 Papagei"], ["hai", "🏅 Belohnung: 🦈 Blauer Hai"], ["elefant", "🏅 Belohnung: 🐘 Elefant"], ["delfin", "🏅 Belohnung: 🐬 Delfin"], ["megalodon", "🏅 Belohnung: 🦈 Megalodon"], ["kein", "🏅 kein Belohnungstier"]] },
+          werte: [["zufall", "🏅 Belohnung: 🎲 Zufall"], ["loewe", "🏅 Belohnung: 🦁 Löwe"], ["trex", "🏅 Belohnung: 🦖 T-Rex"], ["papagei", "🏅 Belohnung: 🦜 Papagei"], ["hai", "🏅 Belohnung: 🦈 Blauer Hai"], ["elefant", "🏅 Belohnung: 🐘 Elefant"], ["delfin", "🏅 Belohnung: 🐬 Delfin"], ["megalodon", "🏅 Belohnung: 🦈 Megalodon"], ["quaki", "🏅 Belohnung: 👑 Quietsch-König Quaki"], ["kein", "🏅 kein Belohnungstier"]] },
         { k: "arbeitszeit", label: "Arbeitszeit", zeigen: e => e.modus !== "zuschauen", werte: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 20, 25, 30].map(m => [m, m + " Min."]) }
     ],
-    std: { minuten: 3, tiere: 9, modus: "ende", arbeitszeit: 10, ueberraschung: "tiere", belohnung: "zufall" },
+    std: { minuten: 3, tiere: 9, modus: "ende", arbeitszeit: 10, ueberraschung: "tiere", belohnung: "zufall", welt: "wald" },
     // kurze Erklärung je Art (steht vor dem Start unten)
     erklaerung: {
         ende: "In der Mitte wächst ganz langsam ein Baum – aber nur, solange es leise ist. Keine Uhr für die Kinder (Restzeit klein unten rechts). Am Ende kommt die Überraschung: je leiser ihr wart, desto größer.",
@@ -430,7 +473,8 @@ W.leise = {
     // zuletzt gewählte Art und Arbeitszeit merken (auf diesem Gerät)
     gemerkt(){ try { return JSON.parse(localStorage.getItem("lt-leise-wahl") || "{}"); } catch (x) { return {}; } },
     eigen(el, e, api){
-        const meer = e.thema === "meer";
+        const meer = e.thema === "meer", quatsch = !meer && e.welt === "quatsch";
+        if (quatsch) quatschAnmelden();
         const n = e.modus === "ende" || e.modus === undefined ? 12 : (+e.tiere || 9), proTier = (+e.minuten || 3) * 60 / n;
         // Art: live zuschauen – oder ruhiger Bildschirm während der Arbeit (Überraschung am Ende, nur melden, Sterne)
         const modus = ["ende", "melden", "sterne", "zuschauen"].includes(e.modus) ? e.modus : "ende";
@@ -438,9 +482,9 @@ W.leise = {
         const ruhigerModus = modus !== "zuschauen";
         const ueberArten = ["tiere", "konfetti", "ballons", "pokal"];
         const ueberWahl = [...ueberArten, "zufall"].includes(e.ueberraschung) ? e.ueberraschung : "tiere";
-        try { localStorage.setItem("lt-leise-wahl", JSON.stringify({ modus, arbeitszeit: Math.round(dauer / 60), tiere: modus === "zuschauen" ? n : (+e.tiere || 9), minuten: +e.minuten || 3, ueberraschung: ueberWahl, belohnung: e.belohnung || "zufall" })); } catch (x) {}
+        try { localStorage.setItem("lt-leise-wahl", JSON.stringify({ modus, arbeitszeit: Math.round(dauer / 60), tiere: modus === "zuschauen" ? n : (+e.tiere || 9), minuten: +e.minuten || 3, ueberraschung: ueberWahl, belohnung: e.belohnung || "zufall", welt: e.welt || "wald" })); } catch (x) {}
         let schwelle = 45; try { schwelle = +localStorage.getItem("lt-leise-schwelle") || 45; } catch (x) {}
-        const reihe = (meer ? MEER_TIERE : WALD_TIERE).slice();
+        const reihe = (meer ? MEER_TIERE : quatsch ? QUATSCH_TIERE : WALD_TIERE).slice();
         const liste = [...reihe.slice(0, 4), ...mischen(reihe.slice(4))].slice(0, n);   // abwechslungsreicher Start: laufen, fliegen, hüpfen …
         const deko = meer
             ? `<div class="lw-wolke" style="top:8%;--t:70s">☁️</div><div class="lw-wolke" style="top:18%;--t:95s;animation-delay:-40s">☁️</div>
@@ -449,7 +493,7 @@ W.leise = {
                ${[8, 22, 47, 63, 81, 93].map((x, i) => `<div class="lw-tang" style="left:${x}%;animation-delay:${-i * .7}s">🌿</div>`).join("")}
                ${Array.from({ length: 10 }, (_, i) => `<i class="lw-blase-luft" style="left:${5 + i * 9.5}%;--t:${5 + (i % 4) * 2}s;animation-delay:${-i * 1.3}s"></i>`).join("")}`
             : `${WALD_SVG()}${[[7, 80, 0, 1], [17, 120, -60, .8], [10, 150, -110, .6]].map(([y, t, d, g]) => `<div class="lw-wolke2" style="top:${y}%;--t:${t}s;animation-delay:${d}s;--g:${g}">${WOLKE}</div>`).join("")}`;
-        const ziel = meer ? "am Leuchtturm" : "im Wald";
+        const ziel = meer ? "am Leuchtturm" : quatsch ? "im Quatsch-Wald" : "im Wald";
         const ruheText = "";   // Kinder sehen nur Uhr und Symbol – Erklärungen stehen bei den Einstellungen
         // Statt Uhr: ein Baum wächst ganz langsam – nur solange es leise ist
         const BLUETEN = [[112,150],[176,128],[205,176],[96,196],[150,104],[140,168],[190,214],[118,232],[168,226],[226,140],[78,160],[150,200]];
@@ -515,7 +559,7 @@ W.leise = {
             <div class="lw-fest" hidden></div>
             <div class="lw-r-pssst" hidden><div><span>🦉</span><b>Pssst!</b></div></div>
           </div>` : "";
-        el.innerHTML = `<div class="lw-szene${meer ? " lw-meer" : ""}">${deko}<div class="lw-tiere"></div><div class="lw-blase" hidden></div>${ruhe}</div>
+        el.innerHTML = `<div class="lw-szene${meer ? " lw-meer" : ""}${quatsch ? " lw-quatsch" : ""}">${deko}<div class="lw-tiere"></div><div class="lw-blase" hidden></div>${ruhe}</div>
         <div class="lw-anzeige">
             <span class="lw-zahl" ${ruhigerModus ? "hidden" : ""}><b>0</b> / ${n} Tiere</span>
             <div class="lw-messer"><div class="lw-pegel"></div><div class="lw-grenze"></div></div>
@@ -558,7 +602,8 @@ W.leise = {
             if (FLIEGT(t.c.art)) t.y = -.15;
             if (meer && t.c.art === "treib") { t.x = .15 + Math.random() * .7; t.y = 1.25; }
             t.zx = .12 + Math.random() * .76;
-            api.klang(560 + Math.random() * 300, .12);
+            if (quatsch) { const f = 260 + Math.random() * 200; [0, 70, 140].forEach((t, i) => setTimeout(() => api.klang(f * (1 + i * .5), .08, i % 2 ? "square" : "sine"), t)); }
+            else api.klang(560 + Math.random() * 300, .12);
         }
         function fliehen(t){
             t.zust = "flieht"; t.d.classList.add("flieht");
@@ -632,6 +677,7 @@ W.leise = {
             hai:     { n: "der blaue Hai", ruf: "SPLASH!", text: "Ich bin der blaue Hai – ich habe euch nicht gehört, so leise wart ihr!" },
             elefant: { n: "der Elefant", ruf: "TÖRÖÖÖÖ!", text: "Ich trompete für euch – ihr wart mucksmäuschenstill!" },
             delfin:  { n: "der Delfin", ruf: "Ikikikik!", text: "Drei Sprünge für eine super leise Klasse!" },
+            quaki:   { n: "Quaki", ruf: "QUIETSCH! QUIETSCH!", text: "Ich bin Quietsch-König Quaki! Ihr seid die leiseste Quatsch-Klasse der Welt!" },
             megalodon: { n: "der Megalodon", ruf: "MEGA LEISE!", text: "Ich bin der Megalodon – der größte Hai aller Zeiten! Und ihr wart MEGA leise!" },
         };
         const MEGALODON = `<svg viewBox="0 0 400 300" class="lw-mega-svg" aria-hidden="true">
@@ -653,7 +699,8 @@ W.leise = {
             if (w === "kein") return;
             if (!HELDEN[w]) { const l = Object.keys(HELDEN); w = l[Math.floor(Math.random() * l.length)]; }
             const H = HELDEN[w];
-            const tierBild = w === "megalodon" ? MEGALODON : bild(w);
+            if (w === "quaki") quatschAnmelden();
+            const tierBild = w === "megalodon" ? MEGALODON : bild(w === "quaki" ? "q_quaki" : w);
             heldEl = document.createElement("div"); heldEl.className = "lw-finale lw-fx-" + w;
             heldEl.innerHTML = `<div class="lw-fx-ebene"></div><div class="lw-ruf">${H.ruf}</div><div class="lw-held"><div class="lw-held-blase" hidden>${H.text} 💛</div><div class="lw-held-bild">${tierBild}</div></div>`;
             szene.appendChild(heldEl);
@@ -701,6 +748,12 @@ W.leise = {
                 spaeter(() => held.classList.add("da"), 300);
                 spaeter(() => { ruf.classList.add("an"); [220, 330, 440, 523].forEach((f, i) => spaeter(() => ton(f, .3, "sawtooth"), i * 140));
                     for (let i = 0; i < 40; i++) spaeter(() => add(`<i class="lw-spritzer" style="--x:${(Math.random() - .5) * 70}vw;--h:${25 + Math.random() * 35}vh"></i>`), i * 45); }, 1400);
+            }
+            if (w === "quaki"){
+                const farben = ["#e53935", "#fb8c00", "#fdd835", "#43a047", "#1e88e5", "#8e24aa", "#ec407a"];
+                spaeter(() => { held.classList.add("da"); [900, 1300, 1100, 1500].forEach((f, i) => spaeter(() => ton(f, .07, "square"), i * 160)); }, 300);
+                spaeter(() => { ruf.classList.add("an"); for (let i = 0; i < 70; i++) add(`<i class="lw-quietsch" style="left:${Math.random() * 100}%;--f:${farben[i % 7]};--d:${2 + Math.random() * 2}s;--w:${Math.random() * 1.5}s;--r:${Math.random() * 720}deg"></i>`); }, 1200);
+                spaeter(() => add(`<div class="lw-strahlen lw-bunt"></div>`), 1300);
             }
             if (w === "megalodon"){
                 szene.classList.add("lw-dunkel");
@@ -1110,6 +1163,11 @@ const CSS = `
 @keyframes lwRuf{ 0%{ transform:translateX(-50%) scale(0) rotate(-8deg); opacity:0; } 30%{ transform:translateX(-50%) scale(1.25) rotate(3deg); opacity:1; } 60%{ transform:translateX(-50%) scale(1) rotate(-2deg); opacity:1; } 100%{ transform:translateX(-50%) scale(1) rotate(0); opacity:.95; } }
 @keyframes lwPop{ 0%{ transform:scale(.3); opacity:0; } 100%{ transform:scale(1); opacity:1; } }
 @keyframes lwHeldHuepf{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6%); } }
+/* Quatsch-Wald: knallbunte Welt */
+.lw-quatsch .lw-wald{ filter:hue-rotate(220deg) saturate(1.6) brightness(1.05); }
+.lw-quietsch{ position:absolute; top:-5%; width:clamp(10px,1.2vw,18px); height:clamp(16px,2vw,28px); background:var(--f); border-radius:3px; animation:lwQuietsch var(--d) linear var(--w) infinite; }
+@keyframes lwQuietsch{ 0%{ transform:translateY(0) rotate(0); } 100%{ transform:translateY(110vh) rotate(var(--r)); } }
+.lw-strahlen.lw-bunt{ background:repeating-conic-gradient(#ff8a8066 0 10deg, #ffd54f66 10deg 20deg, #81c78466 20deg 30deg, #64b5f666 30deg 40deg, #ba68c866 40deg 50deg); }
 /* Löwe: Schallwellen und goldene Strahlen */
 .lw-welle{ position:absolute; left:50%; bottom:28%; width:20vh; height:20vh; margin-left:-10vh; border-radius:50%; border:8px solid rgba(255,210,63,.9); animation:lwWelle 1.4s ease-out forwards; }
 @keyframes lwWelle{ 0%{ transform:scale(.3); opacity:1; } 100%{ transform:scale(6); opacity:0; } }
@@ -1467,7 +1525,7 @@ function starten(id, einstellung = {}){
     const e = Object.assign({}, w.std, w.gemerkt ? w.gemerkt() : {}, einstellung);
     const el = document.createElement("div");
     el.className = "lt-voll" + (e.thema === "meer" ? " lt-meer" : "") + (w.klasse ? " " + w.klasse : "");
-    const kopf = e.thema === "meer" && id === "leise" ? "🌊 Leise-Meer" : w.emoji + " " + w.titel;
+    const kopf = e.thema === "meer" && id === "leise" ? "🌊 Leise-Meer" : e.welt === "quatsch" && id === "leise" ? "🤪 Quatsch-Wald" : w.emoji + " " + w.titel;
     el.innerHTML = `<div class="lt-leiste"><h2>${EULE_MINI}<span>${esc(kopf)}</span></h2>
         ${(w.optionen || []).map(o => `<label data-optlabel="${o.k}" ${o.zeigen && !o.zeigen(e) ? 'style="display:none"' : ""}><select data-opt="${o.k}" title="${esc(o.label)}">${o.werte.map(([v, l]) => `<option value="${esc(JSON.stringify(v))}" ${JSON.stringify(v) === JSON.stringify(e[o.k]) ? "selected" : ""}>${esc(o.label)}: ${esc(l)}</option>`).join("")}</select></label>`).join("")}
         ${w.erklaerung ? '<div class="lt-erkl"></div>' : ""}

@@ -145,6 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-24", "Leise-Wald: Quatsch-Wald", "Neue Welt im Leise-Wald: knallbunter Quatsch-Wald mit 12 erfundenen Quatsch-Wesen (Brummi Toastflieger, Gurki Rollschuh, Kalle Kühlschrank …) und Quietsch-König Quaki als Belohnung.", "tafelbilder.php#leise"],
     ["2026-11-24", "Leise-Wald: Belohnungstier mit Spezialeffekt", "Wenn alle Tiere da sind, kommt zum Schluss ein Belohnungstier mit großem Auftritt: Löwe (Brüllen, Schallwellen), T-Rex (Erdbeben, Fußspuren), Papagei (Regenbogen-Federn), blauer Hai (Flut, Sprung), Elefant (Wasserfontäne), Delfin (drei Sprünge, Regenbogen) oder Megalodon (Tiefsee, riesiges Maul).", "tafelbilder.php#leise"],
     ["2026-11-23", "Das Einmaleins: alles in einer Tafel", "1×1-Tabelle, Verstehen, Kernaufgaben, Tricks, Geteilt, Aufgabenfamilie, Üben und großes 1 × 1 – jetzt eine Tafel mit Reitern.", "tafelbilder.php#1x1-tabelle"],
     ["2026-11-23", "Tafelbilder einzeln auf Tafeln installieren", "Tafelbilder → „📺 Auf Tafeln installieren“: Tafel-Code erstellen, auf der Tafel …/tafel öffnen – jedes Tafelbild bekommt dort sein eigenes Symbol, ohne Login.", "tafelbilder.php"],
