@@ -1823,9 +1823,12 @@ function parseVok(txt){
 VIEWS.vokfoto=p=>{p.s=p.s||'en';p.k=p.k||(p.s==='en'?'vok':'notiz');const sb=subj(p.s);return hdr('📷 Aus dem Heft übernehmen',sb.color)+`
  <div class="chips" style="margin-bottom:10px"><button class="chip ${p.k==='vok'?'on':''}" onclick="view.p.k='vok';view.p.txt=$('#vokin').value;render()">📒 Vokabeln</button><button class="chip ${p.k==='notiz'?'on':''}" onclick="view.p.k='notiz';view.p.txt=$('#vokin').value;render()">📝 Hefter-Eintrag</button></div>
  <label class="small mut">Fach</label><select style="margin-bottom:10px" onchange="view.p.s=this.value;view.p.txt=$('#vokin').value;render()">${SUBJECTS.map(s=>`<option value="${s.id}" ${p.s===s.id?'selected':''}>${s.icon} ${s.name}</option>`).join('')}</select>
- <div class="box"><h3>1. Foto machen</h3>Die Heftseite <b>gerade von oben</b> fotografieren, mit gutem Licht. Ordentliche Schrift wird besser erkannt.</div>
- <div class="box"><h3>2. Text aus dem Foto kopieren</h3><b>Samsung:</b> Foto in der <b>Galerie</b> öffnen → unten rechts auf das <b>„T“</b> tippen → <b>„Alle auswählen“</b> → <b>„Kopieren“</b>.<br><b>Andere Handys:</b> Foto teilen → <b>Google Lens</b> → „Text“ → „Alles auswählen“ → „Kopieren“.</div>
- <div class="box"><h3>3. Hier einfügen</h3>Lange ins Feld drücken → <b>„Einfügen“</b>.
+ <div class="box"><h3>1. Foto aufnehmen</h3>Seite <b>gerade von oben</b> und bei gutem Licht fotografieren. Die App liest den Text selbst aus.
+ <div class="row" style="display:flex;gap:8px;margin-top:10px"><button class="btn" style="flex:1" onclick="$('#ocrcam').click()">📷 Foto aufnehmen</button><button class="btn sec2" style="flex:1" onclick="$('#ocrgal').click()">🖼️ Aus Galerie</button></div>
+ <input id="ocrcam" type="file" accept="image/*" capture="environment" hidden onchange="ocrRun(this)"><input id="ocrgal" type="file" accept="image/*" hidden onchange="ocrRun(this)">
+ <div id="ocrst" class="small mut" style="margin-top:8px"></div>
+ <details style="margin-top:8px"><summary class="small">✍️ Handschrift wird schlecht erkannt?</summary><p class="small">Bei Handschrift ist die Texterkennung des Handys besser:<br><b>Samsung:</b> Foto in der <b>Galerie</b> öffnen → unten rechts auf das <b>„T“</b> → <b>„Alle auswählen“</b> → <b>„Kopieren“</b>.<br><b>Andere Handys:</b> Foto teilen → <b>Google Lens</b> → „Text“ → „Alles auswählen“ → „Kopieren“.<br>Dann unten ins Feld einfügen.</p></details></div>
+ <div class="box"><h3>2. Text prüfen</h3>Hier steht der erkannte Text. Verbessere Fehler direkt im Feld. Du kannst auch Text einfügen (lange ins Feld drücken → „Einfügen“).
  <textarea id="vokin" style="min-height:160px;margin-top:8px" placeholder="${p.k==='vok'?'z. B.&#10;ruler   das Lineal&#10;rubber   der Radiergummi':(p.s==='en'?'z. B.&#10;simple past: Vergangenheit, Signalwort yesterday&#10;She *played* football yesterday.&#10;We *went* to Berlin last week.':'z. B.&#10;Altes Testament: erster Teil der Bibel&#10;Prophet – Mensch, der im Auftrag Gottes spricht')}">${esc(p.txt||'')}</textarea>
  <button class="btn" onclick="vokParse()">${p.k==='vok'?'Vokabeln erkennen →':'Übernehmen →'}</button></div>
  <p class="small mut">${p.k==='vok'?'Im nächsten Schritt siehst du die Liste und kannst Fehler verbessern, bevor gespeichert wird.':'Der ganze Text wird zum Merkwissen unter „Lernen“. Zeilen wie „Begriff: Erklärung“ oder „Begriff – Erklärung“ werden zu Karteikarten. <b>Lückensätze:</b> Setze das gesuchte Wort in Sternchen, z. B. <i>She *plays* football.</i> → „She ___ football.“ Fehlende Karten kannst du im nächsten Schritt selbst ergänzen.'}</p>`};
@@ -1836,6 +1839,31 @@ function vokParse(){const p=view.p,txt=$('#vokin').value;p.txt=txt;if(!txt.trim(
  const cards=parseNotiz(txt);const first=(txt.split(/\r?\n/).map(x=>x.trim()).find(x=>x&&!/\*/.test(x))||'').replace(/[:.]$/,'');
  go('edit',{isNew:true,d:{id:'c_'+Date.now().toString(36),s:p.s,title:(first.length<50?first:subj(p.s).name+' vom '+dat),kind:'qa',learn:txt.trim().replace(/\*([^*]+)\*/g,'$1'),la:'Deutsch',lb:'Englisch',cards:cards.length?cards:[['','']]}});setTimeout(()=>toast(cards.length?`${cards.length} Karteikarten erkannt – Titel und Karten kurz prüfen`:'Als Merkwissen übernommen – Karteikarten kannst du jetzt ergänzen'),300)}
 function vokSwap(){const d=view.p.d;d.cards=d.cards.map(([x,y])=>[y,x]);render()}
+
+/* ===== Texterkennung direkt in der App (Tesseract, läuft auf dem Gerät, kostenlos) ===== */
+const OCR_JS='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+let OCR={w:null,lang:'',busy:false};
+function ocrLoad(){if(window.Tesseract)return Promise.resolve();return new Promise((ok,no)=>{const sc=document.createElement('script');sc.src=OCR_JS;sc.onload=ok;sc.onerror=()=>no(new Error('net'));document.head.appendChild(sc)})}
+function ocrImg(file){return new Promise((ok,no)=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{const M=2200,f=Math.min(1,M/Math.max(im.width,im.height)),w=Math.round(im.width*f),h=Math.round(im.height*f),c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(im,0,0,w,h);URL.revokeObjectURL(u);
+ // Graustufen + Kontrast strecken: hilft bei Heftpapier und Schatten
+ const d=x.getImageData(0,0,w,h),a=d.data,hist=new Array(256).fill(0);for(let i=0;i<a.length;i+=4){const g=(a[i]*.299+a[i+1]*.587+a[i+2]*.114)|0;a[i]=g;hist[g]++}
+ let n=0,lo=0,hi=255;const T=w*h*.02;for(lo=0;lo<255&&(n+=hist[lo])<T;lo++);n=0;for(hi=255;hi>0&&(n+=hist[hi])<T;hi--);const r=Math.max(1,hi-lo);
+ for(let i=0;i<a.length;i+=4){const g=Math.max(0,Math.min(255,(a[i]-lo)*255/r));a[i]=a[i+1]=a[i+2]=g}x.putImageData(d,0,0);ok(c)};im.onerror=()=>{URL.revokeObjectURL(u);no(new Error('img'))};im.src=u})}
+async function ocrRun(inp){const file=inp.files&&inp.files[0];inp.value='';if(!file||OCR.busy)return;const st=$('#ocrst'),set=t=>{const e=$('#ocrst');if(e)e.innerHTML=t};
+ const p=view.p,lang=(p.s==='en'||p.k==='vok')?'deu+eng':'deu';OCR.busy=true;
+ try{set('⏳ Bild wird vorbereitet …');const cv=await ocrImg(file);
+  if(!OCR.w||OCR.lang!==lang){set('⏳ Texterkennung wird geladen … (nur beim ersten Mal etwas länger)');await ocrLoad();if(OCR.w){try{await OCR.w.terminate()}catch(e){}}
+   OCR.w=await Tesseract.createWorker(lang,1,{logger:m=>{if(m.status==='recognizing text')set('🔎 Text wird gelesen … '+Math.round(m.progress*100)+' %');else if(/load|initializ/.test(m.status))set('⏳ Texterkennung wird geladen … '+Math.round((m.progress||0)*100)+' %')}});
+   await OCR.w.setParameters({preserve_interword_spaces:'1'});OCR.lang=lang}
+  set('🔎 Text wird gelesen …');const {data}=await OCR.w.recognize(cv);
+  const lines=(data.lines||[]).filter(l=>l.confidence>=35).map(l=>l.text.replace(/[|_]{2,}/g,' ').replace(/ {3,}/g,'   ').replace(/\s+$/,'')).filter(l=>l.trim().length>1);
+  const txt=lines.length?lines.join('\n'):(data.text||'').trim();const conf=Math.round(data.confidence||0);
+  if(!txt){set('😕 Kein Text erkannt. Bei Handschrift hilft die Anleitung unten („Handschrift …“).');OCR.busy=false;return}
+  const ta=$('#vokin');ta.value=(ta.value.trim()?ta.value.replace(/\s+$/,'')+'\n':'')+txt;p.txt=ta.value;
+  set(conf<60?`⚠️ Text erkannt, aber unsicher (${conf} %). Bitte im Feld genau prüfen. Bei Handschrift ist die Anleitung unten oft besser.`:`✅ ${lines.length||1} Zeilen erkannt. Bitte kurz prüfen und Fehler verbessern. Für eine weitere Seite einfach noch ein Foto machen.`);
+  ta.scrollIntoView({behavior:'smooth',block:'center'})}
+ catch(e){set(e&&e.message==='net'?'📶 Keine Internetverbindung. Beim ersten Mal muss die Texterkennung einmal geladen werden.':'😕 Das hat nicht geklappt. Bitte noch einmal versuchen.')}
+ OCR.busy=false}
 
 /* ===== Eltern-App (Modus pro Gerät) + Vorschau des Kinderbereichs ===== */
 let MODE=(()=>{try{if(/[?&]eltern=1/.test(location.search)){localStorage.setItem('lb_mode','eltern')}return localStorage.getItem('lb_mode')||'kind'}catch(e){return /[?&]eltern=1/.test(location.search)?'eltern':'kind'}})();
