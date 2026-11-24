@@ -145,6 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-24", "Leise-Wald: Belohnungstier mit Spezialeffekt", "Wenn alle Tiere da sind, kommt zum Schluss ein Belohnungstier mit großem Auftritt: Löwe (Brüllen, Schallwellen), T-Rex (Erdbeben, Fußspuren), Papagei (Regenbogen-Federn), blauer Hai (Flut, Sprung), Elefant (Wasserfontäne), Delfin (drei Sprünge, Regenbogen) oder Megalodon (Tiefsee, riesiges Maul).", "tafelbilder.php#leise"],
     ["2026-11-23", "Das Einmaleins: alles in einer Tafel", "1×1-Tabelle, Verstehen, Kernaufgaben, Tricks, Geteilt, Aufgabenfamilie, Üben und großes 1 × 1 – jetzt eine Tafel mit Reitern.", "tafelbilder.php#1x1-tabelle"],
     ["2026-11-23", "Tafelbilder einzeln auf Tafeln installieren", "Tafelbilder → „📺 Auf Tafeln installieren“: Tafel-Code erstellen, auf der Tafel …/tafel öffnen – jedes Tafelbild bekommt dort sein eigenes Symbol, ohne Login.", "tafelbilder.php"],
     ["2026-11-23", "Einmaleins-Werkstatt", "Neue Tafelbilder zum 1 × 1: verstehen im Punktefeld, Kernaufgaben & Nachbarn, 14 Tricks (z. B. 9er-Finger-Trick), Geteilt mit Aufteilen/Verteilen und Rest, Aufgabenfamilie, Üben Klasse gegen Ella – und das echte große 1 × 1 (11–20). Die bisherige Tabelle heißt jetzt „Das kleine 1 × 1“.", "tafelbilder.php#1x1-verstehen"],

@@ -415,9 +415,11 @@ W.leise = {
         { k: "tiere", label: "Tiere", zeigen: e => e.modus === "zuschauen", werte: [[6, "6 Tiere"], [9, "9 Tiere"], [12, "12 Tiere"]] },
         { k: "modus", label: "Art", werte: [["ende", "Überraschung am Ende"], ["melden", "Pssst-Eule"], ["sterne", "Stille-Sterne sammeln"], ["zuschauen", "Tiere kommen live (zum Zuschauen)"]] },
         { k: "ueberraschung", label: "Überraschung", zeigen: e => e.modus === "ende", werte: [["tiere", "🦊 Tiere kommen"], ["konfetti", "🎉 Konfetti-Party"], ["ballons", "🎈 Luftballons"], ["pokal", "🏆 Pokal"], ["zufall", "🎲 Zufall"]] },
+        { k: "belohnung", label: "Belohnungstier (wenn alle Tiere da sind)", zeigen: e => e.modus === "zuschauen" || (e.modus === "ende" && ["tiere", "zufall", undefined].includes(e.ueberraschung)),
+          werte: [["zufall", "🏅 Belohnung: 🎲 Zufall"], ["loewe", "🏅 Belohnung: 🦁 Löwe"], ["trex", "🏅 Belohnung: 🦖 T-Rex"], ["papagei", "🏅 Belohnung: 🦜 Papagei"], ["hai", "🏅 Belohnung: 🦈 Blauer Hai"], ["elefant", "🏅 Belohnung: 🐘 Elefant"], ["delfin", "🏅 Belohnung: 🐬 Delfin"], ["megalodon", "🏅 Belohnung: 🦈 Megalodon"], ["kein", "🏅 kein Belohnungstier"]] },
         { k: "arbeitszeit", label: "Arbeitszeit", zeigen: e => e.modus !== "zuschauen", werte: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 20, 25, 30].map(m => [m, m + " Min."]) }
     ],
-    std: { minuten: 3, tiere: 9, modus: "ende", arbeitszeit: 10, ueberraschung: "tiere" },
+    std: { minuten: 3, tiere: 9, modus: "ende", arbeitszeit: 10, ueberraschung: "tiere", belohnung: "zufall" },
     // kurze Erklärung je Art (steht vor dem Start unten)
     erklaerung: {
         ende: "In der Mitte wächst ganz langsam ein Baum – aber nur, solange es leise ist. Keine Uhr für die Kinder (Restzeit klein unten rechts). Am Ende kommt die Überraschung: je leiser ihr wart, desto größer.",
@@ -436,7 +438,7 @@ W.leise = {
         const ruhigerModus = modus !== "zuschauen";
         const ueberArten = ["tiere", "konfetti", "ballons", "pokal"];
         const ueberWahl = [...ueberArten, "zufall"].includes(e.ueberraschung) ? e.ueberraschung : "tiere";
-        try { localStorage.setItem("lt-leise-wahl", JSON.stringify({ modus, arbeitszeit: Math.round(dauer / 60), tiere: modus === "zuschauen" ? n : (+e.tiere || 9), minuten: +e.minuten || 3, ueberraschung: ueberWahl })); } catch (x) {}
+        try { localStorage.setItem("lt-leise-wahl", JSON.stringify({ modus, arbeitszeit: Math.round(dauer / 60), tiere: modus === "zuschauen" ? n : (+e.tiere || 9), minuten: +e.minuten || 3, ueberraschung: ueberWahl, belohnung: e.belohnung || "zufall" })); } catch (x) {}
         let schwelle = 45; try { schwelle = +localStorage.getItem("lt-leise-schwelle") || 45; } catch (x) {}
         const reihe = (meer ? MEER_TIERE : WALD_TIERE).slice();
         const liste = [...reihe.slice(0, 4), ...mischen(reihe.slice(4))].slice(0, n);   // abwechslungsreicher Start: laufen, fliegen, hüpfen …
@@ -622,7 +624,93 @@ W.leise = {
         let sichtbar = 0, ruhig = 0, laut = 0, sperre = 0, laeuft = false, fertig = false, stream = null, ctx = null, analyser = null, puffer = null, glatt = 0;
         const anzahlZeigen = () => { kopf.textContent = sichtbar; };
         const erschrecken = () => { szene.classList.remove("schreck"); void szene.offsetWidth; szene.classList.add("schreck"); };
-        const jubeln = (an) => { szene.classList.toggle("jubel", an); };
+        // Belohnungstier: großes Finale mit Spezialeffekt, wenn alle Tiere da sind
+        const HELDEN = {
+            loewe:   { n: "der Löwe", ruf: "ROOAAAR!", text: "Ich bin der König der Tiere – und ihr seid die Könige der Stille!" },
+            trex:    { n: "der T-Rex", ruf: "ROOOAAAR!", text: "Ich bin der T-Rex! So leise war es hier seit 66 Millionen Jahren nicht!" },
+            papagei: { n: "der Papagei", ruf: "Krraah! Leise! Leise!", text: "Super gemacht! Super gemacht! Krraah!" },
+            hai:     { n: "der blaue Hai", ruf: "SPLASH!", text: "Ich bin der blaue Hai – ich habe euch nicht gehört, so leise wart ihr!" },
+            elefant: { n: "der Elefant", ruf: "TÖRÖÖÖÖ!", text: "Ich trompete für euch – ihr wart mucksmäuschenstill!" },
+            delfin:  { n: "der Delfin", ruf: "Ikikikik!", text: "Drei Sprünge für eine super leise Klasse!" },
+            megalodon: { n: "der Megalodon", ruf: "MEGA LEISE!", text: "Ich bin der Megalodon – der größte Hai aller Zeiten! Und ihr wart MEGA leise!" },
+        };
+        const MEGALODON = `<svg viewBox="0 0 400 300" class="lw-mega-svg" aria-hidden="true">
+            <defs><radialGradient id="lwMegaH" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#7f8c99"/><stop offset="1" stop-color="#3b4652"/></radialGradient></defs>
+            <path d="M200 10 C330 20 395 120 390 190 C385 260 300 295 200 295 C100 295 15 260 10 190 C5 120 70 20 200 10Z" fill="url(#lwMegaH)"/>
+            <path d="M60 200 C90 270 310 270 340 200 C300 215 100 215 60 200Z" fill="#d9dee3"/>
+            <circle cx="105" cy="105" r="16" fill="#111"/><circle cx="295" cy="105" r="16" fill="#111"/><circle cx="110" cy="100" r="5" fill="#fff"/><circle cx="300" cy="100" r="5" fill="#fff"/>
+            <g class="lw-mega-maul"><ellipse cx="200" cy="190" rx="120" ry="70" fill="#5a0d14"/><ellipse cx="200" cy="200" rx="90" ry="45" fill="#2a0508"/>
+              <g fill="#fff">${[...Array(11)].map((_, i) => `<path d="M${88 + i * 21} 130 l10 0 l-5 26 Z"/>`).join("")}${[...Array(9)].map((_, i) => `<path d="M${105 + i * 21} 252 l10 0 l-5 -24 Z"/>`).join("")}</g></g>
+          </svg>`;
+        let heldEl = null, heldTimer = [];
+        const heldWeg = () => { heldTimer.forEach(clearTimeout); heldTimer = []; if (heldEl) { heldEl.remove(); heldEl = null; } szene.classList.remove("lw-beben", "lw-dunkel"); };
+        const spaeter = (f, ms) => heldTimer.push(setTimeout(f, ms));
+        const beben = () => { szene.classList.remove("lw-beben"); void szene.offsetWidth; szene.classList.add("lw-beben"); };
+        const ton = (f, d, typ) => api.klang(f, d, typ);
+        function heldKommt(){
+            heldWeg();
+            let w = e.belohnung || "zufall";
+            if (w === "kein") return;
+            if (!HELDEN[w]) { const l = Object.keys(HELDEN); w = l[Math.floor(Math.random() * l.length)]; }
+            const H = HELDEN[w];
+            const tierBild = w === "megalodon" ? MEGALODON : bild(w);
+            heldEl = document.createElement("div"); heldEl.className = "lw-finale lw-fx-" + w;
+            heldEl.innerHTML = `<div class="lw-fx-ebene"></div><div class="lw-ruf">${H.ruf}</div><div class="lw-held"><div class="lw-held-blase" hidden>${H.text} 💛</div><div class="lw-held-bild">${tierBild}</div></div>`;
+            szene.appendChild(heldEl);
+            const fx = heldEl.querySelector(".lw-fx-ebene"), held = heldEl.querySelector(".lw-held"), blaseH = heldEl.querySelector(".lw-held-blase"), ruf = heldEl.querySelector(".lw-ruf");
+            const add = html => fx.insertAdjacentHTML("beforeend", html);
+            const zufallX = () => 5 + Math.random() * 90;
+            let blaseAb = 3200;
+            if (w === "loewe"){
+                spaeter(() => { held.classList.add("da"); ton(110, .5, "sawtooth"); }, 300);
+                spaeter(() => { ruf.classList.add("an"); beben(); for (let i = 0; i < 4; i++) spaeter(() => add(`<i class="lw-welle"></i>`), i * 220); [90, 80, 70, 60].forEach((f, i) => spaeter(() => ton(f, .35, "sawtooth"), i * 120)); }, 1200);
+                spaeter(() => add(`<div class="lw-strahlen"></div>`), 1300);
+            }
+            if (w === "trex"){
+                [0, 700, 1400].forEach((t, i) => spaeter(() => { beben(); ton(55, .3, "square"); add(`<i class="lw-fuss" style="left:${20 + i * 22}%;bottom:${8 + (i % 2) * 6}%">🐾</i>`); }, 200 + t));
+                spaeter(() => held.classList.add("da"), 2000);
+                spaeter(() => { ruf.classList.add("an"); beben(); [70, 60, 50].forEach((f, i) => spaeter(() => ton(f, .45, "sawtooth"), i * 160)); }, 2700);
+                blaseAb = 4200;
+            }
+            if (w === "papagei"){
+                held.classList.add("fliegt");
+                const farben = ["#e53935", "#fb8c00", "#fdd835", "#43a047", "#1e88e5", "#8e24aa"];
+                for (let i = 0; i < 40; i++) spaeter(() => add(`<i class="lw-feder" style="left:${4 + i * 2.2}%;top:${30 + Math.sin(i / 3) * 18}%;--f:${farben[i % 6]}"></i>`), 100 + i * 55);
+                [1400, 1600, 1800, 2300, 2500].forEach((t, i) => spaeter(() => ton(1400 + i * 180, .08, "triangle"), t));
+                spaeter(() => ruf.classList.add("an"), 2400);
+            }
+            if (w === "hai" || w === "megalodon" || w === "delfin"){
+                add(`<div class="lw-flut"></div>`);
+                for (let i = 0; i < 18; i++) spaeter(() => add(`<i class="lw-luft" style="left:${zufallX()}%;--d:${2 + Math.random() * 2}s"></i>`), 300 + i * 120);
+            }
+            if (w === "hai"){
+                spaeter(() => add(`<div class="lw-flosse"></div>`), 700);
+                spaeter(() => { held.classList.add("springt"); ton(300, .3, "sine"); }, 2600);
+                spaeter(() => { ruf.classList.add("an"); for (let i = 0; i < 24; i++) add(`<i class="lw-tropfen" style="--x:${(Math.random() - .5) * 60}vw;--y:${-20 - Math.random() * 40}vh;left:50%"></i>`); ton(180, .4, "sawtooth"); }, 3200);
+                blaseAb = 4400;
+            }
+            if (w === "delfin"){
+                add(`<div class="lw-regenbogen"></div>`);
+                held.classList.add("huepft");
+                [600, 1900, 3200].forEach(t => spaeter(() => { ton(2200, .1, "sine"); ton(2600, .08, "sine"); for (let i = 0; i < 12; i++) add(`<i class="lw-tropfen" style="--x:${(Math.random() - .5) * 30}vw;--y:${-10 - Math.random() * 25}vh;left:${30 + Math.random() * 40}%"></i>`); }, t + 900));
+                spaeter(() => { held.classList.remove("huepft"); held.style.transition = "none"; held.classList.add("da"); }, 4500);
+                spaeter(() => ruf.classList.add("an"), 4200);
+                blaseAb = 5200;
+            }
+            if (w === "elefant"){
+                spaeter(() => held.classList.add("da"), 300);
+                spaeter(() => { ruf.classList.add("an"); [220, 330, 440, 523].forEach((f, i) => spaeter(() => ton(f, .3, "sawtooth"), i * 140));
+                    for (let i = 0; i < 40; i++) spaeter(() => add(`<i class="lw-spritzer" style="--x:${(Math.random() - .5) * 70}vw;--h:${25 + Math.random() * 35}vh"></i>`), i * 45); }, 1400);
+            }
+            if (w === "megalodon"){
+                szene.classList.add("lw-dunkel");
+                spaeter(() => { held.classList.add("naht"); [55, 50, 45].forEach((f, i) => spaeter(() => ton(f, .8, "sine"), i * 600)); }, 800);
+                spaeter(() => { heldEl.classList.add("schnapp"); beben(); ton(40, .5, "square"); ruf.classList.add("an"); }, 4200);
+                blaseAb = 5200;
+            }
+            spaeter(() => { ruf.classList.add("aus"); blaseH.hidden = false; [523, 659, 784, 1047].forEach((f, i) => spaeter(() => ton(f, .2, "triangle"), i * 140)); }, blaseAb);
+        }
+        const jubeln = (an) => { szene.classList.toggle("jubel", an); if (an) setTimeout(heldKommt, 900); else heldWeg(); };
         const starten = async () => {
             if (laeuft) return;
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { hinweis.classList.add("wichtig"); hinweis.textContent = "Dieses Gerät oder dieser Browser erlaubt kein Mikrofon (die Seite muss über https geöffnet sein)."; return; }
@@ -1005,6 +1093,72 @@ const CSS = `
 /* Szene (Wald und Meer) */
 .lw-szene{ position:relative; width:min(94vw,1400px); height:min(58vh,620px); overflow:hidden; border-radius:22px; background:linear-gradient(#9fd3f0, #cfe9f7 45%, #b9dc9c 46%, #6fa04a); }
 .lw-tiere{ position:absolute; inset:0; z-index:4; }
+.lw-finale{ position:absolute; inset:0; z-index:7; pointer-events:none; overflow:hidden; }
+.lw-fx-ebene{ position:absolute; inset:0; }
+.lw-held{ position:absolute; left:50%; bottom:5%; transform:translateX(-50%) translateY(130%); display:flex; flex-direction:column; align-items:center; transition:transform 1s cubic-bezier(.2,1.4,.4,1); }
+.lw-held.da{ transform:translateX(-50%) translateY(0); }
+.lw-held-bild{ width:min(34vh,26vw); height:min(34vh,26vw); filter:drop-shadow(0 12px 22px rgba(0,0,0,.3)); }
+.lw-held.da .lw-held-bild{ animation:lwHeldHuepf 1.4s ease-in-out 1.2s infinite; }
+.lw-held-bild .lt-bild, .lw-held-bild svg{ width:100% !important; height:100% !important; display:block; }
+.lw-held-blase{ background:#fff; color:#16324a; font:900 clamp(16px,2.1vw,30px) "Nunito",sans-serif; border-radius:22px; padding:.5em .9em; box-shadow:0 8px 24px rgba(0,0,0,.18); margin-bottom:.6em; max-width:min(70vw,760px); text-align:center; position:relative; animation:lwPop .5s cubic-bezier(.2,1.6,.4,1); }
+.lw-held-blase::after{ content:""; position:absolute; left:50%; bottom:-14px; transform:translateX(-50%); border:14px solid transparent; border-bottom:0; border-top-color:#fff; }
+.lw-ruf{ position:absolute; left:50%; top:6%; transform:translateX(-50%) scale(0); font:900 clamp(40px,8vw,130px) "Nunito",sans-serif; color:#ffd23f; -webkit-text-stroke:4px #7a3e00; text-shadow:0 8px 0 rgba(0,0,0,.2); white-space:nowrap; opacity:0; }
+.lw-ruf.an{ animation:lwRuf 1.8s cubic-bezier(.2,1.6,.4,1) forwards; }
+.lw-ruf.aus{ transition:opacity .6s; opacity:0 !important; animation-play-state:paused; }
+.lw-beben{ animation:lwBeben .5s linear; }
+@keyframes lwBeben{ 0%,100%{ transform:translate(0,0); } 20%{ transform:translate(-14px,6px); } 40%{ transform:translate(12px,-8px); } 60%{ transform:translate(-8px,4px); } 80%{ transform:translate(6px,-3px); } }
+@keyframes lwRuf{ 0%{ transform:translateX(-50%) scale(0) rotate(-8deg); opacity:0; } 30%{ transform:translateX(-50%) scale(1.25) rotate(3deg); opacity:1; } 60%{ transform:translateX(-50%) scale(1) rotate(-2deg); opacity:1; } 100%{ transform:translateX(-50%) scale(1) rotate(0); opacity:.95; } }
+@keyframes lwPop{ 0%{ transform:scale(.3); opacity:0; } 100%{ transform:scale(1); opacity:1; } }
+@keyframes lwHeldHuepf{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6%); } }
+/* Löwe: Schallwellen und goldene Strahlen */
+.lw-welle{ position:absolute; left:50%; bottom:28%; width:20vh; height:20vh; margin-left:-10vh; border-radius:50%; border:8px solid rgba(255,210,63,.9); animation:lwWelle 1.4s ease-out forwards; }
+@keyframes lwWelle{ 0%{ transform:scale(.3); opacity:1; } 100%{ transform:scale(6); opacity:0; } }
+.lw-strahlen{ position:absolute; left:50%; bottom:25%; width:160vmax; height:160vmax; margin:0 0 -80vmax -80vmax; background:repeating-conic-gradient(rgba(255,210,63,.28) 0 8deg, transparent 8deg 20deg); animation:lwDreh 14s linear infinite, lwEin 1s ease-out; border-radius:50%; }
+@keyframes lwDreh{ to{ transform:rotate(360deg); } } @keyframes lwEin{ from{ opacity:0; } }
+/* T-Rex: Fußspuren */
+.lw-fuss{ position:absolute; font-size:clamp(40px,7vw,100px); font-style:normal; animation:lwPop .3s ease-out; filter:grayscale(1) brightness(.4); }
+/* Papagei: fliegt im Bogen, Regenbogen-Federn */
+.lw-held.fliegt{ animation:lwFlug 2.4s ease-in-out forwards; }
+@keyframes lwFlug{ 0%{ transform:translate(-160%, -260%) scale(.5) rotate(-20deg); } 35%{ transform:translate(40%, -230%) scale(.7) rotate(15deg); } 70%{ transform:translate(-90%, -120%) scale(.85) rotate(-10deg); } 100%{ transform:translate(-50%, 0) scale(1) rotate(0); } }
+.lw-feder{ position:absolute; width:clamp(10px,1.4vw,22px); height:clamp(22px,3vw,44px); border-radius:50% 50% 50% 50% / 70% 70% 30% 30%; background:var(--f); animation:lwFeder 3s ease-in forwards; }
+@keyframes lwFeder{ 0%{ transform:rotate(0) translateY(0); opacity:1; } 100%{ transform:rotate(240deg) translateY(55vh); opacity:0; } }
+/* Wasser: Flut, Luftblasen, Hai-Flosse, Tropfen */
+.lw-flut{ position:absolute; left:0; right:0; bottom:0; height:0; background:linear-gradient(#4fc3f7cc, #01579bee); animation:lwFlut 1.6s ease-out forwards; }
+.lw-flut::before{ content:""; position:absolute; left:0; right:0; top:-18px; height:36px; background:radial-gradient(ellipse at 50% 100%, #4fc3f7cc 60%, transparent 62%) 0 0/80px 36px repeat-x; animation:lwWellen 2s linear infinite; }
+@keyframes lwFlut{ to{ height:42%; } } @keyframes lwWellen{ to{ background-position:80px 0; } }
+.lw-luft{ position:absolute; bottom:0; width:clamp(8px,1.2vw,18px); height:clamp(8px,1.2vw,18px); border-radius:50%; border:2px solid rgba(255,255,255,.85); animation:lwLuft var(--d) ease-in infinite; }
+@keyframes lwLuft{ 0%{ transform:translateY(0); opacity:1; } 100%{ transform:translateY(-45vh); opacity:0; } }
+.lw-flosse{ position:absolute; bottom:40%; left:-10%; width:0; height:0; border-left:4vh solid transparent; border-right:2vh solid transparent; border-bottom:9vh solid #1565c0; animation:lwFlosse 2s ease-in-out forwards; }
+@keyframes lwFlosse{ 0%{ left:-10%; } 60%{ left:60%; } 100%{ left:45%; transform:translateY(100%); opacity:0; } }
+.lw-fx-hai .lw-held-bild, .lw-fx-megalodon .lw-held-bild .lt-bild{ filter:drop-shadow(0 12px 22px rgba(0,0,0,.3)) sepia(1) saturate(5) hue-rotate(175deg) brightness(.9); }
+.lw-held.springt{ animation:lwSprung 1.4s cubic-bezier(.3,0,.3,1) forwards; }
+@keyframes lwSprung{ 0%{ transform:translateX(-50%) translateY(130%) rotate(30deg); } 45%{ transform:translateX(-50%) translateY(-55%) rotate(-10deg); } 75%{ transform:translateX(-50%) translateY(10%) rotate(5deg); } 100%{ transform:translateX(-50%) translateY(0) rotate(0); } }
+.lw-tropfen{ position:absolute; bottom:40%; width:clamp(10px,1.3vw,20px); height:clamp(14px,1.8vw,28px); border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:#81d4fa; animation:lwTropfen 1.3s cubic-bezier(.2,.6,.6,1) forwards; }
+@keyframes lwTropfen{ 0%{ transform:translate(0,0); opacity:1; } 100%{ transform:translate(var(--x), var(--y)); opacity:0; } }
+/* Delfin: drei Sprünge, Regenbogen */
+.lw-held.huepft{ animation:lwDelfin 1.3s ease-in-out 3 forwards; animation-delay:.6s; }
+@keyframes lwDelfin{ 0%{ transform:translateX(-160%) translateY(120%) rotate(-50deg); } 50%{ transform:translateX(-50%) translateY(-60%) rotate(0); } 100%{ transform:translateX(60%) translateY(120%) rotate(50deg); } }
+.lw-fx-delfin .lw-held.huepft{ animation-fill-mode:none; }
+.lw-regenbogen{ position:absolute; left:50%; bottom:20%; width:80vw; height:40vw; margin-left:-40vw; border-radius:40vw 40vw 0 0; background:radial-gradient(circle at 50% 100%, transparent 54%, #8e24aa 54% 57%, #1e88e5 57% 60%, #43a047 60% 63%, #fdd835 63% 66%, #fb8c00 66% 69%, #e53935 69% 72%, transparent 72%); opacity:0; animation:lwEin 1.5s ease-out 4.2s forwards; }
+@keyframes lwEinVoll{ to{ opacity:.8; } }
+.lw-regenbogen{ animation-name:lwRegen; } @keyframes lwRegen{ to{ opacity:.75; } }
+/* Elefant: Wasserfontäne */
+.lw-spritzer{ position:absolute; left:46%; bottom:32%; width:clamp(8px,1vw,16px); height:clamp(8px,1vw,16px); border-radius:50%; background:#4fc3f7; animation:lwSpritz 1.6s cubic-bezier(.2,.8,.6,1) forwards; }
+@keyframes lwSpritz{ 0%{ transform:translate(0,0); opacity:1; } 50%{ transform:translate(calc(var(--x) * .5), calc(var(--h) * -1)); } 100%{ transform:translate(var(--x), 10vh); opacity:0; } }
+/* Megalodon: Tiefsee, riesiges Maul kommt näher und schnappt zu */
+.lw-dunkel::after{ content:""; position:absolute; inset:0; background:radial-gradient(circle at 50% 70%, rgba(1,30,60,.55), rgba(0,8,20,.92)); z-index:6; animation:lwEin 1.5s ease-out; pointer-events:none; }
+.lw-fx-megalodon .lw-flut{ background:linear-gradient(rgba(2,40,80,.6), rgba(0,10,25,.95)); }
+.lw-fx-megalodon .lw-held{ bottom:8%; }
+.lw-held.naht{ transition:none; animation:lwNaht 3.4s cubic-bezier(.5,0,.3,1) forwards; }
+@keyframes lwNaht{ 0%{ transform:translateX(-50%) translateY(-40%) scale(.08); opacity:0; } 20%{ opacity:1; } 100%{ transform:translateX(-50%) translateY(0) scale(1.45); } }
+.lw-fx-megalodon .lw-held-blase{ transform:scale(.69); transform-origin:50% 100%; animation:none; }
+.lw-mega-svg{ overflow:visible; }
+.lw-mega-maul{ transform-origin:200px 190px; animation:lwMaul 1.2s ease-in-out infinite alternate; }
+@keyframes lwMaul{ from{ transform:scaleY(1); } to{ transform:scaleY(.75); } }
+.lw-finale.schnapp .lw-mega-maul{ animation:lwSchnapp .25s ease-in forwards; }
+@keyframes lwSchnapp{ to{ transform:scaleY(.1); } }
+.lw-fx-megalodon .lw-ruf{ color:#e3f2fd; -webkit-text-stroke:4px #01579b; }
+@media (prefers-reduced-motion:reduce){ .lw-held, .lw-held-bild, .lw-ruf, .lw-welle, .lw-strahlen, .lw-beben{ animation:none !important; } }
 .lw-tier{ position:absolute; left:0; top:0; display:none; will-change:transform; }
 .lw-tier.da{ display:block; }
 .lw-koerper{ width:100%; height:100%; transform-origin:50% 100%; }
