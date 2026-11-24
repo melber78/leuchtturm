@@ -424,6 +424,7 @@ table.ab-tab td .lz{ min-height:0; }
     #druck .lehrer-druck{ page:lehrer; break-after:page; }
 }
 </style>
+<style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 </head>
 <body>
 

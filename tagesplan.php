@@ -319,6 +319,7 @@ table.dr-woche .zelle b{ color:var(--f); display:block; font-size:8pt; }
 .lrs-wahl{ font:800 14px "Nunito",sans-serif; border:2px solid #7b5cc4; color:#16324a; border-radius:10px; padding:6px 8px; background:white; max-width:100%; }
 </style>
 <style id="druckSeite">@page{ size:A4 portrait; margin:12mm; }</style>
+<style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 </head>
 <body>
 

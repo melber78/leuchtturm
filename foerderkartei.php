@@ -313,6 +313,7 @@ table.liste td select{ padding:5px 8px; font-size:13px; }
 .lk-karte .t{ font-size:10.5px; color:#4a5866; font-weight:700; }
 .lk-karte .f{ font-size:9px; color:#9aa5ab; }
 </style>
+<style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 </head>
 <body>
 <div class="wrap">

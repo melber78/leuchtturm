@@ -420,6 +420,7 @@ textarea{ resize:vertical; min-height:62px; font-weight:600; }
 .zwei-kinder{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
 .zwei-kinder select{ font:800 14px "Nunito",sans-serif; padding:9px 10px; border:2px solid #e2e8ee; border-radius:12px; background:white; color:#16324a; }
 </style>
+<style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 </head>
 <body>
 

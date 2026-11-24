@@ -162,6 +162,7 @@ textarea{ min-height:84px; resize:vertical; font-weight:500; }
 #druck .sign{ display:grid; grid-template-columns:.7fr 1fr 1fr; gap:6mm; margin-top:auto; font-size:7.6pt; color:#555; }
 #druck .sign i{ display:block; border-bottom:.8pt solid #222; height:6mm; margin-bottom:1mm; font-style:normal; font-size:9.4pt; color:#111; }
 </style>
+<style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 </head>
 <body>
 <div class="wrap">

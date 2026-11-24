@@ -1076,6 +1076,7 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .le-antworten span{ display:inline-flex; align-items:center; gap:8px; }
 .le-rf td, .le-rf th{ font-size:inherit !important; vertical-align:middle !important; }
 </style>
+<style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 </head>
 <body>
 
@@ -3704,7 +3705,7 @@ function ws_drucken(seitenListe){
         <style>${document.getElementById("ws-stil").textContent}
         @page{ size:A4; margin:7mm; }
         .ws-seite{ zoom:.93; }
-        html, body{ margin:0; padding:0; background:#fff; }
+        html, body{ margin:0; padding:0; background:#fff; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
         .ws-seite{ box-shadow:none; break-after:page; page-break-after:always; }
         .ws-seite:last-child{ break-after:auto; page-break-after:auto; }
         </style></head><body>${seiten.map(s => s.outerHTML).join("")}</body></html>`);

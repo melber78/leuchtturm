@@ -122,6 +122,7 @@ table.sp-tabelle textarea:focus{ outline:2px solid var(--meer); outline-offset:-
     table.sp-tabelle textarea::placeholder, .sp-std input::placeholder{ color:transparent !important; }
 }
 </style>
+<style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 </head>
 <body>
 
