@@ -113,6 +113,7 @@ body{ background:#f6f2ea; }
 .a-melden .szene{ background:radial-gradient(circle at 50% 110%, #f6c76a, #ffe7b3 65%, #fff6df); } .a-melden .wann{ background:#fff0c9; color:#8a5a00; } .a-melden .los{ background:#d98b1f; }
 .a-sterne .szene{ background:radial-gradient(circle at 30% 20%, #4c5db0, #23305e 70%); } .a-sterne .wann{ background:#e6e9fb; color:#2f3b85; } .a-sterne .los{ background:#3b4a9c; }
 .a-sterne .szene small{ color:#ffe066; }
+.a-quatsch .szene{ background:linear-gradient(135deg,#80deea,#b39ddb 40%,#ffcc80 70%,#c6ff00); } .a-quatsch .wann{ background:#f3e5f5; color:#6a1b9a; } .a-quatsch .los{ background:#8e24aa; }
 .a-live .szene{ background:linear-gradient(#bfe3f7 0 58%, #9fd08a 58%); } .a-live .wann{ background:#e3f2fb; color:#1f5f86; } .a-live .los{ background:#3d7ea6; }
 /* Tafel-Ansicht (Vollbild) */
 #tafel{ position:fixed; inset:0; display:none; flex-direction:column; background:radial-gradient(circle at 20% 0%, #fbf7ee, #efe8da); z-index:10; user-select:none; -webkit-user-select:none; }
@@ -645,8 +646,10 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
     ["melden", "a-melden", "🦉", '<small style="right:22px;top:18px;font-size:18px;background:white;border-radius:12px;padding:2px 8px;font-weight:900;color:#c0392b">Pssst!</small>', "Arbeitsphase", "Pssst-Eule", "Eine Eule schläft in der Abenddämmerung, der Mond geht langsam auf. Wird es laut, wacht sie auf und sagt „Pssst!“."],
     ["sterne", "a-sterne", "🫙", '<small style="left:22px;top:16px">⭐</small><small style="right:26px;top:30px;font-size:18px">✨</small><small style="left:44px;bottom:16px;font-size:18px">⭐</small>', "Arbeitsphase", "Stille-Sterne", "Jede leise Minute kommt heimlich ein Stern ins Glas unter dem karierten Tuch. Erst am Ende wird aufgedeckt."],
     ["zuschauen", "a-live", "🦊", '<small style="left:22px;bottom:14px">🐰</small><small style="right:24px;bottom:12px">🦔</small><small style="right:30px;top:12px">🦉</small>', "kurze Ruhephase", "Tiere kommen live", "Je leiser, desto mehr Tiere kommen in den Wald – bei Lärm laufen sie weg. Zum Zuschauen."],
-] as [$m, $klasse, $haupt, $deko, $wann, $titel, $text]): ?>
-            <button class="lw-art <?= $klasse ?>" type="button" onclick="leiseWahl(false); leiseStarten('<?= $m ?>')">
+    ["ende|quatsch", "a-quatsch", "🍭", '<small style="left:16px;bottom:10px">🍄</small><small style="right:18px;bottom:14px">🥒</small><small style="right:40px;top:14px">🍞</small>', "Arbeitsphase", "Quatsch-Überraschung", "Zum Arbeiten: Der Quatsch-Wald bleibt ruhig und verschwommen, nur ein Baum wächst. Erst am Ende kommen die Quatsch-Wesen – und ein Belohnungstier."],
+    ["zuschauen|quatsch", "a-quatsch", "🤪", '<small style="left:22px;bottom:14px">🍩</small><small style="right:24px;bottom:12px">🍌</small><small style="right:30px;top:12px">☁️</small>', "kurze Ruhephase", "Quatsch-Wald live", "Je leiser, desto mehr Quatsch-Wesen kommen in den knallbunten Wald. Zum Zuschauen."],
+] as [$m, $klasse, $haupt, $deko, $wann, $titel, $text]): [$m, $welt] = array_pad(explode("|", $m), 2, "wald"); ?>
+            <button class="lw-art <?= $klasse ?>" type="button" onclick="leiseWahl(false); leiseStarten('<?= $m ?>', '<?= $welt ?>')">
                 <div class="szene"><?= $haupt ?><?= $deko ?></div>
                 <div class="inhalt"><span class="wann"><?= htmlspecialchars($wann) ?></span><h3><?= htmlspecialchars($titel) ?></h3><p><?= htmlspecialchars($text) ?></p><span class="los">Starten ▶</span></div>
             </button>
@@ -758,9 +761,9 @@ window.tbSeiten = function(){ return window.TB_GEGNER[window.tbGegner()]; };
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "einmaleins")): ?><script src="tafel-einmaleins.js?v=<?= @filemtime(__DIR__ . "/tafel-einmaleins.js") ?: 1 ?>"></script><script src="tafel-1x1.js?v=<?= @filemtime(__DIR__ . "/tafel-1x1.js") ?: 1 ?>"></script><?php endif; ?>
 <script>
 // Leise-Wald direkt aus den Tafelbildern (auch über tafelbilder.php#leise-ende usw.)
-function leiseStarten(modus){ if (window.lernTafel) window.lernTafel.starten("leise", { modus }); }
+function leiseStarten(modus, welt){ if (window.lernTafel) window.lernTafel.starten("leise", Object.assign({ modus, welt: welt || "wald" }, welt === "quatsch" && modus === "ende" ? { ueberraschung: "tiere" } : {})); }
 function leiseWahl(an){ const w = document.getElementById("leiseWahl"); if (w) w.classList.toggle("an", an); }
-document.addEventListener("DOMContentLoaded", () => { const m = /^#leise-(ende|melden|sterne|zuschauen)$/.exec(location.hash); if (m) leiseStarten(m[1]); else if (location.hash === "#leise") leiseWahl(true); });
+document.addEventListener("DOMContentLoaded", () => { const m = /^#leise-(ende|melden|sterne|zuschauen)(-quatsch)?$/.exec(location.hash); if (m) leiseStarten(m[1], m[2] ? "quatsch" : "wald"); else if (location.hash === "#leise") leiseWahl(true); });
 </script>
 <script>
 "use strict";

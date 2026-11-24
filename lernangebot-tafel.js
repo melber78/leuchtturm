@@ -1205,6 +1205,11 @@ const CSS = `
 @keyframes lwPop{ 0%{ transform:scale(.3); opacity:0; } 100%{ transform:scale(1); opacity:1; } }
 @keyframes lwHeldHuepf{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6%); } }
 /* Quatsch-Wald: knallbunte Welt */
+/* Arbeitsphase: Quatsch-Wald hinter dem Schleier steht still, der Baum wird kunterbunt */
+.lw-szene:has(.lw-ruhe:not(.weg):not(.fest)) .lw-q-wackel, .lw-szene:has(.lw-ruhe:not(.weg):not(.fest)) .lw-q-dreh{ animation-play-state:paused; }
+.lw-quatsch .lw-ruhe{ background:rgba(255,255,255,.3); }
+.lw-quatsch .lw-krone circle:nth-child(6n+1){ fill:#ff5252; } .lw-quatsch .lw-krone circle:nth-child(6n+2){ fill:#ffeb3b; } .lw-quatsch .lw-krone circle:nth-child(6n+3){ fill:#40c4ff; }
+.lw-quatsch .lw-krone circle:nth-child(6n+4){ fill:#69f0ae; } .lw-quatsch .lw-krone circle:nth-child(6n+5){ fill:#7c4dff; } .lw-quatsch .lw-krone circle:nth-child(6n){ fill:#ff9800; }
 .lw-q-wackel{ animation:lwQWackel var(--d,4s) ease-in-out infinite alternate; transform-box:view-box; }
 .lw-q-dreh{ animation:lwQDreh var(--d,8s) linear infinite; transform-box:view-box; }
 @keyframes lwQWackel{ from{ transform:rotate(-3deg); } to{ transform:rotate(3deg); } }
