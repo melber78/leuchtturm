@@ -1813,7 +1813,7 @@ function parseVok(txt){
  const art=/^(.+?)\s+((?:der|die|das|ein|eine)\s.+)$/,art2=/^((?:der|die|das|ein|eine)\s\S+)\s+(.+)$/;
  for(let i=0;i<lines.length;i++){const l=lines[i];if(sep.test(l))continue;let m=l.match(art2);if(m&&!/^(der|die|das|ein|eine)\s/.test(m[2])&&/^[a-z]/.test(m[2])&&!/(en|ern|eln)$/.test(m[2])){lines[i]=m[1]+' = '+m[2];continue}m=l.match(art);if(m&&/^[a-z]/.test(m[1])&&!/(en|ern|eln)$/.test(m[1]))lines[i]=m[1]+' = '+m[2]}
  const withSep=lines.filter(l=>sep.test(l)).length;
- if(withSep>=lines.length*.6){lines.forEach(l=>{const m=l.split(sep);if(m.length>=2&&m[0]&&m[1])pairs.push([m[0].trim(),m.slice(1).join(' ').trim()])})}
+ if(withSep>=lines.length*.6){lines.forEach(l=>{const m=/\S\s{3,}\S/.test(l)?l.split(/\s{3,}/):l.split(sep);if(m.length>=2&&m[0]&&m[1])pairs.push([m[0].trim(),m.slice(1).join(' ').trim()])})}
  else{for(let i=0;i+1<lines.length;i+=2)pairs.push([lines[i],lines[i+1]])}
  // Welche Seite ist Deutsch? → in die erste Spalte
  let a=0,b=0;pairs.forEach(([x,y])=>{a+=vokScore(x);b+=vokScore(y)});
@@ -1865,15 +1865,31 @@ function ocrCropUI(){const box=$('#ocrcrop');if(!box)return;const src=ocrRotated
 function ocrDraw(){const cv=$('#ocrcv');if(!cv)return;const x=cv.getContext('2d');x.drawImage(OCR.src,0,0,cv.width,cv.height);const s=OCR.sel;if(!s)return;
  x.fillStyle='rgba(0,0,0,.55)';x.fillRect(0,0,cv.width,s[1]);x.fillRect(0,s[1]+s[3],cv.width,cv.height-s[1]-s[3]);x.fillRect(0,s[1],s[0],s[3]);x.fillRect(s[0]+s[2],s[1],cv.width-s[0]-s[2],s[3]);
  x.strokeStyle='#38bdf8';x.lineWidth=Math.max(2,cv.width/300);x.strokeRect(s[0],s[1],s[2],s[3])}
-/* Ausschnitt in voller Auflösung, passend skaliert, Graustufen + Kontrast */
+/* Ausschnitt in voller Auflösung, passend skaliert, Rauschen glätten, Licht ausgleichen (Sauvola) → Schwarz/Weiß */
+function ocrBox(src,W,H,R){const I=new Float64Array((W+1)*(H+1));for(let y=0;y<H;y++){let r=0;const o=(y+1)*(W+1),q=y*(W+1);for(let x=0;x<W;x++){r+=src[y*W+x];I[o+x+1]=I[q+x+1]+r}}
+ const out=new Float32Array(W*H);for(let y=0;y<H;y++){const y0=Math.max(0,y-R),y1=Math.min(H,y+R+1);for(let x=0;x<W;x++){const x0=Math.max(0,x-R),x1=Math.min(W,x+R+1);out[y*W+x]=(I[y1*(W+1)+x1]-I[y0*(W+1)+x1]-I[y1*(W+1)+x0]+I[y0*(W+1)+x0])/((y1-y0)*(x1-x0))}}return out}
 function ocrPrep(){const src=OCR.src,f=OCR.f,s=OCR.sel?OCR.sel.map(v=>v/f):[0,0,src.width,src.height];
- const L=Math.max(s[2],s[3]),k=Math.min(2.5,Math.max(.4,2200/L)),w=Math.round(s[2]*k),h=Math.round(s[3]*k),c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(src,s[0],s[1],s[2],s[3],0,0,w,h);
- const d=x.getImageData(0,0,w,h),a=d.data,hist=new Array(256).fill(0);for(let i=0;i<a.length;i+=4){const g=(a[i]*.299+a[i+1]*.587+a[i+2]*.114)|0;a[i]=g;hist[g]++}
- let n=0,lo=0,hi=255;const T=w*h*.02;for(lo=0;lo<255&&(n+=hist[lo])<T;lo++);n=0;for(hi=255;hi>0&&(n+=hist[hi])<T;hi--);const r=Math.max(1,hi-lo);
- for(let i=0;i<a.length;i+=4){const g=Math.max(0,Math.min(255,(a[i]-lo)*255/r));a[i]=a[i+1]=a[i+2]=g}x.putImageData(d,0,0);return c}
-/* Aufräumen: Lautschrift, Aufzählungszeichen, Störzeichen */
-function ocrClean(l){return l.replace(/\s+$/,'').replace(/\[[^\]\)]{0,30}[\]\)]|\{[^}]{0,25}\}|\([^)]{0,30}[:'ˈəɪʊ][^)]{0,30}\)|\/[^\/\s]{1,20}\//g,' ').replace(/[©®™•●■□▪◆★☐✓✔]/g,' ').replace(/[|_]{2,}/g,' ')
- .replace(/([a-zäöü])B(?=[a-zäöü]|\b)/g,'$1ß').replace(/^[^A-Za-zÄÖÜäöüß0-9„"'(¿¡]+/,'').replace(/\s+[^\sA-Za-zÄÖÜäöüß0-9.,!?;:'"“”„)…\/–—-]{1,2}(?=\s|$)/g,' ').replace(/ {3,}/g,'   ').replace(/ ?\/ ?/g,' / ').replace(/^ +| +$/g,'')}
+ const L=Math.max(s[2],s[3]),k=Math.min(2,Math.max(.5,3600/L)),W=Math.round(s[2]*k),H=Math.round(s[3]*k),c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(src,s[0],s[1],s[2],s[3],0,0,W,H);
+ const d=x.getImageData(0,0,W,H),a=d.data,g=new Float32Array(W*H);for(let i=0,j=0;i<a.length;i+=4,j++)g[j]=a[i]*.299+a[i+1]*.587+a[i+2]*.114;
+ const sm=ocrBox(g,W,H,2),R=Math.max(15,Math.round(Math.max(W,H)/100)),m=ocrBox(sm,W,H,R),sq=ocrBox(sm.map(v=>v*v),W,H,R);
+ for(let j=0;j<g.length;j++){const sd=Math.sqrt(Math.max(0,sq[j]-m[j]*m[j])),v=sm[j]>m[j]*(1+.35*(sd/128-1))?255:0,i=j*4;a[i]=a[i+1]=a[i+2]=v}
+ x.putImageData(d,0,0);return c}
+/* Aufräumen: Lautschrift, Seitenverweise, Störzeichen, typische Lesefehler */
+function ocrClean(l){return l.replace(/\s+$/,'').replace(/[\[{][^\]})\[{]{0,30}[\]})]|\((?!auch|also|pl|AE|BE)[^)]{0,30}[:'’ˈəɪʊæɑʒðθŋ][^)]{0,30}\)/g,' ').replace(/[©®™•●■□▪◆★☐✓✔|»«>▶►]/g,' ').replace(/_{2,}/g,' ')
+ .replace(/(^|\s)(p|S)\.\s?\d{1,3}(?=\s|$)/g,' ').replace(/([a-zäöü])[BR](?=[a-zäöü])/g,'$1ß').replace(/([a-zäöü])B\b/g,'$1ß').replace(/ ?\/ ?/g,' / ').replace(/\s+\)/g,')').replace(/ {3,}/g,'   ').replace(/^ +| +$/g,'')}
+/* Zeile aus Wörtern neu bauen: unsichere Krümel weg, große Lücken = Spaltenwechsel */
+function ocrLine(l){let ws=(l.words||[]).filter(w=>w.text.trim());let st=0;while(st<ws.length-1){const w=ws[st],n=(w.text.match(/[A-Za-zÄÖÜäöüß]/g)||[]).length;if((/^(I|a|A|I'm|to|an|An|in|on|at|by|my|we|he|it|is|am|of|up|go|do|no|so|Mr|Ms)[.,?!]?$/.test(w.text)||/^\(\w/.test(w.text))&&w.confidence>=60)break;if(n<=2||w.confidence<40)st++;else break}ws=ws.slice(st);
+ const ch=ws.reduce((a,w)=>a+(w.bbox.x1-w.bbox.x0)/Math.max(1,w.text.length),0)/ws.length;let out=ws[0].text;
+ for(let i=1;i<ws.length;i++){const gap=ws[i].bbox.x0-ws[i-1].bbox.x1;out+=(gap>ch*2.2?'   ':' ')+ws[i].text}return out}
+function ocrTrim(x){return x.replace(/^[^A-Za-zÄÖÜäöüß("„¿¡]+/,'').replace(/((\s+[^\sA-Za-zÄÖÜäöüß.?!)]{1,3})|(\s+[A-Za-z]))+$/,'').replace(/[\s~=:;,\-–]+$/,'').trim()}
+function ocrGood(t){t=t.trim();const L=(t.match(/[A-Za-zÄÖÜäöüß]/g)||[]).length;return L>=2&&L/t.replace(/\s/g,'').length>=.6&&/[A-Za-zÄÖÜäöüß]{2,}/.test(t)&&!/^[A-Za-z]{1,2}$/.test(t)}
+/* Vokabeln: jede Zeile in Spalten zerlegen, Störteile weg, umgebrochene Zeilen anhängen */
+function ocrVokRows(lines){const rows=[];lines.forEach(l=>{const segs=ocrClean(l).split(/ {3,}| - | ~ /).map(ocrTrim).filter(ocrGood);
+ if(!segs.length)return;
+ if(segs.length>=2){rows.push([segs[0],segs.slice(1).join(' ')]);return}
+ const t=segs[0],last=rows[rows.length-1];if(!last){rows.push([t,'']);return}
+ if(/^\(/.test(t))last[0]+=' '+t;else if(!last[1])last[1]=t;else last[1]+=(/[\/,;]$/.test(last[1])||/^[a-zäöü]/.test(t)?' ':' ')+t});
+ return rows.filter(r=>r[0]&&r[1]).map(r=>r[0]+'   '+r[1])}
 async function ocrGo(){if(OCR.busy||!OCR.img)return;const p=view.p,vok=p.k==='vok',lang=(p.s==='en'||vok)?'deu+eng':'deu';OCR.busy=true;
  try{const cv=ocrPrep();
   if(!OCR.w||OCR.lang!==lang){ocrSet('⏳ Texterkennung wird geladen … (nur beim ersten Mal etwas länger)');await ocrLoad();if(OCR.w){try{await OCR.w.terminate()}catch(e){}}
@@ -1881,7 +1897,8 @@ async function ocrGo(){if(OCR.busy||!OCR.img)return;const p=view.p,vok=p.k==='vo
   // Vokabeln: Zeile für Zeile über die Spalten lesen (PSM 6) – Hefter: Textblöcke automatisch (PSM 3)
   await OCR.w.setParameters({preserve_interword_spaces:'1',tessedit_pageseg_mode:vok?'6':'3'});
   ocrSet('🔎 Text wird gelesen …');const {data}=await OCR.w.recognize(cv);
-  const lines=(data.lines||[]).filter(l=>l.confidence>=40).map(l=>ocrClean(l.text)).filter(l=>/[A-Za-zÄÖÜäöüß]{2}/.test(l));
+  const raw=(data.lines||[]).filter(l=>l.confidence>=35).map(ocrLine);
+  const lines=vok?ocrVokRows(raw):raw.map(l=>ocrTrim(ocrClean(l))).filter(ocrGood);
   const conf=Math.round(data.confidence||0);
   if(!lines.length){ocrSet('😕 Kein Text erkannt. Rahmen enger ziehen oder bei Handschrift die Anleitung unten nutzen.');OCR.busy=false;return}
   const ta=$('#vokin');ta.value=(ta.value.trim()?ta.value.replace(/\s+$/,'')+'\n':'')+lines.join('\n');p.txt=ta.value;
