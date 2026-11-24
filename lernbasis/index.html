@@ -879,7 +879,7 @@ async function pull(){
  try{const j=await api('load',{pin:SYNC.pin});
   if(j.err==='pin'){lsDel(LSPIN);SYNC.pin=null;go('pin',{},true);return}
   const st=j.state;
-  if(st&&st.updated>S.updated){S=fix(st);lsSet(LS,JSON.stringify(S))}
+  if(st&&st.updated>S.updated){const kb=S.badges||{};S=fix(st);Object.keys(kb).forEach(k=>{if(!S.badges[k])S.badges[k]=kb[k]});lsSet(LS,JSON.stringify(S))}
   else if(S.updated>(st?st.updated:0))await push();
   SYNC.st='ok';
  }catch(e){SYNC.st='offline'}
@@ -1252,7 +1252,7 @@ function delCustom(){const p=view.p;if(!p.del){p.del=true;render();return}S.cust
 /* ---------- PIN (Gerät mit dem Server verbinden) ---------- */
 VIEWS.pin=p=>{p.v=p.v||'';return `<div style="padding-top:40px" class="center"><div class="big">🔐</div><h2>Lernbasis</h2><p class="mut">${SYNC.setup?'<b>Erster Start:</b> Lege jetzt einen 4-stelligen Code fest. Diesen Code gibst du später auf jedem Gerät ein.':'Gib deinen Code ein, damit dein Fortschritt auf Handy und Tablet gleich ist.'}</p><div class="dots">${[0,1,2,3].map(i=>`<i class="${i<p.v.length?'f':''}"></i>`).join('')}</div>${p.err?`<p style="color:var(--bad)">${p.err}</p>`:''}<div class="pinpad">${[1,2,3,4,5,6,7,8,9,'⌫',0,'✓'].map(k=>`<button onclick="pinKey('${k}')">${k}</button>`).join('')}</div></div>`};
 async function pinKey(k){const p=view.p;p.err='';if(k==='⌫')p.v=p.v.slice(0,-1);else if(k==='✓'||p.v.length>=4){}else p.v+=k;render();
- if(p.v.length===4||k==='✓'){try{const j=await api('load',{pin:p.v});if(j.err){p.err=j.err==='warten'?'Zu viele Versuche – bitte 10 Minuten warten.':'Falscher Code.';p.v='';render();return}SYNC.setup=false;SYNC.pin=p.v;lsSet(LSPIN,p.v);const st=j.state;if(st&&st.updated>S.updated){S=fix(st);lsSet(LS,JSON.stringify(S))}else await push();SYNC.st='ok';applyAdj();go('home',{},true)}catch(e){p.err='Keine Verbindung.';p.v='';render()}}}
+ if(p.v.length===4||k==='✓'){try{const j=await api('load',{pin:p.v});if(j.err){p.err=j.err==='warten'?'Zu viele Versuche – bitte 10 Minuten warten.':'Falscher Code.';p.v='';render();return}SYNC.setup=false;SYNC.pin=p.v;lsSet(LSPIN,p.v);const st=j.state;if(st&&st.updated>S.updated){const kb=S.badges||{};S=fix(st);Object.keys(kb).forEach(k=>{if(!S.badges[k])S.badges[k]=kb[k]});lsSet(LS,JSON.stringify(S))}else await push();SYNC.st='ok';applyAdj();go('home',{},true)}catch(e){p.err='Keine Verbindung.';p.v='';render()}}}
 
 /* ---------- Eltern-Bereich ---------- */
 VIEWS.eltern=p=>{
@@ -1325,10 +1325,10 @@ const BADGES=[
 ];
 let CELEB=[];
 function celeb(icon,title,text,coins){if(coins)S.coins=(S.coins||0)+coins;CELEB.push({icon,title,text:text+(coins?` <b>+${coins} 🪙</b>`:'')})}
-function showCeleb(){if(PREVIEW){CELEB=[];return}if(!CELEB.length||$('.ov'))return;const c=CELEB[0];const el=document.createElement('div');el.className='ov';
+function showCeleb(){let el0=false;try{el0=MODE==='eltern'}catch(e){}if(PREVIEW||el0){CELEB=[];return}if(!CELEB.length||$('.ov'))return;const c=CELEB[0];const el=document.createElement('div');el.className='ov';
  el.innerHTML=`<div class="conf">${Array.from({length:40},(_,i)=>`<i style="left:${Math.random()*100}%;background:${['#fde047','#f472b6','#38bdf8','#4ade80','#fb923c','#a78bfa'][i%6]};animation-delay:${Math.random()*.8}s;animation-duration:${1.6+Math.random()*1.4}s"></i>`).join('')}</div><div class="ovc"><div class="ovi">${c.icon}</div><h2>${c.title}</h2><p>${c.text}</p><button class="btn">Weiter</button></div>`;
  el.onclick=()=>{el.remove();CELEB.shift();showCeleb()};document.body.appendChild(el);if(navigator.vibrate)try{navigator.vibrate([40,40,80])}catch(e){}}
-function checkBadges(){BADGES.forEach(([id,ic,n,d,f])=>{if(!S.badges[id]){let ok=false;try{ok=f(S)}catch(e){}if(ok){S.badges[id]=today();celeb(ic,'Abzeichen: '+n,d+'!',20)}}})}
+function checkBadges(){try{if(MODE==='eltern')return}catch(e){}BADGES.forEach(([id,ic,n,d,f])=>{if(!S.badges[id]){let ok=false;try{ok=f(S)}catch(e){}if(ok){S.badges[id]=today();celeb(ic,'Abzeichen: '+n,d+'!',20)}}})}
 function chestCheck(){const g=S.set.goal||60;if((S.days[today()]||0)>=g&&S.chest!==today()){S.chest=today();const c=R(10,25);celeb('🎁','Tagesziel geschafft!','Du hast die Schatztruhe geöffnet:',c)}}
 function applyTheme(){const t=THEMES[S.theme]||THEMES.ozean;const r=document.documentElement.style;r.setProperty('--acc',t.acc);r.setProperty('--hero',t.hero);const m=document.querySelector('meta[name=theme-color]');if(m)m.content='#0b1324'}
 
