@@ -167,7 +167,7 @@ Am Ende sagt Finn: „Danke, Greta. Das hat gutgetan.“
           warum: "Der Teddy ist traurig. Wir trösten ihn mit einem Brief." }
     ],
     ab12: {
-      "titel": "Ich kann trösten",
+      "titel": "Ich kann trösten", "kontext": "Emmas Luftballon ist weggeflogen. Ben tröstet sie.",
       "gemeinsam": true,
       "aufgaben": [
         {
@@ -370,7 +370,7 @@ Am Nachmittag erzählt die Lehrerin der Klasse, dass Tims Opa krank ist. Lara wi
           warum: "Wir schlüpfen in einen anderen und schauen mit seinen Augen." }
     ],
     ab12: {
-      "titel": "Wie geht es dir?",
+      "titel": "Wie geht es dir?", "kontext": "Ella hat aus Versehen Lios Turm umgestoßen.",
       "gemeinsam": true,
       "aufgaben": [
         {
@@ -582,32 +582,32 @@ Eine Woche später setzt Charlotte sich in der Pause wieder neben Nora.
     ],
     ab12: {
       "titel": "Es tut mir leid",
-      "kontext": "Sam hat aus Versehen Leas Bild nass gemacht.",
+      "kontext": "Sam stößt aus Versehen Leas Malwasser um. Ihr Regenbogen-Bild ist ganz nass.",
       "gemeinsam": true,
       "aufgaben": [
         {
           "typ": "daumen",
-          "text": "Ist das eine gute Entschuldigung? Kreise ein: 👍 oder 👎.",
+          "text": "Was sagt Sam zu Lea? Ist das eine gute Entschuldigung? Kreise ein: 👍 oder 👎.",
           "zeilen": [
-            "Ich schaue den anderen an.",
-            "Ich sage es genervt.",
-            "Ich sage, was passiert ist.",
-            "Ich mache es wieder gut."
+            "Sam schaut Lea an und sagt: „Es tut mir leid.“",
+            "Sam murmelt „’tschuldigung“ und geht weiter.",
+            "Sam sagt: „Sorry, aber du bist selbst schuld.“",
+            "Sam fragt: „Soll ich dir helfen, ein neues Bild zu malen?“"
           ],
           "art": "daumen"
         },
         {
           "typ": "gesichter",
-          "text": "Wie fühlt sich Lea vorher – und wie nachher? Male die Gesichter.",
+          "text": "Wie fühlt sich Lea? Male die Gesichter.",
           "gefuehle": [
-            "vorher",
-            "nachher"
+            "Das Bild ist nass.",
+            "Sam entschuldigt sich echt."
           ],
           "leer": true
         },
         {
           "typ": "malen",
-          "text": "Male, wie Sam es wieder gutmacht.",
+          "text": "Male, wie Sam und Lea zusammen einen neuen Regenbogen malen.",
           "bild": ""
         }
       ]
@@ -681,17 +681,17 @@ Am Ende stimmen alle 22 Kinder dafür. Niemand hat alles bekommen, was er wollte
           warum: "Zwei wollen dasselbe. Wir suchen Lösungen, bei denen beide etwas bekommen." }
     ],
     ab12: {
-      "titel": "Beide bekommen etwas",
+      "titel": "Beide bekommen etwas", "kontext": "Mia und Tom wollen beide auf die rote Schaukel.",
       "gemeinsam": true,
       "aufgaben": [
         {
           "typ": "daumen",
-          "text": "Lea und Ben wollen beide das rote Auto. Ist das fair? Kreise ein: 👍 oder 👎.",
+          "text": "Mia und Tom wollen beide auf die rote Schaukel. Ist das fair? Kreise ein: 👍 oder 👎.",
           "zeilen": [
-            "Lea nimmt es einfach weg.",
-            "Sie spielen abwechselnd.",
-            "Ben schreit, bis er es bekommt.",
-            "Sie spielen zusammen damit."
+            "Mia zieht Tom von der Schaukel.",
+            "Sie wechseln sich ab.",
+            "Tom schreit, bis er schaukeln darf.",
+            "Einer schaukelt, einer zählt bis 20."
           ],
           "art": "daumen"
         },

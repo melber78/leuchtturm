@@ -59,7 +59,7 @@ Die Mädchen beschließen eine neue Club-Regel: **Jede, die mitmachen will, darf
           warum: "Wir suchen Spiele, bei denen alle mitmachen können." }
     ],
     ab12: {
-      "titel": "Komm, spiel mit!",
+      "titel": "Komm, spiel mit!", "kontext": "Der kleine Hase darf bei den großen Tieren nicht mitspielen.",
       "gemeinsam": true,
       "aufgaben": [
         {
@@ -155,7 +155,7 @@ Am Nachmittag will Ben Miras Notizbuch anschauen. „Wir teilen doch alles!“, 
           warum: "Ein kniffliges Rätsel: Wie teilt man gerecht?" }
     ],
     ab12: {
-      "titel": "Teilen macht froh",
+      "titel": "Teilen macht froh", "kontext": "Nele hat ihre Stifte vergessen. Mats hat neue Buntstifte.",
       "gemeinsam": true,
       "aufgaben": [
         {
@@ -439,7 +439,7 @@ Am Abend klingeln Selma und Hannes bei Herrn Schulze. Hannes erklärt mit roten 
           warum: "Wir überlegen: Wofür bin ich verantwortlich – und wofür nicht?" }
     ],
     ab12: {
-      "titel": "Ich kümmere mich",
+      "titel": "Ich kümmere mich", "kontext": "Tim hat vergessen, die Klassenpflanze Fridolin zu gießen.",
       "gemeinsam": true,
       "aufgaben": [
         {

@@ -241,7 +241,7 @@ Emil übt jeden Tag fünf Minuten „ie“-Wörter. Das nächste Diktat ist eine
           warum: "Wir sammeln, was hilft, wenn etwas nicht klappt." }
     ],
     ab12: {
-      "titel": "Ich übe noch",
+      "titel": "Ich übe noch", "kontext": "Pia lernt Fahrrad fahren – und fällt oft hin.",
       "gemeinsam": true,
       "aufgaben": [
         {
@@ -688,17 +688,17 @@ Eine Woche später rechnet Tom die Aufgaben allein. Und als Luisa bei Englisch n
           warum: "Wir üben, genau zu sagen, was wir brauchen." }
     ],
     ab12: {
-      "titel": "Kannst du mir helfen?",
+      "titel": "Kannst du mir helfen?", "kontext": "Ellas Lieblingsbuch liegt oben auf dem Schrank – ganz hoch.",
       "gemeinsam": true,
       "aufgaben": [
         {
           "typ": "daumen",
-          "text": "Um Hilfe bitten ist … Kreise ein: 👍 oder 👎.",
+          "text": "Ella kommt nicht an ihr Buch. Ist das gut? Kreise ein: 👍 oder 👎.",
           "zeilen": [
-            "mutig",
-            "peinlich",
-            "schlau",
-            "gut"
+            "Sie fragt: „Papa, kannst du mir bitte helfen?“",
+            "Sie steigt auf einen wackeligen Stuhl.",
+            "Sie zieht am Schrank, bis das Buch runterfällt.",
+            "Sie sagt genau: „Ich komme nicht dran.“"
           ],
           "art": "daumen"
         },

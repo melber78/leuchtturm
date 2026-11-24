@@ -861,7 +861,7 @@ Leon denkt nach. „Dann ist es wie bei Jakob mit der Brille. Der bekommt ja auc
           warum: "Gleich ist nicht immer gerecht. Wir überlegen." }
     ],
     ab12: {
-      "titel": "Jeder bekommt, was er braucht",
+      "titel": "Jeder bekommt, was er braucht", "kontext": "Tim ist groß, Ella mittel, Ben klein. Alle wollen über den Zaun schauen.",
       "gemeinsam": true,
       "aufgaben": [
         {
