@@ -251,6 +251,8 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .druck-anzahl{ display:inline-flex; align-items:center; gap:3px; font-weight:900; color:var(--grau); }
 .druck-anzahl input{ width:58px; font-size:17px; font-weight:800; text-align:center; padding:8px 4px; border:2px solid var(--linie); border-radius:10px; }
 .m-wozu{ font-size:15px; line-height:1.4; background:#fff7e6; border-left:4px solid var(--gold); border-radius:8px; padding:6px 10px; margin:4px 0 6px; }
+.zus-mit{ display:flex; gap:8px; align-items:flex-start; margin-top:10px; padding:8px 10px; background:#eef8f1; border:1.5px solid #bfe3cb; border-radius:10px; font-size:14px; line-height:1.35; cursor:pointer; }
+.zus-mit input{ width:20px; height:20px; flex:0 0 auto; margin-top:1px; accent-color:#2e8b57; }
 .plan-schieben{ display:block; width:100%; margin-top:4px; border:1.5px dashed #e74c3c; background:#fff6f5; color:#c0392b; border-radius:8px; padding:3px 6px; font:inherit; font-size:12px; font-weight:800; cursor:pointer; }
 .plan-schieben:hover{ background:#fdecea; }
 .plan-schieben.mini{ display:inline-block; width:auto; margin:0 0 0 3px; padding:1px 5px; vertical-align:middle; }
@@ -1100,6 +1102,7 @@ function druckAnzahl(k){
     try { localStorage.setItem("sozial_anz_" + k, n); } catch (err) {}
     return n;
 }
+function zusMitdrucken(){ try { return localStorage.getItem("sozial_zus_mit") !== "0"; } catch (err) { return true; } }
 async function drucken(e, was){
     const ziel = document.getElementById("druck");
     ziel.innerHTML = "";
@@ -1137,6 +1140,19 @@ async function drucken(e, was){
         const voll = blaetter.filter(([b]) => !einpassen(b));
         if (voll.length && !confirm("Ein Arbeitsblatt ist zu voll für eine Seite und wird unten abgeschnitten. Trotzdem drucken?")) { ziel.innerHTML = ""; return; }
         blaetter.forEach(([b, n]) => { let nach = b; for (let k = 1; k < n; k++) { const c = b.cloneNode(true); nach.after(c); nach = c; } });
+        // Zusammenfassung für den Hefter gleich mit – so viele wie Arbeitsblätter
+        if (zusMitdrucken() && blaetter.length) {
+            const stufen = [];
+            blaetter.forEach(([b, n]) => { const st = b.classList.contains("stufe34") ? "34" : "12"; const vorh = stufen.find(x => x[0] === st); if (vorh) vorh[1] += n; else stufen.push([st, n]); });
+            for (const [st, n] of stufen) {
+                if (st === "12" && e.nur34) continue;
+                const z = zusammenfassungBlatt(e, st);
+                ziel.appendChild(z);
+                await schriften();
+                zusammenfassungEinpassen(z);
+                for (let k = 1; k < n; k++) ziel.appendChild(z.cloneNode(true));
+            }
+        }
     }
     const titel = document.title;
     document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", lehrer12: " – Vorbereitung Kl. 1-2", lehrer34: " – Vorbereitung Kl. 3-4", alles12: " – Kl. 1-2", alles34: " – Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 1-2", ab34: " – AB Kl. 3-4", zus12: " – Zusammenfassung Kl. 1-2", zus34: " – Zusammenfassung Kl. 3-4" }[was] || "");
@@ -1410,6 +1426,7 @@ function zeigeStunde(id){
                 <div class="druck-posten nur12">${anzahlFeld("zus12")}<button class="btn gruen" data-druck="zus12"><i class="fa-solid fa-lightbulb"></i> Zusammenfassung Kl. 1/2</button></div>
                 <div class="druck-posten">${anzahlFeld("zus34")}<button class="btn gruen" data-druck="zus34"><i class="fa-solid fa-lightbulb"></i> Zusammenfassung Kl. 3/4</button></div>
             </div>
+            <label class="zus-mit"><input type="checkbox" id="zusMit" ${zusMitdrucken() ? "checked" : ""}> <b>Zusammenfassung immer mit ausdrucken</b> – zu jedem Arbeitsblatt kommt die passende Zusammenfassung für den Hefter dazu (gleiche Anzahl)</label>
             <p class="ed-hilfe" style="margin-top:6px"><i class="fa-solid fa-lightbulb"></i> <b>Zusammenfassung:</b> „Das habe ich heute gelernt“ – Merksatz und die wichtigsten Punkte der Stunde für die Mappe der Kinder – ein A4-Blatt pro Kind, mit Feld zum Schreiben oder Malen.</p>
             <div class="knopfleiste" style="margin-top:10px"><button class="btn gold" data-druck="alles12"><i class="fa-solid fa-layer-group"></i> Alles für Kl. 1/2</button><button class="btn gold" data-druck="alles34"><i class="fa-solid fa-layer-group"></i> Alles für Kl. 3/4</button><span class="ed-hilfe" style="margin:0;align-self:center">Stundenvorbereitung nur für diese Stufe + ihre Arbeitsblätter in der eingestellten Anzahl</span></div>
             <p class="ed-hilfe" style="margin-top:10px">Die Zahl vor jedem Knopf ist die Anzahl der Exemplare – sie wird gemerkt. Der Lesetext kommt ohne deine Hinweise auf eine A4-Seite – die Abschnitt-Nummern passen zu den Folien („Wer liest vor?“). Tipp: Im Druckfenster „Als PDF sichern“ wählen, um die Stunde als PDF abzulegen.</p>
@@ -1470,6 +1487,7 @@ function zeigeStunde(id){
         const start34 = inhalt.querySelector('[data-einstieg="34"]'); if (start34) start34.classList.add("gold");
     }
     inhalt.querySelectorAll("[data-druck]").forEach(b => b.addEventListener("click", () => drucken(e, b.dataset.druck)));
+    const zm = inhalt.querySelector("#zusMit"); if (zm) zm.addEventListener("change", () => { try { localStorage.setItem("sozial_zus_mit", zm.checked ? "1" : "0"); } catch (err) {} });
     const verlaufWahl = document.getElementById("verlaufWahl");
     if (verlaufWahl) {
         const zeigen = art => {
