@@ -3702,7 +3702,8 @@ function ws_drucken(seitenListe){
     doc.write(`<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>Worterarbeitung</title>
         <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
         <style>${document.getElementById("ws-stil").textContent}
-        @page{ size:A4; margin:0; }
+        @page{ size:A4; margin:7mm; }
+        .ws-seite{ zoom:.93; }
         html, body{ margin:0; padding:0; background:#fff; }
         .ws-seite{ box-shadow:none; break-after:page; page-break-after:always; }
         .ws-seite:last-child{ break-after:auto; page-break-after:auto; }

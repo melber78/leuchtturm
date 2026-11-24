@@ -413,13 +413,13 @@ table.ab-tab td .lz{ min-height:0; }
 
 /* ---------- Druck ---------- */
 #druck{ position:absolute; left:-10000px; top:0; visibility:hidden; }
-@page{ size:A4; margin:0; }
+@page{ size:A4; margin:7mm; }   /* Drucker-Rand: das Blatt wird im Druck leicht verkleinert (zoom), damit nichts abgeschnitten wird */
 @page lehrer{ size:A4; margin:14mm 15mm 14mm; }
 @media print{
     body{ background:white; }
     body > *:not(#druck){ display:none !important; }
     #druck{ position:static; visibility:visible; }
-    #druck .blatt{ break-after:page; outline:none; }
+    #druck .blatt{ break-after:page; break-inside:avoid; outline:none; zoom:.93; }
     #druck > :last-child{ break-after:auto; }
     #druck .lehrer-druck{ page:lehrer; break-after:page; }
 }

@@ -582,6 +582,7 @@ Eine Woche später setzt Charlotte sich in der Pause wieder neben Nora.
     ],
     ab12: {
       "titel": "Es tut mir leid",
+      "kontext": "Sam hat aus Versehen Leas Bild nass gemacht.",
       "gemeinsam": true,
       "aufgaben": [
         {
