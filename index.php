@@ -145,6 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["24.11.2026", "Zusammenfassung für den Hefter – ausführlicher", "„Das habe ich heute gelernt“, „Meine Werkzeuge“ zum Abhaken, „Mein Satz“ und ein Wochenauftrag (Mo–Fr). Wird beim Arbeitsblatt automatisch mitgedruckt.", "sozial-stunden.php"],
     ["24.11.2026", "Jahresplan: ausgefallene Stunden verschieben", "Bei ✗ ausgefallen erscheint „⏭ verschieben“ – die Stunde rückt in die nächste Woche, alle folgenden eine Woche nach hinten.", "sozial-stunden.php#jahresplan"],
     ["2026-11-24", "Leise-Wald: Quatsch-Wald", "Neue Welt im Leise-Wald: knallbunter Quatsch-Wald mit 12 erfundenen Quatsch-Wesen (Brummi Toastflieger, Gurki Rollschuh, Kalle Kühlschrank …) und Quietsch-König Quaki als Belohnung.", "tafelbilder.php#leise"],
     ["2026-11-24", "Leise-Wald: Belohnungstier mit Spezialeffekt", "Wenn alle Tiere da sind, kommt zum Schluss ein Belohnungstier mit großem Auftritt: Löwe (Brüllen, Schallwellen), T-Rex (Erdbeben, Fußspuren), Papagei (Regenbogen-Federn), blauer Hai (Flut, Sprung), Elefant (Wasserfontäne), Delfin (drei Sprünge, Regenbogen) oder Megalodon (Tiefsee, riesiges Maul).", "tafelbilder.php#leise"],

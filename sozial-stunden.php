@@ -391,7 +391,7 @@ table.ab-tab td .lz{ min-height:0; }
 /* ---------- Zusammenfassung für die Kinder (2 gleiche Hälften zum Ausschneiden) ---------- */
 .blatt.zus{ padding:0; }
 .zus-haelfte{ flex:1 1 0; min-height:0; overflow:hidden; display:flex; flex-direction:column; padding:12mm 14mm 8mm; }
-.zus-feld{ flex:1 0 38mm; margin-top:4mm; border:.5mm dashed #9aa7ad; border-radius:4mm; padding:2.5mm 4mm; display:flex; flex-direction:column; }
+.zus-feld{ flex:1 0 24mm; margin-top:4mm; border:.5mm dashed #9aa7ad; border-radius:4mm; padding:2.5mm 4mm; display:flex; flex-direction:column; }
 .zus-feld b{ font-family:"Nunito",sans-serif; font-size:.8em; color:var(--nacht); }
 .zus-feld .linien{ flex:1; background:repeating-linear-gradient(to bottom, transparent 0, transparent calc(2.4em - .3mm), #c9d6e3 calc(2.4em - .3mm), #c9d6e3 2.4em); margin-top:1mm; }
 .zus-schnitt{ flex:none; border-top:.5mm dashed #9aa7ad; position:relative; height:0; }
@@ -411,6 +411,28 @@ table.ab-tab td .lz{ min-height:0; }
 .zus-woerter div{ display:flex; gap:1.5mm; align-items:baseline; border-bottom:.25mm dotted #c9d6e3; }
 .zus-woerter b{ font-family:"Nunito",sans-serif; }
 .zus-woerter span.de{ margin-left:auto; color:#55636a; }
+.zus-abschnitt{ display:flex; align-items:center; gap:2mm; margin:3.2mm 0 1.4mm; font-family:"Nunito",sans-serif; font-weight:900; font-size:.82em; color:var(--nacht); text-transform:uppercase; letter-spacing:.04em; border-bottom:.3mm solid #dfe5e2; padding-bottom:.6mm; }
+.zus-abschnitt span{ font-size:1.15em; text-transform:none; }
+.zus-wz{ display:grid; grid-template-columns:1fr 1fr; gap:2mm; }
+.zus-wz-k{ display:flex; align-items:center; gap:2mm; border:.4mm solid #c9d6e3; border-radius:3mm; padding:1.6mm 2.2mm; background:#f6f9fb; break-inside:avoid; }
+.zus-wz-k .sym{ font-size:1.45em; line-height:1; flex:0 0 auto; }
+.zus-wz-k div{ flex:1; display:flex; flex-direction:column; line-height:1.2; }
+.zus-wz-k b{ font-family:"Nunito",sans-serif; font-size:.9em; color:var(--nacht); }
+.zus-wz-k div span{ font-size:.78em; color:#33424a; }
+.zus-wz-k .hak{ flex:0 0 auto; width:1em; height:1em; border:.45mm solid #7d8c93; border-radius:1mm; background:white; }
+.zus-wz-hinweis{ font-family:"Nunito",sans-serif; font-size:.62em; font-weight:700; color:#8a979c; margin-top:.8mm; }
+.zus-satz{ margin-top:2.6mm; border:.45mm solid #9cc3e0; background:#eef6fc; border-radius:4mm; padding:.4em .75em; font-size:.92em; line-height:1.3; position:relative; }
+.zus-satz b{ font-family:"Nunito",sans-serif; color:var(--nacht); }
+.zus-satz span{ font-style:italic; }
+.zus-auftrag{ margin-top:2.6mm; border:.45mm solid #bfe3cb; background:#eef8f1; border-radius:3mm; padding:.45em .75em; font-size:.88em; line-height:1.3; display:flex; flex-wrap:wrap; gap:.25em .5em; align-items:baseline; }
+.zus-auftrag b{ font-family:"Nunito",sans-serif; color:#1f6b40; }
+.zus-tage{ display:flex; align-items:center; gap:3mm; width:100%; margin-top:.3em; font-family:"Nunito",sans-serif; font-size:.78em; font-weight:800; color:#33424a; }
+.zus-tage span{ display:flex; align-items:center; gap:1mm; }
+.zus-tage i{ display:inline-block; width:1.05em; height:1.05em; border:.45mm solid #2e8b57; border-radius:1mm; background:white; }
+.zus-tage em{ font-style:normal; font-weight:700; color:#8a979c; margin-left:auto; }
+.zus-name{ flex-direction:column; gap:2mm !important; align-items:stretch !important; }
+.zus-name > div{ display:flex; gap:1.5mm; align-items:flex-end; }
+.zus-name > div .ln{ flex:1; }
 .zus-ich{ margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:4mm; padding-top:2mm; font-size:.8em; }
 .zus-ich .gesichter{ display:flex; gap:3mm; font-size:1.3em; }
 .zus-ich .gesichter span{ border:.4mm solid #c9d6e3; border-radius:50%; width:1.6em; height:1.6em; display:flex; align-items:center; justify-content:center; }
@@ -480,6 +502,7 @@ table.ab-tab td .lz{ min-height:0; }
 
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
 <script src="stunden-merke.js?v=<?= @filemtime(__DIR__ . "/stunden-merke.js") ?: 1 ?>"></script>
+<script src="stunden-werkzeuge.js?v=<?= @filemtime(__DIR__ . "/stunden-werkzeuge.js") ?: 1 ?>"></script>
 <?php foreach ($vorlagenDateien as $vd): ?>
 <script src="<?= htmlspecialchars(basename($vd)) ?>?v=<?= @filemtime($vd) ?: 1 ?>"></script>
 <?php endforeach; ?>
@@ -945,14 +968,20 @@ function zusammenfassungDaten(e, stufe){
 }
 function zusammenfassungBlatt(e, stufe){
     const d = zusammenfassungDaten(e, stufe);
+    const wz = (window.STUNDEN_WERKZEUGE || {})[e.ersetzt || e.id] || (window.STUNDEN_WERKZEUGE || {})[e.id] || null;
+    const lin = t => inline(t).replace(/_{5,}/g, '<span class="ln" style="min-width:45mm"></span>');
+    const titel = (txt, sym) => `<div class="zus-abschnitt"><span>${sym}</span>${txt}</div>`;
     const haelfte = `<div class="zus-haelfte">
-        <div class="zus-kopf"><span class="zus-emoji">${d.emoji}</span><div class="zus-titel"><small>Das habe ich heute gelernt</small><b>${inline(e.titel)}</b></div><div class="zus-name"><span>Name:</span><span class="ln"></span></div></div>
+        <div class="zus-kopf"><span class="zus-emoji">${d.emoji}</span><div class="zus-titel"><small>${esc(window.BEREICH.name)} · Zusammenfassung für den Hefter</small><b>${inline(e.titel)}</b></div><div class="zus-name"><div><span>Name:</span><span class="ln"></span></div><div><span>Datum:</span><span class="ln"></span></div></div></div>
         <div class="zus-kern">${inline(d.kern)}</div>
         ${d.woerter.length ? `<div class="zus-woerter">${d.woerter.map(w => `<div><span>${w[0]}</span><b>${esc(w[1])}</b><span class="de">${esc(w[2])}</span></div>`).join("")}</div>` : ""}
-        ${d.punkte.length ? `<ul class="zus-punkte">${d.punkte.map(p => `<li>${inline(p).replace(/_{5,}/g, '<span class="ln" style="min-width:45mm"></span>')}</li>`).join("")}</ul>` : ""}
+        ${d.punkte.length ? titel("Das habe ich heute gelernt", "📌") + `<ul class="zus-punkte">${d.punkte.map(p => `<li>${lin(p)}</li>`).join("")}</ul>` : ""}
+        ${wz && wz.w && wz.w.length ? titel("Meine Werkzeuge", "🧰") + `<div class="zus-wz">${wz.w.map(w => `<div class="zus-wz-k"><span class="sym">${w[0]}</span><div><b>${esc(w[1])}</b><span>${inline(w[2])}</span></div><span class="hak" title="ausprobiert"></span></div>`).join("")}</div><div class="zus-wz-hinweis">✔ Hake ab, welches Werkzeug du schon ausprobiert hast.</div>` : ""}
+        ${wz && wz.satz ? `<div class="zus-satz"><b>💬 Mein Satz:</b> <span>${inline(wz.satz)}</span></div>` : ""}
+        <div class="zus-auftrag"><b>🎯 Das probiere ich diese Woche aus:</b> ${wz && wz.auftrag ? `<span>${inline(wz.auftrag)}</span>` : '<span class="ln" style="flex:1;min-width:60mm"></span>'}
+            <div class="zus-tage">${["Mo","Di","Mi","Do","Fr"].map(t => `<span><i></i>${t}</span>`).join("")}<em>geschafft?</em></div></div>
         <div class="zus-feld"><b>✏️ Das merke ich mir – schreibe oder male:</b><div class="linien"></div></div>
         <div class="zus-ich"><span>So gut kann ich das schon:</span><span class="gesichter"><span>😀</span><span>🙂</span><span>😐</span></span></div>
-        <div class="zus-fuss">${esc(window.BEREICH.name)}</div>
     </div>`;
     const blatt = document.createElement("div");
     blatt.className = "blatt zus " + (stufe === "34" ? "stufe34" : "stufe12");
