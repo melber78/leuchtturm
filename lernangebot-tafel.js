@@ -422,6 +422,47 @@ function quatschAnmelden(){
 Object.entries(QUATSCH_WESEN).forEach(([k, [, art]]) => { VERHALTEN[k] = { art, v: art === "kriech" ? .02 : art === "flieg" || art === "flatter" ? .09 : .12, g: k === "q_kuehlschrank" ? 1.2 : .95 }; });
 // Gezeichneter Wald (Himmel, Sonne, Hügel, Tannen und Laubbäume in drei Ebenen, Blumenwiese)
 const WOLKE = `<svg viewBox="0 0 220 90"><g fill="#fff"><ellipse cx="70" cy="58" rx="58" ry="26"/><ellipse cx="118" cy="42" rx="46" ry="34"/><ellipse cx="160" cy="60" rx="44" ry="24"/><rect x="40" y="58" width="150" height="26" rx="13"/></g></svg>`;
+// Quatsch-Wald: knallbunte, verrückte Landschaft (Lolli-Bäume, Pilz-Bäume, Zickzack-Tannen, Spiral-Bäume, Ringel-Stämme …)
+function QUATSCH_SVG(){
+    const zz = (i, a, b) => a + ((Math.sin(i * 12.9898) * 43758.5453) % 1 + 1) % 1 * (b - a);
+    const BUNT = ["#ff5252", "#ff9800", "#ffeb3b", "#69f0ae", "#40c4ff", "#7c4dff", "#ff4081", "#00e5ff", "#c6ff00", "#ff6e40"];
+    const f = i => BUNT[Math.abs(i) % BUNT.length];
+    // Ringel-Stamm (wie eine Zuckerstange)
+    const stamm = (x, y, h, w, a, b) => { let s = `<rect x="${x - w / 2}" y="${y - h}" width="${w}" height="${h}" rx="${w / 2}" fill="${a}"/>`; for (let k = 0; k < h; k += w * 1.2) s += `<path d="M${x - w / 2} ${y - k} l${w} ${-w * .6} l0 ${w * .5} l${-w} ${w * .6} Z" fill="${b}"/>`; return s; };
+    const lolli = (x, y, h, i) => { const r = h * .28; let sp = ""; for (let k = 0; k < 4; k++) sp += `<circle cx="${x}" cy="${y - h}" r="${r * (1 - k * .24)}" fill="${f(i + k)}"/>`;
+        return `<g class="lw-q-wackel" style="--d:${3 + (i % 3)}s;transform-origin:${x}px ${y}px">${stamm(x, y, h - r * .4, h * .06, "#fff", f(i + 5))}${sp}<path d="M${x - r * .6} ${y - h} a${r * .6} ${r * .6} 0 1 1 ${r * .8} ${r * .4}" stroke="#fff" stroke-width="${r * .1}" fill="none" opacity=".7"/></g>`; };
+    const pilz = (x, y, h, i) => `<g class="lw-q-wackel" style="--d:${4 + (i % 2)}s;transform-origin:${x}px ${y}px"><rect x="${x - h * .09}" y="${y - h * .62}" width="${h * .18}" height="${h * .62}" rx="${h * .06}" fill="#fff3e0"/>
+        <path d="M${x - h * .5} ${y - h * .6} Q${x} ${y - h * 1.25} ${x + h * .5} ${y - h * .6} Z" fill="${f(i)}"/>${[[-.25, .78], [.05, .95], [.28, .74], [-.05, .7]].map(([dx, dy]) => `<circle cx="${x + dx * h}" cy="${y - dy * h}" r="${h * .06}" fill="#fff"/>`).join("")}</g>`;
+    const zack = (x, y, h, i) => { const w = h * .32; let s = `<rect x="${x - h * .04}" y="${y - h * .15}" width="${h * .08}" height="${h * .15}" fill="${f(i + 3)}"/>`;
+        for (let k = 0; k < 4; k++){ const t = y - h * .12 - k * h * .2, bw = w * (1 - k * .18); s += `<path d="M${x - bw} ${t} L${x - bw * .5} ${t - h * .12} L${x} ${t - h * .06} L${x + bw * .5} ${t - h * .14} L${x + bw} ${t} L${x} ${t - h * .3} Z" fill="${f(i + k)}"/>`; }
+        return `<g class="lw-q-wackel" style="--d:${3.5 + (i % 3) * .5}s;transform-origin:${x}px ${y}px">${s}<circle cx="${x}" cy="${y - h * .98}" r="${h * .06}" fill="#ffeb3b"/></g>`; };
+    const spirale = (x, y, h, i) => `${stamm(x, y, h * .6, h * .07, f(i + 2), "#fff")}<g class="lw-q-dreh" style="--d:${6 + (i % 4)}s;transform-origin:${x}px ${y - h * .75}px">
+        <path d="M${x} ${y - h * .75} m-${h * .3} 0 a${h * .3} ${h * .3} 0 1 1 ${h * .6} 0 a${h * .22} ${h * .22} 0 1 1 -${h * .44} 0 a${h * .14} ${h * .14} 0 1 1 ${h * .28} 0" stroke="${f(i)}" stroke-width="${h * .09}" fill="none" stroke-linecap="round"/></g>`;
+    const wolkenbaum = (x, y, h, i) => `<g class="lw-q-wackel" style="--d:5s;transform-origin:${x}px ${y}px"><rect x="${x - h * .04}" y="${y - h * .55}" width="${h * .08}" height="${h * .55}" fill="${f(i + 4)}"/>
+        ${[[-.22, .62, .2], [.2, .64, .2], [0, .82, .24], [-.1, .5, .15], [.14, .5, .15]].map(([dx, dy, r], k) => `<circle cx="${x + dx * h}" cy="${y - dy * h}" r="${r * h}" fill="${f(i + k * 2)}"/>`).join("")}</g>`;
+    const baeume = [lolli, pilz, zack, spirale, wolkenbaum];
+    let hinten = "", mitte = "", deko = "";
+    for (let i = 0; i < 20; i++) hinten += baeume[i % 5](i * 82 + zz(i, -20, 20), 470 + zz(i + 3, -8, 8), zz(i + 7, 110, 170), i * 3);
+    for (let i = 0; i < 8; i++) mitte += baeume[(i + 2) % 5](i * 210 + 60 + zz(i + 30, -40, 40), 548, zz(i + 20, 180, 250), i * 7 + 1);
+    // Punkte- und Streifenwiese, Schachbrett-Blumen, Lollis im Gras
+    for (let i = 0; i < 70; i++) { const x = zz(i + 40, 0, 1600), y = zz(i + 90, 575, 695); deko += i % 3 ? `<circle cx="${x}" cy="${y}" r="${zz(i + 5, 4, 9)}" fill="${f(i)}"/>` : `<g transform="translate(${x} ${y})"><rect x="-2" y="0" width="4" height="16" fill="#2e7d32"/>${[0, 72, 144, 216, 288].map(w => `<circle cx="${Math.cos(w * Math.PI / 180) * 8}" cy="${Math.sin(w * Math.PI / 180) * 8}" r="6" fill="${f(i + 1)}"/>`).join("")}<circle r="5" fill="#fff"/></g>`; }
+    return `<svg class="lw-wald lw-qwald" viewBox="0 0 1600 700" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs><linearGradient id="lwQHimmel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#80deea"/><stop offset=".45" stop-color="#b39ddb"/><stop offset=".75" stop-color="#ffcc80"/><stop offset="1" stop-color="#fff59d"/></linearGradient>
+        <linearGradient id="lwQBerg1" x1="0" y1="0" x2="1" y2="0">${BUNT.map((c, i) => `<stop offset="${i / 9}" stop-color="${c}"/>`).join("")}</linearGradient>
+        <pattern id="lwQStreifen" width="60" height="60" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><rect width="60" height="60" fill="#76ff03"/><rect width="30" height="60" fill="#b2ff59"/></pattern>
+        <pattern id="lwQKaro" width="80" height="80" patternUnits="userSpaceOnUse"><rect width="80" height="80" fill="#00e676"/><rect width="40" height="40" fill="#69f0ae"/><rect x="40" y="40" width="40" height="40" fill="#69f0ae"/></pattern></defs>
+      <rect width="1600" height="700" fill="url(#lwQHimmel)"/>
+      <g class="lw-q-dreh" style="--d:30s;transform-origin:1340px 120px">${[...Array(12)].map((_, k) => `<path d="M1340 120 L${1340 + Math.cos(k * Math.PI / 6) * 140} ${120 + Math.sin(k * Math.PI / 6) * 140} L${1340 + Math.cos(k * Math.PI / 6 + .2) * 140} ${120 + Math.sin(k * Math.PI / 6 + .2) * 140} Z" fill="${f(k)}" opacity=".55"/>`).join("")}</g>
+      <circle cx="1340" cy="120" r="70" fill="#ffeb3b"/><rect x="1288" y="100" width="44" height="26" rx="10" fill="#212121"/><rect x="1348" y="100" width="44" height="26" rx="10" fill="#212121"/><rect x="1330" y="108" width="20" height="6" fill="#212121"/>
+      <path d="M1310 146 Q1340 172 1370 146" stroke="#e65100" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M0 470 Q200 330 420 440 T 860 420 T 1300 430 T 1600 400 V700 H0 Z" fill="url(#lwQBerg1)" opacity=".85"/>
+      ${hinten}
+      <path d="M0 540 Q250 490 520 530 T 1050 520 T 1600 510 V700 H0Z" fill="url(#lwQStreifen)"/>
+      ${mitte}
+      <path d="M0 590 Q300 560 640 585 T 1600 575 V700 H0Z" fill="url(#lwQKaro)"/>
+      ${deko}
+    </svg>`;
+}
 function WALD_SVG(){
     const zz = (i, a, b) => a + ((Math.sin(i * 12.9898) * 43758.5453) % 1 + 1) % 1 * (b - a);   // feste „Zufallswerte“
     const tanne = (x, y, h, f) => { const w = h * .42; return `<g><rect x="${x - h * .035}" y="${y - h * .12}" width="${h * .07}" height="${h * .14}" fill="#7a5532"/>` +
@@ -492,7 +533,7 @@ W.leise = {
                <div class="lw-wasser"></div><div class="lw-sand"></div>
                ${[8, 22, 47, 63, 81, 93].map((x, i) => `<div class="lw-tang" style="left:${x}%;animation-delay:${-i * .7}s">🌿</div>`).join("")}
                ${Array.from({ length: 10 }, (_, i) => `<i class="lw-blase-luft" style="left:${5 + i * 9.5}%;--t:${5 + (i % 4) * 2}s;animation-delay:${-i * 1.3}s"></i>`).join("")}`
-            : `${WALD_SVG()}${[[7, 80, 0, 1], [17, 120, -60, .8], [10, 150, -110, .6]].map(([y, t, d, g]) => `<div class="lw-wolke2" style="top:${y}%;--t:${t}s;animation-delay:${d}s;--g:${g}">${WOLKE}</div>`).join("")}`;
+            : `${quatsch ? QUATSCH_SVG() : WALD_SVG()}${[[7, 80, 0, 1], [17, 120, -60, .8], [10, 150, -110, .6]].map(([y, t, d, g]) => `<div class="lw-wolke2" style="top:${y}%;--t:${t}s;animation-delay:${d}s;--g:${g}">${WOLKE}</div>`).join("")}`;
         const ziel = meer ? "am Leuchtturm" : quatsch ? "im Quatsch-Wald" : "im Wald";
         const ruheText = "";   // Kinder sehen nur Uhr und Symbol – Erklärungen stehen bei den Einstellungen
         // Statt Uhr: ein Baum wächst ganz langsam – nur solange es leise ist
@@ -1164,7 +1205,11 @@ const CSS = `
 @keyframes lwPop{ 0%{ transform:scale(.3); opacity:0; } 100%{ transform:scale(1); opacity:1; } }
 @keyframes lwHeldHuepf{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6%); } }
 /* Quatsch-Wald: knallbunte Welt */
-.lw-quatsch .lw-wald{ filter:hue-rotate(220deg) saturate(1.6) brightness(1.05); }
+.lw-q-wackel{ animation:lwQWackel var(--d,4s) ease-in-out infinite alternate; transform-box:view-box; }
+.lw-q-dreh{ animation:lwQDreh var(--d,8s) linear infinite; transform-box:view-box; }
+@keyframes lwQWackel{ from{ transform:rotate(-3deg); } to{ transform:rotate(3deg); } }
+@keyframes lwQDreh{ to{ transform:rotate(360deg); } }
+@media (prefers-reduced-motion:reduce){ .lw-q-wackel, .lw-q-dreh{ animation:none; } }
 .lw-quietsch{ position:absolute; top:-5%; width:clamp(10px,1.2vw,18px); height:clamp(16px,2vw,28px); background:var(--f); border-radius:3px; animation:lwQuietsch var(--d) linear var(--w) infinite; }
 @keyframes lwQuietsch{ 0%{ transform:translateY(0) rotate(0); } 100%{ transform:translateY(110vh) rotate(var(--r)); } }
 .lw-strahlen.lw-bunt{ background:repeating-conic-gradient(#ff8a8066 0 10deg, #ffd54f66 10deg 20deg, #81c78466 20deg 30deg, #64b5f666 30deg 40deg, #ba68c866 40deg 50deg); }
