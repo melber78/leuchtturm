@@ -251,6 +251,9 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .druck-anzahl{ display:inline-flex; align-items:center; gap:3px; font-weight:900; color:var(--grau); }
 .druck-anzahl input{ width:58px; font-size:17px; font-weight:800; text-align:center; padding:8px 4px; border:2px solid var(--linie); border-radius:10px; }
 .m-wozu{ font-size:15px; line-height:1.4; background:#fff7e6; border-left:4px solid var(--gold); border-radius:8px; padding:6px 10px; margin:4px 0 6px; }
+.plan-schieben{ display:block; width:100%; margin-top:4px; border:1.5px dashed #e74c3c; background:#fff6f5; color:#c0392b; border-radius:8px; padding:3px 6px; font:inherit; font-size:12px; font-weight:800; cursor:pointer; }
+.plan-schieben:hover{ background:#fdecea; }
+.plan-schieben.mini{ display:inline-block; width:auto; margin:0 0 0 3px; padding:1px 5px; vertical-align:middle; }
 .plan-aufbau{ font-size:12px; font-weight:800; color:#a0651a; background:#fff4dc; border-radius:6px; padding:3px 6px; margin-top:4px; line-height:1.3; }
 .aufbau-box{ background:#fff7e6; border-left:5px solid var(--gold); border-radius:10px; padding:10px 14px; margin:0 0 14px; font-weight:700; line-height:1.5; }
 .aufbau-box a{ color:inherit; }
@@ -1865,6 +1868,36 @@ function klassenStatusSetzen(wocheIso, klId, neu){
         if (y && y.fortsetzung === wocheIso) { delete y.einheit; delete y.fortsetzung; if (/^Fortsetzung von KW/.test(y.notiz || "")) delete y.notiz; }
     }
 }
+// Ausgefallene Stunde verschieben: Die Stunde rückt in die nächste Woche, alle folgenden Stunden dieser Klasse rücken je eine Woche nach hinten.
+function folgeWochen(wocheIso){ const p = plan(); return planWochen().map(iso).filter(d => d > wocheIso && !(p.wochen[d] && p.wochen[d].frei)); }
+function kannVerschieben(wocheIso, kl){
+    const p = plan(), w = p.wochen[wocheIso] || {}, x = klasseInWoche(w, kl), id = einheitFuer(w, kl);
+    if (w.frei || x.status !== "ausgefallen" || !id) return false;
+    const n = folgeWochen(wocheIso)[0];
+    return !!n && einheitFuer(p.wochen[n] || {}, kl) !== id;   // steht nicht schon in der nächsten Woche
+}
+function stundeVerschieben(wocheIso, klId){
+    const p = plan(), kl = planKlassen().find(x => x.id === klId); if (!kl) return null;
+    const id0 = einheitFuer(p.wochen[wocheIso] || {}, kl);
+    // nur noch offene Wochen verschieben – gehaltene Stunden bleiben, wo sie sind
+    const ziele = folgeWochen(wocheIso).filter(d => !klasseInWoche(p.wochen[d] || {}, kl).status);
+    const alt = ziele.map(d => { const x = klasseInWoche(p.wochen[d] || {}, kl); return { id: einheitFuer(p.wochen[d] || {}, kl), fort: x.fortsetzung }; });
+    const neu = [{ id: id0, fort: "" }, ...alt];
+    const raus = neu.pop();
+    ziele.forEach((d, i) => {
+        if (!neu[i].id && !(p.wochen[d] && p.wochen[d].klassen && p.wochen[d].klassen[klId])) return;   // leere Wochen nicht anlegen
+        const w = p.wochen[d] = p.wochen[d] || {};
+        w.klassen = w.klassen || {};
+        const x = w.klassen[klId] = w.klassen[klId] || {};
+        const id = neu[i].id, plan_ = jeKlasse() ? "" : stufenThema(w, kl.stufe);
+        if (id && id !== plan_) x.einheit = id; else delete x.einheit;
+        if (/^Fortsetzung von KW/.test(x.notiz || "")) delete x.notiz;
+        delete x.fortsetzung;
+        if (neu[i].fort && i > 0) { x.fortsetzung = ziele[i - 1]; x.notiz = x.notiz || "Fortsetzung von KW " + kw(tag(ziele[i - 1])); }
+    });
+    const nachKw = ziele.length ? kw(tag(ziele[0])) : null;
+    return { titel: finde(id0)?.titel || "Stunde", kw: nachKw, raus: raus && raus.id ? (finde(raus.id)?.titel || "") : "" };
+}
 // Für die Präsentation (Sternenglas je Gruppe)
 window.sozialGruppen = () => planKlassen();
 // Klassenstufe einer Gruppe aus der Präsentation heraus ändern („1“–„4“ oder "" = gemischt)
@@ -2010,7 +2043,7 @@ function zeigeJahresplan(){
             </div>`).join("")}</div></div>` : ""}
         ${offen.length ? `<div class="karte"><h2>Noch nicht verplant</h2><div class="chips" style="display:flex;gap:8px;flex-wrap:wrap">${offen.map(e => `<a class="chip" style="text-decoration:none;font-size:13px" href="#stunde/${encodeURIComponent(e.id)}">${esc(e.titel)}</a>`).join("")}</div></div>` : ""}
         <div class="karte" style="padding:12px 14px">
-            ${klassen.length ? `<p class="ed-hilfe" style="margin:0 0 8px">Klick auf das Kästchen einer Klasse: ○ offen → ✓ gehalten → ◐ angefangen (dieselbe Stunde wird für diese Klasse automatisch in die nächste Woche übernommen) → ✗ ausgefallen (kommt auf die Nachhol-Liste) → – entfällt (z. B. Ausflug, kein Termin – wird nicht nachgeholt). ${jeKl ? "Das Thema wählst du direkt bei jeder Klasse. Mit <i class=\"fa-solid fa-sliders\"></i> trägst du eine Notiz je Klasse ein." : "Mit <i class=\"fa-solid fa-sliders\"></i> kannst du für eine Klasse ein anderes Thema (z. B. Nachholstunde) und eine Notiz eintragen."}</p>` : ""}
+            ${klassen.length ? `<p class="ed-hilfe" style="margin:0 0 8px">Klick auf das Kästchen einer Klasse: ○ offen → ✓ gehalten → ◐ angefangen (dieselbe Stunde wird für diese Klasse automatisch in die nächste Woche übernommen) → ✗ ausgefallen (kommt auf die Nachhol-Liste – mit ⏭ verschieben rückt die Stunde in die nächste Woche, alle folgenden eine Woche nach hinten) → – entfällt (z. B. Ausflug, kein Termin – wird nicht nachgeholt). ${jeKl ? "Das Thema wählst du direkt bei jeder Klasse. Mit <i class=\"fa-solid fa-sliders\"></i> trägst du eine Notiz je Klasse ein." : "Mit <i class=\"fa-solid fa-sliders\"></i> kannst du für eine Klasse ein anderes Thema (z. B. Nachholstunde) und eine Notiz eintragen."}</p>` : ""}
             <div style="overflow-x:auto"><table class="plan">
             <thead><tr><th>KW</th><th>Woche ab</th>${jeKl ? "" : zweiStufen ? "<th>Thema Kl. 1/2</th><th>Thema Kl. 3/4</th>" : "<th>Stunde</th>"}${klassen.map(k => `<th class="kl-th${jeKl ? " breit" : ""}" title="${stufeName(k.stufe, k.klasse)}">${esc(k.name)}${jeKl ? ` <small>${stufeName(k.stufe, k.klasse)}</small>` : ""}</th>`).join("")}<th>Notiz</th>${klassen.length ? "" : `<th title="erledigt"><i class="fa-solid fa-check"></i></th>`}<th></th></tr></thead>
             <tbody>${wochen.map(d => {
@@ -2028,13 +2061,13 @@ function zeigeJahresplan(){
                         <button class="kl-status ${x.status || "offen"}" data-kl="${esc(kl.id)}" ${w.frei ? "disabled" : ""} title="${esc(kl.name)}: ${STATUS[x.status].text}">${STATUS[x.status].zeichen}</button>
                         <select class="plan-wahl" data-kl="${esc(kl.id)}">${optionen(w.frei ? "@frei" : id)}${id && !w.frei && !ee ? `<option value="${esc(id)}" selected>(gelöschte Stunde)</option>` : ""}</select>
                         ${ee ? `<a class="btn klein plan-oeffnen" href="#stunde/${encodeURIComponent(ee.id)}" title="${esc(ee.titel)} öffnen"><i class="fa-solid fa-arrow-right"></i></a>` : ""}</div>
-                        ${x.fortsetzung && ee ? '<div class="plan-aufbau">↻ Fortsetzung der Vorwoche</div>' : ""}${unpassend ? '<div class="plan-aufbau">⚠️ Stunde ist für Kl. 3/4 gedacht</div>' : ""}${fehlt.length ? `<div class="plan-aufbau">🔗 Baut auf ${fehlt.map(f => `„${esc(finde(f).titel)}“`).join(" und ")} – am besten vorher</div>` : ""}</td>`;
+                        ${kannVerschieben(k, kl) ? `<button class="plan-schieben" data-kl="${esc(kl.id)}" title="Die Stunde kommt in die nächste Woche, alle folgenden Stunden von ${esc(kl.name)} rücken eine Woche nach hinten.">⏭ verschieben</button>` : ""}${x.fortsetzung && ee ? '<div class="plan-aufbau">↻ Fortsetzung der Vorwoche</div>' : ""}${unpassend ? '<div class="plan-aufbau">⚠️ Stunde ist für Kl. 3/4 gedacht</div>' : ""}${fehlt.length ? `<div class="plan-aufbau">🔗 Baut auf ${fehlt.map(f => `„${esc(finde(f).titel)}“`).join(" und ")} – am besten vorher</div>` : ""}</td>`;
                 }).join("") : klassen.map(kl => {
                     const x = klasseInWoche(w, kl);
                     const thema = stufenThema(w, kl.stufe), te = thema ? finde(thema) : null;
                     const anders = x.einheit && x.einheit !== thema ? finde(x.einheit) : null;
                     const unpassend = !anders && te && te.nur34 && kl.stufe === "12";
-                    return `<td class="kl-zelle${unpassend ? " unpassend" : ""}" data-label="${esc(kl.name)}"><button class="kl-status ${x.status || "offen"}" data-kl="${esc(kl.id)}" ${w.frei ? "disabled" : ""} title="${esc(kl.name)}: ${STATUS[x.status].text}${unpassend ? " · Achtung: Stunde nur für Kl. 3/4 – über die Schieberegler ein anderes Thema wählen" : ""}${anders ? (x.fortsetzung ? " · Fortsetzung: " : " · ") + esc(anders.titel) : ""}${x.notiz ? " · " + esc(x.notiz) : ""}">${STATUS[x.status].zeichen}</button>${x.fortsetzung && anders ? '<span class="kl-fort" title="Fortsetzung der Vorwoche">↻</span>' : anders || x.notiz ? '<span class="kl-punkt" title="eigenes Thema / Notiz"></span>' : ""}</td>`;
+                    return `<td class="kl-zelle${unpassend ? " unpassend" : ""}" data-label="${esc(kl.name)}"><button class="kl-status ${x.status || "offen"}" data-kl="${esc(kl.id)}" ${w.frei ? "disabled" : ""} title="${esc(kl.name)}: ${STATUS[x.status].text}${unpassend ? " · Achtung: Stunde nur für Kl. 3/4 – über die Schieberegler ein anderes Thema wählen" : ""}${anders ? (x.fortsetzung ? " · Fortsetzung: " : " · ") + esc(anders.titel) : ""}${x.notiz ? " · " + esc(x.notiz) : ""}">${STATUS[x.status].zeichen}</button>${x.fortsetzung && anders ? '<span class="kl-fort" title="Fortsetzung der Vorwoche">↻</span>' : anders || x.notiz ? '<span class="kl-punkt" title="eigenes Thema / Notiz"></span>' : ""}${kannVerschieben(k, kl) ? `<button class="plan-schieben mini" data-kl="${esc(kl.id)}" title="Verschieben: Die Stunde kommt für ${esc(kl.name)} in die nächste Woche, alle folgenden rücken eine Woche nach hinten.">⏭</button>` : ""}</td>`;
                 }).join("");
                 const details = klassen.length && !w.frei ? `<tr class="kl-details" data-fuer="${k}" hidden><td colspan="${(jeKl ? 4 : 5 + (zweiStufen ? 1 : 0)) + klassen.length}"><div class="kl-detail-raster">${klassen.map(kl => {
                     const x = klasseInWoche(w, kl);
@@ -2112,6 +2145,19 @@ function zeigeJahresplan(){
             const x = klEintrag(btn.dataset.kl);
             klassenStatusSetzen(k, btn.dataset.kl, naechsterStatus(x.status));
             planSpeichern(); zeigeJahresplanBehalten();
+        }));
+        tr.querySelectorAll(".plan-schieben").forEach(btn => btn.addEventListener("click", () => {
+            const kl = planKlassen().find(x => x.id === btn.dataset.kl); if (!kl) return;
+            const andere = planKlassen().filter(o => o.id !== kl.id && kannVerschieben(k, o));
+            const titel = finde(einheitFuer(p.wochen[k] || {}, kl))?.titel || "die Stunde";
+            let welche = [kl];
+            if (andere.length) welche = confirm(`„${titel}“ und alle folgenden Stunden eine Woche nach hinten schieben.\n\nOK = auch für ${andere.map(o => o.name).join(", ")} (dort ist die Stunde ebenfalls ausgefallen)\nAbbrechen = nur ${kl.name}`) ? [kl, ...andere] : [kl];
+            else if (!confirm(`${kl.name}: „${titel}“ kommt in die nächste Woche, alle folgenden Stunden rücken eine Woche nach hinten. Gehaltene Stunden bleiben, wo sie sind.`)) return;
+            const ergebnisse = welche.map(o => [o, stundeVerschieben(k, o.id)]).filter(([, r]) => r);
+            planSpeichern(); zeigeJahresplanBehalten();
+            const r = ergebnisse[0] && ergebnisse[0][1];
+            const raus = ergebnisse.filter(([, r]) => r.raus).map(([o, r]) => `${o.name}: „${r.raus}“`);
+            toast(`Verschoben (${welche.map(o => o.name).join(", ")})${r && r.kw ? " – weiter ab KW " + r.kw : ""}.${raus.length ? " Passt nicht mehr in den Plan: " + raus.join(", ") : ""}`);
         }));
         const mehr = tr.querySelector(".kl-mehr"), det = inhalt.querySelector(`tr.kl-details[data-fuer="${k}"]`);
         if (mehr && det) {
