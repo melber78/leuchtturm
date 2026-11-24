@@ -89,8 +89,8 @@ table.tab td{ border:.3mm solid #9aa9b2; height:2.2em; padding:.2em .4em; }
 .b-inhalt.ganz table.tab td{ height:2.9em; }
 .b-inhalt.ganz .wortspeicher{ font-size:1.05em; padding:.6em .8em; }
 #druck{ position:absolute; left:-10000px; top:0; visibility:hidden; }
-@page{ size:A4; margin:7mm; }
-@media print{ body{ background:#fff; } body > *:not(#druck){ display:none !important; } #druck{ position:static; visibility:visible; } #druck .blatt{ break-after:page; break-inside:avoid; zoom:.93; } #druck > :last-child{ break-after:auto; } }
+@page{ size:A4; margin:0; }
+@media print{ body{ background:#fff; } body > *:not(#druck){ display:none !important; } #druck{ position:static; visibility:visible; } #druck .blatt{ break-after:page; break-inside:avoid; zoom:.93; margin:11mm auto 0; } #druck > :last-child{ break-after:auto; } }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 </head>

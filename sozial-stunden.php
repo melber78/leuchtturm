@@ -418,15 +418,18 @@ table.ab-tab td .lz{ min-height:0; }
 
 /* ---------- Druck ---------- */
 #druck{ position:absolute; left:-10000px; top:0; visibility:hidden; }
-@page{ size:A4; margin:7mm; }   /* Drucker-Rand: das Blatt wird im Druck leicht verkleinert (zoom), damit nichts abgeschnitten wird */
-@page lehrer{ size:A4; margin:14mm 15mm 14mm; }
+@page{ size:A4; margin:0; }   /* Rand 0 – sonst druckt der Browser die Internetadresse in die Fußzeile. Den sicheren Druckrand macht das Blatt selbst (zoom + margin). */
+@page lehrer{ size:A4; margin:0; }
 @media print{
     body{ background:white; }
     body > *:not(#druck){ display:none !important; }
     #druck{ position:static; visibility:visible; }
-    #druck .blatt{ break-after:page; break-inside:avoid; outline:none; zoom:.93; }
+    html, body{ width:auto !important; min-width:0 !important; }
+    #druck{ width:210mm; }
+    #druck .blatt{ break-after:page; break-inside:avoid; outline:none; zoom:.93; margin:11mm auto 0; }
     #druck > :last-child{ break-after:auto; }
-    #druck .lehrer-druck{ page:lehrer; break-after:page; }
+    #druck .lehrer-druck{ page:lehrer; break-after:page; padding:14mm 15mm; -webkit-box-decoration-break:clone; box-decoration-break:clone; overflow-wrap:break-word; }
+    #druck .lehrer-druck table{ width:100%; table-layout:fixed; }
 }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
