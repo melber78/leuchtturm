@@ -256,6 +256,7 @@ function zeichnen(){
         <div class="ws-punkte">
             ${["a", "b"].map(t => `<div class="ws-team${S.dran === t ? " dran" : ""}"><span data-a="dran" data-t="${t}" style="cursor:pointer">${team(t)}</span><button data-a="minus" data-t="${t}" title="Punkt abziehen (z. B. Zwischenruf)">−</button><b>${S[t]}</b><button data-a="plus" data-t="${t}" title="Punkt dazu">+</button></div>`).join("")}
         </div>
+        <button class="ws-k" data-a="ablauf" title="Stundenablauf zum Abhaken drucken – für die Fachlehrkraft">📋 Ablaufplan</button>
         <button class="ws-k" data-a="voll" title="Vollbild">⛶</button>
         <button class="ws-k" data-a="zu">✕ Schließen</button>
     </div>
@@ -404,6 +405,70 @@ function drucken(){
     w.document.close();
 }
 
+/* ---------- Stundenablaufplan (für die Fachlehrkraft, zum Abhaken) ---------- */
+const ABLAUF = [
+    ["0–5", "Ankommen", "Zwei Teams bilden (Team A / Team B). Punkte gibt es an der Tafel, Zwischenrufe kosten einen Punkt.", ""],
+    ["5–15", "Einstiegs-Quiz", "10 Fragen: Stahl & Legierung, Fe-/NE-Metalle, Magnet, Kupfer, Rost, Weichholz, Quellen, Spanplatte, Holzschutz", "Tafel"],
+    ["15–25", "Fe oder NE? · Werkzeug", "12 Gegenstände Eisen-/Nichteisenmetall zuordnen · Werkzeuge: für Holz, Metall oder beides (Metallsäge, Metallfeile, Anreißnadel …)", "Tafel"],
+    ["25–30", "Metallrohr", "Arbeitsschritte ordnen: anreißen → einspannen und sägen → entgraten", "Tafel"],
+    ["30–45", "Arbeitsblätter Metall", "AB 2 „Eisen- vs. Nichteisenmetalle“ · AB 3 „Der Super-Werkstoff Stahl & Werkzeugkunde“ (Zusatz: Suchrätsel)", "AB"],
+    ["45–55", "Holzarten · Baumstamm", "Nadelholz / Laubholz / exotisch zuordnen · Aufbau des Stammes von außen nach innen aufdecken", "Tafel"],
+    ["55–60", "Holz arbeitet · Holzwerkstoffe", "quellen, schwinden, verziehen, Faserrichtung · Spanplatte, Sperrholz, MDF", "Tafel"],
+    ["60–80", "Arbeitsblätter Holz", "AB 3 Laubholz & Nadelholz · AB 4 Werkstoff Holz & Holzschutz · AB 5 Heimische & exotische Holzarten · AB „Der Werkstoff Holz“", "AB"],
+    ["80–85", "Film (optional)", "mit Beobachtungsauftrag für beide Teams", "Tafel"],
+    ["85–90", "Abschluss", "Punkte zählen, Siegerteam, Arbeitsplätze aufräumen", ""]
+];
+const ABLAUF_AB = ["AB 2: Eisen- vs. Nichteisenmetalle (Fe & NE)", "AB 3: Der Super-Werkstoff Stahl & Werkzeugkunde", "Zusatz: Metall-Suchrätsel / Expertenfrage", "AB 3: Laubholz und Nadelholz", "AB 4: Der Werkstoff Holz & Holzschutz", "AB 5: Heimische und exotische Holzarten (mit Quiz)", "AB: Der Werkstoff Holz (2 Seiten)"];
+function ablaufplan(){
+    const w = window.open("", "_blank");
+    if (!w) { alert("Bitte Pop-ups für den Leuchtturm erlauben, dann klappt das Drucken."); return; }
+    const heute = new Date().toLocaleDateString("de-DE");
+    const box = `<input type="checkbox">`;
+    w.document.write(`<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stundenablauf Technik – Holz & Metall</title><style>
+        @page{ size:A4; margin:12mm 13mm; } *{ box-sizing:border-box; }
+        body{ margin:0; font-family:"Nunito",Arial,sans-serif; color:#1f2328; font-size:10.5pt; background:#eef0f2; }
+        .blatt{ background:#fff; width:210mm; min-height:297mm; margin:12px auto; padding:12mm 13mm; display:flex; flex-direction:column; gap:2.6mm; }
+        h1{ margin:0; font-size:17pt; } h1 small{ display:block; font-size:10pt; color:#555; font-weight:700; margin-top:1mm; }
+        .kopf{ display:flex; justify-content:space-between; gap:6mm; align-items:flex-start; border-bottom:3px solid #f2b705; padding-bottom:2.5mm; }
+        .felder{ display:grid; grid-template-columns:auto 1fr auto 1fr; gap:1.6mm 3mm; font-weight:700; align-items:end; }
+        .felder input{ font:inherit; font-weight:400; border:0; border-bottom:1px solid #999; padding:0 1mm; min-width:30mm; background:transparent; }
+        h2{ margin:1.5mm 0 0; font-size:11.5pt; background:#1f2328; color:#fff; padding:1.2mm 3mm; border-radius:2mm; }
+        table{ width:100%; border-collapse:collapse; }
+        td,th{ border:1px solid #c9ced3; padding:1mm 2mm; vertical-align:top; text-align:left; }
+        th{ background:#f4f5f6; font-size:9.5pt; }
+        td.z{ white-space:nowrap; font-weight:800; width:15mm; } td.c{ width:9mm; text-align:center; } td.m{ width:12mm; font-size:9pt; color:#555; }
+        td b{ display:block; }
+        input[type=checkbox]{ width:4.2mm; height:4.2mm; margin:0; accent-color:#2e8b57; }
+        .abl{ display:grid; grid-template-columns:1fr auto auto; gap:1.3mm 4mm; align-items:center; }
+        .abl span.k{ font-size:9pt; color:#555; display:flex; gap:1.5mm; align-items:center; }
+        .punkte{ display:flex; gap:8mm; font-weight:800; align-items:center; }
+        .punkte input{ width:14mm; font:inherit; text-align:center; border:0; border-bottom:1px solid #999; }
+        .notiz{ border:1px solid #c9ced3; border-radius:2mm; min-height:15mm; padding:2mm 3mm; outline:none; background:repeating-linear-gradient(#fff 0 6.4mm,#dde1e5 6.4mm calc(6.4mm + 1px)); line-height:6.5mm; }
+        .knopf{ position:fixed; right:16px; bottom:16px; font:800 15px Arial,sans-serif; padding:12px 18px; border:0; border-radius:999px; background:#f2b705; color:#1f2328; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.2); }
+        .tipp{ text-align:center; color:#555; font-size:12px; margin-top:10px; }
+        @media print{ body{ background:#fff; } .blatt{ margin:0; width:auto; min-height:0; padding:0; } .knopf,.tipp{ display:none; } }
+        @media screen and (max-width:820px){ .blatt{ width:auto; min-height:0; margin:8px; padding:14px; } .felder{ grid-template-columns:auto 1fr; } }
+    </style></head><body>
+    <div class="tipp">Tipp: Kästchen hier anklicken und Felder ausfüllen – dann drucken. Oder leer drucken und mit Stift abhaken.</div>
+    <div class="blatt">
+        <div class="kopf"><h1>Stundenablauf Technik – Holz & Metall<small>Doppelstunde (90 Minuten) · Klasse 5 · Vertretung</small></h1></div>
+        <div class="felder"><span>Datum:</span><input value="${heute}"><span>Klasse:</span><input placeholder="z. B. 5a">
+            <span>Vertretung:</span><input value="Melanie Bernshausen"><span>für:</span><input placeholder="Fachlehrkraft"></div>
+        <h2>Ablauf der Stunde</h2>
+        <table><tr><th>Min.</th><th>Was wir gemacht haben</th><th>Wo</th><th>✔</th></tr>
+            ${ABLAUF.map(([z, t, x, m]) => `<tr><td class="z">${z}</td><td><b>${esc(t)}</b>${esc(x)}</td><td class="m">${m}</td><td class="c">${box}</td></tr>`).join("")}
+        </table>
+        <h2>Arbeitsblätter</h2>
+        <div class="abl">${ABLAUF_AB.map(t => `<span>${esc(t)}</span><span class="k">${box} fertig</span><span class="k">${box} angefangen</span>`).join("")}</div>
+        <h2>Ergebnis & Hinweise</h2>
+        <div class="punkte">Punkte Team A: <input value="${S.a}"> Team B: <input value="${S.b}"></div>
+        <div class="notiz" contenteditable="true" spellcheck="false"></div>
+    </div>
+    <button class="knopf" onclick="window.print()">🖨️ Drucken</button>
+    </body></html>`);
+    w.document.close();
+}
+
 /* ---------- Bedienung ---------- */
 function anderes(){ S.dran = S.dran === "a" ? "b" : "a"; }
 function klick(e){
@@ -444,6 +509,7 @@ function klick(e){
         case "ralle": S.regeln = REGELN.length; return zeichnen();
         case "rzu": S.regeln = 0; return zeichnen();
         case "druck": return drucken();
+        case "ablauf": return ablaufplan();
         case "sieger": return siegerZeigen();
         case "reset": if (!confirm("Punkte und Fortschritt für eine neue Klasse zurücksetzen?")) return;
             Object.assign(S, { a: 0, b: 0, dran: "a", q: 0, qWahl: null, f: 0, fStufe: 0, sp: {}, wWahl: null, regeln: 0, stamm: 0, luecke: 0, schritt: [], kap: "quiz" }); return zeichnen();
