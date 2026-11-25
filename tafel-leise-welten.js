@@ -45,7 +45,7 @@ const CSS = `
 .l2-menue label{ display:flex; align-items:center; gap:8px; font-weight:800; font-size:14px; color:#5b6670; }
 .l2-menue input[type=range]{ flex:1; }
 .l2-menue p{ margin:8px 0 0; font-size:13px; color:#7c8a96; font-weight:700; line-height:1.4; }
-.l2-karte{ position:absolute; left:50%; bottom:7%; transform:translate(-50%,40px); z-index:17; background:rgba(255,255,255,.96); color:#1f2d36; border-radius:24px; padding:16px 26px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.3); opacity:0; transition:opacity .8s, transform .8s; pointer-events:none; max-width:min(720px,90vw); }
+.l2-karte{ position:absolute; left:50%; top:11%; transform:translate(-50%,40px); z-index:17; background:rgba(255,255,255,.96); color:#1f2d36; border-radius:24px; padding:16px 26px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.3); opacity:0; transition:opacity .8s, transform .8s; pointer-events:none; max-width:min(720px,90vw); }
 .l2-karte.an{ opacity:1; transform:translate(-50%,0); }
 .l2-karte b{ display:block; font-size:clamp(22px,4.2vmin,46px); font-weight:900; line-height:1.15; }
 .l2-karte span{ display:block; margin-top:4px; font-weight:800; color:#5b6670; font-size:clamp(14px,2.2vmin,22px); }
@@ -246,7 +246,7 @@ WELTEN.riff = { titel: "Korallenriff", emoji: "🐠", art: "ruhe",
   } };
 
 WELTEN.winter = { titel: "Winterwald", emoji: "⛄", art: "ruhe",
-  text: "Je leiser ihr seid, desto mehr schneit es und die Waldtiere kommen. Bleibt es lange leise, baut sich Stück für Stück ein Schneemann.",
+  text: "Je leiser ihr seid, desto mehr schneit es und die Waldtiere kommen: Hirsch, Eichhörnchen, Eule, Wildschwein, Rotkehlchen, Fuchs und Dachs. Bleibt es lange leise, baut sich Stück für Stück ein Schneemann.",
   fertigText: ["Der Schneemann ist fertig!", "Er winkt euch zu."],
   aufbauen(sz){
     const tanne = (x, y, g, id) => `<g transform="translate(${x} ${y}) scale(${g})"><rect x="-9" y="-12" width="18" height="34" fill="#4a3628"/>
@@ -283,6 +283,34 @@ WELTEN.winter = { titel: "Winterwald", emoji: "⛄", art: "ruhe",
           <linearGradient id="wNase" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffa149"/><stop offset="1" stop-color="#d86a14"/></linearGradient>
           <filter id="wSchatten"><feGaussianBlur stdDeviation="8"/></filter>
         </defs>
+        <defs>
+          <linearGradient id="wHolz" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a6242"/><stop offset=".5" stop-color="#6e4a30"/><stop offset="1" stop-color="#4a3020"/></linearGradient>
+          <linearGradient id="wRinde" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5a4232"/><stop offset=".35" stop-color="#7a5c44"/><stop offset="1" stop-color="#3a2a20"/></linearGradient>
+          <linearGradient id="wHeu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8c878"/><stop offset="1" stop-color="#b8914a"/></linearGradient>
+        </defs>
+        <!-- Futterkrippe -->
+        <g transform="translate(330 0)">
+          <ellipse cx="10" cy="812" rx="150" ry="16" fill="#7d8fbd" opacity=".4" filter="url(#wSchatten)"/>
+          <rect x="-104" y="640" width="14" height="172" rx="3" fill="url(#wHolz)"/><rect x="92" y="640" width="14" height="172" rx="3" fill="url(#wHolz)"/>
+          <path d="M-90 690 L90 690 L76 760 L-76 760Z" fill="#5a3c26"/>
+          <path d="M-84 696 C-60 676 -20 684 0 676 C24 684 60 674 84 696 L74 752 L-74 752Z" fill="url(#wHeu)"/>
+          ${[-60, -30, 0, 30, 60].map(x => `<path d="M${x} 690 L${x * .86} 760" stroke="#4a3020" stroke-width="6"/>`).join("")}
+          <path d="M-90 690 H90 M-76 760 H76" stroke="#4a3020" stroke-width="8" stroke-linecap="round"/>
+          <path d="M-132 650 L0 582 L132 650 L118 658 L0 598 L-118 658Z" fill="url(#wHolz)"/>
+          <path d="M-136 648 Q-60 600 0 578 Q60 600 136 648 Q120 640 100 642 Q60 616 0 598 Q-60 616 -100 642 Q-120 640 -136 648Z" fill="#f6f9ff"/>
+          <path d="M-110 650 q6 14 0 20 M70 638 q5 12 0 18" stroke="#eaf2ff" stroke-width="5" stroke-linecap="round" opacity=".9"/>
+        </g>
+        <!-- großer Baum rechts mit Ast für die Eule -->
+        <g>
+          <path d="M1262 866 C1290 846 1300 800 1304 700 C1310 480 1316 220 1322 -40 L1382 -40 C1386 220 1386 480 1390 700 C1394 800 1406 846 1440 866Z" fill="url(#wRinde)"/>
+          <path d="M1386 360 C1420 330 1470 300 1530 284 C1536 282 1538 290 1532 294 C1476 316 1430 344 1392 380Z" fill="url(#wRinde)"/>
+          <path d="M1392 362 C1430 334 1476 306 1532 288 L1532 294 C1476 312 1432 340 1394 370Z" fill="#f6f9ff"/>
+          <path d="M1330 40 C1334 200 1328 380 1336 560 C1338 640 1334 720 1320 820 M1360 80 C1364 260 1358 460 1366 640 C1368 720 1372 790 1390 850 M1344 120 q6 30 0 60 M1350 420 q-6 30 0 60 M1340 680 q8 20 2 50" stroke="#2e2018" stroke-width="3" opacity=".4" fill="none"/>
+          <path d="M1322 180 q14 10 0 26 q-6 -14 0 -26Z M1378 600 q-12 12 0 26 q6 -14 0 -26Z" fill="#f6f9ff" opacity=".85"/>
+          <path d="M1302 540 C1250 530 1190 536 1120 520 C1112 518 1110 528 1118 532 C1190 552 1250 552 1300 560Z" fill="url(#wRinde)"/>
+          <path d="M1120 518 C1180 520 1240 516 1302 528 L1302 536 C1240 526 1180 530 1120 526Z" fill="#f6f9ff"/>
+          <path d="M1270 860 Q1340 840 1410 860Z" fill="#eef3fc"/>
+        </g>
         <g transform="translate(800 820)">
           <ellipse cx="20" cy="6" rx="160" ry="20" fill="#7d8fbd" opacity=".45" filter="url(#wSchatten)"/>
           <circle class="sm-teil t1" cx="0" cy="-90" r="100" fill="url(#wKugel)"/>
@@ -296,31 +324,52 @@ WELTEN.winter = { titel: "Winterwald", emoji: "⛄", art: "ruhe",
       </svg>
       <div class="ebene"></div>`;
     const ebene = sz.querySelector(".ebene"), flocken = [...sz.querySelectorAll(".flocke")], teile = [...sz.querySelectorAll(".sm-teil")];
-    const plan = [["hase", .92, .08], ["hirsch", .86, .16], ["fuchs", .9, .14], ["eichhoernchen", .93, .07], ["vogel", .5, .07], ["eule", .58, .08]];
-    const tiere = plan.map(([k, y, g], i) => ({ k, y, g, d: wesen(ebene, k), x: i % 2 ? 1.15 : -.15, zx: [.14, .28, .7, .84, .36, .9][i], da: false, t: 0 }));
+    // Umrechnung von Szenen-Koordinaten (1600×900, unten bündig, im Hochformat 1.6-fach) auf den Bildschirm
+    const umr = (x, y, W, H) => { const s0 = Math.min(W / 1600, H / 900), k = W <= H ? 1.6 : 1, ox = (W - 1600 * s0) / 2, oy = H - 900 * s0;
+        return [(W / 2 + (ox + x * s0 - W / 2) * k) / W, (H + (oy + y * s0 - H) * k) / H, s0 * k]; };
+    // nur heimische Waldtiere: wer kommt wann, wohin, wie groß (Szenen-Einheiten)
+    const PLAN = [
+      { k: "hirsch", ab: .1, x: 560, y: 818, g: 200, von: -1, art: "lauf" },
+      { k: "eichhoernchen", ab: .2, x: 1236, y: 842, g: 78, von: 1, art: "huepf" },
+      { k: "eule", ab: .3, x: 1196, y: 534, g: 92, art: "sitz" },
+      { k: "wildschwein", ab: .42, x: 990, y: 852, g: 128, von: -1, art: "lauf" },
+      { k: "rotkehlchen", ab: .54, x: 330, y: 586, g: 62, art: "vogel" },
+      { k: "fuchs", ab: .66, x: 1150, y: 856, g: 132, von: 1, art: "lauf" },
+      { k: "dachs", ab: .78, x: 180, y: 858, g: 104, von: -1, art: "lauf" }
+    ];
+    const tiere = PLAN.map(p => ({ ...p, d: wesen(ebene, p.k), sx: p.von ? (p.von < 0 ? -150 : 1750) : p.x, sy: p.art === "sitz" || p.art === "vogel" ? p.y - 260 : p.y, da: false, t: Math.random() * 5, o: 0 }));
     const schwellen = [.22, .36, .5, .62, .74, .86, .96];
-    let maxP = 0;
+    let maxP = 0, fertig = false;
     return {
       schritt(p, laut, dt, W, H){
-        const S = Math.min(Math.max(W, H * .55), H * 1.6);
         const n = Math.round(10 + p * 80);
         flocken.forEach((f, i) => { const soll = laut ? 0 : (i < n ? .9 : 0); if (f._o !== soll){ f._o = soll; f.style.opacity = soll; } });
         maxP = Math.max(maxP, p);
         teile.forEach((t, i) => { if (maxP >= schwellen[i] && !t.classList.contains("da")){ t.classList.add("da"); this.klang && this.klang(620 + i * 60); } });
-        tiere.forEach((t, i) => {
-          const soll = p >= (i + 1) * .13;
-          if (soll) t.da = true;
+        for (const t of tiere){
+          if (p >= t.ab) t.da = true;
           t.t += dt;
-          const ziel = laut ? (t.zx < .5 ? -.2 : 1.2) : t.zx;
-          if (t.da) t.x += (ziel - t.x) * Math.min(1, dt * (laut ? 2 : .5));
-          t.d.classList.toggle("links", ziel > t.x);
-          const hop = (t.k === "hase" || t.k === "eichhoernchen") && Math.abs(ziel - t.x) > .01 ? -Math.abs(Math.sin(t.t * 8)) * .03 : 0;
-          const flieg = t.k === "vogel" || t.k === "eule" ? Math.sin(t.t * 2) * .02 : 0;
-          t.d.style.opacity = t.da ? 1 : 0;
-          setze(t.d, t.x, t.y + hop + flieg, t.g * S, W, H);
-        });
+          let zx = t.x, zy = t.y, zo = t.da ? 1 : 0, tempo = .9;
+          if (t.art === "vogel" && fertig){ zx = 948; zy = 494; }            // Rotkehlchen landet auf dem Arm des Schneemanns
+          if (laut && t.da){
+            if (t.von){ zx = t.von < 0 ? -160 : 1760; tempo = 2.6; }        // Bodentiere laufen weg
+            else if (t.art === "vogel"){ zy = t.y - 300; zo = 0; tempo = 2; } // Rotkehlchen fliegt kurz weg
+          }
+          if (!t.da){ t.o = 0; t.d.style.opacity = 0; continue; }
+          const dx = zx - t.sx;
+          t.sx += dx * Math.min(1, dt * tempo * (t.von ? .5 : 1.2));
+          t.sy += (zy - t.sy) * Math.min(1, dt * tempo * 1.4);
+          t.o += (zo - t.o) * Math.min(1, dt * 2.5);
+          if (Math.abs(dx) > 2) t.d.classList.toggle("links", dx > 0);
+          const geht = Math.abs(dx) > 6;
+          const hop = t.art === "huepf" && geht ? -Math.abs(Math.sin(t.t * 8)) * 18 : t.art === "lauf" && geht ? -Math.abs(Math.sin(t.t * 9)) * 3 : 0;
+          const wipp = t.art === "vogel" && Math.abs(zy - t.sy) < 4 ? Math.sin(t.t * 3) * 1.5 : 0;
+          const [x, y, sc] = umr(t.sx, t.sy + hop + wipp, W, H);
+          t.d.style.opacity = t.o.toFixed(3);
+          setze(t.d, x, y, t.g * sc, W, H);
+        }
       },
-      fertig(){ sz.classList.add("fertig"); }
+      fertig(){ fertig = true; sz.classList.add("fertig"); }
     };
   } };
 
