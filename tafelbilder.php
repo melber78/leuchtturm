@@ -1,4 +1,4 @@
-<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs", "leise", "einmaleins", "brueche", "taschenlampe"]; require __DIR__ . "/gast-zugang.php"; ?>
+<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs", "leise", "einmaleins", "brueche", "taschenlampe", "mathe", "wortarten"]; require __DIR__ . "/gast-zugang.php"; ?>
 <?php
 if (empty($_SESSION["tafel_csrf"])) $_SESSION["tafel_csrf"] = bin2hex(random_bytes(16));
 // Gespeicherte Tafelbild-Einstellungen (Morgentafel …) – Gäste haben eigene Daten
@@ -587,7 +587,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
 </script>
 <?php endif; ?>
     <div class="kacheln">
-<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen") || lt_gastDarf($LT_GAST, "leise")): ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen") || lt_gastDarf($LT_GAST, "leise") || lt_gastDarf($LT_GAST, "mathe") || lt_gastDarf($LT_GAST, "wortarten")): ?>
         <div class="tb-gruppe">Höhere Klassen</div>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
@@ -602,6 +602,30 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
             <div class="k-text"><h2>Ruhige Arbeitszeit (Kl. 5–9)</h2><p>Sachliche Szenen für konzentriertes Arbeiten: Stadt bei Regen, Meer, Polarlicht – mit ruhigem Klang und schlichter Zeitleiste.</p><div class="k-tags"><span>Arbeitsphase</span><span>Kl. 5–9</span><span>Klang</span></div></div>
         </button>
 <?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
+        <button class="kachel" type="button" onclick="tafelMathe.prozent.oeffnen()">
+            <div class="k-buehne" style="background:linear-gradient(135deg,#dcefee,#a9d8d3);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">¾ = 75 %</div></div>
+            <div class="k-text"><h2>Prozent & Dezimalzahlen</h2><p>Hunderterfeld, Bruch → Dezimalzahl → Prozent, Prozent von … am Prozentstreifen und „Wie viel Prozent?“.</p><div class="k-tags"><span>Mathe</span><span>Kl. 6–8</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
+        <button class="kachel" type="button" onclick="tafelMathe.groessen.oeffnen()">
+            <div class="k-buehne" style="background:linear-gradient(135deg,#e8e0f5,#c9b8ea);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">km → m</div></div>
+            <div class="k-text"><h2>Größen umrechnen</h2><p>Einheitentreppe für Längen, Gewichte, Hohlmaße, Geld und Zeit – mit ganzen Zahlen oder Kommazahlen.</p><div class="k-tags"><span>Mathe</span><span>Kl. 4–8</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "wortarten")): ?>
+        <button class="kachel" type="button" onclick="tafelDeutsch.wortarten.oeffnen()">
+            <div class="k-buehne" style="background:linear-gradient(135deg,#fbe3e1,#f4b9b3);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">Nomen · Verb</div></div>
+            <div class="k-text"><h2>Wortarten & Satzglieder</h2><p>Wörter antippen und einfärben, Prüffragen aufdecken, Satzglieder mit Umstellprobe – Kl. 3/4 einfach, Kl. 5–7 alle Wortarten und Satzglieder.</p><div class="k-tags"><span>Deutsch</span><span>Kl. 3–7</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
+        <button class="kachel" type="button" onclick="tafelMathe.schriftlich.oeffnen()">
+            <div class="k-buehne" style="background:linear-gradient(135deg,#dbe9f4,#b9d3ea);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">4738<br>+2595</div></div>
+            <div class="k-text"><h2>Schriftlich rechnen</h2><p>Plus, Minus (Ergänzen oder Abziehen), Mal und Geteilt – Stelle für Stelle mit Übertrag zum Aufdecken, eigene Aufgaben eintippen.</p><div class="k-tags"><span>Mathe</span><span>Kl. 3–6</span></div></div>
+        </button>
+<?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")): ?>
         <button class="kachel" type="button" onclick="tafelBrueche.oeffnen()">
             <div class="k-buehne k-br"><div class="mini-br"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="#fff" stroke="#16324a" stroke-width="5"/><path d="M60 60 L60 8 A52 52 0 1 1 8 60 Z" fill="#3d7ea6" stroke="#16324a" stroke-width="4" stroke-linejoin="round"/><line x1="60" y1="8" x2="60" y2="112" stroke="#16324a" stroke-width="4"/><line x1="8" y1="60" x2="112" y2="60" stroke="#16324a" stroke-width="4"/></svg><span class="mini-bz"><b>2</b><span><i>3</i><i>4</i></span></span></div></div>
@@ -614,7 +638,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
             <div class="k-text"><h2>Holz &amp; Metall – Werkstoff-Duell</h2><p>Einstiegs-Quiz, Fe oder NE?, Werkzeug, Metallrohr-Schritte, Holzarten (Nadel/Laub/exotisch), Baumstamm zum Aufdecken, Holz arbeitet, Holzwerkstoffe, Film. Team A gegen Team B.</p><div class="k-tags"><span>Technik</span><span>Kl. 5–7</span><span>Doppelstunde</span></div></div>
         </button>
 <?php endif; ?>
-<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen") || lt_gastDarf($LT_GAST, "taschenlampe") || lt_gastDarf($LT_GAST, "leise")): ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen") || lt_gastDarf($LT_GAST, "taschenlampe") || lt_gastDarf($LT_GAST, "leise") || lt_gastDarf($LT_GAST, "mathe") || lt_gastDarf($LT_GAST, "wortarten")): ?>
         <div class="tb-gruppe">Grundschule</div>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
@@ -639,6 +663,30 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
         <button class="kachel" type="button" onclick="tafel1x1.oeffnen('tabelle')">
             <div class="k-buehne k-ee"><div class="mini-ee"><b>·</b><b>1</b><b>2</b><b>3</b><b>1</b><i>1</i><i>2</i><i>3</i><b>2</b><i>2</i><i class="w">4</i><i>6</i><b>3</b><i>3</i><i>6</i><i>9</i></div></div>
             <div class="k-text"><h2>Das Einmaleins</h2><p>Alles in einer Tafel: 1×1-Tabelle zum Antippen, Verstehen im Punktefeld, Kernaufgaben &amp; Nachbarn, Tricks, Geteilt, Aufgabenfamilie, Üben mit Punkten und das große 1 × 1.</p><div class="k-tags"><span>interaktiv</span><span>Kl. 2–6</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
+        <button class="kachel" type="button" onclick="tafelMathe.uhr.oeffnen()">
+            <div class="k-buehne" style="background:linear-gradient(135deg,#e3f1e0,#b9dcae);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">🕗 8:15</div></div>
+            <div class="k-text"><h2>Uhr & Zeit</h2><p>Lernuhr mit Zeiger zum Drehen, digital und gesprochen („Viertel nach acht“ oder „viertel neun“), Zeitspannen am Zeitstrahl.</p><div class="k-tags"><span>Mathe</span><span>Kl. 1–4</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
+        <button class="kachel" type="button" onclick="tafelMathe.stellen.oeffnen()">
+            <div class="k-buehne" style="background:linear-gradient(135deg,#fde7c8,#f7c98a);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">H&nbsp;Z&nbsp;E</div></div>
+            <div class="k-text"><h2>Stellenwerttafel</h2><p>Zahlen mit Plättchen darstellen, Zahlwort, Bündeln & Entbündeln, Kommazahlen mit Zehnteln und Hundertsteln.</p><div class="k-tags"><span>Mathe</span><span>Kl. 1–6</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
+        <button class="kachel" type="button" onclick="tafelMathe.schriftlich.oeffnen()">
+            <div class="k-buehne" style="background:linear-gradient(135deg,#dbe9f4,#b9d3ea);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">4738<br>+2595</div></div>
+            <div class="k-text"><h2>Schriftlich rechnen</h2><p>Plus, Minus (Ergänzen oder Abziehen), Mal und Geteilt – Stelle für Stelle mit Übertrag zum Aufdecken, eigene Aufgaben eintippen.</p><div class="k-tags"><span>Mathe</span><span>Kl. 3–6</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "wortarten")): ?>
+        <button class="kachel" type="button" onclick="tafelDeutsch.wortarten.oeffnen()">
+            <div class="k-buehne" style="background:linear-gradient(135deg,#fbe3e1,#f4b9b3);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">Nomen · Verb</div></div>
+            <div class="k-text"><h2>Wortarten & Satzglieder</h2><p>Wörter antippen und einfärben, Prüffragen aufdecken, Satzglieder mit Umstellprobe – Kl. 3/4 einfach, Kl. 5–7 alle Wortarten und Satzglieder.</p><div class="k-tags"><span>Deutsch</span><span>Kl. 3–7</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
@@ -803,6 +851,9 @@ window.TAFEL_LINKS_ERLAUBT = <?= json_encode(!$TAFEL_APP && !empty($_SESSION["le
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
 <script src="lernangebot-tafel.js?v=<?= @filemtime(__DIR__ . "/lernangebot-tafel.js") ?: 1 ?>"></script>
 <?php if (!$LT_GAST): ?><script src="tafel-werkstatt.js?v=<?= @filemtime(__DIR__ . "/tafel-werkstatt.js") ?: 1 ?>"></script><?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe") || lt_gastDarf($LT_GAST, "wortarten")): ?><script src="tafel-erklaer.js?v=<?= @filemtime(__DIR__ . "/tafel-erklaer.js") ?: 1 ?>"></script><?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?><script src="tafel-mathe.js?v=<?= @filemtime(__DIR__ . "/tafel-mathe.js") ?: 1 ?>"></script><?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "wortarten")): ?><script src="tafel-deutsch.js?v=<?= @filemtime(__DIR__ . "/tafel-deutsch.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?><script src="tafel-ruhig.js?v=<?= @filemtime(__DIR__ . "/tafel-ruhig.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?><script src="tafel-leise-welten.js?v=<?= @filemtime(__DIR__ . "/tafel-leise-welten.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "taschenlampe")): ?><script src="tafel-taschenlampe.js?v=<?= @filemtime(__DIR__ . "/tafel-taschenlampe.js") ?: 1 ?>"></script><?php endif; ?>
