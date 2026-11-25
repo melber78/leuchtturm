@@ -1,9 +1,9 @@
-<?php header("Content-Type: application/manifest+json; charset=utf-8"); ?>
+<?php header("Content-Type: application/manifest+json; charset=utf-8"); require_once __DIR__ . "/../gast-zugang-pruefen.php"; $c = lt_tafelZugang() ? (string)$_COOKIE["lt_tafel"] : ""; ?>
 {
  "id": "guten-morgen-tafel",
  "name": "Guten Morgen! – Tafel",
  "short_name": "Guten Morgen",
- "start_url": "./",
+ "start_url": <?= json_encode("./" . ($c ? "?c=" . rawurlencode($c) : ""), JSON_UNESCAPED_SLASHES) ?>,
  "scope": "./",
  "display": "fullscreen",
  "display_override": ["fullscreen", "standalone"],

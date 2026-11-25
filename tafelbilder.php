@@ -780,6 +780,8 @@ window.TAFEL_CSRF = <?= json_encode($_SESSION["tafel_csrf"]) ?>;
 window.TAFEL_SERVERZEIT = <?= round(microtime(true) * 1000) ?>; window.TAFEL_GELADEN = Date.now();
 window.TB_ERLAUBT = <?= json_encode(["buchstabenkurs" => (!$TAFEL_APP || $TB_B === "buchstabenkurs") && (!$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs")), "morgen" => !$LT_GAST || lt_gastDarf($LT_GAST, "morgen")]) ?>;
 window.TAFEL_APP = <?= $TAFEL_APP ? json_encode(["klasse" => (string)LT_TAFEL_APP, "baustein" => $TB_B]) : "null" ?>;
+<?php if ($TAFEL_APP): ?>try { <?php if (defined("LT_TAFEL_GAST") && is_string($_COOKIE["lt_tafel_gast"] ?? null)): ?>localStorage.setItem("lt_code_gast", <?= json_encode($_COOKIE["lt_tafel_gast"]) ?>);<?php endif; ?><?php if (is_string($_COOKIE["lt_tafel"] ?? null) && lt_tafelZugang()): ?>localStorage.setItem("lt_code_tafel", <?= json_encode($_COOKIE["lt_tafel"]) ?>);<?php endif; ?> sessionStorage.removeItem("lt_auto"); } catch (x) {}
+<?php endif; ?>
 <?php if ($TB_B): ?>
 document.addEventListener("DOMContentLoaded", () => {
     // nur die Kachel dieses Tafelbilds

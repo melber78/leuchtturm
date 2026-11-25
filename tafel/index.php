@@ -18,7 +18,7 @@ $zurueck = "./" . ($b ? "?b=" . $b : "");
 $fehler = "";
 $keks = fn($name, $wert, $tage) => setcookie($name, $wert, ["expires" => time() + $tage * 86400, "path" => $pfad, "secure" => !empty($_SERVER["HTTPS"]), "httponly" => true, "samesite" => "Lax"]);
 // Kollegin meldet sich von dieser Tafel ab (danach kann sich jemand anderes anmelden)
-if (isset($_GET["abmelden"])) { $keks("lt_tafel_gast", "", -1); unset($_SESSION["leuchtturm_gast"]); header("Location: ./"); exit; }
+if (isset($_GET["abmelden"])) { $keks("lt_tafel_gast", "", -1); unset($_SESSION["leuchtturm_gast"]); header("Location: ./?weg=1"); exit; }
 $eingabe = $_POST["code"] ?? ($_GET["c"] ?? null);
 if ($eingabe !== null) {
     if (lt_tafelVersuche() >= 8) $fehler = "Zu viele falsche Versuche. Bitte in 15 Minuten noch einmal.";
@@ -71,9 +71,13 @@ button{margin-top:14px;width:100%;font:900 20px system-ui,sans-serif;padding:14p
 <p>Tafel-Code oder deinen persönlichen Zugangscode eingeben<?= $b ? " – danach öffnet sich <b>" . $h(LT_BAUSTEINE[$b][0]) . "</b>" : "" ?>:</p>
 <form method="post" action="<?= $h($zurueck) ?>"><input name="code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z. B. KR7M-4XPT" maxlength="12" autofocus><button>Tafel freischalten</button></form>
 <?php if ($fehler): ?><p class="rot"><?= $h($fehler) ?></p><?php endif; ?>
+<script>/* Sicherung: Löscht der Browser der Tafel seine Cookies, meldet sich die Tafel mit dem gemerkten Code von selbst wieder an */
+(function(){ try { if (/[?&]weg=1/.test(location.search)) { localStorage.removeItem("lt_code_gast"); return; } if (document.querySelector(".rot") || sessionStorage.getItem("lt_auto")) return;
+  var c = localStorage.getItem("lt_code_gast") || localStorage.getItem("lt_code_tafel"); if (!c) return; sessionStorage.setItem("lt_auto", "1"); var f = document.querySelector("form"), i = f && f.querySelector("input[name=code]"); if (i) { i.value = c; f.submit(); } } catch (x) {} })();</script>
 <p style="font-size:15px;color:#5b6f84">Kolleginnen: Hier funktioniert derselbe Code wie für den Leuchtturm-Zugang – auf jeder Tafel. Du siehst dann die Tafelbilder, die für dich freigegeben sind.</p>
 <?php else: ?>
 <h1>📺 Tafelbilder für diese Tafel</h1>
+<?php if (isset($_GET["weg"])): ?><script>try { localStorage.removeItem("lt_code_gast"); } catch (x) {}</script><?php endif; ?>
 <?php if ($gast): ?><p style="background:#eef6fb;border-radius:14px;padding:10px 14px">👋 Angemeldet<?= ($gast["name"] ?? "") !== "" ? " als <b>" . $h($gast["name"]) . "</b>" : "" ?> – das sind deine freigegebenen Tafelbilder. <a href="./?abmelden=1" style="color:#a3261c;font-weight:800">Von dieser Tafel abmelden</a></p><?php endif; ?>
 <p>Tippe ein Tafelbild an. Es öffnet sich – dann <b>„📲 Installieren“</b> (unten links) antippen. So bekommt jedes Tafelbild sein <b>eigenes Symbol</b> auf der Tafel. Für jedes gewünschte Tafelbild einmal wiederholen.</p>
 <div class="liste"><?php foreach ($liste as $k => $x): ?><a href="./?b=<?= $h($k) ?>"><img src="icons/<?= $h($k) ?>-192.png" alt=""><span><b><?= $h($x[0]) ?></b><small><?= $h($x[1]) ?></small></span></a><?php endforeach; ?></div>

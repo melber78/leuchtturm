@@ -44,6 +44,9 @@ if (!$tafel && empty($_SESSION["leuchtturm_eingeloggt"])) { ?>
 <form method="post" action="./"><input name="code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="z. B. KR7M-4XPT" maxlength="12" autofocus
  style="font:800 34px/1 monospace;letter-spacing:.12em;text-transform:uppercase;width:100%;box-sizing:border-box;padding:14px 16px;border:3px solid #c9d6e3;border-radius:16px;text-align:center">
 <button style="margin-top:14px;width:100%;font:900 20px system-ui,sans-serif;padding:14px;border:0;border-radius:16px;background:#16324a;color:#fff;cursor:pointer">Tafel freischalten</button></form>
+<script>/* Sicherung: Löscht der Browser der Tafel seine Cookies, meldet sich die Tafel mit dem gemerkten Code von selbst wieder an */
+(function(){ try { if (/[?&]weg=1/.test(location.search)) { localStorage.removeItem("lt_code_gast"); return; } if (document.querySelector(".rot") || sessionStorage.getItem("lt_auto")) return;
+  var c = localStorage.getItem("lt_code_tafel"); if (!c) return; sessionStorage.setItem("lt_auto", "1"); var f = document.querySelector("form"), i = f && f.querySelector("input[name=code]"); if (i) { i.value = c; f.submit(); } } catch (x) {} })();</script>
 <?php if ($fehler): ?><p class="rot"><?= htmlspecialchars($fehler) ?></p><?php endif; ?>
 <p style="font-size:15px;color:#5b6f84">Den Code bekommst du im Leuchtturm: Guten Morgen → Bearbeiten → Klasse → „📺 Auf der Tafel installieren“.</p>
 </div></body></html>
