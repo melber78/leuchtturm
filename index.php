@@ -145,6 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-25", "Leise-Wald: 8 neue Welten", "Ruhepause: Korallenriff, Winterwald, Nachthimmel, Raupe wird Schmetterling. Arbeitsphase: Weihnachtsbaum schmücken, Ballonfahrt, Burg bauen, Geheimbild – unter Tafelbilder → Leise-Wald.", "tafelbilder.php#leise"],
     ["2026-11-25", "Tafelbild „Taschenlampen-Lesen“ (Kl. 1–4)", "Die Tafel ist dunkel – ein Kind führt mit dem Finger die Taschenlampe, im Lichtkegel tauchen Buchstaben, Silben, Wörter oder Sätze auf. Mit Silbenbögen, eigenen Wörtern, Advent-Wörtern und „Wort suchen“.", "tafelbilder.php#taschenlampe"],
     ["2026-11-25", "Holz & Metall – Werkstoff-Duell (Technik Kl. 5–7)", "Tafelbild passend zu den Arbeitsblättern: Quiz, Fe oder NE?, Werkzeug, Metallrohr, Holzarten, Baumstamm, Holz arbeitet, Holzwerkstoffe – Team A gegen Team B.", "tafelbilder.php#werkstatt"],
     ["24.11.2026", "Zusammenfassung für den Hefter – ausführlicher", "„Das habe ich heute gelernt“, „Meine Werkzeuge“ zum Abhaken, „Mein Satz“ und ein Wochenauftrag (Mo–Fr). Wird beim Arbeitsblatt automatisch mitgedruckt.", "sozial-stunden.php"],
