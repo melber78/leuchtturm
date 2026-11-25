@@ -246,7 +246,7 @@ WELTEN.riff = { titel: "Korallenriff", emoji: "🐠", art: "ruhe",
   } };
 
 WELTEN.winter = { titel: "Winterwald", emoji: "⛄", art: "ruhe",
-  text: "Je leiser ihr seid, desto mehr schneit es und die Waldtiere kommen: Hirsch, Eichhörnchen, Eule, Wildschwein, Rotkehlchen, Fuchs und Dachs. Bleibt es lange leise, baut sich Stück für Stück ein Schneemann.",
+  text: "Je leiser ihr seid, desto mehr schneit es und 13 Waldtiere kommen – vom Hirsch an der Futterkrippe bis zum Igel, der im Laub schläft. Bleibt es lange leise, baut sich Stück für Stück ein Schneemann.",
   fertigText: ["Der Schneemann ist fertig!", "Er winkt euch zu."],
   aufbauen(sz){
     const tanne = (x, y, g, id) => `<g transform="translate(${x} ${y}) scale(${g})"><rect x="-9" y="-12" width="18" height="34" fill="#4a3628"/>
@@ -310,6 +310,7 @@ WELTEN.winter = { titel: "Winterwald", emoji: "⛄", art: "ruhe",
           <path d="M1302 540 C1250 530 1190 536 1120 520 C1112 518 1110 528 1118 532 C1190 552 1250 552 1300 560Z" fill="url(#wRinde)"/>
           <path d="M1120 518 C1180 520 1240 516 1302 528 L1302 536 C1240 526 1180 530 1120 526Z" fill="#f6f9ff"/>
           <path d="M1270 860 Q1340 840 1410 860Z" fill="#eef3fc"/>
+          <g>${[[1446, 868, "#b5652e"], [1476, 862, "#d08a3a"], [1506, 870, "#9e5a2a"], [1464, 852, "#c9782e"], [1492, 850, "#e0a048"], [1520, 860, "#b06a30"]].map(([x, y, f], i) => `<ellipse cx="${x}" cy="${y}" rx="34" ry="14" fill="${f}" transform="rotate(${i % 2 ? 12 : -10} ${x} ${y})"/>`).join("")}<path d="M1426 864 Q1481 836 1546 866" stroke="#f6f9ff" stroke-width="8" fill="none" stroke-linecap="round" opacity=".9"/></g>
         </g>
         <g transform="translate(800 820)">
           <ellipse cx="20" cy="6" rx="160" ry="20" fill="#7d8fbd" opacity=".45" filter="url(#wSchatten)"/>
@@ -329,15 +330,21 @@ WELTEN.winter = { titel: "Winterwald", emoji: "⛄", art: "ruhe",
         return [(W / 2 + (ox + x * s0 - W / 2) * k) / W, (H + (oy + y * s0 - H) * k) / H, s0 * k]; };
     // nur heimische Waldtiere: wer kommt wann, wohin, wie groß (Szenen-Einheiten)
     const PLAN = [
-      { k: "hirsch", ab: .1, x: 560, y: 818, g: 200, von: -1, art: "lauf" },
-      { k: "eichhoernchen", ab: .2, x: 1236, y: 842, g: 78, von: 1, art: "huepf" },
-      { k: "eule", ab: .3, x: 1196, y: 534, g: 92, art: "sitz" },
-      { k: "wildschwein", ab: .42, x: 990, y: 852, g: 128, von: -1, art: "lauf" },
-      { k: "rotkehlchen", ab: .54, x: 330, y: 586, g: 62, art: "vogel" },
-      { k: "fuchs", ab: .66, x: 1150, y: 856, g: 132, von: 1, art: "lauf" },
-      { k: "dachs", ab: .78, x: 180, y: 858, g: 104, von: -1, art: "lauf" }
+      { k: "hirsch", ab: .06, x: 560, y: 818, g: 200, von: -1, art: "lauf" },
+      { k: "eichhoernchen", ab: .13, x: 1236, y: 842, g: 78, von: 1, art: "huepf" },
+      { k: "eule", ab: .2, x: 1196, y: 534, g: 92, art: "sitz" },
+      { k: "reh", ab: .27, x: 110, y: 798, g: 150, von: -1, art: "lauf" },
+      { k: "wildschwein", ab: .34, x: 990, y: 852, g: 128, von: 1, art: "lauf" },
+      { k: "rotkehlchen", ab: .41, x: 300, y: 586, g: 62, art: "vogel" },
+      { k: "feldhase", ab: .48, x: 630, y: 870, g: 92, von: -1, art: "huepf" },
+      { k: "specht", ab: .55, x: 1284, y: 440, g: 112, art: "fest" },
+      { k: "fuchs", ab: .62, x: 1150, y: 856, g: 132, von: 1, art: "lauf" },
+      { k: "blaumeise", ab: .69, x: 410, y: 614, g: 64, art: "vogel" },
+      { k: "maus", ab: .76, x: 915, y: 880, g: 58, von: 1, art: "huepf" },
+      { k: "dachs", ab: .83, x: 260, y: 872, g: 104, von: -1, art: "lauf" },
+      { k: "igel", ab: .9, x: 1480, y: 868, g: 78, art: "fest" }
     ];
-    const tiere = PLAN.map(p => ({ ...p, d: wesen(ebene, p.k), sx: p.von ? (p.von < 0 ? -150 : 1750) : p.x, sy: p.art === "sitz" || p.art === "vogel" ? p.y - 260 : p.y, da: false, t: Math.random() * 5, o: 0 }));
+    const tiere = PLAN.map(p => ({ ...p, d: wesen(ebene, p.k), sx: p.von ? (p.von < 0 ? -150 : 1750) : p.x, sy: p.art === "sitz" || p.art === "vogel" ? p.y - 260 : p.y, fest: p.art === "fest", da: false, t: Math.random() * 5, o: 0 }));
     const schwellen = [.22, .36, .5, .62, .74, .86, .96];
     let maxP = 0, fertig = false;
     return {
@@ -350,7 +357,7 @@ WELTEN.winter = { titel: "Winterwald", emoji: "⛄", art: "ruhe",
           if (p >= t.ab) t.da = true;
           t.t += dt;
           let zx = t.x, zy = t.y, zo = t.da ? 1 : 0, tempo = .9;
-          if (t.art === "vogel" && fertig){ zx = 948; zy = 494; }            // Rotkehlchen landet auf dem Arm des Schneemanns
+          if (t.k === "rotkehlchen" && fertig){ zx = 948; zy = 494; }            // Rotkehlchen landet auf dem Arm des Schneemanns
           if (laut && t.da){
             if (t.von){ zx = t.von < 0 ? -160 : 1760; tempo = 2.6; }        // Bodentiere laufen weg
             else if (t.art === "vogel"){ zy = t.y - 300; zo = 0; tempo = 2; } // Rotkehlchen fliegt kurz weg
