@@ -16,7 +16,7 @@ require_once __DIR__ . "/gast-zugang-pruefen.php";
 
 $LT_GAST = null;
 // Morgentafel als eigene App auf der digitalen Tafel (morgen/index.php hat den Zugang schon geprüft)
-if (defined("LT_TAFEL_APP")) return;
+if (defined("LT_TAFEL_APP")) { if (defined("LT_TAFEL_GAST")) $LT_GAST = lt_gast(); return; }
 if (empty($_SESSION["leuchtturm_eingeloggt"])) {
     $LT_GAST = lt_gast();
     if (!$LT_GAST) {

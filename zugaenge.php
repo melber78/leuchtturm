@@ -128,11 +128,12 @@ textarea{ width:100%; font:600 14px/1.5 "Nunito",sans-serif; border:2px solid #d
 <a class="zurueck" href="index.php"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
 <h1><i class="fa-solid fa-user-clock"></i> Gast-Zugänge</h1>
 <p class="unter">Kolleginnen testen die Bereiche, die du freigibst – mit eigenem Code und eigenen, getrennten Daten. Deine Kinder-Akten, Materialien und Planungen sehen sie nie.</p>
+<p class="hilfe"><i class="fa-solid fa-chalkboard"></i> <b>Tafelbilder:</b> Mit ihrem Code meldet sich die Kollegin auch auf jeder digitalen Tafel an (Adresse <b><?= h(preg_replace("#^https?://#", "", preg_replace("#[^/]*$#", "", $basisUrl)) . "tafel") ?></b>). Dort sieht sie nur die Tafelbilder, die du hier ankreuzt – ein Code für alle Tafeln. Änderst du die Haken oder sperrst den Zugang, gilt das sofort auch auf den Tafeln.</p>
 
 <?php if ($meldung): ?><div class="meldung"><?= h($meldung) ?></div><?php endif; ?>
 
 <?php if ($neu): $link = $basisUrl . "?code=" . rawurlencode($neu["code"]);
-    $text = "Hallo" . ($neu["g"]["name"] ? " " . $neu["g"]["name"] : "") . ",\n\nhier ist dein Zugang zum Testen (" . bereichNamen($neu["g"]) . "):\n\n" . $link . "\n\nOder auf " . $basisUrl . " den Code eingeben: " . $neu["code"] . ($neu["g"]["bis"] ? "\nGültig bis " . date("d.m.Y", strtotime($neu["g"]["bis"])) . "." : "\nDer Zugang ist unbefristet.") . " Was du speicherst, siehst nur du – probier ruhig alles aus.\n\nViele Grüße\nMelanie"; ?>
+    $text = "Hallo" . ($neu["g"]["name"] ? " " . $neu["g"]["name"] : "") . ",\n\nhier ist dein Zugang zum Testen (" . bereichNamen($neu["g"]) . "):\n\n" . $link . "\n\nOder auf " . $basisUrl . " den Code eingeben: " . $neu["code"] . ($neu["g"]["bis"] ? "\nGültig bis " . date("d.m.Y", strtotime($neu["g"]["bis"])) . "." : "\nDer Zugang ist unbefristet.") . " Was du speicherst, siehst nur du – probier ruhig alles aus." . (lt_gastHatTafelbild($neu["g"]) ? "\n\nAuf der digitalen Tafel: " . preg_replace("#[^/]*$#", "", $basisUrl) . "tafel öffnen und denselben Code eingeben – dann siehst du deine Tafelbilder und kannst jedes als eigene App auf der Tafel installieren. Das klappt auf jeder Tafel mit demselben Code." : "") . "\n\nViele Grüße\nMelanie"; ?>
 <div class="karte neu">
     <h2><i class="fa-solid fa-key"></i> Zugang für <?= h($neu["g"]["name"] ?: "Gast") ?></h2>
     <div>Code:</div><div class="code"><?= h($neu["code"]) ?></div>

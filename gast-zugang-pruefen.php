@@ -89,6 +89,29 @@ function lt_tafelZugang($schluessel = null){
     foreach (lt_tafelnLesen() as $t) if (hash_equals($t["hash"] ?? "", $h) && empty($t["gesperrt"])) return $t;
     return null;
 }
+/* ---------- Persönlicher Gast-Code auf der digitalen Tafel ----------
+   Eine Kollegin meldet sich auf jeder Tafel (…/tafel) mit IHREM Gast-Code an und sieht dort
+   nur die Tafelbilder, die Melanie für sie angekreuzt hat – mit ihren eigenen Daten. */
+// Welcher Gast-Bereich gehört zu welchem einzeln installierbaren Tafelbild?
+const LT_BAUSTEIN_BEREICH = ["morgen" => "morgen", "morgen-sek" => "morgen", "startklar" => "morgen", "pause" => "morgen", "leise" => "leise",
+    "buchstabenkurs" => "buchstabenkurs", "einmaleins" => "einmaleins", "brueche" => "brueche", "taschenlampe" => "taschenlampe"];
+// Gültiger Gast zu einem Code (oder null)
+function lt_gastPerCode($code){
+    $code = (string)$code;
+    if (!preg_match('/^[A-Za-z0-9]{8}$/', preg_replace('/[^A-Za-z0-9]/', "", $code))) return null;
+    foreach (lt_gaesteLesen() as $g) {
+        if (!hash_equals($g["codeHash"] ?? "", lt_codeHash($code))) continue;
+        if (!empty($g["gesperrt"]) || (!empty($g["bis"]) && strtotime($g["bis"] . " 23:59:59") < time())) return null;
+        if (empty($g["v2"]) && in_array("lernangebot", $g["bereiche"] ?? [], true)) $g["bereiche"] = array_values(array_unique(array_merge($g["bereiche"], ["morgen", "buchstabenkurs", "leise"])));
+        return $g;
+    }
+    return null;
+}
+// Darf dieser Gast das Tafelbild (Schlüssel aus tafel/bausteine.php) öffnen?
+function lt_gastDarfBaustein($g, $b){ return isset(LT_BAUSTEIN_BEREICH[$b]) && lt_gastDarf($g, LT_BAUSTEIN_BEREICH[$b]); }
+// Hat der Gast überhaupt ein Tafelbild freigegeben?
+function lt_gastHatTafelbild($g){ foreach (array_keys(LT_BAUSTEIN_BEREICH) as $b) if (lt_gastDarfBaustein($g, $b)) return true; return false; }
+
 // Schutz gegen Durchprobieren: höchstens 8 falsche Codes in 15 Minuten pro Netzwerk
 function lt_tafelVersuche($falsch = false){
     $f = dirname(lt_tafelDatei()) . "/tafel-versuche.json";
