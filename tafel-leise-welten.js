@@ -7,7 +7,7 @@
 (function(){
 "use strict";
 
-const BILD = k => (window.LT_BILDER && window.LT_BILDER[k]) ? window.LT_BILDER[k][2] : "";
+const BILD = k => { const x = (window.LT_BILDER_GANZ && window.LT_BILDER_GANZ[k]) || (window.LT_BILDER && window.LT_BILDER[k]); return x ? x[2] : ""; };
 const zuf = (a, b) => a + Math.random() * (b - a);
 const mischen = l => { const a = l.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
@@ -296,7 +296,7 @@ WELTEN.winter = { titel: "Winterwald", emoji: "⛄", art: "ruhe",
       </svg>
       <div class="ebene"></div>`;
     const ebene = sz.querySelector(".ebene"), flocken = [...sz.querySelectorAll(".flocke")], teile = [...sz.querySelectorAll(".sm-teil")];
-    const plan = [["hase", .92, .08], ["hirsch", .86, .16], ["fuchs", .9, .1], ["eichhoernchen", .93, .07], ["vogel", .5, .07], ["eule", .58, .08]];
+    const plan = [["hase", .92, .08], ["hirsch", .86, .16], ["fuchs", .9, .14], ["eichhoernchen", .93, .07], ["vogel", .5, .07], ["eule", .58, .08]];
     const tiere = plan.map(([k, y, g], i) => ({ k, y, g, d: wesen(ebene, k), x: i % 2 ? 1.15 : -.15, zx: [.14, .28, .7, .84, .36, .9][i], da: false, t: 0 }));
     const schwellen = [.22, .36, .5, .62, .74, .86, .96];
     let maxP = 0;

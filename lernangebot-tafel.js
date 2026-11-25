@@ -14,7 +14,8 @@ const z = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
 const wahl = liste => liste[Math.floor(Math.random() * liste.length)];
 const mischen = liste => { const a = liste.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const bild = b => `<span class="lt-bild">${(window.LT_BILDER && window.LT_BILDER[b] && window.LT_BILDER[b][2]) || ""}</span>`;
+// Fuchs, Bär, Frosch und Löwe gibt es auch als ganzes Tier – die laufen in den Szenen herum
+const bild = b => { const x = (window.LT_BILDER_GANZ && window.LT_BILDER_GANZ[b]) || (window.LT_BILDER && window.LT_BILDER[b]); return `<span class="lt-bild">${(x && x[2]) || ""}</span>`; };
 const zahl = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 // Antwort-Optionen: richtige + falsche, gemischt; liefert { antworten, richtig }
 function optionen(richtig, falsche, n = 3){
