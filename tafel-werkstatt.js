@@ -66,6 +66,11 @@ const CSS = `
 .ws-auftrag{ display:grid; grid-template-columns:1fr 1fr; gap:1.4vmin; }
 .ws-auftrag div{ background:#353c45; border-radius:14px; padding:1.4vmin 1.8vmin; font-size:clamp(15px,2.2vmin,24px); font-weight:800; }
 .ws-auftrag div b{ color:#f2b705; display:block; }
+.ws-tipps{ display:flex; flex-direction:column; gap:1vmin; }
+.ws-tipp{ display:flex; gap:12px; align-items:center; background:#353c45; border-radius:14px; padding:1.2vmin 1.6vmin; font-size:clamp(15px,2.1vmin,22px); flex-wrap:wrap; }
+.ws-tipp .emo{ font-size:1.8em; } .ws-tipp small{ color:#c3c9cf; font-weight:700; font-size:.82em; }
+.ws-art{ background:#1f2328; color:#f2b705; border-radius:999px; padding:1px 10px; font-size:.75em; font-weight:900; }
+.ws-hinweis{ color:#aab2bb; font-weight:700; font-size:clamp(13px,1.7vmin,17px); }
 .ws-zeit{ font-weight:900; color:#f2b705; font-size:22px; min-width:2.4em; }
 .ws-ende{ text-align:center; display:flex; flex-direction:column; gap:2vmin; align-items:center; justify-content:center; flex:1; }
 @media (max-width:760px){
@@ -156,11 +161,15 @@ const REGELN = [
     ["🚑", "Jede Verletzung sofort der Lehrkraft melden."]
 ];
 
-const FILM_SUCHE = [
-    ["▶️ YouTube: Sicherheit im Werkraum", "https://www.youtube.com/results?search_query=Sicherheit+im+Werkraum+Schule"],
-    ["▶️ YouTube: Metall feilen und entgraten", "https://www.youtube.com/results?search_query=Metall+feilen+entgraten+Technikunterricht"],
-    ["▶️ YouTube: Holz sägen mit der Japansäge", "https://www.youtube.com/results?search_query=Japans%C3%A4ge+richtig+s%C3%A4gen+Holz+Schule"]
+// Film-Tipps: Planet Schule „Handwerkskunst!“ (SWR) – Themenseite laut Planet Schule online bis Mai 2028.
+// Die Filme sind lang (ca. 45 Min.) – nur einen Ausschnitt von 8–10 Minuten zeigen.
+const PS = "https://www.planet-schule.de/schwerpunkt/handwerkskunst/";
+const FILM_TIPPS = [
+    ["🚲", "Wie man ein Fahrrad baut", "Metall", PS + "wie-man-ein-fahrrad-baut-film-100.html", "Ein Rahmenbauer in Pforzheim schweißt jedes Stahlrohr selbst und baut daraus Lastenräder – echte Metallwerkstatt."],
+    ["⛵", "Wie man ein Boot baut", "Holz", PS + "wie-man-ein-boot-baut-film-100.html", "Bootsbau aus Holz – viel Handarbeit in der Holzwerkstatt."],
+    ["🌶️", "Wie man eine Pfeffermühle drechselt", "Holz", PS + "wie-man-eine-pfeffermuehle-drechselt-film-100.html", "Aus einem Stück Holz wird an der Drechselbank eine Pfeffermühle."]
 ];
+const FILM_SUCHE = [["▶️ Eigenen Film bei YouTube suchen", "https://www.youtube.com/results?search_query=Sicherheit+im+Werkraum+Schule"]];
 
 /* ---------- Zustand ---------- */
 const S = { kap: "quiz", a: 0, b: 0, dran: "a", q: 0, qWahl: null, f: 0, fStufe: 0, w: 0, wWahl: null, regeln: 0 };
@@ -225,8 +234,10 @@ function film(){
         <div class="ws-auftrag"><div><b>Team A</b>Welche Werkzeuge kommen vor? Für Holz oder Metall?</div><div><b>Team B</b>Welche Sicherheitsregeln seht ihr? Was wird richtig gemacht?</div></div>
         <div class="ws-film">${id ? `<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>` :
             u ? `<div class="leer">🎬<br><br><a class="ws-k gelb" href="${esc(u)}" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Film öffnen ↗</a></div>` :
-            `<div class="leer">Noch kein Film eingetragen.<br>Such dir unten kurz einen passenden Film aus (vorher reinschauen!) und füge den Link ein – er bleibt hier gespeichert.</div>`}</div>
+            `<div class="leer">Wähle unten einen Film-Tipp – er öffnet sich in einem neuen Fenster.<br>Oder füge einen eigenen Link ein (YouTube läuft dann direkt hier).</div>`}</div>
         <div class="ws-reihe"><input id="wsFilm" class="ws-eingabe" placeholder="Film-Link einfügen (YouTube wird direkt hier abgespielt)" value="${esc(u)}">${u ? `<button class="ws-k" data-a="filmweg">Link entfernen</button>` : ""}</div>
+        <div class="ws-tipps">${FILM_TIPPS.map(([e, t, art, url, txt]) => `<div class="ws-tipp"><div class="emo">${e}</div><div style="flex:1"><b>${esc(t)}</b> <span class="ws-art">${art}</span><br><small>${esc(txt)}</small></div><a class="ws-k gelb" href="${url}" target="_blank" rel="noopener" style="text-decoration:none;white-space:nowrap">Film öffnen ↗</a></div>`).join("")}
+            <div class="ws-hinweis">📺 Planet Schule (SWR) · Die Filme sind ca. 45 Minuten lang – zeig nur einen <b>Ausschnitt von 8–10 Minuten</b>. Vorher kurz reinschauen.</div></div>
         <div class="ws-reihe">${FILM_SUCHE.map(([n, l]) => `<a class="ws-k" href="${l}" target="_blank" rel="noopener" style="text-decoration:none">${n}</a>`).join("")}</div>`;
 }
 
