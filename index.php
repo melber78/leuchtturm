@@ -145,6 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-25", "Ruhige Arbeitszeit: Märchenwald & Winterlandschaft", "Zwei neue zauberhafte Szenen: ein Märchenschloss mit Glühwürmchen und leuchtenden Pilzen und eine verschneite Winterlandschaft mit Häuschen und leisem Schneefall.", "tafelbilder.php#ruhig"],
     ["2026-11-25", "Runterkommen & Bewegungspausen", "Runterkommen: Atem-Ballon/Atemkreis, Blume & Kerze, Box-Atmung, Glitzerglas, 5-4-3-2-1, Anspannen & Loslassen. Bewegungspause: eine Figur macht 13 Übungen am Platz vor – als Programm oder einzeln.", "tafelbilder.php#bewegung"],
     ["2026-11-25", "Lernspiel „Bootsfahrt zum Leuchtturm“", "Mathe & Deutsch für Kl. 1–4: Jede richtige Antwort bringt das Boot eine Boje weiter. An der Tafel Klasse gegen Ella oder allein am iPad mit Zahlenfeld und Vorlesen.", "tafelbilder.php#boot"],
     ["2026-11-25", "6 neue Tafelbilder für Mathe & Deutsch", "Schriftlich rechnen, Stellenwerttafel, Uhr & Zeit, Größen umrechnen, Prozent & Dezimalzahlen sowie Wortarten & Satzglieder – mit Bild, Merksatz und Schritten zum Aufdecken.", "tafelbilder.php"],

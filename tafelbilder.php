@@ -604,7 +604,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
         <button class="kachel" type="button" onclick="tafelRuhig.oeffnen('sek')">
             <div class="k-buehne" style="background:linear-gradient(135deg,#141b2e 0%,#3a3f5c 35%,#f2a675 60%,#0f3b45 100%);display:flex;align-items:center;justify-content:center;gap:10px;font-size:46px;">🏙️<span style="font-size:36px">🌊</span>🌌</div>
-            <div class="k-text"><h2>Ruhige Arbeitszeit (Kl. 5–9)</h2><p>Sachliche Szenen für konzentriertes Arbeiten: Stadt bei Regen, Meer, Polarlicht – mit ruhigem Klang und schlichter Zeitleiste.</p><div class="k-tags"><span>Arbeitsphase</span><span>Kl. 5–9</span><span>Klang</span></div></div>
+            <div class="k-text"><h2>Ruhige Arbeitszeit (Kl. 5–9)</h2><p>Sachliche Szenen für konzentriertes Arbeiten: Stadt bei Regen, Meer, Polarlicht, Winterlandschaft – mit ruhigem Klang und schlichter Zeitleiste.</p><div class="k-tags"><span>Arbeitsphase</span><span>Kl. 5–9</span><span>Klang</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
@@ -700,7 +700,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
         <button class="kachel" type="button" onclick="tafelRuhig.oeffnen('gs')">
             <div class="k-buehne" style="background:linear-gradient(135deg,#7fd3e6 0%,#1f7ea6 45%,#3c4a5e 55%,#ff9a4a 100%);display:flex;align-items:center;justify-content:center;gap:10px;font-size:46px;">🐟<span style="font-size:36px">🌧️</span>🔥</div>
-            <div class="k-text"><h2>Ruhige Arbeitszeit</h2><p>Läuft ganz ruhig nebenbei, wenn Flüstern erlaubt ist: Aquarium, Wolkenwiese, Regen am Fenster, Lagerfeuer – mit leisem Klang, ohne Mikrofon.</p><div class="k-tags"><span>Arbeitsphase</span><span>Kl. 1–4</span><span>Klang</span></div></div>
+            <div class="k-text"><h2>Ruhige Arbeitszeit</h2><p>Läuft ganz ruhig nebenbei, wenn Flüstern erlaubt ist: Aquarium, Wolkenwiese, Märchenwald, Regen am Fenster, Lagerfeuer, Winterlandschaft – mit leisem Klang, ohne Mikrofon.</p><div class="k-tags"><span>Arbeitsphase</span><span>Kl. 1–4</span><span>Klang</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>

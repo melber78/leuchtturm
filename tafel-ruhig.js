@@ -154,7 +154,14 @@ const CSS = `
 .rz-wolken .halm{ transform-box:fill-box; transform-origin:50% 100%; animation:rzWiegen 6s ease-in-out infinite; }
 .rz-feuer .glut{ position:absolute; left:50%; bottom:6%; width:min(110vw,1300px); aspect-ratio:2; transform:translateX(-50%); border-radius:50%; background:radial-gradient(ellipse at 50% 70%, rgba(255,150,60,.42), rgba(255,110,40,.12) 45%, rgba(255,110,40,0) 70%); animation:rzAtmen 3.5s ease-in-out infinite; }
 .rz-stadt .fenster-licht{ transition:opacity 4s; }
-.rz-polar .stern, .rz-feuer .stern{ position:absolute; width:2px; height:2px; border-radius:50%; background:#fff; box-shadow:0 0 5px rgba(255,255,255,.7); animation:rzFunkeln 5s ease-in-out infinite; }
+.rz-maerchen .licht, .rz-winter .fenster{ animation:rzFunkeln 7s ease-in-out infinite; --o1:.7; }
+.rz-maerchen .pilz{ animation:rzAtmen 5s ease-in-out infinite; transform-box:fill-box; transform-origin:50% 100%; }
+.rz-maerchen .bluete{ transform-box:fill-box; transform-origin:50% 100%; animation:rzWiegen 6s ease-in-out infinite; }
+.rz-maerchen .fahne{ transform-box:fill-box; transform-origin:0 50%; animation:rzWiegen 3s ease-in-out infinite; }
+.rz-maerchen .nebel{ position:absolute; left:0; width:60vw; height:14vh; border-radius:50%; background:radial-gradient(ellipse, rgba(255,230,255,.22), rgba(255,230,255,0) 70%); filter:blur(12px); animation:rzZiehen linear infinite; }
+.rz-winter .glimm{ animation:rzAtmen 5s ease-in-out infinite; transform-box:fill-box; transform-origin:50% 50%; }
+.rz-winter .glitzer{ animation:rzFunkeln 4s ease-in-out infinite; --o1:0; }
+.rz-maerchen .stern, .rz-winter .stern, .rz-polar .stern, .rz-feuer .stern{ position:absolute; width:2px; height:2px; border-radius:50%; background:#fff; box-shadow:0 0 5px rgba(255,255,255,.7); animation:rzFunkeln 5s ease-in-out infinite; }
 `;
 
 /* ======================= Szenen ======================= */
@@ -316,6 +323,127 @@ const SZENEN = {
         g.globalCompositeOperation = "source-over"; } };
     } },
 
+  maerchen: { titel: "Märchenwald", emoji: "🏰", stufe: "12", klang: ["spieluhr", "wind"], klangText: "leise Spieluhr",
+    text: "Ein Schloss auf dem Hügel, leuchtende Pilze und Glühwürmchen im Abendwald.", farbe: "radial-gradient(circle at 70% 25%, #ffe9c4, #8a6aa8 35%, #2a2052 80%)",
+    bauen(sz){
+      sz.classList.add("rz-maerchen");
+      const baum = (x, y, s, f, i) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-14 0 C-10 -60 -16 -120 -6 -170 L6 -170 C16 -120 10 -60 14 0Z" fill="${f[0]}"/>${[[0, -230, 95], [-70, -190, 70], [70, -185, 74], [-30, -280, 70], [40, -275, 62]].map(([cx, cy, r]) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${f[1]}"/>`).join("")}<circle cx="-30" cy="-260" r="40" fill="${f[2]}" opacity=".35"/></g>`;
+      const pilz = (x, y, s, i) => `<g transform="translate(${x} ${y}) scale(${s})"><g class="pilz" style="animation-delay:${-i * 1.7}s"><ellipse cx="0" cy="-40" rx="70" ry="50" fill="url(#rzmwPg)"/><path d="M-12 0 C-14 -20 -10 -34 -9 -40 L9 -40 C10 -34 14 -20 12 0Z" fill="#f6ead6"/><path d="M-44 -38 C-44 -72 44 -72 44 -38 C30 -44 -30 -44 -44 -38Z" fill="${["#e2574c", "#d65a9e", "#e98b3a"][i % 3]}"/>${[[-22, -54, 6], [8, -60, 5], [26, -48, 4.5], [-6, -46, 4]].map(([a, b, r]) => `<circle cx="${a}" cy="${b}" r="${r}" fill="#fff6e8"/>`).join("")}</g></g>`;
+      sz.innerHTML = `
+        <svg class="voll" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+          <defs><linearGradient id="rzmwH" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1442"/><stop offset=".45" stop-color="#4b3a80"/><stop offset=".72" stop-color="#b981b0"/><stop offset=".86" stop-color="#f2b8a4"/></linearGradient>
+            <radialGradient id="rzmwM" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff8e6"/><stop offset=".22" stop-color="#fff1cf"/><stop offset=".3" stop-color="#ffe9c4" stop-opacity=".45"/><stop offset="1" stop-color="#ffe9c4" stop-opacity="0"/></radialGradient>
+            <radialGradient id="rzmwPg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffd8a8" stop-opacity=".55"/><stop offset="1" stop-color="#ffd8a8" stop-opacity="0"/></radialGradient>
+            <radialGradient id="rzmwF" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe7a0" stop-opacity=".9"/><stop offset="1" stop-color="#ffe7a0" stop-opacity="0"/></radialGradient>
+            <linearGradient id="rzmwS" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4a3c7c"/><stop offset=".5" stop-color="#6e5a9e"/><stop offset="1" stop-color="#3e3270"/></linearGradient>
+            <linearGradient id="rzmwD" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8d5a9c"/><stop offset="1" stop-color="#4b3270"/></linearGradient>
+            <filter id="rzmwB"><feGaussianBlur stdDeviation="5"/></filter><filter id="rzmwB2"><feGaussianBlur stdDeviation="2"/></filter></defs>
+          <rect width="1600" height="900" fill="url(#rzmwH)"/>
+          <circle cx="1180" cy="190" r="260" fill="url(#rzmwM)"/>
+          <path d="M-200 600 Q200 480 520 540 T1100 500 T1800 540 V900 H-200Z" fill="#6c5596" opacity=".75" filter="url(#rzmwB)"/>
+          <!-- Schloss -->
+          <g transform="translate(800 520)">
+            <path d="M-260 60 Q-120 -10 0 -6 Q130 -12 270 60 V200 H-260Z" fill="#4a3a78"/>
+            <g fill="url(#rzmwS)">
+              <rect x="-110" y="-150" width="220" height="160"/><rect x="-190" y="-110" width="64" height="120"/><rect x="126" y="-110" width="64" height="120"/>
+              <rect x="-40" y="-250" width="80" height="110"/><rect x="-150" y="-70" width="300" height="80"/></g>
+            <g fill="url(#rzmwD)"><path d="M-198 -110 L-158 -200 L-118 -110Z"/><path d="M118 -110 L158 -200 L198 -110Z"/><path d="M-50 -250 L0 -360 L50 -250Z"/><path d="M-118 -150 L-80 -210 L-42 -150Z"/><path d="M42 -150 L80 -210 L118 -150Z"/></g>
+            <rect x="-118" y="-150" width="76" height="40" fill="url(#rzmwS)"/><rect x="42" y="-150" width="76" height="40" fill="url(#rzmwS)"/>
+            <path d="M0 -360 V-392" stroke="#d9c7f0" stroke-width="3"/><path class="fahne" d="M0 -392 L30 -384 L0 -374Z" fill="#ffb2c8"/>
+            <path d="M-22 10 V-26 a22 22 0 0 1 44 0 V10Z" fill="#2a2050"/>
+            ${[[-12, -222], [-12, -190], [-80, -120], [-20, -120], [40, -120], [-170, -80], [146, -80], [-80, -40], [60, -40], [-118, -40], [100, -40]].map(([x, y], i) => `<rect class="licht" style="animation-delay:${-i * 1.9}s" x="${x}" y="${y}" width="${i < 2 ? 24 : 18}" height="${i < 2 ? 22 : 24}" rx="9" fill="#ffd98a"/>`).join("")}
+            <circle cx="0" cy="-90" r="200" fill="url(#rzmwF)" opacity=".18"/>
+          </g>
+          <path d="M-200 680 Q300 600 760 640 Q1100 670 1800 610 V900 H-200Z" fill="#33285e"/>
+          <path d="M740 900 C760 800 790 720 800 640 C812 720 860 800 900 900Z" fill="#6a5a9a" opacity=".5"/>
+          <path d="M-200 760 Q400 700 900 760 T1800 740 V900 H-200Z" fill="#211a42"/>
+          ${baum(110, 780, 1.25, ["#1a1438", "#241c4a", "#6b5aa8"])}${baum(300, 820, .9, ["#1a1438", "#2b2254", "#7c68b4"])}${baum(1330, 800, 1.15, ["#1a1438", "#241c4a", "#6b5aa8"])}${baum(1520, 840, 1.35, ["#15102e", "#1f1840", "#5b4a98"])}
+          <g opacity=".9">${Array.from({ length: 26 }, (_, i) => { const x = (i * 61.7) % 1600, y = 800 + (i * 23) % 90; return `<g class="bluete" style="animation-delay:${-i * .9}s"><path d="M${x} ${y + 30} Q${x + 3} ${y + 14} ${x} ${y}" stroke="#3a6a5a" stroke-width="3" fill="none"/><circle cx="${x}" cy="${y}" r="${5 + i % 3}" fill="${["#9fe2ff", "#ffd1f0", "#e8d6ff", "#fff2a8"][i % 4]}"/></g>`; }).join("")}</g>
+          ${pilz(420, 880, 1, 0)}${pilz(500, 890, .6, 1)}${pilz(1160, 880, .85, 2)}${pilz(1230, 895, .55, 0)}${pilz(200, 900, .7, 1)}
+        </svg>
+        ${Array.from({ length: 70 }, (_, i) => `<i class="stern" style="left:${(i * 37.7) % 100}%;top:${(i * 23.3) % 42}%;animation-delay:${-i * .37}s"></i>`).join("")}
+        ${[[54, 220, 0], [62, 300, 1], [70, 260, 2]].map(([y, d, i]) => `<div class="nebel" style="top:${y}%;animation-duration:${d}s;animation-delay:${-i * 90}s"></div>`).join("")}`;
+      const L = leinwand(sz); L.c.style.mixBlendMode = "screen";
+      const wuermchen = Array.from({ length: 34 }, () => ({ x: zuf(0, 1), y: zuf(.45, .95), a: zuf(0, 7), v: zuf(.004, .012), r: zuf(1.6, 3.2), p: zuf(0, 7), w: zuf(0, 7) }));
+      let funkel = [], schnuppe = null, warte = zuf(15, 30);
+      return { frame(t, dt){
+        const [W, H] = L.passen(), g = L.g; g.clearRect(0, 0, W, H); const s = Math.max(W / 1600, H / 900);
+        for (const f of wuermchen){ f.w += dt * .4; f.a += Math.sin(f.w) * dt * .6; f.x += Math.cos(f.a) * f.v * dt; f.y += Math.sin(f.a) * f.v * dt * .6;
+          if (f.x < -.05) f.x = 1.05; if (f.x > 1.05) f.x = -.05; if (f.y < .42) f.a = Math.PI / 2; if (f.y > .97) f.a = -Math.PI / 2;
+          const hell = .35 + .65 * Math.max(0, Math.sin(t * .9 + f.p)), x = f.x * W, y = f.y * H, r = f.r * (s * .8 + .5);
+          const gr = g.createRadialGradient(x, y, 0, x, y, r * 7); gr.addColorStop(0, `rgba(255,246,170,${(hell * .9).toFixed(3)})`); gr.addColorStop(.25, `rgba(220,255,140,${(hell * .3).toFixed(3)})`); gr.addColorStop(1, "rgba(200,255,120,0)");
+          g.fillStyle = gr; g.beginPath(); g.arc(x, y, r * 7, 0, Math.PI * 2); g.fill(); }
+        // zarter Glitzerstaub, der langsam aufsteigt
+        if (Math.random() < dt * 3) funkel.push({ x: zuf(.05, .95), y: zuf(.7, 1), l: 0, d: zuf(6, 11), vx: zuf(-.01, .01) });
+        for (const p of funkel){ p.l += dt / p.d; p.y -= dt * .025; p.x += p.vx * dt; const a = Math.sin(p.l * Math.PI) * .8, x = p.x * W, y = p.y * H, r = (1.2 + Math.sin(t * 6 + p.d) * .5) * (s + .4);
+          g.fillStyle = `rgba(255,230,255,${a.toFixed(3)})`; g.beginPath(); g.moveTo(x, y - r * 3); g.lineTo(x + r * .7, y); g.lineTo(x, y + r * 3); g.lineTo(x - r * .7, y); g.closePath(); g.fill(); g.fillRect(x - r * 3, y - r * .35, r * 6, r * .7); }
+        funkel = funkel.filter(p => p.l < 1);
+        // ab und zu eine Sternschnuppe
+        if (!schnuppe){ warte -= dt; if (warte <= 0) schnuppe = { x: zuf(.1, .6), y: zuf(.05, .2), l: 0 }; }
+        else { schnuppe.l += dt / 1.6; const x = (schnuppe.x + schnuppe.l * .25) * W, y = (schnuppe.y + schnuppe.l * .1) * H, a = Math.sin(schnuppe.l * Math.PI);
+          const gr = g.createLinearGradient(x, y, x - W * .08, y - H * .032); gr.addColorStop(0, `rgba(255,255,255,${a.toFixed(3)})`); gr.addColorStop(1, "rgba(255,255,255,0)"); g.strokeStyle = gr; g.lineWidth = 2; g.beginPath(); g.moveTo(x, y); g.lineTo(x - W * .08, y - H * .032); g.stroke();
+          if (schnuppe.l >= 1){ schnuppe = null; warte = zuf(25, 50); } } } };
+    } },
+
+  winter: { titel: "Winterlandschaft", emoji: "❄️", stufe: "34", auch: "59", klang: ["wind", "flaeche"], klangText: "leiser Wind und warme Klänge",
+    text: "Leiser Schneefall über verschneiten Tannen, im Häuschen brennt warmes Licht.", farbe: "linear-gradient(#3a4a86,#c89ab8 55%,#eef3fb 56%)",
+    bauen(sz){
+      sz.classList.add("rz-winter");
+      const tanne = (x, y, s, d, i) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-7" y="-20" width="14" height="24" fill="${d ? "#3d3540" : "#5a4636"}"/>
+        ${[[0, 150], [1, 118], [2, 86], [3, 56]].map(([k, b]) => { const yy = -20 - k * 52; return `<path d="M${-b / 2} ${yy} L0 ${yy - 90} L${b / 2} ${yy}Z" fill="${d ? "#5b7590" : "#1f4a4a"}"/><path d="M${-b / 2} ${yy} Q${-b / 4} ${yy - 14} 0 ${yy - 4} Q${b / 4} ${yy - 16} ${b / 2} ${yy} Q${b / 4} ${yy - 30} 0 ${yy - 26} Q${-b / 4} ${yy - 28} ${-b / 2} ${yy}Z" fill="${d ? "#e4ecf8" : "#f4f8ff"}"/>`; }).join("")}
+        <path d="M-18 ${-20 - 3 * 52 - 70} L0 ${-20 - 3 * 52 - 90} L18 ${-20 - 3 * 52 - 70}Z" fill="#fff"/></g>`;
+      sz.innerHTML = `
+        <svg class="voll" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+          <defs><linearGradient id="rzwiH" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2656"/><stop offset=".38" stop-color="#4a5394"/><stop offset=".6" stop-color="#b48bb6"/><stop offset=".72" stop-color="#f4c2b4"/></linearGradient>
+            <radialGradient id="rzwiM" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fbfbff"/><stop offset=".2" stop-color="#eef2ff"/><stop offset=".28" stop-color="#dfe6ff" stop-opacity=".35"/><stop offset="1" stop-color="#dfe6ff" stop-opacity="0"/></radialGradient>
+            <linearGradient id="rzwiB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dde3f3"/><stop offset="1" stop-color="#a9b4d4"/></linearGradient>
+            <linearGradient id="rzwiS1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9eefa"/><stop offset="1" stop-color="#c3cde6"/></linearGradient>
+            <linearGradient id="rzwiS2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbfcff"/><stop offset="1" stop-color="#d9e1f2"/></linearGradient>
+            <linearGradient id="rzwiSee" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c8a6c8"/><stop offset="1" stop-color="#8a98c8"/></linearGradient>
+            <radialGradient id="rzwiL" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffcf7a" stop-opacity=".75"/><stop offset="1" stop-color="#ffb05a" stop-opacity="0"/></radialGradient>
+            <filter id="rzwiF"><feGaussianBlur stdDeviation="4"/></filter></defs>
+          <rect width="1600" height="900" fill="url(#rzwiH)"/>
+          <circle cx="420" cy="170" r="230" fill="url(#rzwiM)"/>
+          <path d="M-200 560 L80 420 L230 480 L420 340 L600 470 L760 400 L900 480 L1080 360 L1260 470 L1420 400 L1800 520 V640 H-200Z" fill="url(#rzwiB)" opacity=".9"/>
+          <path d="M420 340 L470 380 L440 396 L410 372 L380 390 L392 360Z M1080 360 L1130 400 L1096 410 L1070 392 L1040 404Z" fill="#fff" opacity=".8"/>
+          <g opacity=".75" filter="url(#rzwiF)">${[0, 70, 140, 1300, 1380, 1460, 1540].map((x, i) => tanne(x, 640, .55 + (i % 3) * .08, true, i)).join("")}</g>
+          <path d="M-200 640 Q300 580 760 620 T1800 600 V900 H-200Z" fill="url(#rzwiS1)"/>
+          <ellipse cx="420" cy="705" rx="200" ry="30" fill="url(#rzwiSee)" opacity=".85"/><ellipse cx="385" cy="699" rx="105" ry="8" fill="#fff" opacity=".35"/>
+          ${[[150, 700, .9], [610, 715, .7], [1250, 700, 1], [1350, 730, .75], [1440, 690, 1.05], [80, 740, 1.15]].map(([x, y, s], i) => tanne(x, y, s, false, i)).join("")}
+          <!-- Häuschen -->
+          <g transform="translate(820 700)">
+            <circle cx="0" cy="-30" r="180" fill="url(#rzwiL)" class="glimm"/>
+            <rect x="-90" y="-80" width="180" height="90" fill="#8a5636"/>${[0, 1, 2, 3, 4].map(k => `<rect x="-90" y="${-80 + k * 18}" width="180" height="2" fill="#6a3e26" opacity=".6"/>`).join("")}
+            <rect x="46" y="-170" width="24" height="70" fill="#7a5a4a"/><rect x="42" y="-180" width="32" height="14" rx="6" fill="#fff"/>
+            <path d="M-118 -76 L0 -158 L118 -76 Z" fill="#6a3e26"/><path d="M-124 -72 Q-60 -96 0 -164 Q60 -96 124 -72 Q110 -62 96 -70 Q50 -60 0 -70 Q-50 -60 -96 -70 Q-110 -62 -124 -72Z" fill="#fbfcff"/>
+            <rect class="fenster" x="-66" y="-58" width="38" height="34" rx="4" fill="#ffd27a"/><rect class="fenster" x="28" y="-58" width="38" height="34" rx="4" fill="#ffd27a"/>
+            <path d="M-47 -58 V-24 M-66 -41 H-28 M47 -58 V-24 M28 -41 H66" stroke="#6a3e26" stroke-width="3"/>
+            <rect x="-14" y="-40" width="28" height="50" rx="3" fill="#5a321e"/><circle cx="8" cy="-14" r="2.5" fill="#ffd27a"/>
+            <path d="M-100 10 Q0 -6 100 10 Q60 22 0 20 Q-60 22 -100 10Z" fill="#fff"/>
+            <g transform="translate(-140 -10)"><rect x="-3" y="-40" width="6" height="50" fill="#3a3040"/><rect x="-10" y="-58" width="20" height="20" rx="3" fill="#ffe2a0"/><circle cx="0" cy="-48" r="40" fill="url(#rzwiL)" class="glimm"/></g>
+          </g>
+          <path d="M-200 780 Q400 720 900 780 T1800 770 V900 H-200Z" fill="url(#rzwiS2)"/>
+          <path d="M-200 850 Q500 810 1000 850 T1800 840 V900 H-200Z" fill="#fff"/>
+          ${Array.from({ length: 60 }, (_, i) => `<circle class="glitzer" style="animation-delay:${-i * .53}s" cx="${(i * 89.3) % 1600}" cy="${720 + (i * 37) % 175}" r="${1.4 + i % 3 * .6}" fill="#fff"/>`).join("")}
+        </svg>
+        ${Array.from({ length: 50 }, (_, i) => `<i class="stern" style="left:${(i * 37.7) % 100}%;top:${(i * 23.3) % 34}%;animation-delay:${-i * .37}s"></i>`).join("")}`;
+      const L = leinwand(sz);
+      const flocken = Array.from({ length: 220 }, (_, i) => { const z = i < 150 ? zuf(.25, .6) : i < 205 ? zuf(.6, 1) : zuf(1.4, 2.2); return { x: zuf(0, 1), y: zuf(0, 1), z, p: zuf(0, 7) }; });
+      let rauch = [];
+      return { frame(t, dt){
+        const [W, H] = L.passen(), g = L.g; g.clearRect(0, 0, W, H); const s = Math.max(W / 1600, H / 900), ox = (W - 1600 * s) / 2, oy = H - 900 * s;
+        // Rauch aus dem Schornstein (Szene 878|520)
+        if (Math.random() < dt * 2.2) rauch.push({ x: 878, y: 515, l: 0, d: zuf(6, 9), dx: zuf(10, 30) });
+        for (const r of rauch){ r.l += dt / r.d; const x = ox + (r.x + r.dx * r.l * 3 + Math.sin(r.l * 6) * 8) * s, y = oy + (r.y - r.l * 170) * s, rad = (10 + r.l * 40) * s, a = (1 - r.l) * .28;
+          const gr = g.createRadialGradient(x, y, 0, x, y, rad); gr.addColorStop(0, `rgba(235,235,245,${a.toFixed(3)})`); gr.addColorStop(1, "rgba(235,235,245,0)"); g.fillStyle = gr; g.beginPath(); g.arc(x, y, rad, 0, Math.PI * 2); g.fill(); }
+        rauch = rauch.filter(r => r.l < 1);
+        // Schneeflocken in drei Tiefen
+        for (const f of flocken){ f.y += dt * .022 * f.z; f.x += Math.sin(t * .4 + f.p) * dt * .004 * f.z + dt * .002; if (f.y > 1.03){ f.y = -.03; f.x = zuf(0, 1); } if (f.x > 1.02) f.x = -.02;
+          const x = f.x * W, y = f.y * H, r = f.z * (s * 1.8 + .6), a = f.z > 1.3 ? .45 : .55 + f.z * .35;
+          if (f.z > 1.3){ const gr = g.createRadialGradient(x, y, 0, x, y, r * 2.4); gr.addColorStop(0, `rgba(255,255,255,${a})`); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.beginPath(); g.arc(x, y, r * 2.4, 0, Math.PI * 2); g.fill(); }
+          else { g.fillStyle = `rgba(255,255,255,${Math.min(1, a).toFixed(2)})`; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill(); } } } };
+    } },
+
   stadt: { titel: "Stadt bei Regen", emoji: "🏙️", stufe: "59", klang: ["regen:leise", "flaeche"], klangText: "Regen und ruhige Klangfläche",
     text: "Blick aus dem Fenster auf eine Stadt bei Nacht, Regen läuft an der Scheibe herunter.", farbe: "linear-gradient(#141b2e,#3a3f5c)",
     bauen(sz){
@@ -419,7 +547,7 @@ function wahlZeigen(){
     const zeig = gruppe === "gs" ? ["12", "34"] : gruppe === "sek" ? ["59"] : ["12", "34", "59"];
     el.className = "an";
     el.innerHTML = `<div class="rz-wahl"><div class="rz-wahl-kopf"><div><h2>🎧 Ruhige Arbeitszeit</h2><small>Läuft ganz ruhig nebenbei – ohne Mikrofon, ohne Punkte. Flüstern ist erlaubt.</small></div><button data-a="zu" title="Schließen">✕</button></div>
-      ${GRUPPEN.filter(([g]) => zeig.includes(g)).map(([g, n]) => `<div class="rz-gruppe">${n}</div><div class="rz-karten">${Object.entries(SZENEN).filter(([, s]) => s.stufe === g).map(([k, s]) => `<button class="rz-karte" data-szene="${k}"><div class="bild" style="background:${s.farbe}">${s.emoji}</div><div class="text"><h3>${s.titel}</h3><p>${s.text}</p><span class="klang">🔈 ${s.klangText}</span></div></button>`).join("")}</div>`).join("")}
+      ${GRUPPEN.filter(([g]) => zeig.includes(g)).map(([g, n]) => `<div class="rz-gruppe">${n}</div><div class="rz-karten">${Object.entries(SZENEN).filter(([, s]) => s.stufe === g || (s.auch === g && !zeig.includes(s.stufe))).map(([k, s]) => `<button class="rz-karte" data-szene="${k}"><div class="bild" style="background:${s.farbe}">${s.emoji}</div><div class="text"><h3>${s.titel}</h3><p>${s.text}</p><span class="klang">🔈 ${s.klangText}</span></div></button>`).join("")}</div>`).join("")}
       ${gruppe !== "alle" ? `<div class="rz-gruppe" style="text-align:center"><button class="rz-k" data-a="alle" style="background:#28465f">Alle Szenen zeigen</button></div>` : ""}</div>`;
 }
 
