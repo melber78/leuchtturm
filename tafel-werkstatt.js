@@ -1,7 +1,8 @@
 /* ===============================================================
-   Tafelbild: Werkstatt-Führerschein (Technik Kl. 5–7)
-   Arbeiten mit Holz und Metall – sicher und richtig.
-   Einstiegs-Quiz · Film · Unfall-Akten · Holz oder Metall? · Regeln & Führerschein
+   Tafelbild: Holz & Metall – Werkstoff-Duell (Technik Kl. 5–7)
+   Passend zu den Arbeitsblättern: Stahl & Werkzeugkunde, Fe- und NE-Metalle,
+   Laub-/Nadelholz, heimisch/exotisch, Holzschutz, Aufbau des Stammes, Holzwerkstoffe.
+   Quiz · Fe oder NE? · Holzarten · Baumstamm · Holz arbeitet · Werkzeug · Film · Werkstatt-Regeln
    Alles läuft über die Tafel, Punkte für Team A / Team B (keine Eule – für die Großen).
    =============================================================== */
 (function(){
@@ -85,26 +86,26 @@ const CSS = `
 /* ---------- Inhalte ---------- */
 // Quiz: [Frage, [richtig, falsch, falsch, falsch], Erklärung, Position der richtigen Antwort 0–3]
 const QUIZ = [
-    ["Was ist ein „Grat“ an einem Werkstück aus Metall?", ["Ein scharfer, rauer Rand an der Schnittkante", "Die Zacken am Sägeblatt", "Die Linie, an der man absägen will", "Eine dünne Leiste zum Abstützen"],
-        "Beim Sägen und Feilen bleibt an der Kante ein scharfer, rauer Rand stehen – der Grat. Daran schneidet man sich leicht. Deshalb wird jede Schnittkante sofort <b>entgratet</b> (mit Feile oder Entgrater).", 2],
-    ["Womit entfernt man Metallspäne von der Werkbank?", ["Mit Handfeger oder Pinsel", "Mit einem feuchten Lappen", "Mit dem Ärmel abstreifen", "Kräftig wegpusten"],
-        "Späne sind winzige, scharfe Splitter. Mit Lappen oder Ärmel drückt man sie in Stoff und Haut, beim Pusten fliegen sie in die Augen. Richtig: <b>Handfeger oder Pinsel</b>.", 1],
-    ["Eine Japansäge (für Holz) sägt …", ["… auf Zug – also beim Ziehen", "… auf Stoß – also beim Schieben", "… in beide Richtungen gleich stark", "… nur, wenn man fest aufdrückt"],
-        "Die Zähne der Japansäge zeigen zum Griff hin. Sie schneidet beim <b>Ziehen</b> – deshalb ist das Blatt so dünn und der Schnitt so fein. Druck braucht man kaum.", 3],
-    ["Bei der Metallbügelsäge zeigen die Zähne …", ["… vom Griff weg nach vorn", "… zum Griff hin", "… nach oben", "Das ist egal, sie sägt immer"],
-        "Die Metallsäge arbeitet <b>auf Stoß</b>: Sie schneidet beim Schieben vom Körper weg. Deshalb zeigen die Zähne nach vorn. Zurück zieht man sie ohne Druck.", 0],
-    ["Warum darf man eine Feile nie ohne Griff (Heft) benutzen?", ["Das spitze hintere Ende kann in die Hand stechen", "Sie feilt dann schief", "Sie wird dann schnell stumpf", "Sie wird beim Feilen zu heiß"],
-        "Hinten hat die Feile eine spitze Angel. Ohne festen Griff rammt man sie sich beim Feilen in die Handfläche. Vorher prüfen: <b>Sitzt der Griff fest?</b>", 1],
-    ["Wann drückt man beim Feilen auf die Feile?", ["Nur beim Vorschieben", "Nur beim Zurückziehen", "Hin und zurück gleich stark", "Gar nicht, die Feile arbeitet allein"],
-        "Die Feile schneidet nur <b>nach vorn</b>. Beim Zurückziehen wird sie nur leicht geführt – sonst wird sie stumpf und das Werkstück zerkratzt.", 2],
-    ["Wie hält man ein Werkstück beim Sägen richtig fest?", ["Im Schraubstock oder mit einer Zwinge", "Mit der freien Hand fest auf den Tisch drücken", "Mit dem Knie gegen die Werkbank pressen", "Gar nicht – schwere Teile liegen von allein still"],
-        "Ein Werkstück, das nur mit der Hand gehalten wird, rutscht weg – und die Säge springt auf die Finger. Darum: <b>immer einspannen</b>. Beide Hände bleiben dann am Werkzeug.", 0],
-    ["Wozu legt man Schutzbacken in den Schraubstock?", ["Damit weiche Werkstücke keine Abdrücke bekommen", "Damit der Schraubstock nicht rostet", "Damit man weniger fest drehen muss", "Damit der Schraubstock leiser ist"],
-        "Die Backen des Schraubstocks sind geriffelt und hart. Holz oder Aluminium bekommen davon hässliche Abdrücke. <b>Schutzbacken</b> aus Kunststoff, Holz oder Alu schonen das Werkstück.", 3],
-    ["Wie schleift man Holz am glattesten?", ["In Richtung der Holzfasern", "Quer zu den Holzfasern", "In kleinen Kreisen", "So schnell wie möglich hin und her"],
-        "Wer quer zur Faser schleift, reißt Kratzer ins Holz, die man später sieht. Glatt wird es <b>in Faserrichtung</b> – erst mit grobem, dann mit feinem Schleifpapier.", 1],
-    ["Was macht man nach dem Arbeiten mit Metall immer?", ["Hände waschen", "Das Werkzeug einölen", "Das Werkstück mit Wasser abkühlen", "Die Fenster schließen"],
-        "An den Händen klebt feiner Metallstaub. Ohne Waschen landet er im Mund (Pausenbrot!) oder in den Augen. Deshalb nach Metallarbeiten: <b>immer Hände waschen</b>.", 2]
+    ["Woraus besteht Stahl?", ["Aus Eisen und ganz wenig Kohlenstoff", "Aus Eisen und Aluminium", "Aus Eisen und Kupfer", "Aus besonders reinem Eisen"],
+        "Dem geschmolzenen Eisen wird <b>weniger als 2 % Kohlenstoff</b> beigemischt. Dadurch wird aus dem weichen Eisen der harte, belastbare Stahl.", 2],
+    ["Was ist eine „Legierung“?", ["Eine Mischung aus verschiedenen Stoffen", "Ein Schutzlack gegen Rost", "Ein besonders reines Metall", "Ein Werkzeug zum Entgraten"],
+        "Eine Legierung ist eine <b>Mischung</b> – zum Beispiel Eisen + Kohlenstoff = Stahl, oder Kupfer + Zink = Messing.", 1],
+    ["Welches davon ist ein Eisenmetall (Fe)?", ["Stahl", "Messing", "Zink", "Kupfer"],
+        "<b>Stahl</b> besteht hauptsächlich aus Eisen. Messing, Zink und Kupfer enthalten kein Eisen – das sind NE-Metalle.", 3],
+    ["Wie findest du am schnellsten heraus, ob eine Schraube aus Eisen ist?", ["Mit einem Magneten", "Man legt sie ins Wasser", "Man prüft, wie sie glänzt", "Man biegt sie mit der Hand"],
+        "Eisenmetalle sind <b>magnetisch</b> – die Schraube bleibt am Magneten hängen. Messing oder Aluminium nicht.", 0],
+    ["Warum sind fast alle Stromkabel aus Kupfer?", ["Kupfer leitet den Strom sehr gut", "Kupfer ist magnetisch", "Kupfer ist das leichteste Metall", "Kupfer ist das billigste Metall"],
+        "Kupfer ist ein NE-Metall und <b>leitet Strom hervorragend</b> – deshalb steckt es in fast jedem Kabel.", 2],
+    ["Was ist der größte Feind von Eisen?", ["Feuchtigkeit – Eisen rostet", "Hitze – Eisen schmilzt schnell", "Kälte – Eisen wird brüchig", "Licht – Eisen bleicht aus"],
+        "Eisen kann <b>rosten</b>, wenn es nass wird. NE-Metalle wie Aluminium oder Zink rosten nicht – darum sind Dachrinnen oft aus Zink.", 1],
+    ["Welches Holz ist ein Nadelholz (Weichholz)?", ["Kiefer", "Buche", "Eiche", "Ahorn"],
+        "<b>Kiefer</b>, Fichte und Tanne sind Nadelhölzer: Sie wachsen schneller, sind weicher und enthalten viel Harz. Buche, Eiche und Ahorn sind harte Laubhölzer.", 3],
+    ["Was passiert, wenn Holz Feuchtigkeit aufnimmt?", ["Es dehnt sich aus – es quillt", "Es zieht sich zusammen – es schwindet", "Es wird härter", "Es verändert sich gar nicht"],
+        "Nasses Holz <b>quillt</b> (dehnt sich aus), trockenes Holz <b>schwindet</b> (zieht sich zusammen). Passiert das ungleichmäßig, <b>verzieht</b> sich das Brett. Man sagt: Holz arbeitet.", 0],
+    ["Woraus besteht eine Spanplatte?", ["Aus gepressten, verleimten Holzspänen", "Aus kreuzweise verleimten Holzschichten", "Aus feinsten gepressten Holzfasern", "Aus einem einzigen Stück Baumstamm"],
+        "Spanplatte = <b>gepresste Späne</b> (oft mit Kunststoff beschichtet). Kreuzweise Schichten = Sperrholz. Feinste Fasern = MDF-Platte.", 2],
+    ["Was bedeutet „konstruktiver Holzschutz“?", ["Holz so verbauen, dass Regenwasser sofort abfließt", "Holz mit Lack oder Öl anstreichen", "Holz mit Chemie gegen Holzwürmer spritzen", "Holz im Ofen trocknen"],
+        "Konstruktiv = durch die <b>Bauweise</b> schützen: Das Wasser kann ablaufen. Lack, Öl und Lasur sind dagegen <b>chemischer</b> Holzschutz.", 1]
 ];
 
 // Unfall-Akten: [Emoji, Fall, Was ist schiefgelaufen?, Regel]
@@ -131,22 +132,78 @@ const FAELLE = [
         "Kein Unfall – aber ein Arbeitsfehler: Quer zur Faser reißt das Schleifpapier Kratzer ins Holz.", "Holz immer <b>in Faserrichtung</b> schleifen – erst grob, dann fein."]
 ];
 
-// Holz oder Metall? [Emoji, Werkzeug, Antwort 0=Holz 1=Metall 2=beides, Erklärung]
-const WERKZEUG = [
-    ["🪚", "Japansäge / Feinsäge", 0, "Für <b>Holz</b>. Sie sägt auf Zug und macht feine, gerade Schnitte."],
-    ["🔩", "Metallbügelsäge", 1, "Für <b>Metall</b> (auch Kunststoff). Ganz feine Zähne, sägt auf Stoß."],
-    ["🧽", "Schleifpapier", 2, "<b>Beides!</b> Es gibt Schleifpapier für Holz und für Metall – zum Glätten und Entgraten."],
-    ["📍", "Reißnadel", 1, "Für <b>Metall</b>. Damit ritzt man die Linie ein – ein Bleistiftstrich wäre auf Metall kaum zu sehen."],
-    ["✏️", "Bleistift und Anschlagwinkel", 0, "Für <b>Holz</b>: Linie anzeichnen, bevor gesägt wird. Der Winkel sorgt für rechte Winkel."],
-    ["🗜️", "Schraubstock", 2, "<b>Beides!</b> Er hält jedes Werkstück fest. Für Holz und weiches Metall: Schutzbacken einlegen."],
-    ["🪵", "Holzraspel", 0, "Für <b>Holz</b>. Grobe Zähne nehmen schnell viel Holz ab."],
-    ["📏", "Feile", 2, "<b>Beides</b> – vor allem aber Metall: zum Formen und Entgraten. Für Holz gibt es eigene Holzfeilen."],
-    ["🎯", "Körner", 1, "Für <b>Metall</b>: Er schlägt eine kleine Kuhle, damit der Bohrer beim Bohren nicht wegrutscht."],
-    ["🪥", "Feilenbürste", 1, "Für <b>Metall</b>-Feilen: Sie bürstet die Späne aus den Rillen der Feile."],
-    ["〰️", "Laubsäge", 2, "Gemein: <b>beides!</b> Mit Holzsägeblatt für Holz – mit Metallsägeblatt kann sie auch dünnes Blech sägen."],
-    ["🔪", "Entgrater", 1, "Für <b>Metall</b>: Damit nimmt man den scharfen Grat von Kanten und Bohrlöchern."]
+// Sortier-Spiele: Einträge [Emoji, Name, richtige Option, Erklärung]
+const SPIELE = {
+    metall: { titel: "Werkstoff", frage: "Eisenmetall (Fe) oder Nichteisenmetall (NE)?", wahl: ["🧲 Eisenmetall (Fe)", "✨ Nichteisenmetall (NE)"], liste: [
+        ["🥫", "Getränkedose aus Aluminium", 1, "<b>NE</b> – Aluminium ist federleicht und rostet nicht."],
+        ["🔌", "Stromkabel", 1, "<b>NE</b> – innen steckt Kupfer, das leitet Strom perfekt."],
+        ["🔩", "Eiserne Bastelschraube", 0, "<b>Fe</b> – sie ist aus Eisen und bleibt am Magneten hängen."],
+        ["🛤️", "Eisenbahnschiene", 0, "<b>Fe</b> – aus Stahl, weil sie riesige Lasten tragen muss."],
+        ["🏠", "Dachrinne", 1, "<b>NE</b> – meist aus Zink, das hält Wind und Wetter stand."],
+        ["✈️", "Flugzeug", 1, "<b>NE</b> – Aluminium, weil es viel leichter ist als Eisen."],
+        ["🔨", "Hammerkopf", 0, "<b>Fe</b> – aus Stahl: extrem hart und belastbar."],
+        ["🎺", "Trompete", 1, "<b>NE</b> – aus Messing (Kupfer + Zink)."],
+        ["🌉", "Große Brücke", 0, "<b>Fe</b> – Stahl ist hart, elastisch und unfassbar belastbar."],
+        ["🧻", "Alufolie", 1, "<b>NE</b> – Aluminium, das Wort steckt schon im Namen."],
+        ["🛞", "Autofelge aus Stahl", 0, "<b>Fe</b> – Stahl ist stark und hält große Belastungen aus."],
+        ["🔑", "Goldfarbener Schlüssel aus Messing", 1, "<b>NE</b> – Messing ist eine Kupfer-Zink-Legierung, ein Magnet zieht ihn nicht an."]
+    ]},
+    holz: { titel: "Holzart", frage: "Nadelholz, heimisches Laubholz – oder exotisches Tropenholz?", wahl: ["🌲 Nadelholz (weich)", "🌳 Laubholz (hart)", "🌴 Exotisch"], liste: [
+        ["🌲", "Fichte", 0, "<b>Nadelholz</b> – heimisch, wächst schnell, weich, viel Harz."],
+        ["🌳", "Eiche", 1, "<b>Laubholz</b> – heimisch, hart, schwer, hält sehr lange."],
+        ["🌴", "Teak", 2, "<b>Exotisch</b> – Tropenholz, von Natur aus wasserfest. Beliebt für Gartenmöbel und Schiffsdecks."],
+        ["🌲", "Kiefer", 0, "<b>Nadelholz</b> – heimisch und weich, leicht zu verarbeiten."],
+        ["🌳", "Buche", 1, "<b>Laubholz</b> – heimisch und hart, z. B. für Möbel und Parkett."],
+        ["🌴", "Mahagoni", 2, "<b>Exotisch</b> – rötlich-braunes Tropenholz für teure Möbel."],
+        ["🌳", "Ahorn", 1, "<b>Laubholz</b> – heimisches Hartholz."],
+        ["🌲", "Tanne", 0, "<b>Nadelholz</b> – heimisches Weichholz."],
+        ["🌴", "Ebenholz", 2, "<b>Exotisch</b> – tiefschwarzes, extrem hartes Tropenholz."],
+        ["🌳", "Birke", 1, "<b>Laubholz</b> – heimisch, mitteleuropäischer Baum mit weißer Rinde."],
+        ["🌴", "Palisander", 2, "<b>Exotisch</b> – Tropenholz, z. B. für Musikinstrumente."]
+    ]},
+    platte: { titel: "Holzwerkstoff", frage: "Welcher Holzwerkstoff ist das?", wahl: ["🧩 Spanplatte", "📚 Sperrholz", "⬜ MDF-Platte"], liste: [
+        ["🗄️", "Günstiges Regal aus gepressten, verleimten Holzspänen, mit Kunststoff beschichtet", 0, "<b>Spanplatte</b> – aus Spänen gepresst und verleimt."],
+        ["🚪", "Rückwand eines Schranks aus dünnen, kreuzweise verleimten Holzschichten", 1, "<b>Sperrholz</b> – die Schichten liegen kreuzweise, damit es sich nicht verzieht."],
+        ["🍽️", "Glatte, schwere Küchenschrank-Front aus feinsten gepressten Holzfasern", 2, "<b>MDF-Platte</b> – aus feinsten Fasern, ganz glatt."]
+    ]},
+    werkzeug: { titel: "Werkzeug", frage: "Für Holz, für Metall – oder für beides?", wahl: ["🪵 Holz", "🔩 Metall", "🤝 Beides"], liste: [
+        ["🔩", "Metallsäge", 1, "<b>Metall</b> – feines Sägeblatt, schneidet das harte Metall präzise in Form."],
+        ["📏", "Metallfeile", 1, "<b>Metall</b> – raue Oberfläche, glättet scharfe Kanten nach dem Schnitt (Entgraten)."],
+        ["📍", "Anreißnadel", 1, "<b>Metall</b> – ritzt feine Linien ein. Ein Bleistift würde auf Metall verschmieren."],
+        ["🪚", "Feinsäge / Japansäge", 0, "<b>Holz</b> – macht feine, gerade Schnitte im Holz."],
+        ["✏️", "Bleistift zum Anzeichnen", 0, "<b>Holz</b> – auf Holz sieht man den Strich gut. Auf Metall nimmt man die Anreißnadel."],
+        ["🪵", "Holzraspel", 0, "<b>Holz</b> – grobe Zähne nehmen schnell viel Holz ab."],
+        ["🧽", "Schleifpapier", 2, "<b>Beides!</b> Es gibt Schleifpapier für Holz und für Metall."],
+        ["🗜️", "Schraubstock", 2, "<b>Beides!</b> Er hält jedes Werkstück fest – auch das Metallrohr beim Sägen."],
+        ["〰️", "Laubsäge", 2, "Gemein: <b>beides!</b> Mit Metallsägeblatt sägt sie auch dünnes Blech."]
+    ]}
+};
+
+// Aufbau des Baumstamms (von außen nach innen): [Name, Beschreibung, Farbe, Radius]
+const STAMM = [
+    ["Borke", "Die äußerste, harte Schicht. Sie schützt den Baum vor Kälte und Verletzungen.", "#5b3a22", 150],
+    ["Bast", "Leitet die in den Blättern hergestellten Nährstoffe nach unten.", "#9c6b3f", 136],
+    ["Kambium", "Die hauchdünne Wachstumsschicht – hier entstehen neue Holzzellen.", "#7fb069", 129],
+    ["Splintholz", "Das hellere, äußere Holz. Es transportiert Wasser und Nährstoffe nach oben.", "#f1d9a6", 124],
+    ["Kernholz", "Das dunklere, innere Holz. Es ist abgestorben und gibt dem Baum seine Stabilität.", "#c48a4f", 74],
+    ["Markröhre", "Das innerste Zentrum. Sie ist beim jungen Trieb entstanden.", "#6e4a2a", 9]
 ];
-const WAHL = ["🪵 Holz", "🔩 Metall", "🤝 Beides"];
+
+// Holz arbeitet – Lückentext
+const LUECKEN = [
+    ["Wenn Holz Feuchtigkeit aufnimmt, dehnt es sich aus. Das nennt man", "quellen", "💧"],
+    ["Gibt das Holz bei trockener Luft Wasser ab, zieht es sich zusammen. Das nennt man", "schwinden", "☀️"],
+    ["Passiert das ungleichmäßig, kann sich ein Brett dauerhaft", "verziehen", "〰️"],
+    ["Holz lässt sich entlang der … viel leichter spalten als quer zu ihr:", "Faserrichtung", "🪓"]
+];
+
+// Arbeitsschritte Metallrohr (richtige Reihenfolge)
+const SCHRITTE = [
+    ["📍", "Ich zeichne die Schnittlinie mit der Anreißnadel auf dem Rohr an."],
+    ["🗜️", "Ich spanne das Rohr ein und schneide es mit der Metallsäge durch."],
+    ["📏", "Ich benutze die Metallfeile, um das Rohr sauber zu entgraten."]
+];
+const SCHRITT_MISCH = [2, 0, 1];
 
 const REGELN = [
     ["🚪", "Werkstatt nur mit der Lehrkraft betreten."],
@@ -164,16 +221,15 @@ const REGELN = [
 // Film-Tipps (YouTube, laufen direkt in der Präsentation). Vor der Stunde kurz reinschauen.
 const YT = id => "https://www.youtube.com/watch?v=" + id;
 const FILM_TIPPS = [
-    ["🔩", "Metallbearbeitung in der Schule", "Metall", YT("SzvKnzW9Ksw"), "Die Grundtechniken im Technikunterricht: Metall sägen, bohren, schneiden, schleifen und entgraten."],
-    ["📏", "Die Feile – Aufbau und Nutzung", "Metall", YT("d2_y0i6spGY"), "Feilenarten, Hieb, richtig feilen und die Feile mit der Feilenbürste sauber machen."],
-    ["🧊", "Metallwürfel – Anzeichnen und plan feilen", "Metall", YT("xHRJ_5MffZY"), "Ein Schulwerkstück aus Aluminium: anreißen und glatt feilen – Schritt für Schritt."]
+    ["🔩", "Metallbearbeitung in der Schule", "Metall", YT("SzvKnzW9Ksw"), "Werkzeuge aus Arbeitsblatt 3 in Aktion: Metall sägen, schneiden, schleifen und entgraten."],
+    ["🌳", "Wunderwerkstoff Holz", "Holz", YT("i_SoteRa1fM"), "Kurzfilm der Empa (Schweizer Forschungsinstitut): Holz – belastbar, vielseitig und nachwachsend."]
 ];
 const FILM_SUCHE = [["▶️ Eigenen Film bei YouTube suchen", "https://www.youtube.com/results?search_query=Sicherheit+im+Werkraum+Schule"]];
 
 /* ---------- Zustand ---------- */
-const S = { kap: "quiz", a: 0, b: 0, dran: "a", q: 0, qWahl: null, f: 0, fStufe: 0, w: 0, wWahl: null, regeln: 0 };
-function laden(){ try { Object.assign(S, JSON.parse(localStorage.getItem("ws_stand") || "{}")); } catch (x) {} S.qWahl = null; S.wWahl = null; }
-function merken(){ try { const { qWahl, wWahl, ...rest } = S; localStorage.setItem("ws_stand", JSON.stringify(rest)); } catch (x) {} }
+const S = { kap: "quiz", a: 0, b: 0, dran: "a", q: 0, qWahl: null, f: 0, fStufe: 0, sp: {}, wWahl: null, regeln: 0, stamm: 0, luecke: 0, schritt: [] };
+function laden(){ try { Object.assign(S, JSON.parse(localStorage.getItem("ws_stand2") || "{}")); } catch (x) {} if (!S.sp || typeof S.sp !== "object") S.sp = {}; if (!Array.isArray(S.schritt)) S.schritt = []; S.qWahl = null; S.wWahl = null; }
+function merken(){ try { const { qWahl, wWahl, ...rest } = S; localStorage.setItem("ws_stand2", JSON.stringify(rest)); } catch (x) {} }
 const filmUrl = v => { try { if (v !== undefined) localStorage.setItem("ws_film", v); return localStorage.getItem("ws_film") || ""; } catch (x) { return ""; } };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const team = t => t === "a" ? "Team A" : "Team B";
@@ -189,13 +245,13 @@ function aufbauen(){
     laden();
 }
 
-const TABS = [["quiz", "❓ Einstiegs-Quiz"], ["film", "🎬 Film"], ["faelle", "🚨 Unfall-Akten"], ["werkzeug", "🧰 Holz oder Metall?"], ["regeln", "🪪 Regeln & Führerschein"]];
+const TABS = [["quiz", "❓ Einstiegs-Quiz"], ["metall", "🧲 Fe oder NE?"], ["werkzeug", "🧰 Werkzeug"], ["schritte", "🔢 Metallrohr"], ["holz", "🌲 Holzarten"], ["stamm", "🪵 Baumstamm"], ["arbeiten", "💧 Holz arbeitet"], ["platte", "🧩 Holzwerkstoffe"], ["film", "🎬 Film"], ["faelle", "🚨 Unfall-Akten"], ["regeln", "🏆 Regeln & Sieger"]];
 
 function zeichnen(){
     merken();
     el.innerHTML = `
     <div class="ws-leiste">
-        <div class="ws-titel">🛠️ Werkstatt-Führerschein<small>Holz & Metall</small></div>
+        <div class="ws-titel">🛠️ Holz & Metall<small>Werkstoff-Duell</small></div>
         <div class="ws-luecke"></div>
         <div class="ws-punkte">
             ${["a", "b"].map(t => `<div class="ws-team${S.dran === t ? " dran" : ""}"><span data-a="dran" data-t="${t}" style="cursor:pointer">${team(t)}</span><button data-a="minus" data-t="${t}" title="Punkt abziehen (z. B. Zwischenruf)">−</button><b>${S[t]}</b><button data-a="plus" data-t="${t}" title="Punkt dazu">+</button></div>`).join("")}
@@ -204,7 +260,7 @@ function zeichnen(){
         <button class="ws-k" data-a="zu">✕ Schließen</button>
     </div>
     <div class="ws-tabs">${TABS.map(([k, n]) => `<button class="ws-tab${S.kap === k ? " an" : ""}" data-kap="${k}">${n}</button>`).join("")}</div>
-    <div class="ws-haupt"><div class="ws-karte">${({ quiz, film, faelle, werkzeug, regeln })[S.kap]()}</div></div>`;
+    <div class="ws-haupt"><div class="ws-karte">${SPIELE[S.kap] ? spiel(S.kap) : ({ quiz, film, faelle, regeln, stamm, arbeiten, schritte })[S.kap]()}</div></div>`;
 }
 
 /* ---------- Quiz ---------- */
@@ -212,7 +268,7 @@ function reihenfolge(i){ const [, o, , pos] = QUIZ[i]; const r = o.slice(1); r.s
 function quiz(){
     if (S.q >= QUIZ.length) return `<div class="ws-ende"><div class="ws-gross">🏁</div><div class="ws-name">Quiz geschafft!</div>
         <div class="ws-frage" style="font-size:clamp(20px,3.4vmin,40px)">Team A: ${S.a} · Team B: ${S.b}</div>
-        <div class="ws-reihe" style="justify-content:center"><button class="ws-k gelb" data-kap="film">Weiter zum Film ▶</button><button class="ws-k" data-a="qneu">↺ Quiz von vorn</button></div></div>`;
+        <div class="ws-reihe" style="justify-content:center"><button class="ws-k gelb" data-kap="metall">Weiter: Fe oder NE? ▶</button><button class="ws-k" data-a="qneu">↺ Quiz von vorn</button></div></div>`;
     const [frage, opts, erkl, pos] = QUIZ[S.q], r = reihenfolge(S.q), gew = S.qWahl;
     return `<div class="ws-kopf"><span class="ws-nr">Frage ${S.q + 1} / ${QUIZ.length}</span><span>🎯 ${team(S.dran)} ist dran – richtig = 1 Punkt</span>
             <span class="ws-luecke"></span><button class="ws-k" data-a="zeit">⏳ 15 Sekunden</button><span class="ws-zeit" id="wsZeit"></span></div>
@@ -230,7 +286,7 @@ function ytId(u){ const m = /(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/.exe
 function film(){
     const u = filmUrl(), id = ytId(u);
     return `<div class="ws-kopf"><span class="ws-nr">Film</span><span>Beobachtungsauftrag: Jedes Team achtet auf etwas anderes. Danach gibt es Punkte für jede richtige Beobachtung.</span></div>
-        <div class="ws-auftrag"><div><b>Team A</b>Welche Werkzeuge kommen vor? Für Holz oder Metall?</div><div><b>Team B</b>Welche Sicherheitsregeln seht ihr? Was wird richtig gemacht?</div></div>
+        <div class="ws-auftrag"><div><b>Team A</b>Welche Werkzeuge und Werkstoffe kommen vor?</div><div><b>Team B</b>Welche Eigenschaften werden genannt? Was wird worauf geachtet?</div></div>
         <div class="ws-film">${id ? `<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>` :
             u ? `<div class="leer">🎬<br><br><a class="ws-k gelb" href="${esc(u)}" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Film öffnen ↗</a></div>` :
             `<div class="leer">Wähle unten einen Film-Tipp – er läuft dann hier.<br>Oder füge einen eigenen YouTube-Link ein.</div>`}</div>
@@ -257,22 +313,62 @@ function faelle(){
         </div>`;
 }
 
-/* ---------- Holz oder Metall? ---------- */
-function werkzeug(){
-    const [emo, name, ok, erkl] = WERKZEUG[S.w], gew = S.wWahl;
-    return `<div class="ws-kopf"><span class="ws-nr">Werkzeug ${S.w + 1} / ${WERKZEUG.length}</span><span>🧰 Für Holz, für Metall – oder für beides? ${team(S.dran)} entscheidet</span></div>
+/* ---------- Sortier-Spiele ---------- */
+function spiel(key){
+    const G = SPIELE[key], i = Math.min(S.sp[key] || 0, G.liste.length - 1), [emo, name, ok, erkl] = G.liste[i], gew = S.wWahl, letzte = i >= G.liste.length - 1;
+    const naechst = TABS[TABS.findIndex(x => x[0] === key) + 1];
+    return `<div class="ws-kopf"><span class="ws-nr">${G.titel} ${i + 1} / ${G.liste.length}</span><span>${G.frage} – ${team(S.dran)} entscheidet</span></div>
         <div class="ws-gross">${emo}</div><div class="ws-name">${esc(name)}</div>
-        <div class="ws-wahl3">${WAHL.map((t, k) => {
+        <div class="ws-wahl3" style="grid-template-columns:repeat(${G.wahl.length},1fr)">${G.wahl.map((t, k) => {
             let c = ""; if (gew !== null) c = k === ok ? " richtig" : k === gew ? " falsch" : " aus";
             return `<button class="ws-o${c}" data-a="wwahl" data-k="${k}"${gew !== null ? " disabled" : ""}>${t}</button>`; }).join("")}</div>
         ${gew !== null ? `<div class="ws-info"><b>${gew === ok ? "✅ Richtig – Punkt für " + team(S.dran) : "❌ Falsch – kein Punkt"}</b>${erkl}</div>` : ""}
-        <div class="ws-reihe"><button class="ws-k" data-a="wzurueck"${S.w ? "" : " disabled"}>◀</button>
-            ${S.w < WERKZEUG.length - 1 ? `<button class="ws-k gelb" data-a="wweiter">Nächstes Werkzeug ▶${gew !== null ? " (" + team(S.dran === "a" ? "b" : "a") + ")" : ""}</button>` : `<button class="ws-k gelb" data-kap="regeln">Weiter zu den Regeln ▶</button>`}</div>`;
+        <div class="ws-reihe"><button class="ws-k" data-a="wzurueck"${i ? "" : " disabled"}>◀</button>
+            ${!letzte ? `<button class="ws-k gelb" data-a="wweiter">Weiter ▶${gew !== null ? " (" + team(S.dran === "a" ? "b" : "a") + ")" : ""}</button>` : naechst ? `<button class="ws-k gelb" data-kap="${naechst[0]}">Weiter: ${naechst[1]} ▶</button>` : ""}</div>`;
+}
+
+/* ---------- Baumstamm ---------- */
+function stamm(){
+    const n = S.stamm, aktuell = STAMM[Math.min(n, STAMM.length - 1)];
+    const ringe = STAMM.map(([name, , farbe, r], k) => `<circle cx="160" cy="160" r="${r}" fill="${k < n ? farbe : "#3a414a"}" stroke="${k < n ? "#2a1a0e" : "#555d67"}" stroke-width="${k === 2 ? 1 : 2}"/>`).join("")
+        + (n >= 5 ? [36, 52, 64].map(r => `<circle cx="160" cy="160" r="${r}" fill="none" stroke="#a8743f" stroke-width="2"/>`).join("") : "")
+        + (n >= 4 ? [88, 100, 112].map(r => `<circle cx="160" cy="160" r="${r}" fill="none" stroke="#e2c58a" stroke-width="2"/>`).join("") : "");
+    const schilder = STAMM.map(([name], k) => k < n ? `<div class="ws-regel" style="min-height:44px;cursor:default"><span class="emo" style="font-size:1em;background:${STAMM[k][2]};width:1.3em;height:1.3em;border-radius:50%;display:inline-block;border:2px solid #1f2328"></span>${k + 1}. ${esc(name)}</div>` : "").join("");
+    return `<div class="ws-kopf"><span class="ws-nr">Aufbau des Stammes</span><span>Von außen nach innen – welche Schicht ist gemeint? ${team(S.dran)} rät</span></div>
+        <div style="display:flex;gap:3vmin;flex-wrap:wrap;align-items:center;justify-content:center;flex:1">
+            <svg viewBox="0 0 320 320" style="width:min(44vmin,320px);min-width:200px;height:auto">${ringe}</svg>
+            <div style="flex:1;min-width:260px;display:flex;flex-direction:column;gap:1.4vmin">
+                ${n < STAMM.length ? `<div class="ws-info"><b>Schicht ${n + 1} von 6 – wie heißt sie?</b>${esc(aktuell[1])}</div>
+                <div class="ws-hinweis">Wortspeicher: Markröhre · Bast · Borke · Kambium · Splintholz · Kernholz</div>` : `<div class="ws-info" style="border-left-color:#2e8b57"><b style="color:#7fe0a6">Geschafft!</b>Alle sechs Schichten des Baumstamms sind aufgedeckt.</div>`}
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${schilder}</div>
+            </div>
+        </div>
+        <div class="ws-reihe">${n < STAMM.length ? `<button class="ws-k gelb" data-a="stammauf">Auflösen: ${n + 1}. Schicht</button><button class="ws-k gruen" data-a="stammpunkt">✔ Richtig: +1 ${team(S.dran)} und auflösen</button><button class="ws-k" data-a="fwechsel">↔ anderes Team</button>` : ""}
+            <span class="ws-luecke"></span><button class="ws-k" data-a="stammneu">↺ von vorn</button></div>`;
+}
+
+/* ---------- Holz arbeitet ---------- */
+function arbeiten(){
+    return `<div class="ws-kopf"><span class="ws-nr">Holz arbeitet</span><span>Wortspeicher: quellen · schwinden · verziehen · Faserrichtung – ${team(S.dran)} beginnt</span></div>
+        <div style="display:flex;flex-direction:column;gap:1.6vmin">${LUECKEN.map(([satz, wort, e], k) => `<div class="ws-fall" style="font-size:clamp(18px,3vmin,36px)"><span class="emo">${e}</span>${esc(satz)} <button class="ws-k ${k < S.luecke ? "gruen" : ""}" data-a="luecke" data-k="${k}" style="font-size:clamp(17px,2.8vmin,32px);min-width:7em">${k < S.luecke ? esc(wort) : "❓ aufdecken"}</button></div>`).join("")}</div>
+        <div class="ws-info"><b>Merke</b>Holz nimmt Feuchtigkeit auf und gibt sie wieder ab – es verändert ständig seine Form. Deshalb gibt es <b>Holzwerkstoffe</b> wie Sperrholz, Spanplatte und MDF: Sie verziehen sich viel weniger.</div>
+        <div class="ws-reihe"><button class="ws-k gruen" data-a="fpunkt">✔ +1 ${team(S.dran)}</button><button class="ws-k" data-a="fwechsel">↔ anderes Team</button><span class="ws-luecke"></span><button class="ws-k" data-a="lueckezu">Alle verdecken</button></div>`;
+}
+
+/* ---------- Arbeitsschritte Metallrohr ---------- */
+function schritte(){
+    const fertig = S.schritt.length === SCHRITTE.length;
+    return `<div class="ws-kopf"><span class="ws-nr">Ein Metallrohr vorbereiten</span><span>Tippe die Schritte in der richtigen Reihenfolge an – ${team(S.dran)} ist dran</span></div>
+        <div style="display:flex;flex-direction:column;gap:1.6vmin">${SCHRITT_MISCH.map(k => { const pos = S.schritt.indexOf(k);
+            return `<button class="ws-o${pos >= 0 ? " richtig" : ""}" data-a="schritt" data-k="${k}"${pos >= 0 ? " disabled" : ""}><i>${pos >= 0 ? pos + 1 : "?"}</i>${SCHRITTE[k][0]} ${esc(SCHRITTE[k][1])}</button>`; }).join("")}</div>
+        <div id="wsSchrittMeld"></div>
+        ${fertig ? `<div class="ws-info" style="border-left-color:#2e8b57"><b style="color:#7fe0a6">✅ Richtig – Punkt für ${team(S.dran)}</b>Erst <b>anreißen</b>, dann <b>einspannen und sägen</b>, zum Schluss <b>entgraten</b> – sonst schneidet man sich am scharfen Grat.</div>` : ""}
+        <div class="ws-reihe"><button class="ws-k" data-a="schrittneu">↺ Nochmal</button>${fertig ? `<button class="ws-k gelb" data-kap="holz">Weiter: 🌲 Holzarten ▶</button>` : ""}</div>`;
 }
 
 /* ---------- Regeln & Führerschein ---------- */
 function regeln(){
-    return `<div class="ws-kopf"><span class="ws-nr">Die 10 Werkstattregeln</span><span>Erst raten lassen, dann antippen und aufdecken. Wer die Regel nennt, holt einen Punkt.</span></div>
+    return `<div class="ws-kopf"><span class="ws-nr">Bonus: die 10 Werkstattregeln</span><span>Erst raten lassen, dann antippen und aufdecken. Wer die Regel nennt, holt einen Punkt.</span></div>
         <div class="ws-regeln">${REGELN.map(([e, t], k) => `<div class="ws-regel${k < S.regeln ? "" : " zu"}" data-a="regel" data-k="${k}"><span class="emo">${e}</span>${esc(t)}</div>`).join("")}</div>
         <div class="ws-reihe"><button class="ws-k" data-a="ralle">Alle aufdecken</button><button class="ws-k" data-a="rzu">Alle verdecken</button><span class="ws-luecke"></span>
             <button class="ws-k gelb" data-a="druck">🖨️ Führerscheine drucken (4 pro A4-Seite)</button>
@@ -333,16 +429,24 @@ function klick(e){
         case "fwechsel": anderes(); return zeichnen();
         case "fweiter": S.f++; S.fStufe = 0; anderes(); return zeichnen();
         case "fzurueck": S.f--; S.fStufe = 0; return zeichnen();
-        case "wwahl": S.wWahl = k; if (k === WERKZEUG[S.w][2]) S[S.dran]++; return zeichnen();
-        case "wweiter": if (S.wWahl !== null) anderes(); S.w++; S.wWahl = null; return zeichnen();
-        case "wzurueck": S.w--; S.wWahl = null; return zeichnen();
+        case "wwahl": { const G = SPIELE[S.kap], i = S.sp[S.kap] || 0; S.wWahl = k; if (k === G.liste[i][2]) S[S.dran]++; return zeichnen(); }
+        case "wweiter": if (S.wWahl !== null) anderes(); S.sp[S.kap] = (S.sp[S.kap] || 0) + 1; S.wWahl = null; return zeichnen();
+        case "wzurueck": S.sp[S.kap] = Math.max(0, (S.sp[S.kap] || 0) - 1); S.wWahl = null; return zeichnen();
+        case "stammauf": S.stamm++; anderes(); return zeichnen();
+        case "stammpunkt": S[S.dran]++; S.stamm++; anderes(); return zeichnen();
+        case "stammneu": S.stamm = 0; return zeichnen();
+        case "luecke": S.luecke = Math.max(S.luecke, k + 1); return zeichnen();
+        case "lueckezu": S.luecke = 0; return zeichnen();
+        case "schritt": { const soll = S.schritt.length; if (k === soll){ S.schritt.push(k); if (S.schritt.length === SCHRITTE.length) S[S.dran]++; return zeichnen(); }
+            const m = el.querySelector("#wsSchrittMeld"); if (m) m.innerHTML = `<div class="ws-info" style="border-left-color:#c0392b"><b style="color:#ff9b8f">❌ Noch nicht – was kommt davor?</b>Das andere Team ist dran.</div>`; anderes(); S.schritt = []; setTimeout(zeichnen, 1600); return; }
+        case "schrittneu": S.schritt = []; return zeichnen();
         case "regel": S.regeln = Math.max(S.regeln, k + 1); return zeichnen();
         case "ralle": S.regeln = REGELN.length; return zeichnen();
         case "rzu": S.regeln = 0; return zeichnen();
         case "druck": return drucken();
         case "sieger": return siegerZeigen();
         case "reset": if (!confirm("Punkte und Fortschritt für eine neue Klasse zurücksetzen?")) return;
-            Object.assign(S, { a: 0, b: 0, dran: "a", q: 0, qWahl: null, f: 0, fStufe: 0, w: 0, wWahl: null, regeln: 0, kap: "quiz" }); return zeichnen();
+            Object.assign(S, { a: 0, b: 0, dran: "a", q: 0, qWahl: null, f: 0, fStufe: 0, sp: {}, wWahl: null, regeln: 0, stamm: 0, luecke: 0, schritt: [], kap: "quiz" }); return zeichnen();
     }
 }
 function stopp(){ if (uhr){ clearInterval(uhr); uhr = null; } }

@@ -596,8 +596,8 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
 <?php endif; ?>
 <?php if (!$LT_GAST): ?>
         <button class="kachel" type="button" onclick="tafelWerkstatt.oeffnen()">
-            <div class="k-buehne" style="background:repeating-linear-gradient(-45deg,#f2b705 0 14px,#1f2328 14px 28px);display:flex;align-items:center;justify-content:center;"><div style="background:#1f2328;color:#f1efe9;border-radius:14px;padding:8px 16px;font-weight:900;font-size:20px;display:flex;gap:8px;align-items:center;"><span style="font-size:30px">🛠️</span>Werkstatt</div></div>
-            <div class="k-text"><h2>Werkstatt-Führerschein</h2><p>Arbeiten mit Holz und Metall – sicher und richtig: Einstiegs-Quiz, Film mit Beobachtungsauftrag, Unfall-Akten, „Holz oder Metall?“, 10 Werkstattregeln und Führerscheine zum Drucken. Punkte für Team A gegen Team B.</p><div class="k-tags"><span>Technik</span><span>Kl. 5–7</span><span>Doppelstunde</span></div></div>
+            <div class="k-buehne" style="background:repeating-linear-gradient(-45deg,#f2b705 0 14px,#1f2328 14px 28px);display:flex;align-items:center;justify-content:center;"><div style="background:#1f2328;color:#f1efe9;border-radius:14px;padding:8px 16px;font-weight:900;font-size:20px;display:flex;gap:8px;align-items:center;"><span style="font-size:30px">🛠️</span>Holz &amp; Metall</div></div>
+            <div class="k-text"><h2>Holz &amp; Metall – Werkstoff-Duell</h2><p>Einstiegs-Quiz, Fe oder NE?, Werkzeug, Metallrohr-Schritte, Holzarten (Nadel/Laub/exotisch), Baumstamm zum Aufdecken, Holz arbeitet, Holzwerkstoffe, Film. Team A gegen Team B.</p><div class="k-tags"><span>Technik</span><span>Kl. 5–7</span><span>Doppelstunde</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen")): ?>
