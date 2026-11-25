@@ -176,7 +176,7 @@ function glasLauf(cv){
 
 /* ======================= Bewegungspausen ======================= */
 // Pose: Arme a = Winkel von unten nach außen, e = Unterarm zusätzlich; Beine h = nach außen, k = Knie (Unterschenkel zurück nach innen), l = Knie heben 0..1; y = Sprung/Hocke; n = Neigung
-const P0 = { aL: 12, eL: 0, aR: 12, eR: 0, hL: 6, kL: 0, lL: 0, hR: 6, kR: 0, lR: 0, y: 0, n: 0 };
+const P0 = { aL: 12, eL: 0, aR: 12, eR: 0, hL: 6, kL: 0, lL: 0, tL: 0, hR: 6, kR: 0, lR: 0, tR: 0, y: 0, n: 0 };
 const pose = o => Object.assign({}, P0, o);
 const UEB = [
     { id: "hampel", gs: "Hampelmann", sek: "Hampelmann", tipp: "Arme und Beine gleichzeitig auf und zu.", t: .9, f: [pose({ y: 0 }), pose({ aL: 165, aR: 165, hL: 22, hR: 22, y: -18 })] },
@@ -186,7 +186,7 @@ const UEB = [
     { id: "strecken", gs: "Groß wie ein Riese – klein wie eine Maus", sek: "Strecken und beugen", tipp: "Ganz lang zur Decke strecken, dann locker nach unten hängen.", t: 3, f: [pose({ aL: 172, aR: 172, y: -8 }), pose({ aL: 175, aR: 175, n: 0, y: 30, kL: 30, kR: 30, hL: 10, hR: 10 })] },
     { id: "seite", gs: "Baum im Wind", sek: "Seitbeuge", tipp: "Einen Arm über den Kopf und zur Seite neigen – dann die andere Seite.", t: 3, f: [pose({ aR: 160, eR: 20, n: -14, hL: 10, hR: 10 }), pose({ aL: 160, eL: 20, n: 14, hL: 10, hR: 10 })] },
     { id: "boxen", gs: "Boxen wie ein Kängurur", sek: "Boxen in die Luft", tipp: "Abwechselnd nach vorn boxen, locker in den Knien.", t: .7, f: [pose({ aL: 90, eL: 0, aR: 40, eR: 110, kL: 12, kR: 12, hL: 12, hR: 12, y: 6 }), pose({ aR: 90, eR: 0, aL: 40, eL: 110, kL: 12, kR: 12, hL: 12, hR: 12, y: 6 })] },
-    { id: "flamingo", gs: "Flamingo", sek: "Auf einem Bein stehen", tipp: "Auf einem Bein stehen, Arme zur Seite. Nach der Hälfte wechseln.", t: 6, halb: true, f: [pose({ aL: 90, aR: 90, lR: 1, hR: 4 }), pose({ aL: 90, aR: 90, lL: 1, hL: 4 })] },
+    { id: "flamingo", gs: "Flamingo", sek: "Auf einem Bein stehen", tipp: "Auf einem Bein stehen, Arme zur Seite. Nach der Hälfte wechseln.", t: 6, halb: true, f: [pose({ aL: 90, aR: 90, lR: 1, tR: 1, hR: 4 }), pose({ aL: 90, aR: 90, lL: 1, tL: 1, hL: 4 })] },
     { id: "kreuz", gs: "Überkreuz-Tanz", sek: "Überkreuzbewegung", tipp: "Rechter Ellenbogen zum linken Knie – dann links zu rechts.", t: 1.2, f: [pose({ aR: 120, eR: 150, lL: 1, n: -6 }), pose({ aL: 120, eL: 150, lR: 1, n: 6 })] },
     { id: "schultern", gs: "Schultern kreisen", sek: "Schultern kreisen", tipp: "Schultern langsam nach hinten kreisen, Arme locker.", t: 2, schulter: true, f: [pose({ aL: 8, aR: 8 })] },
     { id: "acht", gs: "Liegende Acht", sek: "Liegende Acht", tipp: "Mit dem Daumen eine große liegende Acht in die Luft malen. Augen folgen dem Daumen.", t: 4, acht: true, f: [pose({})] },
@@ -197,44 +197,79 @@ UEB.find(u => u.id === "boxen").gs = "Boxen wie ein Känguru";
 
 function mix(a, b, t){ const o = {}; for (const k in P0) o[k] = a[k] + (b[k] - a[k]) * t; return o; }
 function figur(){
-    return `<svg viewBox="0 0 400 400" class="figur"><ellipse cx="200" cy="372" rx="90" ry="12" fill="rgba(58,36,22,.18)"/>
+    const HOSE = ["#3f5f8c", "#2a4266"], SHIRT = ["#e85a4c", "#a93a30"], HAUT = ["#f6c4a0", "#c98d68"];
+    const aussen = (k, w, f) => `<path class="${k}" stroke="${f[1]}" stroke-width="${w + 5}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+    const innen = (k, w, f) => `<path class="${k}" stroke="${f[0]}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+    const beine = [["oL", 27], ["uL", 23], ["oR", 27], ["uR", 23]], arme = [["uaL", 15, HAUT], ["uaR", 15, HAUT], ["oaL", 21, SHIRT], ["oaR", 21, SHIRT]];
+    const beinSvg = beine.map(([k, w]) => aussen(k, w, HOSE)).join("") + beine.map(([k, w]) => innen(k, w, HOSE)).join("");
+    const armSvg = arme.map(([k, w, f]) => aussen(k, w, f)).join("") + arme.map(([k, w, f]) => innen(k, w, f)).join("");
+    return `<svg viewBox="0 0 400 400" class="figur"><defs><linearGradient id="pzShirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f06a5c"/><stop offset="1" stop-color="#d84b3f"/></linearGradient>
+        <linearGradient id="pzHose" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4a6c98"/><stop offset="1" stop-color="#36557e"/></linearGradient>
+        <radialGradient id="pzHaut" cx=".42" cy=".38" r=".7"><stop offset="0" stop-color="#ffd9bb"/><stop offset="1" stop-color="#f0b88f"/></radialGradient></defs>
+      <ellipse class="schatten" cx="200" cy="374" rx="78" ry="11" fill="rgba(90,50,20,.2)"/>
       <path class="acht" d="" stroke="rgba(58,36,22,.35)" stroke-width="6" fill="none" stroke-dasharray="4 12" stroke-linecap="round"/>
       <g class="koerper">
-        <path class="bein bL" stroke="#3d5a80" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <path class="bein bR" stroke="#3d5a80" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <path class="schuh sL" stroke="#2a2a33" stroke-width="16" stroke-linecap="round"/><path class="schuh sR" stroke="#2a2a33" stroke-width="16" stroke-linecap="round"/>
-        <path class="rumpf" stroke="#e2574c" stroke-width="58" stroke-linecap="round" fill="none"/>
-        <path class="arm aL" stroke="#e2574c" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <path class="arm aR" stroke="#e2574c" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <circle class="hand hL" r="11" fill="#f2c29b"/><circle class="hand hR" r="11" fill="#f2c29b"/>
-        <g class="kopf"><circle r="36" fill="#f2c29b"/><path d="M-36 -6 C-36 -44 36 -44 36 -6 C30 -26 -30 -26 -36 -6Z" fill="#6b4a32"/><circle cx="-12" cy="2" r="4" fill="#2a2a33"/><circle cx="12" cy="2" r="4" fill="#2a2a33"/><path d="M-11 14 q11 9 22 0" stroke="#2a2a33" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="-22" cy="12" r="5" fill="#f08a7a" opacity=".4"/><circle cx="22" cy="12" r="5" fill="#f08a7a" opacity=".4"/></g>
+        ${beinSvg}
+        <g class="schuhL"><path d="M-6 -6 h14 a12 12 0 0 1 12 12 v2 h-34 v-4 a10 10 0 0 1 8 -10Z" fill="#2d3142"/><rect x="-14" y="7" width="34" height="4" rx="2" fill="#fff" opacity=".85"/></g>
+        <g class="schuhR"><path d="M-6 -6 h14 a12 12 0 0 1 12 12 v2 h-34 v-4 a10 10 0 0 1 8 -10Z" fill="#2d3142"/><rect x="-14" y="7" width="34" height="4" rx="2" fill="#fff" opacity=".85"/></g>
+        <path class="hosenbund" fill="#3f5f8c" stroke="#2a4266" stroke-width="2.5"/>
+        <path class="rumpf" fill="url(#pzShirt)" stroke="rgba(60,30,20,.22)" stroke-width="2.5" stroke-linejoin="round"/>
+        <path class="saum" stroke="#c24236" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/>
+        ${armSvg}
+        <circle class="hand hL" r="10.5" fill="url(#pzHaut)" stroke="rgba(60,30,20,.22)" stroke-width="2"/><circle class="hand hR" r="10.5" fill="url(#pzHaut)" stroke="rgba(60,30,20,.22)" stroke-width="2"/>
+        <g class="kopf">
+          <rect x="-9" y="22" width="18" height="18" rx="6" fill="#f0b88f"/>
+          <ellipse cx="-33" cy="4" rx="7" ry="9" fill="#f0b88f"/><ellipse cx="33" cy="4" rx="7" ry="9" fill="#f0b88f"/>
+          <ellipse cx="0" cy="0" rx="33" ry="35" fill="url(#pzHaut)" stroke="rgba(60,30,20,.2)" stroke-width="2"/>
+          <path d="M-35 0 C-38 -38 -12 -46 4 -44 C26 -44 40 -30 35 0 C31 -14 24 -20 14 -22 C10 -14 -2 -12 -12 -18 C-18 -10 -28 -10 -35 0Z" fill="#7a4e2e"/>
+          <path d="M-14 -34 C-6 -40 8 -40 18 -34" stroke="#9a6a42" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
+          <ellipse cx="-12" cy="3" rx="4.6" ry="5.6" fill="#2d2a33"/><ellipse cx="12" cy="3" rx="4.6" ry="5.6" fill="#2d2a33"/><circle cx="-10.5" cy="1" r="1.6" fill="#fff"/><circle cx="13.5" cy="1" r="1.6" fill="#fff"/>
+          <path d="M-18 -8 q6 -4 11 -1 M7 -9 q6 -3 11 1" stroke="#6a4428" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <path d="M-10 15 q10 9 20 0" stroke="#7a3b2e" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+          <ellipse cx="-21" cy="13" rx="6" ry="4" fill="#f4877a" opacity=".45"/><ellipse cx="21" cy="13" rx="6" ry="4" fill="#f4877a" opacity=".45"/>
+        </g>
       </g></svg>`;
 }
 function figurStellen(svg, q, extra){
-    const rad = d => d * Math.PI / 180, hy = 228 + q.y, hx = 200, n = rad(q.n);
-    const hals = [hx + Math.sin(n) * 92, hy - Math.cos(n) * 92];
-    const schulterY = 14 + (extra.schulter || 0);
-    const sL = [hals[0] - 30 * Math.cos(n) + Math.sin(n) * schulterY, hals[1] - 30 * Math.sin(n) + schulterY * Math.cos(n)], sR = [hals[0] + 30 * Math.cos(n) + Math.sin(n) * schulterY, hals[1] + 30 * Math.sin(n) + schulterY * Math.cos(n)];
-    // links: nach außen = nach links (negatives x)
-    const armPkt = (s, a, e, links) => { const sg = links ? -1 : 1, A = rad(a), el = [s[0] + sg * Math.sin(A) * 52, s[1] + Math.cos(A) * 52], B = rad(a + e), ha = [el[0] + sg * Math.sin(B) * 48, el[1] + Math.cos(B) * 48]; return [el, ha]; };
+    const rad = d => d * Math.PI / 180, hy = 230 + q.y, hx = 200, n = rad(q.n);
+    const up = [Math.sin(n), -Math.cos(n)], quer = [Math.cos(n), Math.sin(n)];
+    const pkt = (b, a, s) => [b[0] + up[0] * a + quer[0] * s, b[1] + up[1] * a + quer[1] * s];
+    const sy = 84 + (extra.schulter || 0) * -1;
+    const sL = pkt([hx, hy], sy, -31), sR = pkt([hx, hy], sy, 31);
+    const armPkt = (s, a, e, links) => { const sg = links ? -1 : 1, A = rad(a), el = [s[0] + sg * Math.sin(A) * 48, s[1] + Math.cos(A) * 48], B = rad(a + e), ha = [el[0] + sg * Math.sin(B) * 46, el[1] + Math.cos(B) * 46]; return [el, ha]; };
     let [eL, hL] = armPkt(sL, q.aL, q.eL, true), [eR, hR] = armPkt(sR, q.aR, q.eR, false);
-    if (extra.hand){ hR = extra.hand; eR = [(sR[0] + hR[0]) / 2 + 10, (sR[1] + hR[1]) / 2 + 18]; }
-    const bein = (links, h, k, l) => { const sg = links ? -1 : 1, hp = [hx + sg * 18, hy], H = rad(h), lang = 72 * (1 - .5 * l), kn = [hp[0] + sg * Math.sin(H) * lang, hp[1] + Math.cos(H) * lang]; const K = rad(h - k), lang2 = 70 * (1 - .15 * l), fu = [kn[0] + sg * Math.sin(K) * lang2, kn[1] + Math.cos(K) * lang2 - l * 6]; return [hp, kn, fu, sg]; };
-    const [hpL, knL, fuL, gL] = bein(true, q.hL, q.kL, q.lL), [hpR, knR, fuR, gR] = bein(false, q.hR, q.kR, q.lR);
-    const P = a => a.map(v => v.toFixed(1)).join(" ");
-    svg.querySelector(".bL").setAttribute("d", `M${P(hpL)} L${P(knL)} L${P(fuL)}`);
-    svg.querySelector(".bR").setAttribute("d", `M${P(hpR)} L${P(knR)} L${P(fuR)}`);
-    svg.querySelector(".sL").setAttribute("d", `M${P(fuL)} l${-14} 2`); svg.querySelector(".sR").setAttribute("d", `M${P(fuR)} l14 2`);
-    svg.querySelector(".rumpf").setAttribute("d", `M${hx} ${hy - 10} L${P([hals[0], hals[1] + 22])}`);
-    svg.querySelector(".aL").setAttribute("d", `M${P(sL)} L${P(eL)} L${P(hL)}`); svg.querySelector(".aR").setAttribute("d", `M${P(sR)} L${P(eR)} L${P(hR)}`);
+    if (extra.hand){ hR = extra.hand; const mx = (sR[0] + hR[0]) / 2, my = (sR[1] + hR[1]) / 2, dx = hR[0] - sR[0], dy = hR[1] - sR[1], d = Math.hypot(dx, dy) || 1, bend = Math.max(0, (94 - d) / 2); eR = [mx + dy / d * bend * .9, my - dx / d * bend * .9 + 6]; }
+    const bein = (links, h, k, l, tuck) => { const sg = links ? -1 : 1, hp = [hx + sg * 15, hy + 4], H = rad(h);
+        let kn = [hp[0] + sg * Math.sin(H) * 74, hp[1] + Math.cos(H) * 74]; const K = rad(h - k); let fu = [kn[0] + sg * Math.sin(K) * 72, kn[1] + Math.cos(K) * 72];
+        if (l > 0){ // Knie anheben: Oberschenkel nach vorn (verkürzt), Fuß hängt darunter oder liegt am Standbein
+            const kh = [hp[0] + sg * 14, hp[1] + 34], fh = [kh[0] - sg * 4, kh[1] + 60], ft = [hx - sg * 6, hy + 92];
+            const fz = tuck ? [fh[0] + (ft[0] - fh[0]) * tuck, fh[1] + (ft[1] - fh[1]) * tuck] : fh;
+            kn = [kn[0] + (kh[0] - kn[0]) * l, kn[1] + (kh[1] - kn[1]) * l]; fu = [fu[0] + (fz[0] - fu[0]) * l, fu[1] + (fz[1] - fu[1]) * l]; }
+        return [hp, kn, fu, sg]; };
+    const [hpL, knL, fuL] = bein(true, q.hL, q.kL, q.lL, q.tL || 0), [hpR, knR, fuR] = bein(false, q.hR, q.kR, q.lR, q.tR || 0);
+    const P = a => a[0].toFixed(1) + " " + a[1].toFixed(1);
+    const setz = (k, d) => svg.querySelectorAll("." + k).forEach(e => e.setAttribute("d", d));
+    setz("oL", `M${P(hpL)} L${P(knL)}`); setz("uL", `M${P(knL)} L${P(fuL)}`); setz("oR", `M${P(hpR)} L${P(knR)}`); setz("uR", `M${P(knR)} L${P(fuR)}`);
+    const schuh = (k, f, sg, l) => svg.querySelector(k).setAttribute("transform", `translate(${(f[0] + sg * 4).toFixed(1)} ${(f[1] + 4).toFixed(1)}) scale(${sg} 1) rotate(${(l * 30).toFixed(1)})`);
+    schuh(".schuhL", fuL, -1, q.lL); schuh(".schuhR", fuR, 1, q.lR);
+    const w1 = pkt([hx, hy], 6, -27), w2 = pkt([hx, hy], 6, 27), b1 = pkt([hx, hy], -12, -27), b2 = pkt([hx, hy], -12, 27);
+    svg.querySelector(".hosenbund").setAttribute("d", `M${P(w1)} L${P(w2)} L${P(b2)} Q${P(pkt([hx, hy], -20, 0))} ${P(b1)}Z`);
+    const hs = pkt([hx, hy], sy + 10, 0), sl = pkt([hx, hy], sy + 2, -40), sr = pkt([hx, hy], sy + 2, 40), al = pkt([hx, hy], sy - 22, -36), ar = pkt([hx, hy], sy - 22, 36), wl = pkt([hx, hy], 10, -29), wr = pkt([hx, hy], 10, 29);
+    svg.querySelector(".rumpf").setAttribute("d", `M${P(pkt([hx, hy], sy + 8, -14))} Q${P(hs)} ${P(pkt([hx, hy], sy + 8, 14))} Q${P(sr)} ${P(ar)} L${P(wr)} Q${P(pkt([hx, hy], 2, 0))} ${P(wl)} L${P(al)} Q${P(sl)} ${P(pkt([hx, hy], sy + 8, -14))}Z`);
+    svg.querySelector(".saum").setAttribute("d", `M${P(pkt([hx, hy], 16, -24))} Q${P(pkt([hx, hy], 9, 0))} ${P(pkt([hx, hy], 16, 24))}`);
+    // Oberarm = Ärmel bis zur Hälfte, dann Haut
+    const mitte = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+    setz("oaL", `M${P(sL)} L${P(mitte(sL, eL, .62))}`); setz("oaR", `M${P(sR)} L${P(mitte(sR, eR, .62))}`);
+    setz("uaL", `M${P(mitte(sL, eL, .5))} L${P(eL)} L${P(hL)}`); setz("uaR", `M${P(mitte(sR, eR, .5))} L${P(eR)} L${P(hR)}`);
     svg.querySelector(".hL").setAttribute("cx", hL[0].toFixed(1)); svg.querySelector(".hL").setAttribute("cy", hL[1].toFixed(1));
     svg.querySelector(".hR").setAttribute("cx", hR[0].toFixed(1)); svg.querySelector(".hR").setAttribute("cy", hR[1].toFixed(1));
-    svg.querySelector(".kopf").setAttribute("transform", `translate(${(hals[0] + Math.sin(n) * 30).toFixed(1)} ${(hals[1] - Math.cos(n) * 30).toFixed(1)}) rotate(${q.n * .6})`);
+    const kp = pkt([hx, hy], sy + 56, 0); svg.querySelector(".kopf").setAttribute("transform", `translate(${P(kp)}) rotate(${(q.n * .6).toFixed(1)}) scale(1.12)`);
+    const sch = svg.querySelector(".schatten"); const sc = 1 - Math.max(0, -q.y) / 90; sch.setAttribute("rx", (78 * sc).toFixed(1)); sch.setAttribute("opacity", sc.toFixed(2));
 }
 function uebungPose(u, zeit, stufe){
     const f = u.f, ph = (zeit / u.t);
     if (u.kreis){ const a = (zeit / u.t) * 360; return [pose({ aL: 90 + 80 * Math.sin(a * Math.PI / 180), aR: 90 + 80 * Math.sin(a * Math.PI / 180) }), {}]; }
-    if (u.schulter){ const a = (zeit / u.t) * Math.PI * 2; return [pose({ aL: 8, aR: 8 }), { schulter: -10 * Math.sin(a) - 4 }]; }
+    if (u.schulter){ const a = (zeit / u.t) * Math.PI * 2; return [pose({ aL: 8, aR: 8 }), { schulter: -(8 * Math.sin(a) + 4) }]; }
     if (u.acht){ const a = (zeit / u.t) * Math.PI * 2, x = 200 + 110 * Math.sin(a), y = 150 + 45 * Math.sin(2 * a); return [pose({ aL: 10 }), { hand: [x, y] }]; }
     if (u.halb) return [f[Math.floor(ph) % 2 === 0 ? 0 : 1], {}];
     const i = Math.floor(ph) % f.length, j = (i + 1) % f.length, t = ease(ph % 1);
@@ -376,6 +411,6 @@ function oeffnen(b, stufe){
     wahl();
 }
 function schliessen(){ stopp(); el.className = ""; el.innerHTML = ""; const ue = document.getElementById("uebersicht"); if (ue) ue.style.display = ""; try { history.replaceState(null, "", location.pathname); } catch (x) {} }
-window.tafelPausen = { runter: s => oeffnen("runter", s), bewegung: s => oeffnen("bewegung", s), schliessen, _UEB: UEB };
+window.tafelPausen = { runter: s => oeffnen("runter", s), bewegung: s => oeffnen("bewegung", s), schliessen, _UEB: UEB, _stell: (s, q) => figurStellen(s, Object.assign({}, P0, q), {}) };
 document.addEventListener("DOMContentLoaded", () => { if (location.hash === "#runter") oeffnen("runter"); if (location.hash === "#bewegung") oeffnen("bewegung"); });
 })();
