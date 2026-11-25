@@ -161,13 +161,12 @@ const REGELN = [
     ["🚑", "Jede Verletzung sofort der Lehrkraft melden."]
 ];
 
-// Film-Tipps: Planet Schule „Handwerkskunst!“ (SWR) – Themenseite laut Planet Schule online bis Mai 2028.
-// Die Filme sind lang (ca. 45 Min.) – nur einen Ausschnitt von 8–10 Minuten zeigen.
-const PS = "https://www.planet-schule.de/schwerpunkt/handwerkskunst/";
+// Film-Tipps (YouTube, laufen direkt in der Präsentation). Vor der Stunde kurz reinschauen.
+const YT = id => "https://www.youtube.com/watch?v=" + id;
 const FILM_TIPPS = [
-    ["🚲", "Wie man ein Fahrrad baut", "Metall", PS + "wie-man-ein-fahrrad-baut-film-100.html", "Ein Rahmenbauer in Pforzheim schweißt jedes Stahlrohr selbst und baut daraus Lastenräder – echte Metallwerkstatt."],
-    ["⛵", "Wie man ein Boot baut", "Holz", PS + "wie-man-ein-boot-baut-film-100.html", "Bootsbau aus Holz – viel Handarbeit in der Holzwerkstatt."],
-    ["🌶️", "Wie man eine Pfeffermühle drechselt", "Holz", PS + "wie-man-eine-pfeffermuehle-drechselt-film-100.html", "Aus einem Stück Holz wird an der Drechselbank eine Pfeffermühle."]
+    ["🔩", "Metallbearbeitung in der Schule", "Metall", YT("SzvKnzW9Ksw"), "Die Grundtechniken im Technikunterricht: Metall sägen, bohren, schneiden, schleifen und entgraten."],
+    ["📏", "Die Feile – Aufbau und Nutzung", "Metall", YT("d2_y0i6spGY"), "Feilenarten, Hieb, richtig feilen und die Feile mit der Feilenbürste sauber machen."],
+    ["🧊", "Metallwürfel – Anzeichnen und plan feilen", "Metall", YT("xHRJ_5MffZY"), "Ein Schulwerkstück aus Aluminium: anreißen und glatt feilen – Schritt für Schritt."]
 ];
 const FILM_SUCHE = [["▶️ Eigenen Film bei YouTube suchen", "https://www.youtube.com/results?search_query=Sicherheit+im+Werkraum+Schule"]];
 
@@ -234,10 +233,10 @@ function film(){
         <div class="ws-auftrag"><div><b>Team A</b>Welche Werkzeuge kommen vor? Für Holz oder Metall?</div><div><b>Team B</b>Welche Sicherheitsregeln seht ihr? Was wird richtig gemacht?</div></div>
         <div class="ws-film">${id ? `<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>` :
             u ? `<div class="leer">🎬<br><br><a class="ws-k gelb" href="${esc(u)}" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Film öffnen ↗</a></div>` :
-            `<div class="leer">Wähle unten einen Film-Tipp – er öffnet sich in einem neuen Fenster.<br>Oder füge einen eigenen Link ein (YouTube läuft dann direkt hier).</div>`}</div>
+            `<div class="leer">Wähle unten einen Film-Tipp – er läuft dann hier.<br>Oder füge einen eigenen YouTube-Link ein.</div>`}</div>
         <div class="ws-reihe"><input id="wsFilm" class="ws-eingabe" placeholder="Film-Link einfügen (YouTube wird direkt hier abgespielt)" value="${esc(u)}">${u ? `<button class="ws-k" data-a="filmweg">Link entfernen</button>` : ""}</div>
-        <div class="ws-tipps">${FILM_TIPPS.map(([e, t, art, url, txt]) => `<div class="ws-tipp"><div class="emo">${e}</div><div style="flex:1"><b>${esc(t)}</b> <span class="ws-art">${art}</span><br><small>${esc(txt)}</small></div><a class="ws-k gelb" href="${url}" target="_blank" rel="noopener" style="text-decoration:none;white-space:nowrap">Film öffnen ↗</a></div>`).join("")}
-            <div class="ws-hinweis">📺 Planet Schule (SWR) · Die Filme sind ca. 45 Minuten lang – zeig nur einen <b>Ausschnitt von 8–10 Minuten</b>. Vorher kurz reinschauen.</div></div>
+        <div class="ws-tipps">${FILM_TIPPS.map(([e, t, art, url, txt]) => `<div class="ws-tipp"><div class="emo">${e}</div><div style="flex:1"><b>${esc(t)}</b> <span class="ws-art">${art}</span><br><small>${esc(txt)}</small></div><button class="ws-k ${filmUrl() === url ? "gruen" : "gelb"}" data-a="filmtipp" data-u="${url}" style="white-space:nowrap">${filmUrl() === url ? "▶ läuft oben" : "▶ Abspielen"}</button></div>`).join("")}
+            <div class="ws-hinweis">📺 YouTube · Tipp antippen – der Film läuft oben in der Präsentation. Vorher kurz reinschauen und ggf. nur einen Ausschnitt zeigen.</div></div>
         <div class="ws-reihe">${FILM_SUCHE.map(([n, l]) => `<a class="ws-k" href="${l}" target="_blank" rel="noopener" style="text-decoration:none">${n}</a>`).join("")}</div>`;
 }
 
@@ -328,6 +327,7 @@ function klick(e){
         case "qzurueck": S.q = Math.max(0, S.q - 1); S.qWahl = null; return zeichnen();
         case "qneu": S.q = 0; S.qWahl = null; return zeichnen();
         case "filmweg": filmUrl(""); return zeichnen();
+        case "filmtipp": filmUrl(t.dataset.u); return zeichnen();
         case "faufdecken": S.fStufe++; return zeichnen();
         case "fpunkt": S[S.dran]++; S.fStufe = 2; return zeichnen();
         case "fwechsel": anderes(); return zeichnen();
