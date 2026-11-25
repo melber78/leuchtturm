@@ -189,7 +189,9 @@ const CSS = `
 #bt.sammeln .bt-boje{ display:none; }
 #bt.sammeln .bt-boot{ transition:opacity .35s; }
 #bt.sammeln .bt-boot svg{ transition:transform .2s; }
-#bt.sammeln .bt-szene{ touch-action:none; cursor:grab; }
+#bt.sammeln .bt-szene, #bt.sammeln .bt-antwort{ touch-action:none; cursor:grab; }
+.bt-b .schild{ transition:transform .2s, border-color .2s, box-shadow .2s; }
+.bt-b.ziel .schild{ transform:scale(1.18); border-color:#ffc83d; box-shadow:0 0 0 6px rgba(255,200,61,.55), 0 10px 22px rgba(0,20,40,.3); }
 #bt.sammeln.allein .bt-haupt{ flex-direction:column !important; }
 #bt.sammeln.allein .bt-antwort{ width:auto !important; }
 .bt-aufgabe .bt-schild{ font-size:clamp(26px,6vmin,80px); }
@@ -256,7 +258,7 @@ function vorlesen(t){ try { if (!window.speechSynthesis || !t) return; speechSyn
 const seiten = () => (window.tbSeiten && window.tbSeiten()) || ["Klasse", "🦉 Ella"];
 
 function aufbauen(){
-    document.addEventListener("pointerdown", e => { if (!el || !el.classList.contains("sammeln") || !A || SM.phase === "fertig" || !e.target.closest(".bt-szene") || e.target.closest("button")) return; SM.halten = true; fingerZiel(e); });
+    document.addEventListener("pointerdown", e => { if (!el || !el.classList.contains("sammeln") || !A || SM.phase === "fertig" || !e.target.closest(".bt-szene, .bt-antwort") || e.target.closest("button")) return; SM.halten = true; fingerZiel(e); });
     document.addEventListener("pointermove", e => { if (SM.halten) fingerZiel(e); });
     ["pointerup", "pointercancel"].forEach(t => document.addEventListener(t, () => { SM.halten = false; }));
     if (el) return;
@@ -409,7 +411,7 @@ function pruefen(wert, knopf){
 /* ---------- Spielart: Boot steuern und die richtige Boje einsammeln ---------- */
 const SM = { d: 0, wx: 50, zx: 50, phase: "", raf: 0, letzte: 0, halten: false, vx: 0 };
 const spurX = (i, n) => 50 + (i - (n - 1) / 2) * (n <= 2 ? 30 : n === 3 ? 28 : 22);
-const TEMPO = { warten: 7, langsam: 10, schnell: 6 };
+const TEMPO = { warten: 5, langsam: 9, schnell: 6 };
 const REIHE = { y: .6, sc: .62, f: .8 };          // wo die Bojen auf dem Wasser liegen
 const tiefeFaktor = d => 1 - (1 - REIHE.f) * d;    // je weiter hinten, desto näher an der Mitte
 function naechsteSpur(){ const n = A.optionen.length; let best = 0; for (let i = 1; i < n; i++) if (Math.abs(spurX(i, n) - SM.wx) < Math.abs(spurX(best, n) - SM.wx)) best = i; return best; }
@@ -423,7 +425,7 @@ function sammelnStarten(neuMischen){
     const boot = el.querySelector(".bt-boot"); boot.style.opacity = 0; setTimeout(() => boot.style.opacity = 1, 60);
     const f = el.querySelector(".bt-antwort");
     const warten = E.tempo === "warten";
-    f.innerHTML = `<div class="bt-steuer"><button data-s="-1" aria-label="nach links">◀</button><button class="los" data-s="los">${warten ? "Losfahren!" : "Schneller!"}</button><button data-s="1" aria-label="nach rechts">▶</button></div><div class="bt-hinweis">${warten ? "Finger aufs Wasser: Das Boot fährt los und folgt deinem Finger. Fahr zur richtigen Boje!" : "Steuere das Boot mit dem Finger zur richtigen Boje!"}</div>`;
+    f.innerHTML = `<div class="bt-steuer"><button data-s="-1" aria-label="nach links">◀</button><button class="los" data-s="los">${warten ? "Losfahren!" : "Schneller!"}</button><button data-s="1" aria-label="nach rechts">▶</button></div><div class="bt-hinweis">${warten ? "Finger auf das Wasser legen und hinschieben – die leuchtende Boje wird eingesammelt." : "Finger hinschieben – die leuchtende Boje wird eingesammelt."}</div>`;
     standZeigen();
     if (E.kl === 1 && E.modus === "allein") setTimeout(() => vorlesen(A.sprech), 600);
     cancelAnimationFrame(SM.raf); SM.letzte = performance.now(); SM.raf = requestAnimationFrame(sammelnSchritt);
@@ -432,7 +434,9 @@ function bootStellen(){}
 function fingerZiel(e){
     const sz = el.querySelector(".bt-szene"); if (!sz || !A) return; const r = sz.getBoundingClientRect(), n = A.optionen.length;
     const fx = (e.clientX - r.left) / r.width * 100, wx = 50 + (fx - 50) / tiefeFaktor(SM.d);
-    SM.zx = Math.max(spurX(0, n) - 12, Math.min(spurX(n - 1, n) + 12, wx));
+    // Magnet: in der Nähe einer Boje rastet das Ziel auf diese Boje ein
+    let best = 0; for (let i = 1; i < n; i++) if (Math.abs(spurX(i, n) - wx) < Math.abs(spurX(best, n) - wx)) best = i;
+    SM.zx = spurX(best, n);
 }
 function steuern(d){ if (!A || SM.phase === "fertig") return; const n = A.optionen.length, i = Math.max(0, Math.min(n - 1, naechsteSpur() + d)); SM.zx = spurX(i, n); ton(520 + i * 60, .05); }
 function losFahren(spur){
@@ -447,13 +451,14 @@ function sammelnSchritt(jetzt){
     if (SM.phase === "kommt" && (!warten || SM.halten)) SM.d = Math.min(1, SM.d + dt / TEMPO[E.tempo]);
     else if (SM.phase === "faehrt") SM.d = Math.min(1, SM.d + dt / 1.1);
     // weich hinter dem Ziel herlenken
-    const alt = SM.wx; SM.wx += (SM.zx - SM.wx) * Math.min(1, dt * 4.5); SM.vx = SM.vx * .85 + (SM.wx - alt) / Math.max(dt, .001) * .15;
+    const alt = SM.wx; SM.wx += (SM.zx - SM.wx) * Math.min(1, dt * 9); SM.vx = SM.vx * .85 + (SM.wx - alt) / Math.max(dt, .001) * .15;
     const sz = el.querySelector(".bt-szene"), H = sz.clientHeight, W = sz.clientWidth;
     SM.bojenAn = Math.min(1, SM.bojenAn + dt * 1.5);
+    const ziel = SM.phase === "fertig" ? -1 : naechsteSpur();
     el.querySelectorAll(".bt-b:not(.gesammelt)").forEach((b, i) => {
         const x = 50 + (spurX(i, n) - 50) * REIHE.f;
         b.style.transform = `translate(${(x / 100 * W).toFixed(1)}px, ${(REIHE.y * H).toFixed(1)}px) translate(-50%, -100%) scale(${(REIHE.sc * (.7 + .3 * SM.bojenAn)).toFixed(3)})`;
-        b.style.opacity = SM.bojenAn.toFixed(2);
+        b.style.opacity = SM.bojenAn.toFixed(2); b.classList.toggle("ziel", i === ziel);
     });
     // Boot: fährt von vorn nach hinten, wird kleiner und rückt zur Mitte
     const t = SM.d, boot = el.querySelector(".bt-boot"), sc = 1 - (1 - .5) * t;
