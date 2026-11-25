@@ -6,7 +6,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 // Alle Bereiche, die einzeln für Gäste freigegeben werden können (Gruppe => [Schlüssel => Name])
 const LT_GAST_GRUPPEN = [
     "Grundschule" => ["sozial" => "Sozialtraining", "lernangebot" => "Lernangebot (mit Arbeitsblatt-Generator)", "quiz" => "Ella-Quiz (Üben nach Klasse & Fach)", "vertretung" => "Vertretungsstunden"],
-    "Tafelbilder" => ["morgen" => "Guten Morgen! (Tagesstart)", "buchstabenkurs" => "Buchstabenkurs", "leise" => "Leise-Wald (alle 4 Arten)", "einmaleins" => "Einmaleins: kleines & großes 1×1, Werkstatt", "brueche" => "Brüche (Kl. 5/6)", "taschenlampe" => "Taschenlampen-Lesen"],
+    "Tafelbilder" => ["morgen" => "Guten Morgen! (Tagesstart)", "buchstabenkurs" => "Buchstabenkurs", "leise" => "Leise-Wald (alle Welten) & Ruhige Arbeitszeit", "einmaleins" => "Einmaleins: kleines & großes 1×1, Werkstatt", "brueche" => "Brüche (Kl. 5/6)", "taschenlampe" => "Taschenlampen-Lesen"],
     "LRS-Förderung" => ["lrs" => "Material-Generator", "akten" => "Kinder-Akten", "gutachten" => "Gutachten", "anamnese" => "Anamnesebogen", "materialien" => "Materialien", "timer" => "Stunden-Timer", "stundenplan" => "Stundenplan"],
     "Planung" => ["tagesplan" => "Mein Tag (eigener Stundenplan & Tagesplan)"],
 ];
@@ -93,7 +93,7 @@ function lt_tafelZugang($schluessel = null){
    Eine Kollegin meldet sich auf jeder Tafel (…/tafel) mit IHREM Gast-Code an und sieht dort
    nur die Tafelbilder, die Melanie für sie angekreuzt hat – mit ihren eigenen Daten. */
 // Welcher Gast-Bereich gehört zu welchem einzeln installierbaren Tafelbild?
-const LT_BAUSTEIN_BEREICH = ["morgen" => "morgen", "morgen-sek" => "morgen", "startklar" => "morgen", "pause" => "morgen", "leise" => "leise",
+const LT_BAUSTEIN_BEREICH = ["morgen" => "morgen", "morgen-sek" => "morgen", "startklar" => "morgen", "pause" => "morgen", "leise" => "leise", "ruhig" => "leise",
     "buchstabenkurs" => "buchstabenkurs", "einmaleins" => "einmaleins", "brueche" => "brueche", "taschenlampe" => "taschenlampe"];
 // Gültiger Gast zu einem Code (oder null)
 function lt_gastPerCode($code){

@@ -2,7 +2,7 @@
    Leise-Welten (Erweiterung zum Leise-Wald) – Mikrofon misst nur die Lautstärke
    Ruhepause (zum Zuschauen):  Korallenriff · Winterwald · Nachthimmel · Raupe wird Schmetterling
    Arbeitsphase (ruhig, Überraschung am Ende, keine Uhr für die Kinder):
-                               Weihnachtsbaum · Ballonfahrt · Burg bauen · Geheimbild
+                               Weihnachtsbaum · Ballonfahrt · Burg bauen
    =============================================================== */
 (function(){
 "use strict";
@@ -122,14 +122,6 @@ const CSS = `
 .w-burg .fahne{ opacity:0; transform:translateY(80px); transition:transform 3s ease, opacity 1s; }
 .w-burg.fertig .fahne{ opacity:1; transform:translateY(0); }
 .w-burg .fahne-tuch{ transform-box:fill-box; transform-origin:0 50%; animation:l2Wiegen 1.4s ease-in-out infinite; }
-/* Geheimbild */
-.w-geheim{ background:radial-gradient(circle at 50% 40%, #fdf6e3, #f1e2c2); }
-.w-geheim .rahmen{ position:absolute; left:50%; top:52%; transform:translate(-50%,-50%); width:min(86vw,74vh); aspect-ratio:1; border-radius:28px; background:#fff; box-shadow:0 20px 60px rgba(90,60,20,.25); overflow:hidden; }
-.w-geheim .motiv{ position:absolute; inset:8%; }
-.w-geheim .motiv svg{ width:100%; height:100%; }
-.w-geheim .kacheln{ position:absolute; inset:0; display:grid; grid-template-columns:repeat(6,1fr); grid-template-rows:repeat(6,1fr); }
-.w-geheim .kachel{ border:2px solid rgba(255,255,255,.55); display:flex; align-items:center; justify-content:center; font-weight:900; color:rgba(255,255,255,.75); font-size:min(4vw,3.4vh); transition:transform .9s, opacity .9s; }
-.w-geheim .kachel.weg{ transform:rotateY(90deg) scale(.6); opacity:0; }
 /* ---- weicher, echter ---- */
 .l2-korn{ position:absolute; inset:0; z-index:15; pointer-events:none; opacity:.13; mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
@@ -160,10 +152,6 @@ const CSS = `
 .w-burg{ background:#b9e0f7; }
 .w-burg .st-k{ opacity:0; }
 .w-burg .st-k.da{ opacity:.9; }
-.w-geheim{ background:radial-gradient(circle at 50% 35%, #fffaf0, #ead9b6); }
-.w-geheim .rahmen{ box-shadow:0 30px 70px rgba(90,60,20,.3), inset 0 0 0 10px #fff; }
-.w-geheim .kachel{ border:0; box-shadow:inset 0 0 0 2px rgba(255,255,255,.35), inset 0 -8px 16px rgba(0,0,0,.12); text-shadow:0 2px 4px rgba(0,0,0,.2); }
-.w-geheim .motiv svg{ filter:drop-shadow(0 12px 18px rgba(0,0,0,.2)); }
 `;
 
 /* ---------- kleine Bausteine ---------- */
@@ -244,7 +232,7 @@ WELTEN.riff = { titel: "Korallenriff", emoji: "🐠", art: "ruhe",
             else {
               const dx = t.zx - t.x;
               if (Math.abs(dx) < .01) t.zx = zuf(.08, .92); else t.x += Math.sign(dx) * Math.min(Math.abs(dx), t.v * dt);
-              t.d.classList.toggle("links", dx < 0);
+              t.d.classList.toggle("links", dx > 0);
               y = t.typ === "q" ? t.y + Math.sin(t.t * .6) * .1 : t.typ === "b" ? t.y : t.y + Math.sin(t.t * 1.6) * .025;
             }
             x = t.x;
@@ -325,7 +313,7 @@ WELTEN.winter = { titel: "Winterwald", emoji: "⛄", art: "ruhe",
           t.t += dt;
           const ziel = laut ? (t.zx < .5 ? -.2 : 1.2) : t.zx;
           if (t.da) t.x += (ziel - t.x) * Math.min(1, dt * (laut ? 2 : .5));
-          t.d.classList.toggle("links", ziel < t.x);
+          t.d.classList.toggle("links", ziel > t.x);
           const hop = (t.k === "hase" || t.k === "eichhoernchen") && Math.abs(ziel - t.x) > .01 ? -Math.abs(Math.sin(t.t * 8)) * .03 : 0;
           const flieg = t.k === "vogel" || t.k === "eule" ? Math.sin(t.t * 2) * .02 : 0;
           t.d.style.opacity = t.da ? 1 : 0;
@@ -635,25 +623,6 @@ WELTEN.burg = { titel: "Burg bauen", emoji: "🏰", art: "arbeit",
         tor.setAttribute("opacity", p >= .35 ? 1 : 0);
       },
       fertig(){ sz.classList.add("fertig"); }
-    };
-  } };
-
-WELTEN.geheim = { titel: "Geheimbild", emoji: "🧩", art: "arbeit",
-  text: "Solange es leise ist, deckt sich Kachel für Kachel ein Bild auf. Was ist es? Die Kinder dürfen leise raten – erst am Ende wird alles gezeigt.",
-  aufbauen(sz){
-    const MOTIVE = [["dino", "ein Dino"], ["rakete", "eine Rakete"], ["einhorn", "ein Einhorn"], ["eisbaer", "ein Eisbär"], ["elefant", "ein Elefant"], ["giraffe", "eine Giraffe"], ["ufo", "ein Ufo"], ["pinguin", "ein Pinguin"], ["schildkroete", "eine Schildkröte"], ["feuerwehr", "ein Feuerwehrauto"], ["krake", "ein Krake"], ["papagei", "ein Papagei"], ["schneemann", "ein Schneemann"], ["pizza", "eine Pizza"], ["vulkan", "ein Vulkan"], ["eule", "eine Eule"], ["igel", "ein Igel"], ["koala", "ein Koala"], ["hubschrauber", "ein Hubschrauber"], ["regenbogen", "ein Regenbogen"]].filter(([k]) => BILD(k));
-    let letzt = ""; try { letzt = localStorage.getItem("lt-geheimbild") || ""; } catch (x) {}
-    const wahl = mischen(MOTIVE.filter(([k]) => k !== letzt))[0] || MOTIVE[0] || ["", "ein Bild"];
-    try { localStorage.setItem("lt-geheimbild", wahl[0]); } catch (x) {}
-    const FARB = [["#f08a72", "#c95a44"], ["#f6b85a", "#d18a24"], ["#f8d36a", "#d4a92e"], ["#7cc464", "#4c9a3a"], ["#5c9cc8", "#2f6d98"], ["#a588dc", "#7058b0"], ["#ee93b0", "#c45f82"], ["#4fb7a7", "#2a877a"]];
-    sz.innerHTML = `<div class="rahmen"><div class="motiv">${BILD(wahl[0])}</div><div class="kacheln">${Array.from({ length: 36 }, (_, i) => { const [a, b] = FARB[(i * 5 + Math.floor(i / 6)) % FARB.length]; return `<div class="kachel" style="background:linear-gradient(145deg, ${a}, ${b})">?</div>`; }).join("")}</div></div>`;
-    const k = mischen([...sz.querySelectorAll(".kachel")]);
-    return {
-      schritt(p){
-        const n = Math.floor(p * (k.length - 8) + .001);
-        k.forEach((x, i) => { if (i < n && !x.classList.contains("weg")){ x.classList.add("weg"); this.klang && this.klang(660 + (i % 6) * 40, .08); } });
-      },
-      fertig(){ k.forEach((x, i) => setTimeout(() => x.classList.add("weg"), i * 60)); return ["Es ist " + wahl[1] + "!", null]; }
     };
   } };
 

@@ -122,7 +122,6 @@ body{ background:#f6f2ea; }
 .a-baum .szene{ background:radial-gradient(circle at 50% 70%, #5a3a52, #1c1222); } .a-baum .wann, .a-baum .los{ background:#2f6a50; color:#fff; }
 .a-ballon .szene{ background:linear-gradient(#5aa9e6,#d8f0ff); } .a-ballon .wann, .a-ballon .los{ background:#d9574a; color:#fff; }
 .a-burg .szene{ background:linear-gradient(#8fd0f5 0 62%, #8fc86f 62%); } .a-burg .wann, .a-burg .los{ background:#7a5a3a; color:#fff; }
-.a-geheim .szene{ background:repeating-conic-gradient(#f6c453 0 25%, #f2a93b 0 50%) 0 0/44px 44px; } .a-geheim .wann, .a-geheim .los{ background:#8e6cc8; color:#fff; }
 .a-live .szene{ background:linear-gradient(#bfe3f7 0 58%, #9fd08a 58%); } .a-live .wann{ background:#e3f2fb; color:#1f5f86; } .a-live .los{ background:#3d7ea6; }
 /* Tafel-Ansicht (Vollbild) */
 #tafel{ position:fixed; inset:0; display:none; flex-direction:column; background:radial-gradient(circle at 20% 0%, #fbf7ee, #efe8da); z-index:10; user-select:none; -webkit-user-select:none; }
@@ -588,13 +587,19 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
 </script>
 <?php endif; ?>
     <div class="kacheln">
-<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen")): ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen") || lt_gastDarf($LT_GAST, "leise")): ?>
         <div class="tb-gruppe">Höhere Klassen</div>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
         <button class="kachel" type="button" onclick="tafelMorgen.oeffnen('sek')">
             <div class="k-buehne k-morgen" style="background:linear-gradient(135deg,#e9eef4,#d6e1ec);"><div class="mini-gruss" style="color:#1c2b39;">Guten Morgen, 7b!</div><div class="mini-raster"><i>📅</i><i>🧩</i><i>🗂️</i><i>A/B</i></div></div>
             <div class="k-text"><h2>Guten Morgen! (Kl. 5–9)</h2><p>Sachlicher Tagesstart für die Großen: Stundenplan mit Uhrzeiten, A-/B-Woche, Termine (Tests, Abgaben) mit Countdown und jeden Tag ein Impuls – Wort des Tages, Denk-Nuss, Wusstest du?, Redewendung.</p><div class="k-tags"><span>Stundenanfang</span><span>Kl. 5–9</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
+        <button class="kachel" type="button" onclick="tafelRuhig.oeffnen('sek')">
+            <div class="k-buehne" style="background:linear-gradient(135deg,#141b2e 0%,#3a3f5c 35%,#f2a675 60%,#0f3b45 100%);display:flex;align-items:center;justify-content:center;gap:10px;font-size:46px;">🏙️<span style="font-size:36px">🌊</span>🌌</div>
+            <div class="k-text"><h2>Ruhige Arbeitszeit (Kl. 5–9)</h2><p>Sachliche Szenen für konzentriertes Arbeiten: Stadt bei Regen, Meer, Polarlicht – mit ruhigem Klang und schlichter Zeitleiste.</p><div class="k-tags"><span>Arbeitsphase</span><span>Kl. 5–9</span><span>Klang</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")): ?>
@@ -609,7 +614,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
             <div class="k-text"><h2>Holz &amp; Metall – Werkstoff-Duell</h2><p>Einstiegs-Quiz, Fe oder NE?, Werkzeug, Metallrohr-Schritte, Holzarten (Nadel/Laub/exotisch), Baumstamm zum Aufdecken, Holz arbeitet, Holzwerkstoffe, Film. Team A gegen Team B.</p><div class="k-tags"><span>Technik</span><span>Kl. 5–7</span><span>Doppelstunde</span></div></div>
         </button>
 <?php endif; ?>
-<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen") || lt_gastDarf($LT_GAST, "taschenlampe")): ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen") || lt_gastDarf($LT_GAST, "taschenlampe") || lt_gastDarf($LT_GAST, "leise")): ?>
         <div class="tb-gruppe">Grundschule</div>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
@@ -636,6 +641,12 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
             <div class="k-text"><h2>Das Einmaleins</h2><p>Alles in einer Tafel: 1×1-Tabelle zum Antippen, Verstehen im Punktefeld, Kernaufgaben &amp; Nachbarn, Tricks, Geteilt, Aufgabenfamilie, Üben mit Punkten und das große 1 × 1.</p><div class="k-tags"><span>interaktiv</span><span>Kl. 2–6</span></div></div>
         </button>
 <?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
+        <button class="kachel" type="button" onclick="tafelRuhig.oeffnen('gs')">
+            <div class="k-buehne" style="background:linear-gradient(135deg,#7fd3e6 0%,#1f7ea6 45%,#3c4a5e 55%,#ff9a4a 100%);display:flex;align-items:center;justify-content:center;gap:10px;font-size:46px;">🐟<span style="font-size:36px">🌧️</span>🔥</div>
+            <div class="k-text"><h2>Ruhige Arbeitszeit</h2><p>Läuft ganz ruhig nebenbei, wenn Flüstern erlaubt ist: Aquarium, Wolkenwiese, Regen am Fenster, Lagerfeuer – mit leisem Klang, ohne Mikrofon.</p><div class="k-tags"><span>Arbeitsphase</span><span>Kl. 1–4</span><span>Klang</span></div></div>
+        </button>
+<?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "taschenlampe")): ?>
         <button class="kachel" type="button" onclick="tafelTaschenlampe.oeffnen()">
             <div class="k-buehne k-tl" style="background:radial-gradient(circle at 58% 42%, #fff4cf 0 21%, #3a4964 34%, #121a2c 62%);position:relative;overflow:hidden;"><div style="position:absolute;left:58%;top:42%;transform:translate(-50%,-62%);font:700 34px Andika,Nunito,sans-serif;color:#15213a;">So<span style="color:#c62828">fa</span></div><div style="position:absolute;left:56%;top:51%;width:70px;height:12px;transform:translateX(-50%);border:3px solid #c0392b;border-top:0;border-radius:0 0 999px 999px / 0 0 100% 100%;"></div><div style="position:absolute;left:30%;top:64%;font-size:40px;transform:rotate(-40deg);">🔦</div></div>
@@ -651,7 +662,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
         <button class="kachel" type="button" onclick="leiseWahl(true)">
             <div class="k-buehne k-wald"><svg class="mini-wald" viewBox="0 0 320 150" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="mwH" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fd6f5"/><stop offset="1" stop-color="#fdf3d8"/></linearGradient><linearGradient id="mwW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#84c26b"/><stop offset="1" stop-color="#5d9b47"/></linearGradient></defs><rect width="320" height="150" fill="url(#mwH)"/><circle cx="272" cy="28" r="16" fill="#ffd45c"/><path d="M0 92 Q60 72 130 86 T 260 82 T 320 76 V150 H0Z" fill="#bcdcae"/><rect x="18.4" y="89.5" width="3.2" height="6.4" fill="#7a5532"/><path d="M0.7 90.4 L20 71.1 L39.3 90.4 Z" fill="#7fae76"/><path d="M4.9 78.0 L20 58.7 L35.1 78.0 Z" fill="#7fae76"/><path d="M9.2 65.6 L20 46.2 L30.8 65.6 Z" fill="#7fae76"/><rect x="56.7" y="90.4" width="2.7" height="5.3" fill="#7a5532"/><path d="M42.0 91.2 L58 75.2 L74.0 91.2 Z" fill="#7fae76"/><path d="M45.6 80.9 L58 65.0 L70.4 80.9 Z" fill="#7fae76"/><path d="M49.1 70.7 L58 54.7 L66.9 70.7 Z" fill="#7fae76"/><rect x="94.2" y="89.0" width="3.5" height="7.0" fill="#7a5532"/><path d="M75.0 90.0 L96 69.0 L117.0 90.0 Z" fill="#7fae76"/><path d="M79.6 76.5 L96 55.5 L112.4 76.5 Z" fill="#7fae76"/><path d="M84.2 63.0 L96 42.0 L107.8 63.0 Z" fill="#7fae76"/><rect x="138.5" y="90.0" width="2.9" height="5.9" fill="#7a5532"/><path d="M122.4 90.8 L140 73.2 L157.6 90.8 Z" fill="#7fae76"/><path d="M126.2 79.5 L140 61.8 L153.8 79.5 Z" fill="#7fae76"/><path d="M130.1 68.1 L140 50.5 L149.9 68.1 Z" fill="#7fae76"/><rect x="182.3" y="89.2" width="3.4" height="6.7" fill="#7a5532"/><path d="M163.8 90.2 L184 70.0 L204.2 90.2 Z" fill="#7fae76"/><path d="M168.3 77.2 L184 57.1 L199.7 77.2 Z" fill="#7fae76"/><path d="M172.7 64.3 L184 44.1 L195.3 64.3 Z" fill="#7fae76"/><rect x="224.6" y="90.2" width="2.8" height="5.6" fill="#7a5532"/><path d="M209.2 91.0 L226 74.2 L242.8 91.0 Z" fill="#7fae76"/><path d="M212.9 80.2 L226 63.4 L239.1 80.2 Z" fill="#7fae76"/><path d="M216.6 69.4 L226 52.6 L235.4 69.4 Z" fill="#7fae76"/><rect x="266.4" y="89.5" width="3.2" height="6.4" fill="#7a5532"/><path d="M248.7 90.4 L268 71.1 L287.3 90.4 Z" fill="#7fae76"/><path d="M252.9 78.0 L268 58.7 L283.1 78.0 Z" fill="#7fae76"/><path d="M257.2 65.6 L268 46.2 L278.8 65.6 Z" fill="#7fae76"/><rect x="304.6" y="90.2" width="2.8" height="5.6" fill="#7a5532"/><path d="M289.2 91.0 L306 74.2 L322.8 91.0 Z" fill="#7fae76"/><path d="M292.9 80.2 L306 63.4 L319.1 80.2 Z" fill="#7fae76"/><path d="M296.6 69.4 L306 52.6 L315.4 69.4 Z" fill="#7fae76"/><path d="M0 104 Q80 94 160 102 T 320 98 V150 H0Z" fill="#9ccd88"/><rect x="67.8" y="104.6" width="4.3" height="8.7" fill="#7a5532"/><path d="M44.0 105.8 L70 79.8 L96.0 105.8 Z" fill="#4d8a48"/><path d="M49.7 89.1 L70 63.0 L90.3 89.1 Z" fill="#4d8a48"/><path d="M55.4 72.3 L70 46.3 L84.6 72.3 Z" fill="#4d8a48"/><rect x="147.1" y="85.9" width="5.8" height="26.1" fill="#8a5a2e"/><circle cx="138.4" cy="80.1" r="15.1" fill="#5e9e52"/><circle cx="161.6" cy="78.4" r="14.5" fill="#5e9e52"/><circle cx="150" cy="65.6" r="17.4" fill="#5e9e52"/><circle cx="145.4" cy="59.8" r="7.0" fill="#86c272" opacity=".7"/><rect x="234.0" y="105.0" width="4.1" height="8.1" fill="#7a5532"/><path d="M211.6 106.2 L236 81.8 L260.4 106.2 Z" fill="#4d8a48"/><path d="M217.0 90.5 L236 66.2 L255.0 90.5 Z" fill="#4d8a48"/><path d="M222.4 74.9 L236 50.5 L249.6 74.9 Z" fill="#4d8a48"/><rect x="297.3" y="89.7" width="5.4" height="24.3" fill="#8a5a2e"/><circle cx="289.2" cy="84.3" r="14.0" fill="#4f8f45"/><circle cx="310.8" cy="82.7" r="13.5" fill="#4f8f45"/><circle cx="300" cy="70.8" r="16.2" fill="#4f8f45"/><circle cx="295.7" cy="65.4" r="6.5" fill="#86c272" opacity=".7"/><path d="M0 120 Q90 112 170 118 T 320 114 V150 H0Z" fill="url(#mwW)"/><circle cx="30" cy="138" r="2.6" fill="#fff"/><circle cx="64" cy="146" r="2.6" fill="#ffd84d"/><circle cx="110" cy="132" r="2.6" fill="#f48fb1"/><circle cx="150" cy="142" r="2.6" fill="#fff"/><circle cx="196" cy="136" r="2.6" fill="#ffb74d"/><circle cx="240" cy="146" r="2.6" fill="#b39ddb"/><circle cx="282" cy="134" r="2.6" fill="#ffd84d"/><circle cx="312" cy="144" r="2.6" fill="#f48fb1"/></svg><div class="tiere">🦊🐰🦔</div><span class="psst">🤫 Pssst …</span></div>
-            <div class="k-text"><h2>Leise-Wald</h2><p>Leise arbeiten mit dem Mikrofon – viele Welten zur Auswahl: Wald, Quatsch-Wald, Korallenriff, Winterwald, Nachthimmel, Raupe, Weihnachtsbaum, Ballonfahrt, Burg und Geheimbild.</p><div class="k-tags"><span>Mikrofon</span><span>Arbeitsphase</span></div></div>
+            <div class="k-text"><h2>Leise-Wald</h2><p>Leise arbeiten mit dem Mikrofon – viele Welten zur Auswahl: Wald, Quatsch-Wald, Korallenriff, Winterwald, Nachthimmel, Raupe, Weihnachtsbaum, Ballonfahrt und Burg.</p><div class="k-tags"><span>Mikrofon</span><span>Arbeitsphase</span></div></div>
         </button>
 <?php endif; ?>
     </div>
@@ -686,7 +697,6 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
     ["baum", "a-baum", "🎄", '<small style="left:18px;bottom:12px">🎁</small><small style="right:22px;top:16px">⭐</small><small style="right:30px;bottom:14px">🕯️</small>', "Arbeitsphase", "Weihnachtsbaum schmücken", "Bei Ruhe kommt nach und nach Schmuck an den Baum, bei Lärm flackern die Lichter. Am Ende der Stern."],
     ["ballon", "a-ballon", "🎈", '<small style="left:18px;top:16px">☁️</small><small style="right:22px;top:24px">☁️</small><small style="right:34px;bottom:12px">🌳</small>', "Arbeitsphase", "Ballonfahrt", "Bei Ruhe steigt der Ballon, bei Lärm sinkt er. Schafft ihr es bis auf die große Wolke?"],
     ["burg", "a-burg", "🏰", '<small style="left:18px;bottom:12px">🧱</small><small style="right:22px;top:16px">🚩</small>', "Arbeitsphase", "Burg bauen", "Stein für Stein entsteht eine Burg – am Ende wird die Fahne gehisst."],
-    ["geheim", "a-geheim", "🧩", '<small style="left:18px;top:14px;font-weight:900;color:#8e6cc8">?</small><small style="right:22px;bottom:12px;font-weight:900;color:#e2725b">?</small>', "Arbeitsphase", "Geheimbild", "Ein Bild deckt sich Kachel für Kachel auf. Was ist es? Erst am Ende wird alles gezeigt."],
 ] as [$w, $klasse, $haupt, $deko, $wann, $titel, $text]): ?>
             <button class="lw-art <?= $klasse ?>" type="button" onclick="leiseWahl(false); window.leiseWelten && leiseWelten.starten('<?= $w ?>')">
                 <div class="szene"><?= $haupt ?><?= $deko ?></div>
@@ -791,6 +801,7 @@ window.TAFEL_LINKS_ERLAUBT = <?= json_encode(!$TAFEL_APP && !empty($_SESSION["le
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
 <script src="lernangebot-tafel.js?v=<?= @filemtime(__DIR__ . "/lernangebot-tafel.js") ?: 1 ?>"></script>
 <?php if (!$LT_GAST): ?><script src="tafel-werkstatt.js?v=<?= @filemtime(__DIR__ . "/tafel-werkstatt.js") ?: 1 ?>"></script><?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?><script src="tafel-ruhig.js?v=<?= @filemtime(__DIR__ . "/tafel-ruhig.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?><script src="tafel-leise-welten.js?v=<?= @filemtime(__DIR__ . "/tafel-leise-welten.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "taschenlampe")): ?><script src="tafel-taschenlampe.js?v=<?= @filemtime(__DIR__ . "/tafel-taschenlampe.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")): ?><script src="tafel-brueche.js?v=<?= @filemtime(__DIR__ . "/tafel-brueche.js") ?: 1 ?>"></script><?php endif; ?>
