@@ -594,6 +594,12 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
             <div class="k-text"><h2>Brüche</h2><p>Erklär-Tafel mit Bild und Rechenweg zum Aufdecken: Was ist ein Bruch, gemischte Zahlen, Erweitern &amp; Kürzen, Vergleichen, Zahlenstrahl, Plus/Minus, Mal/Geteilt.</p><div class="k-tags"><span>Mathe</span><span>Kl. 5/6</span></div></div>
         </button>
 <?php endif; ?>
+<?php if (!$LT_GAST): ?>
+        <button class="kachel" type="button" onclick="tafelWerkstatt.oeffnen()">
+            <div class="k-buehne" style="background:repeating-linear-gradient(-45deg,#f2b705 0 14px,#1f2328 14px 28px);display:flex;align-items:center;justify-content:center;"><div style="background:#1f2328;color:#f1efe9;border-radius:14px;padding:8px 16px;font-weight:900;font-size:20px;display:flex;gap:8px;align-items:center;"><span style="font-size:30px">🛠️</span>Werkstatt</div></div>
+            <div class="k-text"><h2>Werkstatt-Führerschein</h2><p>Arbeiten mit Holz und Metall – sicher und richtig: Einstiegs-Quiz, Film mit Beobachtungsauftrag, Unfall-Akten, „Holz oder Metall?“, 10 Werkstattregeln und Führerscheine zum Drucken. Punkte für Team A gegen Team B.</p><div class="k-tags"><span>Technik</span><span>Kl. 5–7</span><span>Doppelstunde</span></div></div>
+        </button>
+<?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen")): ?>
         <div class="tb-gruppe">Grundschule</div>
 <?php endif; ?>
@@ -751,6 +757,7 @@ window.TAFEL_LINKS_ERLAUBT = <?= json_encode(!$TAFEL_APP && !empty($_SESSION["le
 <script src="tafel-morgen.js?v=<?= @filemtime(__DIR__ . "/tafel-morgen.js") ?>"></script>
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
 <script src="lernangebot-tafel.js?v=<?= @filemtime(__DIR__ . "/lernangebot-tafel.js") ?: 1 ?>"></script>
+<?php if (!$LT_GAST): ?><script src="tafel-werkstatt.js?v=<?= @filemtime(__DIR__ . "/tafel-werkstatt.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")): ?><script src="tafel-brueche.js?v=<?= @filemtime(__DIR__ . "/tafel-brueche.js") ?: 1 ?>"></script><?php endif; ?>
 <script>
 // Wer spielt gegen wen? (Blitzrechnen/Üben) – Eule Ella für die Kleinen, Teams oder Lehrkraft für die Großen
