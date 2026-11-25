@@ -118,9 +118,23 @@ if ($aktion === "einheit_loeschen") {
     antwort(true, $erg);
 }
 
+// Wie bereinigen(), behält aber Objekte als Objekte – sonst wird ein leeres {} beim Speichern zu [] und
+// alles, was danach dort eingetragen wird, geht verloren.
+function bereinigenObj($wert, $tiefe = 0){
+    if ($tiefe > 8) return null;
+    if ($wert instanceof stdClass) {
+        $neu = new stdClass(); $i = 0;
+        foreach (get_object_vars($wert) as $k => $v) { if (++$i > 400) break; $neu->{mb_substr((string)$k, 0, 60)} = bereinigenObj($v, $tiefe + 1); }
+        return $neu;
+    }
+    if (is_array($wert)) { $neu = []; foreach (array_slice($wert, 0, 400) as $v) $neu[] = bereinigenObj($v, $tiefe + 1); return $neu; }
+    return bereinigen($wert, $tiefe);
+}
+
 if ($aktion === "jahresplan_speichern") {
-    $plan = bereinigen($anfrage["jahresplan"] ?? null);
-    if (!is_array($plan)) antwort(false, ["fehler" => "Ungültiger Jahresplan."]);
+    $roh2 = json_decode($roh);
+    $plan = bereinigenObj($roh2->jahresplan ?? null);
+    if (!($plan instanceof stdClass)) antwort(false, ["fehler" => "Ungültiger Jahresplan."]);
     [$ok, $erg] = aktualisieren($datei, function (&$d) use ($plan) { $d["jahresplan"] = $plan; return []; });
     if (!$ok) antwort(false, ["fehler" => $erg]);
     antwort(true);

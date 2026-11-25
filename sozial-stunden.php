@@ -1310,7 +1310,25 @@ function plan(){
         DATEN.jahresplan = { start: iso(s), ende: iso(en), wochen: {} };
     }
     if (!DATEN.jahresplan.wochen || Array.isArray(DATEN.jahresplan.wochen)) DATEN.jahresplan.wochen = {};
+    planReparieren(DATEN.jahresplan);
     return DATEN.jahresplan;
+}
+// Leere Einträge kamen früher vom Server als [] statt {} zurück. In ein [] eingetragene Werte gehen beim
+// Speichern verloren (JSON kennt keine benannten Felder an Listen) – deshalb hier immer in Objekte umwandeln.
+function alsObjekt(x){
+    if (x && typeof x === "object" && !Array.isArray(x)) return x;
+    const o = {};
+    if (Array.isArray(x)) Object.keys(x).forEach(k => { if (!/^\d+$/.test(k)) o[k] = x[k]; });
+    return o;
+}
+function planReparieren(p){
+    if (!p || p._repariert) return;
+    Object.keys(p.wochen).forEach(k => {
+        const w = p.wochen[k] = alsObjekt(p.wochen[k]);
+        if ("klassen" in w) { w.klassen = alsObjekt(w.klassen); Object.keys(w.klassen).forEach(id => w.klassen[id] = alsObjekt(w.klassen[id])); }
+        if ("einheiten" in w) w.einheiten = alsObjekt(w.einheiten);
+    });
+    Object.defineProperty(p, "_repariert", { value: true, enumerable: false, configurable: true });
 }
 function planWochen(){
     const p = plan(), liste = [];
