@@ -183,6 +183,28 @@ const CSS = `
 .bt-los{ margin-top:16px; width:100%; font:900 22px "Nunito",sans-serif; border:0; border-radius:999px; padding:14px; background:#e08a2c; color:#fff; cursor:pointer; }
 .bt-ende .gross{ font-size:clamp(40px,8vmin,80px); font-weight:900; text-align:center; }
 @media (orientation:landscape) and (min-width:900px){ .bt-antwort{ padding:14px 20px 18px; } }
+.bt-aufgabe{ position:absolute; left:50%; top:30px; transform:translateX(-50%); z-index:4; display:none; }
+#bt.sammeln .bt-aufgabe{ display:block; }
+#bt.sammeln .bt-boje{ display:none; }
+#bt.sammeln .bt-boot{ transition:left .55s cubic-bezier(.4,1.3,.5,1); }
+#bt.sammeln.allein .bt-haupt{ flex-direction:column !important; }
+#bt.sammeln.allein .bt-antwort{ width:auto !important; }
+.bt-aufgabe .bt-schild{ font-size:clamp(26px,6vmin,80px); }
+.bt-aufgabe .bt-schild .bild{ width:clamp(70px,15vmin,170px); }
+.bt-b{ position:absolute; left:0; top:0; transform-origin:50% 100%; display:flex; flex-direction:column; align-items:center; z-index:2; cursor:pointer; will-change:transform; }
+.bt-b .schild{ background:linear-gradient(#fffdf6,#f3ead6); color:#1f2d36; border:4px solid #8a5f3c; border-radius:16px; padding:.15em .45em; font-weight:900; font-size:clamp(24px,5.2vmin,64px); line-height:1.1; white-space:nowrap; box-shadow:0 10px 22px rgba(0,20,40,.3); }
+.bt-b .schild.wort{ font-family:"Andika","Nunito",sans-serif; font-weight:700; }
+.bt-b .schild svg{ width:clamp(54px,11vmin,120px); height:clamp(54px,11vmin,120px); display:block; }
+.bt-b .pfahl{ width:7px; height:clamp(12px,2.4vmin,30px); background:#8a5f3c; }
+.bt-b .tonne svg{ width:clamp(44px,8vmin,90px); display:block; }
+.bt-b.richtig .schild{ background:#7ee29a; border-color:#2e9e5b; }
+.bt-b.falsch .schild{ background:#ffb3aa; border-color:#c0392b; }
+.bt-b.gesammelt{ transition:transform .6s, opacity .6s; opacity:0; }
+.bt-steuer{ display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; }
+.bt-steuer button{ font:900 clamp(24px,4.6vmin,44px) "Nunito",sans-serif; border:0; border-radius:20px; min-width:2.6em; height:1.8em; padding:0 .6em; background:#4a3f8f; color:#fff; box-shadow:0 5px 0 #2e2766; cursor:pointer; }
+.bt-steuer button.los{ background:#e08a2c; box-shadow:0 5px 0 #a35f16; font-size:clamp(20px,3.6vmin,34px); }
+.bt-spritzer{ position:absolute; z-index:3; pointer-events:none; font-size:clamp(30px,6vmin,70px); animation:btSpritz .9s ease-out forwards; }
+@keyframes btSpritz{ from{ transform:translate(-50%,-50%) scale(.4); opacity:1; } to{ transform:translate(-50%,-140%) scale(1.5); opacity:0; } }
 `;
 
 /* Bilder der Szene */
@@ -218,7 +240,7 @@ const TONNE = `<svg viewBox="0 0 100 90" aria-hidden="true"><path d="M20 30 L80 
 const WELLE = (f, o) => `<svg viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60 ${Array.from({ length: 12 }, (_, i) => `Q${i * 100 + 50} ${i % 2 ? 30 : 90} ${i * 100 + 100} 60`).join(" ")} V120 H0Z" fill="${f}" opacity="${o}"/></svg>`;
 
 /* ---------------- Ablauf ---------------- */
-const E = { fach: "mathe", kl: 2, bereich: "mix", laenge: 10, modus: "tafel", ton: true };
+const E = { fach: "mathe", kl: 2, bereich: "mix", laenge: 10, modus: "tafel", ton: true, art: "sammeln", tempo: "warten" };
 try { Object.assign(E, JSON.parse(localStorage.getItem("lt-boot") || "{}")); } catch (x) {}
 const merken = () => { try { localStorage.setItem("lt-boot", JSON.stringify(E)); } catch (x) {} };
 let el, A = null, nr = 0, versuch = 0, ergebnisse = [], punkte = { k: 0, e: 0 }, eingabe = "", ctx = null, gesperrt = false;
@@ -235,7 +257,9 @@ function aufbauen(){
     const st = document.createElement("style"); st.textContent = CSS; document.head.appendChild(st);
     el = document.createElement("div"); el.id = "bt"; document.body.appendChild(el);
     el.addEventListener("click", klick);
-    document.addEventListener("keydown", e => { if (!el.classList.contains("an") || !A || A.art !== "zahl" || E.modus !== "allein") return; if (/^\d$/.test(e.key)) taste(e.key); else if (e.key === "Backspace") taste("weg"); else if (e.key === "Enter") taste("ok"); });
+    document.addEventListener("keydown", e => {
+        if (el.classList.contains("an") && A && E.art === "sammeln"){ if (e.key === "ArrowLeft") steuern(-1); else if (e.key === "ArrowRight") steuern(1); else if (e.key === "Enter" || e.key === " ") losFahren(); else return; e.preventDefault(); return; }
+        if (!el.classList.contains("an") || !A || A.art !== "zahl" || E.modus !== "allein") return; if (/^\d$/.test(e.key)) taste(e.key); else if (e.key === "Backspace") taste("weg"); else if (e.key === "Enter") taste("ok"); });
 }
 
 function startZeigen(){
@@ -249,6 +273,8 @@ function startZeigen(){
       <h4>Klasse</h4><div class="bt-reihe">${[1, 2, 3, 4].map(k => `<button data-e="kl=${k}" class="${E.kl === k ? "an" : ""}">Klasse ${k}</button>`).join("")}</div>
       <h4>Aufgaben</h4><div class="bt-reihe">${ber.map(([k, t]) => `<button data-e="bereich=${k}" class="${E.bereich === k ? "an" : ""}">${t}</button>`).join("")}</div>
       <h4>Wie weit?</h4><div class="bt-reihe">${[5, 10, 15, 20].map(k => `<button data-e="laenge=${k}" class="${E.laenge === k ? "an" : ""}">${k} Bojen</button>`).join("")}</div>
+      <h4>Spielart</h4><div class="bt-reihe"><button data-e="art=sammeln" class="${E.art === "sammeln" ? "an" : ""}">⛵ Boot steuern & Boje einsammeln</button><button data-e="art=tippen" class="${E.art === "tippen" ? "an" : ""}">👆 Antwort antippen</button></div>
+      ${E.art === "sammeln" ? `<h4>Tempo</h4><div class="bt-reihe">${[["warten", "ohne Zeitdruck – Bojen warten"], ["langsam", "langsam"], ["schnell", "schnell"]].map(([k, t]) => `<button data-e="tempo=${k}" class="${E.tempo === k ? "an" : ""}">${t}</button>`).join("")}</div>` : ""}
       <h4>Wie wird gespielt?</h4><div class="bt-reihe"><button data-e="modus=tafel" class="${E.modus === "tafel" ? "an" : ""}">An der Tafel: ${seiten()[2] || "Klasse gegen Ella"}</button><button data-e="modus=allein" class="${E.modus === "allein" ? "an" : ""}">Allein am iPad / Handy</button></div>
       <button class="bt-los" data-a="los">Leinen los! ⛵</button></div></div>`);
 }
@@ -271,6 +297,8 @@ function geruest(){
         <div class="bt-turm">${TURM}</div>
         <div class="bt-wellen w1">${WELLE("#4aa3c8", .8)}</div>
         <div class="bt-boje kommt"></div>
+        <div class="bt-bojen"></div>
+        <div class="bt-aufgabe"></div>
         <div class="bt-wellen w2">${WELLE("#2d86b4", .9)}</div>
         <div class="bt-boot">${BOOT()}</div>
         <div class="bt-wellen w3">${WELLE("#1d6f9c", 1)}</div>
@@ -294,6 +322,7 @@ function naechste(){
     if (nr >= E.laenge) return ende();
     A = E.fach === "mathe" ? mathe(E.kl, E.bereich) : deutsch(E.kl, E.bereich);
     versuch = 0; eingabe = ""; gesperrt = false;
+    if (E.art === "sammeln"){ if (A.optionen.length > 4) A.optionen = A.optionen.slice(0, 4); return sammelnStarten(); }
     const b = el.querySelector(".bt-boje");
     b.className = "bt-boje kommt";
     const schild = A.art === "zahl"
@@ -371,7 +400,79 @@ function pruefen(wert, knopf){
     else { const h = el.querySelector(".bt-hinweis"); if (h) h.textContent = "Noch nicht – versuch es noch einmal!"; }
 }
 
+/* ---------- Spielart: Boot steuern und die richtige Boje einsammeln ---------- */
+const SM = { z: 0, spur: 1, phase: "", raf: 0, letzte: 0, ziel: null };
+const spurX = (i, n) => 50 + (i - (n - 1) / 2) * (n <= 2 ? 30 : n === 3 ? 28 : 22);
+const TEMPO = { warten: 5.5, langsam: 9, schnell: 5.5 };
+function sammelnStarten(neuMischen){
+    if (neuMischen) A.optionen = mischen(A.optionen);
+    const n = A.optionen.length;
+    el.querySelector(".bt-aufgabe").innerHTML = A.art === "zahl" ? `<div class="bt-schild">${A.text} = ?</div>`
+        : `<div class="bt-schild"><div class="frage">${A.frage}</div>${A.bild ? `<div class="bild">${BILD(A.bild)}</div>` : ""}${A.wort ? `<div class="wort">${A.wort}</div>` : ""}</div>`;
+    el.querySelector(".bt-bojen").innerHTML = A.optionen.map((o, i) => `<div class="bt-b" data-b="${i}"><div class="schild${A.bilder ? " bild" : /[a-zäöüß]/i.test(o) ? " wort" : ""}">${A.bilder ? BILD(o) : o}</div><div class="pfahl"></div><div class="tonne">${TONNE}</div></div>`).join("");
+    if (SM.spur >= n) SM.spur = n - 1;
+    SM.z = 0; SM.phase = "kommt"; SM.ziel = null;
+    bootStellen();
+    const f = el.querySelector(".bt-antwort");
+    f.innerHTML = `<div class="bt-steuer"><button data-s="-1" aria-label="nach links">◀</button><button class="los" data-s="los">Einsammeln!</button><button data-s="1" aria-label="nach rechts">▶</button></div><div class="bt-hinweis">${E.modus === "tafel" ? "Tippt auf die richtige Boje – oder steuert mit ◀ ▶." : "Steuere das Boot zur richtigen Boje!"}</div>`;
+    standZeigen();
+    if (E.kl === 1 && E.modus === "allein") setTimeout(() => vorlesen(A.sprech), 600);
+    cancelAnimationFrame(SM.raf); SM.letzte = performance.now(); SM.raf = requestAnimationFrame(sammelnSchritt);
+}
+function bootStellen(){ const b = el.querySelector(".bt-boot"); if (b && A) b.style.left = spurX(SM.spur, A.optionen.length) + "%"; }
+function steuern(d){ if (!A || SM.phase === "fertig" || SM.phase === "faehrt") return; SM.spur = Math.max(0, Math.min(A.optionen.length - 1, SM.spur + d)); bootStellen(); ton(520 + SM.spur * 60, .05); }
+function losFahren(spur){
+    if (!A || SM.phase === "fertig" || SM.phase === "faehrt") return;
+    if (spur !== undefined){ SM.spur = spur; bootStellen(); }
+    if (SM.z < .5) SM.z = .5;   // Bojen kommen schnell heran
+    SM.phase = "faehrt";
+}
+function sammelnSchritt(jetzt){
+    const dt = Math.min(.1, (jetzt - SM.letzte) / 1000); SM.letzte = jetzt;
+    if (!el.classList.contains("an")) return;
+    const n = A ? A.optionen.length : 0, warten = E.tempo === "warten";
+    if (SM.phase === "kommt"){ SM.z = Math.min(1, SM.z + dt / TEMPO[E.tempo]); if (warten && SM.z >= .8){ SM.z = .8; SM.phase = "wartet"; } if (!warten && SM.z >= 1) einsammeln(SM.spur); }
+    else if (SM.phase === "faehrt"){ SM.z = Math.min(1, SM.z + dt / .7); if (SM.z >= 1) einsammeln(SM.spur); }
+    const sz = el.querySelector(".bt-szene"), H = sz.clientHeight, W = sz.clientWidth;
+    const horizont = .5, linie = .8, z = SM.z, t = Math.pow(z, 1.5);
+    el.querySelectorAll(".bt-b:not(.gesammelt)").forEach((b, i) => {
+        const x = 50 + (spurX(i, n) - 50) * (.2 + .8 * z), y = horizont + (linie - horizont) * t, sc = .28 + .72 * z;
+        b.style.transform = `translate(${(x / 100 * W).toFixed(1)}px, ${(y * H).toFixed(1)}px) translate(-50%, -100%) scale(${sc.toFixed(3)})`;
+        b.style.opacity = Math.min(1, z * 4).toFixed(2);
+    });
+    if (SM.phase !== "fertig") SM.raf = requestAnimationFrame(sammelnSchritt);
+}
+function spritzer(text, b){ const sz = el.querySelector(".bt-szene"), r = b.getBoundingClientRect(), q = sz.getBoundingClientRect(); const s = document.createElement("div"); s.className = "bt-spritzer"; s.textContent = text; s.style.left = (r.left + r.width / 2 - q.left) + "px"; s.style.top = (r.top + r.height * .4 - q.top) + "px"; sz.appendChild(s); setTimeout(() => s.remove(), 1000); }
+function einsammeln(spur){
+    SM.phase = "fertig";
+    const wert = A.optionen[spur], richtig = wert === A.antwort, bojen = [...el.querySelectorAll(".bt-b")], b = bojen[spur];
+    const h = el.querySelector(".bt-hinweis");
+    if (richtig){
+        b.classList.add("richtig"); spritzer("✨", b);
+        setTimeout(() => { b.classList.add("gesammelt"); b.style.transform += " scale(.2)"; }, 250);
+        const erste = versuch === 0; ergebnisse.push(erste); if (E.modus === "tafel" && erste) punkte.k++;
+        [660, 880, 1100].forEach((f, i) => setTimeout(() => ton(f, .12, "triangle"), i * 110));
+        if (h) h.textContent = nimm(["Super!", "Richtig!", "Genau!", "Prima!", "Weiter so!"]) + (A.loesung ? "  " + A.loesung : "");
+        nr++; standZeigen(); setTimeout(turmStellen, 500); setTimeout(naechste, 1800);
+        return;
+    }
+    versuch++;
+    b.classList.add("falsch"); spritzer("💦", b); ton(190, .25);
+    el.classList.add("falsch"); setTimeout(() => el.classList.remove("falsch"), 520);
+    const richtigeBoje = bojen[A.optionen.indexOf(A.antwort)];
+    if (E.modus === "tafel" || versuch >= 2){
+        if (richtigeBoje) richtigeBoje.classList.add("richtig");
+        ergebnisse.push(false); if (E.modus === "tafel") punkte.e++;
+        if (h) h.textContent = (E.modus === "tafel" ? `Punkt für ${seiten()[1]}. ` : "") + `Richtig ist: ${A.bilder ? A.loesung : A.antwort}`;
+        nr++; standZeigen(); setTimeout(naechste, 2600);
+        return;
+    }
+    if (h) h.textContent = "Das war nicht die richtige Boje – gleich noch einmal!";
+    setTimeout(() => sammelnStarten(true), 1700);
+}
+
 function ende(){
+    cancelAnimationFrame(SM.raf); const bj = el.querySelector(".bt-bojen"); if (bj) bj.innerHTML = ""; const au = el.querySelector(".bt-aufgabe"); if (au) au.innerHTML = "";
     el.classList.add("da"); turmStellen();
     [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => ton(f, .3, "triangle"), i * 170));
     const ok = ergebnisse.filter(Boolean).length, [k, e] = seiten();
@@ -384,13 +485,17 @@ function ende(){
 
 function fahrtStarten(){
     el.classList.toggle("allein", E.modus === "allein");
+    el.classList.toggle("sammeln", E.art === "sammeln");
+    const bt = el.querySelector(".bt-boot"); if (bt) bt.style.left = "";
     nr = 0; ergebnisse = []; punkte = { k: 0, e: 0 }; el.classList.remove("da");
     ["bt-start", "bt-ende"].forEach(c => { const x = el.querySelector("." + c); if (x) x.remove(); });
     turmStellen(); naechste();
 }
 
 function klick(e){
+    const bo = e.target.closest(".bt-b"); if (bo && E.art === "sammeln"){ losFahren(+bo.dataset.b); return; }
     const t = e.target.closest("button"); if (!t) return;
+    if (t.dataset.s){ if (t.dataset.s === "los") losFahren(); else steuern(+t.dataset.s); return; }
     if (t.dataset.e){ const [k, v] = t.dataset.e.split("="); E[k] = ["kl", "laenge"].includes(k) ? +v : v; if (k === "fach" || k === "kl") E.bereich = "mix"; merken(); return startZeigen(); }
     if (t.dataset.o !== undefined) return pruefen(t.dataset.o, t);
     if (t.dataset.t) return taste(t.dataset.t);
@@ -410,6 +515,7 @@ function oeffnen(){
     A = null; turmStellen(); standZeigen(); el.querySelector(".bt-antwort").innerHTML = ""; startZeigen();
 }
 function schliessen(){
+    cancelAnimationFrame(SM.raf);
     el.classList.remove("an"); el.innerHTML = ""; try { speechSynthesis.cancel(); } catch (x) {}
     const ue = document.getElementById("uebersicht"); if (ue) ue.style.display = "";
     try { history.replaceState(null, "", location.pathname); } catch (x) {}
