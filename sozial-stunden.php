@@ -540,6 +540,8 @@ const VORLAGEN = window.SOZIAL_VORLAGEN || [];
 const KATEGORIEN = window.SOZIAL_KATEGORIEN || ["Sonstiges"];
 const DATEN = window.SOZIAL_DATEN;
 DATEN.einheiten = Array.isArray(DATEN.einheiten) ? DATEN.einheiten : [];
+// alte Jahrespläne gleich beim Laden reparieren (leere Wochen kamen als [] zurück)
+try { if (DATEN.jahresplan && DATEN.jahresplan.wochen) { if (Array.isArray(DATEN.jahresplan.wochen)) DATEN.jahresplan.wochen = {}; planReparieren(DATEN.jahresplan); } } catch (e) {}
 const inhalt = document.getElementById("inhalt");
 
 const FUER = { alle: "Alle", "12": "Kl. 1/2", "34": "Kl. 3/4" };
