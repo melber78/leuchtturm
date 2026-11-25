@@ -40,6 +40,7 @@ $INFO = [
     "vertretung"  => ["sozial-stunden.php?bereich=vertretung", "fa-shuffle", "Vertretungsstunden", "Fertige Stunden für Kl. 1–4 mit Zufallsauswahl"],
     "morgen"      => ["tafelbilder.php#morgen", "fa-sun", "Guten Morgen!", "Tagesstart an der Tafel: Datum, Wetter, Stundenplan, Auspacken, Hinweise"],
     "einmaleins"  => ["tafelbilder.php#einmaleins", "fa-table-cells", "Das große 1×1", "Die 1×1-Tabelle zum Antippen – Reihen, Rechentricks, Blitzrechnen Klasse gegen Ella"],
+    "boot" => ["tafelbilder.php#boot", "fa-sailboat", "Bootsfahrt zum Leuchtturm", "Lernspiel Mathe & Deutsch für Kl. 1–4"],
     "mathe" => ["tafelbilder.php", "fa-calculator", "Mathe-Tafeln", "Schriftlich rechnen, Stellenwerttafel, Uhr, Größen, Prozent"],
     "wortarten" => ["tafelbilder.php#wortarten", "fa-spell-check", "Wortarten & Satzglieder", "Wörter einfärben, Umstellprobe – Kl. 3–7"],
     "taschenlampe" => ["tafelbilder.php#taschenlampe", "fa-lightbulb", "Taschenlampen-Lesen", "Tafel im Dunkeln: mit dem Finger leuchten und lesen – Kl. 1–4"],

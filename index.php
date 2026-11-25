@@ -145,6 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-25", "Lernspiel „Bootsfahrt zum Leuchtturm“", "Mathe & Deutsch für Kl. 1–4: Jede richtige Antwort bringt das Boot eine Boje weiter. An der Tafel Klasse gegen Ella oder allein am iPad mit Zahlenfeld und Vorlesen.", "tafelbilder.php#boot"],
     ["2026-11-25", "6 neue Tafelbilder für Mathe & Deutsch", "Schriftlich rechnen, Stellenwerttafel, Uhr & Zeit, Größen umrechnen, Prozent & Dezimalzahlen sowie Wortarten & Satzglieder – mit Bild, Merksatz und Schritten zum Aufdecken.", "tafelbilder.php"],
     ["2026-11-25", "Ruhige Arbeitszeit", "Für Arbeitsphasen, in denen geflüstert werden darf: Aquarium, Wolkenwiese (Kl. 1/2), Regen am Fenster, Lagerfeuer (Kl. 3/4), Stadt bei Regen, Meer, Polarlicht (Kl. 5–9) – mit leisem, erzeugtem Klang und Zeitleiste.", "tafelbilder.php#ruhig"],
     ["2026-11-25", "Leise-Wald: 7 neue Welten", "Ruhepause: Korallenriff, Winterwald, Nachthimmel, Raupe wird Schmetterling. Arbeitsphase: Weihnachtsbaum schmücken, Ballonfahrt, Burg bauen – unter Tafelbilder → Leise-Wald.", "tafelbilder.php#leise"],
@@ -242,6 +243,7 @@ $BEREICHE = [
             ["tafelbilder.php#buchstabenkurs", "fa-pen-fancy", "Buchstabenkurs", "Nachspuren und schreiben in der Lineatur"],
             ["tafelbilder.php#1x1-tabelle", "fa-table-cells-large", "Das Einmaleins", "Tabelle, Verstehen, Tricks, Geteilt, Üben, großes 1 × 1"],
             ["tafelbilder.php#brueche", "fa-chart-pie", "Brüche (Kl. 5/6)", "Bild, Merksatz und Rechenweg zum Aufdecken"],
+            ["tafelbilder.php#boot", "fa-sailboat", "Bootsfahrt zum Leuchtturm", "Lernspiel Mathe & Deutsch, Kl. 1–4"],
             ["tafelbilder.php#schriftlich", "fa-calculator", "Schriftlich rechnen", "Plus, Minus, Mal, Geteilt Schritt für Schritt"],
             ["tafelbilder.php#stellen", "fa-table-columns", "Stellenwerttafel", "Darstellen, Bündeln, Kommazahlen"],
             ["tafelbilder.php#uhr", "fa-clock", "Uhr & Zeit", "Lernuhr und Zeitspannen"],

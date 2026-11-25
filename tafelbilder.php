@@ -1,4 +1,4 @@
-<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs", "leise", "einmaleins", "brueche", "taschenlampe", "mathe", "wortarten"]; require __DIR__ . "/gast-zugang.php"; ?>
+<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs", "leise", "einmaleins", "brueche", "taschenlampe", "mathe", "wortarten", "boot"]; require __DIR__ . "/gast-zugang.php"; ?>
 <?php
 if (empty($_SESSION["tafel_csrf"])) $_SESSION["tafel_csrf"] = bin2hex(random_bytes(16));
 // Gespeicherte Tafelbild-Einstellungen (Morgentafel …) – Gäste haben eigene Daten
@@ -638,7 +638,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
             <div class="k-text"><h2>Holz &amp; Metall – Werkstoff-Duell</h2><p>Einstiegs-Quiz, Fe oder NE?, Werkzeug, Metallrohr-Schritte, Holzarten (Nadel/Laub/exotisch), Baumstamm zum Aufdecken, Holz arbeitet, Holzwerkstoffe, Film. Team A gegen Team B.</p><div class="k-tags"><span>Technik</span><span>Kl. 5–7</span><span>Doppelstunde</span></div></div>
         </button>
 <?php endif; ?>
-<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen") || lt_gastDarf($LT_GAST, "taschenlampe") || lt_gastDarf($LT_GAST, "leise") || lt_gastDarf($LT_GAST, "mathe") || lt_gastDarf($LT_GAST, "wortarten")): ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen") || lt_gastDarf($LT_GAST, "taschenlampe") || lt_gastDarf($LT_GAST, "leise") || lt_gastDarf($LT_GAST, "mathe") || lt_gastDarf($LT_GAST, "wortarten") || lt_gastDarf($LT_GAST, "boot")): ?>
         <div class="tb-gruppe">Grundschule</div>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
@@ -663,6 +663,12 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
         <button class="kachel" type="button" onclick="tafel1x1.oeffnen('tabelle')">
             <div class="k-buehne k-ee"><div class="mini-ee"><b>·</b><b>1</b><b>2</b><b>3</b><b>1</b><i>1</i><i>2</i><i>3</i><b>2</b><i>2</i><i class="w">4</i><i>6</i><b>3</b><i>3</i><i>6</i><i>9</i></div></div>
             <div class="k-text"><h2>Das Einmaleins</h2><p>Alles in einer Tafel: 1×1-Tabelle zum Antippen, Verstehen im Punktefeld, Kernaufgaben &amp; Nachbarn, Tricks, Geteilt, Aufgabenfamilie, Üben mit Punkten und das große 1 × 1.</p><div class="k-tags"><span>interaktiv</span><span>Kl. 2–6</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "boot")): ?>
+        <button class="kachel" type="button" onclick="tafelBoot.oeffnen()">
+            <div class="k-buehne" style="background:linear-gradient(#a6b8ea 0%,#ffd2a6 48%,#7fc4dc 52%,#1d6f9c 100%);display:flex;align-items:flex-end;justify-content:center;gap:18px;font-size:54px;padding-bottom:6px;">⛵<span style="font-size:40px">🗼</span></div>
+            <div class="k-text"><h2>Bootsfahrt zum Leuchtturm</h2><p>Lernspiel Mathe & Deutsch für Kl. 1–4: Jede richtige Antwort bringt das Boot eine Boje weiter. An der Tafel (Klasse gegen Ella) oder allein am iPad.</p><div class="k-tags"><span>Spiel</span><span>Mathe</span><span>Deutsch</span><span>Kl. 1–4</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
@@ -849,6 +855,7 @@ window.TAFEL_LINKS_ERLAUBT = <?= json_encode(!$TAFEL_APP && !empty($_SESSION["le
 <script src="tafel-impulse.js?v=<?= @filemtime(__DIR__ . "/tafel-impulse.js") ?>"></script>
 <script src="tafel-morgen.js?v=<?= @filemtime(__DIR__ . "/tafel-morgen.js") ?>"></script>
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "boot")): ?><script src="lernangebot-woerter.js?v=<?= @filemtime(__DIR__ . "/lernangebot-woerter.js") ?: 1 ?>"></script><script src="tafel-boot.js?v=<?= @filemtime(__DIR__ . "/tafel-boot.js") ?: 1 ?>"></script><?php endif; ?>
 <script src="lernangebot-tafel.js?v=<?= @filemtime(__DIR__ . "/lernangebot-tafel.js") ?: 1 ?>"></script>
 <?php if (!$LT_GAST): ?><script src="tafel-werkstatt.js?v=<?= @filemtime(__DIR__ . "/tafel-werkstatt.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe") || lt_gastDarf($LT_GAST, "wortarten")): ?><script src="tafel-erklaer.js?v=<?= @filemtime(__DIR__ . "/tafel-erklaer.js") ?: 1 ?>"></script><?php endif; ?>

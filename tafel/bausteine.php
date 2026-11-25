@@ -10,6 +10,7 @@ const LT_BAUSTEINE = [
     "buchstabenkurs" => ["Buchstabenkurs", "Buchstaben in der Lineatur schreiben", "#buchstabenkurs", "kursOeffnen()", "#1e4f8c"],
     "einmaleins"     => ["Das Einmaleins", "Tabelle, Verstehen, Tricks, Geteilt, Üben, großes 1 × 1", "#1x1-tabelle", "tafel1x1.oeffnen(", "#f2a93b"],
     "ruhig"          => ["Ruhige Arbeitszeit", "Bild und leiser Klang für die Arbeitsphase", "#ruhig", "tafelRuhig.oeffnen(", "#28465f"],
+    "boot"           => ["Bootsfahrt zum Leuchtturm", "Lernspiel Mathe & Deutsch, Kl. 1–4", "#boot", "tafelBoot.oeffnen()", "#1d6f9c"],
     "schriftlich"    => ["Schriftlich rechnen", "Plus, Minus, Mal, Geteilt Schritt für Schritt", "#schriftlich", "tafelMathe.schriftlich.oeffnen()", "#3d7ea6"],
     "stellen"        => ["Stellenwerttafel", "Zahlen darstellen, bündeln, Kommazahlen", "#stellen", "tafelMathe.stellen.oeffnen()", "#e08a2c"],
     "uhr"            => ["Uhr & Zeit", "Lernuhr und Zeitspannen", "#uhr", "tafelMathe.uhr.oeffnen()", "#2e9e5b"],
