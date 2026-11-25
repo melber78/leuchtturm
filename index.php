@@ -145,7 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
-    ["25.11.2026", "Werkstatt-Führerschein (Technik Kl. 5–7)", "Tafelbild für die Doppelstunde Holz & Metall: Einstiegs-Quiz, Film, Unfall-Akten, Holz oder Metall?, 10 Werkstattregeln und Führerscheine zum Drucken – Team A gegen Team B.", "tafelbilder.php#werkstatt"],
+    ["2026-11-25", "Werkstatt-Führerschein (Technik Kl. 5–7)", "Tafelbild für die Doppelstunde Holz & Metall: Einstiegs-Quiz, Film, Unfall-Akten, Holz oder Metall?, 10 Werkstattregeln und Führerscheine zum Drucken – Team A gegen Team B.", "tafelbilder.php#werkstatt"],
     ["24.11.2026", "Zusammenfassung für den Hefter – ausführlicher", "„Das habe ich heute gelernt“, „Meine Werkzeuge“ zum Abhaken, „Mein Satz“ und ein Wochenauftrag (Mo–Fr). Wird beim Arbeitsblatt automatisch mitgedruckt.", "sozial-stunden.php"],
     ["24.11.2026", "Jahresplan: ausgefallene Stunden verschieben", "Bei ✗ ausgefallen erscheint „⏭ verschieben“ – die Stunde rückt in die nächste Woche, alle folgenden eine Woche nach hinten.", "sozial-stunden.php#jahresplan"],
     ["2026-11-24", "Leise-Wald: Quatsch-Wald", "Neue Welt im Leise-Wald: knallbunter Quatsch-Wald mit 12 erfundenen Quatsch-Wesen (Brummi Toastflieger, Gurki Rollschuh, Kalle Kühlschrank …) und Quietsch-König Quaki als Belohnung.", "tafelbilder.php#leise"],
@@ -236,6 +236,7 @@ $BEREICHE = [
             ["tafelbilder.php#buchstabenkurs", "fa-pen-fancy", "Buchstabenkurs", "Nachspuren und schreiben in der Lineatur"],
             ["tafelbilder.php#1x1-tabelle", "fa-table-cells-large", "Das Einmaleins", "Tabelle, Verstehen, Tricks, Geteilt, Üben, großes 1 × 1"],
             ["tafelbilder.php#brueche", "fa-chart-pie", "Brüche (Kl. 5/6)", "Bild, Merksatz und Rechenweg zum Aufdecken"],
+            ["tafelbilder.php#werkstatt", "fa-screwdriver-wrench", "Werkstatt-Führerschein (Technik)", "Holz & Metall: Quiz, Film, Unfall-Akten, Regeln"],
         ]],
     ]],
     ["familie", "fa-house", "Familie", [
