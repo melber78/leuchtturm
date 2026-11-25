@@ -371,12 +371,12 @@ const MEER_TIERE = ["fisch", "delfin", "krebs", "ente", "qualle", "wal", "tropen
 const TURM = `<svg viewBox="0 0 60 120"><path d="M18 112 L24 34 L36 34 L42 112 Z" fill="#fffdf5"/><path d="M20.5 84 L39.5 84 L40.6 98 L19.4 98 Z M22.5 58 L37.5 58 L38.4 70 L21.6 70 Z" fill="#e74c3c"/><rect x="21" y="22" width="18" height="12" rx="2" fill="#f2c97b"/><path d="M18 22 L30 10 L42 22 Z" fill="#e74c3c"/><rect x="14" y="110" width="32" height="8" rx="2" fill="#7c8a85"/></svg>`;
 // art: lauf · huepf · kriech · flieg · flatter (Wald) – schwimm · oben · spring · treib · sand (Meer); v = Tempo (Bildbreiten pro Sekunde), g = Größe
 const VERHALTEN = {
-    hase: { art: "huepf", v: .16, g: .95 }, igel: { art: "lauf", v: .05, g: .75 }, fuchs: { art: "lauf", v: .12, g: 1.05 }, eule: { art: "flieg", v: .07, g: .85 },
-    eichhoernchen: { art: "huepf", v: .2, g: .75 }, maus: { art: "lauf", v: .17, g: .55 }, baer: { art: "lauf", v: .05, g: 1.4 }, hirsch: { art: "lauf", v: .08, g: 1.35 },
-    frosch: { art: "huepf", v: .1, g: .7 }, schnecke: { art: "kriech", v: .015, g: .6 }, vogel: { art: "flieg", v: .13, g: .65 }, schmetterling: { art: "flatter", v: .07, g: .55 },
-    fisch: { art: "schwimm", v: .09, g: .75 }, tropenfisch: { art: "schwimm", v: .11, g: .7 }, kugelfisch: { art: "schwimm", v: .05, g: .75 }, schildkroete: { art: "schwimm", v: .035, g: 1 },
-    delfin: { art: "spring", v: .14, g: 1.15 }, pinguin: { art: "spring", v: .1, g: .85 }, wal: { art: "oben", v: .035, g: 1.7 }, robbe: { art: "oben", v: .06, g: 1 }, ente: { art: "oben", v: .05, g: .75 },
-    krake: { art: "treib", v: .025, g: 1 }, qualle: { art: "treib", v: .02, g: .8 }, krebs: { art: "sand", v: .06, g: .7 }
+    hase: { art: "huepf", v: .16, g: 0.82 }, igel: { art: "lauf", v: .05, g: 0.55 }, fuchs: { art: "lauf", v: .12, g: 1.03 }, eule: { art: "flieg", v: .07, g: 0.66 },
+    eichhoernchen: { art: "huepf", v: .2, g: 0.7 }, maus: { art: "lauf", v: .17, g: 0.42 }, baer: { art: "lauf", v: .05, g: 1.7 }, hirsch: { art: "lauf", v: .08, g: 1.6 },
+    frosch: { art: "huepf", v: .1, g: 0.45 }, schnecke: { art: "kriech", v: .015, g: 0.38 }, vogel: { art: "flieg", v: .13, g: 0.42 }, schmetterling: { art: "flatter", v: .07, g: 0.4 },
+    fisch: { art: "schwimm", v: .09, g: 0.54 }, tropenfisch: { art: "schwimm", v: .11, g: 0.5 }, kugelfisch: { art: "schwimm", v: .05, g: 0.54 }, schildkroete: { art: "schwimm", v: .035, g: 0.93 },
+    delfin: { art: "spring", v: .14, g: 1.4 }, pinguin: { art: "spring", v: .1, g: 0.79 }, wal: { art: "oben", v: .035, g: 2.0 }, robbe: { art: "oben", v: .06, g: 1.14 }, ente: { art: "oben", v: .05, g: 0.68 },
+    krake: { art: "treib", v: .025, g: 0.74 }, qualle: { art: "treib", v: .02, g: 0.56 }, krebs: { art: "sand", v: .06, g: 0.5 }
 };
 const FLIEGT = a => a === "flieg" || a === "flatter";
 // Quatsch-Wald: eigene, frei erfundene Quatsch-Wesen (Name, Art, Bild)

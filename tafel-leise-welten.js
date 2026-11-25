@@ -216,7 +216,7 @@ WELTEN.riff = { titel: "Korallenriff", emoji: "🐠", art: "ruhe",
       <div class="ebene"></div>`;
     const ebene = sz.querySelector(".ebene");
     const plan = [["tropenfisch", "s", .3], ["fisch", "s", .5], ["kugelfisch", "s", .62], ["schildkroete", "s", .4], ["qualle", "q", .28], ["krebs", "b", .93], ["tropenfisch", "s", .7], ["krake", "s", .78], ["fisch", "s", .22], ["delfin", "s", .18], ["qualle", "q", .45], ["robbe", "s", .58]];
-    const tiere = plan.map(([k, typ, y], i) => ({ k, typ, y, d: wesen(ebene, k), x: Math.random() < .5 ? -.15 : 1.15, zx: zuf(.1, .9), v: zuf(.03, .06) * (typ === "b" ? .5 : 1), t: zuf(0, 9), da: false, g: k === "delfin" || k === "schildkroete" || k === "robbe" ? .17 : k === "krebs" ? .09 : .12 }));
+    const tiere = plan.map(([k, typ, y], i) => ({ k, typ, y, d: wesen(ebene, k), x: Math.random() < .5 ? -.15 : 1.15, zx: zuf(.1, .9), v: zuf(.03, .06) * (typ === "b" ? .5 : 1), t: zuf(0, 9), da: false, g: { tropenfisch: .092, fisch: .11, kugelfisch: .11, schildkroete: .17, qualle: .11, krebs: .092, krake: .14, delfin: .22, robbe: .19 }[k] || .11 }));
     const wal = wesen(ebene, "wal", "fern"); let walX = -.4, walAn = false;
     const versteck = [.17, .48, .82];
     return {
@@ -331,18 +331,18 @@ WELTEN.winter = { titel: "Winterwald", emoji: "⛄", art: "ruhe",
     // nur heimische Waldtiere: wer kommt wann, wohin, wie groß (Szenen-Einheiten)
     const PLAN = [
       { k: "hirsch", ab: .06, x: 560, y: 818, g: 200, von: -1, art: "lauf" },
-      { k: "eichhoernchen", ab: .13, x: 1236, y: 842, g: 78, von: 1, art: "huepf" },
-      { k: "eule", ab: .2, x: 1196, y: 534, g: 92, art: "sitz" },
-      { k: "reh", ab: .27, x: 110, y: 798, g: 150, von: -1, art: "lauf" },
-      { k: "wildschwein", ab: .34, x: 990, y: 852, g: 128, von: 1, art: "lauf" },
-      { k: "rotkehlchen", ab: .41, x: 300, y: 586, g: 62, art: "vogel" },
-      { k: "feldhase", ab: .48, x: 630, y: 870, g: 92, von: -1, art: "huepf" },
-      { k: "specht", ab: .55, x: 1284, y: 440, g: 112, art: "fest" },
-      { k: "fuchs", ab: .62, x: 1150, y: 856, g: 132, von: 1, art: "lauf" },
-      { k: "blaumeise", ab: .69, x: 410, y: 614, g: 64, art: "vogel" },
-      { k: "maus", ab: .76, x: 915, y: 880, g: 58, von: 1, art: "huepf" },
-      { k: "dachs", ab: .83, x: 260, y: 872, g: 104, von: -1, art: "lauf" },
-      { k: "igel", ab: .9, x: 1480, y: 868, g: 78, art: "fest" }
+      { k: "eichhoernchen", ab: .13, x: 1236, y: 842, g: 88, von: 1, art: "huepf" },
+      { k: "eule", ab: .2, x: 1196, y: 534, g: 86, art: "sitz" },
+      { k: "reh", ab: .27, x: 110, y: 798, g: 134, von: -1, art: "lauf" },
+      { k: "wildschwein", ab: .34, x: 990, y: 852, g: 168, von: 1, art: "lauf" },
+      { k: "rotkehlchen", ab: .41, x: 300, y: 586, g: 50, art: "vogel" },
+      { k: "feldhase", ab: .48, x: 630, y: 870, g: 104, von: -1, art: "huepf" },
+      { k: "specht", ab: .55, x: 1284, y: 440, g: 74, art: "fest" },
+      { k: "fuchs", ab: .62, x: 1150, y: 856, g: 130, von: 1, art: "lauf" },
+      { k: "blaumeise", ab: .69, x: 410, y: 614, g: 46, art: "vogel" },
+      { k: "maus", ab: .76, x: 915, y: 880, g: 50, von: 1, art: "huepf" },
+      { k: "dachs", ab: .83, x: 260, y: 872, g: 118, von: -1, art: "lauf" },
+      { k: "igel", ab: .9, x: 1480, y: 868, g: 66, art: "fest" }
     ];
     const tiere = PLAN.map(p => ({ ...p, d: wesen(ebene, p.k), sx: p.von ? (p.von < 0 ? -150 : 1750) : p.x, sy: p.art === "sitz" || p.art === "vogel" ? p.y - 260 : p.y, fest: p.art === "fest", da: false, t: Math.random() * 5, o: 0 }));
     const schwellen = [.22, .36, .5, .62, .74, .86, .96];
