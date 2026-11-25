@@ -348,6 +348,12 @@ table.plan input[type=checkbox]{ width:20px; height:20px; }
 .zu-r{ display:flex; align-items:center; gap:.5em; }
 .punkt{ flex:0 0 auto; width:.62em; height:.62em; border-radius:50%; background:#333; }
 table.ab-tab{ width:100%; border-collapse:collapse; }
+.nf-vorschau{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin-top:10px; }
+.nf-vorschau .vorschau{ box-shadow:0 2px 10px rgba(0,0,0,.12); border-radius:6px; }
+.nf-hinweis{ font-family:"Nunito",sans-serif; font-size:.72em; font-weight:700; color:#55636a; background:#fff7e0; border:.3mm solid #f0d48a; border-radius:2mm; padding:.25em .6em; margin:.2em 0 .5em; }
+.nf-geschichte{ border:.4mm solid #c9d6e3; border-radius:3mm; background:#f8fafc; padding:.45em .8em .2em; margin:0 0 .6em; font-size:.86em; line-height:1.42; }
+.nf-geschichte .md p{ margin:0 0 .35em; }
+.nf-g-titel{ font-weight:700; color:var(--nacht); margin-bottom:.2em; }
 .blatt-kontext{ background:#f3f6f8; border-left:1.2mm solid #3d7ea6; border-radius:0 2mm 2mm 0; padding:.3em .7em; margin:.1em 0 .5em; font-size:.88em; line-height:1.35; }
 td.tab-kreuz-zelle{ text-align:center; }
 .tab-kreuz{ display:inline-block; width:1.05em; height:1.05em; border:.35mm solid #555; border-radius:1mm; vertical-align:middle; }
@@ -515,6 +521,9 @@ table.ab-tab td .lz{ min-height:0; }
 <?php foreach ($vorlagenDateien as $vd): ?>
 <script src="<?= htmlspecialchars(basename($vd)) ?>?v=<?= @filemtime($vd) ?: 1 ?>"></script>
 <?php endforeach; ?>
+<?php if ($BEREICH === "sozial"): $nfDateien = glob(__DIR__ . "/sozial-notfall*.js") ?: []; natsort($nfDateien); foreach ($nfDateien as $nf): ?>
+<script src="<?= htmlspecialchars(basename($nf)) ?>?v=<?= @filemtime($nf) ?: 1 ?>"></script>
+<?php endforeach; endif; ?>
 <script>
 window.SOZIAL_DATEN = <?= json_encode($daten, $JSON) ?>;
 window.SOZIAL_CSRF = <?= json_encode($_SESSION["sozial_csrf"], $JSON) ?>;
@@ -938,6 +947,68 @@ function blattBauen(e, stufe){
         `<div class="blatt-inhalt">${inhaltHtml}</div>` + FUSS;
     return blatt;
 }
+// ============================================================
+// NOTFALL-STILLARBEIT: Wenn die Gruppe zu unruhig für die Tafel ist,
+// lesen und bearbeiten die Kinder 30 Minuten still drei Blätter zum Thema.
+// Inhalte: sozial-notfall-*.js (window.SOZIAL_NOTFALL[id][stufe] = [Blatt 1, 2, 3]).
+// Blatt 1 bekommt automatisch die Geschichte der Stunde.
+// Eigene Stunden ohne hinterlegte Blätter bekommen Blätter aus Geschichte und Fragen.
+// ============================================================
+function geschichteTeile(e, stufe){
+    const lt = (stufe === "34" ? e.lerntext34 : e.lerntext12) || {};
+    return String(lt.text || "").split(/\*\*\s*(Nach dem Vorlesen|Fragen zum Gespräch)/i)[0]
+        .split(/\n\s*\n/).map(t => t.trim()).filter(Boolean);
+}
+function geschichteFragen(e, stufe){
+    const lt = (stufe === "34" ? e.lerntext34 : e.lerntext12) || {};
+    const teil = String(lt.text || "").split(/\*\*\s*(?:Nach dem Vorlesen|Fragen zum Gespräch)[^*]*\*\*/i)[1] || "";
+    return teil.split("\n").map(z => z.match(/^\s*\d+\.\s*(.+)$/)).filter(Boolean).map(m => m[1].trim());
+}
+function notfallStandard(e, stufe){
+    const fr = geschichteFragen(e, stufe);
+    const lt = (stufe === "34" ? e.lerntext34 : e.lerntext12) || {};
+    if (stufe === "34") return [
+        { titel: lt.titel || e.titel, aufgaben: [
+            { typ: "schreiben", text: "Was ist in der Geschichte passiert? Schreibe in zwei bis drei Sätzen.", zeilen: 4 },
+            { typ: "schreiben", text: "Was hättest du an Stelle der Hauptfigur gemacht?", zeilen: 3 } ] },
+        { titel: "Zum Nachdenken", aufgaben: (fr.length ? fr.slice(0, 5) : ["Worum geht es in dieser Geschichte?", "Wer hat sich richtig verhalten? Warum?", "Was hättest du anders gemacht?"])
+            .map(q => ({ typ: "schreiben", text: q, zeilen: 2 })) },
+        { titel: "Das nehme ich mit", aufgaben: [
+            { typ: "luecken", text: "", nummern: false, saetze: ["Das habe ich gelernt: ___", "Das probiere ich aus: ___", "Dabei hilft mir: ___"] },
+            { typ: "malen", text: "Male eine Situation, in der du das ausprobierst.", bild: "" } ] }
+    ];
+    return [
+        { titel: lt.titel || e.titel, aufgaben: [
+            { typ: "gesichter", text: "Wie geht es der Hauptfigur am Anfang – und am Ende? Male die Gesichter.", gefuehle: ["Anfang", "Ende"], leer: true } ] },
+        { titel: "Zum Nachdenken", aufgaben: [
+            ...(fr.length ? [{ typ: "schreiben", text: fr[0], zeilen: 2 }] : []),
+            { typ: "malen", text: "Male das Wichtigste aus der Geschichte.", bild: "" } ] },
+        { titel: "Das nehme ich mit", aufgaben: [
+            { typ: "luecken", text: "", nummern: false, saetze: ["Das habe ich gelernt: ___"] },
+            { typ: "malen", text: "Male, wie du das ausprobierst.", bild: "" } ] }
+    ];
+}
+function notfallDaten(e, stufe){
+    const N = window.SOZIAL_NOTFALL || {};
+    const d = N[e.ersetzt || e.id] || N[e.id];
+    return d && Array.isArray(d[stufe]) && d[stufe].length ? d[stufe] : notfallStandard(e, stufe);
+}
+function notfallBlatt(e, stufe, i){
+    const liste = notfallDaten(e, stufe), d = liste[i] || { titel: "", aufgaben: [] };
+    const b = blattBauen({ ...e, ab12: d, ab34: d }, stufe);
+    b.classList.add("notfall");
+    const meta = b.querySelector(".blatt-meta");
+    if (meta) meta.innerHTML = `<i class="fa-solid fa-tower-observation"></i> ${esc(window.BEREICH.name)} · Stillarbeit<br>Klasse ${stufe === "34" ? "3/4" : "1/2"} · Blatt ${i + 1} von ${liste.length}`;
+    const inhalt = b.querySelector(".blatt-inhalt");
+    const teile = i === 0 && d.lesen !== false ? geschichteTeile(e, stufe) : [];
+    const lt = (stufe === "34" ? e.lerntext34 : e.lerntext12) || {};
+    let vorn = `<div class="nf-hinweis">🤫 <b>Stillarbeit:</b> ${i === 0 ? (teile.length ? "Lies die Geschichte genau. Dann bearbeite die Aufgaben." : "Lies jede Aufgabe genau.") : "Lies jede Aufgabe genau."} Arbeite leise und allein.</div>`;
+    if (teile.length) vorn += `<div class="nf-geschichte">${lt.titel && lt.titel !== d.titel ? `<div class="nf-g-titel">📖 ${inline(lt.titel)}</div>` : ""}${teile.map(t => `<div class="md">${md(t)}</div>`).join("")}</div>`;
+    if (inhalt) inhalt.insertAdjacentHTML("beforebegin", vorn);
+    return b;
+}
+function notfallAnzahl(e, stufe){ return notfallDaten(e, stufe).length; }
+
 // Lesetext für die Kinder: nur die Geschichte (ohne Lehrer-Hinweise), Abschnitte wie auf den Folien
 function lesetextBlatt(e, stufe){
     const lt = (stufe === "34" ? e.lerntext34 : e.lerntext12) || {};
@@ -1060,6 +1131,20 @@ function schriften(){
     return schriftenBereit;
 }
 // Blatt in einen Vorschau-Rahmen setzen (verkleinert dargestellt, gemessen in Originalgröße)
+// Vorschau der Notfall-Blätter (nebeneinander, am Handy untereinander)
+async function notfallVorschau(ziel, e, stufe, knopf){
+    if (!ziel) return;
+    if (ziel.dataset.stufe === stufe && ziel.innerHTML) { ziel.innerHTML = ""; ziel.dataset.stufe = ""; return; }
+    ziel.dataset.stufe = stufe;
+    ziel.innerHTML = "";
+    const n = notfallAnzahl(e, stufe), blaetter = [];
+    for (let i = 0; i < n; i++) {
+        const r = document.createElement("div"); r.className = "vorschau";
+        const b = notfallBlatt(e, stufe, i); r.appendChild(b); ziel.appendChild(r); blaetter.push([r, b]);
+    }
+    await schriften();
+    blaetter.forEach(([r, b]) => { einpassen(b); const f = (r.clientWidth || 300) / b.offsetWidth; b.style.transform = `scale(${f})`; r.style.height = (b.offsetHeight * f) + "px"; });
+}
 async function vorschauZeigen(rahmen, e, stufe){
     rahmen.innerHTML = "";
     const blatt = blattBauen(e, stufe);
@@ -1135,7 +1220,7 @@ function lehrerHtml(e, st){
         })()}
     </div>`;
 }
-function anzahlGemerkt(k){ const std = (k === "ab12" || k === "ab34" || k.startsWith("lese")) ? 9 : k.startsWith("zus") ? 9 : 1; try { const v = parseInt(localStorage.getItem("sozial_anz_" + k), 10); if (v > 0) return v; } catch (err) {} return std; }
+function anzahlGemerkt(k){ const std = (k === "ab12" || k === "ab34" || k.startsWith("lese") || k.startsWith("not")) ? 9 : k.startsWith("zus") ? 9 : 1; try { const v = parseInt(localStorage.getItem("sozial_anz_" + k), 10); if (v > 0) return v; } catch (err) {} return std; }
 function anzahlFeld(k){ return `<label class="druck-anzahl" title="Anzahl Exemplare"><input type="number" data-anzahl="${k}" min="1" max="40" value="${anzahlGemerkt(k)}" inputmode="numeric"><span>×</span></label>`; }
 function druckAnzahl(k){
     const f = document.querySelector(`[data-anzahl="${k}"]`);
@@ -1162,6 +1247,15 @@ async function drucken(e, was){
         await schriften();
         zusammenfassungEinpassen(erstes);
         for (let k = 1; k < anzahl; k++) ziel.appendChild(erstes.cloneNode(true));
+    } else if (was === "not12" || was === "not34") {
+        const st = was.slice(3), anzahl = druckAnzahl(was);
+        const satz = [];
+        for (let i = 0; i < notfallAnzahl(e, st); i++) { const b = notfallBlatt(e, st, i); ziel.appendChild(b); satz.push(b); }
+        await schriften();
+        const voll = satz.filter(b => !einpassen(b));
+        if (voll.length && !confirm("Ein Notfall-Blatt ist zu voll für eine Seite und wird unten abgeschnitten. Trotzdem drucken?")) { ziel.innerHTML = ""; return; }
+        // pro Kind ein Satz (Blatt 1, 2, 3 hintereinander) – so lässt er sich gleich zusammentackern
+        for (let k = 1; k < anzahl; k++) satz.forEach(b => ziel.appendChild(b.cloneNode(true)));
     } else if (was === "regie12" || was === "regie34") {
         const st = was.slice(5);
         ziel.innerHTML = `<div class="lehrer-druck"><div class="ld-kopf"><div class="ld-meta">${esc(window.BEREICH.name)} · ${esc(e.kategorie)} · ${esc(mitDauer(e).dauer || 40)} Minuten · Klasse ${st === "12" ? "1/2" : "3/4"}</div><h1>${esc(e.titel)} – Schritt für Schritt</h1></div>${window.sozialRegie.bauen(mitDauer(e), st)}</div>`;
@@ -1196,7 +1290,7 @@ async function drucken(e, was){
         }
     }
     const titel = document.title;
-    document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", lehrer12: " – Vorbereitung Kl. 1-2", lehrer34: " – Vorbereitung Kl. 3-4", alles12: " – Kl. 1-2", alles34: " – Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 1-2", ab34: " – AB Kl. 3-4", zus12: " – Zusammenfassung Kl. 1-2", zus34: " – Zusammenfassung Kl. 3-4" }[was] || "");
+    document.title = (e ? e.titel : "Rituale") + ({ lese12: " – Lesetext Kl. 1-2", lese34: " – Lesetext Kl. 3-4", regie12: " – Ablauf Kl. 1-2", regie34: " – Ablauf Kl. 3-4", lehrer12: " – Vorbereitung Kl. 1-2", lehrer34: " – Vorbereitung Kl. 3-4", alles12: " – Kl. 1-2", alles34: " – Kl. 3-4", ab1: " – AB Kl. 1", ab2: " – AB Kl. 2", ab12: " – AB Kl. 1-2", ab34: " – AB Kl. 3-4", zus12: " – Zusammenfassung Kl. 1-2", zus34: " – Zusammenfassung Kl. 3-4", not12: " – Notfall-Stillarbeit Kl. 1-2", not34: " – Notfall-Stillarbeit Kl. 3-4" }[was] || "");
     window.addEventListener("afterprint", () => { ziel.innerHTML = ""; document.title = titel; }, { once: true });
     setTimeout(() => window.print(), 60);
 }
@@ -1473,6 +1567,16 @@ function zeigeStunde(id){
             <p class="ed-hilfe" style="margin-top:10px">Die Zahl vor jedem Knopf ist die Anzahl der Exemplare – sie wird gemerkt. Der Lesetext kommt ohne deine Hinweise auf eine A4-Seite – die Abschnitt-Nummern passen zu den Folien („Wer liest vor?“). Tipp: Im Druckfenster „Als PDF sichern“ wählen, um die Stunde als PDF abzulegen.</p>
         </div>
 
+        ${window.BEREICH.key === "sozial" ? `<div class="karte nf-karte"><h2><i class="fa-solid fa-life-ring"></i> Notfall-Stillarbeit (30 Minuten)</h2>
+            <p class="ed-hilfe" style="margin:0 0 10px">Die Gruppe ist zu unruhig für die Arbeit an der Tafel? Dann lesen und bearbeiten die Kinder still drei Blätter zum Thema der Stunde – <b>Blatt 1</b> mit der Geschichte und Fragen dazu, <b>Blatt 2</b> zum Nachdenken und Entscheiden, <b>Blatt 3</b> zu sich selbst. Pro Kind wird ein Satz (Blatt 1–3) hintereinander gedruckt.</p>
+            <div class="druck-raster">
+                <div class="druck-posten nur12">${anzahlFeld("not12")}<button class="btn rot" data-druck="not12"><i class="fa-solid fa-life-ring"></i> Notfall-Blätter Kl. 1/2 (${notfallAnzahl(e, "12")} Seiten)</button></div>
+                <div class="druck-posten">${anzahlFeld("not34")}<button class="btn rot" data-druck="not34"><i class="fa-solid fa-life-ring"></i> Notfall-Blätter Kl. 3/4 (${notfallAnzahl(e, "34")} Seiten)</button></div>
+            </div>
+            <div class="knopfleiste" style="margin-top:8px">${e.nur34 ? "" : `<button class="btn klein nur12" data-nfvor="12"><i class="fa-solid fa-eye"></i> Ansehen Kl. 1/2</button>`}<button class="btn klein" data-nfvor="34"><i class="fa-solid fa-eye"></i> Ansehen Kl. 3/4</button></div>
+            <div class="nf-vorschau" id="nfVorschau"></div>
+            <p class="ed-hilfe" style="margin-top:6px"><i class="fa-solid fa-lightbulb"></i> Tipp: Einen Stapel vorher ausdrucken und in die Mappe legen – dann bist du in der Stunde sofort startklar.</p>
+        </div>` : ""}
         ${window.sozialMaterial ? `<div class="karte"><div class="detail-kopf" style="margin:0 0 12px"><div class="titel"><h2 style="margin:0"><i class="fa-solid fa-scissors"></i> Arbeitsmaterial</h2>
             <p class="ed-hilfe" style="margin:4px 0 0">Karten, Plakate und Vorlagen für diese Stunde – jede Seite füllt genau eine A4-Seite.</p></div>
             <div class="knopfleiste"><button class="btn gold" id="materialAlle"><i class="fa-solid fa-print"></i> Alles Material drucken</button></div></div>
@@ -1528,6 +1632,7 @@ function zeigeStunde(id){
         const start34 = inhalt.querySelector('[data-einstieg="34"]'); if (start34) start34.classList.add("gold");
     }
     inhalt.querySelectorAll("[data-druck]").forEach(b => b.addEventListener("click", () => drucken(e, b.dataset.druck)));
+    inhalt.querySelectorAll("[data-nfvor]").forEach(b => b.addEventListener("click", () => notfallVorschau(document.getElementById("nfVorschau"), e, b.dataset.nfvor, b)));
     const zm = inhalt.querySelector("#zusMit"); if (zm) zm.addEventListener("change", () => { try { localStorage.setItem("sozial_zus_mit", zm.checked ? "1" : "0"); } catch (err) {} });
     const verlaufWahl = document.getElementById("verlaufWahl");
     if (verlaufWahl) {
