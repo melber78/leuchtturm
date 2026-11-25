@@ -59,6 +59,8 @@ const CSS = `
 .pz-sinn button{ width:clamp(54px,10vmin,110px); aspect-ratio:1; border-radius:50%; border:4px solid rgba(255,255,255,.7); background:transparent; cursor:pointer; transition:background .3s, transform .3s; }
 .pz-sinn button.an{ background:#fff; transform:scale(1.08); }
 .pz-ring{ position:absolute; right:18px; bottom:16px; font-weight:900; opacity:.6; font-variant-numeric:tabular-nums; }
+#pz .augen{ transform-box:fill-box; transform-origin:50% 50%; animation:pzBlinzeln 5s infinite; }
+@keyframes pzBlinzeln{ 0%,92%,100%{ transform:scaleY(1); } 95%{ transform:scaleY(.1); } }
 @keyframes pzFlacker{ 0%,100%{ transform:scale(1) rotate(-2deg); } 50%{ transform:scale(1.05,.95) rotate(2deg); } }
 `;
 
@@ -196,36 +198,43 @@ const UEB = [
 UEB.find(u => u.id === "boxen").gs = "Boxen wie ein Känguru";
 
 function mix(a, b, t){ const o = {}; for (const k in P0) o[k] = a[k] + (b[k] - a[k]) * t; return o; }
-function figur(){
-    const HOSE = ["#3f5f8c", "#2a4266"], SHIRT = ["#e85a4c", "#a93a30"], HAUT = ["#f6c4a0", "#c98d68"];
+function figur(v){
+    v = v || E.figur || "a";
+    const M = v === "b";
+    const HOSE = M ? ["#6a4f9a", "#4a3576"] : ["#3f5f8c", "#2a4266"], SHIRT = M ? ["#2fa58f", "#1c7565"] : ["#e85a4c", "#a93a30"], HAUT = ["#f6c4a0", "#c98d68"], HAAR = M ? ["#c9792e", "#9a5520"] : ["#7a4e2e", "#5a3620"];
     const aussen = (k, w, f) => `<path class="${k}" stroke="${f[1]}" stroke-width="${w + 5}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
     const innen = (k, w, f) => `<path class="${k}" stroke="${f[0]}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
-    const beine = [["oL", 27], ["uL", 23], ["oR", 27], ["uR", 23]], arme = [["uaL", 15, HAUT], ["uaR", 15, HAUT], ["oaL", 21, SHIRT], ["oaR", 21, SHIRT]];
-    const beinSvg = beine.map(([k, w]) => aussen(k, w, HOSE)).join("") + beine.map(([k, w]) => innen(k, w, HOSE)).join("");
-    const armSvg = arme.map(([k, w, f]) => aussen(k, w, f)).join("") + arme.map(([k, w, f]) => innen(k, w, f)).join("");
-    return `<svg viewBox="0 0 400 400" class="figur"><defs><linearGradient id="pzShirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f06a5c"/><stop offset="1" stop-color="#d84b3f"/></linearGradient>
-        <linearGradient id="pzHose" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4a6c98"/><stop offset="1" stop-color="#36557e"/></linearGradient>
-        <radialGradient id="pzHaut" cx=".42" cy=".38" r=".7"><stop offset="0" stop-color="#ffd9bb"/><stop offset="1" stop-color="#f0b88f"/></radialGradient></defs>
+    const licht = (k, w) => `<path class="${k}" stroke="#fff" stroke-opacity=".16" stroke-width="${w * .3}" stroke-linecap="round" fill="none" transform="translate(-${w * .2} -1)"/>`;
+    const beine = [["oL", 27], ["uL", 23], ["oR", 27], ["uR", 23]], arme = [["uaL", 15, HAUT], ["uaR", 15, HAUT], ["oaL", 22, SHIRT], ["oaR", 22, SHIRT]];
+    const schuh = k => `<g class="${k}"><rect x="-9" y="-16" width="18" height="12" rx="4" fill="#fff"/><rect x="-9" y="-12" width="18" height="3" fill="${SHIRT[0]}" opacity=".7"/><path d="M-9 -6 h16 a13 13 0 0 1 13 13 v2 h-36 v-4 a9 9 0 0 1 7 -11Z" fill="${M ? "#e2574c" : "#2d3142"}" stroke="${M ? "#a93a30" : "#16181f"}" stroke-width="2"/><rect x="-16" y="8" width="36" height="4.5" rx="2.2" fill="#fff"/><path d="M-2 -2 l6 3 M2 -4 l6 3" stroke="#fff" stroke-width="1.6" opacity=".7" stroke-linecap="round"/></g>`;
+    return `<svg viewBox="0 0 400 400" class="figur fig-${v}"><defs>
+        <linearGradient id="pzShirt${v}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${SHIRT[0]}"/><stop offset=".55" stop-color="${SHIRT[0]}"/><stop offset="1" stop-color="${SHIRT[1]}"/></linearGradient>
+        <radialGradient id="pzHaut${v}" cx=".42" cy=".38" r=".7"><stop offset="0" stop-color="#ffdcc0"/><stop offset="1" stop-color="#efb48a"/></radialGradient></defs>
       <ellipse class="schatten" cx="200" cy="374" rx="78" ry="11" fill="rgba(90,50,20,.2)"/>
       <path class="acht" d="" stroke="rgba(58,36,22,.35)" stroke-width="6" fill="none" stroke-dasharray="4 12" stroke-linecap="round"/>
       <g class="koerper">
-        ${beinSvg}
-        <g class="schuhL"><path d="M-6 -6 h14 a12 12 0 0 1 12 12 v2 h-34 v-4 a10 10 0 0 1 8 -10Z" fill="#2d3142"/><rect x="-14" y="7" width="34" height="4" rx="2" fill="#fff" opacity=".85"/></g>
-        <g class="schuhR"><path d="M-6 -6 h14 a12 12 0 0 1 12 12 v2 h-34 v-4 a10 10 0 0 1 8 -10Z" fill="#2d3142"/><rect x="-14" y="7" width="34" height="4" rx="2" fill="#fff" opacity=".85"/></g>
-        <path class="hosenbund" fill="#3f5f8c" stroke="#2a4266" stroke-width="2.5"/>
-        <path class="rumpf" fill="url(#pzShirt)" stroke="rgba(60,30,20,.22)" stroke-width="2.5" stroke-linejoin="round"/>
-        <path class="saum" stroke="#c24236" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/>
-        ${armSvg}
-        <circle class="hand hL" r="10.5" fill="url(#pzHaut)" stroke="rgba(60,30,20,.22)" stroke-width="2"/><circle class="hand hR" r="10.5" fill="url(#pzHaut)" stroke="rgba(60,30,20,.22)" stroke-width="2"/>
+        ${M ? `<path class="zopf" d="M0 0 C 22 6 30 30 22 58 C 18 70 8 74 2 66 C 12 50 10 24 -6 10Z" fill="${HAAR[0]}" stroke="${HAAR[1]}" stroke-width="2.5"/>` : ""}
+        ${beine.map(([k, w]) => aussen(k, w, HOSE)).join("")}${beine.map(([k, w]) => innen(k, w, HOSE)).join("")}${beine.map(([k, w]) => licht(k, w)).join("")}
+        ${schuh("schuhL")}${schuh("schuhR")}
+        <path class="hosenbund" fill="${HOSE[0]}" stroke="${HOSE[1]}" stroke-width="2.5"/>
+        ${arme.slice(2).map(([k, w, f]) => aussen(k, w, f)).join("")}${arme.slice(2).map(([k, w, f]) => innen(k, w, f)).join("")}
+        <path class="rumpf" fill="url(#pzShirt${v})" stroke="${SHIRT[1]}" stroke-width="2.5" stroke-linejoin="round"/>
+        <path class="kragen" stroke="${SHIRT[1]}" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path class="motiv" d="M0 -11 L3.2 -3.4 L11.4 -3.4 L4.8 1.6 L7.2 9.6 L0 4.8 L-7.2 9.6 L-4.8 1.6 L-11.4 -3.4 L-3.2 -3.4Z" fill="#ffe27a" stroke="#e6b93c" stroke-width="1.5" stroke-linejoin="round"/>
+        <path class="saum" stroke="${SHIRT[1]}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/>
+        ${arme.slice(0, 2).map(([k, w, f]) => aussen(k, w, f)).join("")}${arme.slice(0, 2).map(([k, w, f]) => innen(k, w, f)).join("")}
+        ${arme.slice(2).map(([k, w, f]) => `<path class="${k}e" stroke="${f[0]}" stroke-width="${w}" stroke-linecap="round" fill="none"/>`).join("")}
+        <circle class="hand hL" r="10.5" fill="url(#pzHaut${v})" stroke="${HAUT[1]}" stroke-width="2.2"/><circle class="hand hR" r="10.5" fill="url(#pzHaut${v})" stroke="${HAUT[1]}" stroke-width="2.2"/>
         <g class="kopf">
-          <rect x="-9" y="22" width="18" height="18" rx="6" fill="#f0b88f"/>
-          <ellipse cx="-33" cy="4" rx="7" ry="9" fill="#f0b88f"/><ellipse cx="33" cy="4" rx="7" ry="9" fill="#f0b88f"/>
-          <ellipse cx="0" cy="0" rx="33" ry="35" fill="url(#pzHaut)" stroke="rgba(60,30,20,.2)" stroke-width="2"/>
-          <path d="M-35 0 C-38 -38 -12 -46 4 -44 C26 -44 40 -30 35 0 C31 -14 24 -20 14 -22 C10 -14 -2 -12 -12 -18 C-18 -10 -28 -10 -35 0Z" fill="#7a4e2e"/>
-          <path d="M-14 -34 C-6 -40 8 -40 18 -34" stroke="#9a6a42" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
-          <ellipse cx="-12" cy="3" rx="4.6" ry="5.6" fill="#2d2a33"/><ellipse cx="12" cy="3" rx="4.6" ry="5.6" fill="#2d2a33"/><circle cx="-10.5" cy="1" r="1.6" fill="#fff"/><circle cx="13.5" cy="1" r="1.6" fill="#fff"/>
-          <path d="M-18 -8 q6 -4 11 -1 M7 -9 q6 -3 11 1" stroke="#6a4428" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-          <path d="M-10 15 q10 9 20 0" stroke="#7a3b2e" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+          <rect x="-9" y="22" width="18" height="18" rx="6" fill="#eab088"/>
+          <ellipse cx="-33" cy="4" rx="7" ry="9" fill="#f3b993" stroke="${HAUT[1]}" stroke-width="2"/><ellipse cx="33" cy="4" rx="7" ry="9" fill="#f3b993" stroke="${HAUT[1]}" stroke-width="2"/>
+          <ellipse cx="0" cy="0" rx="33" ry="35" fill="url(#pzHaut${v})" stroke="${HAUT[1]}" stroke-width="2"/>
+          ${M ? `<path d="M-35 4 C-40 -40 -8 -48 6 -46 C30 -46 42 -28 36 6 C30 -12 18 -22 4 -26 C-6 -18 -22 -14 -35 4Z" fill="${HAAR[0]}" stroke="${HAAR[1]}" stroke-width="2.5" stroke-linejoin="round"/><circle cx="28" cy="-26" r="7" fill="#ffd84d" stroke="#e6b93c" stroke-width="2"/>`
+               : `<path d="M-35 0 C-38 -38 -12 -46 4 -44 C26 -44 40 -30 35 0 C31 -14 24 -20 14 -22 C10 -14 -2 -12 -12 -18 C-18 -10 -28 -10 -35 0Z" fill="${HAAR[0]}" stroke="${HAAR[1]}" stroke-width="2.5" stroke-linejoin="round"/><path d="M-2 -44 C-6 -56 6 -62 10 -54 C4 -54 2 -50 4 -44Z" fill="${HAAR[0]}" stroke="${HAAR[1]}" stroke-width="2"/>`}
+          <path d="M-14 -34 C-6 -40 8 -40 18 -34" stroke="#fff" stroke-opacity=".25" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <g class="augen"><ellipse cx="-12" cy="3" rx="4.8" ry="5.8" fill="#2d2a33"/><ellipse cx="12" cy="3" rx="4.8" ry="5.8" fill="#2d2a33"/><circle cx="-10.4" cy="1" r="1.8" fill="#fff"/><circle cx="13.6" cy="1" r="1.8" fill="#fff"/></g>
+          <path d="M-18 -8 q6 -4 11 -1 M7 -9 q6 -3 11 1" stroke="${HAAR[1]}" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <path class="mund" d="M-10 14 q10 10 20 0" stroke="#7a3b2e" stroke-width="3.4" fill="#fff" fill-opacity=".0" stroke-linecap="round"/>
           <ellipse cx="-21" cy="13" rx="6" ry="4" fill="#f4877a" opacity=".45"/><ellipse cx="21" cy="13" rx="6" ry="4" fill="#f4877a" opacity=".45"/>
         </g>
       </g></svg>`;
@@ -259,7 +268,12 @@ function figurStellen(svg, q, extra){
     svg.querySelector(".saum").setAttribute("d", `M${P(pkt([hx, hy], 16, -24))} Q${P(pkt([hx, hy], 9, 0))} ${P(pkt([hx, hy], 16, 24))}`);
     // Oberarm = Ärmel bis zur Hälfte, dann Haut
     const mitte = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
-    setz("oaL", `M${P(sL)} L${P(mitte(sL, eL, .62))}`); setz("oaR", `M${P(sR)} L${P(mitte(sR, eR, .62))}`);
+    const iL = pkt([hx, hy], sy - 8, -18), iR = pkt([hx, hy], sy - 8, 18);
+    setz("oaL", `M${P(iL)} L${P(sL)} L${P(mitte(sL, eL, .6))}`); setz("oaR", `M${P(iR)} L${P(sR)} L${P(mitte(sR, eR, .6))}`);
+    setz("oaLe", `M${P(mitte(sL, eL, .5))} L${P(mitte(sL, eL, .6))}`); setz("oaRe", `M${P(mitte(sR, eR, .5))} L${P(mitte(sR, eR, .6))}`);
+    svg.querySelector(".kragen").setAttribute("d", `M${P(pkt([hx, hy], sy + 6, -13))} Q${P(pkt([hx, hy], sy - 6, 0))} ${P(pkt([hx, hy], sy + 6, 13))}`);
+    svg.querySelector(".motiv").setAttribute("transform", `translate(${P(pkt([hx, hy], sy - 38, 0))}) rotate(${q.n.toFixed(1)})`);
+    const zo = svg.querySelector(".zopf"); if (zo){ const zp = pkt([hx, hy], sy + 70, 24); zo.setAttribute("transform", `translate(${P(zp)}) rotate(${(q.n * .6 - q.y * .6 + Math.sin(performance.now() / 300) * 4).toFixed(1)})`); }
     setz("uaL", `M${P(mitte(sL, eL, .5))} L${P(eL)} L${P(hL)}`); setz("uaR", `M${P(mitte(sR, eR, .5))} L${P(eR)} L${P(hR)}`);
     svg.querySelector(".hL").setAttribute("cx", hL[0].toFixed(1)); svg.querySelector(".hL").setAttribute("cy", hL[1].toFixed(1));
     svg.querySelector(".hR").setAttribute("cx", hR[0].toFixed(1)); svg.querySelector(".hR").setAttribute("cy", hR[1].toFixed(1));
@@ -277,7 +291,7 @@ function uebungPose(u, zeit, stufe){
 }
 
 /* ======================= Ablauf ======================= */
-const E = { stufe: "gs", n: 5, tempo: "ruhig", ueb: 6, dauer: 30, ton: true };
+const E = { stufe: "gs", n: 5, tempo: "ruhig", ueb: 6, dauer: 30, ton: true, figur: "a" };
 try { Object.assign(E, JSON.parse(localStorage.getItem("lt-pausen") || "{}")); } catch (x) {}
 const merken = () => { try { localStorage.setItem("lt-pausen", JSON.stringify(E)); } catch (x) {} };
 const TEMPO = { ruhig: [4, 6], langsam: [5, 7], kurz: [3, 4] };
@@ -303,7 +317,7 @@ function wahl(){
     } else {
         const karten = UEB.map(u => `<button class="pz-karte" data-u="${u.id}"><div class="b" style="background:linear-gradient(135deg,#fff1d6,#ffc98a)"><svg viewBox="0 0 400 400" style="height:92px">${figur().replace(/^<svg[^>]*>|<\/svg>$/g, "")}</svg></div><div class="t"><h3>${u[st]}</h3><p>${u.tipp}</p></div></button>`).join("");
         el.innerHTML = kopf("🤸 Bewegungspause") + `<div class="pz-buehne"><div class="pz-wahl"><h2>🤸 Bewegungspause</h2><div class="hint">Die Figur macht jede Übung vor – am Platz und daneben. Starte ein ganzes Programm oder tippe eine einzelne Übung an.</div>
-          ${einst}<b>Übungen</b><span class="pz-reihe">${[4, 6, 8].map(v => `<button data-e="ueb=${v}" class="${E.ueb === v ? "an" : ""}">${v}</button>`).join("")}</span><b>Je</b><span class="pz-reihe">${[20, 30, 45].map(v => `<button data-e="dauer=${v}" class="${E.dauer === v ? "an" : ""}">${v} Sek.</button>`).join("")}</span></div>
+          ${einst}<b>Figur</b><span class="pz-reihe">${[["a", "🧒 Ben"], ["b", "👧 Lena"]].map(([k, t]) => `<button data-e="figur=${k}" class="${E.figur === k ? "an" : ""}">${t}</button>`).join("")}</span><b>Übungen</b><span class="pz-reihe">${[4, 6, 8].map(v => `<button data-e="ueb=${v}" class="${E.ueb === v ? "an" : ""}">${v}</button>`).join("")}</span><b>Je</b><span class="pz-reihe">${[20, 30, 45].map(v => `<button data-e="dauer=${v}" class="${E.dauer === v ? "an" : ""}">${v} Sek.</button>`).join("")}</span></div>
           <div class="pz-start"><button data-a="programm">▶ Programm starten (${E.ueb} Übungen, ca. ${Math.round(E.ueb * (E.dauer + 4) / 60)} Min.)</button></div>
           <div class="pz-gruppe" style="max-width:1100px;margin:18px auto 8px;font-weight:900;opacity:.75;text-transform:uppercase;letter-spacing:.08em;font-size:13px">Oder eine Übung</div>
           <div class="pz-karten">${karten}</div></div></div>`;
