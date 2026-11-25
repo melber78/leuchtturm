@@ -145,6 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-25", "Tafelbild „Taschenlampen-Lesen“ (Kl. 1–4)", "Die Tafel ist dunkel – ein Kind führt mit dem Finger die Taschenlampe, im Lichtkegel tauchen Buchstaben, Silben, Wörter oder Sätze auf. Mit Silbenbögen, eigenen Wörtern, Advent-Wörtern und „Wort suchen“.", "tafelbilder.php#taschenlampe"],
     ["2026-11-25", "Holz & Metall – Werkstoff-Duell (Technik Kl. 5–7)", "Tafelbild passend zu den Arbeitsblättern: Quiz, Fe oder NE?, Werkzeug, Metallrohr, Holzarten, Baumstamm, Holz arbeitet, Holzwerkstoffe – Team A gegen Team B.", "tafelbilder.php#werkstatt"],
     ["24.11.2026", "Zusammenfassung für den Hefter – ausführlicher", "„Das habe ich heute gelernt“, „Meine Werkzeuge“ zum Abhaken, „Mein Satz“ und ein Wochenauftrag (Mo–Fr). Wird beim Arbeitsblatt automatisch mitgedruckt.", "sozial-stunden.php"],
     ["24.11.2026", "Jahresplan: ausgefallene Stunden verschieben", "Bei ✗ ausgefallen erscheint „⏭ verschieben“ – die Stunde rückt in die nächste Woche, alle folgenden eine Woche nach hinten.", "sozial-stunden.php#jahresplan"],
@@ -233,6 +234,7 @@ $BEREICHE = [
             ["tafelbilder.php#leise", "fa-tree", "Leise-Wald", "Leise arbeiten mit dem Mikrofon"],
         ]],
         ["Erklären &amp; Üben", [
+            ["tafelbilder.php#taschenlampe", "fa-lightbulb", "Taschenlampen-Lesen", "Im Dunkeln leuchten und lesen – auch Wort suchen"],
             ["tafelbilder.php#buchstabenkurs", "fa-pen-fancy", "Buchstabenkurs", "Nachspuren und schreiben in der Lineatur"],
             ["tafelbilder.php#1x1-tabelle", "fa-table-cells-large", "Das Einmaleins", "Tabelle, Verstehen, Tricks, Geteilt, Üben, großes 1 × 1"],
             ["tafelbilder.php#brueche", "fa-chart-pie", "Brüche (Kl. 5/6)", "Bild, Merksatz und Rechenweg zum Aufdecken"],

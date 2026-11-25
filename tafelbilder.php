@@ -1,4 +1,4 @@
-<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs", "leise", "einmaleins", "brueche"]; require __DIR__ . "/gast-zugang.php"; ?>
+<?php $LT_GAST_BEREICH = ["morgen", "buchstabenkurs", "leise", "einmaleins", "brueche", "taschenlampe"]; require __DIR__ . "/gast-zugang.php"; ?>
 <?php
 if (empty($_SESSION["tafel_csrf"])) $_SESSION["tafel_csrf"] = bin2hex(random_bytes(16));
 // Gespeicherte Tafelbild-Einstellungen (Morgentafel …) – Gäste haben eigene Daten
@@ -600,7 +600,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
             <div class="k-text"><h2>Holz &amp; Metall – Werkstoff-Duell</h2><p>Einstiegs-Quiz, Fe oder NE?, Werkzeug, Metallrohr-Schritte, Holzarten (Nadel/Laub/exotisch), Baumstamm zum Aufdecken, Holz arbeitet, Holzwerkstoffe, Film. Team A gegen Team B.</p><div class="k-tags"><span>Technik</span><span>Kl. 5–7</span><span>Doppelstunde</span></div></div>
         </button>
 <?php endif; ?>
-<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen")): ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche") || lt_gastDarf($LT_GAST, "morgen") || lt_gastDarf($LT_GAST, "taschenlampe")): ?>
         <div class="tb-gruppe">Grundschule</div>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
@@ -625,6 +625,12 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
         <button class="kachel" type="button" onclick="tafel1x1.oeffnen('tabelle')">
             <div class="k-buehne k-ee"><div class="mini-ee"><b>·</b><b>1</b><b>2</b><b>3</b><b>1</b><i>1</i><i>2</i><i>3</i><b>2</b><i>2</i><i class="w">4</i><i>6</i><b>3</b><i>3</i><i>6</i><i>9</i></div></div>
             <div class="k-text"><h2>Das Einmaleins</h2><p>Alles in einer Tafel: 1×1-Tabelle zum Antippen, Verstehen im Punktefeld, Kernaufgaben &amp; Nachbarn, Tricks, Geteilt, Aufgabenfamilie, Üben mit Punkten und das große 1 × 1.</p><div class="k-tags"><span>interaktiv</span><span>Kl. 2–6</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "taschenlampe")): ?>
+        <button class="kachel" type="button" onclick="tafelTaschenlampe.oeffnen()">
+            <div class="k-buehne k-tl" style="background:radial-gradient(circle at 58% 42%, #fff4cf 0 21%, #3a4964 34%, #121a2c 62%);position:relative;overflow:hidden;"><div style="position:absolute;left:58%;top:42%;transform:translate(-50%,-62%);font:700 34px Andika,Nunito,sans-serif;color:#15213a;">So<span style="color:#c62828">fa</span></div><div style="position:absolute;left:56%;top:51%;width:70px;height:12px;transform:translateX(-50%);border:3px solid #c0392b;border-top:0;border-radius:0 0 999px 999px / 0 0 100% 100%;"></div><div style="position:absolute;left:30%;top:64%;font-size:40px;transform:rotate(-40deg);">🔦</div></div>
+            <div class="k-text"><h2>Taschenlampen-Lesen</h2><p>Die Tafel ist dunkel – ein Kind führt mit dem Finger die Taschenlampe, und im Lichtkegel tauchen Buchstaben, Silben, Wörter oder Sätze auf. Auch als „Wort suchen“.</p><div class="k-tags"><span>Lesen</span><span>Kl. 1–4</span><span>Finger</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "buchstabenkurs")): ?>
@@ -758,6 +764,7 @@ window.TAFEL_LINKS_ERLAUBT = <?= json_encode(!$TAFEL_APP && !empty($_SESSION["le
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
 <script src="lernangebot-tafel.js?v=<?= @filemtime(__DIR__ . "/lernangebot-tafel.js") ?: 1 ?>"></script>
 <?php if (!$LT_GAST): ?><script src="tafel-werkstatt.js?v=<?= @filemtime(__DIR__ . "/tafel-werkstatt.js") ?: 1 ?>"></script><?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "taschenlampe")): ?><script src="tafel-taschenlampe.js?v=<?= @filemtime(__DIR__ . "/tafel-taschenlampe.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")): ?><script src="tafel-brueche.js?v=<?= @filemtime(__DIR__ . "/tafel-brueche.js") ?: 1 ?>"></script><?php endif; ?>
 <script>
 // Wer spielt gegen wen? (Blitzrechnen/Üben) – Eule Ella für die Kleinen, Teams oder Lehrkraft für die Großen

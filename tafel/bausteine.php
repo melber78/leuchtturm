@@ -9,5 +9,6 @@ const LT_BAUSTEINE = [
     "leise"          => ["Leise-Wald", "Leise arbeiten mit dem Mikrofon", "#leise", "leiseWahl(true)", "#4d8a48"],
     "buchstabenkurs" => ["Buchstabenkurs", "Buchstaben in der Lineatur schreiben", "#buchstabenkurs", "kursOeffnen()", "#1e4f8c"],
     "einmaleins"     => ["Das Einmaleins", "Tabelle, Verstehen, Tricks, Geteilt, Üben, großes 1 × 1", "#1x1-tabelle", "tafel1x1.oeffnen(", "#f2a93b"],
+    "taschenlampe"   => ["Taschenlampen-Lesen", "Mit dem Finger leuchten und lesen", "#taschenlampe", "tafelTaschenlampe.oeffnen()", "#ffd23f"],
     "brueche"        => ["Brüche", "Erklär-Tafel für Klasse 5/6", "#brueche", "tafelBrueche.oeffnen()", "#00897b"],
 ];
