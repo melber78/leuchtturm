@@ -26,6 +26,8 @@ if ($eingabe !== null) {
     }
 }
 $tafel = lt_tafelZugang();
+// Morgentafel mit Tafel-Code arbeitet immer mit den Daten aus dem Leuchtturm – nie mit den Daten einer Kollegin, die sich unter /tafel angemeldet hat
+if ($tafel && empty($_SESSION["leuchtturm_eingeloggt"])) unset($_SESSION["leuchtturm_gast"]);
 if ($tafel) {
     // Schlüssel bei jedem Start verlängern, damit die Tafel nie abgemeldet wird
     setcookie("lt_tafel", $_COOKIE["lt_tafel"], ["expires" => time() + 400 * 86400, "path" => $pfad, "secure" => !empty($_SERVER["HTTPS"]), "httponly" => true, "samesite" => "Lax"]);

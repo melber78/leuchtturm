@@ -31,7 +31,7 @@ if ($eingabe !== null) {
         }
         if ($g && lt_gastHatTafelbild($g)) {
             // persönlicher Code der Kollegin: gilt auf jeder Tafel, zeigt nur ihre Tafelbilder
-            $keks("lt_tafel_gast", strtoupper(preg_replace('/[^A-Za-z0-9]/', "", (string)$eingabe)), 400); $keks("lt_tafel", "", -1);
+            $keks("lt_tafel_gast", strtoupper(preg_replace('/[^A-Za-z0-9]/', "", (string)$eingabe)), 400);   // Tafel-Code (z. B. für die Morgentafel) bleibt erhalten
             session_regenerate_id(true); $_SESSION["leuchtturm_gast"] = $g["id"];
             header("Location: " . (lt_gastDarfBaustein($g, $b) ? $zurueck : "./")); exit;
         }
@@ -41,11 +41,13 @@ if ($eingabe !== null) {
 }
 $tafel = lt_tafelZugang();
 if ($tafel) $keks("lt_tafel", $_COOKIE["lt_tafel"], 400);
-// Kollegin mit eigenem Code (Freigaben und Sperren gelten sofort, auch auf schon installierten Tafelbildern)
-$gast = (!$tafel && empty($_SESSION["leuchtturm_eingeloggt"]) && is_string($_COOKIE["lt_tafel_gast"] ?? null)) ? lt_gastPerCode($_COOKIE["lt_tafel_gast"]) : null;
+// Kollegin mit eigenem Code (Freigaben und Sperren gelten sofort, auch auf schon installierten Tafelbildern).
+// Hat die Tafel zusätzlich einen Tafel-Code, gilt hier unter /tafel der persönliche Code – die Morgentafel-App unter /morgen bleibt beim Tafel-Code.
+$gast = (empty($_SESSION["leuchtturm_eingeloggt"]) && is_string($_COOKIE["lt_tafel_gast"] ?? null)) ? lt_gastPerCode($_COOKIE["lt_tafel_gast"]) : null;
 if ($gast && !lt_gastHatTafelbild($gast)) $gast = null;
 if ($gast) { $_SESSION["leuchtturm_gast"] = $gast["id"]; $keks("lt_tafel_gast", $_COOKIE["lt_tafel_gast"], 400); }
 elseif (!empty($_COOKIE["lt_tafel_gast"])) { $keks("lt_tafel_gast", "", -1); unset($_SESSION["leuchtturm_gast"]); }
+if ($gast) $tafel = null;
 if ($gast && $b && !lt_gastDarfBaustein($gast, $b)) $b = "";
 $liste = $gast ? array_filter(LT_BAUSTEINE, fn($k) => lt_gastDarfBaustein($gast, $k), ARRAY_FILTER_USE_KEY) : LT_BAUSTEINE;
 $frei = $tafel || $gast || !empty($_SESSION["leuchtturm_eingeloggt"]);
