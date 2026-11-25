@@ -593,7 +593,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
         <div class="tb-gruppe">Höhere Klassen</div>
 <?php endif; ?>
 <?php if ((!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")) || (!$LT_GAST || lt_gastDarf($LT_GAST, "leise"))): ?>
-        <div class="tb-gruppe klein">Tagesstart & Arbeitsphase</div>
+        <div class="tb-gruppe klein">Tagesstart, Ruhe & Bewegung</div>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "morgen")): ?>
         <button class="kachel" type="button" onclick="tafelMorgen.oeffnen('sek')">
@@ -605,6 +605,18 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
         <button class="kachel" type="button" onclick="tafelRuhig.oeffnen('sek')">
             <div class="k-buehne" style="background:linear-gradient(135deg,#141b2e 0%,#3a3f5c 35%,#f2a675 60%,#0f3b45 100%);display:flex;align-items:center;justify-content:center;gap:10px;font-size:46px;">🏙️<span style="font-size:36px">🌊</span>🌌</div>
             <div class="k-text"><h2>Ruhige Arbeitszeit (Kl. 5–9)</h2><p>Sachliche Szenen für konzentriertes Arbeiten: Stadt bei Regen, Meer, Polarlicht – mit ruhigem Klang und schlichter Zeitleiste.</p><div class="k-tags"><span>Arbeitsphase</span><span>Kl. 5–9</span><span>Klang</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
+        <button class="kachel" type="button" onclick="tafelPausen.runter('sek')">
+            <div class="k-buehne" style="background:radial-gradient(circle at 50% 40%,#a6c8e0,#24485e);display:flex;align-items:center;justify-content:center;gap:12px;font-size:50px;">◯ ⬜</div>
+            <div class="k-text"><h2>Runterkommen (Kl. 5–9)</h2><p>Atemkreis, Box-Atmung, Glitzerglas, 5-4-3-2-1 – Ankommen und Anspannen & Loslassen.</p><div class="k-tags"><span>Ruhe</span><span>Kl. 5–9</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
+        <button class="kachel" type="button" onclick="tafelPausen.bewegung('sek')">
+            <div class="k-buehne" style="background:radial-gradient(circle at 50% 40%,#ffe7b8,#f39a5a);display:flex;align-items:center;justify-content:center;gap:12px;font-size:50px;">🤸</div>
+            <div class="k-text"><h2>Bewegungspause (Kl. 5–9)</h2><p>Kurzes Bewegungsprogramm am Platz – Figur macht vor, mit Zeitanzeige.</p><div class="k-tags"><span>Bewegung</span><span>Kl. 5–9</span></div></div>
         </button>
 <?php endif; ?>
 <?php if ((!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")) || (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")) || (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")) || (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe"))): ?>
@@ -677,7 +689,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
         </button>
 <?php endif; ?>
 <?php if ((!$LT_GAST || lt_gastDarf($LT_GAST, "leise")) || (!$LT_GAST || lt_gastDarf($LT_GAST, "leise"))): ?>
-        <div class="tb-gruppe klein">Ruhe & Arbeitsphase</div>
+        <div class="tb-gruppe klein">Ruhe, Bewegung & Arbeitsphase</div>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
         <button class="kachel" type="button" onclick="leiseWahl(true)">
@@ -689,6 +701,18 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
         <button class="kachel" type="button" onclick="tafelRuhig.oeffnen('gs')">
             <div class="k-buehne" style="background:linear-gradient(135deg,#7fd3e6 0%,#1f7ea6 45%,#3c4a5e 55%,#ff9a4a 100%);display:flex;align-items:center;justify-content:center;gap:10px;font-size:46px;">🐟<span style="font-size:36px">🌧️</span>🔥</div>
             <div class="k-text"><h2>Ruhige Arbeitszeit</h2><p>Läuft ganz ruhig nebenbei, wenn Flüstern erlaubt ist: Aquarium, Wolkenwiese, Regen am Fenster, Lagerfeuer – mit leisem Klang, ohne Mikrofon.</p><div class="k-tags"><span>Arbeitsphase</span><span>Kl. 1–4</span><span>Klang</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
+        <button class="kachel" type="button" onclick="tafelPausen.runter('gs')">
+            <div class="k-buehne" style="background:radial-gradient(circle at 50% 40%,#7fd3e6,#2d5c6e);display:flex;align-items:center;justify-content:center;gap:12px;font-size:50px;">🎈🌷✨</div>
+            <div class="k-text"><h2>Runterkommen</h2><p>Atem-Ballon, Blume & Kerze, Glitzerglas, 5-4-3-2-1 und Anspannen & Loslassen – die Anleitung steht groß an der Tafel.</p><div class="k-tags"><span>Ruhe</span><span>Kl. 1–4</span></div></div>
+        </button>
+<?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?>
+        <button class="kachel" type="button" onclick="tafelPausen.bewegung('gs')">
+            <div class="k-buehne" style="background:radial-gradient(circle at 50% 40%,#ffe7b8,#f39a5a);display:flex;align-items:center;justify-content:center;gap:12px;font-size:50px;">🤸</div>
+            <div class="k-text"><h2>Bewegungspause</h2><p>Eine Figur macht 13 Übungen am Platz vor – vom Hampelmann bis zum Flamingo. Als Programm oder einzeln.</p><div class="k-tags"><span>Bewegung</span><span>Kl. 1–4</span></div></div>
         </button>
 <?php endif; ?>
 <?php if ((!$LT_GAST || lt_gastDarf($LT_GAST, "boot"))): ?>
@@ -890,6 +914,7 @@ window.TAFEL_LINKS_ERLAUBT = <?= json_encode(!$TAFEL_APP && !empty($_SESSION["le
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe") || lt_gastDarf($LT_GAST, "wortarten")): ?><script src="tafel-erklaer.js?v=<?= @filemtime(__DIR__ . "/tafel-erklaer.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?><script src="tafel-mathe.js?v=<?= @filemtime(__DIR__ . "/tafel-mathe.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "wortarten")): ?><script src="tafel-deutsch.js?v=<?= @filemtime(__DIR__ . "/tafel-deutsch.js") ?: 1 ?>"></script><?php endif; ?>
+<?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?><script src="tafel-pausen.js?v=<?= @filemtime(__DIR__ . "/tafel-pausen.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?><script src="tafel-ruhig.js?v=<?= @filemtime(__DIR__ . "/tafel-ruhig.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "leise")): ?><script src="tafel-leise-welten.js?v=<?= @filemtime(__DIR__ . "/tafel-leise-welten.js") ?: 1 ?>"></script><?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "taschenlampe")): ?><script src="tafel-taschenlampe.js?v=<?= @filemtime(__DIR__ . "/tafel-taschenlampe.js") ?: 1 ?>"></script><?php endif; ?>

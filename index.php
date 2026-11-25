@@ -145,6 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-25", "Runterkommen & Bewegungspausen", "Runterkommen: Atem-Ballon/Atemkreis, Blume & Kerze, Box-Atmung, Glitzerglas, 5-4-3-2-1, Anspannen & Loslassen. Bewegungspause: eine Figur macht 13 Übungen am Platz vor – als Programm oder einzeln.", "tafelbilder.php#bewegung"],
     ["2026-11-25", "Lernspiel „Bootsfahrt zum Leuchtturm“", "Mathe & Deutsch für Kl. 1–4: Jede richtige Antwort bringt das Boot eine Boje weiter. An der Tafel Klasse gegen Ella oder allein am iPad mit Zahlenfeld und Vorlesen.", "tafelbilder.php#boot"],
     ["2026-11-25", "6 neue Tafelbilder für Mathe & Deutsch", "Schriftlich rechnen, Stellenwerttafel, Uhr & Zeit, Größen umrechnen, Prozent & Dezimalzahlen sowie Wortarten & Satzglieder – mit Bild, Merksatz und Schritten zum Aufdecken.", "tafelbilder.php"],
     ["2026-11-25", "Ruhige Arbeitszeit", "Für Arbeitsphasen, in denen geflüstert werden darf: Aquarium, Wolkenwiese (Kl. 1/2), Regen am Fenster, Lagerfeuer (Kl. 3/4), Stadt bei Regen, Meer, Polarlicht (Kl. 5–9) – mit leisem, erzeugtem Klang und Zeitleiste.", "tafelbilder.php#ruhig"],
@@ -238,6 +239,8 @@ $BEREICHE = [
         ]],
         ["Ruhe &amp; Arbeitsphase", [
             ["tafelbilder.php#leise", "fa-tree", "Leise-Wald", "Leise arbeiten mit dem Mikrofon"],
+            ["tafelbilder.php#runter", "fa-spa", "Runterkommen", "Atemübungen, Glitzerglas, 5-4-3-2-1"],
+            ["tafelbilder.php#bewegung", "fa-person-running", "Bewegungspause", "Figur macht Übungen am Platz vor"],
             ["tafelbilder.php#ruhig", "fa-headphones", "Ruhige Arbeitszeit", "Bild und leiser Klang nebenbei – Kl. 1–9"],
         ]],
         ["Grundschule: Mathe, Deutsch &amp; Spiel", [
