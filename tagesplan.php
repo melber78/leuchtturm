@@ -1031,7 +1031,7 @@ function widgetKarte(){
             <li><b>Mit deinem Leuchtturm verbinden</b><a class="btn gold" href="${esc(link)}"><i class="fa-solid fa-link"></i> Mit dem Handy verbinden</a>
                 <small>Öffnet die App und verbindet sie automatisch.</small></li>
             <li><b>Widget auf den Startbildschirm</b>
-                <small>In der App auf „Widget auf den Startbildschirm“ tippen – oder den Startbildschirm lange gedrückt halten → Widgets → Leuchtturm.</small></li>
+                <small>In der App auf „Widget jetzt hinzufügen“ tippen – oder den Startbildschirm lange gedrückt halten → Widgets → Leuchtturm.</small></li>
         </ol>
         <details class="w-hand"><summary>Von Hand verbinden</summary>
             <div class="w-feld"><span>Adresse</span><code>${esc(widgetBasis())}</code><button class="btn klein" data-kopie-text="${esc(widgetBasis())}"><i class="fa-regular fa-copy"></i></button></div>
