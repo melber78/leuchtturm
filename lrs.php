@@ -1202,6 +1202,76 @@ html:not(.lt-sek):not(.lt-druckschrift) .ws-seite.ws-info.ws-kindblatt{ --ws-sch
 .le-antworten{ display:flex; gap:22px; flex-wrap:wrap; padding-left:26px; }
 .le-antworten span{ display:inline-flex; align-items:center; gap:8px; }
 .le-rf td, .le-rf th{ font-size:inherit !important; vertical-align:middle !important; }
+
+/* ===================================================================
+   Drucklayout „Leuchtturm klar“ (Nov 2026): ruhig, typografisch, wenig Deko.
+   Eine Akzentfarbe (Tinte), Haarlinien statt Kästen mit runden Ecken,
+   keine Pillen, keine gefüllten Kreise, keine Pastellflächen.
+   =================================================================== */
+.ws-seite, .blatt{ --ink:#1b2733; --grau:#6b7783; --linie:#d5dbe1; --akzent:#1f5f8b; --flaeche:#f3f5f7; color:var(--ink); }
+.ws-seite{ padding:14mm 16mm 12mm; }
+.ws-innen{ gap:14px; }
+/* Kopf: Metazeile + Haarlinie, Titel linksbündig */
+.ws-kopf, .fs-reif .ws-kopf{ align-items:flex-end; font-size:13px; padding-bottom:7px; border-bottom:1px solid var(--ink); font-family:Nunito, "Andika", sans-serif; }
+.ws-pille, .fs-reif .ws-pille{ background:none !important; color:var(--grau) !important; padding:0; border-radius:0; font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:11.5px; }
+.ws-name{ font-size:13px; color:var(--grau); gap:6px; }
+.ws-name .ws-linie{ width:200px; border-bottom:1px solid var(--ink); height:16px; }
+.ws-seite h1, .fs-reif h1{ font-size:31px; font-weight:700; letter-spacing:-.01em; line-height:1.12; margin:6px 0 2px; color:var(--ink); }
+/* Aufgaben: Zahl als Ziffer in der Akzentfarbe, keine Kreise */
+.ws-aufgabe, .fs-reif .ws-aufgabe{ align-items:baseline; gap:12px; font-size:19px; line-height:1.42; }
+.ws-nummer, .fs-reif .ws-nummer{ width:auto; min-width:22px; height:auto; border-radius:0; background:none !important; color:var(--akzent) !important; font-size:22px; font-weight:800; display:block; text-align:left; font-family:Nunito, Arial, sans-serif; }
+.ws-auftrag, .anweisung{ background:none !important; border-radius:0; border-left:3px solid var(--akzent); padding:4px 0 4px 14px; font-size:18px; }
+/* Hinweis-/Zielzeilen: Linie links statt Farbfläche */
+.fs-ziel, .fs-reif .fs-ziel{ background:var(--flaeche) !important; border-radius:2px; border-left:3px solid var(--akzent); justify-content:flex-start; padding:9px 14px; font-size:17px; }
+/* Karten und Reihen: Haarlinien, eckig */
+.fs-karte, .fs-reif .fs-karte{ border:none !important; border-bottom:1px solid var(--linie) !important; border-radius:0 !important; padding:9px 2px; }
+.fs-reihe-inhalt, .fs-reif .fs-reihe-inhalt{ border:none !important; border-bottom:1px solid var(--linie) !important; border-radius:0 !important; }
+.fs-reihe-nr{ color:var(--grau); font-family:Nunito, Arial, sans-serif; font-size:12px; }
+.ws-wortzeile{ border:none; border-bottom:1px solid var(--linie); border-radius:0; }
+/* Antwortfelder: schlicht, weiß, feine Kante */
+.fs-box, .fs-zaehl, .fs-nrbox, .fs-reif .fs-box, .fs-reif .fs-zaehl, .fs-reif .fs-nrbox{ background:#fff !important; border:1.5px solid var(--ink) !important; border-radius:3px !important; }
+.ws-kreis{ border-width:1.5px; }
+.ws-malbox{ border:1px dashed #9aa6b1; border-radius:2px; }
+.ws-chip{ border:1px solid #9aa6b1; border-radius:3px; background:#fff; }
+.ws-silbe-l, .ws-silbe-r{ border-width:1.5px; border-radius:4px; background:#fff !important; }
+.bs-zielchip{ border-radius:3px; background:none; color:var(--ink); border:1.5px solid var(--ink); }
+/* Tabellen: keine Kopf-Flächen, klare Linien */
+.rs-tabelle th{ background:none !important; border:none !important; border-bottom:1.5px solid var(--ink) !important; color:var(--grau); font-size:12px; letter-spacing:.06em; text-transform:uppercase; font-family:Nunito, Arial, sans-serif; padding:6px 8px; }
+.rs-tabelle td{ border-left:none !important; border-right:none !important; border-bottom:1px solid var(--linie) !important; }
+/* Lineatur feiner */
+.ws-lineatur .ws-l-o{ border-top-color:#b9c2cb; }
+.ws-lineatur .ws-l-m{ border-top-color:#b9c2cb; }
+.ws-lineatur .ws-l-g{ border-top:1.5px solid var(--ink); border-bottom-color:#b9c2cb; }
+/* Fuß: Haarlinie, klein */
+.ws-fuss{ border-top:1px solid var(--linie); padding-top:6px; font-size:11.5px; color:var(--grau); font-family:Nunito, Arial, sans-serif; letter-spacing:.02em; }
+/* Buchstabenkurs */
+.bk-feld{ border:1px solid var(--linie); border-radius:3px; }
+.bk-feld.ok{ background:var(--flaeche); border-color:#9aa6b1; }
+.bk-feld.jetzt{ border:2px solid var(--akzent); background:#fff; }
+.bk-feld i, .bk-feld.jetzt i{ color:var(--akzent); }
+.bk-zt{ color:var(--grau); font-family:Nunito, Arial, sans-serif; font-size:12px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; }
+/* Ältere Generator-Blätter (.blatt) */
+.blatt-kopf .autor-zeile{ background:none; color:var(--grau); padding:0; border-radius:0; letter-spacing:.12em; text-transform:uppercase; font-size:11.5px; font-family:Nunito, Arial, sans-serif; }
+.blatt-oben{ border-bottom:1px solid var(--ink); padding-bottom:7px; }
+.blatt-kopf h3{ font-size:31px; letter-spacing:-.01em; }
+.blatt-namenszeile{ font-size:13px; color:var(--grau); }
+.blatt-namenszeile span{ border-bottom:1px solid var(--ink); }
+@media screen{ .ws-seite, .blatt{ box-shadow:0 1px 2px rgba(0,0,0,.06), 0 8px 28px rgba(27,39,51,.08); } }
+
+/* Leuchtturm klar – einheitliche Kästen */
+.ws-suchreihe, .ws-auswahl3 > div, .ws-kreiswahl > div, .ws-teppich, .ws-blitz, .fs-muster-reihe, .fs-kachel-reihe, .fs-wortgitter > div,
+.rs-beispiele > div, .rsl-ordnen > div, .rsl-zuordnen > div, .fs-tafel > div, .fs-punkte-paar img, .fs-bild-gitter, .ws-gitter, .fs-kachel{
+    border:1px solid var(--linie) !important; border-radius:3px !important; background:#fff !important; }
+.ws-gitter, .fs-bild-gitter{ border:1.5px solid var(--ink) !important; }
+.ws-merkbox, .rs-regel, .rs-merksatz, .vs-beispiel, .fs-merk, .rsl-merksatz, .rsl-tipp, .rsl-muster, .sp-motto, .ws-ziel, .ws-bilanz, .st-protokoll, .ws-schlange{
+    background:var(--flaeche) !important; border:none !important; border-left:3px solid var(--akzent) !important; border-radius:2px !important; }
+.vs-merkbox, .rsl-kasten, .rsl-wz, .rsa-wz, .rsa-routine, .rsl-auswertung, .rsa-duell{ border:1.5px solid var(--ink) !important; border-radius:3px !important; }
+.rsa-key, .rsl-wz > :first-child{ border-radius:0 !important; }
+.ws-kasten, .fs-lm{ background:#fff !important; border:1.5px solid var(--ink) !important; border-radius:3px !important; }
+.fs-chip > .fs-chiptext, .fs-code span, .ws-chip{ border:1px solid #9aa6b1 !important; border-radius:3px !important; background:#fff !important; }
+.ws-malbox, .st-malbox, .rs-wortbank, .rsl-klapp, .fs-ansage{ border:1px dashed #9aa6b1 !important; border-radius:2px !important; }
+.rsl-leiste span:not(.rsl-weg){ border-radius:3px !important; }
+.ws-laut-tabelle td:first-child, .fs-vergleich td:first-child{ border-radius:0 !important; }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 </head>

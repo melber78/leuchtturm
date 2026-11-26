@@ -145,6 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-26", "Neues Drucklayout", "Arbeitsblätter ruhiger und klarer: feine Linien statt runder Kästen, keine Farbflächen, Aufgabennummern als Ziffern, schlichter Kopf mit Name und Blattnummer.", "lrs.php"],
     ["2026-11-26", "Buchstabenkurs in der Stundenplanung", "Symptomtraining → „Buchstabenkurs“: Buchstabe für Buchstabe in Fibel-Reihenfolge mit Schreibweg (Startpunkt, Zahlen, Pfeile), Hören, Finden, Lesen nur mit bekannten Buchstaben und Buchstabenpass.", "lrs.php"],
     ["2026-11-26", "LRS-Blätter in Grundschrift", "Blätter für Klasse 1–4 (auch Lesetexte und Lernbox) jetzt in Grundschrift – ab Klasse 5 und auf deinen Planungsblättern bleibt alles wie gewohnt.", "lrs.php"],
     ["2026-11-26", "Handy-Widget „Mein Tag“", "Deine Stunden von heute als Widget auf dem Android-Startbildschirm – die laufende Stunde ist hervorgehoben. Einrichten unter Mein Tag → Mein Stundenplan → Handy-Widget.", "tagesplan.php#stundenplan"],
