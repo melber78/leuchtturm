@@ -1,0 +1,15 @@
+Build-Tools: /usr/local/lib/android/sdk/build-tools/37.0.0
+Plattform:   /usr/local/lib/android/sdk/platforms/android-36
+src/de/mewestudio/leuchtturm/widget/MainActivity.java:38: warning: [deprecation] setStatusBarColor(int) in Window has been deprecated
+        getWindow().setStatusBarColor(NACHT);
+                   ^
+src/de/mewestudio/leuchtturm/widget/WidgetProvider.java:80: warning: [deprecation] setRemoteAdapter(int,Intent) in RemoteViews has been deprecated
+            v.setRemoteAdapter(R.id.liste, dienst);
+             ^
+src/de/mewestudio/leuchtturm/widget/WidgetProvider.java:90: warning: [deprecation] notifyAppWidgetViewDataChanged(int[],int) in AppWidgetManager has been deprecated
+        m.notifyAppWidgetViewDataChanged(ids, R.id.liste);
+         ^
+3 warnings
+V3.0 Signer: certificate DN: CN=Leuchtturm Widget, O=Melanie
+V3.0 Signer: certificate SHA-256 digest: 4e550f4ae674ad3a5329831bf85dd71e682a2816e7130a788cfe8dd791f236ab
+-rw-r--r-- 1 runner runner 50235 Nov 26 07:21 build/leuchtturm-widget.apk
