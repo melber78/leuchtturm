@@ -706,6 +706,96 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .vs-satzzeile{ display:flex; gap:10px; align-items:center; }
 .vs-linien{ flex:1; display:flex; flex-direction:column; gap:14px; }
 .vs-linien > div{ border-bottom:2px solid #8FA3B8; height:34px; display:flex; align-items:flex-end; font-size:19px; }
+/* Stopp-Routine: Lernweg zum Selbstlernen */
+.rsl-leiste{ display:flex; gap:4px; align-items:center; font-size:12.5px; flex-wrap:nowrap; }
+.rsl-leiste .rsl-weg{ font-weight:800; color:#2C4A6E; margin-right:4px; white-space:nowrap; }
+.rsl-leiste span:not(.rsl-weg){ flex:1; display:flex; align-items:center; gap:4px; background:#EEF2F7; color:#6B7A88; border-radius:20px; padding:3px 6px; white-space:nowrap; }
+.rsl-leiste b{ display:inline-flex; width:18px; height:18px; border-radius:50%; background:#C9D6E3; color:#fff; align-items:center; justify-content:center; font-size:11px; flex:none; }
+.rsl-leiste .fertig b{ background:#7FA88E; }
+.rsl-leiste .an{ background:#2C4A6E !important; color:#fff !important; font-weight:800; }
+.rsl-leiste .an b{ background:#fff; color:#2C4A6E; }
+.rsl-kasten{ border:2.5px solid #2C4A6E; border-radius:14px; padding:8px 14px; }
+.rsl-kasten-titel{ font-weight:800; font-size:17px; color:#2C4A6E; margin-bottom:4px; }
+.rsl-flex{ flex:1; display:flex; flex-direction:column; }
+.rsl-jonas{ display:flex; flex-direction:column; gap:6px; font-size:16.5px; line-height:1.35; flex:1; justify-content:space-around; }
+.rsl-jonas > div{ display:flex; gap:10px; align-items:center; }
+.rsl-ordnen{ display:grid; grid-template-columns:1fr; gap:6px; font-size:16px; }
+.rsl-ordnen > div{ display:flex; gap:12px; align-items:center; border:1.5px solid #D8DFE7; border-radius:10px; padding:5px 10px; }
+.rsl-nr{ width:38px !important; height:34px !important; flex:none; display:inline-flex; align-items:center; justify-content:center; font-size:19px; font-weight:800; }
+.rsl-rf{ display:flex; flex-direction:column; gap:5px; font-size:16px; }
+.rsl-rf > div{ display:flex; gap:12px; align-items:center; border-bottom:1.5px solid #E3E9F0; padding:3px 4px; }
+.rsl-rf-t{ flex:1; }
+.rsl-rf-nr{ display:inline-flex; width:24px; height:24px; border-radius:50%; background:#EEF2F7; color:#2C4A6E; font-weight:800; align-items:center; justify-content:center; font-size:13px; flex:none; }
+.rsl-merksatz{ font-size:18px; line-height:2.3; background:#F6F8FB; border-radius:12px; padding:4px 14px; }
+.rsl-ll{ display:inline-block; min-width:150px; border-bottom:2px solid #8FA3B8; text-align:center; line-height:1.4; }
+.rsl-fazit{ display:flex; gap:22px; align-items:center; font-size:14.5px; color:#2C3E55; flex-wrap:wrap; }
+.rsl-smile i{ font-style:normal; font-size:19px; margin-left:6px; }
+.rsl-weiter{ margin-left:auto; font-weight:800; color:#2C4A6E; }
+.rsl-kontrolle{ border-top:2px dashed #8FA3B8; padding-top:4px; }
+.rsl-knick{ font-size:13px; color:#6B7A88; text-align:center; margin-bottom:3px; }
+.rsl-loes{ transform:rotate(180deg); font-size:14px; line-height:1.4; color:#4A5866; display:flex; flex-direction:column; gap:2px; }
+.rsl-alarm td{ font-size:15px; line-height:1.3; padding:5px 8px; vertical-align:middle; }
+.rsl-alarm .rsa-key-zelle small{ display:block; font-size:11px; font-weight:600; color:#4A5866; }
+.rsl-bsp{ font-size:15px; }
+.rsl-bsp u{ text-decoration-color:#C0392B; text-decoration-thickness:3px; }
+.rsl-zuordnen{ display:grid; grid-template-columns:1fr 1fr; gap:6px 18px; }
+.rsl-zuordnen > div{ display:flex; gap:10px; align-items:center; border:1.5px solid #D8DFE7; border-radius:10px; padding:4px 10px; min-height:46px; }
+.rsl-zu-wort{ flex:1; font-size:18px; }
+.rsl-zu-wort .rs-satz{ font-size:15.5px; }
+.rsl-zu-wort .rs-optionen, .rsl-tab .rs-optionen{ display:inline-flex; margin-left:6px; font-size:14px; vertical-align:middle; }
+.rsl-saetze, .rsl-uebung{ display:flex; flex-direction:column; gap:8px; }
+.rsl-wz{ border:2.5px solid #2C4A6E; border-radius:14px; overflow:hidden; display:flex; flex-direction:column; gap:7px; padding-bottom:8px; flex:1 0 auto; }
+.rsl-wz > .ws-aufgabe, .rsl-wz > table{ margin:0 12px; }
+.rsl-wz > table{ width:calc(100% - 24px); }
+.rsl-wz-kopf{ display:flex; align-items:stretch; background:#EEF2F7; }
+.rsl-wz-kopf .rsa-key{ width:52px; font-size:32px; }
+.rsl-wz-kopf > div{ padding:6px 12px; display:flex; flex-direction:column; gap:1px; font-size:14.5px; }
+.rsl-wz-kopf > div b{ font-size:19px; }
+.rsl-wz-innen{ display:grid; grid-template-columns:1.55fr 1fr; gap:12px; padding:0 12px; }
+.rsl-so{ font-size:14.5px; line-height:1.35; }
+.rsl-so ol{ margin:3px 0 0; padding-left:20px; display:flex; flex-direction:column; gap:2px; }
+.rsl-muster{ background:#FBF6E6; border-radius:10px; padding:6px 10px; font-size:15px; display:flex; flex-direction:column; gap:5px; justify-content:center; }
+.rsl-muster .rs-wort{ font-size:20px; } .rsl-muster .rs-satz{ font-size:15px; }
+.rsl-muster .rs-optionen{ display:inline-flex; font-size:13px; vertical-align:middle; }
+.rsl-voll{ width:auto !important; min-width:34px; padding:0 4px; text-align:center; font-weight:800; color:#2C4A6E; line-height:26px; }
+.rsl-tab td{ height:42px; vertical-align:middle; overflow-wrap:anywhere; }
+.rsl-tab .rsa-n{ text-align:center; color:#4A5866; font-size:15px; }
+.rsl-tab .rs-wort{ font-size:19px; } .rsl-tab .rs-satz{ font-size:15.5px; }
+.rsl-satz{ font-size:18px; line-height:1.9; }
+.rsl-wahl{ display:inline-flex; align-items:baseline; gap:3px; border:1.5px dashed #8FA3B8; border-radius:8px; padding:0 6px; margin:0 1px; }
+.rsl-wahl sup{ color:#2C4A6E; font-weight:800; font-size:13px; }
+.rsl-wahl em{ font-style:normal; color:#8FA3B8; }
+.rsl-kreis{ border:2px solid #C0392B; border-radius:50%; padding:0 4px; }
+.rsl-zeilen{ display:flex; flex-direction:column; gap:4px; margin-top:2px; }
+.rsl-zeilen > div{ display:flex; gap:10px; align-items:flex-end; font-size:15px; }
+.rsl-wl{ flex:1.1; min-width:0; } .rsl-bl{ flex:1.6; min-width:0; }
+.rsl-wz-feld{ display:inline-flex; align-items:center; gap:4px; }
+.rsl-muster-z i{ color:#4A5866; }
+.rsl-haken{ flex:none; font-size:15px; align-self:center; }
+.rsl-uebung .fs-karte{ align-items:flex-start; }
+.rsl-kopf{ display:flex; flex-direction:column; gap:8px; font-size:17px; }
+.rsl-kopf > div{ display:flex; gap:10px; align-items:flex-end; }
+.rsl-kopf .rs-linie{ flex:1; }
+.rsl-kopf-reihe{ flex-direction:row; flex-wrap:wrap; gap:8px 16px; }
+.rsl-kopf-reihe > div{ flex:1 1 30%; }
+.rsl-merk{ background:#FBF6E6; border-color:#E6B94F; text-align:center; }
+.rsl-vers{ font-size:19px; font-weight:700; line-height:1.5; color:#2C3E55; }
+.rsl-karten{ display:grid; grid-template-columns:1fr 1fr; gap:8px 14px; flex:1; }
+.rsl-klapp{ display:grid; grid-template-columns:1fr 1fr; border:2px dashed #8FA3B8; border-radius:10px; overflow:hidden; min-height:82px; }
+.rsl-klapp-v{ padding:6px 8px; font-size:14px; line-height:1.3; display:flex; flex-direction:column; gap:3px; border-right:2px dotted #8FA3B8; }
+.rsl-klapp-v small, .rsl-klapp-h small{ font-size:11.5px; color:#6B7A88; }
+.rsl-klapp-bsp{ font-size:15px; margin-top:auto; }
+.rsl-klapp-bsp .rs-luecke{ width:30px; height:24px; vertical-align:-5px; }
+.rsl-klapp-bsp .rs-optionen{ display:inline-flex; font-size:12px; vertical-align:middle; }
+.rsl-klapp-h{ display:flex; gap:8px; align-items:center; background:#EEF2F7; padding:4px 8px 4px 0; }
+.rsl-klapp-h .rsa-key{ width:40px; font-size:26px; align-self:stretch; }
+.rsl-klapp-h > div{ display:flex; flex-direction:column; gap:2px; font-size:14.5px; line-height:1.25; }
+.rsl-kann td{ height:34px; font-size:15px; vertical-align:middle; }
+.rsl-tipp{ font-size:14.5px; color:#2C3E55; background:#EEF2F7; border-radius:10px; padding:5px 10px; }
+.rsl-teil{ font-size:16.5px; display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; border-bottom:2px solid #2C4A6E; padding-bottom:2px; }
+.rsl-teil b{ color:#2C4A6E; }
+.rsl-pkt{ margin-left:auto; font-weight:800; color:#2C4A6E; white-space:nowrap; }
+.rsl-auswertung{ border:2.5px solid #2C4A6E; border-radius:14px; padding:8px 14px; display:flex; flex-direction:column; gap:3px; font-size:14.5px; }
 /* Rechtschreibung anwenden */
 .rsa-wahl{ display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:4px 14px; font-size:14px; margin-top:4px; }
 .rsa-wahl label{ display:flex; gap:6px; align-items:center; font-weight:600; margin:0; }
@@ -5940,7 +6030,7 @@ function rsaB_profil(ctx){
         <div class="rsa-stolper"><div><b>Mein Ziel bis zu den Ferien:</b><i></i><i></i></div><div><b>Darauf achte ich ab jetzt besonders:</b><i></i><i></i></div></div>` };
 }
 
-const RSA_BLAETTER = [
+const RSA_KERN = [
     { nr: "1", kurz: "Werkzeugkasten", name: "Werkzeugkasten & Stopp-Routine", bau: rsaB_werkzeugkasten },
     { nr: "2", kurz: "Signalstellen-Training", name: "Signalstellen-Training (gemischt)", bau: rsaB_training },
     { nr: "3", kurz: "Signalstellen finden", name: "Signalstellen finden", bau: rsaB_finden },
@@ -5949,6 +6039,257 @@ const RSA_BLAETTER = [
     { nr: "6", kurz: "Eigener Text", name: "Mein Text mit Stopp-Routine", bau: rsaB_text },
     { nr: "7", kurz: "Fehlerprofil", name: "Mein Fehlerprofil", bau: rsaB_profil },
 ];
+/* ---------- Stopp-Routine: Lernweg zum Selbstlernen ----------
+   Acht Blätter, die ein Kind ohne Trainerin durcharbeiten kann:
+   Einführung → Erklärung (Signalstellen) → Werkzeuge V & A → S & M → G & E → Üben → Merken → Check.
+   Jedes Lernblatt erklärt zuerst, zeigt ein Muster und hat unten einen Kontrollstreifen
+   (zum Umknicken, auf dem Kopf gedruckt). Der Check am Ende hat nur ein Lösungsblatt.
+   Übungen: {richtig/falsch}|Beweis – das Wort in der Klammer zuerst ist das richtige. */
+const RSL_STATIONEN = ["Einführung", "Erklärung", "V & A", "S & M", "G & E", "Üben", "Merken", "Check"];
+const RSL_WZ = {
+    V: { name: "Verlängern", signal: "Wortende: <b>b/p · d/t · g/k</b>, <b>-ig/-ich</b>",
+        frage: "Klingt das Wortende hart – könnte es auch anders geschrieben werden?",
+        schritte: ["Am Wortende höre ich <b>p, t, k</b> oder <b>-ich</b>. Achtung: Das kann täuschen!", "Ich <b>verlängere</b> das Wort: Mehrzahl (der Berg → die Berge), Grundform (er gibt → geben) oder steigern (gelb → gelber).", "Im verlängerten Wort höre ich den Buchstaben deutlich – und schreibe ihn auch im kurzen Wort."],
+        muster: ["Zwer", "g", "k", "", "die Zwerge → ich höre g"] },
+    A: { name: "Ableiten", signal: "<b>ä oder e? äu oder eu?</b>",
+        frage: "Gibt es ein verwandtes Wort mit a oder au?",
+        schritte: ["Ich höre ein <b>e</b> oder <b>eu</b> – geschrieben werden kann es aber auch ä oder äu.", "Ich suche ein <b>verwandtes Wort</b>: Einzahl, Grundform oder ein Wort aus derselben Familie.", "Finde ich ein Wort mit <b>a</b> oder <b>au</b>? → ä oder äu. Finde ich keins? → e oder eu."],
+        muster: ["B", "äu", "eu", "me", "der Baum → au → äu"] },
+    S: { name: "Schwingen & Vokal hören", signal: "<b>doppelt? ck/tz? ss/ß? ie/i?</b>",
+        frage: "Ist der Vokal (Selbstlaut) kurz oder lang?",
+        schritte: ["Ich spreche das Wort in <b>Silben</b> und schwinge mit (kurze Wörter vorher verlängern: Fuß → Fü-ße).", "Ich höre genau auf den betonten Vokal: <b>kurz</b> wie in <i>Sonne</i> oder <b>lang</b> wie in <i>Rose</i>?", "<b>Kurz</b> → zwei Konsonanten, ck, tz, ss. <b>Lang</b> → nur einer, ß, bei i meistens ie."],
+        muster: ["So", "nn", "n", "e", "Son-ne → o kurz → nn"] },
+    M: { name: "Merkwort", signal: "<b>Dehnungs-h, v, aa/ee/oo</b>, Fremdwörter",
+        frage: "Hilft keine Regel – muss ich das Wort einfach kennen?",
+        schritte: ["Ich prüfe zuerst die anderen Werkzeuge. Keins hilft? Dann ist es ein <b>Merkwort</b>.", "Ich schaue mir die schwierige Stelle genau an und <b>markiere</b> sie mit Farbe.", "Ich übe das Wort: abdecken, aus dem Kopf schreiben, vergleichen – und schreibe es auf eine Karteikarte."],
+        muster: ["fa", "hr", "r", "en", "Merkwort mit h"] },
+    G: { name: "Groß-Probe", signal: "<b>groß oder klein?</b>",
+        frage: "Kann ein Begleiter davor stehen – auch ein versteckter?",
+        schritte: ["Ich frage: Steht ein <b>Begleiter</b> davor – oder passt einer? (der, die, das, ein, mein …)", "Ich achte auf <b>versteckte</b> Begleiter: beim (bei dem), zum (zu dem), am, im – und auf alles, etwas, nichts, viel vor Adjektiven.", "Passt ein Begleiter → <b>groß</b>. Passt keiner → <b>klein</b>."],
+        muster: ["Wir gehen zum ", "S", "s", "chwimmen.", "zum = zu dem → groß"] },
+    E: { name: "Ersatzprobe", signal: "<b>das oder dass?</b>",
+        frage: "Kann ich „dieses“ oder „welches“ einsetzen?",
+        schritte: ["Ich lese den Satz bis zum <b>das/dass</b> und bleibe dort stehen.", "Ich setze <b>dieses</b> oder <b>welches</b> ein und lese den Satz noch einmal.", "Klingt es richtig → <b>das</b>. Klingt es falsch → <b>dass</b>."],
+        muster: ["Das Rad, ", "das", "dass", " dort steht, ist neu.", "welches passt → das"] },
+};
+const RSL_UEBUNG = {
+    V: { basis: ["Hun{d/t}|die Hunde", "Ber{g/k}|die Berge", "Kor{b/p}|die Körbe", "Wal{d/t}|die Wälder", "Zwer{g/k}|die Zwerge", "gel{b/p}|gelber", "Fel{d/t}|die Felder", "Zu{g/k}|die Züge", "Lan{d/t}|die Länder", "Die{b/p}|die Diebe", "Kin{d/t}|die Kinder", "Ta{g/k}|die Tage", "Wel{t/d}|die Welten", "Schran{k/g}|die Schränke", "lusti{g/ch}|lustiger", "Hem{d/t}|die Hemden", "run{d/t}|runder"],
+        profi: ["er gi{b/p}t|geben", "sie le{g/k}t|legen", "Erfol{g/k}|die Erfolge", "Ausflu{g/k}|die Ausflüge", "Stran{d/t}|die Strände", "Abschie{d/t}|die Abschiede", "er schrei{b/p}t|schreiben", "flüssi{g/ch}|flüssiger", "Verban{d/t}|die Verbände", "bewegli{ch/g}|beweglicher", "gesun{d/t}|gesünder", "er flie{g/k}t|fliegen", "Gewan{d/t}|die Gewänder", "sie trä{g/k}t|tragen"] },
+    A: { basis: ["B{äu/eu}me|der Baum", "H{ä/e}nde|die Hand", "K{ä/e}lte|kalt", "W{ä/e}lder|der Wald", "L{äu/eu}fer|laufen", "M{äu/eu}se|die Maus", "z{ä/e}hlen|die Zahl", "S{ä/e}tze|der Satz", "Gl{ä/e}ser|das Glas", "er tr{ä/e}gt|tragen", "R{äu/eu}ber|rauben", "H{e/ä}ft|kein a-Wort", "N{e/ä}st|kein a-Wort", "W{e/ä}tter|kein a-Wort", "Fr{eu/äu}nd|kein au-Wort", "F{eu/äu}er|kein au-Wort"],
+        profi: ["erkl{ä/e}ren|klar", "gef{ä/e}hrlich|die Gefahr", "Ger{äu/eu}sch|rauschen", "verst{ä/e}ndlich|der Verstand", "Gel{ä/e}nde|das Land", "s{äu/eu}berlich|sauber", "Beh{ä/e}lter|halten", "erz{ä/e}hlen|die Zahl", "gl{äu/eu}big|glauben", "tr{äu/eu}men|der Traum", "abw{e/ä}chseln|kein a-Wort", "Gr{e/ä}nze|kein a-Wort", "f{eu/äu}cht|kein au-Wort", "Verl{e/ä}tzung|kein a-Wort", "St{e/ä}rn|kein a-Wort", "Gesch{ä/e}ft|schaffen"] },
+    S: { basis: ["So{nn/n}e|Son-ne: o kurz", "Na{m/mm}e|Na-me: a lang", "Ja{ck/k}e|Ja-cke: a kurz", "Lu{p/pp}e|Lu-pe: u lang", "Ka{tz/z}e|Kat-ze: a kurz", "Stra{ß/ss}e|Stra-ße: a lang", "Wa{ss/ß}er|Was-ser: a kurz", "L{ie/i}be|Lie-be: i lang", "T{i/ie}sch|Ti-sche: i kurz", "Mü{tz/z}e|Müt-ze: ü kurz", "Te{ll/l}er|Tel-ler: e kurz", "Ho{s/ss}e|Ho-se: o lang", "Fu{ß/ss}|Fü-ße: ü lang", "Ki{ss/ß}en|Kis-sen: i kurz", "Sp{ie/i}gel|Spie-gel: i lang", "Hü{tt/t}e|Hüt-te: ü kurz"],
+        profi: ["schwi{mm/m}en|schwim-men: i kurz", "plö{tz/z}lich|plötz-lich: ö kurz", "Gru{ß/ss}|Grü-ße: ü lang", "er wu{ss/ß}te|wuss-te: u kurz", "Schlü{ss/ß}el|Schlüs-sel: ü kurz", "gie{ß/ss}en|gie-ßen: ie lang", "Bä{ck/k}erei|Bä-cke-rei: ä kurz", "Verle{tz/z}ung|ver-let-zen: e kurz", "begrü{ß/ss}en|be-grü-ßen: ü lang", "Stü{ck/k}|Stü-cke: ü kurz", "Ma{ß/ss}e|Ma-ße: a lang", "Ergebni{ss/s}e|Er-geb-nis-se: i kurz", "Gew{i/ie}nn|Ge-win-ne: i kurz", "Tü{t/tt}e|Tü-te: ü lang", "Ga{ss/ß}e|Gas-se: a kurz", "flie{ß/ss}end|flie-ßen: ie lang"] },
+    M: { basis: ["fa{hr/r}en|Merkwort mit h", "{V/F}ater|Merkwort mit V", "M{ee/e}r|Merkwort mit ee", "B{oo/o}t|Merkwort mit oo", "Z{ah/a}n|Merkwort mit h", "{V/F}ogel|Merkwort mit V", "S{ee/e}|Merkwort mit ee", "H{aa/a}r|Merkwort mit aa", "U{hr/r}|Merkwort mit h", "St{uh/u}l|Merkwort mit h", "w{oh/o}nen|Merkwort mit h", "{v/f}ier|Merkwort mit v", "T{ee/e}|Merkwort mit ee"],
+        profi: ["{V/F}erspätung|Vorsilbe ver- → v", "{v/f}orsichtig|Vorsilbe vor- → v", "{Th/T}eater|Fremdwort mit Th", "{V/W}ase|Fremdwort: v klingt wie w", "Kla{v/w}ier|Fremdwort: v klingt wie w", "erf{ah/a}ren|Merkwort mit h", "Gef{ah/a}r|Merkwort mit h", "{v/f}ollständig|voll → v", "Id{ee/e}|Merkwort mit ee", "B{ah/a}n|Merkwort mit h", "S{aa/a}l|Merkwort mit aa", "P{aa/a}r|Merkwort mit aa", "W{ah/a}l|Merkwort mit h", "Ma{sch/sh}ine|Fremdwort mit sch"] },
+    G: { basis: ["Wir gehen zum {S/s}chwimmen.|zum = zu dem → groß", "Der {H/h}und bellt laut.|der → groß", "Das Auto ist {s/S}chnell.|kein Begleiter → klein", "Ich wünsche dir alles {G/g}ute.|alles + Adjektiv → groß", "Sie {l/L}iest ein Buch.|kein Begleiter → klein", "Am {A/a}bend spielen wir.|am = an dem → groß", "Mein Bruder ist {g/G}roß.|kein Begleiter → klein", "Das {L/l}achen war laut.|das → groß", "Wir {s/S}ingen im Chor.|kein Begleiter → klein", "Er hat etwas {N/n}eues gekauft.|etwas + Adjektiv → groß", "Beim {E/e}ssen redet er viel.|beim = bei dem → groß", "Die Suppe ist {h/H}eiß.|kein Begleiter → klein"],
+        profi: ["Beim {Ü/ü}berqueren der Straße passe ich auf.|beim = bei dem → groß", "Das {L/l}ernen fällt mir leicht.|das → groß", "Nichts {B/b}esonderes ist passiert.|nichts + Adjektiv → groß", "Wir treffen uns {m/M}orgen um acht.|kein Begleiter → klein", "Am {M/m}orgen ist es noch kalt.|am = an dem → groß", "Sie hat viel {G/g}utes getan.|viel + Adjektiv → groß", "Zum {A/a}bschluss singen wir.|zum = zu dem → groß", "Das ist wirklich zum {L/l}achen.|zum = zu dem → groß", "Ich finde den Film {s/S}pannend.|kein Begleiter → klein", "Im {A/a}llgemeinen klappt das gut.|im = in dem → groß", "Er kam {a/A}bends nach Hause.|abends (mit s) → klein", "Sie kann gut {z/Z}eichnen.|kein Begleiter → klein"] },
+    E: { basis: ["Das Buch, {das/dass} ich lese, ist spannend.|welches passt → das", "Ich glaube, {dass/das} es regnet.|welches passt nicht → dass", "{Das/Dass} Fahrrad ist neu.|dieses passt → das", "Er sagt, {dass/das} er müde ist.|welches passt nicht → dass", "Das Spiel, {das/dass} wir spielen, macht Spaß.|welches passt → das", "Es ist schön, {dass/das} du da bist.|welches passt nicht → dass", "Siehst du {das/dass} Haus dort?|dieses passt → das", "Wir freuen uns, {dass/das} Ferien sind.|welches passt nicht → dass", "Das Lied, {das/dass} sie singt, kenne ich.|welches passt → das", "Ich hoffe, {dass/das} du gewinnst.|welches passt nicht → dass"],
+        profi: ["Das Gerücht, {das/dass} sich verbreitet hat, stimmt nicht.|welches passt → das", "Es ist wichtig, {dass/das} man einen Helm trägt.|welches passt nicht → dass", "Sie bemerkte, {dass/das} das Fenster offen war.|welches passt nicht → dass", "{Dass/Das} er gewonnen hat, wundert niemanden.|welches passt nicht → dass", "Das Ergebnis, {das/dass} wir erwartet hatten, kam pünktlich.|welches passt → das", "Er versprach, {dass/das} er pünktlich ist.|welches passt nicht → dass", "Kennst du {das/dass} neue Lied?|dieses passt → das", "Das Problem, {das/dass} uns beschäftigt, ist lösbar.|welches passt → das", "Mir fällt auf, {dass/das} du heute fehlst.|welches passt nicht → dass", "Das Video, {das/dass} er gedreht hat, ist lustig.|welches passt → das"] },
+};
+
+function rsl_item(roh){
+    const [teil, beweis = ""] = roh.split("|");
+    const m = /\{([^/}]*)\/([^}]*)\}/.exec(teil);
+    const vor = teil.slice(0, m.index), nach = teil.slice(m.index + m[0].length);
+    const wort = (vor.match(/[^\s„]*$/) || [""])[0] + m[1] + (nach.match(/^[^\s.,!?“]*/) || [""])[0];
+    return { vor, r: m[1], f: m[2], nach, beweis, wort, satz: /\s/.test(teil.trim()) };
+}
+function rsl_luecke(it, mitLoesung = true){
+    const opt = mische([it.r, it.f]);
+    return `<span class="${it.satz ? "rs-satz" : "rs-wort"}">${ws_esc(it.vor)}<span class="rs-luecke">${mitLoesung ? L(ws_esc(it.r)) : ""}</span>${ws_esc(it.nach)}</span> <span class="rs-optionen">${opt.map(o => `<span>${ws_esc(o)}</span>`).join("")}</span>`;
+}
+// n Übungen zu einem Werkzeug (Niveau: basis, profi oder beide)
+function rsl_ziehen(wz, n, niv){
+    const p = RSL_UEBUNG[wz], liste = niv === "profi" ? p.profi : (niv === "beide" ? [...p.basis, ...p.profi] : p.basis);
+    return mische(liste).slice(0, n).map(rsl_item);
+}
+function rsl_leiste(nr){
+    return `<div class="rsl-leiste"><span class="rsl-weg">Mein Lernweg</span>${RSL_STATIONEN.map((s, i) => `<span class="${i + 1 === nr ? "an" : (i + 1 < nr ? "fertig" : "")}"><b>${i + 1 < nr ? "✓" : i + 1}</b>${s}</span>`).join("")}</div>`;
+}
+function rsl_kontrolle(teile){
+    return `<div class="rsl-kontrolle"><div class="rsl-knick">✂ Kontrolle – erst umknicken, wenn du ganz fertig bist. Fehler mit einer anderen Farbe verbessern!</div><div class="rsl-loes">${teile.map(t => `<span>${t}</span>`).join("")}</div></div>`;
+}
+function rsl_fazit(weiter){
+    return `<div class="rsl-fazit"><span>${fs_kreuzBox(false)} selbst kontrolliert</span><span>${fs_kreuzBox(false)} Fehler verbessert</span><span class="rsl-smile">So ging's: <i>😀</i><i>🙂</i><i>😕</i></span>${weiter ? `<span class="rsl-weiter">➜ ${weiter}</span>` : ""}</div>`;
+}
+const rsl_kasten = (titel, inhalt, klasse = "") => `<div class="rsl-kasten ${klasse}"><div class="rsl-kasten-titel">${titel}</div>${inhalt}</div>`;
+
+/* L1: Einführung – Was ist die Stopp-Routine? */
+function rslB_einfuehrung(ctx){
+    const schritte = mische(RSA_ROUTINE.map(([em, t, x], i) => ({ i, t: `${em} <b>${t}</b> – ${x}` })));
+    const buchst = "ABCDE";
+    const aussagen = mische([
+        ["Die Stopp-Routine mache ich erst am Ende des ganzen Textes.", false],
+        ["Beim Stopp lege ich den Stift wirklich ab.", true],
+        ["Eine Signalstelle ist eine Stelle, an der man leicht einen Fehler macht.", true],
+        ["Wenn ich mir sicher bin, brauche ich keinen Beweis.", false],
+        ["Das Werkzeug hilft mir, die richtige Schreibung zu beweisen.", true],
+        ["Den Haken setze ich erst, wenn ich alle Signalstellen geprüft habe.", true],
+        ["Wer die Regeln kennt, macht automatisch keine Fehler mehr.", false],
+    ]).slice(0, 5);
+    const woerter = ["Satz", "Stift", "Signalstellen", "Werkzeug", "Beweis", "Haken"];
+    const luecke = w => `<span class="rsl-ll">${L(w)}</span>`;
+    return { titel: "Die Stopp-Routine – was ist das?", html: `
+        ${rsl_leiste(1)}
+        <div class="fs-ziel" style="text-align:left;"><span>Du kennst viele Rechtschreibregeln – trotzdem passieren Fehler. Beim Schreiben denkt man an den <b>Inhalt</b>, nicht an die Regel. Die <b>Stopp-Routine</b> ist ein fester Ablauf: Nach <b>jedem Satz</b> hältst du kurz an und prüfst. Auf diesen acht Blättern lernst du sie Schritt für Schritt – ganz allein.</span></div>
+        ${rsa_routineHtml()}
+        ${rsl_kasten("So macht es Jonas", `<div class="rsl-jonas">
+            <div><span class="rsa-snr">1</span><span>✍️ Jonas schreibt: <i>„Der Hunt bellt im Garten.“</i></span></div>
+            <div><span class="rsa-snr">2</span><span>✋ Er legt den Stift ab – Stopp!</span></div>
+            <div><span class="rsa-snr">3</span><span>🔍 Er sucht Signalstellen: <i>„Hunt“</i> – am Wortende höre ich <b>t</b>, es könnte aber auch <b>d</b> sein!</span></div>
+            <div><span class="rsa-snr">4</span><span>🧰 Werkzeug <b>V</b> (Verlängern): der Hund → die Hun<u>d</u>e. Ich höre <b>d</b>. Das ist mein Beweis.</span></div>
+            <div><span class="rsa-snr">5</span><span>✅ Er verbessert zu <i>„Hund“</i>, setzt den Haken und schreibt den nächsten Satz.</span></div></div>`, "rsl-flex")}
+        ${ws_aufgabe(1, "Deck die beiden Kästen oben mit einem Blatt ab! Die Schritte sind durcheinander geraten. Schreibe die richtige Reihenfolge <b>1 bis 5</b> in die Kästchen.")}
+        <div class="rsl-ordnen">${schritte.map((s, j) => `<div><span class="fs-kaestchen-klein rsl-nr">${L(String(s.i + 1))}</span><span>${s.t}</span></div>`).join("")}</div>
+        ${ws_aufgabe(2, "Stimmt das? Kreuze an: <b>r</b> = richtig, <b>f</b> = falsch.")}
+        <div class="rsl-rf">${aussagen.map(([t, r], j) => `<div><span class="rsl-rf-nr">${j + 1}</span><span class="rsl-rf-t">${t}</span><span>${fs_kreuzBox(r)} r</span><span>${fs_kreuzBox(!r)} f</span></div>`).join("")}</div>
+        ${ws_aufgabe(3, `Ergänze den Merksatz. Diese Wörter helfen dir: <i>${mische(woerter).join(" · ")}</i>`)}
+        <div class="rsl-merksatz">Nach jedem ${luecke("Satz")} lege ich den ${luecke("Stift")} ab. Dann suche ich die ${luecke("Signalstellen")}. Mit dem passenden ${luecke("Werkzeug")} finde ich den ${luecke("Beweis")}. Erst dann setze ich den ${luecke("Haken")}.</div>
+        ${rsl_fazit("weiter mit Blatt 2: Signalstellen erkennen")}
+        ${rsl_kontrolle([
+            `<b>1:</b> ${schritte.map(s => s.i + 1).join(" – ")} (von oben nach unten)`,
+            `<b>2:</b> ${aussagen.map(([, r], j) => `${j + 1} ${r ? "r" : "f"}`).join(", ")}`,
+            `<b>3:</b> ${woerter.join(", ")}`])}` };
+}
+
+/* L2: Erklärung – Signalstellen und Alarm-Fragen */
+function rslB_erklaerung(ctx){
+    const niv = rsa_niveau(ctx);
+    const items = mische(["V", "A", "S", "M", "G", "E"].flatMap(k => rsl_ziehen(k, 2, niv).map(it => ({ ...it, k }))));
+    const naechster = rsa_saetze(niv), saetze = [naechster(), naechster(), naechster()];
+    const satzHtml = teile => teile.map(x => x.t != null ? ws_esc(x.t) : `<span class="rsa-sig">${ws_esc(x.w)}<span class="fs-loes rsa-k">${x.k}</span></span>`).join("");
+    return { titel: "Signalstellen erkennen", html: `
+        ${rsl_leiste(2)}
+        <div class="fs-ziel" style="text-align:left;"><span>Eine <b>Signalstelle</b> ist eine Stelle im Wort, an der du die Schreibung <b>nicht sicher hören</b> kannst. Zu jeder Signalstelle gehört eine <b>Alarm-Frage</b> – und zu jeder Alarm-Frage ein <b>Werkzeug</b>, mit dem du die Schreibung beweist.</span></div>
+        <table class="rs-tabelle rsl-alarm"><thead><tr><th style="width:9%;">🧰</th><th style="width:30%;">Signalstelle</th><th>Alarm-Frage</th><th style="width:22%;">Beispiel</th></tr></thead>
+        <tbody>${["V", "A", "S", "G", "E", "M"].map(k => { const w = RSL_WZ[k], b = w.muster; return `<tr><td class="rsa-key-zelle">${k}<small>${w.name.split(" ")[0]}</small></td><td>${w.signal}</td><td>${w.frage}</td><td class="rsl-bsp">${ws_esc(b[0])}<u>${ws_esc(b[1])}</u>${ws_esc(b[3])}</td></tr>`; }).join("")}</tbody></table>
+        ${ws_aufgabe(1, "Die Signalstelle ist schon markiert. Welches <b>Werkzeug</b> brauchst du? Schreibe den Buchstaben ins Kästchen: V · A · S · G · E · M. (Du musst das Wort noch nicht schreiben.)")}
+        <div class="rsl-zuordnen">${items.map((it, j) => `<div><span class="rsl-rf-nr">${j + 1}</span><span class="rsl-zu-wort">${rsl_luecke(it, false)}</span><span class="fs-kaestchen-klein rsl-nr">${L(it.k)}</span></div>`).join("")}</div>
+        ${ws_aufgabe(2, "Diese Sätze sind <b>richtig</b> geschrieben. <b>Unterstreiche</b> alle Wörter mit einer Signalstelle und schreibe den Werkzeug-Buchstaben darüber. Rechts steht, wie viele es sind.")}
+        <div class="rsl-saetze">${saetze.map((t, j) => `<div class="fs-karte"><div class="fs-reihe-nr">${j + 1}</div><span class="rs-satz rsa-hoch">${satzHtml(t)}</span><span class="rsa-anzahl">${t.filter(x => x.w).length} Stellen</span></div>`).join("")}</div>
+        ${rsl_fazit("weiter mit Blatt 3: Werkzeuge V und A")}
+        ${rsl_kontrolle([
+            `<b>1:</b> ${items.map((it, j) => `${j + 1} ${it.k}`).join(", ")}`,
+            `<b>2:</b> ${saetze.map((t, j) => `${j + 1}) ${t.filter(x => x.w).map(x => `${ws_esc(x.w)} (${x.k})`).join(", ")}`).join(" · ")}`])}` };
+}
+
+/* L3–L5: Zwei Werkzeuge erklärt – So geht's · Muster · selbst üben */
+function rsl_werkzeugBlock(k, items, nr){
+    const w = RSL_WZ[k], m = w.muster, satz = /\s/.test(m[0] + m[3]), satzIt = items[0].satz;
+    return `<div class="rsl-wz">
+        <div class="rsl-wz-kopf"><span class="rsa-key">${k}</span><div><b>${w.name}</b><span>Signal: ${w.signal} · Alarm-Frage: <i>${w.frage}</i></span></div></div>
+        <div class="rsl-wz-innen">
+            <div class="rsl-so"><b>So geht's</b><ol>${w.schritte.map(s => `<li>${s}</li>`).join("")}</ol></div>
+            <div class="rsl-muster"><b>Muster</b><div><span class="${satz ? "rs-satz" : "rs-wort"}">${ws_esc(m[0])}<span class="rs-luecke rsl-voll">${ws_esc(m[1])}</span>${ws_esc(m[3])}</span> <span class="rs-optionen"><span>${ws_esc(m[1])}</span><span>${ws_esc(m[2])}</span></span></div><div>Beweis: <i>${ws_esc(m[4])}</i></div></div>
+        </div>
+        ${ws_aufgabe(nr, satzIt ? `Du bist dran: Fülle die Lücke und schreibe deinen <b>Beweis</b> auf.` : `Du bist dran: Fülle die Lücke, schreibe deinen <b>Beweis</b> und dann das ganze Wort richtig.`)}
+        <table class="rs-tabelle rsl-tab"><thead><tr><th style="width:6%;">Nr.</th><th style="width:${satzIt ? 58 : 34}%;">Aufgabe</th><th>Mein Beweis</th>${satzIt ? "" : `<th style="width:24%;">Wort richtig</th>`}</tr></thead>
+        <tbody>${items.map((it, j) => `<tr><td class="rsa-n">${j + 1}</td><td>${rsl_luecke(it)}</td><td>${L(ws_esc(it.beweis), "font-size:15px;")}</td>${satzIt ? "" : `<td>${L(ws_esc(it.wort))}</td>`}</tr>`).join("")}</tbody></table>
+    </div>`;
+}
+function rsl_werkzeugBlatt(nr, k1, k2, weiter){
+    return ctx => {
+        const niv = rsa_niveau(ctx), n = 5;
+        const a = rsl_ziehen(k1, n, niv), b = rsl_ziehen(k2, n, niv);
+        const kontr = (k, items) => `<b>${k}:</b> ${items.map((it, j) => `${j + 1} ${ws_esc(it.satz ? it.r : it.wort)} (${ws_esc(it.beweis)})`).join(" · ")}`;
+        return { titel: `Werkzeuge ${k1} und ${k2}: ${RSL_WZ[k1].name.split(" ")[0]} & ${RSL_WZ[k2].name.split(" ")[0]}`, html: `
+            ${rsl_leiste(nr)}
+            ${rsl_werkzeugBlock(k1, a, 1)}
+            ${rsl_werkzeugBlock(k2, b, 2)}
+            ${rsl_fazit(weiter)}
+            ${rsl_kontrolle([kontr(k1, a), kontr(k2, b)])}` };
+    };
+}
+
+/* L6: Üben – Satz für Satz mit der Stopp-Routine */
+function rslB_ueben(ctx){
+    const niv = rsa_niveau(ctx), naechster = rsa_saetze(niv);
+    const saetze = Array.from({ length: 6 }, () => {
+        const teile = naechster(), stellen = teile.filter(x => x.w), wahl = new Set(mische(stellen).slice(0, 2));
+        return { teile, wahl: stellen.filter(x => wahl.has(x)) };
+    });
+    const kreis = ["①", "②"];
+    const satzHtml = s => s.teile.map(x => {
+        if (x.t != null) return ws_esc(x.t);
+        const i = s.wahl.indexOf(x);
+        if (i < 0) return ws_esc(x.w);
+        const opt = mische([x.w, x.f]);
+        return `<span class="rsl-wahl"><sup>${kreis[i]}</sup>${opt.map(o => `<span${o === x.w ? ' class="fs-lm rsl-richtig"' : ""}>${ws_esc(o)}</span>`).join("<em>/</em>")}</span>`;
+    }).join("");
+    const zeile = (x, i) => `<div><b>${kreis[i]}</b><span class="rs-linie rsl-wl">${L(ws_esc(x.w))}</span><span class="rsl-wz-feld">🧰 <span class="fs-kaestchen-klein">${L(x.k)}</span></span><span class="rs-linie rsl-bl">${L(ws_esc(x.b), "font-size:14px;")}</span></div>`;
+    return { titel: "Üben: Satz für Satz", html: `
+        ${rsl_leiste(6)}
+        <div class="fs-ziel" style="text-align:left;"><span>Jetzt alles zusammen! In jedem Satz stehen an <b>zwei Signalstellen</b> zwei Schreibweisen. Mach die Stopp-Routine: Welche Schreibung stimmt? Kreise sie ein und schreibe darunter das Wort, den <b>Werkzeug-Buchstaben</b> und deinen <b>Beweis</b>.</span></div>
+        ${rsl_kasten("Muster", `<div class="rs-satz rsl-satz">Der <span class="rsl-wahl"><sup>①</sup><span>Hunt</span><em>/</em><span class="rsl-kreis">Hund</span></span> rennt über die <span class="rsl-wahl"><sup>②</sup><span class="rsl-kreis">Straße</span><em>/</em><span>Strasse</span></span>.</div>
+            <div class="rsl-zeilen rsl-muster-z"><div><b>①</b><span class="rs-linie rsl-wl"><i>Hund</i></span><span class="rsl-wz-feld">🧰 <span class="fs-kaestchen-klein"><i>V</i></span></span><span class="rs-linie rsl-bl"><i>die Hunde</i></span></div><div><b>②</b><span class="rs-linie rsl-wl"><i>Straße</i></span><span class="rsl-wz-feld">🧰 <span class="fs-kaestchen-klein"><i>S</i></span></span><span class="rs-linie rsl-bl"><i>Stra-ße: a lang → ß</i></span></div></div>`)}
+        ${ws_aufgabe(1, "Jetzt du – nach <b>jedem</b> Satz: ✋ Stopp · 🔍 Signalstelle · 🧰 Werkzeug + Beweis · ✅ Haken.")}
+        <div class="rsl-uebung">${saetze.map((s, j) => `<div class="fs-karte"><div class="fs-reihe-nr">${j + 1}</div><div style="flex:1;"><div class="rs-satz rsl-satz">${satzHtml(s)}</div><div class="rsl-zeilen">${s.wahl.map(zeile).join("")}</div></div><span class="rsl-haken">${fs_kreuzBox(false)} ✅</span></div>`).join("")}</div>
+        ${rsl_fazit("weiter mit Blatt 7: Merken")}
+        ${rsl_kontrolle(saetze.map((s, j) => `<b>${j + 1}:</b> ${s.wahl.map((x, i) => `${kreis[i]} ${ws_esc(x.w)} (${x.k}: ${ws_esc(x.b)})`).join(" ")}`))}` };
+}
+
+/* L7: Merken – Routine aus dem Kopf, Klappkarten, Selbsteinschätzung */
+function rslB_merken(ctx){
+    const karten = ["V", "A", "S", "G", "E", "M"].map(k => { const w = RSL_WZ[k], m = w.muster; return `<div class="rsl-klapp"><div class="rsl-klapp-v"><small>Signal</small><div>${w.signal}</div><span class="rsl-klapp-bsp">${ws_esc(m[0])}<span class="rs-luecke"></span>${ws_esc(m[3])} <span class="rs-optionen"><span>${ws_esc(m[1])}</span><span>${ws_esc(m[2])}</span></span></span></div><div class="rsl-klapp-h"><span class="rsa-key">${k}</span><div><b>${w.name}</b><small>${w.frage}</small></div></div></div>`; }).join("");
+    const kann = ["die 5 Schritte der Stopp-Routine aufzählen.", "Signalstellen in einem Satz finden.", "zu jeder Signalstelle das passende Werkzeug wählen.", "einen Beweis aufschreiben.", "die Routine beim eigenen Schreiben wirklich machen."];
+    return { titel: "Merken: Das bleibt im Kopf", html: `
+        ${rsl_leiste(7)}
+        ${ws_aufgabe(1, "Schreibe die 5 Schritte der Stopp-Routine <b>aus dem Kopf</b> auf. Schau erst danach zur Kontrolle auf Blatt 1.")}
+        <div class="rsl-kopf">${[1, 2, 3, 4, 5].map(i => `<div><span class="rsa-snr">${i}</span><span class="rs-linie">${L(RSA_ROUTINE[i - 1][1])}</span></div>`).join("")}</div>
+        ${rsl_kasten("Merksatz – lies ihn dreimal laut", `<div class="rsl-vers">Erst der Satz – dann der Stopp.<br>Stellen suchen, Werkzeug holen,<br>Beweis finden – Haken drauf!</div>`, "rsl-merk")}
+        ${ws_aufgabe(2, "<b>Klappkarten</b> zum Üben: Ausschneiden, in der Mitte falten (Werkzeug nach hinten). Lies die Signalstelle – sag das Werkzeug – klapp auf und prüfe. Die Karten passen ins Mäppchen.")}
+        <div class="rsl-karten">${karten}</div>
+        ${ws_aufgabe(3, "Wie sicher bist du? Kreuze ehrlich an.")}
+        <table class="rs-tabelle rsl-kann"><thead><tr><th>Ich kann …</th><th style="width:11%;">😀 sicher</th><th style="width:11%;">🙂 meistens</th><th style="width:11%;">😕 noch nicht</th></tr></thead>
+        <tbody>${kann.map(t => `<tr><td>… ${t}</td><td></td><td></td><td></td></tr>`).join("")}</tbody></table>
+        <div class="rsl-tipp">💡 Bei <b>😕</b>: Geh zurück zur passenden Station – Schritte auf Blatt 1, Signalstellen auf Blatt 2, Werkzeuge auf Blatt 3 bis 5.</div>
+        ${rsl_fazit("weiter mit Blatt 8: der Check")}` };
+}
+
+/* L8: Abschluss-Check (ohne Kontrollstreifen – Lösungsblatt) */
+function rslB_check(ctx){
+    const niv = rsa_niveau(ctx);
+    const a = mische(["V", "A", "S", "G", "E", "M"].map(k => ({ ...rsl_ziehen(k, 1, niv)[0], k })));
+    const b = mische(["V", "A", "S", "M", "V", "S"]).slice(0, 4).map(k => ({ ...rsl_ziehen(k, 1, niv)[0], k }));
+    const naechster = rsa_saetze(niv);
+    const c = Array.from({ length: 3 }, () => {
+        const teile = naechster(), falsch = new Set(mische(teile.filter(x => x.w)).slice(0, 2));
+        return { teile, falsch: teile.filter(x => falsch.has(x)) };
+    });
+    const pkt = n => `<span class="rsl-pkt">___ / ${n} P.</span>`;
+    return { titel: "Mein Stopp-Routine-Check", html: `
+        ${rsl_leiste(8)}
+        <div class="fs-ziel" style="text-align:left;"><span>Zeig, was du kannst! Diesen Check machst du <b>ohne Hilfe</b>. Danach kontrolliert deine Trainerin – oder du bekommst das Lösungsblatt.</span></div>
+        <div class="rsl-teil"><span><b>Teil A · Welches Werkzeug?</b> Schreibe den Buchstaben ins Kästchen.</span>${pkt(6)}</div>
+        <div class="rsl-zuordnen">${a.map((it, j) => `<div><span class="rsl-rf-nr">${j + 1}</span><span class="rsl-zu-wort">${rsl_luecke(it, false)}</span><span class="fs-kaestchen-klein rsl-nr">${L(it.k)}</span></div>`).join("")}</div>
+        <div class="rsl-teil"><span><b>Teil B · Wort und Beweis.</b> Schreibe das Wort richtig und den Beweis dazu (je 2 Punkte).</span>${pkt(8)}</div>
+        <table class="rs-tabelle rsl-tab"><thead><tr><th style="width:6%;">Nr.</th><th style="width:34%;">Aufgabe</th><th style="width:24%;">Wort richtig</th><th>Beweis</th></tr></thead>
+        <tbody>${b.map((it, j) => `<tr><td class="rsa-n">${j + 1}</td><td>${rsl_luecke(it)}</td><td>${L(ws_esc(it.wort))}</td><td>${L(ws_esc(it.beweis), "font-size:15px;")}</td></tr>`).join("")}</tbody></table>
+        <div class="rsl-teil"><span><b>Teil C · Fehlerdetektiv.</b> In jedem Satz stecken <b>genau 2 Fehler</b>. Streiche sie durch und schreibe die Wörter richtig auf die Linie.</span>${pkt(6)}</div>
+        <div class="rsl-uebung">${c.map((s, j) => `<div class="fs-karte rsa-det"><div class="fs-reihe-nr">${j + 1}</div><div style="flex:1;"><div class="rs-satz">${s.teile.map(x => x.t != null ? ws_esc(x.t) : (s.falsch.includes(x) ? `<span class="fs-ls">${ws_esc(x.f)}</span>` : ws_esc(x.w))).join("")}</div><div class="rsa-det-zeile"><span class="rs-linie" style="flex:1;">${L(s.falsch.map(x => ws_esc(x.w)).join(", "))}</span></div></div></div>`).join("")}</div>
+        <div class="rsl-teil"><span><b>Teil D · Die Stopp-Routine aus dem Kopf.</b> Schreibe die 5 Schritte auf.</span>${pkt(5)}</div>
+        <div class="rsl-kopf rsl-kopf-reihe">${[1, 2, 3, 4, 5].map(i => `<div><span class="rsa-snr">${i}</span><span class="rs-linie">${L(RSA_ROUTINE[i - 1][1])}</span></div>`).join("")}</div>
+        <div class="rsl-auswertung">
+            <div><b>Gesamt:</b> <span class="fs-kaestchen-klein" style="width:60px;"></span> / 25 Punkte</div>
+            <div><b>22–25 ⭐</b> Super! Du kannst die Stopp-Routine. Jetzt im Training anwenden (Signalstellen-Training, Fehlerdetektiv, eigener Text).</div>
+            <div><b>15–21 👍</b> Gut! Schau dir die Werkzeuge noch einmal an, bei denen du Punkte verloren hast (Blatt 3–5).</div>
+            <div><b>unter 15 🔁</b> Geh den Lernweg ab Blatt 2 noch einmal durch und sprich mit deiner Trainerin.</div>
+        </div>` };
+}
+
+const RSL_BLAETTER = [
+    { nr: "L1", kurz: "Einführung", name: "Lernweg 1: Einführung – was ist die Stopp-Routine?", bau: rslB_einfuehrung },
+    { nr: "L2", kurz: "Signalstellen", name: "Lernweg 2: Erklärung – Signalstellen & Alarm-Fragen", bau: rslB_erklaerung },
+    { nr: "L3", kurz: "V & A", name: "Lernweg 3: Werkzeuge Verlängern & Ableiten", bau: rsl_werkzeugBlatt(3, "V", "A", "weiter mit Blatt 4: Werkzeuge S und M") },
+    { nr: "L4", kurz: "S & M", name: "Lernweg 4: Werkzeuge Schwingen & Merkwort", bau: rsl_werkzeugBlatt(4, "S", "M", "weiter mit Blatt 5: Werkzeuge G und E") },
+    { nr: "L5", kurz: "G & E", name: "Lernweg 5: Werkzeuge Groß-Probe & Ersatzprobe", bau: rsl_werkzeugBlatt(5, "G", "E", "weiter mit Blatt 6: Üben") },
+    { nr: "L6", kurz: "Üben", name: "Lernweg 6: Üben – Satz für Satz", bau: rslB_ueben },
+    { nr: "L7", kurz: "Merken", name: "Lernweg 7: Merken – Klappkarten & Ich kann …", bau: rslB_merken },
+    { nr: "L8", kurz: "Check", name: "Lernweg 8: Abschluss-Check", bau: rslB_check },
+];
+// Alle Blätter der Stopp-Routine (Training + Lernweg) – für Stundenplanung, Tauschen und Akte
+const RSA_BLAETTER = [...RSA_KERN, ...RSL_BLAETTER];
+const rsl_istLernweg = nr => /^L\d$/.test(String(nr || ""));
 /* ---------- Vom Lesen zum Schreiben: Wörter verschriften ----------
    Für Kinder, die lesen können, aber beim Schreiben nicht nachvollziehbar verschriften
    („wie gehört“, aber Laute fehlen, sind vertauscht oder falsch zugeordnet).
@@ -8950,7 +9291,19 @@ const FS_SERIEN = {
             <select id="rsa-niveau"><option value="auto">passend zur Klassenstufe (Kl. 2–4 Basis, Kl. 5–6 gemischt, Kl. 7–9 Profi)</option><option value="basis">Basis</option><option value="profi">Profi</option><option value="beide">gemischt</option></select>`,
         ctxExtra: () => ({ rsa: rsa_ausFormular() }),
         speicherName: () => "Rechtschreibung anwenden",
-        blaetter: RSA_BLAETTER },
+        blaetter: RSA_KERN },
+    lernweg: { tab: "werkzeug", mat: "symptom", wert: "rs-lernweg", reif: true,
+        optionText: "Stopp-Routine – Lernweg zum Selbstlernen: Einführung, Erklärung, Üben, Merken, Check (ab Klasse 4/5)",
+        label: "Stopp-Routine · Lernweg", afs: "Symptomtraining: Rechtschreibstrategien anwenden (selbstständig)", select: "#wz-typ", erstellen: "erstelleWerkzeug",
+        ordner: "Rechtschreibung",
+        tipp: "Acht Blätter, die das Kind ohne dich durcharbeiten kann: Jedes Lernblatt erklärt, zeigt ein Muster und hat unten einen Kontrollstreifen zum Umknicken. Der Check (Blatt L8) hat nur ein Lösungsblatt – „Mit Lösungsblättern drucken“.",
+        optionenHtml: `
+            <p class="beschreibung" style="margin:12px 0 6px;"><b>Idee:</b> Das Kind erarbeitet sich die Stopp-Routine selbst – Schritt für Schritt mit Lernweg-Leiste oben: <b>Einführung</b> · <b>Erklärung</b> (Signalstellen &amp; Alarm-Fragen) · <b>Werkzeuge</b> V &amp; A, S &amp; M, G &amp; E (So geht's, Muster, selbst üben) · <b>Üben</b> Satz für Satz · <b>Merken</b> (Klappkarten, Ich kann …) · <b>Check</b> mit Punkten. Danach geht es mit dem Training (Serie „Rechtschreibung anwenden“) weiter.</p>
+            <label style="margin-top:10px;">Niveau der Übungen</label>
+            <select id="rsl-niveau"><option value="auto">passend zur Klassenstufe (Kl. 4 Basis, Kl. 5–6 gemischt, ab Kl. 7 Profi)</option><option value="basis">Basis</option><option value="beide">gemischt</option><option value="profi">Profi</option></select>`,
+        ctxExtra: () => { const niv = lt_wert("rsl-niveau"); return { rsa: rsa_ctx("", null, niv && niv !== "auto" ? niv : (lt_klasse() >= 7 ? "profi" : (lt_klasse() >= 5 ? "beide" : "basis"))) }; },
+        speicherName: () => "Stopp-Routine – Lernweg",
+        blaetter: RSL_BLAETTER },
     rlehrgang: { tab: "werkzeug", mat: "symptom", wert: "rl-serie", reif: () => lt_klasse() >= 5,
         optionText: "Rechtschreib-Werkstatt Kl. 3–8 – Lehrgang Schritt für Schritt & Grundwortschatz",
         label: "Rechtschreib-Werkstatt", afs: "Symptomtraining: Rechtschreibung Schritt für Schritt", select: "#wz-typ", erstellen: "erstelleWerkzeug",
@@ -9857,7 +10210,7 @@ function std_auswahlAufbauen(){
     document.getElementById("std-funktion").innerHTML = STD_FUNKTIONEN.map(k => `<option value="${k}">${ws_esc(FS_SERIEN[k].label)}</option>`).join("") + `<option value="">– ohne Funktionsblatt –</option>`;
     document.getElementById("std-vs").innerHTML = `<option value="">– nichts zusätzlich –</option>` + VS_BLAETTER.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("");
     document.getElementById("std-symptom").innerHTML =
-        `<optgroup label="Rechtschreibung anwenden statt nur wissen (gemischt)"><option value="rsa">Stopp-Routine: Signalstellen, Werkzeug, Beweis</option></optgroup>` +
+        `<optgroup label="Rechtschreibung anwenden statt nur wissen (gemischt)"><option value="rsa">Stopp-Routine: Signalstellen, Werkzeug, Beweis</option><option value="rsl">Stopp-Routine: Lernweg zum Selbstlernen (Einführung bis Check)</option></optgroup>` +
         rl_optionen().replace(/<option value="/g, '<option value="rl:').replace('label="Lehrgang Schritt für Schritt (Kl. 3–8)"', 'label="Rechtschreib-Werkstatt: Lehrgang Schritt für Schritt (Kl. 3–8)"').replace(/label="Grundwortschatz Klasse/g, 'label="Rechtschreib-Werkstatt: Grundwortschatz Klasse') +
         `<optgroup label="Rechtschreibung (ab Kl. 3/4)">${Object.entries(RS_SCHWERPUNKTE).map(([k, sp]) => `<option value="rs:${k}">${ws_esc(sp.name)}</option>`).join("")}</optgroup>` +
         `<optgroup label="Lesetraining nach Leistungsstand (kleinschrittig)">${Object.entries(LE_STUFEN).map(([k, st]) => `<option value="le:${k}">Lesestufe ${st.nr} · ${ws_esc(st.name)} – ${ws_esc(st.unter)}</option>`).join("")}</optgroup>` +
@@ -9904,7 +10257,8 @@ function std_zweiZeigen(){
 }
 function std_symptomListe(sy){
     if (sy.startsWith("rs:")) return FS_SERIEN.rechtschreibung.blaetter;
-    if (sy === "rsa") return RSA_BLAETTER;
+    if (sy === "rsa") return RSA_KERN;
+    if (sy === "rsl") return RSL_BLAETTER;
     if (sy === "vs") return VS_BLAETTER;
     if (sy.startsWith("rl:")) return RL_BLAETTER;
     if (sy === "kartei") return KT_BLAETTER;
@@ -9922,6 +10276,7 @@ function std_blattListen2(){
     const liste = sy && sy !== "=" ? std_symptomListe(sy) : [];
     sb.innerHTML = liste.length ? liste.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("") : `<option value="">–</option>`;
     if (sy.startsWith("rs:") || sy === "rsa") sb.value = "2";
+    if (sy === "rsl") sb.value = "L1";
     if (sy === "vs") sb.value = "3";
     document.getElementById("std-funktion2-anzahl").disabled = !f || f === "=";
     document.getElementById("std-symptom2-anzahl").disabled = !sy || sy === "=" || sy === "diktat";
@@ -9932,7 +10287,8 @@ function std_blattListen(){
     fb.innerHTML = f ? `<option value="zufall">zufällig</option>` + FS_SERIEN[f].blaetter.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("") : `<option value="">–</option>`;
     let liste = [];
     if (sy.startsWith("rs:")) liste = FS_SERIEN.rechtschreibung.blaetter;
-    else if (sy === "rsa") liste = RSA_BLAETTER;
+    else if (sy === "rsa") liste = RSA_KERN;
+    else if (sy === "rsl") liste = RSL_BLAETTER;
     else if (sy === "vs") liste = VS_BLAETTER;
     else if (sy.startsWith("rl:")) liste = RL_BLAETTER;
     else if (sy === "kartei") liste = KT_BLAETTER;
@@ -9943,6 +10299,7 @@ function std_blattListen(){
     sb.innerHTML = liste.length ? liste.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("") : `<option value="">–</option>`;
     if (sy.startsWith("rs:")) sb.value = "2";
     if (sy === "rsa") sb.value = "2";
+    if (sy === "rsl") sb.value = "L1";
     if (sy === "vs") sb.value = "3";
     const sa = document.getElementById("std-symptom-anzahl");
     sa.disabled = !sy || sy === "diktat"; if (sa.disabled) sa.value = "1";
@@ -9955,6 +10312,7 @@ function std_blattListen(){
     else if (sy.startsWith("le:")){ const st = LE_STUFEN[sy.slice(3)], lb = (LRS_AKTEN[lt_wert("std-kind")] || {}).lb; hinweis.textContent = `Lesestufe ${st.nr} ${st.name}: ${st.ziel}. Die Blätter bauen aufeinander auf – bei mehreren Blättern kommen die nächsten der Reihe.` + (lb ? ` Bekannte Buchstaben aus dem Förderplan: ${lb}` : ""); }
     else if (sy === "diktat") hinweis.textContent = "Ein Diktattext passend zu Klassenstufe und Schwierigkeit wird zufällig gewählt (gekürzte Fassung für die Stunde).";
     else if (sy === "ws") hinweis.textContent = "Es werden die Lernwörter aus dem Reiter Symptomtraining → Worterarbeitung verwendet: " + (lt_wert("ws-woerter") || "–");
+    else if (sy === "rsl") hinweis.textContent = "Lernweg zum Selbstlernen: Das Kind arbeitet die Blätter allein durch – erklären, Muster, üben, Kontrollstreifen zum Umknicken. Bei mehreren Blättern kommen die nächsten der Reihe (z. B. L1 + L2). Am Ende L8: Check mit Punkten.";
     else if (sy === "rsa") hinweis.textContent = "Gemischte Aufgaben aus den häufigsten Schwerpunkten (Wortende, ä/e, Doppelkonsonant, s/ss/ß, ie, groß/klein, das/dass, Dehnungs-h) – mit Fehlerwörtern aus der Förderkartei, wenn oben ein Kürzel gewählt ist. Tipp: Blatt 1 (Werkzeugkasten) einmal laminieren.";
     else if (sy.startsWith("rl:")) hinweis.textContent = `Rechtschreib-Werkstatt – ${rl_name(sy.slice(3))}. Erste Stunde einer Stufe: mit „Das lerne ich“ beginnen. Am Ende einer Stufe „Kann ich's?“ – 8 von 10 richtig, dann weiter zur nächsten Stufe.`;
     else if (sy === "vs") hinweis.textContent = "Für Kinder, die lesen können, aber nicht nachvollziehbar schreiben: Laute hören mit der Schreib-Treppe. Stufe passend zur Klasse (Kl. 2: offene Silben, Kl. 3: geschlossene, ab Kl. 4: Mitlaut-Häufungen). Tipp: Blatt 1 einmal laminieren.";
@@ -10083,7 +10441,10 @@ function std_itemsSymptom(r, neu, sy, sb, n){
         const liste = FS_SERIEN.rechtschreibung.blaetter;
         std_mehrere(liste, liste.find(x => x.nr === sb) || liste[0], n).forEach(x => neu({ p: "Symptomtraining", t: "rs", k: sy.slice(3), nr: x.nr }));
     } else if (sy === "rsa"){
-        std_mehrere(RSA_BLAETTER, RSA_BLAETTER.find(x => x.nr === sb) || RSA_BLAETTER[1], n).forEach(x => neu({ p: "Symptomtraining", t: "rsa", nr: x.nr }));
+        std_mehrere(RSA_KERN, RSA_KERN.find(x => x.nr === sb) || RSA_KERN[1], n).forEach(x => neu({ p: "Symptomtraining", t: "rsa", nr: x.nr }));
+    } else if (sy === "rsl"){
+        const i0 = Math.max(0, RSL_BLAETTER.findIndex(x => x.nr === sb));
+        for (let i = 0; i < n; i++) neu({ p: "Symptomtraining", t: "rsa", nr: RSL_BLAETTER[Math.min(RSL_BLAETTER.length - 1, i0 + i)].nr });
     } else if (sy.startsWith("rl:")){
         std_mehrere(RL_BLAETTER, RL_BLAETTER.find(x => x.nr === sb) || RL_BLAETTER[0], n).forEach(x => neu({ p: "Symptomtraining", t: "rl", k: sy.slice(3), nr: x.nr }));
     } else if (sy === "vs"){
@@ -10211,7 +10572,7 @@ function std_alternativen(it, r){
         pool = (passt.length ? passt : k).map(b => ({ t: "fs", s: it.s, nr: b.nr }));
     }
     else if (it.t === "rs") pool = FS_SERIEN.rechtschreibung.blaetter.map(b => ({ t: "rs", k: it.k, nr: b.nr }));
-    else if (it.t === "rsa") pool = RSA_BLAETTER.map(b => ({ t: "rsa", nr: b.nr }));
+    else if (it.t === "rsa") pool = (rsl_istLernweg(it.nr) ? RSL_BLAETTER : RSA_KERN).map(b => ({ t: "rsa", nr: b.nr }));
     else if (it.t === "vs") pool = VS_BLAETTER.map(b => ({ t: "vs", nr: b.nr }));
     else if (it.t === "rl") pool = RL_BLAETTER.map(b => ({ t: "rl", k: it.k, nr: b.nr }));
     else if (it.t === "lesen") pool = LT_AUFGABEN.map(a => ({ t: "lesen", a: a.key }));
@@ -10367,7 +10728,7 @@ function std_ausRezept(r){
         const start = blaetter.length;
         if (it.t === "fs"){ const b = fs_katalog(it.s).find(x => x.nr === it.nr); blaetter.push(mitCache(fp_blattEintrag(it.s, b, 0), U)); geuebt.push(b.name); }
         else if (it.t === "rs"){ const b = FS_SERIEN.rechtschreibung.blaetter.find(x => x.nr === it.nr); blaetter.push(mitCache(fp_rsEintrag(it.k, b.bau, b.name, 0, code), U)); geuebt.push(`${RS_NAMEN[it.k] ? RS_NAMEN[it.k].kurz : it.k}: ${b.name}`); }
-        else if (it.t === "rsa"){ const b = RSA_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Anwenden: " + b.kurz, name: "Rechtschreibung anwenden – " + b.name, bau: c => b.bau({ ...c, rsa: rsa_ctx(code) }), extra: { label: "Rechtschreibung anwenden", afs: "Symptomtraining: Rechtschreibstrategien anwenden", reif: true }, quelle: { t: "rsa", nr: b.nr } }, U)); geuebt.push("Anwenden: " + b.name); } }
+        else if (it.t === "rsa"){ const b = RSA_BLAETTER.find(x => x.nr === it.nr); if (b){ const lw = rsl_istLernweg(b.nr); blaetter.push(mitCache({ nr: "0", kurz: (lw ? "Lernweg: " : "Anwenden: ") + b.kurz, name: (lw ? "Stopp-Routine – " : "Rechtschreibung anwenden – ") + b.name, bau: c => b.bau({ ...c, rsa: rsa_ctx(code) }), extra: { label: "Rechtschreibung anwenden", afs: "Symptomtraining: Rechtschreibstrategien anwenden", reif: true }, quelle: { t: "rsa", nr: b.nr } }, U)); geuebt.push("Anwenden: " + b.name); } }
         else if (it.t === "rl"){ const b = RL_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "RS: " + b.kurz, name: "Rechtschreib-Werkstatt – " + b.name, bau: c => b.bau({ ...c, rs: rl_daten(it.k, code) }), extra: { label: "Rechtschreib-Werkstatt", afs: "Symptomtraining: Rechtschreibung Schritt für Schritt", reif: lt_klasse() >= 5 }, quelle: { t: "rl", nr: b.nr } }, U)); geuebt.push(`${rl_name(it.k)}: ${b.name}`); } }
         else if (it.t === "vs"){ const b = VS_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Schreiben: " + b.kurz, name: "Vom Lesen zum Schreiben – " + b.name, bau: c => b.bau({ ...c, vs: vs_ctx(it.st || "") }), extra: { label: "Vom Lesen zum Schreiben", afs: "Symptomtraining: Laute hören und verschriften", reif: true }, quelle: { t: "vs", nr: b.nr } }, U)); geuebt.push("Schreiben: " + b.name); } }
         else if (it.t === "lesen"){
@@ -10600,7 +10961,8 @@ function std_optionen(ph, r){
     if (ph === "Symptomtraining"){
         gruppen.push(["Vom Lesen zum Schreiben", VS_BLAETTER.map(b => opt({ t: "vs", nr: b.nr }, b.name))]);
         [...RL_STUFEN, ...RL_GWS].forEach(t => gruppen.push(["Rechtschreib-Werkstatt · " + rl_name(t.key), RL_BLAETTER.map(b => opt({ t: "rl", k: t.key, nr: b.nr }, b.name))]));
-        gruppen.push(["Rechtschreibung anwenden (gemischt)", RSA_BLAETTER.map(b => opt({ t: "rsa", nr: b.nr }, b.name))]);
+        gruppen.push(["Rechtschreibung anwenden (gemischt)", RSA_KERN.map(b => opt({ t: "rsa", nr: b.nr }, b.name))]);
+        gruppen.push(["Stopp-Routine: Lernweg zum Selbstlernen", RSL_BLAETTER.map(b => opt({ t: "rsa", nr: b.nr }, b.name))]);
         Object.entries(RS_SCHWERPUNKTE).forEach(([k, sp]) => gruppen.push(["Rechtschreibung: " + sp.name, FS_SERIEN.rechtschreibung.blaetter.map(b => opt({ t: "rs", k, nr: b.nr }, b.name))]));
         gruppen.push(["Lesetraining" + (r.lesetext ? ` („${r.lesetext}“)` : ""), LT_AUFGABEN.map(a => opt({ t: "lesen", a: a.key }, a.name))]);
         gruppen.push(["Diktat", STD_DIKTAT.map(d => opt({ t: "diktat", d: d.key }, d.name))]);
@@ -13129,6 +13491,7 @@ function wz_material(w){
     if (w.rs.length > 1) liste.push({ icon: "fa-shuffle", text: `Alles zu „${w.n}“ gemischt anwenden – mit Stopp-Routine`, info: "7 Blätter · ab Kl. 4/5", serie: "anwenden", mix: w.rs });
     if (w.rs.length) liste.push({ icon: "fa-id-card", text: `Strategie-Kärtchen fürs Mäppchen: ${w.n}`, info: "zum Ausschneiden", serie: "kaertchen", sk: w.rs });
     if (w.k === "alle"){
+        liste.push({ icon: "fa-route", text: "Stopp-Routine selbst lernen – Lernweg: Einführung, Erklärung, Werkzeuge, Üben, Merken, Check (ohne Trainerin bearbeitbar)", info: "8 Blätter · ab Kl. 4/5", serie: "lernweg" });
         liste.push({ icon: "fa-toolbox", text: "Alle Werkzeuge gemischt anwenden – Werkzeugkasten-Karte, Stopp-Routine, Fehlerdetektiv, eigener Text", info: "7 Blätter · ab Kl. 4/5", serie: "anwenden", mix: RSA_STANDARD });
         liste.push({ icon: "fa-stairs", text: "Rechtschreib-Werkstatt: der ganze Lehrgang Stufe 1–25 (Stufe unten auswählen)", info: "9 Blätter · Kl. 3–8", serie: "rlehrgang", rl: "l1" });
         liste.push({ icon: "fa-id-card", text: "Strategie-Kärtchen fürs Mäppchen: alle Schwerpunkte", info: "zum Ausschneiden", serie: "kaertchen", sk: Object.keys(RS_SCHWERPUNKTE) });
@@ -13184,7 +13547,7 @@ function wz_init(){
     wz_kachelnBauen();
     const typ = document.getElementById("wz-typ");
     if (!typ) return;
-    ["rlehrgang", "rechtschreibung", "anwenden", "verschriften", "kaertchen"].forEach(k => {
+    ["rlehrgang", "rechtschreibung", "anwenden", "lernweg", "verschriften", "kaertchen"].forEach(k => {
         const o = [...typ.options].find(x => x.value === FS_SERIEN[k].wert);
         if (o) typ.appendChild(o);
     });
