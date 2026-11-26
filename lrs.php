@@ -404,7 +404,9 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 <style id="ws-stil">
 @font-face{ font-family:"Playwrite DE Grund"; font-style:normal; font-weight:400; font-display:block; src:url("schriften/playwrite-de-grund-400.woff2") format("woff2"); }
 :root{ --ws-schrift:"Playwrite DE Grund", "Andika", sans-serif; --ws-schrift-reif:"Playwrite DE Grund", "Andika", sans-serif; }
-html.lt-druckschrift{ --ws-schrift:"Andika", sans-serif; --ws-schrift-reif:"Atkinson Hyperlegible", "Andika", sans-serif; }
+/* Grundschrift nur für Grundschulblätter: ab Klasse 5 (html.lt-sek), auf Blättern für die Trainerin (.ws-info) und bei gewählter Druckschrift wie früher */
+html.lt-druckschrift, html.lt-sek, .ws-seite.ws-info{ --ws-schrift:"Andika", sans-serif; --ws-schrift-reif:"Atkinson Hyperlegible", "Andika", sans-serif; }
+html:not(.lt-sek):not(.lt-druckschrift) .ws-seite.ws-info.ws-kindblatt{ --ws-schrift:"Playwrite DE Grund", "Andika", sans-serif; --ws-schrift-reif:"Playwrite DE Grund", "Andika", sans-serif; }
 .rs-tabelle th:first-child, .rs-tabelle td:first-child{ white-space:nowrap; }
 .ws-seite{
     width:210mm; height:297mm; flex:none; box-sizing:border-box; padding:13mm 15mm;
@@ -1204,13 +1206,16 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
 </div>
 
 <div class="schrift-wahl">
-    <span><i class="fa-solid fa-font"></i> Schrift auf den Blättern:</span>
+    <span><i class="fa-solid fa-font"></i> Schrift auf den Grundschul-Blättern (Kl. 1–4):</span>
     <label><input type="radio" name="ws-schriftart" value="grund" onchange="ws_schriftSetzen(this.value)"> Grundschrift</label>
     <label><input type="radio" name="ws-schriftart" value="druck" onchange="ws_schriftSetzen(this.value)"> Druckschrift</label>
 </div>
 <script>
 // Schrift der Arbeitsblätter: Grundschrift (Standard) oder Druckschrift – wird auf diesem Gerät gemerkt
-function ws_druckschrift(){ return document.documentElement.classList.contains("lt-druckschrift"); }
+function ws_druckschrift(){ return document.documentElement.classList.contains("lt-druckschrift") || document.documentElement.classList.contains("lt-sek"); }
+// Ab Klasse 5 keine Grundschrift: richtet sich nach der gewählten Klassenstufe
+function ws_stufeSetzen(){ const g = document.getElementById("g-klasse"); const k = g ? parseInt(g.value, 10) || 2 : 2; document.documentElement.classList.toggle("lt-sek", k >= 5); }
+document.addEventListener("DOMContentLoaded", () => { ws_stufeSetzen(); const g = document.getElementById("g-klasse"); if (g) g.addEventListener("change", ws_stufeSetzen); });
 (function(){ let w = "grund"; try { w = localStorage.getItem("lt-ws-schrift") || "grund"; } catch (e){} document.documentElement.classList.toggle("lt-druckschrift", w === "druck");
     document.addEventListener("DOMContentLoaded", () => { const r = document.querySelector(`input[name="ws-schriftart"][value="${w}"]`); if (r) r.checked = true; }); })();
 function ws_schriftSetzen(w){
@@ -3631,6 +3636,7 @@ function ws_kartenEinpassen(seite){
 // zu viel Inhalt wird verkleinert, wenig Inhalt etwas vergrößert (Kopf und Fußzeile bleiben gleich groß).
 const WS_MIN = 0.55, WS_MAX = 1.2;
 function ws_einpassen(nurSeite){
+    ws_stufeSetzen();
     const seiten = nurSeite ? [nurSeite] : [...document.querySelectorAll("#ws-blaetter .ws-seite")];
     seiten.forEach(seite => {
         if (seite.classList.contains("ws-aus")) return;
@@ -3828,7 +3834,7 @@ function ws_drucken(seitenListe){
 
     const doc = rahmen.contentDocument;
     doc.open();
-    doc.write(`<!DOCTYPE html><html lang="de" class="${ws_druckschrift() ? "lt-druckschrift" : ""}"><head><meta charset="UTF-8"><title>Worterarbeitung</title>
+    doc.write(`<!DOCTYPE html><html lang="de" class="${document.documentElement.className}"><head><meta charset="UTF-8"><title>Worterarbeitung</title>
         <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
         <style>${document.getElementById("ws-stil").textContent}
         @page{ size:A4; margin:0; }
@@ -4297,7 +4303,7 @@ function fs_seite(bereich, nr, titel, inhalt, extra = {}){
     if (reif) html = html.replace('<div class="ws-seite"', '<div class="ws-seite fs-reif"');
     // Seiten mit festem Raster (Kärtchen, Pass …) nicht über 100 % vergrößern
     if (extra.max) html = html.replace('<div class="ws-seite', `<div data-max="${extra.max}" class="ws-seite`);
-    if (extra.info) html = html.replace('class="ws-seite', 'class="ws-seite ws-info');
+    if (extra.info) html = html.replace('class="ws-seite', 'class="ws-seite ws-info' + (extra.kindblatt ? ' ws-kindblatt' : ''));
     return html;
 }
 
@@ -9959,7 +9965,7 @@ function std_ablaufplan(info){
 
 function std_rueckblick(info){
     if (lt_klasse() >= 5) return std_reflexion(info);
-    return { titel: "Mein Stunden-Rückblick", extra: { info: true, max: 1, label: "Abschluss", afs: "AFS · Reflexion und Motivation" }, html: `
+    return { titel: "Mein Stunden-Rückblick", extra: { info: true, kindblatt: true, max: 1, label: "Abschluss", afs: "AFS · Reflexion und Motivation" }, html: `
         ${ws_aufgabe(1, "Wie war die Stunde heute für dich? Male ein Gesicht an.")}
         <div class="rb-smileys"><div>${lt_smiley("gut")}super</div><div>${lt_smiley("mittel")}geht so</div><div>${lt_smiley("schlecht")}schwer</div></div>
         ${ws_aufgabe(2, "Das habe ich heute geübt – hake ab, was du geschafft hast:")}
@@ -10413,7 +10419,7 @@ function std_lesetext(niveau){
 }
 function std_lesetextSeite(lt){
     const t = lt.text;
-    const stil = `font-size:${LT_SCHRIFT[lt.klasse] || 22}px; line-height:${LT_ABSTAND[lt.klasse] || 1.9}; font-family:${lt.reif ? "var(--ws-schrift-reif)" : "var(--ws-schrift)"};`;
+    const stil = `font-size:${LT_SCHRIFT[lt.klasse] || 22}px; line-height:${LT_ABSTAND[lt.klasse] || 1.9}; font-family:${lt.reif ? "'Atkinson Hyperlegible', 'Andika', sans-serif" : "var(--ws-schrift)"};`;
     return { titel: ws_esc(t.t), extra: { max: 1, info: true }, html: `
         <div class="st-text" style="${stil}">${st_html(st_tokens(t.x), { art: lt.art, saetze: false })}</div>
         <div class="st-protokoll">Ich habe den Text <span class="ws-linie2"></span> mal gelesen. <span>Zeit: <span class="ws-linie2"></span> Sek.</span> <span>${lt_woerter(t.x).length} Wörter</span></div>
@@ -10867,7 +10873,7 @@ function es_kacheln(woerter, art){
 }
 function es_schuelerblatt(et, art){
     const k = lt_klasse();
-    const gr = LT_SCHRIFT[k] || 22, ab = LT_ABSTAND[k] || 1.9, schrift = k >= 5 ? "var(--ws-schrift-reif)" : "var(--ws-schrift)";
+    const gr = LT_SCHRIFT[k] || 22, ab = LT_ABSTAND[k] || 1.9, schrift = k >= 5 ? "'Atkinson Hyperlegible', 'Andika', sans-serif" : "var(--ws-schrift)";
     const tokens = st_tokens(et.x).filter(t => t.typ === "wort");
     const gesehen = new Set(), woerter = [];
     const gross = t => /^[A-ZÄÖÜ]/.test(t.kern);
@@ -12230,7 +12236,7 @@ function lt_textHolen(prefix, bank){
 
 /* --- gemeinsame Seitenaufteilung für lange Texte (Silbentext, Lesetext) --- */
 async function st_paginieren(box, bereich, nr, opt, tokens, ende, reif){
-    const stil = `font-size:${opt.groesse}px; line-height:${opt.abstand}; font-family:${opt.schrift === "auto" ? "var(--ws-schrift)" : opt.schrift === "auto-reif" ? "var(--ws-schrift-reif)" : `'${opt.schrift}', 'Andika', sans-serif`};`;
+    const stil = `font-size:${opt.groesse}px; line-height:${opt.abstand}; font-family:${opt.schrift === "auto" ? "var(--ws-schrift)" : opt.schrift === "auto-reif" ? "'Atkinson Hyperlegible', 'Andika', sans-serif" : `'${opt.schrift}', 'Andika', sans-serif`};`;
     const klasse = "st-text" + (opt.art === "boegen" ? " st-schwarz" : "");
     let start = 0, seite = 0;
     while (start < tokens.length && seite < 40){
@@ -12364,7 +12370,7 @@ function ltB_luecke(ctx){
     return { titel: "Lückentext", html: `
         ${ws_aufgabe(1, mitBank ? "Lies den Text. Setze die Wörter aus dem Kasten in die Lücken ein. Streiche jedes Wort durch, das du benutzt hast." : "Lies den Text. Welche Wörter fehlen? Setze passende Wörter ein – ohne im Original nachzuschauen.")}
         ${mitBank ? `<div class="rs-wortbank">${mische(bank).map(w => `<span>${ws_esc(w)}</span>`).join("")}</div>` : ""}
-        <div class="lt-text" style="${lt_schriftStil(lt)} font-family:${lt.reif ? "var(--ws-schrift-reif)" : "var(--ws-schrift)"};">${html}</div>
+        <div class="lt-text" style="${lt_schriftStil(lt)} font-family:${lt.reif ? "'Atkinson Hyperlegible', 'Andika', sans-serif" : "var(--ws-schrift)"};">${html}</div>
         ${ws_aufgabe(2, lt.klasse <= 2 ? "Schreibe zwei Sätze mit Lückenwörtern ab." : "Schreibe die Sätze mit den Lückenwörtern vollständig ab.")}
         <div style="${LT_LINIENFELD} min-height:60px;"></div>`, extra: { max: 1 } };
 }
@@ -12421,7 +12427,7 @@ function ltB_fehler(ctx){
     const html = woerter.map((w, i) => ersatz[i] ? `<span class="fs-ls">${ws_esc(w.replace(woerter[i].replace(/^[„"(]+|[.,!?;:“")]+$/g, ""), ersatz[i]))}</span>` : ws_esc(w)).join(" ");
     return { titel: "Lies genau!", html: `
         ${ws_aufgabe(1, `In diesem Text haben sich <b>${anzahl}</b> Wörter versteckt, die nicht passen. Lies genau und streiche sie durch. Schreibe das richtige Wort darüber – schau dafür im Original nach.`)}
-        <div class="lt-text" style="${lt_schriftStil(lt)} font-family:${lt.reif ? "var(--ws-schrift-reif)" : "var(--ws-schrift)"};">${html}</div>
+        <div class="lt-text" style="${lt_schriftStil(lt)} font-family:${lt.reif ? "'Atkinson Hyperlegible', 'Andika', sans-serif" : "var(--ws-schrift)"};">${html}</div>
         <div class="fs-ziel" style="font-size:15px;">Gefunden: <span class="rs-linie" style="min-width:60px;"></span> von ${anzahl} Wörtern ${L("Richtig: " + gewaehlt.map(x => ws_esc(x.kern)).join(", "), "font-size:14px; white-space:normal;")}</div>
         ${ws_aufgabe(2, "Schreibe die Sätze mit den falschen Wörtern richtig ab.")}
         <div style="${LT_LINIENFELD} min-height:60px;"></div>`, extra: { max: 1 } };
@@ -12565,7 +12571,7 @@ function dkB_luecken(ctx){
     const zeile = () => lineatur ? bs_lineatur("") : `<div class="dk-zeile"></div>`;
     return { titel: "Lückendiktat", zeile, max: 30, extra: { reif: dk.reif }, html: `
         ${ws_aufgabe(1, "Hör gut zu. Schreibe die fehlenden Wörter in die Lücken.")}
-        <div class="lt-text" style="font-size:${t.k <= 2 ? 24 : 20}px; font-family:${dk.reif ? "var(--ws-schrift-reif)" : "var(--ws-schrift)"};">${html}</div>
+        <div class="lt-text" style="font-size:${t.k <= 2 ? 24 : 20}px; font-family:${dk.reif ? "'Atkinson Hyperlegible', 'Andika', sans-serif" : "var(--ws-schrift)"};">${html}</div>
         ${ws_aufgabe(2, "Schreibe die Lückenwörter noch einmal ab. Sprich dabei leise mit.")}
         <div class="${lineatur ? "ws-lineatur-liste" : "dk-zeilen"} fs-fuell"></div>` };
 }

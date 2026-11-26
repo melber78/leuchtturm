@@ -193,6 +193,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 $LT_GAST_BEREICH = ["akten", "lrs"]; require __DIR__ . "/gast-zugang.php";
 $kinderCodes = array_map(fn($k) => $k["code"], fkJsonLesen($kinderDatei));
 $startKind = in_array($_GET["kind"] ?? "", $kinderCodes, true) ? $_GET["kind"] : ($kinderCodes[0] ?? "");
+// Klassenstufe je Kind (aus der Kinder-Akte) – ab Klasse 5 keine Grundschrift
+$fkKlassen = [];
+foreach (fkJsonLesen($kinderDatei) as $k) if (!empty($k["klasse"])) $fkKlassen[$k["code"]] = (int)$k["klasse"];
+foreach (fkJsonLesen(lt_daten("akten.json")) as $c => $a) if (is_array($a) && !empty($a["klasse"])) $fkKlassen[$c] = (int)$a["klasse"];
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -217,7 +221,7 @@ $startKind = in_array($_GET["kind"] ?? "", $kinderCodes, true) ? $_GET["kind"] :
 <style>
 @font-face{ font-family:"Playwrite DE Grund"; font-style:normal; font-weight:400; font-display:block; src:url("schriften/playwrite-de-grund-400.woff2") format("woff2"); }
 :root{ --ws-schrift:"Playwrite DE Grund", "Andika", sans-serif; }
-html.lt-druckschrift{ --ws-schrift:"Andika", sans-serif; }
+html.lt-druckschrift, html.lt-sek{ --ws-schrift:"Andika", sans-serif; }
 :root{ --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4; --text:#1f2d36; --schatten:0 6px 24px rgba(22,50,74,.1); --gruen:#2f8a3d; --rot:#b3382f; }
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; line-height:1.5; }
@@ -758,9 +762,12 @@ function verlaufsbogenDrucken(){
 }
 
 /* ---------- Start ---------- */
+const FK_KLASSEN = <?= json_encode((object)$fkKlassen) ?>;
+function fk_stufe(){ document.documentElement.classList.toggle("lt-sek", (FK_KLASSEN[kind] || 0) >= 5); }
+fk_stufe();
 if (kind){
     document.querySelectorAll(".kind-chip").forEach(b => b.addEventListener("click", () => {
-        kind = b.dataset.kind;
+        kind = b.dataset.kind; fk_stufe();
         document.querySelectorAll(".kind-chip").forEach(x => x.classList.toggle("aktiv", x === b));
         history.replaceState(null, "", "foerderkartei.php?kind=" + encodeURIComponent(kind));
         abfrage = null; abfrageZeigen();
