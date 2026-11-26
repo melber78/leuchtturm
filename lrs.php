@@ -1272,8 +1272,65 @@ html:not(.lt-sek):not(.lt-druckschrift) .ws-seite.ws-info.ws-kindblatt{ --ws-sch
 .ws-malbox, .st-malbox, .rs-wortbank, .rsl-klapp, .fs-ansage{ border:1px dashed #9aa6b1 !important; border-radius:2px !important; }
 .rsl-leiste span:not(.rsl-weg){ border-radius:3px !important; }
 .ws-laut-tabelle td:first-child, .fs-vergleich td:first-child{ border-radius:0 !important; }
+
+/* ===================================================================
+   „Leuchtturm warm“ (Nov 2026): klar, aber mit Charakter –
+   Tinte + Petrol + Terrakotta, sandfarbene Flächen, kleiner Leuchtturm im Kopf.
+   =================================================================== */
+.ws-seite, .blatt{ --ink:#23313d; --grau:#7a7368; --linie:#e6ddd0; --akzent:#1d6a7a; --warm:#d0643b; --flaeche:#f7f1e7; --flaeche2:#fbf8f3; }
+.ws-kopf, .fs-reif .ws-kopf, .blatt-oben{ border-bottom:2px solid var(--akzent); position:relative; padding-bottom:8px; }
+.ws-kopf::after, .blatt-oben::after{ content:""; position:absolute; left:0; bottom:-2px; width:64px; height:2px; background:var(--warm); }
+.ws-pille, .fs-reif .ws-pille, .blatt-kopf .autor-zeile{ display:inline-flex; align-items:center; gap:8px; color:var(--akzent) !important; letter-spacing:.1em; }
+.ws-pille::before, .blatt-kopf .autor-zeile::before{ content:""; width:16px; height:21px; flex:none; background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2032%22%3E%3Cpath%20d%3D%22M12%201.5l3%203h-6z%22%20fill%3D%22%231d6a7a%22/%3E%3Crect%20x%3D%228.6%22%20y%3D%224.5%22%20width%3D%226.8%22%20height%3D%224%22%20rx%3D%221%22%20fill%3D%22%23f2b544%22/%3E%3Cpath%20d%3D%22M8.2%208.5h7.6l2%2021H6.2z%22%20fill%3D%22%23fff%22%20stroke%3D%22%2323313d%22%20stroke-width%3D%221.2%22%20stroke-linejoin%3D%22round%22/%3E%3Cpath%20d%3D%22M7.6%2014.5h8.8l.6%205H7z%22%20fill%3D%22%23d0643b%22/%3E%3Cpath%20d%3D%22M6.6%2024.5h10.8l.4%205H6.2z%22%20fill%3D%22%23d0643b%22/%3E%3Cpath%20d%3D%22M3%2030.5h18%22%20stroke%3D%22%2323313d%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M17%206.5l5-2M17%207.5l5%201.5M7%206.5l-5-2M7%207.5l-5%201.5%22%20stroke%3D%22%23f2b544%22%20stroke-width%3D%221.1%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E") center/contain no-repeat; }
+.ws-seite h1, .fs-reif h1, .blatt-kopf h3{ font-family:Nunito, "Andika", sans-serif; font-weight:800; color:var(--ink); }
+/* Aufgabennummer: Terrakotta-Ziffer auf Sand, leicht eckig */
+.ws-nummer, .fs-reif .ws-nummer{ background:var(--flaeche) !important; color:var(--warm) !important; min-width:30px; height:30px; border-radius:6px; display:inline-flex !important; align-items:center; justify-content:center; font-size:18px; align-self:flex-start; margin-top:1px; }
+.ws-aufgabe, .fs-reif .ws-aufgabe{ align-items:flex-start; }
+/* Flächen: Sand statt Grau, ohne Linksbalken */
+.fs-ziel, .fs-reif .fs-ziel, .ws-auftrag, .anweisung,
+.ws-merkbox, .rs-regel, .rs-merksatz, .vs-beispiel, .fs-merk, .rsl-merksatz, .rsl-tipp, .rsl-muster, .sp-motto, .ws-ziel, .ws-bilanz, .st-protokoll, .ws-schlange{
+    background:var(--flaeche) !important; border:none !important; border-radius:8px !important; }
+.ws-auftrag, .anweisung{ padding:10px 16px !important; }
+/* Reihen: warme Haarlinien, jede zweite Reihe ganz leicht getönt */
+.fs-karte, .fs-reif .fs-karte, .fs-reihe-inhalt, .fs-reif .fs-reihe-inhalt, .ws-wortzeile{ border-bottom-color:var(--linie) !important; }
+.fs-karte:nth-of-type(even), .ws-wortzeile:nth-of-type(even){ background:var(--flaeche2); }
+.fs-reihe-nr{ color:var(--warm); font-weight:800; }
+/* Antwortfelder und Kästen: Petrol-Kante, etwas runder */
+.fs-box, .fs-zaehl, .fs-nrbox, .fs-reif .fs-box, .fs-reif .fs-zaehl, .fs-reif .fs-nrbox, .ws-kasten, .fs-lm{ border:1.5px solid var(--akzent) !important; border-radius:5px !important; }
+.ws-suchreihe, .ws-auswahl3 > div, .ws-kreiswahl > div, .ws-teppich, .ws-blitz, .fs-muster-reihe, .fs-kachel-reihe, .fs-wortgitter > div,
+.rs-beispiele > div, .rsl-ordnen > div, .rsl-zuordnen > div, .fs-tafel > div, .fs-punkte-paar img, .fs-kachel{ border-color:var(--linie) !important; border-radius:6px !important; }
+.ws-gitter, .fs-bild-gitter, .vs-merkbox, .rsl-kasten, .rsl-wz, .rsa-wz, .rsa-routine, .rsl-auswertung, .rsa-duell{ border-color:var(--akzent) !important; border-radius:8px !important; }
+.fs-chip > .fs-chiptext, .fs-code span, .ws-chip{ border-color:#cdbfae !important; border-radius:6px !important; background:#fffdf9 !important; }
+.rs-tabelle th{ color:var(--akzent); border-bottom:2px solid var(--akzent) !important; }
+.rs-tabelle td{ border-bottom-color:var(--linie) !important; }
+.rs-tabelle tr:nth-child(even) td{ background:var(--flaeche2); }
+.ws-fuss{ border-top:1px solid var(--linie); color:var(--grau); }
+.bk-feld.jetzt{ border-color:var(--warm); background:#fff8f2; }
+.bk-feld.jetzt i{ color:var(--warm); }
+.bk-feld.ok{ background:#eef5f3; border-color:#a9cbc6; }
+.bk-feld.ok i{ color:var(--akzent); }
+.bk-zt{ color:var(--akzent); }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
+
+<style>
+@media screen{
+  .ws-seite, .blatt{ transform:scale(var(--ws-f, 1)); transform-origin:top center; margin-bottom:calc((var(--ws-f, 1) - 1) * 297mm) !important; }
+  html.ws-klein .ws-blaetter{ overflow-x:hidden; }
+}
+</style>
+<script>
+// A4-Blätter am Handy auf die Bildschirmbreite verkleinern (Inhalt und Einpassen bleiben unverändert)
+function ws_vorschauSkalieren(){
+    const breite = Math.min(document.documentElement.clientWidth, window.innerWidth || 9999) - 24;
+    const f = Math.min(1, breite / 794);
+    document.documentElement.style.setProperty("--ws-f", f.toFixed(4));
+    document.documentElement.classList.toggle("ws-klein", f < 1);
+}
+window.addEventListener("resize", ws_vorschauSkalieren);
+document.addEventListener("DOMContentLoaded", ws_vorschauSkalieren);
+ws_vorschauSkalieren();
+</script>
 </head>
 <body>
 
@@ -3798,6 +3855,10 @@ async function ws_pdfErzeugen(seiten, status, aufloesung = PDF_AUFLOESUNG, quali
     await ws_skriptLaden("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js", () => window.jspdf);
     if (document.fonts && document.fonts.ready) await document.fonts.ready;
     if (document.activeElement) document.activeElement.blur(); // keine Schreibmarke im PDF
+    document.documentElement.style.setProperty("--ws-f", "1");   // Handy-Verkleinerung für die Aufnahme aus
+    try { return await ws_pdfErzeugenIntern(seiten, status, aufloesung, qualitaet); } finally { ws_vorschauSkalieren(); }
+}
+async function ws_pdfErzeugenIntern(seiten, status, aufloesung, qualitaet){
     seiten.forEach(s => ws_einpassen(s)); // letzte Änderungen sofort einpassen
 
     const pdf = new window.jspdf.jsPDF({ unit: "mm", format: "a4", orientation: "portrait", compress: true });
