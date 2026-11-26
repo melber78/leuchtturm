@@ -29,7 +29,7 @@ function stand(){ global $STAND; return file_exists($STAND) ? (json_decode(file_
 // Welche Dateien dürfen ersetzt werden?
 function erlaubt($pfad){
     if ($pfad === "" || strpos($pfad, "..") !== false || $pfad[0] === "/" || $pfad[0] === ".") return false;
-    foreach (["material-daten/", "material-dateien/", "update-backup/", ".git", ".github/"] as $p) if (strpos($pfad, $p) === 0) return false;
+    foreach (["material-daten/", "material-dateien/", "update-backup/", ".git", ".github/", "android-widget/"] as $p) if (strpos($pfad, $p) === 0) return false;
     $name = strtolower(basename($pfad));
     if (in_array($name, ["auth.php", "config.php", "update-config.php", ".htaccess", "readme.md"], true)) return false;
     if (strpos($name, "config") !== false || strpos($name, "passwort") !== false) return false;

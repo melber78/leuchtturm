@@ -119,6 +119,15 @@ button, input, select, textarea{ font-family:inherit; font-size:15px; }
 .btn.rot{ background:#fbebeb; color:var(--rot); box-shadow:none; }
 .btn.flach{ background:transparent; box-shadow:none; color:var(--grau); }
 .btn.klein{ padding:6px 10px; font-size:13px; border-radius:9px; }
+.widget-karte .w-text{ font-weight:700; margin:0 0 12px; }
+.w-schritte{ margin:0; padding-left:22px; }
+.w-schritte li{ margin-bottom:14px; font-weight:700; }
+.w-schritte li > b{ display:block; margin-bottom:6px; }
+.w-schritte small, .w-hand small{ display:block; color:var(--grau); font-size:13px; margin-top:6px; }
+.w-hand summary{ cursor:pointer; font-weight:800; color:var(--grau); font-size:14px; }
+.w-feld{ display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+.w-feld span{ font-weight:800; font-size:13px; color:var(--grau); min-width:90px; }
+.w-feld code{ flex:1; min-width:0; overflow-wrap:anywhere; background:var(--schaum); border-radius:8px; padding:6px 8px; font-size:13px; }
 .karte{ background:white; border-radius:20px; box-shadow:var(--schatten); padding:20px 22px; margin-bottom:18px; }
 .karte h2{ margin:0 0 12px; font-size:18px; font-weight:900; color:var(--nacht); display:flex; gap:8px; align-items:center; }
 .hinweis{ background:#f9eeda; border-radius:14px; padding:12px 16px; font-weight:700; margin-bottom:18px; }
@@ -350,6 +359,9 @@ window.TP_KINDER = <?= json_encode(array_values(array_filter($kinderCodes)), $JS
 window.TP_VORLAGEN = <?= json_encode($VORLAGEN, $JSON) ?>;
 window.TP_CSRF = <?= json_encode($_SESSION["tagesplan_csrf"], $JSON) ?>;
 window.TP_GESPERRT = <?= $tpKaputt ? "true" : "false" ?>;
+<?php if (!empty($_SESSION["leuchtturm_eingeloggt"])) { $w = @json_decode((string)@file_get_contents(__DIR__ . "/material-daten/widget.json"), true); ?>
+window.TP_WIDGET = <?= json_encode(["schluessel" => is_array($w) ? (string)($w["schluessel"] ?? "") : ""], $JSON) ?>;
+<?php } ?>
 </script>
 <script>
 "use strict";
@@ -932,6 +944,7 @@ function zeigeStundenplan(){
             <p style="font-size:13px;color:var(--grau);font-weight:700;margin:12px 0 0"><i class="fa-solid fa-lightbulb"></i> Bei Sozialtraining und Lernangebot mit GS1–GS4 steht im Tagesplan automatisch die Stunde aus dem Jahresplan.</p>
         </div>
         ${lrsKinderKarte()}
+        ${widgetKarte()}
         <div class="karte"><h2 style="justify-content:space-between;flex-wrap:wrap"><span><i class="fa-solid fa-table"></i> Überblick</span><button class="btn nacht klein" data-spdruck><i class="fa-solid fa-print"></i> Stundenplan drucken</button></h2><div class="uebersicht">${uebersichtHtml()}</div></div>
         <div class="karte"><h2><i class="fa-solid fa-clock"></i> Zeitraster</h2>
             ${s.zeiten.map((z, i) => `<div class="raster-zeile ${z.typ === "pause" ? "pause" : ""}" data-i="${i}">
@@ -963,6 +976,7 @@ function zeigeStundenplan(){
         });
     });
     inhalt.querySelector("[data-spdruck]").onclick = druckeStundenplan;
+    widgetEreignisse();
     inhalt.querySelectorAll("[data-lrskind]").forEach(b => b.onclick = () => { lrsKindUmschalten(b.dataset.lrskind); neuZeichnen(); });
     inhalt.querySelectorAll("[data-aufsicht]").forEach(c => c.onchange = () => {
         const zid = c.closest(".sp-zeile").dataset.z;
@@ -1000,6 +1014,48 @@ function zeigeStundenplan(){
         stundenplanSpeichern(); neuZeichnen();
     });
 }
+/* ---------- Handy-Widget (Android): Stunden auf dem Startbildschirm ---------- */
+function widgetBasis(){ return location.origin + location.pathname.replace(/[^/]*$/, ""); }
+function widgetKarte(){
+    if (!window.TP_WIDGET) return "";   // nur im eigenen Zugang
+    const k = window.TP_WIDGET.schluessel;
+    if (!k) return `<div class="karte widget-karte"><h2><i class="fa-solid fa-mobile-screen-button"></i> Handy-Widget</h2>
+        <p class="w-text">Deine Stunden von heute als Widget auf dem Startbildschirm deines Android-Handys – mit der aktuellen Stunde hervorgehoben, ohne den Leuchtturm zu öffnen.</p>
+        <button class="btn nacht" data-widgetneu><i class="fa-solid fa-plus"></i> Handy-Widget einrichten</button></div>`;
+    const link = "intent://verbinden?url=" + encodeURIComponent(widgetBasis()) + "&k=" + encodeURIComponent(k) + "#Intent;scheme=leuchtturm-widget;package=de.mewestudio.leuchtturm.widget;end";
+    return `<div class="karte widget-karte"><h2><i class="fa-solid fa-mobile-screen-button"></i> Handy-Widget</h2>
+        <p class="w-text">Diese Schritte am <b>Handy</b> machen (Leuchtturm dort in Chrome öffnen):</p>
+        <ol class="w-schritte">
+            <li><b>App laden und installieren</b><a class="btn nacht" href="widget-app.php"><i class="fa-brands fa-android"></i> Widget-App herunterladen</a>
+                <small>Beim ersten Mal fragt Android, ob Chrome Apps installieren darf → <b>Zulassen</b>. Warnt Play Protect, auf „Trotzdem installieren“ tippen – die App ist deine eigene.</small></li>
+            <li><b>Mit deinem Leuchtturm verbinden</b><a class="btn gold" href="${esc(link)}"><i class="fa-solid fa-link"></i> Mit dem Handy verbinden</a>
+                <small>Öffnet die App und verbindet sie automatisch.</small></li>
+            <li><b>Widget auf den Startbildschirm</b>
+                <small>In der App auf „Widget auf den Startbildschirm“ tippen – oder den Startbildschirm lange gedrückt halten → Widgets → Leuchtturm.</small></li>
+        </ol>
+        <details class="w-hand"><summary>Von Hand verbinden</summary>
+            <div class="w-feld"><span>Adresse</span><code>${esc(widgetBasis())}</code><button class="btn klein" data-kopie-text="${esc(widgetBasis())}"><i class="fa-regular fa-copy"></i></button></div>
+            <div class="w-feld"><span>Widget-Code</span><code>${esc(k)}</code><button class="btn klein" data-kopie-text="${esc(k)}"><i class="fa-regular fa-copy"></i></button></div>
+            <button class="btn klein rot" data-widgetneu style="margin-top:8px"><i class="fa-solid fa-rotate"></i> Neuen Code erzeugen</button>
+            <small>Der alte Code gilt dann nicht mehr – z. B. wenn ein Handy weg ist.</small>
+        </details>
+    </div>`;
+}
+function widgetEreignisse(){
+    inhalt.querySelectorAll("[data-widgetneu]").forEach(b => b.onclick = async () => {
+        if (window.TP_WIDGET.schluessel && !confirm("Neuen Code erzeugen? Das Widget auf dem Handy muss danach neu verbunden werden.")) return;
+        try {
+            const r = await fetch("tagesplan-speichern.php", { method: "POST", headers: { "Content-Type": "application/json", "X-CSRF": window.TP_CSRF }, body: JSON.stringify({ aktion: "widget_schluessel" }) });
+            const j = await r.json();
+            if (!j.ok) throw new Error(j.fehler || "Fehler");
+            window.TP_WIDGET.schluessel = j.schluessel; toast("Handy-Widget ist bereit"); neuZeichnen();
+        } catch (e) { toast(e.message, true); }
+    });
+    inhalt.querySelectorAll("[data-kopie-text]").forEach(b => b.onclick = () => {
+        (navigator.clipboard ? navigator.clipboard.writeText(b.dataset.kopieText) : Promise.reject()).then(() => toast("Kopiert"), () => toast("Bitte von Hand markieren und kopieren", true));
+    });
+}
+
 // Nach Änderungen am Zeitraster: Beschriftungen und Überblick neu, ohne den Fokus zu verlieren
 function rasterAnzeigen(){
     sp().zeiten.forEach(z => { const el = inhalt.querySelector(`.sp-zeile[data-z="${esc(z.id)}"] .z`); if (el) el.innerHTML = (z.typ === "pause" ? esc(z.name || "Pause") : esc(z.name) + ". Stunde") + `<small>${esc(zeitText(z)) || "&nbsp;"}</small>`; });

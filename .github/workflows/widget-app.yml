@@ -1,0 +1,48 @@
+# Baut die Android-App fürs Handy-Widget „Mein Tag“, sobald sich etwas in android-widget/ ändert.
+# Fertige App:  Branch widget-app (leuchtturm-widget.apk + version.json) – der Leuchtturm holt sie über widget-app.php.
+# Fehlschlag:   Branch widget-app-fehler (bau.log) – die zuletzt funktionierende App bleibt erhalten.
+name: Handy-Widget bauen
+on:
+  push:
+    branches: [main]
+    paths: ['android-widget/**', '.github/workflows/widget-app.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: widget-app
+  cancel-in-progress: false
+jobs:
+  bauen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: APK bauen
+        id: bau
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          VERSION_CODE=$((100 + ${{ github.run_number }})) VERSION_NAME="1.${{ github.run_number }}" bash android-widget/build.sh 2>&1 | tee bau.log
+      - name: Ergebnis ablegen
+        run: |
+          mkdir -p /tmp/aus && cp bau.log /tmp/aus/bau.log
+          if [ "${{ steps.bau.outcome }}" = "success" ]; then
+            ZWEIG=widget-app
+            cp android-widget/build/leuchtturm-widget.apk /tmp/aus/
+            printf '{"version":"1.%s","code":%s,"commit":"%s","zeit":"%s"}\n' "${{ github.run_number }}" "$((100 + ${{ github.run_number }}))" "$GITHUB_SHA" "$(date -u +%FT%TZ)" > /tmp/aus/version.json
+          else
+            ZWEIG=widget-app-fehler
+            printf '{"commit":"%s","zeit":"%s"}\n' "$GITHUB_SHA" "$(date -u +%FT%TZ)" > /tmp/aus/version.json
+          fi
+          cd /tmp/aus
+          git init -q && git checkout -q -b "$ZWEIG"
+          git config user.name "github-actions[bot]" && git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -q -m "Widget-App ${GITHUB_SHA::7} (${{ steps.bau.outcome }})"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$ZWEIG"
+      - name: Fehlschlag melden
+        if: steps.bau.outcome != 'success'
+        run: exit 1

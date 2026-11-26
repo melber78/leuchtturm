@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Leuchtturm</string>
+    <string name="widget_name">Mein Tag</string>
+    <string name="widget_beschreibung">Deine Stunden von heute aus dem Leuchtturm</string>
+</resources>

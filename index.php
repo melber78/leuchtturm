@@ -145,6 +145,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-26", "Handy-Widget „Mein Tag“", "Deine Stunden von heute als Widget auf dem Android-Startbildschirm – die laufende Stunde ist hervorgehoben. Einrichten unter Mein Tag → Mein Stundenplan → Handy-Widget.", "tagesplan.php#stundenplan"],
     ["2026-11-26", "Gemeinsame Stunde: nur ein Kind da", "In der Kinder-Akte bei der gemeinsamen Stunde „Nur 1 Kind da“: Das fehlende Kind bekommt seine Blätter an einem anderen Tag, das anwesende planst du direkt neu.", "trainingshefte.php"],
     ["2026-11-25", "Ruhige Arbeitszeit: Märchenwald & Winterlandschaft", "Zwei neue zauberhafte Szenen: ein Märchenschloss mit Glühwürmchen und leuchtenden Pilzen und eine verschneite Winterlandschaft mit Häuschen und leisem Schneefall.", "tafelbilder.php#ruhig"],
     ["2026-11-25", "Runterkommen & Bewegungspausen", "Runterkommen: Atem-Ballon/Atemkreis, Blume & Kerze, Box-Atmung, Glitzerglas, 5-4-3-2-1, Anspannen & Loslassen. Bewegungspause: eine Figur macht 13 Übungen am Platz vor – als Programm oder einzeln.", "tafelbilder.php#bewegung"],

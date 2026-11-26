@@ -81,4 +81,16 @@ if ($aktion === "tag_speichern") {
     antwort(true, ["zeit" => date("H:i")]);
 }
 
+// Handy-Widget: neuen Zugangscode erzeugen (nur Melanie, nie Gäste). Der alte Code gilt danach nicht mehr.
+if ($aktion === "widget_schluessel") {
+    if ($gast) { http_response_code(403); antwort(false, ["fehler" => "Nur im eigenen Zugang möglich."]); }
+    $ordner = __DIR__ . "/material-daten";
+    if (!is_dir($ordner)) mkdir($ordner, 0775, true);
+    if (!file_exists("$ordner/.htaccess")) @file_put_contents("$ordner/.htaccess", "Require all denied\nDeny from all\n");
+    $schluessel = bin2hex(random_bytes(20));
+    $ok = file_put_contents("$ordner/widget.json", json_encode(["schluessel" => $schluessel, "erstellt" => date("c")], JSON_PRETTY_PRINT), LOCK_EX);
+    if ($ok === false) antwort(false, ["fehler" => "Der Code konnte nicht gespeichert werden."]);
+    antwort(true, ["schluessel" => $schluessel]);
+}
+
 antwort(false, ["fehler" => "Unbekannte Aktion."]);

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@drawable/hintergrund">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+        android:background="@drawable/kopf" android:paddingStart="16dp" android:paddingTop="10dp" android:paddingBottom="10dp">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Heute · Do 26.11." android:textColor="#FFFFFF" android:textSize="16sp" android:textStyle="bold" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="A-Woche · 4 Stunden" android:textColor="#F2A93B" android:textSize="12sp" android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingTop="4dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingStart="8dp" android:paddingEnd="12dp" android:paddingTop="6dp" android:paddingBottom="6dp">
+            <LinearLayout android:layout_width="50dp" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1" android:textColor="#16324A" android:textSize="15sp" android:textStyle="bold" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="07:45" android:textColor="#7C8A85" android:textSize="10sp" />
+            </LinearLayout>
+            <TextView android:layout_width="4dp" android:layout_height="match_parent" android:layout_marginStart="2dp" android:layout_marginEnd="10dp" android:background="#3D7EA6" />
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Sozialtraining · GS2" android:textColor="#16324A" android:textSize="14sp" android:textStyle="bold" android:maxLines="1" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Gefühle erkennen" android:textColor="#5B6B73" android:textSize="12sp" android:maxLines="1" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingStart="8dp" android:paddingEnd="12dp" android:paddingTop="6dp" android:paddingBottom="6dp" android:background="#FFF1D6">
+            <LinearLayout android:layout_width="50dp" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2" android:textColor="#16324A" android:textSize="15sp" android:textStyle="bold" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="08:35" android:textColor="#7C8A85" android:textSize="10sp" />
+            </LinearLayout>
+            <TextView android:layout_width="4dp" android:layout_height="match_parent" android:layout_marginStart="2dp" android:layout_marginEnd="10dp" android:background="#16324A" />
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Unterricht · SEK3 · Deutsch" android:textColor="#16324A" android:textSize="14sp" android:textStyle="bold" android:maxLines="1" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="jetzt · Raum 12" android:textColor="#5B6B73" android:textSize="12sp" android:maxLines="1" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingStart="8dp" android:paddingEnd="12dp" android:paddingTop="6dp" android:paddingBottom="6dp">
+            <LinearLayout android:layout_width="50dp" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:textColor="#16324A" android:textSize="15sp" android:textStyle="bold" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="09:20" android:textColor="#7C8A85" android:textSize="10sp" />
+            </LinearLayout>
+            <TextView android:layout_width="4dp" android:layout_height="match_parent" android:layout_marginStart="2dp" android:layout_marginEnd="10dp" android:background="#B08A2E" />
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Hofpausenaufsicht" android:textColor="#16324A" android:textSize="14sp" android:textStyle="bold" android:maxLines="1" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Hof" android:textColor="#5B6B73" android:textSize="12sp" android:maxLines="1" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingStart="8dp" android:paddingEnd="12dp" android:paddingTop="6dp" android:paddingBottom="6dp">
+            <LinearLayout android:layout_width="50dp" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3" android:textColor="#16324A" android:textSize="15sp" android:textStyle="bold" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="09:40" android:textColor="#7C8A85" android:textSize="10sp" />
+            </LinearLayout>
+            <TextView android:layout_width="4dp" android:layout_height="match_parent" android:layout_marginStart="2dp" android:layout_marginEnd="10dp" android:background="#7B5CC4" />
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="LRS-Förderung" android:textColor="#16324A" android:textSize="14sp" android:textStyle="bold" android:maxLines="1" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="AB + CD" android:textColor="#5B6B73" android:textSize="12sp" android:maxLines="1" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
