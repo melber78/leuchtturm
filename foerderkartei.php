@@ -215,6 +215,9 @@ $startKind = in_array($_GET["kind"] ?? "", $kinderCodes, true) ? $_GET["kind"] :
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Andika:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <style>
+@font-face{ font-family:"Playwrite DE Grund"; font-style:normal; font-weight:400; font-display:block; src:url("schriften/playwrite-de-grund-400.woff2") format("woff2"); }
+:root{ --ws-schrift:"Playwrite DE Grund", "Andika", sans-serif; }
+html.lt-druckschrift{ --ws-schrift:"Andika", sans-serif; }
 :root{ --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4; --text:#1f2d36; --schatten:0 6px 24px rgba(22,50,74,.1); --gruen:#2f8a3d; --rot:#b3382f; }
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; line-height:1.5; }
@@ -251,8 +254,8 @@ table.liste{ width:100%; border-collapse:collapse; font-size:14px; }
 table.liste th{ text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.3px; color:#7c8a94; padding:6px 8px; border-bottom:2px solid #eef2f5; }
 table.liste td{ padding:6px 8px; border-bottom:1px solid #f0f3f5; vertical-align:middle; }
 table.liste td select{ padding:5px 8px; font-size:13px; }
-.wort{ font-family:"Andika",sans-serif; font-size:19px; font-weight:700; }
-.falsch{ font-family:"Andika",sans-serif; color:var(--rot); text-decoration:line-through; text-decoration-thickness:1px; }
+.wort{ font-family:var(--ws-schrift); font-size:19px; font-weight:700; }
+.falsch{ font-family:var(--ws-schrift); color:var(--rot); text-decoration:line-through; text-decoration-thickness:1px; }
 .stelle{ background:#FFE7A3; border-radius:4px; padding:0 1px; }
 .faecher{ display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
 .fach{ border:2px solid #dde5ea; border-radius:16px; padding:12px 8px; text-align:center; background:#f9fbfc; }
@@ -264,7 +267,7 @@ table.liste td select{ padding:5px 8px; font-size:13px; }
 .sp-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
 .sp-chip{ background:#e3eef8; color:#1d4f86; border-radius:999px; padding:3px 12px; font-size:12px; font-weight:800; }
 .abfrage{ border:3px solid var(--meer); border-radius:20px; padding:22px; text-align:center; background:#f7fbfe; margin-top:14px; }
-.abfrage .gross{ font-family:"Andika",sans-serif; font-size:56px; font-weight:700; letter-spacing:2px; margin:10px 0; min-height:80px; }
+.abfrage .gross{ font-family:var(--ws-schrift); font-size:56px; font-weight:700; letter-spacing:2px; margin:10px 0; min-height:80px; }
 .abfrage .verdeckt{ color:transparent; text-shadow:0 0 22px rgba(22,50,74,.55); user-select:none; }
 .leer{ color:#9aa5ab; font-weight:700; font-size:14px; padding:10px 0; }
 .diagramme{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
@@ -309,11 +312,12 @@ table.liste td select{ padding:5px 8px; font-size:13px; }
 .db-unterschrift div{ border-top:1.5px solid #1f2d36; padding-top:3px; }
 .lk-gitter{ display:grid; grid-template-columns:repeat(3,1fr); border-top:1.5px dashed #8fa3b8; border-left:1.5px dashed #8fa3b8; }
 .lk-karte{ height:44mm; border-right:1.5px dashed #8fa3b8; border-bottom:1.5px dashed #8fa3b8; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:6px; text-align:center; }
-.lk-karte .w{ font-family:"Andika",sans-serif; font-size:26px; font-weight:700; }
+.lk-karte .w{ font-family:var(--ws-schrift); font-size:26px; font-weight:700; }
 .lk-karte .t{ font-size:10.5px; color:#4a5866; font-weight:700; }
 .lk-karte .f{ font-size:9px; color:#9aa5ab; }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
+<script>try { if (localStorage.getItem("lt-ws-schrift") === "druck") document.documentElement.classList.add("lt-druckschrift"); } catch (e){}</script>
 </head>
 <body>
 <div class="wrap">

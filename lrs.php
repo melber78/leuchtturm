@@ -169,7 +169,7 @@ textarea{ min-height:64px; resize:vertical; font-weight:400; }
 .blatt{
     width:210mm; height:297mm; margin:6px auto 0; box-sizing:border-box; flex:none;
     padding:13mm 15mm; background:#fff; box-shadow:0 6px 24px rgba(22,50,74,.12); overflow:hidden;
-    font-family:"Andika", sans-serif; color:#1E2A36; line-height:1.4;
+    font-family:var(--ws-schrift); color:#1E2A36; line-height:1.4;
     -webkit-print-color-adjust:exact; print-color-adjust:exact;
     page:lt-blatt;
 }
@@ -402,10 +402,14 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 
 <!-- Gestaltung der Worterarbeitungs-Serie (wird auch für den Druck wiederverwendet) -->
 <style id="ws-stil">
+@font-face{ font-family:"Playwrite DE Grund"; font-style:normal; font-weight:400; font-display:block; src:url("schriften/playwrite-de-grund-400.woff2") format("woff2"); }
+:root{ --ws-schrift:"Playwrite DE Grund", "Andika", sans-serif; --ws-schrift-reif:"Playwrite DE Grund", "Andika", sans-serif; }
+html.lt-druckschrift{ --ws-schrift:"Andika", sans-serif; --ws-schrift-reif:"Atkinson Hyperlegible", "Andika", sans-serif; }
+.rs-tabelle th:first-child, .rs-tabelle td:first-child{ white-space:nowrap; }
 .ws-seite{
     width:210mm; height:297mm; flex:none; box-sizing:border-box; padding:13mm 15mm;
     background:#fff; box-shadow:0 6px 24px rgba(22,50,74,.12); overflow:hidden;
-    font-family:"Andika",sans-serif; color:#1E2A36; line-height:1.3;
+    font-family:var(--ws-schrift); color:#1E2A36; line-height:1.3;
     -webkit-print-color-adjust:exact; print-color-adjust:exact;
 }
 .ws-seite *{ box-sizing:border-box; }
@@ -638,7 +642,7 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .fs-spiegel{ display:flex; align-items:center; gap:0; }
 .fs-achse{ width:0; align-self:stretch; border-left:4px dashed #B23A2E; margin:0 14px; }
 /* ===== Ältere Schüler (ab Klasse 5): sachlichere Optik ===== */
-.ws-seite.fs-reif{ font-family:"Atkinson Hyperlegible", "Andika", sans-serif; }
+.ws-seite.fs-reif{ font-family:var(--ws-schrift-reif); }
 .fs-reif h1{ font-size:30px; letter-spacing:-.2px; }
 .fs-reif .ws-pille{ background:#E8EDF3; color:#2C3E55; }
 .fs-reif .ws-nummer{ width:30px; height:30px; font-size:16px; background:#2C4A6E; }
@@ -688,7 +692,7 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .vs-tab .vs-bz{ text-align:center; }
 .vs-wortzelle{ font-size:26px; letter-spacing:.06em; }
 .vs-silbenzelle .fs-loes{ font-size:19px; }
-.vs-falsch{ color:#2C3E55; font-family:"Atkinson Hyperlegible", sans-serif; }
+.vs-falsch{ color:#2C3E55; font-family:var(--ws-schrift-reif); }
 .vs-teppich{ border-collapse:collapse; width:100%; table-layout:fixed; }
 .vs-teppich td{ border:2px solid #C9D6E3; font-size:22px; padding:6px 2px; text-align:center; }
 .vs-teppich tr:nth-child(odd) td{ background:#F3F6F9; }
@@ -859,7 +863,7 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .fs-tier svg{ width:44px; height:44px; }
 
 /* ===== Lösungen (unsichtbar, bis „Lösungen zeigen“ aktiv ist – das Layout bleibt gleich) ===== */
-.fs-loes{ visibility:hidden; color:#C0392B; font-family:"Andika", sans-serif; font-weight:700; white-space:nowrap; line-height:1.1; }
+.fs-loes{ visibility:hidden; color:#C0392B; font-family:var(--ws-schrift); font-weight:700; white-space:nowrap; line-height:1.1; }
 .fs-lx{ font-size:26px; line-height:1; }
 .ws-loesung .fs-loes{ visibility:visible; }
 .fs-lm{ display:inline-flex; align-items:center; justify-content:center; border-radius:10px; }
@@ -1045,6 +1049,11 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .std-blatt-leiste:has(+ .ws-seite.ws-aus){ display:none; }
 .std-ed-hinweis{ font-size:12.5px; font-weight:700; color:#8a5a00; background:#fff4dc; border-radius:10px; padding:8px 10px; }
 @media (max-width:700px){ .std-ed-phase{ grid-template-columns:1fr; } .std-ed-name{ padding-top:0; } }
+.schrift-wahl{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; background:#fff; border-radius:16px; padding:10px 14px; margin:0 0 16px; box-shadow:var(--schatten); font-size:14px; font-weight:800; color:var(--nacht); }
+.schrift-wahl label{ display:inline-flex; align-items:center; gap:6px; border:2px solid #e2e7eb; border-radius:999px; padding:5px 12px; cursor:pointer; margin:0; text-transform:none; letter-spacing:0; font-size:14px; color:#405260; }
+.schrift-wahl label:first-of-type{ font-family:"Playwrite DE Grund", "Nunito", sans-serif; font-weight:400; }
+.schrift-wahl label:has(input:checked){ background:var(--meer); border-color:var(--meer); color:#fff; }
+.schrift-wahl input{ display:none; }
 .std-teilen{ margin-top:10px; background:#fff8e6; border:2px solid var(--gold, #f2a93b); border-radius:14px; padding:12px 14px; font-size:13.5px; font-weight:700; color:#5c4300; }
 .std-teilen .tl-zeile{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px; }
 .std-teilen .tl-wahl{ display:inline-flex; gap:6px; flex-wrap:wrap; }
@@ -1193,6 +1202,24 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 <i class="fa-solid fa-lock"></i>
 Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materialien oder in der Förderkartei speicherst – immer nur mit Kürzel, nie mit Namen.
 </div>
+
+<div class="schrift-wahl">
+    <span><i class="fa-solid fa-font"></i> Schrift auf den Blättern:</span>
+    <label><input type="radio" name="ws-schriftart" value="grund" onchange="ws_schriftSetzen(this.value)"> Grundschrift</label>
+    <label><input type="radio" name="ws-schriftart" value="druck" onchange="ws_schriftSetzen(this.value)"> Druckschrift</label>
+</div>
+<script>
+// Schrift der Arbeitsblätter: Grundschrift (Standard) oder Druckschrift – wird auf diesem Gerät gemerkt
+function ws_druckschrift(){ return document.documentElement.classList.contains("lt-druckschrift"); }
+(function(){ let w = "grund"; try { w = localStorage.getItem("lt-ws-schrift") || "grund"; } catch (e){} document.documentElement.classList.toggle("lt-druckschrift", w === "druck");
+    document.addEventListener("DOMContentLoaded", () => { const r = document.querySelector(`input[name="ws-schriftart"][value="${w}"]`); if (r) r.checked = true; }); })();
+function ws_schriftSetzen(w){
+    try { localStorage.setItem("lt-ws-schrift", w); } catch (e){}
+    document.documentElement.classList.toggle("lt-druckschrift", w === "druck");
+    const fertig = () => { try { ws_spurAusrichten(); ws_einpassen(); } catch (e){} };
+    if (document.fonts && document.fonts.load) document.fonts.load("400 30px 'Playwrite DE Grund'").catch(() => {}).then(fertig); else fertig();
+}
+</script>
 
 <div class="global-karte">
     <h2><i class="fa-solid fa-sliders"></i> Gemeinsame Einstellungen (gelten für alle Bereiche)</h2>
@@ -3536,7 +3563,7 @@ function ws_erstellen(){
     ws_blattwahl();
     ws_spurAusrichten();
     if (document.fonts && document.fonts.load){
-        Promise.all([document.fonts.load("400 40px Andika"), document.fonts.load("700 40px Andika")])
+        Promise.all([document.fonts.load("400 40px Andika"), document.fonts.load("700 40px Andika"), document.fonts.load("400 40px 'Playwrite DE Grund'")])
             .catch(() => {})
             .then(() => { ws_spurAusrichten(); ws_einpassen(); });
     }
@@ -3547,7 +3574,7 @@ function ws_erstellen(){
 function ws_spurAusrichten(){
     const MITTELBAND = 22, GRUNDLINIE = 44; // in px, passend zu .ws-l-o / .ws-l-m in der Lineatur
     const ctx = document.createElement("canvas").getContext("2d");
-    ctx.font = "400 100px Andika, sans-serif";
+    ctx.font = `400 100px ${ws_druckschrift() ? "Andika" : "'Playwrite DE Grund'"}, sans-serif`;
     const x = ctx.measureText("x");
     const ref = ctx.measureText("Hg");
     if (!x.actualBoundingBoxAscent || !ref.fontBoundingBoxAscent) return; // ältere Browser: Standardwerte aus dem CSS
@@ -3801,7 +3828,7 @@ function ws_drucken(seitenListe){
 
     const doc = rahmen.contentDocument;
     doc.open();
-    doc.write(`<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>Worterarbeitung</title>
+    doc.write(`<!DOCTYPE html><html lang="de" class="${ws_druckschrift() ? "lt-druckschrift" : ""}"><head><meta charset="UTF-8"><title>Worterarbeitung</title>
         <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
         <style>${document.getElementById("ws-stil").textContent}
         @page{ size:A4; margin:0; }
@@ -3826,7 +3853,7 @@ function ws_drucken(seitenListe){
     const schriftLaden = () => {
         const fonts = doc.fonts;
         if (!fonts || !fonts.load){ setTimeout(los, 300); return; }
-        Promise.all([fonts.load("400 30px Andika"), fonts.load("700 30px Andika")])
+        Promise.all([fonts.load("400 30px Andika"), fonts.load("700 30px Andika"), fonts.load("400 30px 'Playwrite DE Grund'")])
             .then(() => setTimeout(los, 150))
             .catch(() => setTimeout(los, 150));
     };
@@ -4350,7 +4377,7 @@ async function fs_erstellen(bereich){
 
     fs_blattwahl(bereich);
     if (document.fonts && document.fonts.load){
-        Promise.all([document.fonts.load("400 30px Andika"), document.fonts.load("700 30px Andika")])
+        Promise.all([document.fonts.load("400 30px Andika"), document.fonts.load("700 30px Andika"), document.fonts.load("400 30px 'Playwrite DE Grund'")])
             .catch(() => {})
             .then(() => { if (box.querySelector(".ws-spur")) ws_spurAusrichten(); fs_alleFuellen(bereich, true); });
     }
@@ -6590,7 +6617,7 @@ function fsB_wortschlangen(ctx){
         const zufall = n => [...Array(n)].map(() => FUELL[zufallsZahl(0, FUELL.length - 1)]).join("");
         woerter.forEach(w => kette += zufall(zufallsZahl(2, [4, 6, 8][st])) + w);
         kette += zufall(zufallsZahl(2, 5));
-        return `<div class="fs-karte" style="flex-direction:column; align-items:stretch; gap:8px;"><div style="display:flex; gap:10px; align-items:center;"><div class="fs-reihe-nr">${i + 1}</div><span style="font-size:22px; letter-spacing:3px; font-family:'Atkinson Hyperlegible', monospace; word-break:break-all;">${kette}</span></div><div style="display:flex; gap:20px; padding-left:36px;">${woerter.map(w => `<span class="rs-linie" style="min-width:150px;">${L(ws_esc(w))}</span>`).join("")}</div></div>`;
+        return `<div class="fs-karte" style="flex-direction:column; align-items:stretch; gap:8px;"><div style="display:flex; gap:10px; align-items:center;"><div class="fs-reihe-nr">${i + 1}</div><span style="font-size:22px; letter-spacing:3px; font-family:var(--ws-schrift-reif); word-break:break-all;">${kette}</span></div><div style="display:flex; gap:20px; padding-left:36px;">${woerter.map(w => `<span class="rs-linie" style="min-width:150px;">${L(ws_esc(w))}</span>`).join("")}</div></div>`;
     };
     return { titel: "Wortschlangen", zeile, html: `
         ${ws_aufgabe(1, `In jeder Buchstabenschlange verstecken sich ${[2, 2, 3][st]} Wörter. Finde sie, markiere sie und schreibe sie darunter.`)}
@@ -6615,7 +6642,7 @@ function fsB_codes(ctx){
             }
             if (b === a){ const c = [...code]; const k = stellen[0]; c[k] = c[k] === "A" ? "R" : "A"; b = c.join(""); }
         }
-        const stil = "font-family:'Atkinson Hyperlegible', monospace; font-size:22px; letter-spacing:2px;";
+        const stil = "font-family:var(--ws-schrift-reif); font-size:22px; letter-spacing:2px;";
         return `<tr><td style="${stil}">${a}</td><td style="${stil}">${b}</td><td>${fs_kreuzBox(a === b)}</td><td>${fs_kreuzBox(a !== b)}</td></tr>`;
     };
     return { titel: "Codes vergleichen", zeile, html: `
@@ -7947,7 +7974,7 @@ function fxO_zeichenketten(ctx){
             if (b.join("") === a.join("")){ const k = zufallsZahl(0, laenge - 1); b[k] = zufallsElement(set.filter(z => z !== a[k])); }
         }
         const ist = a.join("") === b.join("");
-        const s = `font-family:Arial, sans-serif; letter-spacing:${st >= 2 ? 1 : 3}px;`;
+        const s = `font-family:var(--ws-schrift); letter-spacing:${st >= 2 ? 1 : 3}px;`;
         return `<tr><td style="${s}">${ws_esc(a.join(""))}</td><td style="${s}">${ws_esc(b.join(""))}</td><td>${fs_kreuzBox(ist)}</td><td>${fs_kreuzBox(!ist)}</td></tr>`;
     };
     return { titel: "Zeichenketten vergleichen", zeile, html: `
@@ -7968,7 +7995,7 @@ function fxO_zahlenVergleich(ctx){
             else { const ersatz = { 6: 9, 9: 6, 1: 7, 7: 1, 3: 8, 8: 3, 5: 6, 0: 8, 2: 5, 4: 1 }; b[k] = ersatz[a[k]]; }
         }
         const ist = a.join("") === b.join("");
-        return `<tr><td style="font-family:Arial, sans-serif;">${gruppe(a.join(""))}</td><td style="font-family:Arial, sans-serif;">${gruppe(b.join(""))}</td><td>${fs_kreuzBox(ist)}</td><td>${fs_kreuzBox(!ist)}</td></tr>`;
+        return `<tr><td style="font-family:var(--ws-schrift);">${gruppe(a.join(""))}</td><td style="font-family:var(--ws-schrift);">${gruppe(b.join(""))}</td><td>${fs_kreuzBox(ist)}</td><td>${fs_kreuzBox(!ist)}</td></tr>`;
     };
     return { titel: "Zahlen vergleichen", zeile, html: `
         ${ws_aufgabe(1, "Wie bei einer Telefonnummer: Vergleiche beide Zahlen Ziffer für Ziffer. Sind sie genau gleich? Kreuze an.")}
@@ -8056,7 +8083,7 @@ function fxG_zahlen(ctx){
     const zeile = i => {
         const k = [3, 4, 5, 7][st] + (i >= 6 ? 1 : 0);
         const z = [...Array(k)].map(() => zufallsZahl(0, 9));
-        return fx_merkKarte(`<span style="font-size:${k > 6 ? 26 : 30}px; letter-spacing:${k > 6 ? 3 : 6}px; font-family:Arial, sans-serif;">${z.join("")}</span>`, fx_boxen(z));
+        return fx_merkKarte(`<span style="font-size:${k > 6 ? 26 : 30}px; letter-spacing:${k > 6 ? 3 : 6}px; font-family:var(--ws-schrift);">${z.join("")}</span>`, fx_boxen(z));
     };
     return { titel: "Zahlen merken", zeile, html: `
         ${ws_aufgabe(1, "Schau dir die Zahl genau an und sprich sie dir leise vor. Decke sie ab und schreibe die Ziffern aus dem Kopf in die Kästchen.")}
@@ -8068,7 +8095,7 @@ function fxG_buchstabenketten(ctx){
     const zeile = i => {
         const k = [3, 4, 5, 6][st];
         const z = [...Array(k)].map((_, j) => st === 0 && j === 1 ? zufallsElement(VO) : zufallsElement(st >= 2 ? [...BU, ...VO, "q", "x", "y"] : BU));
-        return fx_merkKarte(`<span style="font-size:30px; letter-spacing:6px; font-family:Arial, sans-serif;">${z.join("")}</span>`, fx_boxen(z));
+        return fx_merkKarte(`<span style="font-size:30px; letter-spacing:6px; font-family:var(--ws-schrift);">${z.join("")}</span>`, fx_boxen(z));
     };
     return { titel: "Buchstabenketten merken", zeile, html: `
         ${ws_aufgabe(1, "Diese Buchstabenketten ergeben kein Wort – du musst sie dir also wirklich merken! Präge dir eine Kette ein, decke sie ab und schreibe sie aus dem Kopf in die Kästchen.")}
@@ -8198,7 +8225,7 @@ function fxS_rueckwaerts(ctx){
     const zeile = i => {
         const w = st === 3 && Math.random() < 0.4 ? [ctx.wort(), ctx.wort()].join(" ") : ctx.wort(x => x.length >= min) || ctx.wort();
         const r = w.toLowerCase().split("").reverse().join("");
-        return fx_karte(i, `<span style="font-size:26px; font-family:Arial, sans-serif; letter-spacing:2px; min-width:220px;">${ws_esc(r)}</span>${fx_linie(w, 24)}`);
+        return fx_karte(i, `<span style="font-size:26px; font-family:var(--ws-schrift); letter-spacing:2px; min-width:220px;">${ws_esc(r)}</span>${fx_linie(w, 24)}`);
     };
     return { titel: "Rückwärts gelesen", zeile, html: `
         ${ws_aufgabe(1, "Diese Wörter sind rückwärts geschrieben. Lies sie Buchstabe für Buchstabe von rechts nach links und schreibe sie richtig auf die Linie.")}
@@ -8712,7 +8739,7 @@ function bd_woerter(st){
     return [kurz.concat(W.be, W.de), W.klein.concat(W.be, W.de, W.bm, W.dm), W.klein.concat(W.bm, W.dm, W.be, W.de, W.beide, W.b0, W.d0),
         W.klein.concat(W.bm, W.dm, W.beide, W.beide, ["dabei", "drüben", "bedeckt", "bedanken", "durchbohren", "baden", "Badewanne"])][st];
 }
-const BD_STIL = "font-family:Andika, 'Comic Sans MS', sans-serif;";
+const BD_STIL = "font-family:var(--ws-schrift);";
 
 /* 1 · Merkblatt: das Bett */
 function bd_bett(gr = 150){
@@ -9882,18 +9909,18 @@ function st_optionen(){
     return {
         text: lt_wert("st-text"), titel: lt_wert("st-titel").trim() || "Mein Lesetext",
         art: lt_wert("st-art") || "farbig", groesse: parseInt(lt_wert("st-groesse"), 10) || 24,
-        abstand: parseFloat(lt_wert("st-abstand")) || 2, schrift: lt_wert("st-schrift") || "Andika",
+        abstand: parseFloat(lt_wert("st-abstand")) || 2, schrift: lt_wert("st-schrift") || "auto",
         saetze: lt_an("st-saetze"), protokoll: lt_an("st-protokoll"),
     };
 }
 async function st_erstellen(box){
     await silben_laden();
-    if (document.fonts && document.fonts.load) await Promise.all([document.fonts.load("400 24px Andika"), document.fonts.load("400 24px 'Atkinson Hyperlegible'")]).catch(() => {});
+    if (document.fonts && document.fonts.load) await Promise.all([document.fonts.load("400 24px Andika"), document.fonts.load("400 24px 'Atkinson Hyperlegible'"), document.fonts.load("400 24px 'Playwrite DE Grund'")]).catch(() => {});
     const opt = st_optionen();
     const tokens = st_tokens(opt.text);
     if (!tokens.some(t => t.typ === "wort")){ box.innerHTML = '<p class="beschreibung">Bitte oben einen Text eingeben.</p>'; return; }
     const ende = opt.protokoll ? `<div class="st-protokoll">Ich habe den Text <span class="ws-linie2"></span> mal gelesen. <span>Zeit: <span class="ws-linie2"></span></span> <span>Das war schwer: <span class="ws-linie2" style="width:180px;"></span></span></div><div class="st-malbox">Male ein Bild zum Text oder schreibe auf, was dir gefallen hat:</div>` : "";
-    await st_paginieren(box, "silbentext", "1", opt, tokens, ende, opt.schrift !== "Andika");
+    await st_paginieren(box, "silbentext", "1", opt, tokens, ende, opt.schrift === "Atkinson Hyperlegible");
 }
 
 /* ---------- Stunde und Förderplan: Lehrkraft-Seiten ---------- */
@@ -10386,7 +10413,7 @@ function std_lesetext(niveau){
 }
 function std_lesetextSeite(lt){
     const t = lt.text;
-    const stil = `font-size:${LT_SCHRIFT[lt.klasse] || 22}px; line-height:${LT_ABSTAND[lt.klasse] || 1.9}; font-family:'${lt.reif ? "Atkinson Hyperlegible" : "Andika"}', 'Andika', sans-serif;`;
+    const stil = `font-size:${LT_SCHRIFT[lt.klasse] || 22}px; line-height:${LT_ABSTAND[lt.klasse] || 1.9}; font-family:${lt.reif ? "var(--ws-schrift-reif)" : "var(--ws-schrift)"};`;
     return { titel: ws_esc(t.t), extra: { max: 1, info: true }, html: `
         <div class="st-text" style="${stil}">${st_html(st_tokens(t.x), { art: lt.art, saetze: false })}</div>
         <div class="st-protokoll">Ich habe den Text <span class="ws-linie2"></span> mal gelesen. <span>Zeit: <span class="ws-linie2"></span> Sek.</span> <span>${lt_woerter(t.x).length} Wörter</span></div>
@@ -10840,7 +10867,7 @@ function es_kacheln(woerter, art){
 }
 function es_schuelerblatt(et, art){
     const k = lt_klasse();
-    const gr = LT_SCHRIFT[k] || 22, ab = LT_ABSTAND[k] || 1.9, schrift = k >= 5 ? "'Atkinson Hyperlegible', 'Andika', sans-serif" : "'Andika', sans-serif";
+    const gr = LT_SCHRIFT[k] || 22, ab = LT_ABSTAND[k] || 1.9, schrift = k >= 5 ? "var(--ws-schrift-reif)" : "var(--ws-schrift)";
     const tokens = st_tokens(et.x).filter(t => t.typ === "wort");
     const gesehen = new Set(), woerter = [];
     const gross = t => /^[A-ZÄÖÜ]/.test(t.kern);
@@ -10864,7 +10891,7 @@ function es_lehrerexemplar(et, art){
     const zeilen = lt_saetze(et.x).map(satz => { summe += lt_woerter(satz).length;
         return `<div class="es-zeile"><div>${st_html(st_tokens(satz), { art, saetze: false })}</div><span class="es-n">${summe}</span></div>`; }).join("");
     return { titel: "Lehrerexemplar & Beobachtungsbogen", extra: { info: true, max: 1, reif: true, label: "Lese-Schnappschuss", afs: "Beobachtung Lesen", kopfRechts: `Text: „${ws_esc(et.t)}“ · ${n} Wörter` }, html: `
-        <div class="st-text" style="font-size:17px; line-height:1.9; font-family:'Andika', sans-serif;">${zeilen}</div>
+        <div class="st-text" style="font-size:17px; line-height:1.9; font-family:var(--ws-schrift);">${zeilen}</div>
         <div class="es-h">Messung</div>
         <div class="es-grid">
             <div class="es-feld">Lesezeit:<i></i>Min.<i></i>Sek.</div><div class="es-feld">Fehler gesamt:<i></i></div>
@@ -12203,7 +12230,7 @@ function lt_textHolen(prefix, bank){
 
 /* --- gemeinsame Seitenaufteilung für lange Texte (Silbentext, Lesetext) --- */
 async function st_paginieren(box, bereich, nr, opt, tokens, ende, reif){
-    const stil = `font-size:${opt.groesse}px; line-height:${opt.abstand}; font-family:'${opt.schrift}', 'Andika', sans-serif;`;
+    const stil = `font-size:${opt.groesse}px; line-height:${opt.abstand}; font-family:${opt.schrift === "auto" ? "var(--ws-schrift)" : opt.schrift === "auto-reif" ? "var(--ws-schrift-reif)" : `'${opt.schrift}', 'Andika', sans-serif`};`;
     const klasse = "st-text" + (opt.art === "boegen" ? " st-schwarz" : "");
     let start = 0, seite = 0;
     while (start < tokens.length && seite < 40){
@@ -12258,10 +12285,10 @@ function lt_dynamisch(ctx){
 }
 async function lt_erstellen(box, ctx){
     await silben_laden();
-    if (document.fonts && document.fonts.load) await Promise.all([document.fonts.load("400 24px Andika"), document.fonts.load("400 24px 'Atkinson Hyperlegible'")]).catch(() => {});
+    if (document.fonts && document.fonts.load) await Promise.all([document.fonts.load("400 24px Andika"), document.fonts.load("400 24px 'Atkinson Hyperlegible'"), document.fonts.load("400 24px 'Playwrite DE Grund'")]).catch(() => {});
     const lt = ctx.lt, t = lt.text;
     const opt = { titel: t.t, art: lt.art, groesse: LT_SCHRIFT[lt.klasse] || 22, abstand: LT_ABSTAND[lt.klasse] || 1.9,
-        schrift: lt.reif ? "Atkinson Hyperlegible" : "Andika", saetze: lt_an("lt-satzweise") };
+        schrift: lt.reif ? "auto-reif" : "auto", saetze: lt_an("lt-satzweise") };
     const ende = `<div class="st-protokoll">Ich habe den Text <span class="ws-linie2"></span> mal gelesen. <span>Zeit: <span class="ws-linie2"></span> Sek.</span> <span>${lt_woerter(t.x).length} Wörter</span></div>` +
         (lt.klasse <= 4
             ? `<div class="st-malbox" style="min-height:90px;">Male ein Bild zum Text:</div>`
@@ -12337,7 +12364,7 @@ function ltB_luecke(ctx){
     return { titel: "Lückentext", html: `
         ${ws_aufgabe(1, mitBank ? "Lies den Text. Setze die Wörter aus dem Kasten in die Lücken ein. Streiche jedes Wort durch, das du benutzt hast." : "Lies den Text. Welche Wörter fehlen? Setze passende Wörter ein – ohne im Original nachzuschauen.")}
         ${mitBank ? `<div class="rs-wortbank">${mische(bank).map(w => `<span>${ws_esc(w)}</span>`).join("")}</div>` : ""}
-        <div class="lt-text" style="${lt_schriftStil(lt)} font-family:${lt.reif ? "'Atkinson Hyperlegible'," : ""}'Andika', sans-serif;">${html}</div>
+        <div class="lt-text" style="${lt_schriftStil(lt)} font-family:${lt.reif ? "var(--ws-schrift-reif)" : "var(--ws-schrift)"};">${html}</div>
         ${ws_aufgabe(2, lt.klasse <= 2 ? "Schreibe zwei Sätze mit Lückenwörtern ab." : "Schreibe die Sätze mit den Lückenwörtern vollständig ab.")}
         <div style="${LT_LINIENFELD} min-height:60px;"></div>`, extra: { max: 1 } };
 }
@@ -12394,7 +12421,7 @@ function ltB_fehler(ctx){
     const html = woerter.map((w, i) => ersatz[i] ? `<span class="fs-ls">${ws_esc(w.replace(woerter[i].replace(/^[„"(]+|[.,!?;:“")]+$/g, ""), ersatz[i]))}</span>` : ws_esc(w)).join(" ");
     return { titel: "Lies genau!", html: `
         ${ws_aufgabe(1, `In diesem Text haben sich <b>${anzahl}</b> Wörter versteckt, die nicht passen. Lies genau und streiche sie durch. Schreibe das richtige Wort darüber – schau dafür im Original nach.`)}
-        <div class="lt-text" style="${lt_schriftStil(lt)} font-family:${lt.reif ? "'Atkinson Hyperlegible'," : ""}'Andika', sans-serif;">${html}</div>
+        <div class="lt-text" style="${lt_schriftStil(lt)} font-family:${lt.reif ? "var(--ws-schrift-reif)" : "var(--ws-schrift)"};">${html}</div>
         <div class="fs-ziel" style="font-size:15px;">Gefunden: <span class="rs-linie" style="min-width:60px;"></span> von ${anzahl} Wörtern ${L("Richtig: " + gewaehlt.map(x => ws_esc(x.kern)).join(", "), "font-size:14px; white-space:normal;")}</div>
         ${ws_aufgabe(2, "Schreibe die Sätze mit den falschen Wörtern richtig ab.")}
         <div style="${LT_LINIENFELD} min-height:60px;"></div>`, extra: { max: 1 } };
@@ -12538,7 +12565,7 @@ function dkB_luecken(ctx){
     const zeile = () => lineatur ? bs_lineatur("") : `<div class="dk-zeile"></div>`;
     return { titel: "Lückendiktat", zeile, max: 30, extra: { reif: dk.reif }, html: `
         ${ws_aufgabe(1, "Hör gut zu. Schreibe die fehlenden Wörter in die Lücken.")}
-        <div class="lt-text" style="font-size:${t.k <= 2 ? 24 : 20}px; font-family:${dk.reif ? "'Atkinson Hyperlegible'," : ""}'Andika', sans-serif;">${html}</div>
+        <div class="lt-text" style="font-size:${t.k <= 2 ? 24 : 20}px; font-family:${dk.reif ? "var(--ws-schrift-reif)" : "var(--ws-schrift)"};">${html}</div>
         ${ws_aufgabe(2, "Schreibe die Lückenwörter noch einmal ab. Sprich dabei leise mit.")}
         <div class="${lineatur ? "ws-lineatur-liste" : "dk-zeilen"} fs-fuell"></div>` };
 }
@@ -13411,7 +13438,7 @@ Object.assign(FS_SERIEN, {
                 <div><label>Zeilenabstand</label><select id="st-abstand"><option value="1.7">normal</option><option value="2.1" selected>groß</option><option value="2.6">sehr groß</option></select></div>
             </div>
             <div class="zeile drei" style="margin-top:10px;">
-                <div><label>Schrift</label><select id="st-schrift"><option value="Andika">Andika (Grundschule)</option><option value="Atkinson Hyperlegible">Atkinson (ältere Schüler)</option></select></div>
+                <div><label>Schrift</label><select id="st-schrift"><option value="auto" selected>wie eingestellt (Grundschrift)</option><option value="Andika">Andika (Druckschrift)</option><option value="Atkinson Hyperlegible">Atkinson (ältere Schüler)</option></select></div>
                 <div><label style="display:flex; gap:6px; align-items:center; margin-top:26px; text-transform:none;"><input type="checkbox" id="st-saetze"> Jeder Satz in neuer Zeile</label></div>
                 <div><label style="display:flex; gap:6px; align-items:center; margin-top:26px; text-transform:none;"><input type="checkbox" id="st-protokoll" checked> Leseprotokoll am Ende</label></div>
             </div>`,
