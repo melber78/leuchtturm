@@ -955,6 +955,16 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .std-blatt-leiste:has(+ .ws-seite.ws-aus){ display:none; }
 .std-ed-hinweis{ font-size:12.5px; font-weight:700; color:#8a5a00; background:#fff4dc; border-radius:10px; padding:8px 10px; }
 @media (max-width:700px){ .std-ed-phase{ grid-template-columns:1fr; } .std-ed-name{ padding-top:0; } }
+.std-teilen{ margin-top:10px; background:#fff8e6; border:2px solid var(--gold, #f2a93b); border-radius:14px; padding:12px 14px; font-size:13.5px; font-weight:700; color:#5c4300; }
+.std-teilen .tl-zeile{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px; }
+.std-teilen .tl-wahl{ display:inline-flex; gap:6px; flex-wrap:wrap; }
+.std-teilen .tl-wahl label{ display:inline-flex; align-items:center; gap:6px; background:#fff; border:2px solid #f0dca8; border-radius:999px; padding:5px 12px; cursor:pointer; margin:0; text-transform:none; font-size:13.5px; color:#3b2a00; letter-spacing:0; }
+.std-teilen .tl-wahl label:has(input:checked){ background:#3d7ea6; border-color:#3d7ea6; color:#fff; }
+.std-teilen .tl-wahl input{ display:none; }
+.std-teilen input[type=date]{ width:auto; padding:6px 10px; }
+.std-teilen small{ display:block; font-weight:600; color:#7a6420; margin-top:6px; line-height:1.45; }
+.std-teilen.fertig{ background:#e8f3ea; border-color:#4a9a5b; color:#1f5a2c; }
+.std-teilen.fertig small{ color:#2f6b3c; }
 .std-akte{ margin-top:12px; display:none; align-items:center; gap:10px; flex-wrap:wrap; background:#eef4f8; border-radius:14px; padding:10px 14px; font-size:13px; font-weight:700; }
 .std-akte .btn{ margin-top:0; }
 /* ---------- Aufmerksamkeit: Bilder-Blätter ---------- */
@@ -1705,6 +1715,7 @@ Die Blätter entstehen im Browser. Gespeichert wird nur, was du selbst in Materi
         <button class="btn" onclick="fs_erstellen('stunde')"><i class="fa-solid fa-layer-group"></i> Stunde zusammenstellen</button>
         <button class="btn sekundaer" type="button" onclick="std_timerOeffnen()" title="Timer mit den Phasen und Minuten der Stunde"><i class="fa-solid fa-stopwatch"></i> Timer für die Stunde</button>
         <div class="std-akte" id="std-akte"></div>
+        <div class="std-teilen" id="std-teilen" style="display:none;"></div>
         <div class="std-editor" id="std-editor" style="display:none;"></div>
     </div>
 </div>
@@ -10559,7 +10570,8 @@ function es_ausRezept(r){
     return ergebnis.map((b, i) => ({ ...b, nr: String(i + 1) }));
 }
 function std_dynamisch(){
-    if (!std_bearbeiten || !std_rezept){ std_rezept = std_rezeptAusFormular(); std_cache = {}; std_akteId = null; std_akteHinweis = ""; std_standVorschlag = "offen"; }
+    if (!std_bearbeiten || !std_rezept){ std_rezept = std_rezeptAusFormular(); std_cache = {}; std_akteId = null; std_akteHinweis = ""; std_standVorschlag = "offen";
+        const tb = document.getElementById("std-teilen"); if (tb && !tb.classList.contains("fertig")) tb.style.display = "none"; }
     return std_ausRezept(std_rezept);
 }
 // Aktuelle Seiten merken, damit unveränderte Blätter beim Tauschen genau so bleiben
@@ -10754,6 +10766,12 @@ async function std_ausAkteOeffnen(code, sid){
     const stunde = (LRS_STUNDEN[code] || []).find(x => x.id === sid);
     if (!stunde) return false;
     const r = stunde.rezept && stunde.rezept.items ? JSON.parse(JSON.stringify(stunde.rezept)) : std_rezeptAusText(stunde, code);
+    // Gemeinsame Stunde aus der Akte von Kind 2 geöffnet: Rollen tauschen, damit „1“ immer das geöffnete Kind ist
+    if (r.kind2 && r.kind2 === code){
+        r.kind2 = r.kind && r.kind !== code ? r.kind : "";
+        r.items.forEach(it => { if (it.wer === "1") it.wer = "2"; else if (it.wer === "2") it.wer = "1"; });
+    }
+    if (!r.kind2) delete r.kind2;
     r.kind = code;
     r.items.forEach(it => { if (!it.u) it.u = std_neuUid(); });
     if (/^[1-9]$/.test(String(r.klasse || ""))){ const l = document.getElementById("std-klasse"); l.value = r.klasse; l.dispatchEvent(new Event("change")); }
@@ -10770,8 +10788,100 @@ async function std_ausAkteOeffnen(code, sid){
     const d = document.getElementById("std-akte-datum"); if (d && stunde.datum) d.value = stunde.datum;
     std_akteHinweis = r.ausText ? "ℹ️ Aus dem Text in der Akte wiederhergestellt – bitte kurz prüfen. Die Aufgaben in den Blättern sind neu gemischt; drucke nur, was du änderst, plus den Ablaufplan." : "ℹ️ Aus der Akte geöffnet. Die Aufgaben in den Blättern sind neu gemischt – drucke nur, was du änderst, plus den Ablaufplan.";
     std_akteLeiste();
-    document.getElementById("std-editor").scrollIntoView({ behavior: "smooth", block: "start" });
+    std_teilenZeigen(stunde);
+    document.getElementById(r.kind2 && location.hash === "#teilen" ? "std-teilen" : "std-editor").scrollIntoView({ behavior: "smooth", block: "start" });
     return true;
+}
+
+/* ---------- Gemeinsame Stunde: nur ein Kind war da ---------- */
+let std_ersatz = null;   // { kind, id, datum } – Stunde, die eine ganz neu zusammengestellte Stunde ersetzen soll
+function std_naechsterSchultag(){ const d = new Date(); d.setHours(12); do { d.setDate(d.getDate() + 1); } while (d.getDay() === 0 || d.getDay() === 6); return d.toISOString().slice(0, 10); }
+function std_teilenZeigen(stunde){
+    const el = document.getElementById("std-teilen");
+    if (!el) return;
+    const r = std_rezept;
+    if (!r || !r.kind2 || r.erst){ el.style.display = "none"; el.className = "std-teilen"; return; }
+    const A = r.kind, B = r.kind2;
+    el.className = "std-teilen"; el.style.display = "";
+    el.innerHTML = `<i class="fa-solid fa-user-group"></i> Gemeinsame Stunde von <b>${ws_esc(A)}</b> und <b>${ws_esc(B)}</b> – war nur ein Kind da?
+        <div class="tl-zeile"><span>Da war:</span><span class="tl-wahl">${[A, B].map(k => `<label><input type="radio" name="std-tl-da" value="${ws_esc(k)}" ${k === A ? "checked" : ""} onchange="std_teilenText()"> ${ws_esc(k)}</label>`).join("")}</span></div>
+        <div class="tl-zeile"><span id="std-tl-weg-text"></span><input type="date" id="std-tl-datum" value="${std_naechsterSchultag()}">
+            <button class="btn klein" onclick="std_teilen()"><i class="fa-solid fa-scissors"></i> Stunde aufteilen</button></div>
+        <small>Das fehlende Kind bekommt seine Blätter als eigene Stunde am gewählten Tag (in seiner Akte, Stand „geplant“). Das anwesende Kind behält seine Blätter als Einzelstunde – die kannst du danach unten neu planen: Blätter tauschen, ergänzen oder entfernen, der Ablaufplan passt sich an.</small>`;
+    std_teilenText();
+}
+function std_teilenText(){
+    const r = std_rezept, el = document.getElementById("std-tl-weg-text"); if (!r || !el) return;
+    const da = (document.querySelector('input[name="std-tl-da"]:checked') || {}).value, weg = da === r.kind ? r.kind2 : r.kind;
+    el.innerHTML = `Stunde für <b>${ws_esc(weg)}</b> nachholen am:`;
+}
+function std_einzelRezept(r, rolle, code){
+    const x = JSON.parse(JSON.stringify(r));
+    x.items = x.items.filter(it => !it.wer || it.wer === "beide" || it.wer === rolle).map(it => { delete it.wer; return it; });
+    x.kind = code; delete x.kind2;
+    return x;
+}
+function std_inhaltText(info){
+    const rezept = info.rezept || {};
+    const ng = (rezept.items || []).filter(it => it.ng).map(it => `„${std_itemInfo(it, rezept).name}“`);
+    return info.phasen.map(p => `${p.phase} (${p.zeit}): ${p.inhalt.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&[a-z]+;/g, " ")}`).join("\n")
+        + (ng.length ? `\nNicht geschafft (kommt in die nächste Stunde): ${ng.join(", ")}` : "");
+}
+async function std_akteSenden(daten){
+    const a = await fetch("akte.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(daten) });
+    const j = await a.json().catch(() => ({ ok: false, fehler: "Keine Antwort von akte.php." }));
+    if (!j.ok) throw new Error(j.fehler || "Fehler beim Speichern.");
+    if (j.akte && j.akte.stunden) LRS_STUNDEN[daten.kind] = j.akte.stunden.map(x => ({ id: x.id, datum: x.datum, dauer: x.dauer, inhalt: x.inhalt, rezept: x.rezept || null, heft: x.heft || [], status: x.status }));
+    return j;
+}
+// Rezept als Einzelstunde neu aufbauen und in der Akte des Kindes speichern (ändern oder neu eintragen); gibt die Stunden-ID zurück
+async function std_einzelnSpeichern(r, code, id, datum, status){
+    std_rezept = r;
+    std_bearbeiten = true;
+    try { await fs_erstellen("stunde"); } finally { std_bearbeiten = false; }
+    const info = std_letzte, rezept = JSON.parse(JSON.stringify(info.rezept || r)); delete rezept.ausText;
+    const inhalt = std_inhaltText(info);
+    const stunde = { datum, dauer: info.dauer, inhalt, heft: info.heft || [], rezept };
+    if (status) stunde.status = status;
+    await std_akteSenden(id ? { aktion: "stunde_aendern", kind: code, id, stunde } : { aktion: "stunde_hinzu", kind: code, stunde: { ...stunde, status: status || "offen" } });
+    if (id) return id;
+    const n = (LRS_STUNDEN[code] || []).find(x => x.datum === datum && x.inhalt === inhalt.slice(0, 1500));
+    return n ? n.id : null;
+}
+async function std_teilen(){
+    const r0 = JSON.parse(JSON.stringify(std_rezept || {}));
+    if (!r0.kind2) return;
+    const A = r0.kind, B = r0.kind2;
+    const da = (document.querySelector('input[name="std-tl-da"]:checked') || {}).value;
+    const weg = da === A ? B : A, neuDatum = lt_wert("std-tl-datum");
+    if (!da || !neuDatum){ alert("Bitte wählen, wer da war, und ein Datum für das andere Kind."); return; }
+    const sid = std_akteId, orig = (LRS_STUNDEN[A] || []).find(x => x.id === sid);
+    const altDatum = orig ? orig.datum : lt_wert("std-akte-datum");
+    const idVon = code => code === A ? sid : (((LRS_STUNDEN[code] || []).find(x => orig && x.datum === orig.datum && x.inhalt === orig.inhalt)) || {}).id || null;
+    const idDa = idVon(da), idWeg = idVon(weg);
+    const el = document.getElementById("std-teilen");
+    el.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Teile die Stunde auf …`;
+    try {
+        // 1. das fehlende Kind: eigene Stunde am neuen Tag
+        await std_einzelnSpeichern(std_einzelRezept(r0, weg === A ? "1" : "2", weg), weg, idWeg, neuDatum, "offen");
+        // 2. das anwesende Kind: Einzelstunde am ursprünglichen Tag – bleibt hier zum Neuplanen offen
+        const neuId = await std_einzelnSpeichern(std_einzelRezept(r0, da === A ? "1" : "2", da), da, idDa, altDatum, null);
+        std_akteId = neuId; std_ersatz = neuId ? { kind: da, id: neuId, datum: altDatum } : null;
+        const kSel = document.getElementById("std-kind"), k2Sel = document.getElementById("std-kind2");
+        if (kSel){ kSel.value = da; } if (k2Sel){ k2Sel.value = ""; std_zweiZeigen(); }
+        std_akteHinweis = `ℹ️ Einzelstunde für ${ws_esc(da)} – Blätter unten anpassen und „Änderungen speichern“.`;
+        std_akteLeiste(); std_editorZeigen();
+        const d = document.getElementById("std-akte-datum"); if (d) d.value = altDatum;
+        el.className = "std-teilen fertig";
+        el.innerHTML = `<i class="fa-solid fa-circle-check"></i> Aufgeteilt. <b>${ws_esc(weg)}</b> hat seine Blätter jetzt als eigene Stunde am <b>${std_datumKurz(neuDatum)}</b> (<a href="${fp_akteLink(weg, "stunden")}" target="_blank">Akte</a>).
+            <small><b>${ws_esc(da)} neu planen</b> – zwei Wege:<br>
+            ① <b>Anpassen:</b> unten bei „Blätter dieser Stunde anpassen“ tauschen (🎲), ergänzen oder entfernen, dann oben „Änderungen in der Akte speichern“.<br>
+            ② <b>Ganz neu:</b> oben im Formular die Stunde für ${ws_esc(da)} neu zusammenstellen und „Stunde erstellen“ – danach mit „Ersetzt die Stunde vom ${std_datumKurz(altDatum)}“ speichern, dann gibt es keine doppelte Stunde.</small>`;
+        document.getElementById("std-editor").scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (e){
+        el.className = "std-teilen";
+        el.innerHTML = `⚠️ ${ws_esc(e.message)} – bitte die Seite neu laden und in der Akte prüfen.`;
+    }
 }
 
 /* ---------- Kinder-Akte: Förderplan laden/speichern ---------- */
@@ -10900,15 +11010,23 @@ function std_akteLeiste(){
         <input type="date" id="std-akte-datum" value="${new Date().toISOString().slice(0, 10)}" style="width:auto; padding:6px 10px;">
         ${std_akteId ? "" : `<select id="std-akte-stand" style="width:auto; padding:6px 10px;"><option value="offen">○ geplant</option><option value="erledigt" ${std_standVorschlag === "erledigt" ? "selected" : ""}>✓ schon gehalten</option></select>`}
         ${std_akteId ? `<button class="btn klein" onclick="std_inAkte(true)"><i class="fa-solid fa-floppy-disk"></i> Änderungen in der Akte speichern</button><button class="btn sekundaer klein" onclick="std_inAkte(false)">Als neue Stunde eintragen</button>`
-            : `<button class="btn klein" onclick="std_inAkte()"><i class="fa-solid fa-floppy-disk"></i> In die Akte eintragen</button>`}<span id="std-akte-status">${std_akteId ? std_akteHinweis : ""}</span>`;
+            : (std_ersatz && std_ersatz.kind === code && !std_letzte.kind2
+                ? `<button class="btn klein" onclick="std_ersetzen()"><i class="fa-solid fa-right-left"></i> Ersetzt die Stunde vom ${std_datumKurz(std_ersatz.datum)}</button><button class="btn sekundaer klein" onclick="std_inAkte()">Als zusätzliche Stunde eintragen</button>`
+                : `<button class="btn klein" onclick="std_inAkte()"><i class="fa-solid fa-floppy-disk"></i> In die Akte eintragen</button>`)}<span id="std-akte-status">${std_akteId ? std_akteHinweis : ""}</span>`;
+}
+async function std_ersetzen(){
+    if (!std_ersatz) return;
+    std_akteId = std_ersatz.id;
+    const d = document.getElementById("std-akte-datum");
+    if (d) d.value = std_ersatz.datum;
+    await std_inAkte(true);
+    std_ersatz = null; std_akteLeiste(); std_editorZeigen();
 }
 async function std_inAkte(aendern){
     const st = document.getElementById("std-akte-status"), info = std_letzte;
     const rezept = JSON.parse(JSON.stringify(info.rezept || {}));
     delete rezept.ausText;
-    const ng = (rezept.items || []).filter(it => it.ng).map(it => `„${std_itemInfo(it, rezept).name}“`);
-    const inhalt = info.phasen.map(p => `${p.phase} (${p.zeit}): ${p.inhalt.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&[a-z]+;/g, " ")}`).join("\n")
-        + (ng.length ? `\nNicht geschafft (kommt in die nächste Stunde): ${ng.join(", ")}` : "");
+    const inhalt = std_inhaltText(info);
     try {
         const antwort = await fetch("akte.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
             body: JSON.stringify(aendern && std_akteId

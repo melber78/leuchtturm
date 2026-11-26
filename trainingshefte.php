@@ -419,6 +419,7 @@ textarea{ resize:vertical; min-height:62px; font-weight:600; }
 .dp-unterschriften div{ border-top:1px solid #444; padding-top:4px; font-size:11px; color:#555; }
 .zwei-kinder{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
 .zwei-kinder select{ font:800 14px "Nunito",sans-serif; padding:9px 10px; border:2px solid #e2e8ee; border-radius:12px; background:white; color:#16324a; }
+.st-partner{ display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:800; color:#3d7ea6; background:#eef4f8; border-radius:999px; padding:3px 10px; margin-left:4px; }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 </head>
@@ -916,10 +917,11 @@ function stunden_zeigen(){
         <div><div class="datum">${af_datum(s.datum)}</div><div class="dauer">${s.dauer} Minuten</div>
             <div style="display:flex; gap:6px; margin-top:8px;">
                 <a class="knopf" style="padding:5px 10px; font-size:12px;" title="Im Generator öffnen: Blätter tauschen oder ergänzen, Ablaufplan neu drucken" href="lrs.php?stunde=${encodeURIComponent(AKTE_KIND)}&sid=${encodeURIComponent(s.id)}"><i class="fa-solid fa-layer-group"></i></a>
+                ${(ST_PARTNER[s.id] || []).length && st !== "erledigt" ? `<a class="knopf" style="padding:5px 10px; font-size:12px; background:#fff3d6; color:#7a5d00;" title="Nur ein Kind war da: das fehlende Kind auf einen anderen Tag verschieben, das anwesende neu planen" href="lrs.php?stunde=${encodeURIComponent(AKTE_KIND)}&sid=${encodeURIComponent(s.id)}#teilen"><i class="fa-solid fa-user-xmark"></i> Nur 1 Kind da</a>` : ""}
                 <button class="knopf" style="padding:5px 10px; font-size:12px;" title="Auf ein anderes Datum verschieben" onclick="stunden_verschieben = stunden_verschieben === '${id}' ? null : '${id}'; stunden_zeigen()"><i class="fa-solid fa-calendar-days"></i></button>
                 <button class="knopf" style="padding:5px 10px; font-size:12px;" title="Bearbeiten" onclick="stunden_bearbeiten='${id}'; stunden_zeigen()"><i class="fa-solid fa-pen"></i></button>
                 <button class="knopf" style="padding:5px 10px; font-size:12px; color:#c0392b; background:#fdeceb;" title="Löschen" onclick="stunde_loeschen('${id}')"><i class="fa-solid fa-trash"></i></button></div></div>
-        <div><div class="st-statusreihe">${knoepfe}</div>
+        <div><div class="st-statusreihe">${knoepfe}${(ST_PARTNER[s.id] || []).length ? `<span class="st-partner"><i class="fa-solid fa-user-group"></i> mit ${(ST_PARTNER[s.id]).map(af_esc).join(", ")}</span>` : ""}</div>
             <div class="inhalt">${af_esc(s.inhalt) || '<span class="leer-text">ohne Inhaltsangabe</span>'}</div>
             <label>Beobachtung</label><textarea rows="2" onchange="stunde_beob('${id}', this.value)" placeholder="Wie lief die Stunde? Wo habt ihr aufgehört? (wird beim Verlassen des Feldes gespeichert)">${af_esc(s.beobachtung)}</textarea></div>
         ${stunden_verschieben === s.id ? stunde_verschiebenBox(s) : ""}
@@ -931,7 +933,7 @@ function stunde_verschiebenBox(s){
     const schnell = [[7, "+1 Woche"], [14, "+2 Wochen"], [1, "+1 Tag"]].map(([n, t]) => `<button class="knopf" onclick="document.getElementById('sv-datum').value = st_plusTage(document.getElementById('sv-datum').value || '${af_esc(s.datum)}', ${n})">${t}</button>`).join("");
     return `<div class="st-verschieben"><b><i class="fa-solid fa-calendar-days"></i> Verschieben auf:</b>
         <input type="date" id="sv-datum" value="${af_esc(s.datum)}"> ${schnell}
-        ${p.length ? `<label class="mit"><input type="checkbox" id="sv-mit" checked> Gemeinsame Stunde – auch bei ${p.map(af_esc).join(", ")} verschieben</label><div class="klein" style="width:100%; color:#6B7A88;">War nur ein Kind da? Dann Haken weg – verschoben wird nur die Stunde dieses Kindes. Beim anderen Kind die Stunde einfach auf ✓ erledigt setzen.</div>` : ""}
+        ${p.length ? `<label class="mit"><input type="checkbox" id="sv-mit" checked> Gemeinsame Stunde – auch bei ${p.map(af_esc).join(", ")} verschieben</label><div class="klein" style="width:100%; color:#6B7A88;">War nur ein Kind da? Besser über <i class="fa-solid fa-user-xmark"></i> „Nur ein Kind da“: Dann bekommt das fehlende Kind nur seine eigenen Blätter am neuen Tag, und du planst das anwesende Kind neu.</div>` : ""}
         <button class="knopf voll" onclick="stunde_verschiebenJetzt('${id}')"><i class="fa-solid fa-check"></i> Verschieben</button>
         <button class="knopf" onclick="stunden_verschieben=null; stunden_zeigen()">Abbrechen</button></div>`;
 }
