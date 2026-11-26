@@ -115,6 +115,14 @@ switch ($aktion) {
         $meldung = count($akte["plan"]["f"]) . " Funktionsbereiche, " . count($akte["plan"]["r"]) . " Rechtschreib-Schwerpunkte und " . count($akte["plan"]["l"]) . " Lesestufen im Förderplan gespeichert.";
         break;
 
+    // Buchstabenkurs: gelernte Buchstaben setzen (nur dieses Feld des Förderplans)
+    case "lesebuchstaben":
+        $akte["plan"]["lb"] = $lesebuchstaben($eingabe["lb"] ?? "");
+        $akte["plan"]["geaendert"] = date("Y-m-d");
+        $geaendert = true;
+        $meldung = "Gelernte Buchstaben gespeichert.";
+        break;
+
     case "klasse":
         if (preg_match('/^[1-8]$/', (string)($eingabe["klasse"] ?? ""))) { $akte["klasse"] = (string)$eingabe["klasse"]; $geaendert = true; }
         break;

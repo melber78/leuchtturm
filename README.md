@@ -26,3 +26,4 @@ Lernbasis (Lern-App für Henry, Klasse 5 Gymnasium Sachsen-Anhalt): `lernbasis/`
 Handy-Widget (Android): `widget.php` liefert die Stunden der nächsten zwei Wochen als JSON (nur mit dem Widget-Code aus `material-daten/widget.json`, erzeugt unter Mein Tag → Mein Stundenplan → Handy-Widget). Die App liegt in `android-widget/`, wird per GitHub Actions gebaut (Branch `widget-app`) und über `widget-app.php` heruntergeladen.
 
 Schrift der LRS-Arbeitsblätter: Grundschrift „Playwrite DE Grund“ (SIL Open Font License, liegt in `schriften/`), umschaltbar auf Druckschrift (Andika) oben im Material-Generator – gemerkt pro Gerät.
+Buchstabenkurs für LRS-Kinder: `lrs-buchstabenkurs.js` (in der Stundenplanung unter Symptomtraining), Schreibwege der Buchstaben in `buchstaben-wege.js` (gleiche Daten wie das Tafelbild Buchstabenkurs). Gelernte Buchstaben = „Bekannte Buchstaben“ im Förderplan der Kinder-Akte.

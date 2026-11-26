@@ -408,6 +408,19 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 html.lt-druckschrift, html.lt-sek, .ws-seite.ws-info{ --ws-schrift:"Andika", sans-serif; --ws-schrift-reif:"Atkinson Hyperlegible", "Andika", sans-serif; }
 html:not(.lt-sek):not(.lt-druckschrift) .ws-seite.ws-info.ws-kindblatt{ --ws-schrift:"Playwrite DE Grund", "Andika", sans-serif; --ws-schrift-reif:"Playwrite DE Grund", "Andika", sans-serif; }
 .rs-tabelle th:first-child, .rs-tabelle td:first-child{ white-space:nowrap; }
+.bk-kopf{ margin:6px 0 10px; display:flex; justify-content:center; }
+.bk-kopf svg{ max-width:100%; height:auto; }
+.bk-zt{ font-size:15px; font-weight:700; color:#2f5d86; margin:8px 0 2px; }
+.bk-reihe{ margin-bottom:2px; }
+.bk-pass{ display:grid; grid-template-columns:repeat(6, 1fr); gap:10px; margin-top:10px; }
+.bk-feld{ position:relative; border:2px solid #cfdbe6; border-radius:14px; height:92px; display:flex; align-items:center; justify-content:center; font-size:30px; background:#fff; }
+.bk-feld b{ font-weight:400; }
+.bk-feld .bk-nr{ position:absolute; left:8px; top:5px; font-size:12px; color:#8a9aa8; font-family:Nunito, Arial, sans-serif; }
+.bk-feld i{ position:absolute; right:8px; bottom:4px; font-style:normal; font-size:20px; color:#2e9e5b; }
+.bk-feld.ok{ background:#edf7ef; border-color:#9fd3a8; }
+.bk-feld.jetzt{ border-color:#f2a93b; border-width:3px; background:#fff8e6; }
+.bk-feld.jetzt i{ color:#e0901e; }
+.bk-pass-fuss{ display:flex; gap:28px; justify-content:center; margin-top:16px; font-size:16px; color:#4A5866; }
 .ws-seite{
     width:210mm; height:297mm; flex:none; box-sizing:border-box; padding:13mm 15mm;
     background:#fff; box-shadow:0 6px 24px rgba(22,50,74,.12); overflow:hidden;
@@ -1056,6 +1069,9 @@ html:not(.lt-sek):not(.lt-druckschrift) .ws-seite.ws-info.ws-kindblatt{ --ws-sch
 .schrift-wahl label:first-of-type{ font-family:"Playwrite DE Grund", "Nunito", sans-serif; font-weight:400; }
 .schrift-wahl label:has(input:checked){ background:var(--meer); border-color:var(--meer); color:#fff; }
 .schrift-wahl input{ display:none; }
+.std-bk{ margin-top:12px; background:#f4f8fb; border:2px dashed #cfdde8; border-radius:14px; padding:10px 14px; }
+.std-bk-info{ display:flex; align-items:center; flex-wrap:wrap; gap:6px; font-size:13px; font-weight:700; color:#4a5866; padding-top:20px; }
+.bk-chip{ display:inline-block; background:#fff; border:1px solid #cfdde8; border-radius:8px; padding:0 7px; font-family:"Playwrite DE Grund", Nunito, sans-serif; font-weight:400; }
 .std-teilen{ margin-top:10px; background:#fff8e6; border:2px solid var(--gold, #f2a93b); border-radius:14px; padding:12px 14px; font-size:13.5px; font-weight:700; color:#5c4300; }
 .std-teilen .tl-zeile{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px; }
 .std-teilen .tl-wahl{ display:inline-flex; gap:6px; flex-wrap:wrap; }
@@ -1795,6 +1811,10 @@ function ws_schriftSetzen(w){
             <div><label>Blatt</label><select id="std-symptom-blatt"></select></div>
             <div><label>Anzahl</label><select id="std-symptom-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
         </div>
+        <div class="std-bk std-nur-foerder" id="std-bk" style="display:none;">
+            <div class="zeile zwei"><div><label><i class="fa-solid fa-font"></i> Buchstabe im Kurs</label><select id="std-bk-zeichen" onchange="bk_infoZeigen()"></select></div><div class="std-bk-info" id="std-bk-info"></div></div>
+            <p class="beschreibung" style="margin:6px 0 0;">Reihenfolge wie in der Fibel: m a l i o e s n r t u d h ei w k au b f g sch p z ch ä ö ü eu j v ie pf st sp qu x y c. Die Blätter 7–9 lesen nur Silben und Wörter aus Buchstaben, die das Kind schon kann (plus dem neuen). „Anzahl“ nimmt die nächsten Blätter der Reihe dazu.</p>
+        </div>
         <p class="beschreibung std-nur-foerder" style="margin:6px 0 0;">Für gut lesende Kinder mit großen Schreibproblemen: „Vom Lesen zum Schreiben“ trainiert das sichere Verschriften Schritt für Schritt. Wenn Regeln bekannt sind, beim Schreiben aber nicht angewendet werden, nutze „Rechtschreibung anwenden“ mit Signalstellen, Werkzeugwahl, Begründung und Transfer in eigene Texte.</p>
         <div class="zeile std-anz-zeile std-nur-foerder" style="margin-top:12px;">
             <div><label>Zusätzlich: Vom Lesen zum Schreiben</label><select id="std-vs"><option value="">– nichts zusätzlich –</option></select></div>
@@ -1973,6 +1993,8 @@ function ws_schriftSetzen(w){
 
 <script src="rs-einordnung.js"></script>
 <script src="bilder.js"></script>
+<script src="buchstaben-wege.js"></script>
+<script src="lrs-buchstabenkurs.js"></script>
 <script>
 
 function zufallsZahl(min, max){ return Math.floor(Math.random() * (max - min + 1)) + min; }
@@ -10243,6 +10265,7 @@ function std_auswahlAufbauen(){
     document.getElementById("std-funktion").innerHTML = STD_FUNKTIONEN.map(k => `<option value="${k}">${ws_esc(FS_SERIEN[k].label)}</option>`).join("") + `<option value="">– ohne Funktionsblatt –</option>`;
     document.getElementById("std-vs").innerHTML = `<option value="">– nichts zusätzlich –</option>` + VS_BLAETTER.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("");
     document.getElementById("std-symptom").innerHTML =
+        `<optgroup label="Buchstaben lernen"><option value="bk">Buchstabenkurs – der nächste Buchstabe (Kennenlernen, Schreibweg, Hören, Lesen)</option></optgroup>` +
         `<optgroup label="Rechtschreibung anwenden statt nur wissen (gemischt)"><option value="rsa">Stopp-Routine: Signalstellen, Werkzeug, Beweis</option><option value="rsl">Stopp-Routine: Lernweg zum Selbstlernen (Einführung bis Check)</option></optgroup>` +
         rl_optionen().replace(/<option value="/g, '<option value="rl:').replace('label="Lehrgang Schritt für Schritt (Kl. 3–8)"', 'label="Rechtschreib-Werkstatt: Lehrgang Schritt für Schritt (Kl. 3–8)"').replace(/label="Grundwortschatz Klasse/g, 'label="Rechtschreib-Werkstatt: Grundwortschatz Klasse') +
         `<optgroup label="Rechtschreibung (ab Kl. 3/4)">${Object.entries(RS_SCHWERPUNKTE).map(([k, sp]) => `<option value="rs:${k}">${ws_esc(sp.name)}</option>`).join("")}</optgroup>` +
@@ -10270,7 +10293,7 @@ function std_auswahlAufbauen(){
     document.getElementById("std-kind").addEventListener("change", () => {
         std_klasseAusKuerzel();
         std_ausAkte(lt_wert("std-kind"));
-        if (!lt_wert("std-symptom").startsWith("le:") && lt_wert("std-kind") && kt_woerter(lt_wert("std-kind")).length) document.getElementById("std-symptom").value = "kartei";
+        if (!lt_wert("std-symptom").startsWith("le:") && lt_wert("std-symptom") !== "bk" && lt_wert("std-kind") && kt_woerter(lt_wert("std-kind")).length) document.getElementById("std-symptom").value = "kartei";
         std_blattListen();
         std_heftZeigen();
         std_weiterZeigen();
@@ -10299,6 +10322,7 @@ function std_symptomListe(sy){
     if (sy === "lesen" || sy.startsWith("lesen:")) return LT_AUFGABEN.map(a => ({ nr: a.key, name: "Lesetext + " + a.name }));
     if (sy.startsWith("le:")) return (LE_BLAETTER[sy.slice(3)] || []).map((b, i) => ({ nr: String(i), name: b.name }));
     if (sy === "diktat") return STD_DIKTAT.map(d => ({ nr: d.key, name: d.name }));
+    if (sy === "bk") return BK_BLAETTER;
     return [];
 }
 function std_blattListen2(){
@@ -10314,12 +10338,14 @@ function std_blattListen2(){
     document.getElementById("std-funktion2-anzahl").disabled = !f || f === "=";
     document.getElementById("std-symptom2-anzahl").disabled = !sy || sy === "=" || sy === "diktat";
 }
+let std_bkVorher = "";
 function std_blattListen(){
     const f = lt_wert("std-funktion"), sy = lt_wert("std-symptom");
     const fb = document.getElementById("std-funktion-blatt"), sb = document.getElementById("std-symptom-blatt");
     fb.innerHTML = f ? `<option value="zufall">zufällig</option>` + FS_SERIEN[f].blaetter.map(b => `<option value="${b.nr}">${ws_esc(b.name)}</option>`).join("") : `<option value="">–</option>`;
     let liste = [];
-    if (sy.startsWith("rs:")) liste = FS_SERIEN.rechtschreibung.blaetter;
+    if (sy === "bk") liste = BK_BLAETTER;
+    else if (sy.startsWith("rs:")) liste = FS_SERIEN.rechtschreibung.blaetter;
     else if (sy === "rsa") liste = RSA_KERN;
     else if (sy === "rsl") liste = RSL_BLAETTER;
     else if (sy === "vs") liste = VS_BLAETTER;
@@ -10334,6 +10360,8 @@ function std_blattListen(){
     if (sy === "rsa") sb.value = "2";
     if (sy === "rsl") sb.value = "L1";
     if (sy === "vs") sb.value = "3";
+    if (sy === "bk"){ sb.value = "1"; if (std_bkVorher !== "bk") document.getElementById("std-symptom-anzahl").value = "3"; }
+    std_bkVorher = sy; bk_zeileZeigen();
     const sa = document.getElementById("std-symptom-anzahl");
     sa.disabled = !sy || sy === "diktat"; if (sa.disabled) sa.value = "1";
     sa.title = sy === "diktat" ? "Beim Diktat gehören die Blätter fest zusammen" : "";
@@ -10343,6 +10371,7 @@ function std_blattListen(){
     else if (sy === "lesen") hinweis.textContent = "Ein Lesetext passend zu Klassenstufe und Schwierigkeit wird zufällig gewählt (Kl. 1–4 mit farbigen Silben).";
     else if (sy.startsWith("lesen:")) hinweis.textContent = `Ein Lesetext auf dem Niveau von Klasse ${sy.slice(6)} wird gewählt – unabhängig von der Klasse des Kindes (bis Kl. 4 mit farbigen Silben).`;
     else if (sy.startsWith("le:")){ const st = LE_STUFEN[sy.slice(3)], lb = (LRS_AKTEN[lt_wert("std-kind")] || {}).lb; hinweis.textContent = `Lesestufe ${st.nr} ${st.name}: ${st.ziel}. Die Blätter bauen aufeinander auf – bei mehreren Blättern kommen die nächsten der Reihe.` + (lb ? ` Bekannte Buchstaben aus dem Förderplan: ${lb}` : ""); }
+    else if (sy === "bk") hinweis.textContent = "Buchstabenkurs: ein Buchstabe pro Einheit – kennenlernen, Schreibweg mit Startpunkt und Pfeilen, hören, finden und mit den bekannten Buchstaben lesen.";
     else if (sy === "diktat") hinweis.textContent = "Ein Diktattext passend zu Klassenstufe und Schwierigkeit wird zufällig gewählt (gekürzte Fassung für die Stunde).";
     else if (sy === "ws") hinweis.textContent = "Es werden die Lernwörter aus dem Reiter Symptomtraining → Worterarbeitung verwendet: " + (lt_wert("ws-woerter") || "–");
     else if (sy === "rsl") hinweis.textContent = "Lernweg zum Selbstlernen: Das Kind arbeitet die Blätter allein durch – erklären, Muster, üben, Kontrollstreifen zum Umknicken. Bei mehreren Blättern kommen die nächsten der Reihe (z. B. L1 + L2). Am Ende L8: Check mit Punkten.";
@@ -10468,9 +10497,12 @@ function std_itemsFunktion(neu, f, fb, n, code){
     }
     std_mehrere(alle, b, n).forEach(x => neu({ p: "Funktionstraining", t: "fs", s: f, nr: x.nr }));
 }
-function std_itemsSymptom(r, neu, sy, sb, n){
+function std_itemsSymptom(r, neu, sy, sb, n, fuerKind){
     if (!sy || sy === "=") return;
-    if (sy.startsWith("rs:")){
+    if (sy === "bk"){
+        const z = fuerKind ? bk_naechster(fuerKind) : (lt_wert("std-bk-zeichen") || bk_naechster(r.kind));
+        bk_reiheAb(sb || "1", n).forEach(b => neu({ p: "Symptomtraining", t: "bk", z, nr: b.nr }));
+    } else if (sy.startsWith("rs:")){
         const liste = FS_SERIEN.rechtschreibung.blaetter;
         std_mehrere(liste, liste.find(x => x.nr === sb) || liste[0], n).forEach(x => neu({ p: "Symptomtraining", t: "rs", k: sy.slice(3), nr: x.nr }));
     } else if (sy === "rsa"){
@@ -10542,7 +10574,7 @@ function std_rezeptAusFormular(){
         });
         const neu2 = o => neu({ ...o, wer: "2" });
         if (f2 !== "=") std_itemsFunktion(neu2, f2, lt_wert("std-funktion2-blatt"), std_anzahl("std-funktion2-anzahl"), k2);
-        if (s2 !== "=") std_itemsSymptom(r, neu2, s2, lt_wert("std-symptom2-blatt"), std_anzahl("std-symptom2-anzahl"));
+        if (s2 !== "=") std_itemsSymptom(r, neu2, s2, lt_wert("std-symptom2-blatt"), std_anzahl("std-symptom2-anzahl"), k2);
         // Reihenfolge: Phase für Phase, innerhalb der Phase erst die gemeinsamen, dann Kind 1, dann Kind 2
         const rang = { beide: 0, "1": 1, "2": 2 };
         r.items = r.items.map((it, n) => ({ it, n })).sort((a, b) => STD_PHASEN.indexOf(a.it.p) - STD_PHASEN.indexOf(b.it.p) || rang[a.it.wer] - rang[b.it.wer] || a.n - b.n).map(x => x.it);
@@ -10607,6 +10639,7 @@ function std_alternativen(it, r){
     else if (it.t === "rs") pool = FS_SERIEN.rechtschreibung.blaetter.map(b => ({ t: "rs", k: it.k, nr: b.nr }));
     else if (it.t === "rsa") pool = (rsl_istLernweg(it.nr) ? RSL_BLAETTER : RSA_KERN).map(b => ({ t: "rsa", nr: b.nr }));
     else if (it.t === "vs") pool = VS_BLAETTER.map(b => ({ t: "vs", nr: b.nr }));
+    else if (it.t === "bk") pool = BK_BLAETTER.map(b => ({ t: "bk", z: it.z, nr: b.nr }));
     else if (it.t === "rl") pool = RL_BLAETTER.map(b => ({ t: "rl", k: it.k, nr: b.nr }));
     else if (it.t === "lesen") pool = LT_AUFGABEN.map(a => ({ t: "lesen", a: a.key }));
     else if (it.t === "le") pool = (LE_BLAETTER[it.st] || []).map((b, i) => ({ t: "le", st: it.st, i }));
@@ -10679,6 +10712,7 @@ function std_itemInfo(it, r){
     if (it.t === "rs"){ const b = FS_SERIEN.rechtschreibung.blaetter.find(x => x.nr === it.nr), sp = RS_SCHWERPUNKTE[it.k]; return b && sp ? { name: b.name, gruppe: sp.name, ok: true } : { name: "?", ok: false }; }
     if (it.t === "rsa"){ const b = RSA_BLAETTER.find(x => x.nr === it.nr); return b ? { name: b.name, gruppe: "Rechtschreibung anwenden", ok: true } : { name: "?", ok: false }; }
     if (it.t === "vs"){ const b = VS_BLAETTER.find(x => x.nr === it.nr); return b ? { name: b.name, gruppe: "Vom Lesen zum Schreiben", ok: true } : { name: "?", ok: false }; }
+    if (it.t === "bk") return bk_info(it);
     if (it.t === "rl"){ const b = RL_BLAETTER.find(x => x.nr === it.nr); return b ? { name: b.name, gruppe: "Rechtschreib-Werkstatt · " + rl_name(it.k), ok: true } : { name: "?", ok: false }; }
     if (it.t === "lesen"){ const a = LT_AUFGABEN.find(x => x.key === it.a); return a ? { name: a.name, gruppe: "Lesetraining", ok: true } : { name: "?", ok: false }; }
     if (it.t === "diktat"){ const d = STD_DIKTAT.find(x => x.key === it.d); return d ? { name: d.name, gruppe: "Diktat", ok: true } : { name: "?", ok: false }; }
@@ -10737,6 +10771,8 @@ function std_ausRezept(r){
         if (rsa.length) teile.push(`Rechtschreibung anwenden (Stopp-Routine): ${rsa.map(it => `„${ws_esc(std_itemInfo(it, r).name)}“`).join(", ")}. Nach jedem Satz: Stopp – Signalstelle – Werkzeug – Beweis.`);
         const rll = liste.filter(it => it.t === "rl");
         [...new Set(rll.map(it => it.k))].forEach(k => { const d = rl_daten(k); teile.push(`Rechtschreib-Werkstatt – ${ws_esc(rl_name(k))}: ${rll.filter(it => it.k === k).map(it => `„${ws_esc(std_itemInfo(it, r).name)}“`).join(", ")}. Strategie: ${d.str.s} ${ws_esc(d.str.n)}.`); if (!merksatz) merksatz = ws_esc(d.merke); });
+        const bkl = liste.filter(it => it.t === "bk");
+        [...new Set(bkl.map(it => it.z))].forEach(z => teile.push(`Buchstabenkurs – Buchstabe ${ws_esc(bk_gross(z))} ${ws_esc(z)} (${bk_nummer(z)}. im Kurs): ${bkl.filter(it => it.z === z).map(it => `„${ws_esc((BK_BLAETTER.find(b => b.nr === it.nr) || {}).name || "")}“`).join(", ")}. Laut sprechen, mit dem Finger nachfahren, dann schreiben.`));
         const vsl = liste.filter(it => it.t === "vs");
         if (vsl.length) teile.push(`Vom Lesen zum Schreiben: ${vsl.map(it => `„${ws_esc(std_itemInfo(it, r).name)}“`).join(", ")}. Schreib-Treppe: schwingen – langsam sprechen – schreiben – Laut für Laut kontrollieren.`);
         const heft = liste.filter(it => it.t === "heft");
@@ -10763,6 +10799,7 @@ function std_ausRezept(r){
         else if (it.t === "rs"){ const b = FS_SERIEN.rechtschreibung.blaetter.find(x => x.nr === it.nr); blaetter.push(mitCache(fp_rsEintrag(it.k, b.bau, b.name, 0, code), U)); geuebt.push(`${RS_NAMEN[it.k] ? RS_NAMEN[it.k].kurz : it.k}: ${b.name}`); }
         else if (it.t === "rsa"){ const b = RSA_BLAETTER.find(x => x.nr === it.nr); if (b){ const lw = rsl_istLernweg(b.nr); blaetter.push(mitCache({ nr: "0", kurz: (lw ? "Lernweg: " : "Anwenden: ") + b.kurz, name: (lw ? "Stopp-Routine – " : "Rechtschreibung anwenden – ") + b.name, bau: c => b.bau({ ...c, rsa: rsa_ctx(code) }), extra: { label: "Rechtschreibung anwenden", afs: "Symptomtraining: Rechtschreibstrategien anwenden", reif: true }, quelle: { t: "rsa", nr: b.nr } }, U)); geuebt.push("Anwenden: " + b.name); } }
         else if (it.t === "rl"){ const b = RL_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "RS: " + b.kurz, name: "Rechtschreib-Werkstatt – " + b.name, bau: c => b.bau({ ...c, rs: rl_daten(it.k, code) }), extra: { label: "Rechtschreib-Werkstatt", afs: "Symptomtraining: Rechtschreibung Schritt für Schritt", reif: lt_klasse() >= 5 }, quelle: { t: "rl", nr: b.nr } }, U)); geuebt.push(`${rl_name(it.k)}: ${b.name}`); } }
+        else if (it.t === "bk"){ const e = bk_eintrag(it, code); blaetter.push(mitCache(e, U)); geuebt.push(e.kurz); }
         else if (it.t === "vs"){ const b = VS_BLAETTER.find(x => x.nr === it.nr); if (b){ blaetter.push(mitCache({ nr: "0", kurz: "Schreiben: " + b.kurz, name: "Vom Lesen zum Schreiben – " + b.name, bau: c => b.bau({ ...c, vs: vs_ctx(it.st || "") }), extra: { label: "Vom Lesen zum Schreiben", afs: "Symptomtraining: Laute hören und verschriften", reif: true }, quelle: { t: "vs", nr: b.nr } }, U)); geuebt.push("Schreiben: " + b.name); } }
         else if (it.t === "lesen"){
             const lt = ctxLesen.lt, a = LT_AUFGABEN.find(x => x.key === it.a);
@@ -10992,6 +11029,7 @@ function std_optionen(ph, r){
     if (ph === "Aufmerksamkeit") ["aufmerksamkeit", "aufmerksamkeit5", "aufmerksamkeit7"].forEach(k => gruppen.push([FS_SERIEN[k].label, fs_katalog(k).map(b => opt({ t: "fs", s: k, nr: b.nr }, b.name))]));
     if (ph === "Funktionstraining") STD_FUNKTIONEN.forEach(k => gruppen.push([FS_SERIEN[k].label, FS_SERIEN[k].blaetter.map(b => opt({ t: "fs", s: k, nr: b.nr }, b.name))]));
     if (ph === "Symptomtraining"){
+        { const z = (r.items.find(x => x.t === "bk") || {}).z || bk_naechster(code); gruppen.push([`Buchstabenkurs · ${bk_gross(z)} ${z}`, BK_BLAETTER.map(b => opt({ t: "bk", z, nr: b.nr }, b.name))]); }
         gruppen.push(["Vom Lesen zum Schreiben", VS_BLAETTER.map(b => opt({ t: "vs", nr: b.nr }, b.name))]);
         [...RL_STUFEN, ...RL_GWS].forEach(t => gruppen.push(["Rechtschreib-Werkstatt · " + rl_name(t.key), RL_BLAETTER.map(b => opt({ t: "rl", k: t.key, nr: b.nr }, b.name))]));
         gruppen.push(["Rechtschreibung anwenden (gemischt)", RSA_KERN.map(b => opt({ t: "rsa", nr: b.nr }, b.name))]);
@@ -11007,7 +11045,7 @@ function std_optionen(ph, r){
     if (heft.length) gruppen.push(["Aus dem Trainingsheft", heft.map(m => opt({ t: "heft", id: m.id }, (m.erledigt ? "✓ " : "") + m.titel + (std_heftDruckbar(m) ? "" : " (separat drucken)")))]);
     return gruppen.map(([g, o]) => `<optgroup label="${ws_esc(g)}">${o.join("")}</optgroup>`).join("");
 }
-function std_gleich(a, b){ return ["t", "s", "nr", "k", "a", "d", "id", "st", "i", "b"].every(k => String(a[k] ?? "") === String(b[k] ?? "")); }
+function std_gleich(a, b){ return ["t", "s", "nr", "k", "a", "d", "id", "st", "i", "b", "z"].every(k => String(a[k] ?? "") === String(b[k] ?? "")); }
 function std_editorZeigen(){
     const el = document.getElementById("std-editor");
     if (!el || !std_rezept) return;
@@ -11021,7 +11059,7 @@ function std_editorZeigen(){
             const liste = r.items.filter(it => it.p === ph);
             const optHtml = std_optionen(ph, r);
             return `<div class="std-ed-phase"><div class="std-ed-name">${ph}</div><div class="std-ed-zeilen">
-                ${liste.map(it => { const info = std_itemInfo(it, r), sel = encodeURIComponent(JSON.stringify({ t: it.t, s: it.s, nr: it.nr, k: it.k, a: it.a, d: it.d, id: it.id, st: it.st, i: it.i }));
+                ${liste.map(it => { const info = std_itemInfo(it, r), sel = encodeURIComponent(JSON.stringify({ t: it.t, s: it.s, nr: it.nr, k: it.k, a: it.a, d: it.d, id: it.id, st: it.st, i: it.i, z: it.z }));
                     const alt = it.t !== "heft" && std_alternativen(it, r).length;
                     return `<div class="std-ed-zeile ${it.ng ? "ng" : ""} ${it.von ? "weiter" : ""}">${r.kind2 ? `<select class="std-wer" data-wer="${it.u}" title="Für wen?">${[["beide", "beide"], ["1", r.kind || "Kind 1"], ["2", r.kind2]].map(([w, n]) => `<option value="${w}" ${(it.wer || "1") === w ? "selected" : ""}>${ws_esc(n)}</option>`).join("")}</select>` : ""}<select data-tausch="${it.u}" title="${it.von ? "Aus der Stunde vom " + std_datumKurz(it.vd) + " übernommen" : ""}">${info.ok ? "" : `<option selected>${ws_esc(info.name)}</option>`}${optHtml}</select>
                         <button class="std-ed-knopf" data-ed="tausch" data-u="${it.u}" title="Anderes Blatt derselben Art" ${alt ? "" : "disabled"}><i class="fa-solid fa-dice"></i></button>
@@ -11545,8 +11583,8 @@ function bs_pool(){
     const eigene = g.thema === "eigen" ? (lt_wert("g-eigene-woerter") || "").split(",").map(w => w.trim()).filter(Boolean) : [];
     return [...new Set([...eigene, ...BS_WOERTER])].filter(w => w.length <= (g.klasse <= 1 ? 7 : 10));
 }
-function bs_kontext(){
-    const modus = bs_modus(), ziele = bs_ziele(), pool = bs_pool();
+function bs_kontext(mo, zi){
+    const modus = mo || bs_modus(), ziele = zi || bs_ziele(), pool = bs_pool();
     const set = new Set(ziele);
     const info = pool.map(w => {
         const roh = bs_laute(w);
