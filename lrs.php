@@ -293,7 +293,7 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .fp-chip:hover{ border-color:#bcd2e2; }
 .fp-chip input{ position:absolute; opacity:0; pointer-events:none; }
 .fp-chip::before{ content:""; width:20px; height:20px; flex:none; border-radius:6px; border:2px solid #c3ced6; background:#fff; }
-.fp-chip.an{ border-color:var(--meer); background:#eef6fb; }
+.fp-chip.an{ border-color:var(--meer); background:#f3f7ec; }
 .fp-chip.an::before{ background:var(--meer) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat; border-color:var(--meer); }
 .fp-chip-text{ flex:1; min-width:0; }
 .fp-chip-text small{ display:block; font-size:11.5px; font-weight:700; color:#7c8a94; margin-top:1px; }
@@ -317,7 +317,7 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 #fp-summe b{ font-size:20px; color:var(--gold); }
 #fp-summe span{ opacity:.8; font-weight:700; }
 /* Übernahme aus dem Gutachten */
-.fp-import{ background:linear-gradient(135deg, #eef6fb, #f7fbfe); border:2px solid #cfe3f0; border-radius:20px; padding:16px 18px; margin:6px 0 14px; }
+.fp-import{ background:linear-gradient(135deg, #f3f7ec, #f7fbfe); border:2px solid #cfe3f0; border-radius:20px; padding:16px 18px; margin:6px 0 14px; }
 .fp-import-kopf{ display:flex; gap:10px; align-items:center; font-weight:900; color:var(--nacht); font-size:14px; }
 .fp-import-kopf small{ font-weight:700; color:#7c8a94; font-size:12px; }
 .fp-kacheln{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; margin:12px 0; }
@@ -360,7 +360,7 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 .fp-wahl{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:4px 14px; }
 .fp-wahl label{ display:flex; gap:6px; align-items:center; text-transform:none; letter-spacing:0; font-size:13px; font-weight:700; color:var(--text); margin:0; }
 .fp-wahl label small{ color:var(--meer); font-weight:800; }
-.fp-import{ background:#eef6fb; border:2px solid #bcd8ea; border-radius:16px; padding:12px 16px; font-size:13px; margin-bottom:14px; }
+.fp-import{ background:#f3f7ec; border:2px solid #bcd8ea; border-radius:16px; padding:12px 16px; font-size:13px; margin-bottom:14px; }
 .fp-tabelle{ width:100%; border-collapse:collapse; margin-top:8px; font-size:13px; }
 .fp-tabelle th, .fp-tabelle td{ text-align:left; padding:4px 8px; border-bottom:1px solid #d6e6f0; }
 .fp-uebertragen{ margin-top:10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-weight:700; }

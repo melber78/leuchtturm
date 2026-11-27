@@ -173,7 +173,7 @@ body{ background:#f6f2ea; }
 .zu{ position:sticky; top:0; float:right; }
 
 /* ---------- Guten Morgen! (Tagesstart) ---------- */
-#morgen{ position:fixed; inset:0; display:none; flex-direction:column; z-index:10; background:linear-gradient(160deg,#fff8e8 0%,#eef6fb 100%); color:#1f2d36; font-family:"Nunito",sans-serif; user-select:none; }
+#morgen{ position:fixed; inset:0; display:none; flex-direction:column; z-index:10; background:linear-gradient(160deg,#fff8e8 0%,#f3f7ec 100%); color:#1f2d36; font-family:"Nunito",sans-serif; user-select:none; }
 #morgen.an{ display:flex; }
 /* Klasse 5–9: sachlicher */
 #morgen.sek{ background:linear-gradient(160deg,#eef2f6 0%,#e2e9f1 100%); color:#1c2b39; }
@@ -334,7 +334,7 @@ body{ background:#f6f2ea; }
 .mg-wbild{ font-size:clamp(46px,min(6.5vw,11vh),130px); line-height:1.1; }
 .mg-wtext{ font:900 clamp(18px,min(2vw,3.4vh),38px) "Nunito",sans-serif; color:#2f4a1f; }
 .mg-temp{ font:800 clamp(15px,min(1.5vw,2.6vh),28px) "Nunito",sans-serif; color:#557428; margin-top:.4vh; }
-.mg-kleidung{ margin-top:.8vh; background:#eef6fb; border-radius:999px; padding:.3em .9em; font:800 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#2f4a1f; }
+.mg-kleidung{ margin-top:.8vh; background:#f3f7ec; border-radius:999px; padding:.3em .9em; font:800 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#2f4a1f; }
 .mg-tipp{ color:#9aa5ad; font-weight:700; font-size:14px; }
 /* Stundenplan */
 .mg-stunden{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.9vh; flex:1; min-height:0; justify-content:flex-start; }

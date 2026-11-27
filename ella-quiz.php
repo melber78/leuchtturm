@@ -52,7 +52,7 @@ main{ max-width:1180px; margin:0 auto; padding:0 18px 40px; }
 .thema.misch{ background:linear-gradient(135deg,#fff,#fff6e3); }
 .sterne{ color:#e0a500; letter-spacing:2px; font-size:16px; min-height:20px; }
 .sterne .leer{ color:#dde3e7; }
-.hinweis{ background:#eef6fb; border-radius:16px; padding:12px 16px; font-weight:700; color:#3a5566; margin-top:18px; }
+.hinweis{ background:#f3f7ec; border-radius:16px; padding:12px 16px; font-weight:700; color:#3a5566; margin-top:18px; }
 /* Quiz */
 #quiz{ display:none; min-height:100vh; flex-direction:column; }
 body.spielt #quiz{ display:flex; }

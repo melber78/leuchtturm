@@ -85,7 +85,7 @@ body{
 .portal-card i{ font-size:30px !important; margin-bottom:10px !important; }
 .portal-card h2{ font-size:17px !important; }
 .portal-card p{ font-size:13px !important; }
-.portal-card.haupt{ background:linear-gradient(135deg, #eef6fb, #fff); outline:2px solid #cfe2ef; }
+.portal-card.haupt{ background:linear-gradient(135deg, #f3f7ec, #fff); outline:2px solid #dbe6cc; }
 .heute-karte{ display:flex; align-items:center; gap:16px; text-decoration:none; color:white; background:linear-gradient(135deg, var(--nacht), var(--meer)); border-radius:22px; padding:18px 22px; box-shadow:var(--schatten); margin:18px 0 6px; transition:.2s; }
 .heute-karte:hover{ transform:translateY(-3px); }
 .heute-karte > i:first-child{ font-size:30px; color:var(--gold); }
@@ -124,12 +124,12 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 .untergruppe h3{ margin:4px 0 8px; font:900 12px "Nunito",sans-serif; text-transform:uppercase; letter-spacing:.08em; color:#8a9aa5; }
 .kacheln{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:10px; }
 .kachel{ display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text); background:#f6f8fa; border-radius:14px; padding:12px 14px; border:2px solid transparent; transition:.15s; min-width:0; }
-.kachel:hover{ border-color:#cfe2ef; background:#fff; transform:translateY(-2px); }
+.kachel:hover{ border-color:#dbe6cc; background:#fff; transform:translateY(-2px); }
 .kachel > i{ font-size:22px; color:var(--meer); width:30px; text-align:center; flex:none; }
 .kachel span{ display:flex; flex-direction:column; min-width:0; }
 .kachel b{ font-size:15px; font-weight:900; color:var(--nacht); }
 .kachel small{ font-size:12.5px; color:#6f7d86; font-weight:600; line-height:1.3; }
-.kachel.haupt{ background:linear-gradient(135deg,#eef6fb,#fff); border-color:#d5e6f1; }
+.kachel.haupt{ background:linear-gradient(135deg,#f3f7ec,#fff); border-color:#d5e6f1; }
 .kachel.versteckt, .untergruppe.versteckt, details.bereich.versteckt{ display:none; }
 @media (max-width:520px){ .kacheln{ grid-template-columns:1fr 1fr; gap:8px; } .kachel{ flex-direction:column; align-items:flex-start; gap:6px; padding:10px 12px; } .kachel small{ display:none; } .kachel b{ font-size:14px; line-height:1.2; } .neu-eintrag span{ display:none; } .neu-eintrag{ padding:8px 12px; } .portal-header p{ display:none; } details.bereich > summary{ padding:14px 16px; font-size:17px; } .untergruppe{ padding:0 14px 12px; } }
 </style>

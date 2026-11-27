@@ -44,7 +44,7 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .sp-header p{ font-size:14px; opacity:.9; font-weight:700; margin:4px 0 0; }
 
 .sp-hinweis{
-    background:#eef6fb; border:2px solid #cfe2ef; border-radius:16px; padding:10px 18px;
+    background:#f3f7ec; border:2px solid #dbe6cc; border-radius:16px; padding:10px 18px;
     font-size:14px; font-weight:700; color:var(--nacht); margin-bottom:18px; display:flex; gap:10px; align-items:center;
 }
 .sp-hinweis i{ color:var(--meer); }
@@ -73,7 +73,7 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 }
 .sp-chips{ display:flex; gap:8px; flex-wrap:wrap; }
 .sp-chip{
-    display:inline-flex; align-items:center; gap:6px; background:#eef6fb; color:var(--meer); border:2px solid #cfe2ef;
+    display:inline-flex; align-items:center; gap:6px; background:#f3f7ec; color:var(--meer); border:2px solid #dbe6cc;
     border-radius:999px; padding:6px 12px; font-weight:800; font-size:13px; cursor:pointer; transition:.15s;
 }
 .sp-chip:hover{ background:var(--meer); color:white; }

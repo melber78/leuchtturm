@@ -132,7 +132,7 @@ button, input, select, textarea{ font-family:inherit; font-size:15px; }
 .karte h2{ margin:0 0 12px; font-size:18px; font-weight:900; color:var(--nacht); display:flex; gap:8px; align-items:center; }
 .hinweis{ background:#f9eeda; border-radius:14px; padding:12px 16px; font-weight:700; margin-bottom:18px; }
 .hinweis.rot{ background:#fbebeb; color:var(--rot); }
-.hinweis.blau{ background:#eef6fb; color:var(--nacht); }
+.hinweis.blau{ background:#f3f7ec; color:var(--nacht); }
 .leer{ color:var(--grau); font-weight:700; text-align:center; padding:22px; }
 input[type=text], input[type=time], input[type=date], input[type=search], select, textarea{
     border:2px solid var(--linie); border-radius:10px; padding:7px 10px; background:white; color:var(--text); width:100%;
@@ -217,9 +217,9 @@ input:focus, select:focus, textarea:focus{ outline:none; border-color:var(--meer
 .sp-zeile{ display:grid; grid-template-columns:86px 170px 120px 1fr 96px 118px; gap:8px; align-items:center; padding:8px 0; border-bottom:1px solid #eef1ef; }
 .sp-titelzeile{ padding:0 0 4px; font-size:12px; font-weight:800; color:var(--grau); text-transform:uppercase; letter-spacing:.04em; }
 .checks{ display:flex; flex-direction:column; gap:6px; }
-.sp-ab{ grid-column:2 / -1; display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:#eef6fb; border-radius:10px; padding:6px 10px; font-weight:800; font-size:14px; }
+.sp-ab{ grid-column:2 / -1; display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:#f3f7ec; border-radius:10px; padding:6px 10px; font-weight:800; font-size:14px; }
 .sp-ab select{ width:auto; min-width:120px; }
-.ab-leiste{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:14px; background:#eef6fb; border-radius:12px; padding:10px 12px; font-size:14px; font-weight:700; color:var(--nacht); }
+.ab-leiste{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:14px; background:#f3f7ec; border-radius:12px; padding:10px 12px; font-size:14px; font-weight:700; color:var(--nacht); }
 .sp-pause{ grid-template-columns:86px 210px 1fr 150px; }
 .aufsicht-check{ background:#fbf4e3; border-radius:10px; padding:8px 10px; color:#7a5a12; }
 .zweit-check{ display:flex; align-items:center; gap:6px; font-size:13px; font-weight:800; color:var(--nacht); cursor:pointer; line-height:1.15; }
