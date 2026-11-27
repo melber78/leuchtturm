@@ -123,3 +123,24 @@ function lt_tafelVersuche($falsch = false){
     if ($falsch) { $d[$ip][] = $jetzt; if (!is_dir(dirname($f))) mkdir(dirname($f), 0775, true); file_put_contents($f, json_encode($d), LOCK_EX); }
     return count($d[$ip] ?? []);
 }
+
+/* ---------- Freigabe-Links: eine einzelne Stunde für eine Kollegin (ohne Konto) ----------
+   Melanie erzeugt in einer Stunde „Link für Kollegin“. Wer den Link öffnet, sieht nur diese
+   eine Stunde (Präsentation, Material, Druck) – nichts anderes, und kann nichts speichern. */
+function lt_freigabenDatei(){ return __DIR__ . "/material-daten/gaeste/freigaben.json"; }
+function lt_freigabenLesen(){ $f = lt_freigabenDatei(); $d = file_exists($f) ? json_decode((string)file_get_contents($f), true) : null; return is_array($d) ? $d : []; }
+function lt_freigabenSchreiben($liste){
+    $f = lt_freigabenDatei();
+    if (!is_dir(dirname($f))) mkdir(dirname($f), 0775, true);
+    if (!file_exists(dirname($f) . "/.htaccess")) @file_put_contents(dirname($f) . "/.htaccess", "Require all denied\nDeny from all\n");
+    return file_put_contents($f, json_encode(array_values($liste), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX) !== false;
+}
+function lt_freigabeGueltig($f){ return $f && empty($f["gesperrt"]) && (empty($f["bis"]) || strtotime($f["bis"] . " 23:59:59") >= time()); }
+function lt_freigabeVon($token){
+    if (!is_string($token) || !preg_match('/^[A-Za-z0-9]{10,40}$/', $token)) return null;
+    foreach (lt_freigabenLesen() as $f) if (hash_equals((string)($f["token"] ?? ""), $token)) return lt_freigabeGueltig($f) ? $f : null;
+    return null;
+}
+// Freigabe der aktuellen Sitzung (gesetzt von teilen.php)
+function lt_freigabe(){ return lt_freigabeVon($_SESSION["leuchtturm_freigabe"] ?? ""); }
+

@@ -30,6 +30,12 @@ if (file_exists($datei)) {
     if (!is_array($daten)) { $dateiKaputt = trim((string)$inhalt) !== ""; $daten = []; }
 }
 $daten += ["einheiten" => [], "jahresplan" => null, "rituale" => null];
+// Freigabe-Link: nur die geteilte Stunde, kein Jahresplan
+if (!empty($LT_FREIGABE)) {
+    if ($LT_FREIGABE["bereich"] !== $BEREICH) { header("Location: sozial-stunden.php?bereich=" . urlencode($LT_FREIGABE["bereich"])); exit; }
+    $daten["einheiten"] = array_values(array_filter((array)$daten["einheiten"], fn($e) => ($e["id"] ?? "") === $LT_FREIGABE["id"]));
+    $daten["jahresplan"] = null;
+}
 $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE;
 // Alle Vorlagen-Dateien: sozial-einheiten.js zuerst, dann -2, -3 … (neue Dateien werden automatisch geladen)
 $vorlagenDateien = glob(__DIR__ . "/" . $B_INFO["vorlagen"] . "*.js") ?: [];
@@ -468,16 +474,23 @@ table.ab-tab td .lz{ min-height:0; }
     #druck .lehrer-druck{ page:lehrer; break-after:page; padding:14mm 15mm; -webkit-box-decoration-break:clone; box-decoration-break:clone; overflow-wrap:break-word; }
     #druck .lehrer-druck table{ width:100%; table-layout:fixed; }
 }
+
+/* Freigabe-Link: nur die eine Stunde */
+body.freigabe .reiter, body.freigabe .detail-kopf .knopfleiste, body.freigabe .detail-kopf .titel > a, body.freigabe .aufbau-box{ display:none !important; }
+.teilen-box{ border:2px solid #e8d9b5; background:#fffaf0; }
+.teilen-zeile{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:8px 0; border-top:1px solid #eee3c8; }
+.teilen-zeile code{ flex:1 1 260px; font-size:12.5px; word-break:break-all; background:#fff; border:1px solid #eee3c8; border-radius:8px; padding:6px 8px; }
+.teilen-neu{ margin:10px 0 4px; font-weight:800; color:#3d6b2a; }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 <link rel="stylesheet" href="marke/mewe.css">
 </head>
-<body>
+<body class="<?= !empty($LT_FREIGABE) ? "freigabe" : "" ?>">
 
 <header class="kopf">
     <div class="kopf-innen">
         <div class="kopf-zeile">
-            <a class="zurueck" href="<?= $LT_GAST ? "gast.php" : "index.php" ?>"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a>
+            <?php if (empty($LT_FREIGABE)): ?><a class="zurueck" href="<?= $LT_GAST ? "gast.php" : "index.php" ?>"><i class="fa-solid fa-arrow-left"></i> Leuchtturm</a><?php else: ?><img src="marke/mewe-leuchtturm.svg" alt="MeWe Leuchtturm" style="height:46px"><?php endif; ?>
             <h1><i class="fa-solid <?= $B_INFO["icon"] ?>"></i> <?= htmlspecialchars($B_INFO["titel"]) ?></h1>
         </div>
         <nav class="reiter">
@@ -527,6 +540,9 @@ table.ab-tab td .lz{ min-height:0; }
 <?php endforeach; endif; ?>
 <script>
 window.SOZIAL_DATEN = <?= json_encode($daten, $JSON) ?>;
+window.LT_FREIGABE = <?= json_encode(!empty($LT_FREIGABE) ? ["id" => $LT_FREIGABE["id"], "titel" => $LT_FREIGABE["titel"] ?? ""] : null, $JSON) ?>;
+window.LT_DARF_TEILEN = <?= json_encode(empty($LT_GAST) && empty($LT_FREIGABE)) ?>;
+window.LT_BEREICH = <?= json_encode($BEREICH) ?>;
 window.SOZIAL_CSRF = <?= json_encode($_SESSION["sozial_csrf"], $JSON) ?>;
 window.SOZIAL_GESPERRT = <?= $dateiKaputt ? "true" : "false" ?>;
 window.BEREICH = <?= json_encode(["key" => $BEREICH, "name" => $B_INFO["name"], "titel" => $B_INFO["titel"]], $JSON) ?>;
@@ -1432,6 +1448,7 @@ function reiterSetzen(name){
 function route(){
     if (ignoriereHash) { ignoriereHash = false; return; }
     const [ansicht, id] = decodeURIComponent(location.hash.slice(1)).split("/");
+    if (window.LT_FREIGABE && (ansicht !== "stunde" || id !== window.LT_FREIGABE.id)) { ignoriereHash = false; location.replace("#stunde/" + encodeURIComponent(window.LT_FREIGABE.id)); return zeigeStunde(window.LT_FREIGABE.id); }
     if (editor && editor.geaendert && ansicht !== "bearbeiten" && ansicht !== "neu") {
         if (!confirm("Deine Änderungen sind noch nicht gespeichert. Trotzdem verlassen?")) {
             ignoriereHash = true; history.back(); return;
@@ -1452,6 +1469,39 @@ window.addEventListener("hashchange", route);
 // Zu einer Ansicht wechseln – auch wenn die Adresse gleich bleibt, wird neu gezeichnet
 function gehe(hash){ if (location.hash === hash) route(); else location.hash = hash; }
 window.addEventListener("beforeunload", ev => { if (editor && editor.geaendert) { ev.preventDefault(); ev.returnValue = ""; } });
+
+/* ---------- Link für eine Kollegin (nur diese eine Stunde, ohne Konto) ---------- */
+async function teilenApi(daten){
+    const a = await fetch("teilen.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(daten) });
+    const j = await a.json().catch(() => ({ ok: false, fehler: "Keine Antwort von teilen.php." }));
+    if (!j.ok) throw new Error(j.fehler || "Das hat nicht geklappt."); return j;
+}
+async function teilenZeigen(e){
+    const box = document.getElementById("teilen-box"); if (!box) return;
+    box.hidden = false;
+    const zeichne = async (neu) => {
+        let liste = [];
+        try { liste = (await teilenApi({ aktion: "liste", bereich: window.LT_BEREICH, id: e.id })).liste || []; } catch (x) {}
+        const zeile = f => `<div class="teilen-zeile"><code>${esc(f.url)}</code><span class="chip">${f.bis ? "bis " + esc(f.bis.split("-").reverse().join(".")) : "unbegrenzt"}</span>
+            <button class="btn" data-kopie="${esc(f.url)}"><i class="fa-solid fa-copy"></i> Kopieren</button>${navigator.share ? `<button class="btn" data-share="${esc(f.url)}"><i class="fa-solid fa-share-nodes"></i> Senden</button>` : ""}
+            <button class="btn rot" data-weg="${esc(f.token)}" title="Link löschen – danach funktioniert er nicht mehr"><i class="fa-solid fa-trash"></i></button></div>`;
+        box.innerHTML = `<h2><i class="fa-solid fa-share-nodes"></i> Link für eine Kollegin</h2>
+            <p class="ed-hilfe" style="margin:0 0 10px">Wer den Link öffnet, sieht <b>nur diese Stunde</b> – mit Präsentation, Tafel-Übungen, Filmen und Druck. Ohne Anmeldung, ohne deine anderen Stunden, und es kann nichts gespeichert oder verändert werden.</p>
+            <div class="knopfleiste"><select id="teilen-tage"><option value="7">gültig 1 Woche</option><option value="30" selected>gültig 1 Monat</option><option value="180">gültig ½ Jahr</option><option value="0">ohne Ablauf</option></select>
+                <button class="btn gold" id="teilen-neu"><i class="fa-solid fa-link"></i> Neuen Link erstellen</button></div>
+            ${neu ? `<div class="teilen-neu">✅ Link erstellt${neu.kopiert ? " und kopiert" : ""} – einfach in eine Nachricht einfügen.</div>` : ""}
+            ${liste.length ? `<div class="teilen-liste">${liste.map(zeile).join("")}</div>` : ""}`;
+        box.querySelector("#teilen-neu").onclick = async () => {
+            try { const j = await teilenApi({ aktion: "erstellen", bereich: window.LT_BEREICH, id: e.id, titel: e.titel, tage: parseInt(box.querySelector("#teilen-tage").value, 10) || 0 });
+                let kopiert = false; try { await navigator.clipboard.writeText(j.url); kopiert = true; } catch (x) {}
+                zeichne({ kopiert }); } catch (x) { alert(x.message); } };
+        box.querySelectorAll("[data-kopie]").forEach(b => b.onclick = async () => { try { await navigator.clipboard.writeText(b.dataset.kopie); b.innerHTML = '<i class="fa-solid fa-check"></i> Kopiert'; } catch (x) { prompt("Link kopieren:", b.dataset.kopie); } });
+        box.querySelectorAll("[data-share]").forEach(b => b.onclick = () => navigator.share({ title: e.titel, text: `Stunde „${e.titel}“ aus meinem Leuchtturm:`, url: b.dataset.share }).catch(() => {}));
+        box.querySelectorAll("[data-weg]").forEach(b => b.onclick = async () => { if (!confirm("Diesen Link löschen? Er funktioniert dann nicht mehr.")) return; try { await teilenApi({ aktion: "loeschen", token: b.dataset.weg }); zeichne(); } catch (x) { alert(x.message); } });
+    };
+    await zeichne();
+    box.scrollIntoView({ behavior: "smooth", block: "center" });
+}
 
 /* ---------- Bibliothek ---------- */
 let filterText = "", filterKat = "", filterOhne = false;
@@ -1539,8 +1589,9 @@ function zeigeStunde(id){
                     const st = klassenStand(), mit = st.filter(x => x.gehalten.some(g => ids.includes(g.id))).map(x => x.k.name), nach = st.filter(x => x.nachholen.some(g => ids.includes(g.id))).map(x => x.k.name);
                     return (mit.length ? `<span class="chip gruen"><i class="fa-solid fa-check"></i> gehalten: ${esc(mit.join(", "))}</span> ` : "") + (nach.length ? `<span class="chip rot"><i class="fa-solid fa-rotate"></i> nachholen: ${esc(nach.join(", "))}</span>` : ""); })()}</div>
                 <h2>${esc(e.titel)}</h2></div>
-            <div class="knopfleiste">${bearbeitenKnopf}<button class="btn" id="kopieren"><i class="fa-solid fa-copy"></i> Als neue Stunde kopieren</button>${loeschKnopf}</div>
+            <div class="knopfleiste">${bearbeitenKnopf}<button class="btn" id="kopieren"><i class="fa-solid fa-copy"></i> Als neue Stunde kopieren</button>${loeschKnopf}${window.LT_DARF_TEILEN ? `<button class="btn gold" id="teilen"><i class="fa-solid fa-share-nodes"></i> Link für Kollegin</button>` : ""}</div>
         </div>
+        <div id="teilen-box" class="karte teilen-box" hidden></div>
 
         ${(() => {
             const vor = vorherIds(e), nach = danachIds(e);
@@ -1694,6 +1745,7 @@ function zeigeStunde(id){
         catch (err) { toast("PowerPoint konnte nicht erstellt werden: " + err.message, true); }
         b.disabled = false; b.innerHTML = alt;
     }));
+    const tk = document.getElementById("teilen"); if (tk) tk.addEventListener("click", () => teilenZeigen(e));
     document.getElementById("kopieren").addEventListener("click", () => {
         editor = { entwurf: { ...sauber(e), id: undefined, ersetzt: undefined, titel: e.titel + " (Kopie)" }, geaendert: true, quelleId: null };
         ignoriereHash = true; location.hash = "#neu"; zeigeEditor(null, true);
