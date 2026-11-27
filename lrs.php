@@ -1214,13 +1214,13 @@ html:not(.lt-sek):not(.lt-druckschrift) .ws-seite.ws-info.ws-kindblatt{ --ws-sch
 @font-face{ font-family:"Nunito LT"; font-weight:600; src:url("schriften/nunito-600.woff2") format("woff2"); }
 @font-face{ font-family:"Nunito LT"; font-weight:700; src:url("schriften/nunito-700.woff2") format("woff2"); }
 @font-face{ font-family:"Nunito LT"; font-weight:800; src:url("schriften/nunito-800.woff2") format("woff2"); }
-.ws-seite, .blatt{ --ink:#2d3530; --moos:#4f6b4a; --salbei:#a9bfa0; --salbeih:#e8efe2; --holz:#8a6a4b; --creme:#f8f4ec; --klein:"Nunito LT", Nunito, sans-serif; color:var(--ink); }
+.ws-seite, .blatt{ --ink:#2d3530; --moos:#557428; --salbei:#b3c69a; --salbeih:#edf2e3; --holz:#8a6a4b; --creme:#f8f4ec; --klein:"Nunito LT", Nunito, sans-serif; color:var(--ink); }
 .ws-seite{ position:relative; padding:12mm 15mm 13mm 15mm; }
 .ws-innen{ gap:12px; position:relative; z-index:1; }
 /* Kopf: Keimling + Reihe/Blatt + Samenpunkte, rechts Name */
 .ws-kopf, .fs-reif .ws-kopf{ align-items:center; font-size:13px; padding:0 0 2px; border:none; font-family:var(--klein); }
-.ws-pille, .fs-reif .ws-pille{ display:inline-flex !important; align-items:center; gap:9px; background:none !important; color:var(--holz) !important; padding:0 !important; border-radius:0 !important; font:700 11.5px var(--klein) !important; letter-spacing:.13em; text-transform:uppercase; }
-.ws-pille::before{ content:""; width:30px; height:30px; flex:none; background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cpath%20d%3D%22M24%2044%20C24%2034%2024%2028%2024%2022%22%20stroke%3D%22%234f6b4a%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M24%2024%20C14%2024%207%2017%207%208%20C17%208%2024%2014%2024%2024Z%22%20fill%3D%22%234f6b4a%22/%3E%3Cpath%20d%3D%22M24%2027%20C33%2027%2041%2021%2041%2011%20C31%2011%2024%2018%2024%2027Z%22%20fill%3D%22%23a9bfa0%22/%3E%3Cpath%20d%3D%22M13%2044%20Q24%2039%2035%2044%22%20stroke%3D%22%238a6a4b%22%20stroke-width%3D%222.6%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22/%3E%3C/svg%3E") center/contain no-repeat; }
+.ws-pille, .fs-reif .ws-pille{ display:inline-flex !important; align-items:center; gap:7px; background:none !important; color:var(--holz) !important; padding:0 !important; border-radius:0 !important; font:700 11.5px var(--klein) !important; letter-spacing:.13em; text-transform:uppercase; }
+.ws-pille::before{ content:""; width:66px; height:36px; flex:none; background:url("marke/mewe-logo.png") left center/contain no-repeat; margin-right:4px; }
 .ws-pille{ white-space:nowrap; min-width:0; overflow:hidden; }
 .ws-kopf{ gap:14px; }
 .ws-saat{ display:inline-flex; gap:5px; margin-left:4px; flex:none; }
@@ -1235,7 +1235,7 @@ html:not(.lt-sek):not(.lt-druckschrift) .ws-seite.ws-info.ws-kindblatt{ --ws-sch
 .ws-seite:not(.ws-info) .ws-inhalt::before{ content:""; position:absolute; left:19px; top:14px; bottom:6px; width:3px; border-radius:2px; background:linear-gradient(var(--salbei), var(--moos)); }
 .ws-aufgabe, .fs-reif .ws-aufgabe{ position:relative; align-items:flex-start; gap:10px; font-size:19px; line-height:1.45; }
 .ws-seite:not(.ws-info) .ws-nummer, .ws-seite:not(.ws-info).fs-reif .ws-nummer{ position:absolute; left:-50px; top:-4px; width:40px !important; min-width:0; height:36px !important; border-radius:0 !important;
-    background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2044%2040%22%3E%3Cpath%20d%3D%22M4%2030%20C4%2012%2018%203%2040%204%20C40%2024%2028%2036%208%2036%20Z%22%20fill%3D%22%234f6b4a%22/%3E%3Cpath%20d%3D%22M8%2034%20C16%2026%2024%2018%2034%209%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.2%22%20opacity%3D%22.4%22%20fill%3D%22none%22/%3E%3C/svg%3E") center/contain no-repeat !important; color:#fff !important; font:700 16px "Fraunces", Georgia, serif !important; display:flex !important; align-items:center; justify-content:center; padding:4px 0 0 2px; }
+    background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2044%2040%22%3E%3Cpath%20d%3D%22M4%2030%20C4%2012%2018%203%2040%204%20C40%2024%2028%2036%208%2036%20Z%22%20fill%3D%22%23557428%22/%3E%3Cpath%20d%3D%22M8%2034%20C16%2026%2024%2018%2034%209%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.2%22%20opacity%3D%22.4%22%20fill%3D%22none%22/%3E%3C/svg%3E") center/contain no-repeat !important; color:#fff !important; font:700 16px "Fraunces", Georgia, serif !important; display:flex !important; align-items:center; justify-content:center; padding:4px 0 0 2px; }
 .ws-seite:not(.ws-info) .ws-aufgabe:nth-of-type(even) .ws-nummer{ background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2044%2040%22%3E%3Cpath%20d%3D%22M4%2030%20C4%2012%2018%203%2040%204%20C40%2024%2028%2036%208%2036%20Z%22%20fill%3D%22%238a6a4b%22/%3E%3Cpath%20d%3D%22M8%2034%20C16%2026%2024%2018%2034%209%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.2%22%20opacity%3D%22.4%22%20fill%3D%22none%22/%3E%3C/svg%3E") !important; }
 .ws-seite.ws-info .ws-nummer{ background:var(--moos) !important; border-radius:50% 50% 50% 8px !important; color:#fff !important; font:700 15px "Fraunces", Georgia, serif !important; width:30px; height:30px; }
 /* Flächen */
@@ -1261,7 +1261,7 @@ html:not(.lt-sek):not(.lt-druckschrift) .ws-seite.ws-info.ws-kindblatt{ --ws-sch
 .rsl-leiste span:not(.rsl-weg){ border-radius:10px 3px 10px 3px !important; }
 .ws-laut-tabelle td:first-child, .fs-vergleich td:first-child{ border-radius:0 !important; }
 /* Tabellen */
-.rs-tabelle th{ background:none !important; border:none !important; border-bottom:2px solid var(--moos) !important; color:var(--holz); font:800 11.5px var(--klein); letter-spacing:.08em; text-transform:uppercase; padding:6px 8px; }
+.rs-tabelle th{ background:none !important; border:none !important; border-bottom:2px solid var(--moos) !important; color:var(--holz); font:800 13px var(--klein); letter-spacing:0; padding:6px 8px; }
 .rs-tabelle td{ border-left:none !important; border-right:none !important; border-bottom:1px solid var(--salbeih) !important; }
 .rs-tabelle tr:nth-child(even) td{ background:var(--creme); }
 /* Lineatur */
