@@ -383,6 +383,17 @@ textarea{ resize:vertical; min-height:62px; font-weight:600; }
 .st-verschieben label.mit{ display:flex; align-items:center; gap:6px; font-size:13px; font-weight:700; margin:0; width:100%; text-transform:none; letter-spacing:0; color:var(--text); }
 .st-verschieben label.mit input{ width:auto; }
 .st-statusreihe{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+.st-abschluss{ grid-column:1 / -1; border-top:2px dashed #e6ecdc; padding-top:10px; margin-top:4px; }
+.st-abschluss h4{ margin:0 0 6px; font-size:14px; color:#2f4a1f; display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; align-items:center; }
+.st-blatt{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; padding:6px 0; border-bottom:1px solid #f0f3ec; }
+.st-blatt .bn{ flex:1 1 200px; font-weight:800; font-size:13.5px; } .st-blatt .bn small{ display:block; color:#7c8a94; font-weight:700; font-size:11.5px; }
+.st-bew{ display:flex; gap:4px; flex-wrap:wrap; }
+.st-bew button{ border:2px solid #e2e8ec; background:#fff; border-radius:999px; padding:4px 9px; font:inherit; font-size:12px; font-weight:800; color:#7c8a94; cursor:pointer; }
+.st-bew button.an.ok{ background:#e3f1d8; border-color:#7fb35a; color:#2f6a1f; } .st-bew button.an.teil{ background:#fff3d6; border-color:#e8c46a; color:#7a5d00; }
+.st-bew button.an.nein{ background:#fbe4dc; border-color:#e6a08a; color:#9b3d26; } .st-bew button.an.ng{ background:#e8eef6; border-color:#9fb4cf; color:#3c5578; }
+.st-abschluss .zeile2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; } @media (max-width:700px){ .st-abschluss .zeile2{ grid-template-columns:1fr; } }
+.st-abschluss input[type=text]{ width:100%; }
+.st-naechste{ display:inline-flex; gap:6px; align-items:center; background:#2f4a1f; color:#fff !important; border-radius:999px; padding:8px 14px; font-weight:900; font-size:13.5px; text-decoration:none; }
 .st-status{ border:2px solid #e2e8ec; background:#fff; border-radius:999px; padding:4px 10px; font:inherit; font-size:12px; font-weight:800; color:#7c8a94; cursor:pointer; }
 .st-status.offen.an{ background:#eef1f3; border-color:#9aa6ab; color:#2f4a1f; }
 .st-status.angefangen.an{ background:#fff4dc; border-color:#d9a23f; color:#8a5a00; }
@@ -687,6 +698,8 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
     <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
         <h2>Stunden</h2>
         <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <?php $letzte = null; foreach ($akte["stunden"] as $st0) { if (!empty($st0["rezept"]["items"]) && ($st0["status"] ?? "erledigt") !== "offen") { $letzte = $st0; break; } } ?>
+        <?php if ($letzte): ?><a class="knopf voll" style="background:#d9a23f; color:#3b2a06;" href="lrs.php?stunde=<?= urlencode($aktuellesKind) ?>&naechste=<?= urlencode($letzte["id"]) ?>" title="Aus dem Abschluss der Stunde vom <?= h(date("d.m.", strtotime($letzte["datum"]))) ?>"><i class="fa-solid fa-wand-magic-sparkles"></i> Nächste Stunde per Knopfdruck</a><?php endif; ?>
         <a class="knopf voll" href="lrs.php?stunde=<?= urlencode($aktuellesKind) ?>"><i class="fa-solid fa-layer-group"></i> Neue Stunde im Generator planen</a>
         <form class="zwei-kinder" action="lrs.php" method="get" onsubmit="if(!this.kind2.value){event.preventDefault(); this.kind2.focus();}">
                 <input type="hidden" name="stunde" value="<?= h($aktuellesKind) ?>">
@@ -928,8 +941,50 @@ function stunden_zeigen(){
         <div><div class="st-statusreihe">${knoepfe}${(ST_PARTNER[s.id] || []).length ? `<span class="st-partner"><i class="fa-solid fa-user-group"></i> mit ${(ST_PARTNER[s.id]).map(af_esc).join(", ")}</span>` : ""}</div>
             <div class="inhalt">${af_esc(s.inhalt) || '<span class="leer-text">ohne Inhaltsangabe</span>'}</div>
             <label>Beobachtung</label><textarea rows="2" onchange="stunde_beob('${id}', this.value)" placeholder="Wie lief die Stunde? Wo habt ihr aufgehört? (wird beim Verlassen des Feldes gespeichert)">${af_esc(s.beobachtung)}</textarea></div>
+        ${abschluss_html(s)}
         ${stunden_verschieben === s.id ? stunde_verschiebenBox(s) : ""}
     </div>`; }).join("") : `<div class="leer">${alle.length ? "Keine Stunden mit diesem Stand." : "Noch keine Stunden eingetragen."}</div>`;
+}
+/* --- Stunden-Abschluss: Blatt für Blatt bewerten → daraus wird die nächste Stunde --- */
+const AB_BEW = [["ok", "✓ klappt"], ["teil", "◐ teilweise"], ["nein", "✗ noch nicht"], ["ng", "⏸ nicht geschafft"]];
+function abschluss_html(s){
+    const it = (s.rezept && s.rezept.items) || [];
+    const bewertbar = it.map((x, i) => ({ x, i })).filter(({ x }) => x.t !== "erst");
+    if (!bewertbar.length) return `<div class="st-abschluss"><h4>Abschluss</h4><span class="leer-text" style="font-size:13px">Diese Stunde wurde ohne Generator eingetragen – für den Abschluss Blatt für Blatt die Stunde einmal über „Im Generator öffnen“ in die Akte speichern.</span></div>`;
+    const fertig = bewertbar.filter(({ x }) => x.e || x.ng).length;
+    const id = af_esc(s.id);
+    return `<div class="st-abschluss"><h4><span>📋 Abschluss: Was hat geklappt? <small style="color:#7c8a94">(${fertig}/${bewertbar.length} bewertet)</small></span>
+            <a class="st-naechste" href="lrs.php?stunde=${encodeURIComponent(AKTE_KIND)}&naechste=${encodeURIComponent(s.id)}" title="Stellt die nächste Stunde aus diesem Abschluss zusammen"><i class="fa-solid fa-wand-magic-sparkles"></i> Nächste Stunde planen</a></h4>
+        ${bewertbar.map(({ x, i }) => { const akt = x.ng ? "ng" : x.e || "";
+            return `<div class="st-blatt"><div class="bn">${af_esc(x.n || ("Blatt " + (i + 1)))}<small>${af_esc(x.p || "")}${x.g ? " · " + af_esc(x.g) : ""}</small></div>
+            <div class="st-bew">${AB_BEW.map(([k, t]) => `<button class="${k}${akt === k ? " an" : ""}" onclick="abschluss_setzen('${id}', ${i}, '${k}')">${t}</button>`).join("")}</div></div>`; }).join("")}
+        <div class="zeile2">
+            <div><label>Fehlerwörter von heute → Lernbox</label><div style="display:flex; gap:6px"><input type="text" id="ab-fw-${id}" placeholder="z. B. Hund (Hunt), Fahrrad, wieder"><button class="knopf" onclick="abschluss_fehlerwoerter('${id}')">+ Lernbox</button></div>
+                <small style="color:#7c8a94; font-weight:700">Richtig schreiben, falsche Schreibung in Klammern – der Schwerpunkt wird automatisch erkannt.</small><div id="ab-fw-st-${id}" style="font-size:12.5px; font-weight:800; color:#3d6b2a"></div></div>
+            <div><label>Nächstes Mal weiter mit …</label><input type="text" value="${af_esc(s.weiter || "")}" placeholder="z. B. Lesestufe 3 ab Blatt 2, ck/tz noch mal" onchange="abschluss_weiter('${id}', this.value)"></div>
+        </div></div>`;
+}
+async function abschluss_setzen(id, i, k){
+    const s = (AKTE.stunden || []).find(x => x.id === id); if (!s || !s.rezept) return;
+    const r = JSON.parse(JSON.stringify(s.rezept)), it = r.items[i]; if (!it) return;
+    const war = it.ng ? "ng" : it.e || "";
+    delete it.e; delete it.ng;
+    if (war !== k){ if (k === "ng") it.ng = 1; else it.e = k; }
+    const daten = { rezept: r };
+    if (stunde_status(s) === "offen") daten.status = r.items.some(x => x.e) ? "erledigt" : "angefangen";
+    try { await akte_api({ aktion: "stunde_aendern", id, stunde: daten }); stunden_zeigen(); } catch (e){ alert(e.message); }
+}
+async function abschluss_weiter(id, wert){ try { await akte_api({ aktion: "stunde_aendern", id, stunde: { weiter: wert } }); } catch (e){ alert(e.message); } }
+async function abschluss_fehlerwoerter(id){
+    const feld = document.getElementById("ab-fw-" + id), st = document.getElementById("ab-fw-st-" + id);
+    const eintraege = typeof rs_eingabeLesen === "function" ? rs_eingabeLesen(feld.value) : feld.value.split(/[,;\n]+/).map(w => ({ wort: w.trim() })).filter(e => e.wort);
+    if (!eintraege.length){ feld.focus(); return; }
+    try {
+        const r = await fetch("foerderkartei.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ aktion: "woerter_hinzu", kind: AKTE_KIND, eintraege }) });
+        const j = await r.json().catch(() => ({ ok: false, fehler: "Keine Antwort von foerderkartei.php" }));
+        if (!j.ok) throw new Error(j.fehler || "Fehler");
+        feld.value = ""; st.textContent = "✅ " + (j.meldung || "In der Lernbox.");
+    } catch (e){ st.textContent = "⚠️ " + e.message; }
 }
 function st_plusTage(d, n){ const t = new Date(d + "T12:00:00"); t.setDate(t.getDate() + n); return t.toISOString().slice(0, 10); }
 function stunde_verschiebenBox(s){

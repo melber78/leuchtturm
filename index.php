@@ -147,6 +147,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-27", "Stunden-Abschluss & nächste Stunde per Knopfdruck", "In der Kinder-Akte jede Stunde Blatt für Blatt abschließen: ✓ klappt · ◐ teilweise · ✗ noch nicht · ⏸ nicht geschafft, Fehlerwörter direkt in die Lernbox, „weiter mit …“. Daraus stellt der Leuchtturm die nächste Stunde zusammen – auch die Spontanstunde knüpft daran an.", "trainingshefte.php"],
     ["2026-11-27", "Lernspiele neu gedacht", "Geübt wird jetzt immer mit Strategie: Wort hören, Schwingen/Verlängern/Ableiten, Lücke füllen – bei Fehlern erst ein Tipp, dann noch ein Versuch. Nie ein falsches Wortbild. Weltenreise = Lehrgang (eine Strategie pro Welt, Lesepfad für Buchstabenkinder). Action-Spiele sind jetzt Belohnung und kosten ⚡ Energie, die man beim Üben sammelt.", "lrs-spiele.php"],
     ["2026-11-27", "Schreiben & Vorlagen", "Empfehlung zum Nachteilsausgleich zum Ankreuzen, Einladung zum Gespräch, Rückmeldung an die Eltern, Übungstipps für zu Hause (passend zu den Schwerpunkten, ohne Technik) und Elterninfo zum Start – druckfertig im MeWe-Design.", "lrs-schreiben.php"],
     ["2026-11-27", "Weltenreise", "Abenteuerspiel in den Lernspielen: 8 Welten von Zauberwald bis Wolkenschloss – mit Geschichte, Begleitfigur, Abenteuern (Springen, Suchen, Bauen) und einem Wächter-Kampf. Sterne, Schätze und Münzen; geübt wird der Schwerpunkt des Kindes.", "lrs-spiele.php"],

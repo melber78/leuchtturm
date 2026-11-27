@@ -180,6 +180,7 @@ switch ($aktion) {
             if (isset($s["dauer"])) $st["dauer"] = max(5, min(240, (int)$s["dauer"]));
             if (isset($s["inhalt"])) $st["inhalt"] = $text($s["inhalt"], 1500);
             if (isset($s["beobachtung"])) $st["beobachtung"] = $text($s["beobachtung"], 1500);
+            if (isset($s["weiter"])) $st["weiter"] = $text($s["weiter"], 600);
             if (isset($s["rezept"])) $st["rezept"] = $rezeptPruefen($s["rezept"]);
             if (isset($s["heft"])) $st["heft"] = array_values(array_filter(array_map("strval", (array)$s["heft"]), fn($i) => preg_match('/^[A-Za-z0-9_.-]{1,60}$/', $i)));
             if (isset($s["status"])) {

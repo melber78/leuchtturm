@@ -36,7 +36,7 @@ $lrsStunden = [];
 foreach ($lrsAktenRoh as $code => $a) {
     if (!in_array((string)$code, $lrsKinder, true) || !is_array($a)) continue;
     $lrsStunden[(string)$code] = array_map(fn($st) => ["id" => (string)($st["id"] ?? ""), "datum" => (string)($st["datum"] ?? ""), "dauer" => (int)($st["dauer"] ?? 40),
-        "inhalt" => (string)($st["inhalt"] ?? ""), "rezept" => $st["rezept"] ?? null, "heft" => $st["heft"] ?? []], array_slice($a["stunden"] ?? [], 0, 60));
+        "inhalt" => (string)($st["inhalt"] ?? ""), "rezept" => $st["rezept"] ?? null, "heft" => $st["heft"] ?? [], "weiter" => (string)($st["weiter"] ?? ""), "beobachtung" => (string)($st["beobachtung"] ?? ""), "status" => (string)($st["status"] ?? "")], array_slice($a["stunden"] ?? [], 0, 60));
 }
 // Förderkartei: Fehlerwörter je Kürzel (für Blätter mit den eigenen Wörtern eines Kindes)
 $lrsKartei = [];
@@ -1886,7 +1886,7 @@ function ws_schriftSetzen(w){
 <div class="bereich" id="bereich-stunde">
     <div class="karte">
         <div class="std-spontan" id="std-spontan">
-            <div class="std-spontan-kopf"><span class="std-spontan-ico">⚡</span><div><b>Spontanstunde</b><small>Kind steht ungeplant vor dir? Ein Klick – fertige Stunde passend zur Akte.</small></div></div>
+            <div class="std-spontan-kopf"><span class="std-spontan-ico">⚡</span><div><b>Spontanstunde</b><small>Kind steht ungeplant vor dir? Ein Klick – fertige Stunde passend zur Akte. Gibt es einen Abschluss der letzten Stunde, geht es genau dort weiter.</small></div></div>
             <div class="std-spontan-zeile">
                 <select id="sp-kind" aria-label="Kind"></select>
                 <div class="std-spontan-dauer" id="sp-dauer"><button type="button" data-d="20">20 Min</button><button type="button" data-d="30">30 Min</button><button type="button" data-d="40" class="an">40 Min</button></div>
@@ -11571,7 +11571,7 @@ function std_akteLeiste(){
         ${std_akteId ? `<button class="btn klein" onclick="std_inAkte(true)"><i class="fa-solid fa-floppy-disk"></i> Änderungen in der Akte speichern</button><button class="btn sekundaer klein" onclick="std_inAkte(false)">Als neue Stunde eintragen</button>`
             : (std_ersatz && std_ersatz.kind === code && !std_letzte.kind2
                 ? `<button class="btn klein" onclick="std_ersetzen()"><i class="fa-solid fa-right-left"></i> Ersetzt die Stunde vom ${std_datumKurz(std_ersatz.datum)}</button><button class="btn sekundaer klein" onclick="std_inAkte()">Als zusätzliche Stunde eintragen</button>`
-                : `<button class="btn klein" onclick="std_inAkte()"><i class="fa-solid fa-floppy-disk"></i> In die Akte eintragen</button>`)}<span id="std-akte-status">${std_akteId ? std_akteHinweis : ""}</span>`;
+                : `<button class="btn klein" onclick="std_inAkte()"><i class="fa-solid fa-floppy-disk"></i> In die Akte eintragen</button>`)}<span id="std-akte-status">${std_akteId || String(std_akteHinweis).startsWith("✨") ? std_akteHinweis : ""}</span>`;
 }
 async function std_ersetzen(){
     if (!std_ersatz) return;
@@ -11585,6 +11585,8 @@ async function std_inAkte(aendern){
     const st = document.getElementById("std-akte-status"), info = std_letzte;
     const rezept = JSON.parse(JSON.stringify(info.rezept || {}));
     delete rezept.ausText;
+    // Blattnamen mitspeichern – damit die Akte den Stunden-Abschluss Blatt für Blatt zeigen kann
+    (rezept.items || []).forEach(it => { try { if (it.t === "bk" && !it.z && typeof bk_naechster === "function") it.z = bk_naechster(info.kind); const i = std_itemInfo(it, rezept); if (i && i.ok){ it.n = String(i.name).slice(0, 90); it.g = String(i.gruppe || "").slice(0, 60); } } catch (e){} });
     const inhalt = std_inhaltText(info);
     try {
         const antwort = await fetch("akte.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
@@ -11624,6 +11626,73 @@ async function std_inAkte(aendern){
     } catch (e){ st.textContent = "⚠️ " + e.message; }
 }
 // Kind gewählt: Klasse und Schwerpunkte aus der Akte vorschlagen
+/* ---------- Nächste Stunde per Knopfdruck – aus dem Abschluss der letzten Stunde ----------
+   e = "ok" (klappt) → einen Schritt weiter · "teil"/"nein" → mit neuem Material wiederholen ·
+   ng (nicht geschafft) → wird weitergeführt · Aufmerksamkeit: immer ein frisches Blatt. */
+function std_weiterSchritt(it, code){
+    const n = JSON.parse(JSON.stringify(it));
+    if (it.t === "fs"){ const k = fs_katalog(it.s) || [], i = k.findIndex(x => x.nr === it.nr); if (i >= 0 && i + 1 < k.length) n.nr = k[i + 1].nr; return n; }
+    if (it.t === "rs"){ const bl = FS_SERIEN.rechtschreibung.blaetter, i = bl.findIndex(x => x.nr === it.nr);
+        if (i >= 0 && i + 1 < bl.length){ n.nr = bl[i + 1].nr; return n; }
+        const plan = ((LRS_AKTEN[code] || {}).r || []).filter(k => RS_SCHWERPUNKTE[k]), j = plan.indexOf(it.k);
+        if (plan.length > 1){ n.k = plan[(j + 1) % plan.length]; n.nr = bl[0].nr; } return n; }
+    if (it.t === "le"){ const l = LE_BLAETTER[it.st] || []; if (it.i + 1 < l.length){ n.i = it.i + 1; return n; }
+        const st = Object.keys(LE_STUFEN), j = st.indexOf(it.st); if (j >= 0 && j + 1 < st.length){ n.st = st[j + 1]; n.i = 0; } return n; }
+    if (it.t === "bk" && typeof BK_BLAETTER !== "undefined"){
+        const z = it.z || bk_naechster(code), i = BK_BLAETTER.findIndex(x => x.nr === it.nr); n.z = z;
+        if (i >= 0 && i + 1 < BK_BLAETTER.length){ n.nr = BK_BLAETTER[i + 1].nr; return n; }
+        const j = BK_FOLGE.indexOf(z); if (j >= 0 && j + 1 < BK_FOLGE.length){ n.z = BK_FOLGE[j + 1]; n.nr = BK_BLAETTER[0].nr; } return n; }
+    if (it.t === "rl" && typeof RL_BLAETTER !== "undefined"){ const i = RL_BLAETTER.findIndex(x => x.nr === it.nr); if (i >= 0 && i + 1 < RL_BLAETTER.length) n.nr = RL_BLAETTER[i + 1].nr; return n; }
+    if (it.t === "vs"){ const i = VS_BLAETTER.findIndex(x => x.nr === it.nr); if (i >= 0 && i + 1 < VS_BLAETTER.length) n.nr = VS_BLAETTER[i + 1].nr; return n; }
+    return n;   // Diktat, Kartei, Lesetext …: gleiche Art, neue Aufgaben
+}
+function std_naechsteRezept(code, sid){
+    const st = (LRS_STUNDEN[code] || []).find(x => x.id === sid);
+    if (!st || !st.rezept || !st.rezept.items) return null;
+    const alt = JSON.parse(JSON.stringify(st.rezept)), zaehl = { weiter: 0, wdh: 0, offen: 0, neu: 0 };
+    const items = [];
+    alt.items.forEach(it => {
+        if (it.t === "erst" || it.t === "heft") return;
+        let n;
+        if (it.p === "Aufmerksamkeit" && it.t === "fs"){
+            const k = fs_katalog(it.s) || [], zuletzt = std_zuletztGenutzt(code, it.s), frisch = k.filter(x => au_passt(x) && !zuletzt.includes(x.nr) && x.nr !== it.nr);
+            n = { ...it, nr: (frisch.length ? frisch[Math.floor(Math.random() * frisch.length)] : it).nr }; zaehl.neu++;
+        }
+        else if (it.ng){ n = { ...it, von: sid + ":" + it.u, vd: st.datum }; delete n.ng; zaehl.offen++; }
+        else if (it.e === "ok"){
+            // einen Schritt weiter – und so lange weiter, bis das Blatt nicht schon in der Stunde vorkommt
+            n = std_weiterSchritt(it, code);
+            for (let t = 0; t < 12 && [...items, ...alt.items.filter(x => !x.e || x.e !== "ok")].some(x => std_gleich(x, n)); t++) n = std_weiterSchritt(n, code);
+            zaehl.weiter++;
+        }
+        else { n = { ...it }; if (it.e) zaehl.wdh++; else zaehl.neu++; }
+        ["e", "n", "g"].forEach(x => delete n[x]); n.u = std_neuUid();
+        items.push(n);
+    });
+    for (let a = items.length - 1; a > 0; a--) if (items.slice(0, a).some(x => std_gleich(x, items[a]) && x.t !== "fs")) items.splice(a, 1);
+    // neue Fehlerwörter in der Lernbox, aber noch kein Kartei-Blatt? Dann eins dazu
+    if (kt_woerter(code).length && !items.some(x => x.t === "kartei") && typeof KT_BLAETTER !== "undefined" && KT_BLAETTER[0]){ items.push({ u: std_neuUid(), p: "Symptomtraining", t: "kartei", nr: KT_BLAETTER[0].nr }); zaehl.neu++; }
+    delete alt.kind2; // nächste Stunde zuerst für dieses Kind – ein zweites Kind kannst du dazunehmen
+    return { r: { ...alt, kind: code, items }, zaehl, st };
+}
+async function std_naechsteOeffnen(code, sid){
+    const x = std_naechsteRezept(code, sid);
+    if (!x) return false;
+    const r = x.r;
+    if (/^[1-9]$/.test(String(r.klasse || ""))){ const l = document.getElementById("std-klasse"); l.value = r.klasse; l.dispatchEvent(new Event("change")); }
+    if (r.stufe){ const sw = document.getElementById("std-schwierigkeit"); sw.value = r.stufe; sw.dispatchEvent(new Event("change")); }
+    std_rezept = r; std_cache = {};
+    std_bearbeiten = true;
+    try { await fs_erstellen("stunde"); } finally { std_bearbeiten = false; }
+    std_akteId = null;
+    const z = x.zaehl, teile = [z.weiter && `${z.weiter}× einen Schritt weiter`, z.wdh && `${z.wdh}× wiederholt`, z.offen && `${z.offen}× weitergeführt (nicht geschafft)`].filter(Boolean);
+    std_akteHinweis = `✨ <b>Vorschlag aus der Stunde vom ${std_datumKurz(x.st.datum)}</b>: ${teile.join(" · ") || "gleicher Aufbau"}.${x.st.weiter ? ` <br>📌 Weiter mit: <i>${ws_esc(x.st.weiter)}</i>` : ""} Passt? Dann drucken und in die Akte eintragen.`;
+    std_akteLeiste(); std_editorZeigen();
+    const d = document.getElementById("std-akte-datum"); if (d) d.value = std_naechsterSchultag();
+    std_akteLeiste();
+    document.getElementById("std-editor").scrollIntoView({ behavior: "smooth", block: "start" });
+    return true;
+}
 /* ---------- Spontanstunde: ein Klick, Stunde passend zur Akte ---------- */
 function std_spontanAufbauen(){
     const sel = document.getElementById("sp-kind"); if (!sel) return;
@@ -11640,6 +11709,9 @@ function std_spontanAufbauen(){
         if (!c && LRS_KINDER.length){ sel.focus(); sel.classList.add("fehlt"); setTimeout(() => sel.classList.remove("fehlt"), 1200); return; }
         // Spontanstunde immer als Einzel-Förderstunde mit frischer Auswahl
         if (document.getElementById("std-kind2")){ document.getElementById("std-kind2").value = ""; std_zweiZeigen(); }
+        // Gibt es eine abgeschlossene letzte Stunde? Dann daran anknüpfen (Abschluss → nächste Stunde)
+        const letzte = (LRS_STUNDEN[c] || []).find(x => x.rezept && x.rezept.items && x.rezept.items.length && x.status !== "offen" && !x.rezept.erst);
+        if (letzte){ const d0 = document.getElementById("std-dauer"); d0.value = String(dauer); std_dauerWechsel(); const x = std_naechsteRezept(c, letzte.id); if (x){ x.r.dauer = dauer; const alt = std_naechsteRezept; std_naechsteRezept = () => x; try { await std_naechsteOeffnen(c, letzte.id); } finally { std_naechsteRezept = alt; } return; } }
         const art = document.getElementById("std-art"); if (art.value !== "foerder"){ art.value = "foerder"; std_artWechsel(); }
         const k = document.getElementById("std-kind"); k.value = c; k.dispatchEvent(new Event("change"));
         const d = document.getElementById("std-dauer"); d.value = String(dauer); std_dauerWechsel();
@@ -13850,6 +13922,8 @@ lt_init();
         sk.dispatchEvent(new Event("change"));
         const k2 = q.get("kind2");
         if (k2 && LRS_KINDER.includes(k2) && k2 !== stunde){ const s2 = document.getElementById("std-kind2"); s2.value = k2; std_zweiZeigen(); setTimeout(() => document.getElementById("std-zwei").scrollIntoView({ behavior: "smooth", block: "center" }), 300); }
+        const naechste = q.get("naechste");
+        if (naechste){ silben_laden().then(() => std_naechsteOeffnen(stunde, naechste)).then(ok => { if (ok === false) alert("Die letzte Stunde hat keinen gespeicherten Aufbau – bitte die Stunde einmal über den Generator in die Akte eintragen."); }); return; }
         const sid = q.get("sid");
         if (sid) silben_laden().then(() => std_ausAkteOeffnen(stunde, sid)).then(ok => { if (ok === false) alert("Diese Stunde wurde in der Akte nicht gefunden."); });
         return;
