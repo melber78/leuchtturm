@@ -140,7 +140,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <div class="portal">
 
 <header class="portal-header">
-<h1 class="portal-logo"><img src="marke/mewe-leuchtturm.png" alt="MeWe Leuchtturm" width="700" height="436"></h1>
+<h1 class="portal-logo"><img src="marke/mewe-leuchtturm.png" alt="MeWe Leuchtturm" width="720" height="444"></h1>
 <p>Orientierung &amp; Material für LRS-Förderung, Sozialtraining, Lernangebot und Vertretung</p>
 </header>
 
