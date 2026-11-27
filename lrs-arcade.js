@@ -338,8 +338,7 @@ function arKarten(){
     let ziel = document.getElementById("arcade-spiele");
     if (!ziel){
         document.getElementById("spiele").insertAdjacentHTML("beforebegin", `<div class="karte ar-karte"><div class="zeile" style="justify-content:space-between"><h2 style="margin:0">Weltenreise & Belohnung</h2><div class="ar-konto" id="ar-konto"></div></div>
-            <p class="hilfe" style="margin-bottom:12px">Erst in Ruhe üben und ⚡ Energie sammeln – dann gibt es eine Runde Action als Belohnung. Mit Münzen werden neue Figuren freigeschaltet.</p><div class="spiele" id="arcade-spiele"></div></div>
-            <h2 style="font-family:Fraunces,Georgia,serif;color:var(--nacht);margin:6px 4px 12px;font-size:21px">Ruhig üben</h2>`);
+            <p class="hilfe" style="margin-bottom:12px">Erst in Ruhe üben und ⚡ Energie sammeln – dann gibt es eine Runde Action als Belohnung. Mit Münzen werden neue Figuren freigeschaltet.</p><div class="spiele" id="arcade-spiele"></div></div>`);
         const s = document.createElement("style"); s.textContent = `.ar-karte{ background:linear-gradient(135deg, #2f4a1f, #1d3015); color:#fff; } .ar-karte h2{ color:#ffe08a !important; } .ar-karte .hilfe{ color:#d8e4c8; }
             .ar-karte .spiel{ background:rgba(255,255,255,.08); box-shadow:none; color:#fff; } .ar-karte .spiel b{ color:#ffe08a; } .ar-karte .spiel span{ color:#d8e4c8; }
             .ar-karte .spiel .ico{ background:rgba(255,224,138,.15); font-size:30px; } .ar-konto{ font-weight:900; font-size:17px; color:#ffe08a; }`;

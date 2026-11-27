@@ -11,34 +11,42 @@
 const WELTEN = [
     { id: "wald", name: "Zauberwald", emoji: "🌳", hg: "linear-gradient(#1f4d2b, #3f7a3a 60%, #5d8f3e)", begleiter: ["🦊", "Fuchs Finn"], weg: "🪷", schatzKiste: "🍄",
       rs: { strategie: "schwingen", keys: ["schaerfung", "ie", "sss", "cktz"], text: "Im Zauberwald musst du genau hinhören! Schwing jedes Wort in Silben und hör auf den Selbstlaut: kurz oder lang?" },
+      vor: { art: "reim", text: "Im Zauberwald reimen sich die Dinge! Hör genau hin: Welches Bild klingt am Ende genauso?" },
       le: { art: "anlaut", text: "Im Zauberwald haben alle Dinge ihren Anfangslaut verloren. Hör genau hin: Womit fängt das Wort an?" },
       waechter: ["🧌", "Trollkönig Brumm"], schatz: ["✨", "Waldlicht"] },
     { id: "eis", name: "Eisreich", emoji: "❄️", hg: "linear-gradient(#bfe3f5, #e9f6fc 60%, #ffffff)", hell: true, begleiter: ["🐧", "Pinguin Paul"], weg: "🧊", schatzKiste: "🧊",
       rs: { strategie: "verlaengern", keys: ["auslaut", "iglich", "silbenh"], text: "Im Eisreich ist alles eingefroren – und kurz! Verlängere die Wörter (Hund → Hun-de), dann hörst du, wie man sie schreibt." },
+      vor: { art: "klatsch", text: "Im Eisreich klatschen wir, damit uns warm wird! Klatsch jedes Wort in Silben." },
       le: { art: "silben", text: "Das Eis ist in Silben zersprungen! Leg die Silben wieder richtig zusammen." },
       waechter: ["🐻‍❄️", "Eisbär Frost"], schatz: ["💎", "Eisdiamant"] },
     { id: "wueste", name: "Sandwüste", emoji: "🏜️", hg: "linear-gradient(#ffcf7a, #f5b45a 55%, #e39a43)", hell: true, begleiter: ["🐪", "Kamel Karl"], weg: "🟫", schatzKiste: "🏺",
       rs: { strategie: "ableiten", keys: ["aeau"], text: "In der Wüste haben Wörter Verwandte. Such das verwandte Wort mit a oder au (Bäume → Baum) – dann weißt du: ä oder e?" },
+      vor: { art: "anlaut", text: "In der Wüste hört man jeden Laut ganz deutlich. Welches Bild fängt genauso an?" },
       le: { art: "bildwort", text: "In der Wüste sehen viele Wörter fast gleich aus. Lies ganz genau: Welches Wort passt zum Bild?" },
       waechter: ["🦂", "Skorpionkönig Zack"], schatz: ["🧭", "Goldener Kompass"] },
     { id: "meer", name: "Meerestiefe", emoji: "🌊", hg: "linear-gradient(#1b6ca8, #12467a 60%, #0c2f55)", begleiter: ["🐢", "Schildkröte Tilda"], weg: "🐚", schatzKiste: "🦪",
       rs: { strategie: "merken", keys: ["dehnung", "doppelvokal", "vf", "chsx", "spst"], text: "Manche Wörter muss man sich einfach merken – wie die Muster der Muscheln. Schau genau hin, merk dir das Wort und bau es wieder auf." },
+      vor: { art: "janein", text: "Unter Wasser sind wir Laut-Detektive. Hörst du den Laut am Anfang? Daumen hoch oder runter!" },
       le: { art: "reim", text: "Unter Wasser klingen Wörter wie ein Echo. Welche Wörter reimen sich?" },
       waechter: ["🐙", "Krake Kalle"], schatz: ["🫧", "Zauberperle"] },
     { id: "dino", name: "Dinotal", emoji: "🦕", hg: "linear-gradient(#a8d672, #7fb64e 55%, #5f8f38)", hell: true, begleiter: ["🦕", "Dino Rudi"], weg: "🪨", schatzKiste: "🥚",
       rs: { strategie: "artikel", keys: ["grossklein"], text: "Im Dinotal sind die großen Dinge Nomen! Mach die Artikelprobe: Passt der, die oder das davor? Dann schreibst du groß." },
+      vor: { art: "anlautmix", text: "Die Dinos rufen laut! Hör auf den ersten Laut jedes Wortes." },
       le: { art: "blitz", text: "Die Dinos sind schnell! Das Wort blitzt nur kurz auf – lies es und finde das passende Bild." },
       waechter: ["🦖", "T-Rex Rex"], schatz: ["🥚", "Goldenes Dino-Ei"] },
     { id: "vulkan", name: "Vulkaninsel", emoji: "🌋", hg: "linear-gradient(#3a1d1d, #6b2a1f 55%, #a33b1f)", begleiter: ["🐦‍🔥", "Feuervogel Funke"], weg: "🪨", schatzKiste: "💎",
       rs: { strategie: "ersatz", keys: ["dasdass"], ab: 4, text: "Auf der Vulkaninsel brodeln die Sätze. das oder dass? Setz „dieses“ oder „welches“ ein – passt es, schreibst du das." },
+      vor: { art: "reimklatsch", text: "Am Vulkan brodelt es: Reime und Silben – du schaffst beides!" },
       le: { art: "merk", text: "Am Vulkan liegen Wörter in Stücken. Schau dir das Wort genau an und bau es wieder auf." },
       waechter: ["🐉", "Feuerdrache Glut"], schatz: ["🔥", "Feuerkristall"] },
     { id: "all", name: "Weltraum", emoji: "🪐", hg: "radial-gradient(ellipse at 50% 120%, #2a3f73, #0a0f24 70%)", begleiter: ["🤖", "Roboter Robo"], weg: "🪨", schatzKiste: "⭐",
       rs: { strategie: "fehler", keys: [], text: "Piep! Im Weltraum fliegen deine eigenen Fehlerwörter herum. Wir sammeln sie ein: genau ansehen, merken, aufbauen." },
+      vor: { art: "robo", text: "Piep! Ich spreche Robo-Sprache, in Silben. Kannst du mich verstehen? Welches Bild meine ich?" },
       le: { art: "bildwort", text: "Piep! Die Raketenteile sind beschriftet. Lies genau, damit wir die richtigen Teile einbauen." },
       waechter: ["👾", "Alien-Kommandant Zork"], schatz: ["🚀", "Sternenrakete"] },
     { id: "wolke", name: "Wolkenschloss", emoji: "🏰", hg: "linear-gradient(#f7c6e6, #c9d8ff 55%, #eef3ff)", hell: true, begleiter: ["🦄", "Einhorn Wolke"], weg: "☁️", schatzKiste: "🌈",
       rs: { strategie: "mix", keys: [], text: "Im Wolkenschloss brauchst du alles, was du gelernt hast: Schwingen, Verlängern, Ableiten und Merken." },
+      vor: { art: "mix", text: "Im Wolkenschloss brauchst du alles: Reime, Silben, Anfangslaute und Robo-Sprache." },
       le: { art: "mix", text: "Im Wolkenschloss brauchst du alles: Laute hören, Silben legen und genau lesen." },
       waechter: ["🧙", "Schattenzauberer Nebel"], schatz: ["👑", "Krone der Weltenreise"] },
 ];
@@ -49,8 +57,9 @@ const STUFEN = [
 ];
 
 /* ---------- Pfad: Rechtschreib-Lehrgang oder Buchstaben-/Lesepfad ---------- */
-const lesePfad = () => !sek() && (!S.kind || !S.kind.r.length) && (!!buchstaben() || S.klasse <= 2);
-function inhalt(w){ return lesePfad() ? w.le : w.rs; }
+const vorPfad = () => typeof vorleser === "function" && vorleser();
+const lesePfad = () => !sek() && (vorPfad() || ((!S.kind || !S.kind.r.length) && (!!buchstaben() || S.klasse <= 2)));
+function inhalt(w){ return vorPfad() ? w.vor : lesePfad() ? w.le : w.rs; }
 function istSchwerpunkt(w){ if (!S.kind || lesePfad()) return false; const r = S.kind.r; return w.rs.keys.some(k => r.includes(k)) || (w.id === "all" && S.kind.woerter.length > 0); }
 // Reiseroute: Welten mit Förderplan-Schwerpunkt zuerst, das Wolkenschloss immer zum Schluss
 function route(){
@@ -59,6 +68,12 @@ function route(){
 }
 function aufgabenFuer(w, n){
     const c = inhalt(w);
+    if (vorPfad()){
+        const f = { reim: AG.reimHoerAufg, klatsch: AG.klatschAufg, anlaut: AG.anlautHoerAufg, janein: AG.lautJaNeinAufg, robo: AG.syntheseAufg,
+            anlautmix: x => mischen([...AG.anlautHoerAufg(Math.ceil(x / 2)), ...AG.lautJaNeinAufg(Math.ceil(x / 2))]).slice(0, x),
+            reimklatsch: x => mischen([...AG.reimHoerAufg(Math.ceil(x / 2)), ...AG.klatschAufg(Math.ceil(x / 2))]).slice(0, x), mix: AG.vorlesePassend }[c.art];
+        return (f || AG.vorlesePassend)(n);
+    }
     if (lesePfad()){
         const f = { anlaut: AG.anlautAufg, silben: AG.silbenAufg, bildwort: AG.bildWortAufg, reim: AG.reimAufg, blitz: AG.blitzAufg, merk: x => AG.merkAufgaben(x) }[c.art];
         if (f) return f(n);
@@ -75,7 +90,7 @@ function aufgabenFuer(w, n){
 }
 
 /* ---------- Speicher ---------- */
-const sk = () => "sp-welten2-" + (S.kind?.code || "_") + (lesePfad() ? "-le" : "-rs");
+const sk = () => "sp-welten2-" + (S.kind?.code || "_") + (vorPfad() ? "-vor" : lesePfad() ? "-le" : "-rs");
 function stand(){ const s = laden(sk(), null) || {}; s.sterne = s.sterne || {}; s.schaetze = s.schaetze || []; return s; }
 function standSpeichern(s){ merken(sk(), s); }
 const alleOffen = () => !!laden("sp-alle-welten", false);
@@ -178,7 +193,7 @@ function weltenKarte(){
     const jetzt = R.findIndex((w, i) => weltFrei(i) && !s.schaetze.includes(w.id));
     box.innerHTML = `<button class="wt-zu" id="wt-zu">✕</button><div class="wt-karte">
         <div class="wt-titel"><div style="font-size:50px">🗺️</div><h2>Weltenreise</h2>
-            <div class="wt-pfadname">${lesePfad() ? "Lesepfad: Laute, Silben und Wörter" : "Rechtschreib-Lehrgang: eine Strategie pro Welt"}${S.kind ? ` · ${esc(S.kind.code)}` : ""}</div>
+            <div class="wt-pfadname">${vorPfad() ? "Hörpfad: Reime, Silben und Laute – ganz ohne Lesen" : lesePfad() ? "Lesepfad: Laute, Silben und Wörter" : "Rechtschreib-Lehrgang: eine Strategie pro Welt"}${S.kind ? ` · ${esc(S.kind.code)}` : ""}</div>
             <div class="wt-leiste"><span class="wt-pill">⚡ ${laden(eKey(), 0)}</span><span class="wt-pill">🪙 ${k.muenzen}</span><span class="wt-pill">⭐ ${Object.values(s.sterne).reduce((a, b) => a + b, 0)} / ${R.length * 9}</span></div>
             <div class="wt-leiste"><span class="wt-pill" style="font-size:24px">${R.map(w => s.schaetze.includes(w.id) ? w.schatz[0] : "▫️").join(" ")}</span></div></div>
         <div class="wt-pfad">${R.map((w, i) => { const frei = weltFrei(i), fertig = s.schaetze.includes(w.id), sterne = [0, 1, 2].reduce((a, x) => a + (s.sterne[`${w.id}-${x}`] || 0), 0);
@@ -202,6 +217,7 @@ function weltZeigen(i){
                 <div><b>${boss ? `Wächter: ${esc(w.waechter[1])}` : esc(x.name)}</b><span>${boss ? `Besiege den Wächter und hol dir: ${esc(w.schatz[1])} ${w.schatz[0]}` : esc(x.text)}</span></div><div class="st">${"⭐".repeat(sterne)}${"☆".repeat(3 - sterne)}</div></button>`; }).join("")}</div></div>`;
     box.querySelector("#wt-zu").onclick = weltenKarte;
     box.querySelector("#wt-sag").onclick = () => sprechen(text);
+    if (vorPfad()) setTimeout(() => sprechen(text), 300);
     box.querySelectorAll("[data-s]").forEach(b => b.onclick = () => { const si = +b.dataset.s; if (!stufeFrei(i, si)){ sfx("au"); return; } stufeSpielen(i, si); });
 }
 
@@ -287,7 +303,7 @@ function weltenKachel(){
     const s = stand(), R = route();
     let k = document.getElementById("wt-kachel");
     if (!k){ ziel.insertAdjacentHTML("beforebegin", `<button class="spiel" id="wt-kachel" style="width:100%;margin-bottom:14px;background:linear-gradient(120deg, rgba(255,224,138,.22), rgba(255,255,255,.06));border:2px solid rgba(255,224,138,.5)"></button>`); k = document.getElementById("wt-kachel"); }
-    k.innerHTML = `<div class="ico" style="font-size:34px">🗺️</div><div><b style="font-size:22px">Weltenreise</b><span>${lesePfad() ? "Lesepfad: Laute hören, Silben legen, genau lesen – Welt für Welt." : "Rechtschreib-Lehrgang: In jeder Welt eine Strategie – Schwingen, Verlängern, Ableiten, Merkwörter …"} In Ruhe lösen, Tipps bei Fehlern, Energie sammeln.<br><em>${s.schaetze.length ? `${s.schaetze.length} von ${R.length} Schätzen: ${R.filter(w => s.schaetze.includes(w.id)).map(w => w.schatz[0]).join(" ")}` : `Die Reise beginnt: ${R[0].name} ${R[0].emoji}`}</em></span></div>`;
+    k.innerHTML = `<div class="ico" style="font-size:34px">🗺️</div><div><b style="font-size:22px">Weltenreise</b><span>${vorPfad() ? "Hörpfad für Anfänger: Reime, Silben klatschen, Anfangslaute, Robo-Sprache – alles wird vorgelesen." : lesePfad() ? "Lesepfad: Laute hören, Silben legen, genau lesen – Welt für Welt." : "Rechtschreib-Lehrgang: In jeder Welt eine Strategie – Schwingen, Verlängern, Ableiten, Merkwörter …"} In Ruhe lösen, Tipps bei Fehlern, Energie sammeln.<br><em>${s.schaetze.length ? `${s.schaetze.length} von ${R.length} Schätzen: ${R.filter(w => s.schaetze.includes(w.id)).map(w => w.schatz[0]).join(" ")}` : `Die Reise beginnt: ${R[0].name} ${R[0].emoji}`}</em></span></div>`;
     k.onclick = () => { box.classList.add("an"); document.body.style.overflow = "hidden"; try { const e = document.documentElement; if (!document.fullscreenElement && e.requestFullscreen && matchMedia("(pointer:coarse)").matches) e.requestFullscreen().catch(() => {}); } catch (x){} weltenKarte(); };
 }
 const alt = window.arKarten;

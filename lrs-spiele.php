@@ -56,6 +56,7 @@ select{ font:inherit; font-weight:700; padding:10px 12px; border-radius:12px; bo
 .chip{ border:2px solid #dfe6d4; background:#fff; border-radius:999px; padding:8px 14px; font-weight:800; font-size:14.5px; }
 .chip.an{ background:var(--moos); border-color:var(--moos); color:#fff; }
 .spiele{ display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:14px; }
+.sp-gruppe{ font-family:Fraunces, Georgia, serif; color:var(--nacht); font-size:20px; margin:18px 4px 10px; }
 .spiel{ text-align:left; border:0; background:#fff; border-radius:22px; padding:18px; box-shadow:0 4px 18px rgba(47,74,31,.07); display:flex; gap:14px; align-items:flex-start; transition:transform .15s; }
 .spiel:hover{ transform:translateY(-2px); }
 .spiel .ico{ flex:0 0 52px; height:52px; border-radius:16px; background:var(--salbeih); display:grid; place-items:center; font-size:24px; color:var(--moos); }
@@ -127,6 +128,7 @@ html.sek .wort{ letter-spacing:.04em; }
             <select id="kind"><option value="">Ohne Kind – frei wählen</option></select>
             <select id="klasse"><?php for ($i = 1; $i <= 9; $i++) echo "<option value=\"$i\">Klasse $i</option>"; ?></select>
             <select id="schrift"><option value="grund">Grundschrift</option><option value="druck">Druckschrift</option></select>
+            <select id="lesestand" title="Lesestand"><option value="auto">Lesestand: automatisch</option><option value="vor">liest noch nicht</option><option value="liest">liest schon</option></select>
         </div>
         <p class="hilfe" id="kind-info">Wählst du ein Kind, passen sich die Spiele an: bekannte Buchstaben, Schwerpunkte aus dem Förderplan und Fehlerwörter aus der Förderkartei.</p>
         <div id="garten" class="garten" style="margin-top:8px"></div>
@@ -138,7 +140,7 @@ html.sek .wort{ letter-spacing:.04em; }
         <div class="zeile" id="rs-wahl"></div>
         <p class="hilfe">Für die Rechtschreib-Strategie und die Weltenreise. ★ = im Förderplan.</p>
     </div>
-    <div class="spiele" id="spiele"></div>
+    <div id="spiele"></div>
 </main>
 
 <div id="buehne">
@@ -197,9 +199,14 @@ function kindSetzen(){
            S.kind.r.length ? `Schwerpunkte: ${S.kind.r.filter(x => SP_RS[x]).map(x => SP_RS[x].name).join(", ")}` : "",
            S.kind.woerter.length ? `${S.kind.woerter.length} Fehlerwörter aus der Förderkartei` : ""].filter(Boolean).join(" · ")
         : "Wählst du ein Kind, passen sich die Spiele an: bekannte Buchstaben, Schwerpunkte aus dem Förderplan und Fehlerwörter aus der Förderkartei.";
+    $("#lesestand").value = laden("sp-lesestand-" + (S.kind?.code || "_"), "auto"); $("#lesestand").style.display = sek() ? "none" : "";
     schriftSetzen(); rsZeigen(); spieleZeigen(); gartenZeigen();
 }
 $("#kind").onchange = kindSetzen;
+// Lesestand: „liest noch nicht“ → Hör- und Bildspiele zuerst, Weltenreise auf dem Hörpfad
+function vorleser(){ const v = laden("sp-lesestand-" + (S.kind?.code || "_"), "auto"); if (v !== "auto") return v === "vor";
+    if (sek()) return false; const lb = buchstaben(); return S.klasse <= 1 && (!lb || lb.length < 8) || (!!S.kind && !S.kind.r.length && (!lb || lb.length < 5) && S.klasse <= 2); }
+$("#lesestand").onchange = () => { merken("sp-lesestand-" + (S.kind?.code || "_"), $("#lesestand").value); spieleZeigen(); };
 $("#freispiel").checked = laden("sp-freispiel", false); $("#freispiel").onchange = () => merken("sp-freispiel", $("#freispiel").checked);
 $("#alle-welten").checked = laden("sp-alle-welten", false); $("#alle-welten").onchange = () => { merken("sp-alle-welten", $("#alle-welten").checked); if (window.arKarten) arKarten(); };
 $("#klasse").onchange = () => { S.klasse = parseInt($("#klasse").value, 10); schriftSetzen(); spieleZeigen(); };
@@ -377,6 +384,9 @@ function memoryAufgaben(art){
     if (art === "gk"){ const lb = (buchstaben() || BK_REIHE.slice(0, 14)).filter(z => z.length === 1 && !"ß".includes(z));
         paare = mischen(lb).slice(0, 6).map(z => [z.toUpperCase(), z]); }
     if (art === "reim") paare = mischen(SP_REIME.filter(p => p.every(lesbar))).slice(0, 6);
+    if (art === "reimbild"){ const m = {}; bilder().forEach(b => { m[b.w] = m[b.w] || b; });
+        const R = [["Maus", "Haus"], ["Hose", "Rose"], ["Igel", "Spiegel"], ["Schwein", "Stein"], ["Wal", "Schal"], ["Raupe", "Lupe"], ["Taube", "Schraube"], ["Zitrone", "Krone"], ["Rakete", "Trompete"], ["Giraffe", "Affe"], ["Erdbeere", "Schere"], ["Schlange", "Zange"], ["Mais", "Eis"], ["Hund", "Mund"], ["Tisch", "Fisch"], ["Topf", "Kopf"]].filter(p => m[p[0]] && m[p[1]]);
+        const gesehen = new Set(); paare = mischen(R).filter(p => !gesehen.has(p[0]) && !gesehen.has(p[1]) && (gesehen.add(p[0]), gesehen.add(p[1]), true)).slice(0, 6).map(([a, b]) => [{ svg: m[a].svg, w: a }, { svg: m[b].svg, w: b }]); }
     if (art === "bild") paare = mischen(bilder().filter(b => lesbar(b.w) && b.w.length <= 7)).slice(0, 6).map(b => [{ svg: b.svg, w: b.w }, b.w]);
     return paare.length >= 3 ? [{ typ: "memory", paare, w: "" }] : [];
 }
@@ -405,6 +415,12 @@ function memoryZeigen(a, feld, fertig){
 
 /* ---------- Spieleliste ---------- */
 const SPIELE = [
+    { id: "v-reim", gruppe: "vor", titel: "Reime hören", ico: "fa-ear-listen", text: "Bild ansehen, zuhören: Was reimt sich? Ganz ohne Lesen.", gs: true, machen: () => AG.reimHoerAufg(8) },
+    { id: "v-klatsch", gruppe: "vor", titel: "Silben klatschen", ico: "fa-hands-clapping", text: "Wort hören, mitklatschen: Wie viele Silben?", gs: true, machen: () => AG.klatschAufg(8) },
+    { id: "v-anlaut", gruppe: "vor", titel: "Anfangslaute hören", ico: "fa-volume-high", text: "Welches Bild fängt genauso an? Nur hören, keine Buchstaben.", gs: true, machen: () => AG.anlautHoerAufg(8) },
+    { id: "v-robo", gruppe: "vor", titel: "Robo-Sprache", ico: "fa-robot", text: "Robo spricht in Silben – welches Bild meint er?", gs: true, machen: () => AG.syntheseAufg(8) },
+    { id: "v-detektiv", gruppe: "vor", titel: "Laut-Detektiv", ico: "fa-magnifying-glass", text: "Hörst du am Anfang ein M? Daumen hoch oder runter.", gs: true, machen: () => AG.lautJaNeinAufg(10) },
+    { id: "v-mem", gruppe: "vor", titel: "Memory: Reimbilder", ico: "fa-clone", text: "Bilder aufdecken, zuhören – welche reimen sich?", gs: true, machen: () => memoryAufgaben("reimbild") },
     { id: "strategie", titel: "Rechtschreib-Strategie", ico: "fa-route", text: "Hören, Strategie anwenden, Lücke füllen – mit Tipp, wenn es hakt.", gs: true, sek: true, rs: true, machen: () => AG.rsAufgaben(S.rs, 10) },
     { id: "merk", titel: "Merk- & Fehlerwörter", ico: "fa-eye", text: "Wortbild ansehen, abdecken, aufbauen. Mit den Fehlerwörtern aus der Förderkartei.", gs: true, sek: true, machen: () => AG.merkAufgaben(8) },
     { id: "silben", titel: "Silben-Puzzle", ico: "fa-shoe-prints", text: "Silben in die richtige Reihenfolge legen und mitschwingen.", gs: true, sek: true, machen: () => AG.silbenAufg(8) },
@@ -418,7 +434,10 @@ const SPIELE = [
 ];
 function spieleZeigen(){
     const liste = SPIELE.filter(s => sek() ? s.sek : s.gs);
-    $("#spiele").innerHTML = liste.map(s => `<button class="spiel" data-spiel="${s.id}"><div class="ico"><i class="fa-solid ${s.ico}"></i></div><div><b>${esc(s.titel)}</b><span>${esc(s.text)}${s.rs ? ` <br><em>Schwerpunkt: ${esc(SP_RS[S.rs].name)}</em>` : ""}</span></div></button>`).join("");
+    const karte = s => `<button class="spiel" data-spiel="${s.id}"><div class="ico"><i class="fa-solid ${s.ico}"></i></div><div><b>${esc(s.titel)}</b><span>${esc(s.text)}${s.rs ? ` <br><em>Schwerpunkt: ${esc(SP_RS[S.rs].name)}</em>` : ""}</span></div></button>`;
+    const vor = liste.filter(s => s.gruppe === "vor"), rest = liste.filter(s => s.gruppe !== "vor"), zuerstVor = vorleser();
+    const block = (t, l) => l.length ? `<h3 class="sp-gruppe">${t}</h3><div class="spiele">${l.map(karte).join("")}</div>` : "";
+    $("#spiele").innerHTML = zuerstVor ? block("Für Anfänger – ganz ohne Lesen", vor) + block("Mit Lesen und Schreiben", rest) : block("Lesen und Schreiben", rest) + block("Für Anfänger – ganz ohne Lesen", vor);
     $("#spiele").querySelectorAll("[data-spiel]").forEach(b => b.onclick = () => rundeStarten(SPIELE.find(s => s.id === b.dataset.spiel)));
     if (window.arKarten) arKarten();
 }

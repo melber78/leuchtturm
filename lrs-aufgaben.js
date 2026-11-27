@@ -116,6 +116,63 @@ function reimAufg(n){
 function silbenAufg(n){
     return silbenAufgaben(n).map(a => ({ typ: "silben", w: a.w, svg: a.svg, sag: a.w, teile: a.teile, loesung: a.w }));
 }
+/* ---------- Für Anfänger, die (noch) nicht lesen: nur Hören und Bilder ----------
+   Vorläuferfähigkeiten: Reime hören, Silben klatschen, Anlaute hören, Silben zusammenziehen,
+   Laut am Anfang ja/nein. Alles wird vorgelesen – es steht nichts da, was man lesen müsste. */
+const REIMBILD = [["Maus", "Haus"], ["Hose", "Rose"], ["Igel", "Spiegel"], ["Schwein", "Stein"], ["Wal", "Schal"], ["Raupe", "Lupe"], ["Taube", "Schraube"], ["Zitrone", "Krone"], ["Melone", "Krone"],
+    ["Rakete", "Trompete"], ["Papagei", "Ei"], ["Giraffe", "Affe"], ["Erdbeere", "Schere"], ["Taube", "Traube"], ["Schlange", "Zange"], ["Hai", "Ei"], ["Mais", "Eis"], ["Kanne", "Tanne"], ["Hund", "Mund"], ["Tisch", "Fisch"], ["Ball", "Stall"], ["Topf", "Kopf"], ["Sonne", "Tonne"], ["Baum", "Traum"]];
+// Wörter, deren Aussprache nicht zur Schrift passt (Fremdwörter, G wie in Giraffe …) – für Hörspiele ungeeignet
+const FREMD = new Set(["Keyboard", "Skateboard", "Croissant", "Burger", "Bowling", "Popcorn", "Shorts", "Muffin", "Aubergine", "Giraffe", "Genie", "Jeans", "Chips", "Hotdog", "Sandwich", "Laptop", "Computer", "Baseball", "Hamburger", "Cowboy", "T-Rex", "Smartphone", "Handy", "Teddy", "Brokkoli", "Zucchini", "Avocado", "Pommes", "Pizza", "Joghurt", "Rechenschieber", "Karussellpferd", "Schraubzwinge", "Medaille", "Champignon", "Trikot", "Jacke"]);
+const hoerBilder = () => bilder().filter(b => !FREMD.has(b.w) && !/^(sh|ch|c|y|j|ph)/i.test(b.w));
+const bildMap = () => { const m = {}; hoerBilder().forEach(b => { if (!m[b.w]) m[b.w] = b; }); return m; };
+const ANFANG_LAUT = g => ({ sch: "sch", ch: "ch", ei: "ei", au: "au", eu: "eu", pf: "pf" })[g] || g;
+function lautName(z){ return ({ a: "a", e: "e", i: "i", o: "o", u: "u", ei: "ei", au: "au", eu: "eu", sch: "sch", m: "mmm", s: "sss", f: "fff", l: "lll", n: "nnn", r: "rrr", w: "www" })[z] || z; }
+// 1) Reime hören: Bild + gesprochenes Wort → welches Bild reimt sich?
+function reimHoerAufg(n){
+    const m = bildMap(), paare = mischen(REIMBILD.filter(p => m[p[0]] && m[p[1]]));
+    const alle = hoerBilder();
+    return paare.slice(0, n).map(([a, b]) => {
+        const andere = mischen(alle.filter(x => x.w !== a && x.w !== b && x.w.slice(-2) !== b.slice(-2) && x.w.length <= 8)).slice(0, 2);
+        const opts = mischen([m[b], ...andere]);
+        return { typ: "bildwahl", w: b, ziel: m[a], frage: `Was reimt sich auf ${a}?`, sag: `Was reimt sich auf ${a}? … ${opts.map(o => o.w).join(" … ")}`, opts, richtig: b,
+            tipp: `Sprich langsam: ${a} … und jetzt jedes Bild. Was klingt am Ende genauso?`, tippSag: `${a} … ${opts.map(o => o.w).join(" … ")}`, loesung: `${a} – ${b}` };
+    });
+}
+// 2) Silben klatschen: Bild + Wort → wie oft klatschst du?
+function klatschAufg(n){
+    const pool = mischen(hoerBilder().filter(b => b.w.length <= 10 && silben(b.w).length <= 4));
+    const proZahl = { 1: [], 2: [], 3: [], 4: [] }; pool.forEach(b => { const k = silben(b.w).length; if (proZahl[k] && proZahl[k].length < 6) proZahl[k].push(b); });
+    const auswahl = mischen([...proZahl[1].slice(0, 2), ...proZahl[2].slice(0, 3), ...proZahl[3].slice(0, 3), ...proZahl[4].slice(0, 2)]).slice(0, n);
+    return auswahl.map(b => { const sb = silben(b.w); return { typ: "klatschen", w: b.w, ziel: b, n: sb.length, sag: `${b.w}. Wie oft klatschst du?`, tippSag: sb.join(" … "), tipp: "Sprich das Wort ganz langsam und klatsch bei jeder Silbe.", loesung: b.w }; });
+}
+// 3) Anlaut hören: Welches Bild fängt genauso an wie …?
+function anlautHoerAufg(n){
+    const pool = hoerBilder().filter(b => !/^(sp|st|ch|qu|c|y|x|v|ph)/i.test(b.w) && b.w.length <= 9);
+    const nach = {}; pool.forEach(b => { const a = anlaut(b.w); (nach[a] = nach[a] || []).push(b); });
+    const laute = mischen(Object.keys(nach).filter(a => nach[a].length >= 2));
+    return laute.slice(0, n).map(a => {
+        const [z, r] = mischen(nach[a]).slice(0, 2), andere = mischen(pool.filter(x => anlaut(x.w) !== a && !"aeiouäöü".includes(anlaut(x.w)[0]) === !"aeiouäöü".includes(a[0]))).slice(0, 2);
+        const opts = mischen([r, ...andere]);
+        return { typ: "bildwahl", w: r.w, ziel: z, frage: `Was fängt so an wie ${z.w}?`, sag: `Welches Bild fängt so an wie ${z.w}? … ${opts.map(o => o.w).join(" … ")}`, opts, richtig: r.w,
+            tipp: `Hör auf den ersten Laut: ${lautName(a)} … ${z.w}.`, tippSag: `${lautName(a)} … ${z.w} … ${opts.map(o => o.w).join(" … ")}`, loesung: `${z.w} – ${r.w}` };
+    });
+}
+// 4) Roboter-Sprache: Silben zusammenziehen (Synthese)
+function syntheseAufg(n){
+    const pool = mischen(hoerBilder().filter(b => { const k = silben(b.w).length; return k >= 2 && k <= 4 && b.w.length <= 10; }));
+    return pool.slice(0, n).map(b => { const andere = mischen(hoerBilder().filter(x => x.w !== b.w && x.w.length <= 10)).slice(0, 2), opts = mischen([b, ...andere]), sb = silben(b.w);
+        return { typ: "bildwahl", w: b.w, frage: "Robo spricht in Silben. Welches Bild meint er?", sag: `Robo sagt: ${sb.join(" …… ")}. Welches Bild ist das?`, opts, richtig: b.w, robo: true,
+            tipp: "Sag die Silben schneller hintereinander – dann hörst du das Wort.", tippSag: sb.join(" … "), loesung: b.w }; });
+}
+// 5) Laut-Detektiv: Hörst du am Anfang ein …?
+function lautJaNeinAufg(n){
+    const pool = hoerBilder().filter(b => !/^(sp|st|ch|qu|c|y|x|v|ph)/i.test(b.w) && b.w.length <= 9);
+    const laute = ["m", "s", "l", "a", "o", "f", "r", "n", "e", "i", "u", "w"];
+    return mischen(pool).slice(0, n).map(b => { const ja = Math.random() < .5, l = ja ? anlaut(b.w) : mischen(laute.filter(x => x !== anlaut(b.w)))[0];
+        return { typ: "janein", w: b.w, ziel: b, laut: l, richtig: anlaut(b.w) === l ? "ja" : "nein", sag: `${b.w}. Hörst du am Anfang ein ${lautName(l)}?`, tipp: `Sprich ganz langsam und dehne den Anfang: ${b.w}.`, tippSag: `${lautName(anlaut(b.w))} … ${b.w}`, loesung: b.w }; });
+}
+function vorlesePassend(n){ return mischen([...reimHoerAufg(3), ...klatschAufg(3), ...anlautHoerAufg(3), ...syntheseAufg(2)]).slice(0, n); }
+
 // Mischung nach Kind
 function passendeAufgaben(n){
     if (!sek() && (!S.kind || !S.kind.r.length) && (buchstaben() || S.klasse <= 1)) return mischen([...anlautAufg(4), ...bildWortAufg(3), ...silbenAufg(3)]).slice(0, n);
@@ -153,6 +210,10 @@ const css = `
 .ag-kachel.weg{ visibility:hidden; } .ag-kachel.nein{ animation:ag-w .35s; border-color:#e6c3b5; }
 .ag-merk{ font-family:var(--wort); font-size:clamp(40px, 10vw, 72px); color:#2d3530; background:#fff; border-radius:22px; padding:10px 28px; box-shadow:0 6px 20px rgba(47,74,31,.1); }
 .ag-weiter{ border:0; background:#557428; color:#fff; border-radius:18px; padding:14px 28px; font-family:Nunito, sans-serif; font-weight:900; font-size:18px; box-shadow:0 4px 0 #2f4a1f; cursor:pointer; }
+.ag-hoer.gross{ width:78px; height:78px; font-size:32px; }
+.ag-frage.ag-klein{ font-size:15px; color:#8a957f; }
+.ag-knopf.gross{ font-size:44px; min-width:130px; display:flex; flex-direction:column; align-items:center; } .ag-knopf.gross small{ font-size:15px; font-family:Nunito, sans-serif; }
+.ag-knopf.klatsch{ font-size:clamp(22px, 5vw, 30px); letter-spacing:-2px; min-width:90px; }
 .ag-blitz{ min-height:110px; display:flex; align-items:center; justify-content:center; }
 .ag-dunkel .ag-frage, .ag-dunkel .ag-tippknopf{ color:#fff; }
 `;
@@ -215,6 +276,26 @@ function zeigen(feld, a, fertig, opt = {}){
                 if (o === a.richtig){ z.dataset.fertig = 1; b.classList.add("ok"); if (a.lesen) sprechen(o); ende(); }
                 else if (falsch(a.tipp, b)){ z.dataset.fertig = 1; [...z.children][a.opts.indexOf(a.richtig)].classList.add("ok"); if (a.sag) sprechen(a.sag); ende(); } }; });
     }
+    if (a.typ === "bildwahl" || a.typ === "janein" || a.typ === "klatschen"){
+        const optHtml = a.typ === "bildwahl" ? a.opts.map((o, i) => `<button class="ag-knopf bild" data-o="${i}">${o.svg}</button>`).join("")
+            : a.typ === "janein" ? `<button class="ag-knopf text gross" data-o="ja">👍<small>ja</small></button><button class="ag-knopf text gross" data-o="nein">👎<small>nein</small></button>`
+            : [1, 2, 3, 4].map(k => `<button class="ag-knopf text klatsch" data-o="${k}">${"👏".repeat(k)}</button>`).join("");
+        box.innerHTML = `${a.ziel ? `<div class="ag-bild">${a.ziel.svg}</div>` : a.robo ? `<div style="font-size:84px;line-height:1">🤖</div>` : ""}
+            <button class="ag-hoer gross" id="ag-nochmal" title="Noch mal hören">🔊</button><div class="ag-frage ag-klein">${esc(a.frage || "")}</div>
+            <div class="ag-zeile" id="ag-z">${optHtml}</div><button class="ag-tippknopf" id="ag-t">💡 Tipp</button>`;
+        const z = box.querySelector("#ag-z");
+        const sagen = () => sprechen(a.sag);
+        box.querySelector("#ag-nochmal").onclick = sagen; setTimeout(sagen, 250);
+        box.querySelector("#ag-t").onclick = () => { tippZeigen(esc(a.tipp)); sprechen(a.tippSag || a.tipp); };
+        const richtigIst = b => a.typ === "bildwahl" ? a.opts[+b.dataset.o].w === a.richtig : String(b.dataset.o) === String(a.typ === "klatschen" ? a.n : a.richtig);
+        z.querySelectorAll("button").forEach(b => b.onclick = () => {
+            if (z.dataset.fertig) return;
+            if (richtigIst(b)){ z.dataset.fertig = 1; b.classList.add("ok"); sprechen(a.typ === "klatschen" ? silben(a.w).join(" … ") : a.loesung.replace("–", "und")); ende(); }
+            else { if (a.typ === "bildwahl") sprechen(a.opts[+b.dataset.o].w);
+                if (falsch(esc(a.tipp), b)){ z.dataset.fertig = 1; [...z.children].find(richtigIst)?.classList.add("ok"); sprechen(a.typ === "klatschen" ? silben(a.w).join(" … ") : a.loesung.replace("–", "und")); ende(); }
+                else setTimeout(() => sprechen(a.tippSag || a.tipp), 700); }
+        });
+    }
     if (a.typ === "blitz"){
         const ms = laden("sp-blitz", sek() ? 700 : 1300);
         box.innerHTML = `<div class="ag-frage">Lies das Wort – dann tippe auf das passende Bild.</div><div class="ag-blitz ag-wort" id="ag-b">·</div><button class="ag-weiter" id="ag-los">Zeig das Wort</button><div class="ag-zeile" id="ag-z"></div>`;
@@ -256,5 +337,5 @@ function zeigen(feld, a, fertig, opt = {}){
     }
     return box;
 }
-window.AG = { zeigen, rsAufgaben, merkAufgaben, anlautAufg, bildWortAufg, blitzAufg, reimAufg, silbenAufg, passendeAufgaben, STRATEGIE, STRAT_VON, silbenHtml };
+window.AG = { zeigen, reimHoerAufg, klatschAufg, anlautHoerAufg, syntheseAufg, lautJaNeinAufg, vorlesePassend, rsAufgaben, merkAufgaben, anlautAufg, bildWortAufg, blitzAufg, reimAufg, silbenAufg, passendeAufgaben, STRATEGIE, STRAT_VON, silbenHtml };
 })();
