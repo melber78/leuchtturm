@@ -6,10 +6,10 @@ header.kopf h1, .portal-header h1, .titel, h1.titel, h2.titel, .karte h2.titel, 
 header.kopf{ background:linear-gradient(135deg, #2f4a1f, #557428) !important; }
 ::selection{ background:#dfe8cf; }
 /* Kopfleisten: hell, mit deinem Blatt aus dem Logo */
-header.kopf, .kopf{ background-color:#edf2e3 !important; background-image:url("mewe-blatt.png") !important; background-repeat:no-repeat !important;
-    background-position:right 26px center !important; background-size:auto 70% !important; color:#2f4a1f !important; box-shadow:none !important; border:none; }
-.kopf{ background-size:auto 64% !important; background-position:right 4% center !important; }
-.heute-karte{ background-color:#f8efd9 !important; background-image:url("mewe-blatt-holz.png") !important; background-repeat:no-repeat !important; background-position:right 64px center !important; background-size:auto 62% !important;
+header.kopf, .kopf{ background-color:#edf2e3 !important; background-image:url("mewe-blatt-dezent.png") !important; background-repeat:no-repeat !important;
+    background-position:right 26px center !important; background-size:auto 58% !important; color:#2f4a1f !important; box-shadow:none !important; border:none; }
+.kopf{ background-size:auto 54% !important; background-position:right 4% center !important; }
+.heute-karte{ background-color:#f8efd9 !important; background-image:url("mewe-blatt-holz-dezent.png") !important; background-repeat:no-repeat !important; background-position:right 64px center !important; background-size:auto 52% !important;
     color:#4a3a1e !important; box-shadow:0 6px 18px rgba(138,106,75,.12) !important; border:none; }
 header.kopf h1, .kopf h1, .heute-karte b{ color:#2f4a1f !important; }
 header.kopf p, .heute-karte small, .kopf .speicherstatus{ color:#56664a !important; opacity:1 !important; }
