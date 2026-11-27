@@ -64,7 +64,7 @@ if (!is_array($alle)) {
     $alle = [];
 }
 $akte = $alle[$kind] ?? [];
-$akte += ["klasse" => "", "plan" => [], "erledigt" => [], "stunden" => []];
+$akte += ["klasse" => "", "plan" => [], "erledigt" => [], "stunden" => [], "lernstand" => []];
 $akte["plan"] += ["von" => "", "bis" => "", "f" => [], "r" => [], "l" => [], "lb" => "", "ziele" => [], "notiz" => "", "geaendert" => ""];
 $geaendert = false; $meldung = "";
 
@@ -98,7 +98,7 @@ switch ($aktion) {
             "lb" => isset($p["lb"]) ? $lesebuchstaben($p["lb"]) : $akte["plan"]["lb"],
             "ziele" => $ziele, "notiz" => $text($p["notiz"] ?? "", 3000), "geaendert" => date("Y-m-d"),
         ];
-        if (preg_match('/^[1-8]$/', (string)($eingabe["klasse"] ?? ""))) $akte["klasse"] = (string)$eingabe["klasse"];
+        if (preg_match('/^[1-9]$/', (string)($eingabe["klasse"] ?? ""))) $akte["klasse"] = (string)$eingabe["klasse"];
         $geaendert = true; $meldung = "Förderplan gespeichert.";
         break;
 
@@ -110,7 +110,7 @@ switch ($aktion) {
         $akte["plan"]["lb"] = $lesebuchstaben($eingabe["lb"] ?? "");
         if (!$akte["plan"]["von"]) $akte["plan"]["von"] = date("Y-m-d");
         $akte["plan"]["geaendert"] = date("Y-m-d");
-        if (preg_match('/^[1-8]$/', (string)($eingabe["klasse"] ?? ""))) $akte["klasse"] = (string)$eingabe["klasse"];
+        if (preg_match('/^[1-9]$/', (string)($eingabe["klasse"] ?? ""))) $akte["klasse"] = (string)$eingabe["klasse"];
         $geaendert = true;
         $meldung = count($akte["plan"]["f"]) . " Funktionsbereiche, " . count($akte["plan"]["r"]) . " Rechtschreib-Schwerpunkte und " . count($akte["plan"]["l"]) . " Lesestufen im Förderplan gespeichert.";
         break;
@@ -123,8 +123,28 @@ switch ($aktion) {
         $meldung = "Gelernte Buchstaben gespeichert.";
         break;
 
+    // Lernstand: Messungen (Lesetempo, Mini-Diktat, Buchstaben, eigene) für den Vorher-/Nachher-Vergleich
+    case "lernstand_hinzu":
+        $m = (array)($eingabe["messung"] ?? []);
+        $art = in_array($m["art"] ?? "", ["lesen", "diktat", "buchstaben", "eigen"], true) ? $m["art"] : "eigen";
+        $details = is_array($m["details"] ?? null) ? $m["details"] : [];
+        $dj = json_encode($details, JSON_UNESCAPED_UNICODE); if ($dj === false || strlen($dj) > 6000) $details = [];
+        $neu = ["id" => uniqid("m_"), "datum" => $datum($m["datum"] ?? ""), "art" => $art, "name" => $zeile($m["name"] ?? "", 80),
+            "wert" => is_numeric($m["wert"] ?? null) ? round((float)$m["wert"], 1) : 0, "max" => is_numeric($m["max"] ?? null) ? (float)$m["max"] : null,
+            "fehler" => is_numeric($m["fehler"] ?? null) ? (int)$m["fehler"] : null, "stufe" => $zeile($m["stufe"] ?? "", 10),
+            "details" => $details, "notiz" => $text($m["notiz"] ?? "", 600)];
+        $akte["lernstand"][] = $neu;
+        usort($akte["lernstand"], fn($a, $b) => strcmp($a["datum"], $b["datum"]));
+        $geaendert = true; $meldung = "Messung gespeichert.";
+        break;
+    case "lernstand_loeschen":
+        $id = (string)($eingabe["id"] ?? "");
+        $akte["lernstand"] = array_values(array_filter($akte["lernstand"], fn($x) => ($x["id"] ?? "") !== $id));
+        $geaendert = true;
+        break;
+
     case "klasse":
-        if (preg_match('/^[1-8]$/', (string)($eingabe["klasse"] ?? ""))) { $akte["klasse"] = (string)$eingabe["klasse"]; $geaendert = true; }
+        if (preg_match('/^[1-9]$/', (string)($eingabe["klasse"] ?? ""))) { $akte["klasse"] = (string)$eingabe["klasse"]; $geaendert = true; }
         break;
 
     case "erledigt":

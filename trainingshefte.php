@@ -202,9 +202,9 @@ function renderMatThumb($m, $BILD_TYPEN, $DATEI_ICONS){
 // ---------------------------
 // Kinder-Akte: Förderplan, Stunden, Lernbox
 // ---------------------------
-$TABS = ["uebersicht" => ["Übersicht", "fa-house"], "plan" => ["Förderplan", "fa-compass"], "heft" => ["Trainingsheft", "fa-book-bookmark"], "kartei" => ["Lernbox & Verlauf", "fa-box-archive"], "stunden" => ["Stunden", "fa-calendar-check"]];
+$TABS = ["uebersicht" => ["Übersicht", "fa-house"], "plan" => ["Förderplan", "fa-compass"], "heft" => ["Trainingsheft", "fa-book-bookmark"], "kartei" => ["Lernbox & Verlauf", "fa-box-archive"], "lernstand" => ["Lernstand & Bericht", "fa-chart-line"], "stunden" => ["Stunden", "fa-calendar-check"]];
 $tab = isset($TABS[$_GET["tab"] ?? ""]) ? $_GET["tab"] : "uebersicht";
-$akte = ["klasse" => "", "plan" => [], "erledigt" => (object)[], "stunden" => []];
+$akte = ["klasse" => "", "plan" => [], "erledigt" => (object)[], "stunden" => [], "lernstand" => []];
 $kartei = ["woerter" => [], "verlauf" => []];
 if ($kindDaten) {
     $alleAkten = json_decode((string)@file_get_contents($aktenDatei), true);
@@ -465,7 +465,7 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
     <div class="klasse">Klasse
         <select id="akte-klasse" onchange="akte_klasse(this.value)">
             <option value="">–</option>
-            <?php for ($k = 1; $k <= 8; $k++): ?><option value="<?= $k ?>" <?= (string)$akte["klasse"] === (string)$k ? "selected" : "" ?>><?= $k ?></option><?php endfor; ?>
+            <?php for ($k = 1; $k <= 9; $k++): ?><option value="<?= $k ?>" <?= (string)$akte["klasse"] === (string)$k ? "selected" : "" ?>><?= $k ?></option><?php endfor; ?>
         </select>
     </div>
 </div>
@@ -593,7 +593,7 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
             </select>
             <select name="filter_klasse" onchange="this.form.submit()">
                 <option value="">Alle Klassen</option>
-                <?php for ($k = 1; $k <= 8; $k++): ?><option value="<?= $k ?>" <?= $filterKlasse === (string)$k ? "selected" : "" ?>>Klasse <?= $k ?></option><?php endfor; ?>
+                <?php for ($k = 1; $k <= 9; $k++): ?><option value="<?= $k ?>" <?= $filterKlasse === (string)$k ? "selected" : "" ?>>Klasse <?= $k ?></option><?php endfor; ?>
             </select>
         </form>
         <div id="verf-bulk-leiste" style="display:none; align-items:center; gap:10px; background:#eef3e6; border-radius:14px; padding:10px 16px; margin-bottom:14px; flex-wrap:wrap;">
@@ -680,6 +680,8 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
     </div>
 </div>
 
+<?php elseif ($tab === "lernstand"): ?>
+<div id="lernstand"></div>
 <?php elseif ($tab === "stunden"): ?>
 <div class="karte">
     <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
@@ -713,6 +715,7 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
 <script>
 const AKTE_KIND = <?= json_encode($aktuellesKind, JSON_UNESCAPED_UNICODE) ?>;
 let AKTE = <?= json_encode($akte, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
+const AKTE_KARTEI = <?= json_encode(["woerter" => array_map(fn($w) => ["w" => (string)($w["wort"] ?? ""), "f" => (int)($w["fach"] ?? 1), "sp" => $w["sp"] ?? []], $kartei["woerter"])], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
 const ST_PARTNER = <?= json_encode((object)$stPartner, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;
 const AF_FUNKTIONEN = { aufmerksamkeit: "Aufmerksamkeit/Konzentration", optdiff: "Optische Differenzierung", optged: "Optisches Gedächtnis", optser: "Optische Serialität",
     akdiff: "Akustische Differenzierung", akged: "Akustisches Gedächtnis", akser: "Akustische Serialität", koerper: "Körperschema", raum: "Raumorientierung" };
@@ -981,6 +984,7 @@ stunden_zeigen();
 if (stunden_verschieben) window.addEventListener("load", () => setTimeout(() => { const b = document.querySelector(".st-verschieben"); if (b) b.scrollIntoView({ block: "center" }); }, 100));
 </script>
 
+<?php if ($tab === "lernstand"): ?><script src="lrs-lernstand.js"></script><?php endif; ?>
 <?php if ($tab === "heft"): ?>
 <script>
 const HEFT_MATERIALIEN = <?php
