@@ -498,6 +498,7 @@ body.freigabe .reiter, body.freigabe .detail-kopf .knopfleiste, body.freigabe .d
 <?php if ($BEREICH === "sozial"): ?>
             <a href="#jahresplan" data-reiter="jahresplan"><i class="fa-solid fa-calendar-week"></i> Jahresplan</a>
             <a href="#rituale" data-reiter="rituale"><i class="fa-solid fa-hands-holding-circle"></i> Rituale</a>
+            <a href="#konflikte" data-reiter="konflikte"><i class="fa-solid fa-handshake-angle"></i> Konflikte</a>
 <?php elseif ($BEREICH === "lernangebot"): ?>
             <a href="#jahresplan" data-reiter="jahresplan"><i class="fa-solid fa-calendar-week"></i> Jahresplan</a>
             <a href="#methoden" data-reiter="methoden"><i class="fa-solid fa-shapes"></i> Methoden &amp; Planer</a>
@@ -1461,6 +1462,7 @@ function route(){
     if (ansicht === "neu") return zeigeEditor(null);
     if (ansicht === "jahresplan") return zeigeJahresplan();
     if (ansicht === "rituale") return zeigeRituale();
+    if (ansicht === "konflikte" && window.sozialKonflikt){ reiterSetzen("konflikte"); return window.sozialKonflikt.zeigen(inhalt); }
     if (ansicht === "methoden" && window.lernMethoden) { reiterSetzen("methoden"); return window.lernMethoden.zeigen(inhalt, id); }
     if (ansicht === "tafel" && window.lernTafel) { reiterSetzen("tafel"); return window.lernTafel.uebersicht(inhalt); }
     zeigeBibliothek();
@@ -2518,6 +2520,7 @@ function zeigeRituale(bearbeiten = false){
 route();
 </script>
 <?php $zusaetze = ["sozial-medien.js", "sozial-praesentation.js", "sozial-material.js", "sozial-regie.js"];
+if ($BEREICH === "sozial") $zusaetze[] = "sozial-konflikt.js";
 if ($BEREICH === "lernangebot") array_push($zusaetze, "lernangebot-einstiege.js", "lernangebot-woerter.js", "lernangebot-material.js", "lernangebot-tafel.js", "lernangebot-duell.js", "lernangebot-methoden.js", "lernangebot-duelle.js");
 else $zusaetze[] = "lernangebot-tafel.js";   // für Leise-Meer in der Präsentation
 foreach ($zusaetze as $zusatz): if (file_exists(__DIR__ . "/" . $zusatz)): ?>
@@ -2525,7 +2528,7 @@ foreach ($zusaetze as $zusatz): if (file_exists(__DIR__ . "/" . $zusatz)): ?>
 <?php endif; endforeach; ?>
 <script>
 // Ansicht neu zeichnen, sobald Präsentation und Filmliste geladen sind (Knöpfe/Filme erscheinen dann)
-if (/^#(stunde|methoden|tafel)/.test(location.hash)) route();
+if (/^#(stunde|methoden|tafel|konflikte)/.test(location.hash)) route();
 </script>
 </body>
 </html>
