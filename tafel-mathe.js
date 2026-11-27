@@ -39,6 +39,21 @@ const ZUSATZ_CSS = `
 .sr .tl{ color:#e08a2c; }
 .sr .strich{ border-top:.07em solid currentColor; height:.18em; }
 .sr .alt{ text-decoration:line-through; text-decoration-color:#d1342b; text-decoration-thickness:.08em; opacity:.7; }
+.ek-bild .sr .frei.zu-s:not(.auf-s){ opacity:1; color:transparent; cursor:pointer; }
+.ek-bild .sr .frei.zu-s:not(.auf-s)::before{ content:""; position:absolute; inset:.08em .04em; border:.045em dashed #b3c69a; border-radius:.14em; background:rgba(179,198,154,.12); }
+.ek.kreide .ek-bild .sr .frei.zu-s:not(.auf-s)::before{ border-color:rgba(255,255,255,.4); background:rgba(255,255,255,.06); }
+.ek-bild .sr .frei.wahl::before{ border-style:solid !important; border-color:#e08a2c !important; background:rgba(224,138,44,.15) !important; }
+.ek-bild .sr .falsch::before{ animation:srW .35s; border-color:#d1342b !important; }
+.ek-bild .sr .getroffen{ animation:srOk .7s; }
+@keyframes srW{ 25%{ transform:translateX(-4px); } 75%{ transform:translateX(4px); } }
+@keyframes srOk{ 0%{ transform:scale(1.35); } 100%{ transform:scale(1); } }
+.sr-pad{ position:fixed; z-index:100; display:none; grid-template-columns:repeat(11, 1fr); gap:6px; padding:8px 10px calc(8px + env(safe-area-inset-bottom)); background:#fff; border-radius:20px 20px 0 0; box-shadow:0 -8px 30px rgba(0,0,0,.2); left:50%; bottom:0; transform:translateX(-50%); width:min(760px, 100vw); }
+@media (max-width:600px){ .sr-pad{ grid-template-columns:repeat(6, 1fr); } }
+.sr-pad.an{ display:grid; } .sr-pad.kreide{ background:#24403a; }
+.sr-pad button{ font:900 clamp(24px,4vmin,34px) "Nunito",sans-serif; border:0; border-radius:14px; height:clamp(52px,8vmin,66px); background:#eef3e6; color:#2f4a1f; cursor:pointer; }
+.sr-pad.kreide button{ background:rgba(255,255,255,.12); color:#f3efe3; }
+.sr-pad button[data-z="✕"]{ background:#fbe9e4; color:#b5583f; }
+.sr-pad.wackeln button{ animation:srW .35s; }
 .sr .kopf{ font-size:.42em; color:#7c8a96; align-items:center; }
 .swt{ display:grid; gap:10px; width:100%; height:100%; align-content:center; }
 .swt-k{ background:#f4f7fa; border-radius:16px; padding:8px 6px 10px; display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0; }
@@ -235,7 +250,53 @@ const zahlLesen = t => Number(String(t).replace(/[\s. ]/g, ""));
     };
 });
 
-const schriftlich = ET.neu({ id: "schriftlich", titel: "Schriftlich rechnen", unter: "Klasse 3–6", hash: "schriftlich", speicher: "lt-schriftlich",
+/* Direkt an der Tafel rechnen: leere Ziffernfelder antippen und die Ziffer eintragen.
+   Stimmt sie, bleibt sie stehen; ist ein Schritt komplett, wird er im Rechenweg aufgedeckt. */
+let srPad = null, srZiel = null, srApi = null;
+function srPadZeigen(zelle){
+    if (!srPad){
+        srPad = document.createElement("div"); srPad.className = "sr-pad";
+        srPad.innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "✕"].map(z => `<button data-z="${z}">${z}</button>`).join("");
+        document.body.appendChild(srPad);
+        srPad.addEventListener("click", e => { const b = e.target.closest("[data-z]"); if (!b) return; e.stopPropagation(); if (b.dataset.z === "✕") return srPadZu(); srEingabe(b.dataset.z); });
+        document.addEventListener("pointerdown", e => { if (srPad.classList.contains("an") && !e.target.closest(".sr-pad, .sr .frei")) srPadZu(); });
+    }
+    document.querySelectorAll(".sr .frei.wahl").forEach(x => x.classList.remove("wahl"));
+    srZiel = zelle; zelle.classList.add("wahl");
+    const host = zelle.closest(".ek"); if (srPad.parentElement !== host) host.appendChild(srPad);
+    srPad.classList.toggle("kreide", host.classList.contains("kreide"));
+    srPad.classList.add("an");
+    // Ziffernblock unten am Rand – so bleibt die Rechnung sichtbar; das Feld wird bei Bedarf nach oben gescrollt
+    const r = zelle.getBoundingClientRect(), ph = srPad.offsetHeight;
+    if (r.bottom > innerHeight - ph - 16) { const sc = zelle.closest(".ek-bild, .ek-haupt, .ek") ; window.scrollBy(0, r.bottom - (innerHeight - ph - 24)); zelle.scrollIntoView({ block: "center" }); }
+}
+function srPadZu(){ if (srPad) srPad.classList.remove("an"); document.querySelectorAll(".sr .frei.wahl").forEach(x => x.classList.remove("wahl")); srZiel = null; }
+function srEingabe(z){
+    const c = srZiel; if (!c) return;
+    if (c.textContent.trim() === String(z)){
+        c.classList.remove("wahl", "frei"); c.classList.add("auf-s", "getroffen"); setTimeout(() => c.classList.remove("getroffen"), 700);
+        const s = c.dataset.s, ek = c.closest(".ek");
+        if (![...ek.querySelectorAll(`.ek-bild .ziel[data-s="${s}"]`)].some(x => !x.classList.contains("auf-s"))){
+            const l = ek.querySelector(`.ek-panel .lsg.zu[data-i="${s}"]`); if (l && srApi) srApi.aufdecken(l);
+            // alles gerechnet? Dann auch den Ergebnis-Schritt aufdecken
+            if (![...ek.querySelectorAll(".ek-bild .sr .ziel")].some(x => !x.classList.contains("auf-s"))) ek.querySelectorAll(".ek-panel .lsg.zu").forEach(x => srApi && srApi.aufdecken(x));
+        }
+        srPadZu();
+        // nächstes leeres Feld derselben Spalte oder weiter links vorschlagen
+    } else {
+        c.classList.remove("falsch"); void c.offsetWidth; c.classList.add("falsch");
+        srPad.classList.remove("wackeln"); void srPad.offsetWidth; srPad.classList.add("wackeln");
+    }
+}
+function tafelRechnen(el, api){
+    srApi = api; srPadZu();
+    // Überträge (kleine rote Ziffern) erscheinen von selbst, sobald die Stelle gerechnet ist – sonst würden leere Kästchen verraten, wo einer kommt
+    el.querySelectorAll(".ek-bild .sr [data-s]").forEach(c => { if (/^\d$/.test(c.textContent.trim()) && !c.classList.contains("kl")){ c.classList.add("frei", "ziel"); c.onclick = e => { e.stopPropagation(); if (c.classList.contains("frei")) srPadZeigen(c); }; } });
+}
+["plus", "minus", "mal", "geteilt"].forEach(k => { const orig = SK[k]; SK[k] = Object.assign(() => { const d = orig(); d.nachher = tafelRechnen;
+    d.frage = (d.frage || "") + ` <span style="font-size:.8em;opacity:.75">– tippe auf ein leeres Feld und trag die Ziffer ein.</span>`; return d; }, orig); });
+
+const schriftlich = ET.neu({ id: "schriftlich", titel: "Schriftlich rechnen", unter: "Klasse 3–6", hash: "schriftlich", speicher: "lt-schriftlich", merkeZu: true,
     kapitel: [["plus", "Plus"], ["minus", "Minus"], ["mal", "Mal"], ["geteilt", "Geteilt"]], K: SK, S: SR, aufgebaut: css });
 
 /* =====================================================================

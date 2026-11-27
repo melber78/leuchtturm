@@ -60,6 +60,10 @@ const CSS = `
 .ek-h{ font-size:13px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; color:#7c8a96; margin:2px 0 -4px; }
 .ek.kreide .ek-h{ color:#b9c9bf; }
 .ek-schritte{ display:flex; flex-direction:column; gap:1.1vmin; }
+.ek-s.spaeter{ display:none; }
+.ek-rest{ font-size:clamp(13px,1.6vmin,16px); font-weight:800; color:#9aa8b4; padding-left:calc(clamp(26px,3.4vmin,38px) + 1.2vmin); }
+.ek-merke-knopf{ align-self:flex-start; font:900 clamp(14px,1.8vmin,18px) "Nunito",sans-serif; border:2px dashed #b3c69a; background:transparent; color:#557428; border-radius:999px; padding:8px 16px; cursor:pointer; }
+.ek.kreide .ek-merke-knopf{ color:#f3efe3; border-color:rgba(255,255,255,.35); }
 .ek-s{ display:grid; grid-template-columns:auto 1fr; gap:.5vmin 1.2vmin; align-items:start; }
 .ek-s .nr{ width:clamp(26px,3.4vmin,38px); height:clamp(26px,3.4vmin,38px); border-radius:50%; background:#2f4a1f; color:white; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:clamp(14px,1.9vmin,20px); grid-row:span 2; }
 .ek.kreide .ek-s .nr{ background:#f3efe3; color:#24403a; }
@@ -188,11 +192,11 @@ function neu(cfg){
         el.querySelector(".ek-bild").innerHTML = !S.bild ? `<div class="ek-ohne"><i class="fa-solid fa-eye-slash"></i> Bild ausgeblendet – oben auf „Bild“ tippen</div>` : (d.bild || "");
         const sch = d.schritte || [];
         el.querySelector(".ek-panel").innerHTML = `
-            ${d.merke ? `<div class="ek-merke">${d.merke}</div>` : ""}
+            ${d.merke ? (cfg.merkeZu && !S._merkeAuf ? `<button class="ek-merke-knopf" data-a="merke">💡 Merke zeigen</button>` : `<div class="ek-merke">${d.merke}</div>`) : ""}
             ${d.regler ? `<div class="ek-regler">${d.regler}</div>` : ""}
             ${S.fehler ? `<div class="ek-fehler">${S.fehler}</div>` : ""}
             ${sch.length ? `<div class="ek-h">${d.schritteTitel || "Rechenweg"}</div>
-            <div class="ek-schritte">${sch.map((s, i) => `<div class="ek-s"><span class="nr">${i + 1}</span><div class="f">${s[0]}</div><div class="a">${s[1] === "" ? "" : `<span class="lsg zu" data-l="1" data-i="${i}"><span>${s[1]}</span></span>`}</div></div>`).join("")}</div>` : ""}
+            <div class="ek-schritte">${sch.map((s, i) => `<div class="ek-s"><span class="nr">${i + 1}</span><div class="f">${s[0]}</div><div class="a">${s[1] === "" ? "" : `<span class="lsg zu" data-l="1" data-i="${i}"><span>${s[1]}</span></span>`}</div></div>`).join("")}</div><div class="ek-rest" id="ek-rest"></div>` : ""}
             ${d.unten || ""}
             <div class="ek-knoepfe">
                 ${sch.length ? `<button class="haupt" data-a="weiter"><i class="fa-solid fa-forward-step"></i> Nächster Schritt</button>` : ""}
@@ -200,13 +204,20 @@ function neu(cfg){
                 ${K[S.kap].neu ? `<button class="neu" data-a="neu"><i class="fa-solid fa-dice"></i> Neues Beispiel</button>` : ""}
             </div>`;
         el.querySelectorAll(".ek-bild [data-s]").forEach(x => x.classList.add("zu-s"));
+        schritteFolgen();
         if (d.nachher) d.nachher(el, api);
         const tab = el.querySelector(`[data-kap="${S.kap}"]`); if (tab && tab.scrollIntoView) tab.scrollIntoView({ block: "nearest", inline: "nearest" });
     }
 
+    // Schritt für Schritt: spätere Schritte (mit Überträgen usw.) erst zeigen, wenn der vorige gelöst ist
+    function schritteFolgen(){
+        const st = [...el.querySelectorAll(".ek-schritte .ek-s")]; let offen = false, rest = 0;
+        st.forEach(x => { x.classList.toggle("spaeter", offen); if (offen) rest++; if (!offen && x.querySelector(".lsg.zu")) offen = true; });
+        const r = el.querySelector("#ek-rest"); if (r) r.textContent = rest ? `… noch ${rest} ${rest === 1 ? "Schritt" : "Schritte"}` : "";
+    }
     function bildTeile(i, an){ el.querySelectorAll(`.ek-bild [data-s="${i}"]`).forEach(x => { x.classList.toggle("auf-s", an); }); }
-    function aufdecken(x){ x.classList.remove("zu"); x.classList.add("neu"); setTimeout(() => x.classList.remove("neu"), 800); if (x.dataset.i !== undefined) bildTeile(x.dataset.i, true); }
-    function zudecken(x){ x.classList.add("zu"); if (x.dataset.i !== undefined) bildTeile(x.dataset.i, false); }
+    function aufdecken(x){ x.classList.remove("zu"); x.classList.add("neu"); setTimeout(() => x.classList.remove("neu"), 800); if (x.dataset.i !== undefined) bildTeile(x.dataset.i, true); schritteFolgen(); }
+    function zudecken(x){ x.classList.add("zu"); if (x.dataset.i !== undefined) bildTeile(x.dataset.i, false); schritteFolgen(); }
 
     function klick(e){
         const t = e.target.closest("button, .lsg, [data-x]");
@@ -222,6 +233,7 @@ function neu(cfg){
         if (a === "voll") return window.vollbild ? window.vollbild() : null;
         if (a === "menue") return el.querySelector(".ek-menue").classList.toggle("an");
         if (a === "bild"){ S.bild = !S.bild; merken(); return zeichnen(); }
+        if (a === "merke"){ const m = document.createElement("div"); m.className = "ek-merke"; m.innerHTML = K[S.kap]().merke || ""; t.replaceWith(m); return; }
         if (a === "neu"){ S.fehler = ""; K[S.kap].neu(); return zeichnen(); }
         if (a === "weiter"){ const n = el.querySelector(".ek-panel .lsg.zu"); if (n){ aufdecken(n); if (n.scrollIntoView) n.scrollIntoView({ block: "nearest", behavior: "smooth" }); } else if (K[S.kap].allesAuf) K[S.kap].allesAuf(el, api); return; }
         if (a === "alle"){ el.querySelectorAll(".lsg.zu").forEach(aufdecken); if (K[S.kap].allesAuf) K[S.kap].allesAuf(el, api); return; }
@@ -242,7 +254,7 @@ function neu(cfg){
         const ue = document.getElementById("uebersicht"); if (ue) ue.style.display = "";
         try { history.replaceState(null, "", location.pathname); } catch (x) {}
     }
-    const api = { oeffnen, schliessen, zeichnen, S, el: () => el };
+    const api = { oeffnen, schliessen, zeichnen, S, el: () => el, aufdecken };
     document.addEventListener("DOMContentLoaded", () => { if (location.hash === "#" + cfg.hash) oeffnen(); });
     return api;
 }
