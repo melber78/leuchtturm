@@ -431,4 +431,5 @@ function arKarten(){
     ziel.querySelectorAll("[data-ar]").forEach(b => b.onclick = () => { box.classList.add("an"); document.body.style.overflow = "hidden"; startZeigen(b.dataset.ar); });
 }
 window.arKarten = arKarten;
+window.AR = { konto, kontoSpeichern, aktiveFigur, sfx, runnerAufgaben, regelMachen, quellenFuer, QUELLEN };
 })();

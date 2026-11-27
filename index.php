@@ -147,6 +147,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-27", "Weltenreise", "Abenteuerspiel in den Lernspielen: 8 Welten von Zauberwald bis Wolkenschloss – mit Geschichte, Begleitfigur, Abenteuern (Springen, Suchen, Bauen) und einem Wächter-Kampf. Sterne, Schätze und Münzen; geübt wird der Schwerpunkt des Kindes.", "lrs-spiele.php"],
     ["2026-11-27", "Lernstand & Förderbericht", "Neuer Reiter in der Kinder-Akte: Lesetempo-Test (1 Minute), Mini-Diktat und Buchstabentest mit festen Listen, Verlauf als Grafik – und ein Förderbericht auf Knopfdruck für Konferenz und Elterngespräch.", "trainingshefte.php"],
     ["2026-11-27", "Eigenes Drucklayout „Wachsen“", "Mit deinem MeWe-Logo im Kopf: Grün, Salbei und Holz, Überschriften in Fraunces, am Rand wächst ein Stängel mit den Aufgaben als Blätter, Samenpunkte zeigen das Blatt der Reihe, unten sanfte Hügel.", "lrs.php"],
     ["2026-11-26", "Buchstabenkurs in der Stundenplanung", "Symptomtraining → „Buchstabenkurs“: Buchstabe für Buchstabe in Fibel-Reihenfolge mit Schreibweg (Startpunkt, Zahlen, Pfeile), Hören, Finden, Lesen nur mit bekannten Buchstaben und Buchstabenpass.", "lrs.php"],

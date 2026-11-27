@@ -573,5 +573,6 @@ kindSetzen();
 </script>
 <script src="lrs-arcade.js"></script>
 <script>arKarten();</script>
+<script src="lrs-welten.js"></script>
 </body>
 </html>
