@@ -72,7 +72,7 @@ $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESC
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -87,9 +87,9 @@ $JSON = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESC
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <style>
 :root{
-    --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4;
+    --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --schaum:#f7f4ec;
     --text:#1f2d36; --grau:#7c8a85; --linie:#dfe5e2;
-    --schatten:0 6px 24px rgba(22,50,74,.1);
+    --schatten:0 6px 24px rgba(47,74,31,.1);
     --rot:#c0392b; --gruen:#2e8b57;
 }
 *{ box-sizing:border-box; }
@@ -111,7 +111,7 @@ button, input, select, textarea{ font-family:inherit; font-size:15px; }
 .seite{ width:min(1100px,94%); margin:22px auto 60px; }
 
 /* ---------- Bausteine ---------- */
-.btn{ border:0; border-radius:12px; padding:9px 14px; font-weight:800; cursor:pointer; background:white; color:var(--nacht); box-shadow:0 2px 8px rgba(22,50,74,.1); display:inline-flex; align-items:center; gap:7px; text-decoration:none; font-size:14px; }
+.btn{ border:0; border-radius:12px; padding:9px 14px; font-weight:800; cursor:pointer; background:white; color:var(--nacht); box-shadow:0 2px 8px rgba(47,74,31,.1); display:inline-flex; align-items:center; gap:7px; text-decoration:none; font-size:14px; }
 .btn:hover{ filter:brightness(.96); }
 .btn.gold{ background:var(--gold); color:var(--nacht); }
 .btn.blau{ background:var(--meer); color:white; }
@@ -240,7 +240,7 @@ table.ue .zelle b{ display:block; color:var(--f); font-size:12px; }
 table.ue tr.pause td{ background:#fafbfa; color:var(--grau); font-style:italic; }
 
 /* ---------- Auswahl (Stunde einfügen) ---------- */
-.dialog-hg{ position:fixed; inset:0; background:rgba(22,50,74,.45); display:flex; align-items:flex-end; justify-content:center; z-index:50; }
+.dialog-hg{ position:fixed; inset:0; background:rgba(47,74,31,.45); display:flex; align-items:flex-end; justify-content:center; z-index:50; }
 @media (min-width:700px){ .dialog-hg{ align-items:center; } }
 .dialog{ background:white; width:min(680px,100%); max-height:88vh; border-radius:22px 22px 0 0; display:flex; flex-direction:column; overflow:hidden; }
 @media (min-width:700px){ .dialog{ border-radius:22px; } }
@@ -325,10 +325,11 @@ table.dr-woche .zelle b{ color:var(--f); display:block; font-size:8pt; }
 .lrs-kinder.klein-zeile{ align-items:center; margin:0 0 12px; font-weight:800; color:var(--grau); font-size:14px; }
 .lrs-kinder.klein-zeile .lrs-kind{ font-size:13px; padding:5px 12px; min-height:34px; }
 .lrs-kind.aus{ background:white; color:var(--grau); border-color:var(--linie); text-decoration:line-through; }
-.lrs-wahl{ font:800 14px "Nunito",sans-serif; border:2px solid #7b5cc4; color:#16324a; border-radius:10px; padding:6px 8px; background:white; max-width:100%; }
+.lrs-wahl{ font:800 14px "Nunito",sans-serif; border:2px solid #7b5cc4; color:#2f4a1f; border-radius:10px; padding:6px 8px; background:white; max-width:100%; }
 </style>
 <style id="druckSeite">@page{ size:A4 portrait; margin:12mm; }</style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 
@@ -376,12 +377,12 @@ const inhalt = document.getElementById("inhalt");
 
 const ARTEN = {
     "":          { name: "frei",              farbe: "#b5c0c5", icon: "fa-mug-hot" },
-    sozial:      { name: "Sozialtraining",    farbe: "#3d7ea6", icon: "fa-people-group", bereich: "sozial" },
+    sozial:      { name: "Sozialtraining",    farbe: "#557428", icon: "fa-people-group", bereich: "sozial" },
     lernangebot: { name: "Lernangebot",       farbe: "#2e8b57", icon: "fa-seedling", bereich: "lernangebot" },
     lrs:         { name: "LRS-Förderung",     farbe: "#7b5cc4", icon: "fa-pen-nib" },
     foerder:     { name: "Fördergruppe",      farbe: "#c05a96", icon: "fa-hands-holding-child" },
     vertretung:  { name: "Vertretung",        farbe: "#e07a2f", icon: "fa-shuffle", bereich: "vertretung" },
-    unterricht:  { name: "Unterricht",        farbe: "#16324a", icon: "fa-chalkboard-user" },
+    unterricht:  { name: "Unterricht",        farbe: "#2f4a1f", icon: "fa-chalkboard-user" },
     aufsicht:    { name: "Aufsicht",          farbe: "#b08a2e", icon: "fa-eye" },
     termin:      { name: "Termin / Besprechung", farbe: "#c0392b", icon: "fa-handshake" },
     sonstiges:   { name: "Sonstiges",         farbe: "#7c8a85", icon: "fa-thumbtack" }

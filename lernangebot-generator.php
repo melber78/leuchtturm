@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,7 +20,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <style>
-:root{ --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4; --text:#1f2d36; --grau:#7c8a85; --linie:#dfe5e2; --schatten:0 6px 24px rgba(22,50,74,.1); }
+:root{ --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --schaum:#f7f4ec; --text:#1f2d36; --grau:#7c8a85; --linie:#dfe5e2; --schatten:0 6px 24px rgba(47,74,31,.1); }
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; }
 button, select, input{ font-family:inherit; font-size:15px; }
@@ -37,14 +37,14 @@ select, input[type=number]{ border:2px solid var(--linie); border-radius:10px; p
 .reihe{ display:flex; gap:6px; flex-wrap:wrap; }
 .wahl{ border:2px solid var(--linie); background:#fff; border-radius:10px; padding:8px 12px; font-weight:800; cursor:pointer; }
 .wahl.an{ background:var(--meer); border-color:var(--meer); color:#fff; }
-.btn{ border:0; border-radius:12px; padding:11px 16px; font-weight:800; cursor:pointer; background:#eef4f8; color:var(--nacht); display:inline-flex; align-items:center; gap:8px; }
+.btn{ border:0; border-radius:12px; padding:11px 16px; font-weight:800; cursor:pointer; background:#eef3e6; color:var(--nacht); display:inline-flex; align-items:center; gap:8px; }
 .btn.gold{ background:var(--gold); }
 .btn.blau{ background:var(--meer); color:#fff; }
 .knoepfe{ display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; }
 .hilfe{ font-size:12.5px; color:var(--grau); font-weight:700; margin-top:8px; }
 .check{ display:flex; gap:8px; align-items:center; font-weight:700; margin-top:10px; }
 .vorschau-box{ position:sticky; top:12px; }
-.vorschau{ position:relative; overflow:hidden; border-radius:6px; box-shadow:0 2px 14px rgba(22,50,74,.18); background:#fff; }
+.vorschau{ position:relative; overflow:hidden; border-radius:6px; box-shadow:0 2px 14px rgba(47,74,31,.18); background:#fff; }
 .vorschau > .blatt{ position:absolute; top:0; left:0; transform-origin:top left; }
 .status{ font-weight:800; font-size:13px; margin-top:8px; color:#2e8b57; }
 .status.voll{ color:#c0392b; }
@@ -81,7 +81,7 @@ select, input[type=number]{ border:2px solid var(--linie); border-radius:10px; p
 .spur{ font-size:2.2em; letter-spacing:.35em; color:transparent; -webkit-text-stroke:.03em #7f8c8d; font-family:"Andika",sans-serif; }
 .liste{ line-height:1.9; }
 table.tab{ width:100%; border-collapse:collapse; font-size:.95em; }
-table.tab th{ background:#eef4f8; border:.3mm solid #9aa9b2; padding:.25em .4em; text-align:left; }
+table.tab th{ background:#eef3e6; border:.3mm solid #9aa9b2; padding:.25em .4em; text-align:left; }
 table.tab td{ border:.3mm solid #9aa9b2; height:2.2em; padding:.2em .4em; }
 .wortspeicher{ border:.4mm dashed #9aa9b2; border-radius:3mm; padding:.35em .6em; display:flex; flex-wrap:wrap; gap:.3em .6em; grid-column:1 / -1; }
 .wortspeicher span{ background:#f3f6f8; border:.3mm solid #c9d6e3; border-radius:2mm; padding:.05em .45em; }
@@ -93,6 +93,7 @@ table.tab td{ border:.3mm solid #9aa9b2; height:2.2em; padding:.2em .4em; }
 @media print{ body{ background:#fff; } body > *:not(#druck){ display:none !important; } #druck{ position:static; visibility:visible; } #druck .blatt{ break-after:page; break-inside:avoid; zoom:.93; margin:11mm auto 0; } #druck > :last-child{ break-after:auto; } }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 <header class="kopf"><div class="kopf-innen">
@@ -187,7 +188,7 @@ const U = {
         optionen: [{ k: "genau", label: "Genauigkeit", werte: k => [["stunde", "volle Stunden"], ["halb", "volle & halbe"], ...(k >= 3 ? [["viertel", "Viertelstunden"], ["fuenf", "5 Minuten"]] : [])] }],
         aufgabe(e){ const h = z(1, 12), m = { stunde: 0, halb: wahl([0, 30]), viertel: wahl([0, 15, 30, 45]), fuenf: z(0, 11) * 5 }[e.genau] ?? 0;
             const w = n => n * Math.PI / 180, wh = w(((h % 12) + m / 60) * 30), wm = w(m * 6);
-            let s = `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#fff" stroke="#16324a" stroke-width="3"/>`;
+            let s = `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#fff" stroke="#2f4a1f" stroke-width="3"/>`;
             for (let i = 1; i <= 12; i++) s += `<text x="${50 + Math.sin(w(i * 30)) * 35}" y="${50 - Math.cos(w(i * 30)) * 35 + 4}" text-anchor="middle" font-size="11" font-weight="700" font-family="Nunito">${i}</text>`;
             s += `<line x1="50" y1="50" x2="${50 + Math.sin(wh) * 22}" y2="${50 - Math.cos(wh) * 22}" stroke="#e74c3c" stroke-width="5" stroke-linecap="round"/><line x1="50" y1="50" x2="${50 + Math.sin(wm) * 36}" y2="${50 - Math.cos(wm) * 36}" stroke="#2f80c4" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="3"/></svg>`;
             return `<div class="zeile uhr">${s}${L(h + ":" + String(m).padStart(2, "0"))}</div>`; } },

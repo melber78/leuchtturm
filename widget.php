@@ -40,12 +40,12 @@ $spTage = is_array($sp["tage"] ?? null) ? $sp["tage"] : [];
 
 const ARTEN = [
     ""           => ["frei", "#b5c0c5"],
-    "sozial"     => ["Sozialtraining", "#3d7ea6"],
+    "sozial"     => ["Sozialtraining", "#557428"],
     "lernangebot"=> ["Lernangebot", "#2e8b57"],
     "lrs"        => ["LRS-Förderung", "#7b5cc4"],
     "foerder"    => ["Fördergruppe", "#c05a96"],
     "vertretung" => ["Vertretung", "#e07a2f"],
-    "unterricht" => ["Unterricht", "#16324a"],
+    "unterricht" => ["Unterricht", "#2f4a1f"],
     "aufsicht"   => ["Aufsicht", "#b08a2e"],
     "termin"     => ["Termin / Besprechung", "#c0392b"],
     "sonstiges"  => ["Sonstiges", "#7c8a85"],

@@ -1,0 +1,7 @@
+/* MeWe – gemeinsames Erscheinungsbild für alle Seiten des Leuchtturms */
+@font-face{ font-family:"Fraunces"; font-weight:600; font-display:swap; src:url("../schriften/fraunces-600.woff2") format("woff2"); }
+@font-face{ font-family:"Fraunces"; font-weight:700; font-display:swap; src:url("../schriften/fraunces-700.woff2") format("woff2"); }
+:root{ --mewe-gruen:#557428; --mewe-dunkel:#2f4a1f; --mewe-salbei:#b3c69a; --mewe-hell:#edf2e3; --mewe-holz:#8a6a4b; --mewe-creme:#f7f4ec; --mewe-honig:#d9a23f; }
+header.kopf h1, .portal-header h1, .titel, h1.titel, h2.titel, .karte h2.titel, .seite-kopf h1, .gruppe-titel-gross{ font-family:"Fraunces", Georgia, serif !important; font-weight:600 !important; letter-spacing:-.01em; }
+header.kopf{ background:linear-gradient(135deg, #2f4a1f, #557428) !important; }
+::selection{ background:#dfe8cf; }

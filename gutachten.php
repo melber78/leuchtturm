@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -29,8 +29,8 @@
 
 <style>
 :root{
-    --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4;
-    --karte:#ffffff; --text:#1f2d36; --schatten:0 6px 24px rgba(22,50,74,.1);
+    --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --schaum:#f7f4ec;
+    --karte:#ffffff; --text:#1f2d36; --schatten:0 6px 24px rgba(47,74,31,.1);
 }
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; line-height:1.5; }
@@ -76,6 +76,7 @@ textarea{ min-height:90px; resize:vertical; font-weight:400; line-height:1.5; }
 
 .klein-hinweis{ font-size:11px; color:#9aa5ab; margin-top:4px; }
 </style>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 
@@ -539,7 +540,7 @@ function diktatAnalysieren(){
 
     // Vorschau
     let vorschau = `<table style="width:100%; border-collapse:collapse; font-size:12px;">
-        <tr style="background:#eef4f8;"><th style="padding:4px 8px; text-align:left;">Kategorie</th><th style="padding:4px 8px; text-align:left;">Beispiele</th></tr>`;
+        <tr style="background:#eef3e6;"><th style="padding:4px 8px; text-align:left;">Kategorie</th><th style="padding:4px 8px; text-align:left;">Beispiele</th></tr>`;
     if (konsonantenFehler.length) vorschau += `<tr><td style="padding:4px 8px;">Konsonanten-Verwechslung</td><td style="padding:4px 8px;">${konsonantenFehler.join(", ")}</td></tr>`;
     if (buchstabendreher.length) vorschau += `<tr><td style="padding:4px 8px;">Buchstabendreher</td><td style="padding:4px 8px;">${buchstabendreher.join(", ")}</td></tr>`;
     if (auslassungen.length) vorschau += `<tr><td style="padding:4px 8px;">Auslassung</td><td style="padding:4px 8px;">${auslassungen.join(", ")}</td></tr>`;
@@ -608,7 +609,7 @@ const DIKTATBOGEN_BEREICHE = [
 
 function diktatbogenTabelleRendern(ergebnis){
     const container = document.getElementById("diktatbogen-tabelle");
-    let html = '<table style="width:100%; border-collapse:collapse; font-size:13px;"><tr style="background:#eef4f8;"><th style="padding:6px 8px; text-align:left;">Bereich</th><th style="padding:6px 8px; width:70px;">Anzahl</th><th style="padding:6px 8px; text-align:left;">Auffällige Wörter</th></tr>';
+    let html = '<table style="width:100%; border-collapse:collapse; font-size:13px;"><tr style="background:#eef3e6;"><th style="padding:6px 8px; text-align:left;">Bereich</th><th style="padding:6px 8px; width:70px;">Anzahl</th><th style="padding:6px 8px; text-align:left;">Auffällige Wörter</th></tr>';
     DIKTATBOGEN_BEREICHE.forEach(b => {
         const eintrag = ergebnis[b.id] || { anzahl: "", woerter: "" };
         html += `<tr>

@@ -17,12 +17,12 @@ const CSS = `
 .regie-vorher li{ margin:3px 0; }
 .regie-phase{ display:grid; grid-template-columns:86px 1fr; gap:14px; border:2px solid #e3e9ee; border-radius:14px; padding:14px 16px; background:#fff; break-inside:avoid; }
 .regie-zeit{ text-align:center; }
-.regie-zeit b{ display:block; font-size:20px; color:#16324a; }
+.regie-zeit b{ display:block; font-size:20px; color:#2f4a1f; }
 .regie-zeit span{ display:block; font-size:12px; font-weight:800; color:#7c8a85; text-transform:uppercase; letter-spacing:.04em; margin-top:2px; }
 .regie-zweck{ font-style:italic; color:#55636a; margin:0 0 8px; font-weight:600; }
 .regie-schritte{ margin:0; padding-left:22px; display:flex; flex-direction:column; gap:8px; }
 .regie-schritte > li{ line-height:1.45; }
-.regie-sag{ display:block; margin:5px 0 2px; background:#eef6fb; border-left:4px solid #3d7ea6; border-radius:0 10px 10px 0; padding:6px 10px; font-weight:700; color:#16324a; }
+.regie-sag{ display:block; margin:5px 0 2px; background:#eef6fb; border-left:4px solid #557428; border-radius:0 10px 10px 0; padding:6px 10px; font-weight:700; color:#2f4a1f; }
 .regie-sag::before{ content:"🗣️ Sag: "; font-weight:900; }
 .regie-tipp{ margin-top:10px; background:#f3f8f3; border-radius:10px; padding:8px 12px; font-size:.95em; }
 .regie-tipp b{ color:#2e7d4f; }

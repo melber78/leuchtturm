@@ -31,28 +31,28 @@ const CSS = `
 
 /* Plakat */
 .mplakat{ padding:12mm 13mm 9mm; }
-.mplakat .mp-titel{ font-family:"Nunito",sans-serif; font-weight:900; font-size:2.1em; line-height:1.1; color:#16324a; text-align:center; margin-bottom:.5em; }
+.mplakat .mp-titel{ font-family:"Nunito",sans-serif; font-weight:900; font-size:2.1em; line-height:1.1; color:#2f4a1f; text-align:center; margin-bottom:.5em; }
 .mplakat .mp-liste{ flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
 .mplakat .mp-punkt{ flex:1 1 0; display:flex; align-items:center; gap:.55em; border:.6mm solid #dfe5e2; border-radius:5mm; padding:.25em .6em; margin:.18em 0; background:#fbfcfb; min-height:0; }
-.mplakat .mp-zeichen{ flex:0 0 auto; width:1.55em; height:1.55em; border-radius:50%; background:#f9eeda; display:flex; align-items:center; justify-content:center; font-family:"Nunito",sans-serif; font-weight:900; color:#16324a; font-size:1.25em; line-height:1; }
+.mplakat .mp-zeichen{ flex:0 0 auto; width:1.55em; height:1.55em; border-radius:50%; background:#f9eeda; display:flex; align-items:center; justify-content:center; font-family:"Nunito",sans-serif; font-weight:900; color:#2f4a1f; font-size:1.25em; line-height:1; }
 .mplakat .mp-text{ flex:1; font-weight:700; font-size:1.15em; line-height:1.25; }
 .mplakat .mp-linie{ flex:1; border-bottom:.5mm solid #777; align-self:flex-end; margin-bottom:.4em; }
 .mplakat .mp-symbolfeld{ flex:0 0 auto; width:2.6em; height:2.2em; border:.4mm dashed #9aa6ab; border-radius:3mm; }
-.mplakat .mp-fuss{ text-align:center; font-weight:700; font-size:1em; color:#3d7ea6; margin-top:.5em; }
+.mplakat .mp-fuss{ text-align:center; font-weight:700; font-size:1em; color:#557428; margin-top:.5em; }
 .mplakat .mp-unterschrift{ margin-top:.6em; font-family:"Nunito",sans-serif; font-weight:800; font-size:.8em; color:#55636a; }
 .mplakat .mp-unterschrift .linien{ display:flex; gap:4mm; margin-top:2mm; }
 .mplakat .mp-unterschrift .linien span{ flex:1; border-bottom:.4mm solid #999; height:9mm; }
 
 /* Urkunde */
 .murkunde{ padding:10mm; }
-.murkunde .mu-rahmen{ flex:1; border:2.2mm double #f2a93b; border-radius:6mm; padding:12mm 12mm 10mm; display:flex; flex-direction:column; align-items:center; text-align:center; gap:7mm; outline:.6mm solid #16324a; outline-offset:-5mm; }
-.murkunde .mu-sterne{ font-size:16pt; letter-spacing:.5em; color:#f2a93b; }
-.murkunde .mu-titel{ font-family:"Nunito",sans-serif; font-weight:900; font-size:40pt; color:#16324a; line-height:1.05; }
+.murkunde .mu-rahmen{ flex:1; border:2.2mm double #d9a23f; border-radius:6mm; padding:12mm 12mm 10mm; display:flex; flex-direction:column; align-items:center; text-align:center; gap:7mm; outline:.6mm solid #2f4a1f; outline-offset:-5mm; }
+.murkunde .mu-sterne{ font-size:16pt; letter-spacing:.5em; color:#d9a23f; }
+.murkunde .mu-titel{ font-family:"Nunito",sans-serif; font-weight:900; font-size:40pt; color:#2f4a1f; line-height:1.05; }
 .murkunde .mu-bild{ width:55mm; height:55mm; }
 .murkunde .mu-bild .bild{ width:100%; height:100%; }
 .murkunde .mu-zeile{ width:85%; display:flex; gap:3mm; align-items:flex-end; font-weight:700; font-size:17pt; }
 .murkunde .mu-zeile span.l{ flex:1; border-bottom:.45mm solid #555; height:12mm; }
-.murkunde .mu-text{ font-size:19pt; font-weight:700; color:#16324a; }
+.murkunde .mu-text{ font-size:19pt; font-weight:700; color:#2f4a1f; }
 .murkunde .mu-linien{ width:85%; }
 .murkunde .mu-linien span{ display:block; border-bottom:.45mm solid #999; height:13mm; }
 .murkunde .mu-unten{ margin-top:auto; width:85%; display:flex; justify-content:space-between; gap:10mm; font-family:"Nunito",sans-serif; font-weight:800; color:#55636a; font-size:11pt; }
@@ -65,28 +65,28 @@ const CSS = `
 .m-eintrag strong{ font-size:14.5px; line-height:1.25; }
 .m-eintrag small{ color:#7c8a85; font-weight:700; font-size:12px; line-height:1.35; }
 .mliste{ position:relative; }
-.mliste .ml-band{ position:absolute; left:0; right:0; top:0; height:7mm; background:linear-gradient(90deg,#2e8b57,#3d7ea6,#c98a1b,#8e44ad); }
+.mliste .ml-band{ position:absolute; left:0; right:0; top:0; height:7mm; background:linear-gradient(90deg,#2e8b57,#557428,#c98a1b,#8e44ad); }
 .mliste .ml-kopf{ display:flex; align-items:center; gap:5mm; margin:6mm 0 6mm; }
 .mliste .ml-icon{ font-size:24mm; line-height:1; }
-.mliste .ml-titel{ font-family:"Nunito",sans-serif; font-weight:900; font-size:32pt; line-height:1.05; color:#16324a; }
+.mliste .ml-titel{ font-family:"Nunito",sans-serif; font-weight:900; font-size:32pt; line-height:1.05; color:#2f4a1f; }
 .mliste .ml-unter{ font-family:"Nunito",sans-serif; font-weight:700; font-size:14pt; color:#55636a; margin-top:1.5mm; }
-.mliste .ml-tab{ width:100%; border-collapse:separate; border-spacing:0; font-family:"Nunito",sans-serif; border:.6mm solid #16324a; border-radius:4mm; overflow:hidden; }
+.mliste .ml-tab{ width:100%; border-collapse:separate; border-spacing:0; font-family:"Nunito",sans-serif; border:.6mm solid #2f4a1f; border-radius:4mm; overflow:hidden; }
 .mliste .ml-tab th{ color:white; font-size:13pt; font-weight:900; padding:3mm; text-align:left; border:0; }
-.mliste .ml-tab td{ height:17.5mm; border:0; border-top:.3mm solid #c9d6e3; border-left:.3mm solid #e1e8ee; padding:0 3mm; font-size:15pt; font-weight:700; color:#16324a; }
+.mliste .ml-tab td{ height:17.5mm; border:0; border-top:.3mm solid #c9d6e3; border-left:.3mm solid #e1e8ee; padding:0 3mm; font-size:15pt; font-weight:700; color:#2f4a1f; }
 .mliste .ml-tab td:first-child{ border-left:0; font-weight:900; }
 .mliste .ml-tab tr:nth-child(odd) td{ background:#f6f9fb; }
-.mliste .ml-fuss{ margin-top:5mm; background:#fff4dc; border-radius:4mm; padding:3mm 5mm; font-family:"Nunito",sans-serif; font-weight:900; font-size:16pt; color:#16324a; text-align:center; }
-.ml-dialog-hg{ position:fixed; inset:0; background:rgba(22,50,74,.55); z-index:200; display:flex; align-items:center; justify-content:center; padding:12px; }
+.mliste .ml-fuss{ margin-top:5mm; background:#fff4dc; border-radius:4mm; padding:3mm 5mm; font-family:"Nunito",sans-serif; font-weight:900; font-size:16pt; color:#2f4a1f; text-align:center; }
+.ml-dialog-hg{ position:fixed; inset:0; background:rgba(47,74,31,.55); z-index:200; display:flex; align-items:center; justify-content:center; padding:12px; }
 .ml-dialog{ background:white; border-radius:18px; padding:18px; max-width:960px; width:100%; max-height:calc(100vh - 24px); display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,.3); }
 .ml-dialog h2{ margin:0 0 6px; }
 .ml-hinweis{ margin:0 0 10px; font-size:14px; color:#55636a; font-weight:700; }
 .ml-scroll{ overflow:auto; flex:1; }
 .ml-form{ width:100%; border-collapse:collapse; min-width:560px; }
-.ml-form th{ text-align:left; font-size:13px; padding:4px; color:#16324a; }
+.ml-form th{ text-align:left; font-size:13px; padding:4px; color:#2f4a1f; }
 .ml-form td{ padding:3px; }
 .ml-form input{ box-sizing:border-box; width:100%; padding:8px; border:2px solid #dfe5e2; border-radius:8px; font:inherit; font-size:15px; }
 .ml-knoepfe{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
-.mliste .ml-tab th{ background:#eef4f8; border:.4mm solid #9aa9b2; padding:2.5mm; font-size:13pt; text-align:left; }
+.mliste .ml-tab th{ background:#eef3e6; border:.4mm solid #9aa9b2; padding:2.5mm; font-size:13pt; text-align:left; }
 .mliste .ml-tab td{ border:.4mm solid #9aa9b2; }
 .mliste .mp-fuss{ margin-top:4mm; }
 @media print{ #druck .mseite{ break-after:page; } #druck > .mseite:last-child{ break-after:auto; } }
@@ -97,8 +97,8 @@ const STOPP_ROT = `<svg viewBox="0 0 120 172" xmlns="http://www.w3.org/2000/svg"
 const BRILLE = `<svg viewBox="0 0 220 90" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#222" stroke-width="2.6" stroke-linejoin="round"><rect x="14" y="16" width="80" height="58" rx="24"/><rect x="126" y="16" width="80" height="58" rx="24"/><rect x="28" y="28" width="52" height="34" rx="14" stroke-dasharray="5 4"/><rect x="140" y="28" width="52" height="34" rx="14" stroke-dasharray="5 4"/><path d="M94 38 Q110 26 126 38"/><path d="M14 34 L2 30 M206 34 L218 30"/><text x="110" y="88" text-anchor="middle" font-family="Arial" font-size="9" stroke="none" fill="#777">gestrichelt = Gucklöcher ausschneiden</text></svg>`;
 const PIZZA = `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#222" stroke-width="2.4"><circle cx="60" cy="60" r="56"/><circle cx="60" cy="60" r="46" stroke-dasharray="3 4"/><circle cx="42" cy="44" r="8"/><circle cx="76" cy="40" r="7"/><circle cx="62" cy="70" r="8"/><circle cx="38" cy="76" r="6"/><circle cx="84" cy="74" r="7"/><path d="M50 58 l6 3 M80 58 l-4 5 M58 32 l5 4"/></svg>`;
 const PFLASTER = `<svg viewBox="0 0 200 76" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="194" height="70" rx="34" fill="#f6d7b9" stroke="#b7865a" stroke-width="2.4"/><rect x="66" y="12" width="68" height="52" rx="10" fill="#fff4e8" stroke="#b7865a" stroke-width="2"/>${[0,1,2,3].map(r => [0,1,2,3,4,5].map(c => `<circle cx="${18 + c * 7 + (c > 2 ? 108 : 0) - (c > 2 ? 21 : 0)}" cy="${22 + r * 11}" r="1.6" fill="#b7865a"/>`).join("")).join("")}</svg>`;
-const GLAS = `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg"><rect x="52" y="8" width="96" height="22" rx="6" fill="#c9d6e3" stroke="#16324a" stroke-width="3"/><path d="M60 30 Q40 46 40 70 L40 210 Q40 232 62 232 L138 232 Q160 232 160 210 L160 70 Q160 46 140 30 Z" fill="#eef6fb" stroke="#16324a" stroke-width="4"/>${[[70,205],[100,205],[130,205],[70,175],[100,175],[130,175],[70,145],[100,145],[130,145],[100,115]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="13" fill="white" stroke="#3d7ea6" stroke-width="2.5" stroke-dasharray="4 3"/><text x="${x}" y="${y+5}" text-anchor="middle" font-family="Arial" font-weight="700" font-size="13" fill="#9aa6ab">${i+1}</text>`).join("")}<path d="M52 60 L52 200" stroke="white" stroke-width="6" stroke-linecap="round" opacity=".8"/></svg>`;
-const KASTEN = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" font-family="Arial" font-weight="700"><rect x="35" y="35" width="130" height="130" rx="8" fill="#e7f1fb" stroke="#3d7ea6" stroke-width="5"/><g fill="#16324a" font-size="13" text-anchor="middle"><text x="100" y="26">1 · einatmen (4)</text><text x="100" y="186">3 · ausatmen (4)</text><text x="186" y="104" transform="rotate(90 186 100)">2 · halten (4)</text><text x="14" y="104" transform="rotate(-90 14 100)">4 · halten (4)</text></g><g fill="#f2a93b"><polygon points="150,27 162,35 150,43"/><polygon points="173,150 165,162 157,150"/><polygon points="50,173 38,165 50,157"/><polygon points="27,50 35,38 43,50"/></g><text x="100" y="108" text-anchor="middle" font-size="16" fill="#3d7ea6">Kasten-Atmen</text></svg>`;
+const GLAS = `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg"><rect x="52" y="8" width="96" height="22" rx="6" fill="#c9d6e3" stroke="#2f4a1f" stroke-width="3"/><path d="M60 30 Q40 46 40 70 L40 210 Q40 232 62 232 L138 232 Q160 232 160 210 L160 70 Q160 46 140 30 Z" fill="#eef6fb" stroke="#2f4a1f" stroke-width="4"/>${[[70,205],[100,205],[130,205],[70,175],[100,175],[130,175],[70,145],[100,145],[130,145],[100,115]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="13" fill="white" stroke="#557428" stroke-width="2.5" stroke-dasharray="4 3"/><text x="${x}" y="${y+5}" text-anchor="middle" font-family="Arial" font-weight="700" font-size="13" fill="#9aa6ab">${i+1}</text>`).join("")}<path d="M52 60 L52 200" stroke="white" stroke-width="6" stroke-linecap="round" opacity=".8"/></svg>`;
+const KASTEN = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" font-family="Arial" font-weight="700"><rect x="35" y="35" width="130" height="130" rx="8" fill="#e7f1fb" stroke="#557428" stroke-width="5"/><g fill="#2f4a1f" font-size="13" text-anchor="middle"><text x="100" y="26">1 · einatmen (4)</text><text x="100" y="186">3 · ausatmen (4)</text><text x="186" y="104" transform="rotate(90 186 100)">2 · halten (4)</text><text x="14" y="104" transform="rotate(-90 14 100)">4 · halten (4)</text></g><g fill="#d9a23f"><polygon points="150,27 162,35 150,43"/><polygon points="173,150 165,162 157,150"/><polygon points="50,173 38,165 50,157"/><polygon points="27,50 35,38 43,50"/></g><text x="100" y="108" text-anchor="middle" font-size="16" fill="#557428">Kasten-Atmen</text></svg>`;
 
 const FARBE = { cool: "#9fd8e8", froh: "#ffe08a", traurig: "#a9cff0", wuetend: "#f5a3a3", angst: "#d5c4f0", ruhig: "#bfe6c3", ueberrascht: "#ffd1a3", stolz: "#f9d56e", muede: "#d8dde0", gelangweilt: "#e3e0d7", neutral: "#eeeeee" };
 function gesichtBunt(g){
@@ -452,7 +452,7 @@ function symbolHtml(it){
     if (it.gesicht) return gesichtBunt(it.gesicht);
     if (it.bild) return ltBild(it.bild);
     if (it.emoji) return `<span>${it.emoji}</span>`;
-    if (it.zahl) return `<span style="font-family:Nunito,sans-serif;font-weight:900;color:#16324a">${esc(it.zahl)}</span>`;
+    if (it.zahl) return `<span style="font-family:Nunito,sans-serif;font-weight:900;color:#2f4a1f">${esc(it.zahl)}</span>`;
     return "";
 }
 function kartenSeiten(m){
@@ -508,7 +508,7 @@ function urkundeSeite(m){
 // Liste zum Aufhängen: Tabelle – auf Papier von Hand oder hier digital ausfüllen.
 // Digital eingetragene Werte (z. B. Vornamen) bleiben NUR im Arbeitsspeicher dieser Seite – nie gespeichert oder gesendet.
 const listenWerte = {};
-const LISTEN_FARBEN = ["#16324a", "#2e8b57", "#3d7ea6", "#c98a1b", "#8e44ad"];
+const LISTEN_FARBEN = ["#2f4a1f", "#2e8b57", "#557428", "#c98a1b", "#8e44ad"];
 function listeSeite(m){
     const s = seite("mliste");
     const sp = m.spalten || [], werte = listenWerte[m.id] || [];

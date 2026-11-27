@@ -245,7 +245,7 @@ usort($gefiltert, fn($a, $b) => strcmp($b["hochgeladen_am"], $a["hochgeladen_am"
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -263,8 +263,8 @@ usort($gefiltert, fn($a, $b) => strcmp($b["hochgeladen_am"], $a["hochgeladen_am"
 
 <style>
 :root{
-    --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4;
-    --karte:#ffffff; --text:#1f2d36; --schatten:0 6px 24px rgba(22,50,74,.1);
+    --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --schaum:#f7f4ec;
+    --karte:#ffffff; --text:#1f2d36; --schatten:0 6px 24px rgba(47,74,31,.1);
 }
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; line-height:1.5; }
@@ -319,7 +319,7 @@ textarea{ min-height:60px; resize:vertical; font-weight:400; }
 .material-info h4{ margin:0 0 6px; font-size:16px; font-weight:900; }
 .material-info p{ margin:0 0 8px; font-size:13px; color:#5a6b74; }
 .material-meta{ display:flex; gap:8px; flex-wrap:wrap; font-size:11px; font-weight:800; }
-.material-meta span{ background:#eef4f8; color:var(--meer); padding:4px 10px; border-radius:999px; }
+.material-meta span{ background:#eef3e6; color:var(--meer); padding:4px 10px; border-radius:999px; }
 .material-aktionen{ display:flex; gap:10px; align-items:center; }
 .material-aktionen a{ font-weight:800; font-size:13px; text-decoration:none; color:var(--meer); }
 .material-aktionen a.loeschen{ color:#c0392b; }
@@ -329,6 +329,7 @@ textarea{ min-height:60px; resize:vertical; font-weight:400; }
 
 .leer{ text-align:center; padding:40px; color:#a0a0a0; font-weight:700; }
 </style>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 
@@ -423,7 +424,7 @@ textarea{ min-height:60px; resize:vertical; font-weight:400; }
         <button type="submit" class="btn klein">Filtern</button>
     </form>
 
-    <div id="bulk-leiste" style="display:none; align-items:center; gap:10px; background:#eef4f8; border-radius:14px; padding:10px 16px; margin-bottom:14px; flex-wrap:wrap;">
+    <div id="bulk-leiste" style="display:none; align-items:center; gap:10px; background:#eef3e6; border-radius:14px; padding:10px 16px; margin-bottom:14px; flex-wrap:wrap;">
         <span id="bulk-anzahl" style="font-weight:800; font-size:13px; color:var(--nacht);"></span>
         <select id="bulk-ordner-auswahl" onchange="
             const neuFeld = document.getElementById('bulk-neuer-ordner');

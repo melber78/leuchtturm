@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -26,12 +26,12 @@
 <style>
 
 :root{
-    --nacht:#16324a;
-    --meer:#3d7ea6;
-    --gold:#f2a93b;
-    --schaum:#f4f6f4;
+    --nacht:#2f4a1f;
+    --meer:#557428;
+    --gold:#d9a23f;
+    --schaum:#f7f4ec;
     --text:#1f2d36;
-    --schatten:0 6px 24px rgba(22,50,74,.1);
+    --schatten:0 6px 24px rgba(47,74,31,.1);
 }
 
 *{ box-sizing:border-box; }
@@ -133,6 +133,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 .kachel.versteckt, .untergruppe.versteckt, details.bereich.versteckt{ display:none; }
 @media (max-width:520px){ .kacheln{ grid-template-columns:1fr 1fr; gap:8px; } .kachel{ flex-direction:column; align-items:flex-start; gap:6px; padding:10px 12px; } .kachel small{ display:none; } .kachel b{ font-size:14px; line-height:1.2; } .neu-eintrag span{ display:none; } .neu-eintrag{ padding:8px 12px; } .portal-header p{ display:none; } details.bereich > summary{ padding:14px 16px; font-size:17px; } .untergruppe{ padding:0 14px 12px; } }
 </style>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 

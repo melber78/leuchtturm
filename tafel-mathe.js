@@ -34,7 +34,7 @@ const ZUSATZ_CSS = `
 .sr .kl{ font-size:.5em; color:#d1342b; height:1.3em; align-items:flex-end; padding-bottom:.15em; }
 .ek.kreide .sr .kl{ color:#ff9b8f; }
 .sr .op{ color:#7c8a96; }
-.sr .er{ color:#3d7ea6; }
+.sr .er{ color:#557428; }
 .ek.kreide .sr .er{ color:#9fd0f0; }
 .sr .tl{ color:#e08a2c; }
 .sr .strich{ border-top:.07em solid currentColor; height:.18em; }
@@ -49,7 +49,7 @@ const ZUSATZ_CSS = `
 .swt-k .pl i.viel{ outline:3px solid #d1342b; }
 .swt-k .zf{ font-size:clamp(30px,6vmin,76px); font-weight:900; line-height:1; }
 .swt-k .knopf{ display:flex; gap:4px; }
-.swt-k .knopf button{ font:900 18px "Nunito",sans-serif; border:0; background:white; color:#16324a; width:36px; height:36px; border-radius:50%; cursor:pointer; box-shadow:0 2px 6px rgba(22,50,74,.12); }
+.swt-k .knopf button{ font:900 18px "Nunito",sans-serif; border:0; background:white; color:#2f4a1f; width:36px; height:36px; border-radius:50%; cursor:pointer; box-shadow:0 2px 6px rgba(47,74,31,.12); }
 .swt-komma{ align-self:center; font-size:clamp(40px,8vmin,90px); font-weight:900; color:#d1342b; }
 .swt-unter{ grid-column:1/-1; display:flex; flex-direction:column; align-items:center; gap:4px; font-weight:900; }
 .swt-unter .gross{ font-size:clamp(30px,6vmin,72px); }
@@ -58,7 +58,7 @@ const ZUSATZ_CSS = `
 .hf{ display:grid; grid-template-columns:repeat(10,1fr); gap:3px; width:min(100%, 52vh); aspect-ratio:1; margin:auto; }
 .hf i{ border-radius:3px; background:#e3e9ef; }
 .ek.kreide .hf i{ background:rgba(255,255,255,.1); }
-.hf i.an{ background:#3d7ea6; }
+.hf i.an{ background:#557428; }
 .hf i.an.b{ background:#e08a2c; }
 `;
 let cssDa = false;
@@ -243,7 +243,7 @@ const schriftlich = ET.neu({ id: "schriftlich", titel: "Schriftlich rechnen", un
    ===================================================================== */
 const WS = { kap: "zahl", zahl: { n: 3, d: [3, 4, 7, 0, 0] }, buendeln: { d: [7, 14, 3, 0] }, komma: { d: [3, 4, 7, 0] } };
 const WK = {};
-const FARBE = ["#3d7ea6", "#e08a2c", "#2e9e5b", "#8e44ad", "#d1342b"];
+const FARBE = ["#557428", "#e08a2c", "#2e9e5b", "#8e44ad", "#d1342b"];
 function spalte(name, kurz, wert, farbe, key, max, idx){
     const dots = Array.from({ length: wert }, (_, i) => `<i style="background:${farbe}" class="${i >= 10 ? "viel" : ""}"></i>`).join("");
     return `<div class="swt-k"><h5 style="color:${farbe}">${kurz}<br><small style="font-size:.6em;color:#7c8a96">${name}</small></h5><div class="pl" style="grid-template-columns:repeat(${wert > 10 ? 4 : 2},1fr)">${dots}</div><div class="zf" style="color:${farbe}">${wert}</div>
@@ -285,7 +285,7 @@ WK.buendeln.knopf = (a, t, api) => {
 };
 
 WK.komma = () => {
-    const d = WS.komma.d, namen = ["Einer", "Zehntel", "Hundertstel", "Tausendstel"], kurz = ["E", "z", "h", "t"], fb = ["#3d7ea6", "#e08a2c", "#2e9e5b", "#8e44ad"];
+    const d = WS.komma.d, namen = ["Einer", "Zehntel", "Hundertstel", "Tausendstel"], kurz = ["E", "z", "h", "t"], fb = ["#557428", "#e08a2c", "#2e9e5b", "#8e44ad"];
     let letzte = 0; d.forEach((z, i) => { if (i && z) letzte = i; });
     const text = d[0] + (letzte ? "," + d.slice(1, letzte + 1).join("") : "");
     const nenner = Math.pow(10, letzte), zaehler = Number(d.slice(1, letzte + 1).join("") || 0);
@@ -324,13 +324,13 @@ function gesprochen(h, m, regional){
 function uhrSvg(h, m, zahlen){
     const W = 400, c = 200, R = 170, wm = m * 6, wh = (h % 12) * 30 + m * .5;
     let s = `<svg viewBox="0 0 ${W} ${W}" class="uhr" style="touch-action:none;width:100%;height:100%" font-family="Nunito, sans-serif">
-      <circle cx="${c}" cy="${c}" r="${R + 14}" fill="#fff" stroke="#16324a" stroke-width="8"/>`;
-    for (let i = 0; i < 60; i++){ const a = i * 6 * Math.PI / 180, l = i % 5 ? 8 : 18, r1 = R, r2 = R - l; s += `<line x1="${(c + r1 * Math.sin(a)).toFixed(1)}" y1="${(c - r1 * Math.cos(a)).toFixed(1)}" x2="${(c + r2 * Math.sin(a)).toFixed(1)}" y2="${(c - r2 * Math.cos(a)).toFixed(1)}" stroke="#16324a" stroke-width="${i % 5 ? 2 : 5}" stroke-linecap="round"/>`; }
-    for (let i = 1; i <= 12; i++){ const a = i * 30 * Math.PI / 180, r = R - 46; s += `<text x="${(c + r * Math.sin(a)).toFixed(1)}" y="${(c - r * Math.cos(a) + 13).toFixed(1)}" text-anchor="middle" font-size="38" font-weight="900" fill="#3d7ea6">${i}</text>`; }
+      <circle cx="${c}" cy="${c}" r="${R + 14}" fill="#fff" stroke="#2f4a1f" stroke-width="8"/>`;
+    for (let i = 0; i < 60; i++){ const a = i * 6 * Math.PI / 180, l = i % 5 ? 8 : 18, r1 = R, r2 = R - l; s += `<line x1="${(c + r1 * Math.sin(a)).toFixed(1)}" y1="${(c - r1 * Math.cos(a)).toFixed(1)}" x2="${(c + r2 * Math.sin(a)).toFixed(1)}" y2="${(c - r2 * Math.cos(a)).toFixed(1)}" stroke="#2f4a1f" stroke-width="${i % 5 ? 2 : 5}" stroke-linecap="round"/>`; }
+    for (let i = 1; i <= 12; i++){ const a = i * 30 * Math.PI / 180, r = R - 46; s += `<text x="${(c + r * Math.sin(a)).toFixed(1)}" y="${(c - r * Math.cos(a) + 13).toFixed(1)}" text-anchor="middle" font-size="38" font-weight="900" fill="#557428">${i}</text>`; }
     if (zahlen === "1") for (let i = 0; i < 12; i++){ const a = i * 30 * Math.PI / 180, r = R + 34; s += `<text x="${(c + r * Math.sin(a)).toFixed(1)}" y="${(c - r * Math.cos(a) + 7).toFixed(1)}" text-anchor="middle" font-size="19" font-weight="900" fill="#d1342b">${zz(i * 5)}</text>`; }
-    s += `<g transform="rotate(${wh} ${c} ${c})"><line x1="${c}" y1="${c + 16}" x2="${c}" y2="${c - 92}" stroke="#3d7ea6" stroke-width="14" stroke-linecap="round"/></g>
+    s += `<g transform="rotate(${wh} ${c} ${c})"><line x1="${c}" y1="${c + 16}" x2="${c}" y2="${c - 92}" stroke="#557428" stroke-width="14" stroke-linecap="round"/></g>
       <g transform="rotate(${wm} ${c} ${c})" class="minzeiger" style="cursor:grab"><line x1="${c}" y1="${c + 20}" x2="${c}" y2="${c - 150}" stroke="#d1342b" stroke-width="9" stroke-linecap="round"/><circle cx="${c}" cy="${c - 150}" r="22" fill="#d1342b" opacity=".001"/></g>
-      <circle cx="${c}" cy="${c}" r="11" fill="#16324a"/></svg>`;
+      <circle cx="${c}" cy="${c}" r="11" fill="#2f4a1f"/></svg>`;
     return `<div style="width:min(100%,58vh);aspect-ratio:1;margin:auto;padding:${zahlen === "1" ? 18 : 0}px;box-sizing:border-box">${s}</div>`;
 }
 UK.lesen = () => {
@@ -377,9 +377,9 @@ UK.spanne = () => {
     schritte.push(["Zusammen", `<b>${dauer(a, b)}</b>`]);
     // Zeitstrahl
     const W = 900, x0 = 40, x1 = 860, t0 = Math.floor(a / 60) * 60, t1 = Math.ceil(b / 60) * 60 || t0 + 60, X = t => x0 + (t - t0) / (t1 - t0) * (x1 - x0);
-    let s = `<svg viewBox="0 0 ${W} 260" style="width:100%;height:100%" font-family="Nunito, sans-serif"><line x1="${x0}" y1="150" x2="${x1}" y2="150" stroke="#16324a" stroke-width="5" stroke-linecap="round"/>`;
-    for (let t = t0; t <= t1; t += 60) s += `<line x1="${X(t)}" y1="132" x2="${X(t)}" y2="168" stroke="#16324a" stroke-width="4"/><text x="${X(t)}" y="200" text-anchor="middle" font-size="24" font-weight="900" fill="#52606b">${t / 60}:00</text>`;
-    const F = ["#3d7ea6", "#e08a2c", "#2e9e5b"];
+    let s = `<svg viewBox="0 0 ${W} 260" style="width:100%;height:100%" font-family="Nunito, sans-serif"><line x1="${x0}" y1="150" x2="${x1}" y2="150" stroke="#2f4a1f" stroke-width="5" stroke-linecap="round"/>`;
+    for (let t = t0; t <= t1; t += 60) s += `<line x1="${X(t)}" y1="132" x2="${X(t)}" y2="168" stroke="#2f4a1f" stroke-width="4"/><text x="${X(t)}" y="200" text-anchor="middle" font-size="24" font-weight="900" fill="#52606b">${t / 60}:00</text>`;
+    const F = ["#557428", "#e08a2c", "#2e9e5b"];
     teile.forEach(([x, y], i) => { const mx = (X(x) + X(y)) / 2, w = X(y) - X(x); s += `<g data-s="${i}"><path d="M${X(x)} 140 Q${mx} ${140 - Math.min(110, 30 + w * .35)} ${X(y)} 140" fill="none" stroke="${F[i]}" stroke-width="6"/><text x="${mx}" y="${140 - Math.min(110, 30 + w * .35) / 2 - 8}" text-anchor="middle" font-size="26" font-weight="900" fill="${F[i]}">${dauer(x, y)}</text></g>`; });
     [[a, "#d1342b", "Start"], [b, "#d1342b", "Ende"]].forEach(([t, f, n]) => { s += `<circle cx="${X(t)}" cy="150" r="10" fill="${f}"/><text x="${X(t)}" y="236" text-anchor="middle" font-size="22" font-weight="900" fill="${f}">${n} ${fmt(t)}</text>`; });
     s += `</svg>`;
@@ -426,8 +426,8 @@ function treppe(g, von, nach){
               <text x="${u2 - 58}" y="${(v1 + v2) / 2 + 8}" text-anchor="end" font-size="${auf ? 28 : 22}" font-weight="900" fill="${auf ? "#d1342b" : "#9aa8b4"}">: ${g.f[i]}</text></g>`;
     }
     for (let i = 0; i < n; i++){
-        const f = i === von ? "#3d7ea6" : i === nach ? "#e08a2c" : "#fff", tc = i === von || i === nach ? "#fff" : "#16324a";
-        s += `<rect x="${X(i)}" y="${Y(i)}" width="${bw}" height="${bh}" rx="14" fill="${f}" stroke="#16324a" stroke-width="3"/><text x="${X(i) + bw / 2}" y="${Y(i) + bh / 2 + 13}" text-anchor="middle" font-size="40" font-weight="900" fill="${tc}">${g.e[i]}</text>`;
+        const f = i === von ? "#557428" : i === nach ? "#e08a2c" : "#fff", tc = i === von || i === nach ? "#fff" : "#2f4a1f";
+        s += `<rect x="${X(i)}" y="${Y(i)}" width="${bw}" height="${bh}" rx="14" fill="${f}" stroke="#2f4a1f" stroke-width="3"/><text x="${X(i) + bw / 2}" y="${Y(i) + bh / 2 + 13}" text-anchor="middle" font-size="40" font-weight="900" fill="${tc}">${g.e[i]}</text>`;
     }
     return s + `</svg>`;
 }
@@ -498,10 +498,10 @@ PK.von = () => {
     else { weg = [[`Zuerst 1 %: ${fz(g)} : 100`, `1 % = <b>${fz(g / 100)}</b>`], [`${p} % sind ${p} · 1 %`, `${p} · ${fz(g / 100)} = <b>${fz(w)}</b>`]]; }
     const W = 900, x0 = 40, x1 = 860, X = q => x0 + q / 100 * (x1 - x0);
     const bild = `<svg viewBox="0 0 ${W} 300" style="width:100%;height:100%" font-family="Nunito, sans-serif">
-        <rect x="${x0}" y="110" width="${x1 - x0}" height="70" rx="10" fill="#eef2f6" stroke="#16324a" stroke-width="3"/>
-        <rect x="${x0}" y="110" width="${X(p) - x0}" height="70" rx="10" fill="#3d7ea6"/>
-        ${[0, 25, 50, 75, 100].map(q => `<line x1="${X(q)}" y1="100" x2="${X(q)}" y2="190" stroke="#16324a" stroke-width="${q % 50 ? 2 : 3}"/><text x="${X(q)}" y="88" text-anchor="middle" font-size="22" font-weight="800" fill="#7c8a96">${q} %</text><text x="${X(q)}" y="220" text-anchor="middle" font-size="22" font-weight="800" fill="#7c8a96">${fz(g * q / 100)}</text>`).join("")}
-        <text x="${X(p)}" y="60" text-anchor="middle" font-size="30" font-weight="900" fill="#3d7ea6">${p} %</text>
+        <rect x="${x0}" y="110" width="${x1 - x0}" height="70" rx="10" fill="#eef2f6" stroke="#2f4a1f" stroke-width="3"/>
+        <rect x="${x0}" y="110" width="${X(p) - x0}" height="70" rx="10" fill="#557428"/>
+        ${[0, 25, 50, 75, 100].map(q => `<line x1="${X(q)}" y1="100" x2="${X(q)}" y2="190" stroke="#2f4a1f" stroke-width="${q % 50 ? 2 : 3}"/><text x="${X(q)}" y="88" text-anchor="middle" font-size="22" font-weight="800" fill="#7c8a96">${q} %</text><text x="${X(q)}" y="220" text-anchor="middle" font-size="22" font-weight="800" fill="#7c8a96">${fz(g * q / 100)}</text>`).join("")}
+        <text x="${X(p)}" y="60" text-anchor="middle" font-size="30" font-weight="900" fill="#557428">${p} %</text>
         <text data-s="${weg.length - 1}" x="${X(p)}" y="262" text-anchor="middle" font-size="32" font-weight="900" fill="#e08a2c">${fz(w)}</text></svg>`;
     return { frage: `Wie viel sind <b>${p} %</b> von <b>${fz(g)}</b>?`, aufgabe: `${p} % von ${fz(g)} = ${L(fz(w))}`, bild,
         merke: `<b>Merke</b>Der <b>Grundwert</b> (hier ${fz(g)}) sind immer 100 %. Rechne über einen leichten Zwischenschritt: 1 %, 10 % oder einen bekannten Bruch.`, schritte: weg };

@@ -15,25 +15,25 @@ const CSS = `
 .ew-punkte{ display:none; gap:8px; font-weight:900; font-size:17px; }
 .ew-punkte.an{ display:flex; }
 .ew-punkte i{ font-style:normal; }
-.ew-punkte span{ background:white; border-radius:999px; padding:5px 13px; color:#16324a; box-shadow:0 3px 10px rgba(22,50,74,.1); }
+.ew-punkte span{ background:white; border-radius:999px; padding:5px 13px; color:#2f4a1f; box-shadow:0 3px 10px rgba(47,74,31,.1); }
 .ew-tabs{ display:flex; gap:6px; overflow-x:auto; padding:0 14px 10px; scrollbar-width:none; flex:none; }
 .ew-tabs::-webkit-scrollbar{ display:none; }
-.ew-tab{ font:800 15px "Nunito",sans-serif; border:2px solid #e6dccb; background:white; color:#16324a; border-radius:999px; padding:8px 15px; cursor:pointer; white-space:nowrap; min-height:44px; }
-.ew-tab.an{ background:#16324a; border-color:#16324a; color:white; }
+.ew-tab{ font:800 15px "Nunito",sans-serif; border:2px solid #e6dccb; background:white; color:#2f4a1f; border-radius:999px; padding:8px 15px; cursor:pointer; white-space:nowrap; min-height:44px; }
+.ew-tab.an{ background:#2f4a1f; border-color:#2f4a1f; color:white; }
 .ew-haupt{ flex:1; min-height:0; display:flex; gap:2vmin; padding:0 2vmin 2vmin; }
-.ew-buehne{ flex:1.3; min-width:0; background:white; border-radius:22px; box-shadow:0 6px 24px rgba(22,50,74,.08); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:2.2vmin 2.4vmin; gap:1.6vmin; overflow:auto; position:relative; }
-.ew-panel{ flex:1; max-width:620px; min-width:300px; background:white; border-radius:22px; box-shadow:0 6px 24px rgba(22,50,74,.08); padding:2.2vmin 2.4vmin; display:flex; flex-direction:column; gap:1.3vmin; overflow:auto; }
-.ew-gross{ font-size:clamp(36px,8vmin,110px); font-weight:900; color:#16324a; line-height:1.05; text-align:center; font-variant-numeric:tabular-nums; white-space:nowrap; }
-.ew-mittel{ font-size:clamp(22px,4.2vmin,54px); font-weight:900; color:#16324a; text-align:center; line-height:1.2; font-variant-numeric:tabular-nums; }
+.ew-buehne{ flex:1.3; min-width:0; background:white; border-radius:22px; box-shadow:0 6px 24px rgba(47,74,31,.08); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:2.2vmin 2.4vmin; gap:1.6vmin; overflow:auto; position:relative; }
+.ew-panel{ flex:1; max-width:620px; min-width:300px; background:white; border-radius:22px; box-shadow:0 6px 24px rgba(47,74,31,.08); padding:2.2vmin 2.4vmin; display:flex; flex-direction:column; gap:1.3vmin; overflow:auto; }
+.ew-gross{ font-size:clamp(36px,8vmin,110px); font-weight:900; color:#2f4a1f; line-height:1.05; text-align:center; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.ew-mittel{ font-size:clamp(22px,4.2vmin,54px); font-weight:900; color:#2f4a1f; text-align:center; line-height:1.2; font-variant-numeric:tabular-nums; }
 .ew-rot{ color:#d1342b; }
 .ew-zu{ display:inline-block; min-width:1.4em; border-radius:12px; background:#eef2f6; color:transparent !important; cursor:pointer; text-align:center; }
 .ew-zu *{ visibility:hidden; }
 .ew-h{ font-size:13px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; color:#8a7a60; margin:2px 0 -4px; }
-.ew-merke{ background:#fff4d6; border-left:6px solid #f2a93b; border-radius:12px; padding:1.1vmin 1.5vmin; font-size:clamp(15px,2vmin,22px); line-height:1.45; font-weight:700; }
+.ew-merke{ background:#fff4d6; border-left:6px solid #d9a23f; border-radius:12px; padding:1.1vmin 1.5vmin; font-size:clamp(15px,2vmin,22px); line-height:1.45; font-weight:700; }
 .ew-merke b:first-child{ display:block; font-size:.7em; letter-spacing:.08em; text-transform:uppercase; color:#b7791f; margin-bottom:2px; }
 .ew-schritte{ display:flex; flex-direction:column; gap:.9vmin; }
-.ew-schritt{ display:flex; gap:10px; align-items:flex-start; background:#f6f8fa; border-radius:14px; padding:.9vmin 1.2vmin; font-size:clamp(16px,2.4vmin,28px); font-weight:800; color:#16324a; cursor:pointer; line-height:1.3; }
-.ew-schritt .nr{ flex:none; width:1.6em; height:1.6em; border-radius:50%; background:#16324a; color:white; display:flex; align-items:center; justify-content:center; font-size:.7em; margin-top:.1em; }
+.ew-schritt{ display:flex; gap:10px; align-items:flex-start; background:#f6f8fa; border-radius:14px; padding:.9vmin 1.2vmin; font-size:clamp(16px,2.4vmin,28px); font-weight:800; color:#2f4a1f; cursor:pointer; line-height:1.3; }
+.ew-schritt .nr{ flex:none; width:1.6em; height:1.6em; border-radius:50%; background:#2f4a1f; color:white; display:flex; align-items:center; justify-content:center; font-size:.7em; margin-top:.1em; }
 .ew-schritt small{ display:block; font-size:.62em; color:#7c8a96; font-weight:800; }
 .ew-schritt.zu{ background:#eef2f6; }
 .ew-schritt.zu .inhalt{ visibility:hidden; }
@@ -41,45 +41,45 @@ const CSS = `
 .ew-schritt.zu{ position:relative; justify-content:flex-start; }
 .ew-schritt.zu::after{ left:3.4em; top:50%; transform:translateY(-50%); color:#9aa8b4; font-size:.7em; }
 .ew-knoepfe{ display:flex; gap:8px; flex-wrap:wrap; }
-.ew-k{ font:900 clamp(15px,1.9vmin,20px) "Nunito",sans-serif; border:0; border-radius:999px; padding:10px 18px; cursor:pointer; background:#f1ece2; color:#16324a; min-height:44px; }
-.ew-k.blau{ background:#16324a; color:white; } .ew-k.gruen{ background:#2e8b57; color:white; } .ew-k.lila{ background:#7a5a9e; color:white; } .ew-k.gold{ background:#f2a93b; color:#16324a; }
+.ew-k{ font:900 clamp(15px,1.9vmin,20px) "Nunito",sans-serif; border:0; border-radius:999px; padding:10px 18px; cursor:pointer; background:#f1ece2; color:#2f4a1f; min-height:44px; }
+.ew-k.blau{ background:#2f4a1f; color:white; } .ew-k.gruen{ background:#2e8b57; color:white; } .ew-k.lila{ background:#7a5a9e; color:white; } .ew-k.gold{ background:#d9a23f; color:#2f4a1f; }
 .ew-st{ display:inline-flex; align-items:center; gap:4px; background:#f3efe6; border-radius:999px; padding:4px 4px 4px 12px; font-weight:800; font-size:15px; color:#6b5d45; }
-.ew-st b{ min-width:1.6em; text-align:center; font-size:22px; color:#16324a; font-variant-numeric:tabular-nums; }
-.ew-st button{ font:900 20px "Nunito",sans-serif; border:0; background:white; color:#16324a; width:40px; height:40px; border-radius:50%; cursor:pointer; box-shadow:0 2px 6px rgba(22,50,74,.12); }
+.ew-st b{ min-width:1.6em; text-align:center; font-size:22px; color:#2f4a1f; font-variant-numeric:tabular-nums; }
+.ew-st button{ font:900 20px "Nunito",sans-serif; border:0; background:white; color:#2f4a1f; width:40px; height:40px; border-radius:50%; cursor:pointer; box-shadow:0 2px 6px rgba(47,74,31,.12); }
 .ew-chips{ display:flex; gap:6px; flex-wrap:wrap; }
-.ew-chip{ font:900 17px "Nunito",sans-serif; border:2px solid #e6dccb; background:white; color:#16324a; border-radius:12px; min-width:46px; height:44px; padding:0 10px; cursor:pointer; }
-.ew-chip.an{ background:#f2a93b; border-color:#f2a93b; }
+.ew-chip{ font:900 17px "Nunito",sans-serif; border:2px solid #e6dccb; background:white; color:#2f4a1f; border-radius:12px; min-width:46px; height:44px; padding:0 10px; cursor:pointer; }
+.ew-chip.an{ background:#d9a23f; border-color:#d9a23f; }
 .ew-feld{ display:inline-flex; flex-direction:column; align-items:center; }
 .ew-feld .zr{ display:flex; justify-content:center; }
-.ew-feld i{ display:block; border-radius:50%; background:#3d7ea6; flex:none; transition:background .3s, transform .3s; }
-.ew-feld i.g1{ background:#3d7ea6; } .ew-feld i.g2{ background:#e2574c; } .ew-feld i.g3{ background:#3f9a5a; } .ew-feld i.g4{ background:#e6a13a; } .ew-feld i.g5{ background:#8e5bc7; }
+.ew-feld i{ display:block; border-radius:50%; background:#557428; flex:none; transition:background .3s, transform .3s; }
+.ew-feld i.g1{ background:#557428; } .ew-feld i.g2{ background:#e2574c; } .ew-feld i.g3{ background:#3f9a5a; } .ew-feld i.g4{ background:#e6a13a; } .ew-feld i.g5{ background:#8e5bc7; }
 .ew-feld i.g6{ background:#00897b; } .ew-feld i.g7{ background:#c0398b; } .ew-feld i.g8{ background:#5b6f84; } .ew-feld i.g9{ background:#8d6e63; } .ew-feld i.g10{ background:#1d5fa8; }
 .ew-feld i.rest{ background:#c9d6e3; box-shadow:inset 0 0 0 3px #8fa3b8; }
 .ew-feld .zr.mark{ background:#fff4d6; border-radius:999px; }
 .ew-liste{ display:grid; grid-template-columns:1fr; gap:.4vmin; width:100%; max-width:640px; }
-.ew-liste > div{ display:grid; grid-template-columns:auto 1fr auto; gap:1.4vmin; align-items:center; padding:.5vmin 1.2vmin; border-radius:12px; cursor:pointer; font-size:clamp(17px,3vmin,34px); font-weight:900; color:#16324a; }
+.ew-liste > div{ display:grid; grid-template-columns:auto 1fr auto; gap:1.4vmin; align-items:center; padding:.5vmin 1.2vmin; border-radius:12px; cursor:pointer; font-size:clamp(17px,3vmin,34px); font-weight:900; color:#2f4a1f; }
 .ew-liste > div:nth-child(odd){ background:#f6f8fa; }
 .ew-liste > div.kern{ background:#fff4d6; }
 .ew-liste .weg{ font-size:.58em; color:#6b7a86; font-weight:800; }
 .ew-liste .erg{ color:#d1342b; min-width:2.2em; text-align:right; }
 .ew-tricks{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; }
-.ew-trick{ border:2px solid #e6dccb; background:white; border-radius:14px; padding:10px 12px; text-align:left; cursor:pointer; font-family:"Nunito",sans-serif; color:#16324a; }
+.ew-trick{ border:2px solid #e6dccb; background:white; border-radius:14px; padding:10px 12px; text-align:left; cursor:pointer; font-family:"Nunito",sans-serif; color:#2f4a1f; }
 .ew-trick b{ display:block; font-size:17px; font-weight:900; } .ew-trick small{ font-size:13px; color:#7c8a96; font-weight:700; }
-.ew-trick.an{ border-color:#16324a; background:#eef4fb; }
+.ew-trick.an{ border-color:#2f4a1f; background:#eef4fb; }
 .ew-haus{ display:flex; flex-direction:column; align-items:center; }
 .ew-dach{ width:0; height:0; border-left:min(22vmin,180px) solid transparent; border-right:min(22vmin,180px) solid transparent; border-bottom:min(13vmin,110px) solid #e2574c; position:relative; }
 .ew-dach span{ position:absolute; left:50%; transform:translateX(-50%); top:min(5vmin,44px); font-size:clamp(26px,5vmin,60px); font-weight:900; color:white; }
 .ew-hauswand{ width:min(44vmin,360px); background:#fff8e8; border:4px solid #e2574c; border-top:0; display:flex; flex-direction:column; }
-.ew-hauswand .z{ display:flex; justify-content:center; gap:.3em; font-size:clamp(22px,4.4vmin,54px); font-weight:900; color:#16324a; padding:.4vmin 0; border-bottom:2px dashed #f0d9b8; cursor:pointer; font-variant-numeric:tabular-nums; }
+.ew-hauswand .z{ display:flex; justify-content:center; gap:.3em; font-size:clamp(22px,4.4vmin,54px); font-weight:900; color:#2f4a1f; padding:.4vmin 0; border-bottom:2px dashed #f0d9b8; cursor:pointer; font-variant-numeric:tabular-nums; }
 .ew-hauswand .z:last-child{ border-bottom:0; }
 .ew-hauswand .kopf{ display:flex; justify-content:space-around; font-size:clamp(24px,5vmin,60px); font-weight:900; color:#1d5fa8; background:#eef4fb; padding:.6vmin 0; }
-.ew-blitz{ font-size:clamp(60px,15vmin,190px); font-weight:900; color:#16324a; text-align:center; line-height:1.05; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.ew-blitz{ font-size:clamp(60px,15vmin,190px); font-weight:900; color:#2f4a1f; text-align:center; line-height:1.05; white-space:nowrap; font-variant-numeric:tabular-nums; }
 .ew-info{ color:#7c8a96; font-weight:800; font-size:clamp(14px,1.9vmin,20px); text-align:center; }
-.ew-tab-gross{ display:grid; gap:2px; background:#c9d6e3; border:3px solid #16324a; border-radius:12px; overflow:hidden; }
-.ew-tab-gross > div{ background:white; display:flex; align-items:center; justify-content:center; font-weight:800; color:#16324a; cursor:pointer; font-variant-numeric:tabular-nums; }
-.ew-tab-gross > div.kopf{ background:#16324a; color:#ffd77a; font-weight:900; cursor:default; }
-.ew-tab-gross > div.ecke{ background:#f2a93b; cursor:default; }
-.ew-tab-gross > div.wahl{ background:#f2a93b; box-shadow:inset 0 0 0 3px #16324a; }
+.ew-tab-gross{ display:grid; gap:2px; background:#c9d6e3; border:3px solid #2f4a1f; border-radius:12px; overflow:hidden; }
+.ew-tab-gross > div{ background:white; display:flex; align-items:center; justify-content:center; font-weight:800; color:#2f4a1f; cursor:pointer; font-variant-numeric:tabular-nums; }
+.ew-tab-gross > div.kopf{ background:#2f4a1f; color:#ffd77a; font-weight:900; cursor:default; }
+.ew-tab-gross > div.ecke{ background:#d9a23f; cursor:default; }
+.ew-tab-gross > div.wahl{ background:#d9a23f; box-shadow:inset 0 0 0 3px #2f4a1f; }
 .ew-tab-gross > div.zu{ color:transparent; }
 .ew-tab-gross > div.zu::after{ content:"?"; color:#c9d6e3; position:absolute; }
 .ew-tab-gross > div{ position:relative; }
@@ -180,7 +180,7 @@ function reihe(B, P){
     }).join("")}</div>`;
     P.innerHTML = `<div class="ew-h">Reihe</div><div class="ew-chips">${[...Array(10).keys()].map(i => `<button class="ew-chip ${S.reihe === i + 1 ? "an" : ""}" data-reihe="${i + 1}">${i + 1}</button>`).join("")}</div>
         <div class="ew-merke"><b>Kernaufgaben ⭐</b>1 ·, 2 ·, 5 · und 10 · sind leicht: <b>einmal</b>, <b>verdoppeln</b>, <b>Hälfte von 10 ·</b>, <b>Null anhängen</b>. Alle anderen Aufgaben sind ihre <b>Nachbarn</b>.</div>
-        <div class="ew-merke" style="background:#eef4fb;border-left-color:#3d7ea6"><b style="color:#3d7ea6">Nachbaraufgaben</b>3 · = 2 · + einmal · 4 · = 2 · verdoppeln · 6 · = 5 · + einmal · 7 · = 5 · + 2 · · 8 · = 10 · − 2 · · 9 · = 10 · − einmal</div>
+        <div class="ew-merke" style="background:#eef4fb;border-left-color:#557428"><b style="color:#557428">Nachbaraufgaben</b>3 · = 2 · + einmal · 4 · = 2 · verdoppeln · 6 · = 5 · + einmal · 7 · = 5 · + 2 · · 8 · = 10 · − 2 · · 9 · = 10 · − einmal</div>
         <div class="ew-knoepfe"><button class="ew-k blau" data-x="kern">⭐ Kernaufgaben zeigen</button><button class="ew-k" data-x="wege">${S.wegeZeigen ? "Rechenwege aus" : "Rechenwege an"}</button><button class="ew-k" data-x="reiheAlle">Alles zeigen</button><button class="ew-k" data-x="reiheZu">Verdecken</button></div>
         <div class="ew-info" style="text-align:left">Tippe auf eine Zeile: Die Klasse sagt zuerst, wie man von der Kernaufgabe aus rechnet – dann aufdecken.</div>`;
 }
@@ -269,8 +269,8 @@ function familie(B, P){
         <div class="ew-knoepfe">${stepper("Zahl 1", a, 1, 10, "fa")}${stepper("Zahl 2", b, 1, 10, "fb")}</div>
         <div class="ew-info" style="text-align:left">Die Klasse nennt die Aufgaben – tippe auf eine Zeile im Haus, um aufzudecken.</div>
         <div class="ew-knoepfe"><button class="ew-k blau" data-x="weiter">Weiter ▶</button><button class="ew-k" data-x="alle">Alles zeigen</button><button class="ew-k gold" data-x="neu">🎲 Neues Haus</button></div>
-        <div class="ew-merke" style="background:#eef4fb;border-left-color:#3d7ea6"><b style="color:#3d7ea6">Knobelaufgabe</b>Nur das Dach steht da: <b>${c}</b>. Welche Zahlen können unten stehen?
-            <details style="margin-top:6px"><summary style="cursor:pointer;color:#3d7ea6">Lösung</summary>${teiler(c).map(([x, y]) => `${x} · ${y}`).join(" · ") || "–"}</details></div>`;
+        <div class="ew-merke" style="background:#eef4fb;border-left-color:#557428"><b style="color:#557428">Knobelaufgabe</b>Nur das Dach steht da: <b>${c}</b>. Welche Zahlen können unten stehen?
+            <details style="margin-top:6px"><summary style="cursor:pointer;color:#557428">Lösung</summary>${teiler(c).map(([x, y]) => `${x} · ${y}`).join(" · ") || "–"}</details></div>`;
 }
 function teiler(c){ const l = []; for (let x = 1; x <= 10; x++) if (c % x === 0 && c / x <= 10 && x <= c / x) l.push([x, c / x]); return l; }
 function famNeu(){ S.fam = { a: z(2, 9), b: z(2, 9) }; S.schritt = 0; }
@@ -320,7 +320,7 @@ function grosses(B, P){
     } else {
         P.innerHTML = `<div class="ew-gross" style="font-size:clamp(30px,5vmin,64px)">Das große 1 × 1</div>
             <div class="ew-merke"><b>Merke</b>Das große Einmaleins sind die Aufgaben von <b>11 · 1 bis 20 · 10</b>. Keiner muss sie auswendig können – mit dem <b>Zerlege-Trick</b> rechnet man sie aus dem kleinen 1 × 1: <b>14 · 6 = 10 · 6 + 4 · 6 = 60 + 24 = 84</b>.</div>
-            <div class="ew-merke" style="background:#eef4fb;border-left-color:#3d7ea6"><b style="color:#3d7ea6">Gut zu wissen</b>Quadratzahlen: 11 · 11 = 121 · 12 · 12 = 144 · 13 · 13 = 169 · 14 · 14 = 196 · 15 · 15 = 225 · 20 · 20 = 400</div>
+            <div class="ew-merke" style="background:#eef4fb;border-left-color:#557428"><b style="color:#557428">Gut zu wissen</b>Quadratzahlen: 11 · 11 = 121 · 12 · 12 = 144 · 13 · 13 = 169 · 14 · 14 = 196 · 15 · 15 = 225 · 20 · 20 = 400</div>
             <div class="ew-knoepfe"><button class="ew-k gold" data-gx="zufall">🎲 Zufällige Aufgabe</button><button class="ew-k" data-gx="verdecken">${g.verdeckt ? "Alle zeigen" : "Ergebnisse verdecken"}</button></div>
             <div class="ew-info" style="text-align:left">Tippe auf ein Feld der Tabelle: Die Aufgabe wird Schritt für Schritt zerlegt.</div>`;
     }

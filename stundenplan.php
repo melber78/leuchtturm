@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,9 +27,9 @@
 -->
 <style>
 :root{
-    --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4;
+    --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --schaum:#f7f4ec;
     --text:#1f2d36; --grau:#7c8a85; --linie:#e3e8ea;
-    --schatten:0 6px 24px rgba(22,50,74,.1);
+    --schatten:0 6px 24px rgba(47,74,31,.1);
 }
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; }
@@ -62,7 +62,7 @@ body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito
 .sp-btn.nacht{ background:var(--nacht); }
 .sp-btn.meer{ background:var(--meer); }
 .sp-btn.gold{ background:var(--gold); color:var(--nacht); }
-.sp-btn.hell{ background:white; color:var(--nacht); box-shadow:0 3px 10px rgba(22,50,74,.08); }
+.sp-btn.hell{ background:white; color:var(--nacht); box-shadow:0 3px 10px rgba(47,74,31,.08); }
 
 .sp-namen-leiste{ background:white; border-radius:20px; box-shadow:var(--schatten); padding:16px 20px; margin-bottom:18px; }
 .sp-namen-leiste h3{ font-size:13px; text-transform:uppercase; letter-spacing:.4px; color:var(--grau); margin:0 0 10px; font-weight:800; }
@@ -123,6 +123,7 @@ table.sp-tabelle textarea:focus{ outline:2px solid var(--meer); outline-offset:-
 }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 

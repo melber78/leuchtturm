@@ -23,10 +23,10 @@ const CSS = `
 #praes .p-folie.zurueck{ animation:pReinL .45s cubic-bezier(.2,.8,.2,1); }
 @keyframes pRein{ from{ opacity:0; transform:translateX(6vw) scale(.98); } to{ opacity:1; transform:none; } }
 @keyframes pReinL{ from{ opacity:0; transform:translateX(-6vw) scale(.98); } to{ opacity:1; transform:none; } }
-#praes h1{ font-size:clamp(34px,7vw,110px); font-weight:900; margin:.1em 0; line-height:1.05; color:#16324a; }
-#praes h2{ font-size:clamp(26px,4.4vw,64px); font-weight:900; margin:0 0 .4em; color:#16324a; line-height:1.1; }
+#praes h1{ font-size:clamp(34px,7vw,110px); font-weight:900; margin:.1em 0; line-height:1.05; color:#2f4a1f; }
+#praes h2{ font-size:clamp(26px,4.4vw,64px); font-weight:900; margin:0 0 .4em; color:#2f4a1f; line-height:1.1; }
 #praes .p-klein{ font-size:clamp(16px,1.8vw,26px); font-weight:800; color:#7c8a85; letter-spacing:.03em; }
-#praes .p-chip{ display:inline-block; padding:.35em 1em; border-radius:99px; background:#e7f1fb; color:#3d7ea6; font-weight:900; font-size:clamp(14px,1.6vw,24px); margin:.2em; }
+#praes .p-chip{ display:inline-block; padding:.35em 1em; border-radius:99px; background:#e7f1fb; color:#557428; font-weight:900; font-size:clamp(14px,1.6vw,24px); margin:.2em; }
 #praes .p-chip.gold{ background:#f9eeda; color:#8a5a12; }
 #praes .p-chip.gruen{ background:#e5f4e4; color:#2e8b57; }
 #praes .p-text{ font-family:"Andika","Nunito",sans-serif; font-size:clamp(22px,3.3vw,50px); line-height:1.4; max-width:30em; }
@@ -37,14 +37,14 @@ const CSS = `
 #praes .p-bilder .bild{ width:clamp(70px,12vh,170px); height:clamp(70px,12vh,170px); animation:pHuepf 2.4s ease-in-out infinite; }
 #praes .p-bilder .bild:nth-child(2){ animation-delay:.4s; } #praes .p-bilder .bild:nth-child(3){ animation-delay:.8s; }
 @keyframes pHuepf{ 0%,100%{ transform:translateY(0) rotate(-3deg); } 50%{ transform:translateY(-10px) rotate(3deg); } }
-#praes .p-knopf{ border:0; border-radius:18px; padding:.55em 1.1em; font:inherit; font-weight:900; font-size:clamp(16px,1.9vw,28px); cursor:pointer; background:#16324a; color:white; box-shadow:0 6px 18px rgba(22,50,74,.2); transition:transform .12s; }
+#praes .p-knopf{ border:0; border-radius:18px; padding:.55em 1.1em; font:inherit; font-weight:900; font-size:clamp(16px,1.9vw,28px); cursor:pointer; background:#2f4a1f; color:white; box-shadow:0 6px 18px rgba(47,74,31,.2); transition:transform .12s; }
 #praes .p-knopf:active{ transform:scale(.95); }
-#praes .p-knopf.gold{ background:#f2a93b; color:#16324a; }
-#praes .p-knopf.hell{ background:white; color:#16324a; }
+#praes .p-knopf.gold{ background:#d9a23f; color:#2f4a1f; }
+#praes .p-knopf.hell{ background:white; color:#2f4a1f; }
 #praes .p-reihe{ display:flex; gap:1.4vw; justify-content:center; flex-wrap:wrap; margin-top:3vh; }
 
 /* Titel mit Leuchtturm-Strahl */
-#praes .p-titel{ background:radial-gradient(circle at 50% 120%, #3d7ea6 0%, #16324a 60%); color:white; }
+#praes .p-titel{ background:radial-gradient(circle at 50% 120%, #557428 0%, #2f4a1f 60%); color:white; }
 #praes .p-titel h1{ color:white; text-shadow:0 6px 30px rgba(0,0,0,.35); }
 #praes .p-titel .p-klein{ color:#f2c97b; }
 #praes .p-strahl-box{ position:absolute; inset:0; overflow:hidden; pointer-events:none; }
@@ -53,15 +53,15 @@ const CSS = `
 #praes .p-titel .p-bilder .bild{ width:clamp(90px,17vh,220px); height:clamp(90px,17vh,220px); }
 #praes .p-wahl{ margin-top:3vh; display:flex; gap:1vw; justify-content:center; flex-wrap:wrap; }
 #praes .p-wahl .p-knopf{ background:rgba(255,255,255,.14); color:white; box-shadow:none; border:2px solid rgba(255,255,255,.35); font-size:clamp(14px,1.5vw,22px); }
-#praes .p-wahl .p-knopf.an{ background:#f2a93b; color:#16324a; border-color:#f2a93b; }
+#praes .p-wahl .p-knopf.an{ background:#d9a23f; color:#2f4a1f; border-color:#d9a23f; }
 
 /* Abstimmung (Gesichter, Daumen, Ampel) */
 #praes .p-stimmen{ display:flex; gap:2.2vw; justify-content:center; align-items:flex-end; margin-top:2vh; flex-wrap:wrap; }
 #praes .p-stimme{ display:flex; flex-direction:column; align-items:center; gap:.6vh; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 #praes .p-saeule{ width:clamp(46px,7vw,110px); background:#e7f1fb; border-radius:14px 14px 4px 4px; display:flex; align-items:flex-end; justify-content:center; height:22vh; overflow:hidden; position:relative; }
-#praes .p-saeule .p-fuell{ width:100%; background:linear-gradient(#f2c97b,#f2a93b); border-radius:12px 12px 0 0; transition:height .35s cubic-bezier(.2,1.4,.4,1); }
-#praes .p-saeule .p-zahl{ position:absolute; top:.3em; font-weight:900; font-size:clamp(18px,2.4vw,40px); color:#16324a; }
-#praes .p-symbol{ width:clamp(70px,10vw,150px); height:clamp(70px,10vw,150px); border-radius:50%; background:white; box-shadow:0 6px 20px rgba(22,50,74,.15); display:flex; align-items:center; justify-content:center; transition:transform .15s; font-size:clamp(40px,6vw,90px); }
+#praes .p-saeule .p-fuell{ width:100%; background:linear-gradient(#f2c97b,#d9a23f); border-radius:12px 12px 0 0; transition:height .35s cubic-bezier(.2,1.4,.4,1); }
+#praes .p-saeule .p-zahl{ position:absolute; top:.3em; font-weight:900; font-size:clamp(18px,2.4vw,40px); color:#2f4a1f; }
+#praes .p-symbol{ width:clamp(70px,10vw,150px); height:clamp(70px,10vw,150px); border-radius:50%; background:white; box-shadow:0 6px 20px rgba(47,74,31,.15); display:flex; align-items:center; justify-content:center; transition:transform .15s; font-size:clamp(40px,6vw,90px); }
 #praes .p-symbol svg{ width:84%; height:84%; }
 #praes .p-stimme:active .p-symbol, #praes .p-symbol.pop{ transform:scale(1.15); }
 #praes .p-stimme .p-name{ font-weight:900; font-size:clamp(15px,1.7vw,26px); }
@@ -69,11 +69,11 @@ const CSS = `
 #praes .p-stimme.richtig .p-name::after{ content:" ✓"; color:#2e8b57; }
 #praes .p-stimme.falsch{ opacity:.3; }
 #praes .p-minus{ border:0; background:none; color:#a0aaa6; font-size:clamp(14px,1.4vw,20px); font-weight:900; cursor:pointer; padding:.2em .6em; }
-#praes .p-aussage{ font-family:"Andika","Nunito",sans-serif; font-size:clamp(26px,4.2vw,66px); font-weight:700; line-height:1.25; max-width:24em; background:white; border-radius:28px; padding:.6em 1em; box-shadow:0 8px 30px rgba(22,50,74,.12); }
+#praes .p-aussage{ font-family:"Andika","Nunito",sans-serif; font-size:clamp(26px,4.2vw,66px); font-weight:700; line-height:1.25; max-width:24em; background:white; border-radius:28px; padding:.6em 1em; box-shadow:0 8px 30px rgba(47,74,31,.12); }
 
 /* Fragen */
 #praes .p-fragen{ text-align:left; width:min(100%,1150px); }
-#praes .p-frage{ font-family:"Andika","Nunito",sans-serif; font-size:clamp(18px,min(2.4vw,4vh),38px); padding:.4em .8em; margin:.3em 0; border-radius:18px; background:white; box-shadow:0 4px 14px rgba(22,50,74,.08); opacity:.35; transition:.3s; cursor:pointer; display:flex; gap:.6em; }
+#praes .p-frage{ font-family:"Andika","Nunito",sans-serif; font-size:clamp(18px,min(2.4vw,4vh),38px); padding:.4em .8em; margin:.3em 0; border-radius:18px; background:white; box-shadow:0 4px 14px rgba(47,74,31,.08); opacity:.35; transition:.3s; cursor:pointer; display:flex; gap:.6em; }
 #praes .p-frage.an{ opacity:1; transform:scale(1.02); box-shadow:0 8px 26px rgba(242,169,59,.35); }
 #praes .p-frage.aufgabe{ background:#fff7e6; }
 #praes .p-frage.aufgabe:not(.an):not(.war){ visibility:hidden; }
@@ -82,12 +82,12 @@ const CSS = `
 #praes.lern .p-loes{ background:rgba(120,220,150,.15); color:#bff5cf; }
 #praes .p-liste .zu{ filter:blur(9px); opacity:.55; cursor:pointer; user-select:none; }
 #praes .p-liste{ display:flex; flex-wrap:wrap; gap:.5em .7em; justify-content:center; margin-top:2vh; max-width:min(1300px,94vw); }
-#praes .p-liste div{ background:white; border-radius:16px; padding:.35em .8em; box-shadow:0 4px 14px rgba(22,50,74,.1); font-family:"Andika","Nunito",sans-serif; font-size:clamp(17px,min(2.2vw,3.6vh),34px); }
-#praes .p-frage .nr{ font-family:"Nunito",sans-serif; font-weight:900; color:#f2a93b; }
+#praes .p-liste div{ background:white; border-radius:16px; padding:.35em .8em; box-shadow:0 4px 14px rgba(47,74,31,.1); font-family:"Andika","Nunito",sans-serif; font-size:clamp(17px,min(2.2vw,3.6vh),34px); }
+#praes .p-frage .nr{ font-family:"Nunito",sans-serif; font-weight:900; color:#d9a23f; }
 
 /* Film */
 #praes .p-filme{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(420px,80vw),1fr)); gap:2vw; width:100%; max-width:1400px; }
-#praes .p-film{ background:white; border-radius:24px; padding:1.2em 1.4em; box-shadow:0 6px 22px rgba(22,50,74,.12); text-align:left; display:flex; gap:1em; align-items:center; text-decoration:none; color:inherit; }
+#praes .p-film{ background:white; border-radius:24px; padding:1.2em 1.4em; box-shadow:0 6px 22px rgba(47,74,31,.12); text-align:left; display:flex; gap:1em; align-items:center; text-decoration:none; color:inherit; }
 #praes .p-film .play{ flex:0 0 auto; width:clamp(56px,6vw,90px); height:clamp(56px,6vw,90px); border-radius:50%; background:#e74c3c; display:flex; align-items:center; justify-content:center; color:white; font-size:clamp(24px,3vw,44px); }
 #praes .p-film strong{ display:block; font-size:clamp(18px,2vw,30px); }
 #praes .p-film span{ color:#7c8a85; font-weight:700; font-size:clamp(14px,1.4vw,20px); }
@@ -98,14 +98,14 @@ const CSS = `
 #praes .p-hand.an{ opacity:1; transform:translateY(-18px) scale(1.25); }
 
 /* Leiste */
-#praes .p-leiste{ display:flex; align-items:center; gap:8px; padding:8px 14px; background:white; box-shadow:0 -4px 18px rgba(22,50,74,.08); flex-wrap:wrap; }
-#praes .p-leiste button{ border:0; background:#f1f4f2; border-radius:12px; padding:10px 14px; font:inherit; font-weight:900; font-size:16px; cursor:pointer; color:#16324a; min-width:46px; }
+#praes .p-leiste{ display:flex; align-items:center; gap:8px; padding:8px 14px; background:white; box-shadow:0 -4px 18px rgba(47,74,31,.08); flex-wrap:wrap; }
+#praes .p-leiste button{ border:0; background:#f1f4f2; border-radius:12px; padding:10px 14px; font:inherit; font-weight:900; font-size:16px; cursor:pointer; color:#2f4a1f; min-width:46px; }
 #praes .p-leiste button:hover{ background:#e7f1fb; }
 #praes .p-leiste .p-pos{ font-weight:900; color:#7c8a85; min-width:70px; text-align:center; }
 #praes .p-leiste .p-platz{ flex:1; }
 #praes .p-punkte{ display:flex; gap:4px; flex:1; justify-content:center; flex-wrap:wrap; }
 #praes .p-punkte i{ width:9px; height:9px; border-radius:50%; background:#dfe5e2; display:block; cursor:pointer; }
-#praes .p-punkte i.an{ background:#f2a93b; transform:scale(1.4); }
+#praes .p-punkte i.an{ background:#d9a23f; transform:scale(1.4); }
 @media (max-width:700px){
     #praes .p-punkte{ display:none; }
     #praes .p-leiste .p-wort{ display:none; }
@@ -120,14 +120,14 @@ const CSS = `
 }
 
 /* Timer */
-#praes .p-timer{ position:absolute; top:2vh; right:2vw; background:#16324a; color:white; border-radius:22px; padding:.3em .7em; font-weight:900; font-size:clamp(28px,4vw,64px); font-variant-numeric:tabular-nums; display:flex; align-items:center; gap:.4em; z-index:5; box-shadow:0 8px 24px rgba(22,50,74,.3); }
+#praes .p-timer{ position:absolute; top:2vh; right:2vw; background:#2f4a1f; color:white; border-radius:22px; padding:.3em .7em; font-weight:900; font-size:clamp(28px,4vw,64px); font-variant-numeric:tabular-nums; display:flex; align-items:center; gap:.4em; z-index:5; box-shadow:0 8px 24px rgba(47,74,31,.3); }
 #praes .p-timer button{ border:0; background:rgba(255,255,255,.15); color:white; border-radius:10px; font:inherit; font-size:.45em; padding:.3em .55em; cursor:pointer; }
 #praes .p-timer.ende{ animation:pBlink .6s ease-in-out 6; background:#e74c3c; }
 @keyframes pBlink{ 50%{ transform:scale(1.12); } }
 #praes .p-timer .ring{ width:.8em; height:.8em; }
 
 /* Overlays (Glücksrad, Timer wählen) */
-#praes .p-dran{ position:absolute; top:12px; right:12px; z-index:9; min-width:clamp(48px,5.5vw,80px); height:clamp(48px,5.5vw,80px); border-radius:999px; border:4px solid white; box-shadow:0 6px 18px rgba(22,50,74,.25); color:white; font:900 clamp(24px,3vw,44px)/1 "Nunito",sans-serif; display:flex; align-items:center; justify-content:center; padding:0 .3em; cursor:pointer; }
+#praes .p-dran{ position:absolute; top:12px; right:12px; z-index:9; min-width:clamp(48px,5.5vw,80px); height:clamp(48px,5.5vw,80px); border-radius:999px; border:4px solid white; box-shadow:0 6px 18px rgba(47,74,31,.25); color:white; font:900 clamp(24px,3vw,44px)/1 "Nunito",sans-serif; display:flex; align-items:center; justify-content:center; padding:0 .3em; cursor:pointer; }
 #praes .p-dran.lang{ font-size:clamp(16px,1.8vw,26px); padding:0 .7em; }
 #praes .p-dran.neu{ animation:pDran .5s cubic-bezier(.2,1.6,.4,1); }
 @keyframes pDran{ from{ transform:scale(.3); } to{ transform:scale(1); } }
@@ -135,31 +135,31 @@ const CSS = `
 #praes .p-s1{ color:#1D5FA8; }
 #praes .p-s2{ color:#C0392B; }
 #praes .p-silbenknopf{ opacity:.55; }
-#praes .p-silbenknopf.an{ opacity:1; background:#fff4dc !important; box-shadow:inset 0 0 0 2px #f2a93b; }
-#praes .p-overlay{ position:absolute; inset:0; background:rgba(22,50,74,.55); display:flex; align-items:center; justify-content:center; z-index:10; animation:pFade .2s; }
+#praes .p-silbenknopf.an{ opacity:1; background:#fff4dc !important; box-shadow:inset 0 0 0 2px #d9a23f; }
+#praes .p-overlay{ position:absolute; inset:0; background:rgba(47,74,31,.55); display:flex; align-items:center; justify-content:center; z-index:10; animation:pFade .2s; }
 @keyframes pFade{ from{ opacity:0; } }
 #praes .p-dialog{ background:white; border-radius:30px; padding:3vh 3vw; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.3); max-width:92vw; max-height:calc(100% - 16px); overflow-y:auto; box-sizing:border-box; }
 #praes .p-dialog.mit-namen .p-rad-wrap{ width:min(32vh,60vw); height:min(32vh,60vw); }
 #praes .p-dialog h2{ font-size:clamp(24px,3vw,44px); }
 #praes .p-rad-wrap{ position:relative; width:min(50vh,78vw); height:min(50vh,78vw); margin:0 auto 1vh; }
 #praes .p-rad-wrap canvas{ width:100%; height:100%; }
-#praes .p-zeiger{ position:absolute; top:-10px; left:50%; margin-left:-22px; width:0; height:0; border-left:22px solid transparent; border-right:22px solid transparent; border-top:44px solid #16324a; filter:drop-shadow(0 3px 4px rgba(0,0,0,.3)); }
-#praes .p-ergebnis{ font-size:clamp(36px,6vh,90px); font-weight:900; color:#f2a93b; min-height:1.2em; }
-#praes .p-vorleser{ display:inline-flex; align-items:center; gap:.4em; background:#fff4dc; color:#16324a; border-radius:18px; padding:.45em 1em; font-weight:900; font-size:clamp(16px,1.9vw,28px); box-shadow:0 4px 14px rgba(22,50,74,.1); }
+#praes .p-zeiger{ position:absolute; top:-10px; left:50%; margin-left:-22px; width:0; height:0; border-left:22px solid transparent; border-right:22px solid transparent; border-top:44px solid #2f4a1f; filter:drop-shadow(0 3px 4px rgba(0,0,0,.3)); }
+#praes .p-ergebnis{ font-size:clamp(36px,6vh,90px); font-weight:900; color:#d9a23f; min-height:1.2em; }
+#praes .p-vorleser{ display:inline-flex; align-items:center; gap:.4em; background:#fff4dc; color:#2f4a1f; border-radius:18px; padding:.45em 1em; font-weight:900; font-size:clamp(16px,1.9vw,28px); box-shadow:0 4px 14px rgba(47,74,31,.1); }
 #praes .p-rad-optionen{ display:flex; gap:1.2em; justify-content:center; align-items:center; flex-wrap:wrap; font-weight:800; margin-top:.4em; }
 #praes .p-rad-optionen label{ display:inline-flex; gap:.4em; align-items:center; cursor:pointer; }
 #praes .p-rad-optionen input[type=checkbox]{ width:1.2em; height:1.2em; }
 #praes .p-namen{ width:min(560px,80vw); min-height:4em; height:4.5em; font:inherit; font-size:18px; border:2px solid #dfe5e2; border-radius:12px; padding:.4em .6em; margin-top:.5em; }
 #praes .p-dialog input{ font:inherit; font-size:22px; width:4.5em; text-align:center; border:2px solid #dfe5e2; border-radius:12px; padding:.2em; }
 #praes .p-ruhe{ position:absolute; inset:0; z-index:30; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.2vh; text-align:center; color:white; cursor:pointer;
-    background:radial-gradient(circle at 50% 40%, #2b5f86 0%, #16324a 70%); animation:pRuheAtem 6s ease-in-out infinite, pFade .25s; padding:3vh 4vw; }
+    background:radial-gradient(circle at 50% 40%, #2b5f86 0%, #2f4a1f 70%); animation:pRuheAtem 6s ease-in-out infinite, pFade .25s; padding:3vh 4vw; }
 #praes .p-ruhe-icon{ font-size:clamp(90px,17vh,220px); line-height:1; animation:pRuhePuls 2s ease-in-out infinite; }
 #praes .p-ruhe h2{ color:white; font-size:clamp(40px,8vh,110px); margin:0; letter-spacing:.02em; }
 #praes .p-ruhe-regeln{ display:flex; gap:2vw; flex-wrap:wrap; justify-content:center; }
 #praes .p-ruhe-regeln div{ background:rgba(255,255,255,.12); border:2px solid rgba(255,255,255,.25); border-radius:22px; padding:1.4vh 2vw; font:800 clamp(18px,3.2vh,38px)/1.2 "Nunito",sans-serif; display:flex; flex-direction:column; align-items:center; gap:.4em; min-width:9em; }
 #praes .p-ruhe-regeln div span{ font-size:1.8em; line-height:1; }
 #praes .p-ruhe-zeit{ font:800 clamp(16px,2.6vh,30px)/1.3 "Nunito",sans-serif; opacity:.85; }
-#praes .p-ruhe-zeit b{ font-variant-numeric:tabular-nums; color:#f2a93b; }
+#praes .p-ruhe-zeit b{ font-variant-numeric:tabular-nums; color:#d9a23f; }
 #praes .p-ruhe .p-knopf{ margin-top:1vh; }
 @keyframes pRuhePuls{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.08); } }
 @keyframes pRuheAtem{ 0%,100%{ filter:brightness(1); } 50%{ filter:brightness(1.18); } }
@@ -516,7 +516,7 @@ function konfetti(buehne){
     const c = document.createElement("canvas"); c.className = "p-konfetti";
     buehne.appendChild(c);
     const w = c.width = buehne.clientWidth, h = c.height = buehne.clientHeight, x = c.getContext("2d");
-    const farben = ["#f2a93b", "#3d7ea6", "#e74c3c", "#2e8b57", "#c0399b", "#f9d56e"];
+    const farben = ["#d9a23f", "#557428", "#e74c3c", "#2e8b57", "#c0399b", "#f9d56e"];
     const teile = Array.from({ length: 160 }, () => ({ x: w / 2 + (Math.random() - .5) * w * .3, y: h * .45, vx: (Math.random() - .5) * 18, vy: -Math.random() * 18 - 6, r: Math.random() * 6.3, s: 6 + Math.random() * 8, f: farben[Math.floor(Math.random() * farben.length)] }));
     let n = 0;
     (function bild(){
@@ -1423,7 +1423,7 @@ function timerStarten(sekunden){
     const t = z.timer = { rest: sekunden, gesamt: sekunden, el, pause: false, id: null };
     const zeichnen = () => {
         const m = Math.floor(t.rest / 60), s = t.rest % 60, anteil = t.rest / t.gesamt;
-        el.innerHTML = `<svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="5"/><circle cx="18" cy="18" r="15" fill="none" stroke="#f2a93b" stroke-width="5" stroke-dasharray="${(anteil * 94.2).toFixed(1)} 94.2" transform="rotate(-90 18 18)"/></svg>
+        el.innerHTML = `<svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="5"/><circle cx="18" cy="18" r="15" fill="none" stroke="#d9a23f" stroke-width="5" stroke-dasharray="${(anteil * 94.2).toFixed(1)} 94.2" transform="rotate(-90 18 18)"/></svg>
             <span>${m}:${String(s).padStart(2, "0")}</span><button data-t="pause">${t.pause ? "▶" : "⏸"}</button><button data-t="plus">+1</button><button data-t="weg">✕</button>`;
     };
     el.addEventListener("click", ev => {
@@ -1519,7 +1519,7 @@ function dranZeigen(name, farbe){
     const nr = String(name).startsWith("Platz ") ? String(name).slice(6) : String(name);
     b.textContent = nr;
     b.classList.toggle("lang", nr.length > 2);
-    b.style.background = farbe || "#f2a93b";
+    b.style.background = farbe || "#d9a23f";
     b.classList.remove("neu"); void b.offsetWidth; b.classList.add("neu");
 }
 function overlay(html){
@@ -1549,7 +1549,7 @@ function gluecksrad(opt = {}){
         <div data-namen-box="1" hidden><textarea class="p-namen" data-namen="1" placeholder="Ein Vorname pro Zeile (oder mit Komma getrennt) – wird nicht gespeichert">${esc(radNamen.join("\n"))}</textarea>
             <div style="font-size:14px;color:#7c8a85;font-weight:700">Die Namen bleiben nur, solange diese Seite offen ist. Leer lassen = Platznummern.</div></div>`);
     const c = o.querySelector("canvas"), x = c.getContext("2d");
-    const farben = ["#f2a93b", "#3d7ea6", "#e74c3c", "#2e8b57", "#c0399b", "#e67e22", "#17a2b8", "#16324a", "#8e44ad", "#27ae60"];
+    const farben = ["#d9a23f", "#557428", "#e74c3c", "#2e8b57", "#c0399b", "#e67e22", "#17a2b8", "#2f4a1f", "#8e44ad", "#27ae60"];
     let winkel = 0, laeuft = false;
     const etiketten = () => radNamen.length >= 2 ? radNamen.slice(0, 30) : Array.from({ length: z.anzahl }, (_, k) => "Platz " + (k + 1));
     const kurz = t => t.startsWith("Platz ") ? t.slice(6) : (t.length > 9 ? t.slice(0, 8) + "…" : t);

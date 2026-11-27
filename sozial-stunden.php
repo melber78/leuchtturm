@@ -43,7 +43,7 @@ usort($vorlagenDateien, fn($a, $b) => (basename($a) === $basisDatei ? -1 : (base
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -60,9 +60,9 @@ usort($vorlagenDateien, fn($a, $b) => (basename($a) === $basisDatei ? -1 : (base
 
 <style>
 :root{
-    --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4;
+    --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --schaum:#f7f4ec;
     --text:#1f2d36; --grau:#7c8a85; --linie:#dfe5e2;
-    --schatten:0 6px 24px rgba(22,50,74,.1);
+    --schatten:0 6px 24px rgba(47,74,31,.1);
     --rot:#c0392b; --gruen:#2e8b57;
 }
 *{ box-sizing:border-box; }
@@ -82,7 +82,7 @@ button, input, select, textarea{ font-family:inherit; font-size:15px; }
 .seite{ width:min(1200px,95%); margin:24px auto 60px; }
 
 /* ---------- Bausteine ---------- */
-.btn{ border:0; border-radius:12px; padding:10px 16px; font-weight:800; cursor:pointer; background:white; color:var(--nacht); box-shadow:0 2px 8px rgba(22,50,74,.1); display:inline-flex; align-items:center; gap:8px; text-decoration:none; }
+.btn{ border:0; border-radius:12px; padding:10px 16px; font-weight:800; cursor:pointer; background:white; color:var(--nacht); box-shadow:0 2px 8px rgba(47,74,31,.1); display:inline-flex; align-items:center; gap:8px; text-decoration:none; }
 .btn:hover{ filter:brightness(.96); }
 .btn.gold{ background:var(--gold); color:var(--nacht); }
 .btn.blau{ background:var(--meer); color:white; }
@@ -160,7 +160,7 @@ table.verlauf td:nth-child(2){ font-weight:800; }
 @media (max-width:800px){ .vorschau-paar, .vorschau-paar.drei{ grid-template-columns:1fr; } }
 .ed-umschalter{ display:flex; gap:6px; margin-bottom:8px; }
 .ed-umschalter .btn.aktiv{ background:var(--meer); color:white; }
-.vorschau{ position:relative; overflow:hidden; border-radius:6px; box-shadow:0 2px 14px rgba(22,50,74,.18); background:white; }
+.vorschau{ position:relative; overflow:hidden; border-radius:6px; box-shadow:0 2px 14px rgba(47,74,31,.18); background:white; }
 .vorschau > .blatt{ position:absolute; top:0; left:0; transform-origin:top left; }
 .vorschau-status{ font-size:13px; font-weight:800; margin-top:8px; }
 .vorschau-status.ok{ color:var(--gruen); }
@@ -222,7 +222,7 @@ table.plan td.kl-thema.unpassend .plan-wahl{ border-color:var(--gold); }
 table.plan td.kl-zelle{ text-align:center; position:relative; white-space:nowrap; }
 .kl-status{ width:34px; height:34px; border-radius:10px; border:2px solid #d6dee3; background:#fff; font-size:17px; font-weight:900; color:#9aa6ab; cursor:pointer; }
 .kl-status.gehalten{ background:#2e8b57; border-color:#2e8b57; color:#fff; }
-.kl-status.angefangen{ background:#fff4dc; border-color:#f2a93b; color:#b07a12; }
+.kl-status.angefangen{ background:#fff4dc; border-color:#d9a23f; color:#b07a12; }
 .kl-fort{ display:block; font-size:12px; font-weight:900; color:#b07a12; line-height:1; margin-top:2px; }
 .dw-anders{ font-size:13.5px; font-weight:700; margin:4px 0 0 2px; display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
 .kl-status.verschoben{ background:#eef6fc; border-color:#3d8bd4; color:#1f5f99; font-size:15px; }
@@ -354,13 +354,13 @@ table.ab-tab{ width:100%; border-collapse:collapse; }
 .nf-geschichte{ border:.4mm solid #c9d6e3; border-radius:3mm; background:#f8fafc; padding:.45em .8em .2em; margin:0 0 .6em; font-size:.86em; line-height:1.42; }
 .nf-geschichte .md p{ margin:0 0 .35em; }
 .nf-g-titel{ font-weight:700; color:var(--nacht); margin-bottom:.2em; }
-.blatt-kontext{ background:#f3f6f8; border-left:1.2mm solid #3d7ea6; border-radius:0 2mm 2mm 0; padding:.3em .7em; margin:.1em 0 .5em; font-size:.88em; line-height:1.35; }
+.blatt-kontext{ background:#f3f6f8; border-left:1.2mm solid #557428; border-radius:0 2mm 2mm 0; padding:.3em .7em; margin:.1em 0 .5em; font-size:.88em; line-height:1.35; }
 td.tab-kreuz-zelle{ text-align:center; }
 .tab-kreuz{ display:inline-block; width:1.05em; height:1.05em; border:.35mm solid #555; border-radius:1mm; vertical-align:middle; }
 .wortspeicher{ border:.4mm dashed #9aa9b2; border-radius:3mm; padding:.35em .6em; margin:.2em 0 .45em; display:flex; flex-wrap:wrap; gap:.3em .5em; align-items:center; font-size:.92em; }
 .wortspeicher b{ font-family:"Nunito",sans-serif; font-size:.8em; text-transform:uppercase; letter-spacing:.04em; color:#55636a; margin-right:.2em; }
 .wortspeicher span{ background:#f3f6f8; border:.3mm solid #c9d6e3; border-radius:2mm; padding:.05em .45em; white-space:nowrap; }
-table.ab-tab th{ background:#eef4f8; text-align:left; font-weight:700; padding:.3em .5em; border:.3mm solid #9aa9b2; font-size:.9em; }
+table.ab-tab th{ background:#eef3e6; text-align:left; font-weight:700; padding:.3em .5em; border:.3mm solid #9aa9b2; font-size:.9em; }
 table.ab-tab td{ border:.3mm solid #9aa9b2; padding:.35em .5em; vertical-align:middle; height:calc(2.3em * var(--z)); }
 table.ab-tab td .lz{ min-height:0; }
 .gesichter{ display:flex; justify-content:space-around; gap:3mm; flex-wrap:wrap; }
@@ -396,7 +396,7 @@ table.ab-tab td .lz{ min-height:0; }
 .lehrer-druck h2{ font-size:13pt; margin:5mm 0 2mm; font-weight:900; color:var(--nacht); break-after:avoid; }
 .lehrer-druck h3{ font-size:11pt; margin:3mm 0 1mm; font-weight:900; break-after:avoid; }
 .lehrer-druck table{ width:100%; border-collapse:collapse; font-size:9.5pt; }
-.lehrer-druck th{ background:#eef4f8; text-align:left; padding:1.5mm 2mm; border:.3mm solid #c5d0d6; }
+.lehrer-druck th{ background:#eef3e6; text-align:left; padding:1.5mm 2mm; border:.3mm solid #c5d0d6; }
 .lehrer-druck td{ padding:1.5mm 2mm; border:.3mm solid #c5d0d6; vertical-align:top; }
 .lehrer-druck tr{ break-inside:avoid; }
 .lehrer-druck .md p{ margin:0 0 2mm; }
@@ -470,6 +470,7 @@ table.ab-tab td .lz{ min-height:0; }
 }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 
@@ -809,7 +810,7 @@ const SYMBOLE = [
     ["#e74c3c", '<circle cx="12" cy="12" r="10"/>'],
     ["#2f80c4", '<rect x="2.5" y="2.5" width="19" height="19" rx="2"/>'],
     ["#2e8b57", '<polygon points="12,2 22.5,21 1.5,21"/>'],
-    ["#f2a93b", '<polygon points="12,1.5 14.9,8.8 22.7,9.2 16.6,14.1 18.6,21.7 12,17.4 5.4,21.7 7.4,14.1 1.3,9.2 9.1,8.8"/>'],
+    ["#d9a23f", '<polygon points="12,1.5 14.9,8.8 22.7,9.2 16.6,14.1 18.6,21.7 12,17.4 5.4,21.7 7.4,14.1 1.3,9.2 9.1,8.8"/>'],
     ["#c0399b", '<path d="M12 21.5 C4 15.5 1.5 11.5 1.5 7.6 C1.5 4.4 4 2.2 6.9 2.2 C9.1 2.2 10.9 3.5 12 5.4 C13.1 3.5 14.9 2.2 17.1 2.2 C20 2.2 22.5 4.4 22.5 7.6 C22.5 11.5 20 15.5 12 21.5 Z"/>'],
     ["#e67e22", '<polygon points="12,1.5 22.5,12 12,22.5 1.5,12"/>'],
     ["#7f8c8d", '<path d="M15.5 2.5 A10 10 0 1 0 21.5 17 A8 8 0 1 1 15.5 2.5 Z"/>'],
@@ -1552,7 +1553,7 @@ function zeigeStunde(id){
             const link = id => `<a href="#stunde/${encodeURIComponent(id)}">„${esc(finde(id).titel)}“</a>`;
             return `<div class="aufbau-box">${vor.length ? `🔗 <b>Baut auf:</b> ${vor.map(id => `${link(id)} <small>(${status(id)})</small>`).join(", ")} – am besten vorher.` : ""}${vor.length && nach.length ? "<br>" : ""}${nach.length ? `➡️ <b>Danach passt:</b> ${nach.map(link).join(", ")}` : ""}</div>`;
         })()}
-        ${window.sozialPraesentation ? `<div class="karte" style="background:linear-gradient(135deg,#16324a,#3d7ea6);color:white">
+        ${window.sozialPraesentation ? `<div class="karte" style="background:linear-gradient(135deg,#2f4a1f,#557428);color:white">
             <h2 style="color:white"><i class="fa-solid fa-display"></i> Einstieg für die Tafel</h2>
             <p style="margin:0 0 14px;font-weight:700;opacity:.85">Interaktive Präsentation im Vollbild: Gefühls-Abstimmung, Geschichte mit Bildern und Vorlesestimme, Fragen, Daumen-Abstimmungen, Übungen mit Timer, Glücksrad „Wer ist dran?“ und Applauswelle. Steuerung mit Tippen, Pfeiltasten oder Presenter.</p>
             <div class="knopfleiste">

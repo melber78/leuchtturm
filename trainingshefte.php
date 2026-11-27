@@ -237,7 +237,7 @@ function h($s){ return htmlspecialchars((string)$s, ENT_QUOTES, "UTF-8"); }
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -257,8 +257,8 @@ function h($s){ return htmlspecialchars((string)$s, ENT_QUOTES, "UTF-8"); }
 <style>
 
 :root{
-    --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4;
-    --karte:#ffffff; --text:#1f2d36; --schatten:0 6px 24px rgba(22,50,74,.1);
+    --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --schaum:#f7f4ec;
+    --karte:#ffffff; --text:#1f2d36; --schatten:0 6px 24px rgba(47,74,31,.1);
 }
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; line-height:1.5; }
@@ -284,7 +284,7 @@ input[type="text"], select{ width:100%; border:2px solid #ececec; border-radius:
 
 .kinder-liste{ display:flex; gap:10px; flex-wrap:wrap; }
 .kind-chip{ display:inline-flex; align-items:center; gap:8px; background:white; border:2px solid #ececec; border-radius:999px; padding:8px 16px; font-weight:800; text-decoration:none; color:var(--text); box-shadow:var(--schatten); }
-.kind-chip.aktiv{ border-color:var(--nacht); background:#eef4f8; color:var(--nacht); }
+.kind-chip.aktiv{ border-color:var(--nacht); background:#eef3e6; color:var(--nacht); }
 .kind-chip i.loeschen{ color:#c0392b; opacity:.6; cursor:pointer; }
 .kind-chip i.loeschen:hover{ opacity:1; }
 
@@ -326,7 +326,7 @@ input[type="text"], select{ width:100%; border:2px solid #ececec; border-radius:
 .reiter{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; }
 .reiter a{ display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:999px; background:white; box-shadow:var(--schatten); color:var(--text); font-weight:800; font-size:14px; text-decoration:none; }
 .reiter a.aktiv{ background:var(--nacht); color:white; }
-.reiter a .zahl{ background:#eef4f8; color:var(--nacht); border-radius:999px; padding:0 8px; font-size:12px; }
+.reiter a .zahl{ background:#eef3e6; color:var(--nacht); border-radius:999px; padding:0 8px; font-size:12px; }
 .reiter a.aktiv .zahl{ background:rgba(255,255,255,.2); color:white; }
 .kacheln{ display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:18px; }
 .kachel{ background:white; border-radius:22px; box-shadow:var(--schatten); padding:20px 22px; display:flex; flex-direction:column; gap:10px; }
@@ -335,14 +335,14 @@ input[type="text"], select{ width:100%; border:2px solid #ececec; border-radius:
 .kachel .gross{ font-size:30px; font-weight:900; color:var(--nacht); line-height:1; }
 .kachel .klein{ font-size:13px; color:#7c8a94; font-weight:700; }
 .kachel .aktionen{ margin-top:auto; display:flex; gap:8px; flex-wrap:wrap; }
-.knopf{ display:inline-flex; align-items:center; gap:7px; border:0; border-radius:999px; padding:8px 15px; font:800 13px "Nunito",sans-serif; text-decoration:none; cursor:pointer; background:#eef4f8; color:var(--nacht); }
+.knopf{ display:inline-flex; align-items:center; gap:7px; border:0; border-radius:999px; padding:8px 15px; font:800 13px "Nunito",sans-serif; text-decoration:none; cursor:pointer; background:#eef3e6; color:var(--nacht); }
 .knopf.voll{ background:var(--nacht); color:white; }
 .knopf.gold{ background:var(--gold); color:var(--nacht); }
 .knopf:hover{ filter:brightness(.95); }
 .balken{ height:10px; background:#eef1f4; border-radius:999px; overflow:hidden; }
 .balken > span{ display:block; height:100%; background:linear-gradient(90deg, var(--meer), #6bcb77); border-radius:999px; }
 .sp-chips{ display:flex; flex-wrap:wrap; gap:6px; }
-.sp-chip{ font-size:12px; font-weight:800; padding:4px 10px; border-radius:999px; background:#eef4f8; color:var(--nacht); }
+.sp-chip{ font-size:12px; font-weight:800; padding:4px 10px; border-radius:999px; background:#eef3e6; color:var(--nacht); }
 .sp-chip.rs{ background:#fff3dc; color:#7a5200; }
 .sp-chip.le{ background:#e6f5ea; color:#1f6b35; }
 .lesen-box{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; }
@@ -357,7 +357,7 @@ input[type=date], input[type=number], textarea{ width:100%; border:2px solid #ec
 textarea{ resize:vertical; min-height:62px; font-weight:600; }
 .wahl-chips{ display:flex; flex-wrap:wrap; gap:8px; }
 .wahl-chips label{ margin:0; text-transform:none; letter-spacing:0; display:inline-flex; align-items:center; gap:6px; background:#f4f6f8; border:2px solid #e4e8ec; border-radius:999px; padding:6px 12px; font-size:13px; font-weight:800; color:var(--text); cursor:pointer; }
-.wahl-chips label.an{ background:#eef4f8; border-color:var(--meer); color:var(--nacht); }
+.wahl-chips label.an{ background:#eef3e6; border-color:var(--meer); color:var(--nacht); }
 .wahl-chips input{ display:none; }
 .ziel{ border:2px solid #e9edf1; border-radius:18px; padding:14px 16px; display:grid; grid-template-columns:200px 1fr 1fr; gap:10px 14px; align-items:start; position:relative; }
 @media (max-width:860px){ .ziel{ grid-template-columns:1fr; } }
@@ -365,7 +365,7 @@ textarea{ resize:vertical; min-height:62px; font-weight:600; }
 .ziel .unten select, .ziel .unten input{ width:auto; }
 .ziel .weg{ position:absolute; top:8px; right:10px; background:none; border:0; color:#c0392b; cursor:pointer; font-size:16px; opacity:.6; }
 .stand-offen{ border-left:6px solid #d5dbe1; } .stand-teilweise{ border-left:6px solid var(--gold); } .stand-erreicht{ border-left:6px solid #3aa35b; }
-.speicher-leiste{ position:sticky; bottom:12px; background:var(--nacht); color:white; border-radius:18px; padding:12px 18px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; box-shadow:0 10px 30px rgba(22,50,74,.35); z-index:20; }
+.speicher-leiste{ position:sticky; bottom:12px; background:var(--nacht); color:white; border-radius:18px; padding:12px 18px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; box-shadow:0 10px 30px rgba(47,74,31,.35); z-index:20; }
 .speicher-leiste .status{ font-size:13px; font-weight:700; opacity:.9; }
 /* Stunden */
 .stunde{ border:2px solid #e9edf1; border-radius:18px; padding:14px 16px; display:grid; grid-template-columns:150px 1fr; gap:6px 16px; }
@@ -374,9 +374,9 @@ textarea{ resize:vertical; min-height:62px; font-weight:600; }
 .stunde .dauer{ font-size:12px; color:#7c8a94; font-weight:800; }
 .stunde .inhalt{ font-size:14px; white-space:pre-line; }
 .stunde.offen{ border-color:#d6dee3; border-style:dashed; }
-.stunde.angefangen{ border-color:#f2a93b; background:#fffaf0; }
-.stunde.bearbeiten{ border-color:#3d7ea6; }
-.ue-verschieben{ display:inline-block; font-size:12px; font-weight:800; color:#3d7ea6; background:#eef5fa; border-radius:999px; padding:1px 9px; text-decoration:none; white-space:nowrap; }
+.stunde.angefangen{ border-color:#d9a23f; background:#fffaf0; }
+.stunde.bearbeiten{ border-color:#557428; }
+.ue-verschieben{ display:inline-block; font-size:12px; font-weight:800; color:#557428; background:#eef5fa; border-radius:999px; padding:1px 9px; text-decoration:none; white-space:nowrap; }
 .st-verschieben{ grid-column:1 / -1; background:#eef5fa; border-radius:14px; padding:12px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
 .st-verschieben input[type=date]{ width:auto; min-width:150px; }
 .st-verschieben .knopf{ padding:6px 12px; font-size:13px; }
@@ -384,12 +384,12 @@ textarea{ resize:vertical; min-height:62px; font-weight:600; }
 .st-verschieben label.mit input{ width:auto; }
 .st-statusreihe{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
 .st-status{ border:2px solid #e2e8ec; background:#fff; border-radius:999px; padding:4px 10px; font:inherit; font-size:12px; font-weight:800; color:#7c8a94; cursor:pointer; }
-.st-status.offen.an{ background:#eef1f3; border-color:#9aa6ab; color:#16324a; }
-.st-status.angefangen.an{ background:#fff4dc; border-color:#f2a93b; color:#8a5a00; }
+.st-status.offen.an{ background:#eef1f3; border-color:#9aa6ab; color:#2f4a1f; }
+.st-status.angefangen.an{ background:#fff4dc; border-color:#d9a23f; color:#8a5a00; }
 .st-status.erledigt.an{ background:#2e8b57; border-color:#2e8b57; color:#fff; }
 .st-filter{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
-.st-fknopf{ border:2px solid #e2e8ec; background:#fff; border-radius:12px; padding:6px 12px; font:inherit; font-size:13px; font-weight:800; color:#16324a; cursor:pointer; }
-.st-fknopf.an{ background:#16324a; border-color:#16324a; color:#fff; }
+.st-fknopf{ border:2px solid #e2e8ec; background:#fff; border-radius:12px; padding:6px 12px; font:inherit; font-size:13px; font-weight:800; color:#2f4a1f; cursor:pointer; }
+.st-fknopf.an{ background:#2f4a1f; border-color:#2f4a1f; color:#fff; }
 .erledigt-box{ display:flex; align-items:center; gap:6px; font-size:12px; font-weight:800; color:#3aa35b; cursor:pointer; white-space:nowrap; }
 .erledigt-box input{ width:18px; height:18px; accent-color:#3aa35b; }
 .mat-karte.erledigt{ opacity:.6; }
@@ -408,7 +408,7 @@ textarea{ resize:vertical; min-height:62px; font-weight:600; }
     #druck-plan{ display:block; font-family:"Nunito",sans-serif; color:#1E2A36; font-size:12.5px; }
     @page{ size:A4; margin:14mm 14mm 16mm; }
 }
-.dp-kopf{ display:flex; justify-content:space-between; align-items:flex-end; border-bottom:3px solid #16324a; padding-bottom:8px; margin-bottom:12px; }
+.dp-kopf{ display:flex; justify-content:space-between; align-items:flex-end; border-bottom:3px solid #2f4a1f; padding-bottom:8px; margin-bottom:12px; }
 .dp-kopf h1{ font-size:22px; margin:0; }
 .dp-felder{ display:grid; grid-template-columns:repeat(2, 1fr); gap:6px 24px; margin-bottom:12px; }
 .dp-felder span{ display:inline-block; min-width:150px; border-bottom:1px solid #444; }
@@ -418,10 +418,11 @@ textarea{ resize:vertical; min-height:62px; font-weight:600; }
 .dp-unterschriften{ display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; margin-top:34px; }
 .dp-unterschriften div{ border-top:1px solid #444; padding-top:4px; font-size:11px; color:#555; }
 .zwei-kinder{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
-.zwei-kinder select{ font:800 14px "Nunito",sans-serif; padding:9px 10px; border:2px solid #e2e8ee; border-radius:12px; background:white; color:#16324a; }
-.st-partner{ display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:800; color:#3d7ea6; background:#eef4f8; border-radius:999px; padding:3px 10px; margin-left:4px; }
+.zwei-kinder select{ font:800 14px "Nunito",sans-serif; padding:9px 10px; border:2px solid #e2e8ee; border-radius:12px; background:white; color:#2f4a1f; }
+.st-partner{ display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:800; color:#557428; background:#eef3e6; border-radius:999px; padding:3px 10px; margin-left:4px; }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 
@@ -595,7 +596,7 @@ Bitte hier <strong>keine echten Namen</strong> eintragen — nur ein Kürzel/Cod
                 <?php for ($k = 1; $k <= 8; $k++): ?><option value="<?= $k ?>" <?= $filterKlasse === (string)$k ? "selected" : "" ?>>Klasse <?= $k ?></option><?php endfor; ?>
             </select>
         </form>
-        <div id="verf-bulk-leiste" style="display:none; align-items:center; gap:10px; background:#eef4f8; border-radius:14px; padding:10px 16px; margin-bottom:14px; flex-wrap:wrap;">
+        <div id="verf-bulk-leiste" style="display:none; align-items:center; gap:10px; background:#eef3e6; border-radius:14px; padding:10px 16px; margin-bottom:14px; flex-wrap:wrap;">
             <span id="verf-bulk-anzahl" style="font-weight:800; font-size:13px; color:var(--nacht);"></span>
             <button class="btn klein" onclick="bulkZuweisen()"><i class="fa-solid fa-plus"></i> Ausgewählte zuweisen</button>
             <button class="btn klein" style="background:#999;" onclick="verfAuswahlAufheben()">Auswahl aufheben</button>

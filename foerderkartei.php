@@ -205,7 +205,7 @@ foreach (fkJsonLesen(lt_daten("akten.json")) as $c => $a) if (is_array($a) && !e
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -222,7 +222,7 @@ foreach (fkJsonLesen(lt_daten("akten.json")) as $c => $a) if (is_array($a) && !e
 @font-face{ font-family:"Playwrite DE Grund"; font-style:normal; font-weight:400; font-display:block; src:url("schriften/playwrite-de-grund-400.woff2") format("woff2"); }
 :root{ --ws-schrift:"Playwrite DE Grund", "Andika", sans-serif; }
 html.lt-druckschrift, html.lt-sek{ --ws-schrift:"Andika", sans-serif; }
-:root{ --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4; --text:#1f2d36; --schatten:0 6px 24px rgba(22,50,74,.1); --gruen:#2f8a3d; --rot:#b3382f; }
+:root{ --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --schaum:#f7f4ec; --text:#1f2d36; --schatten:0 6px 24px rgba(47,74,31,.1); --gruen:#2f8a3d; --rot:#b3382f; }
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; line-height:1.5; }
 .wrap{ width:min(1050px,95%); margin:30px auto 70px; }
@@ -269,10 +269,10 @@ table.liste td select{ padding:5px 8px; font-size:13px; }
 .fach.fs1{ background:#fdf0ee; border-color:#efc2bc; }
 .punkte{ display:inline-flex; gap:3px; } .punkte i{ width:10px; height:10px; border-radius:50%; background:#dde5ea; display:inline-block; } .punkte i.an{ background:var(--meer); }
 .sp-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
-.sp-chip{ background:#e3eef8; color:#1d4f86; border-radius:999px; padding:3px 12px; font-size:12px; font-weight:800; }
+.sp-chip{ background:#e8efdd; color:#1d4f86; border-radius:999px; padding:3px 12px; font-size:12px; font-weight:800; }
 .abfrage{ border:3px solid var(--meer); border-radius:20px; padding:22px; text-align:center; background:#f7fbfe; margin-top:14px; }
 .abfrage .gross{ font-family:var(--ws-schrift); font-size:56px; font-weight:700; letter-spacing:2px; margin:10px 0; min-height:80px; }
-.abfrage .verdeckt{ color:transparent; text-shadow:0 0 22px rgba(22,50,74,.55); user-select:none; }
+.abfrage .verdeckt{ color:transparent; text-shadow:0 0 22px rgba(47,74,31,.55); user-select:none; }
 .leer{ color:#9aa5ab; font-weight:700; font-size:14px; padding:10px 0; }
 .diagramme{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 @media (max-width:760px){ .diagramme{ grid-template-columns:1fr; } }
@@ -299,16 +299,16 @@ table.liste td select{ padding:5px 8px; font-size:13px; }
 }
 .db-seite{ font-family:"Nunito",sans-serif; color:#1f2d36; break-after:page; }
 .db-seite:last-child{ break-after:auto; }
-.db-kopf{ display:flex; justify-content:space-between; align-items:flex-end; border-bottom:3px solid #16324a; padding-bottom:8px; margin-bottom:12px; }
-.db-kopf h1{ font-size:24px; margin:0; color:#16324a; }
+.db-kopf{ display:flex; justify-content:space-between; align-items:flex-end; border-bottom:3px solid #2f4a1f; padding-bottom:8px; margin-bottom:12px; }
+.db-kopf h1{ font-size:24px; margin:0; color:#2f4a1f; }
 .db-kopf small{ font-size:12px; color:#4a5866; font-weight:700; }
 .db-felder{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px 16px; font-size:13px; margin-bottom:12px; }
 .db-felder div{ border-bottom:1.5px solid #1f2d36; padding:2px 0; }
 .db-felder b{ font-size:10px; text-transform:uppercase; color:#7c8a94; display:block; }
-.db-seite h2{ font-size:14px; color:#16324a; margin:14px 0 6px; text-transform:uppercase; letter-spacing:.4px; }
+.db-seite h2{ font-size:14px; color:#2f4a1f; margin:14px 0 6px; text-transform:uppercase; letter-spacing:.4px; }
 .db-seite table{ width:100%; border-collapse:collapse; font-size:11.5px; }
 .db-seite th, .db-seite td{ border:1px solid #c9d6e3; padding:4px 6px; text-align:left; vertical-align:top; }
-.db-seite th{ background:#eef4f8; }
+.db-seite th{ background:#eef3e6; }
 .db-diagramme{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 .db-diagramme > div{ border:1px solid #c9d6e3; border-radius:8px; padding:6px; }
 .db-linien div{ border-bottom:1px solid #8fa3b8; height:26px; }
@@ -322,6 +322,7 @@ table.liste td select{ padding:5px 8px; font-size:13px; }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 <script>try { if (localStorage.getItem("lt-ws-schrift") === "druck") document.documentElement.classList.add("lt-druckschrift"); } catch (e){}</script>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 <div class="wrap">
@@ -690,10 +691,10 @@ function diagramm(punkte, einheit, breite = 460, hoehe = 200){
         const w = min + (max - min) * k / 4;
         svg += `<line x1="${L}" x2="${breite - R}" y1="${y(w)}" y2="${y(w)}" stroke="#e6ecf1"/><text x="${L - 6}" y="${y(w) + 4}" font-size="11" text-anchor="end" fill="#7c8a94">${Math.round(w * 10) / 10}</text>`;
     }
-    svg += `<polyline fill="none" stroke="#3d7ea6" stroke-width="3" stroke-linejoin="round" points="${punkte.map((p, i) => `${x(i)},${y(p.y)}`).join(" ")}"/>`;
+    svg += `<polyline fill="none" stroke="#557428" stroke-width="3" stroke-linejoin="round" points="${punkte.map((p, i) => `${x(i)},${y(p.y)}`).join(" ")}"/>`;
     const schritt = Math.max(1, Math.ceil(punkte.length / 8));
     punkte.forEach((p, i) => {
-        svg += `<circle cx="${x(i)}" cy="${y(p.y)}" r="4.5" fill="#16324a"/>`;
+        svg += `<circle cx="${x(i)}" cy="${y(p.y)}" r="4.5" fill="#2f4a1f"/>`;
         if (i % schritt === 0 || i === punkte.length - 1) svg += `<text x="${x(i)}" y="${hoehe - 12}" font-size="10.5" text-anchor="middle" fill="#4a5866">${p.x.slice(8, 10)}.${p.x.slice(5, 7)}.</text>`;
     });
     svg += `<text x="${L}" y="${hoehe - 1}" font-size="10" fill="#9aa5ab">${esc(einheit)}</text></svg>`;

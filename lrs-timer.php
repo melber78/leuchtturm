@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -25,21 +25,21 @@
   Der Stand bleibt beim Neuladen erhalten (wird nur im Browser gemerkt).
 -->
 <style>
-:root{ --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --text:#1f2d36; --grau:#7c8a85; --pf:#3d7ea6; }
+:root{ --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --text:#1f2d36; --grau:#7c8a85; --pf:#557428; }
 *{ box-sizing:border-box; }
 html, body{ height:100%; }
 body{ margin:0; background:linear-gradient(160deg,#fbf7ee,#eaf3f9); color:var(--text); font-family:"Nunito",sans-serif; display:flex; flex-direction:column; user-select:none; -webkit-user-select:none; }
 .kopf{ display:flex; align-items:center; gap:10px; padding:10px 18px; }
-.kopf a, .k{ font:800 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:10px 16px; background:white; color:var(--nacht); cursor:pointer; display:inline-flex; gap:8px; align-items:center; text-decoration:none; box-shadow:0 3px 10px rgba(22,50,74,.08); min-height:44px; }
+.kopf a, .k{ font:800 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:10px 16px; background:white; color:var(--nacht); cursor:pointer; display:inline-flex; gap:8px; align-items:center; text-decoration:none; box-shadow:0 3px 10px rgba(47,74,31,.08); min-height:44px; }
 .k.rund{ width:46px; padding:0; justify-content:center; }
 .kopf h1{ margin:0; font-size:20px; font-weight:900; color:#7c6a4f; }
 .luft{ flex:1; }
-.ende{ font-weight:900; color:var(--nacht); background:white; border-radius:999px; padding:10px 16px; box-shadow:0 3px 10px rgba(22,50,74,.08); font-variant-numeric:tabular-nums; }
+.ende{ font-weight:900; color:var(--nacht); background:white; border-radius:999px; padding:10px 16px; box-shadow:0 3px 10px rgba(47,74,31,.08); font-variant-numeric:tabular-nums; }
 main{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.4vh; padding:0 3vw 2vh; min-height:0; }
 /* großer Ring */
 .ring{ position:relative; width:min(46vh,60vw); aspect-ratio:1; }
 .ring svg{ width:100%; height:100%; transform:rotate(-90deg); }
-.ring .bahn{ fill:none; stroke:rgba(22,50,74,.08); stroke-width:9; }
+.ring .bahn{ fill:none; stroke:rgba(47,74,31,.08); stroke-width:9; }
 .ring .rest{ fill:none; stroke:var(--pf); stroke-width:9; stroke-linecap:round; transition:stroke-dashoffset .4s linear, stroke .4s; }
 .ring-innen{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
 .p-emoji{ font-size:min(9vh,11vw); line-height:1; }
@@ -60,16 +60,16 @@ body.vorbei .hinweis{ cursor:pointer; text-decoration:underline; text-underline-
 .steuer .start.pause{ background:var(--gold); color:var(--nacht); }
 /* Phasen-Leiste */
 .leiste{ width:min(1300px,100%); display:flex; gap:6px; }
-.seg{ position:relative; border-radius:16px; background:white; padding:10px 8px 12px; text-align:center; cursor:pointer; box-shadow:0 3px 10px rgba(22,50,74,.06); overflow:hidden; min-width:0; border:3px solid transparent; transition:.2s; }
+.seg{ position:relative; border-radius:16px; background:white; padding:10px 8px 12px; text-align:center; cursor:pointer; box-shadow:0 3px 10px rgba(47,74,31,.06); overflow:hidden; min-width:0; border:3px solid transparent; transition:.2s; }
 .seg .voll{ position:absolute; left:0; top:0; bottom:0; background:var(--sf); opacity:.16; width:0; }
 .seg b{ position:relative; display:block; font-size:clamp(12px,1.3vw,18px); font-weight:900; color:var(--sf); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .seg span{ position:relative; display:block; font-size:clamp(18px,2vw,30px); }
 .seg small{ position:relative; display:block; font-weight:800; color:var(--grau); font-size:clamp(11px,1.1vw,15px); font-variant-numeric:tabular-nums; }
-.seg.an{ border-color:var(--sf); transform:translateY(-4px); box-shadow:0 8px 20px rgba(22,50,74,.14); }
+.seg.an{ border-color:var(--sf); transform:translateY(-4px); box-shadow:0 8px 20px rgba(47,74,31,.14); }
 .seg.fertig{ opacity:.55; } .seg.fertig b::after{ content:" ✓"; }
 .gesamt{ font-weight:800; color:var(--grau); font-size:15px; font-variant-numeric:tabular-nums; }
 /* Einstellungen */
-#einst{ position:fixed; inset:0; background:rgba(22,50,74,.45); display:none; align-items:center; justify-content:center; z-index:10; }
+#einst{ position:fixed; inset:0; background:rgba(47,74,31,.45); display:none; align-items:center; justify-content:center; z-index:10; }
 #einst.an{ display:flex; }
 .dialog{ background:white; border-radius:24px; padding:22px 26px; width:min(640px,94vw); max-height:92vh; overflow:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); user-select:text; }
 .dialog h2{ margin:0 0 12px; font-size:24px; font-weight:900; color:var(--nacht); }
@@ -88,6 +88,7 @@ body.vorbei .hinweis{ cursor:pointer; text-decoration:underline; text-underline-
 .summe.falsch{ color:#c0392b; }
 @media (max-width:700px){ .leiste{ flex-wrap:wrap; } .seg{ flex:1 1 30% !important; } .kopf h1{ display:none; } }
 </style>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 <div class="kopf">
@@ -141,7 +142,7 @@ body.vorbei .hinweis{ cursor:pointer; text-decoration:underline; text-underline-
 const ARTEN = {
     "Ankommen":          { e: "👋", f: "#e09a2c", t: "Begrüßen, kurz erzählen, Lernbox" , g: 3 },
     "Aufmerksamkeit":    { e: "🎯", f: "#e2574c", t: "Konzentration wecken", g: 7 },
-    "Funktionstraining": { e: "🧩", f: "#3d7ea6", t: "Sinneswahrnehmung üben", g: 14 },
+    "Funktionstraining": { e: "🧩", f: "#557428", t: "Sinneswahrnehmung üben", g: 14 },
     "Symptomtraining":   { e: "✏️", f: "#2e9e5b", t: "Lesen und Schreiben üben", g: 15 },
     "Abschluss":         { e: "⭐", f: "#8e44ad", t: "Rückblick, Stempel, kleines Spiel", g: 5 },
     "Bewegungspause":    { e: "🤸", f: "#16a085", t: "Kurz bewegen, durchatmen", g: 2 },

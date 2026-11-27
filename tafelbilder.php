@@ -20,7 +20,7 @@ if ($TAFEL_APP): ?><base href="../">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="<?= $TAFEL_APP ? $TB_APPDIR . "manifest.php" . ($TB_B ? "?b=" . $TB_B : "") : "manifest.php" ?>">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="<?= $TAFEL_APP ? $TB_ICON : "app-icon-192.png" ?>">
 <link rel="icon" type="image/png" href="<?= $TAFEL_APP ? $TB_ICON : "app-icon-192.png" ?>">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -40,7 +40,7 @@ if ($TAFEL_APP): ?><base href="../">
   Mit dem Tafelstift wird direkt auf der Seite geschrieben (eigene Zeichenebene).
 -->
 <style>
-:root{ --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4; --text:#1f2d36; --grau:#7c8a85; --schatten:0 6px 24px rgba(22,50,74,.1); }
+:root{ --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --schaum:#f7f4ec; --text:#1f2d36; --grau:#7c8a85; --schatten:0 6px 24px rgba(47,74,31,.1); }
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; }
 /* Übersicht */
@@ -55,8 +55,8 @@ body{ background:#f6f2ea; }
 .tb-inst-box{ max-width:720px; }
 .tb-inst-schritte{ font-size:16px; line-height:1.5; padding-left:22px; }
 .tb-inst-neu{ display:flex; gap:8px; flex-wrap:wrap; } .tb-inst-neu input{ flex:1; min-width:200px; font:700 16px "Nunito",sans-serif; padding:10px 12px; border:2px solid #d8dee5; border-radius:12px; }
-.tb-inst-neu button, .tb-inst-z button{ font:900 15px "Nunito",sans-serif; border:0; border-radius:12px; padding:10px 16px; background:#16324a; color:#fff; cursor:pointer; }
-.tb-inst-z button{ background:#f1ece2; color:#16324a; padding:6px 12px; }
+.tb-inst-neu button, .tb-inst-z button{ font:900 15px "Nunito",sans-serif; border:0; border-radius:12px; padding:10px 16px; background:#2f4a1f; color:#fff; cursor:pointer; }
+.tb-inst-z button{ background:#f1ece2; color:#2f4a1f; padding:6px 12px; }
 .tb-inst-code{ background:#fff8e1; border:2px dashed #e0b84d; border-radius:14px; padding:12px 16px; margin-top:12px; display:flex; flex-direction:column; gap:6px; font-weight:700; }
 .tb-inst-code b{ display:block; } .tb-inst-code .adr{ font-size:20px; color:#1d5fa8; user-select:all; } .tb-inst-code .code{ font:900 34px monospace; letter-spacing:.12em; user-select:all; }
 #tbInstListe h3{ margin:16px 0 6px; font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:#7c8a85; }
@@ -76,15 +76,15 @@ body{ background:#f6f2ea; }
 .k-kurs{ background:linear-gradient(#f1f7fd,#fdfbf6); padding:18px 26px; }
 .k-kurs #kachelBild{ width:100%; height:100%; }
 .k-morgen{ background:linear-gradient(135deg,#fff3d1,#e6f2fb); gap:10px; flex-direction:column; }
-.k-morgen .mini-gruss{ font:900 22px "Nunito",sans-serif; color:#16324a; display:flex; align-items:center; gap:8px; }
+.k-morgen .mini-gruss{ font:900 22px "Nunito",sans-serif; color:#2f4a1f; display:flex; align-items:center; gap:8px; }
 .k-morgen .mini-gruss span{ font-size:30px; }
 .k-morgen .mini-raster{ display:flex; gap:8px; }
 .k-pause{ background:linear-gradient(135deg,#fde8e8,#fff3d1); gap:10px; flex-direction:column; }
-.k-pause .mini-pause{ font:900 22px "Nunito",sans-serif; color:#16324a; display:flex; align-items:center; gap:8px; }
+.k-pause .mini-pause{ font:900 22px "Nunito",sans-serif; color:#2f4a1f; display:flex; align-items:center; gap:8px; }
 .k-pause .mini-pause span{ font-size:30px; }
 .k-pause .mini-raster{ display:flex; gap:8px; }
-.k-pause .mini-raster i{ width:52px; height:46px; background:white; border-radius:10px; box-shadow:0 3px 8px rgba(22,50,74,.08); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:22px; }
-.k-morgen .mini-raster i{ width:62px; height:46px; background:white; border-radius:10px; box-shadow:0 3px 8px rgba(22,50,74,.08); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:22px; }
+.k-pause .mini-raster i{ width:52px; height:46px; background:white; border-radius:10px; box-shadow:0 3px 8px rgba(47,74,31,.08); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:22px; }
+.k-morgen .mini-raster i{ width:62px; height:46px; background:white; border-radius:10px; box-shadow:0 3px 8px rgba(47,74,31,.08); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:22px; }
 .k-wald{ background:#9fd6f5; }
 .k-wald .mini-wald{ position:absolute; inset:0; width:100%; height:100%; }
 .k-wald .tiere{ position:absolute; bottom:8%; font-size:34px; display:flex; gap:26px; }
@@ -122,7 +122,7 @@ body{ background:#f6f2ea; }
 .a-baum .szene{ background:radial-gradient(circle at 50% 70%, #5a3a52, #1c1222); } .a-baum .wann, .a-baum .los{ background:#2f6a50; color:#fff; }
 .a-ballon .szene{ background:linear-gradient(#5aa9e6,#d8f0ff); } .a-ballon .wann, .a-ballon .los{ background:#d9574a; color:#fff; }
 .a-burg .szene{ background:linear-gradient(#8fd0f5 0 62%, #8fc86f 62%); } .a-burg .wann, .a-burg .los{ background:#7a5a3a; color:#fff; }
-.a-live .szene{ background:linear-gradient(#bfe3f7 0 58%, #9fd08a 58%); } .a-live .wann{ background:#e3f2fb; color:#1f5f86; } .a-live .los{ background:#3d7ea6; }
+.a-live .szene{ background:linear-gradient(#bfe3f7 0 58%, #9fd08a 58%); } .a-live .wann{ background:#e3f2fb; color:#1f5f86; } .a-live .los{ background:#557428; }
 /* Tafel-Ansicht (Vollbild) */
 #tafel{ position:fixed; inset:0; display:none; flex-direction:column; background:radial-gradient(circle at 20% 0%, #fbf7ee, #efe8da); z-index:10; user-select:none; -webkit-user-select:none; }
 #tafel.an{ display:flex; }
@@ -134,9 +134,9 @@ body{ background:#f6f2ea; }
 .tb-k{ font:800 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:9px 15px; background:#f1ece2; color:var(--nacht); cursor:pointer; display:inline-flex; gap:7px; align-items:center; white-space:nowrap; min-height:46px; transition:.15s; }
 .tb-k:hover{ background:#e7dfcf; }
 #tafel.gruen .tb-k{ background:rgba(255,255,255,.12); color:#fff7e6; }
-.tb-k.an{ background:var(--gold) !important; color:#16324a !important; }
+.tb-k.an{ background:var(--gold) !important; color:#2f4a1f !important; }
 .tb-k.rund{ width:46px; padding:0; justify-content:center; }
-.tb-buchstabe{ font:900 30px "Nunito",sans-serif; min-width:86px; height:56px; border-radius:18px; border:0; cursor:pointer; color:white; background:linear-gradient(135deg,#3d7ea6,#16324a); box-shadow:0 6px 16px rgba(22,50,74,.25); letter-spacing:.04em; }
+.tb-buchstabe{ font:900 30px "Nunito",sans-serif; min-width:86px; height:56px; border-radius:18px; border:0; cursor:pointer; color:white; background:linear-gradient(135deg,#557428,#2f4a1f); box-shadow:0 6px 16px rgba(47,74,31,.25); letter-spacing:.04em; }
 .tb-luft{ flex:1; }
 #buehne{ position:relative; flex:1; overflow:hidden; }
 #blatt{ position:absolute; left:18px; right:18px; top:14px; bottom:96px; background:#fffdf8; border-radius:22px; box-shadow:0 10px 30px rgba(80,60,20,.12), 0 0 0 1px rgba(80,60,20,.06); overflow:hidden; }
@@ -214,20 +214,20 @@ body{ background:#f6f2ea; }
 .mg-titel{ font-weight:900; color:#7c6a4f; font-size:17px; }
 #mgInhalt{ flex:1; display:flex; flex-direction:column; padding:0 1.6vw 1.6vh; min-height:0; }
 .mg-gruss{ display:flex; align-items:center; gap:1.2vw; margin:0 0 1.4vh; }
-.mg-gruss h1{ flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:0; font:900 clamp(26px,min(4.2vw,7vh),76px)/1.1 "Nunito",sans-serif; color:#16324a; }
+.mg-gruss h1{ flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:0; font:900 clamp(26px,min(4.2vw,7vh),76px)/1.1 "Nunito",sans-serif; color:#2f4a1f; }
 .mg-sonne{ font-size:clamp(34px,min(5vw,8vh),90px); display:inline-block; }
 .mg-sonne.dreht{ animation:mgSonne 12s linear infinite; }
 .mg-warnung{ background:#fdecea; color:#a3261c; font-weight:900; border-radius:14px; padding:8px 14px; margin-bottom:8px; }
 .mg-info-box{ background:#e9f7ee; color:#1d5c38; border-radius:14px; padding:12px 16px; font-weight:700; margin-bottom:8px; }
 .mg-tadr{ font:800 20px "Nunito",sans-serif; color:#1d5fa8; margin:4px 0 8px; user-select:all; }
-.mg-tcode{ font:900 34px/1.2 monospace; letter-spacing:.12em; color:#16324a; background:#fff8e1; border:2px dashed #e0b84d; border-radius:12px; display:inline-block; padding:4px 16px; margin:4px 0 8px; user-select:all; }
+.mg-tcode{ font:900 34px/1.2 monospace; letter-spacing:.12em; color:#2f4a1f; background:#fff8e1; border:2px dashed #e0b84d; border-radius:12px; display:inline-block; padding:4px 16px; margin:4px 0 8px; user-select:all; }
 .mg-anl{ border:2px solid #e3e9ef; border-radius:12px; padding:10px 14px; margin:8px 0; font-size:16px; line-height:1.45; } .mg-anl.an{ border-color:#2e9e5b; background:#e9f7ee; }
 .mg-tafellink{ background:#fff; border-radius:12px; padding:10px 14px; margin-top:8px; font-weight:600; } .mg-tafellink ol{ margin:6px 0; padding-left:20px; } .mg-tafellink li{ margin-bottom:6px; }
 @keyframes mgSonne{ to{ transform:rotate(360deg); } }
-.mg-uhr{ font:900 clamp(24px,min(3.2vw,5.5vh),58px) "Nunito",sans-serif; color:#16324a; background:white; border-radius:20px; padding:.15em .6em; box-shadow:0 6px 18px rgba(22,50,74,.1); font-variant-numeric:tabular-nums; }
+.mg-uhr{ font:900 clamp(24px,min(3.2vw,5.5vh),58px) "Nunito",sans-serif; color:#2f4a1f; background:white; border-radius:20px; padding:.15em .6em; box-shadow:0 6px 18px rgba(47,74,31,.1); font-variant-numeric:tabular-nums; }
 .mg-raster{ flex:1; display:grid; grid-template-columns:minmax(0,27fr) minmax(0,40fr) minmax(0,33fr); gap:1.4vw; min-height:0; }
 .mg-spalte{ display:flex; flex-direction:column; gap:1.4vw; min-height:0; }
-.mg-karte{ background:white; border-radius:26px; box-shadow:0 10px 28px rgba(22,50,74,.09); padding:1.6vh 1.3vw; display:flex; flex-direction:column; min-height:0; overflow:hidden; position:relative; }
+.mg-karte{ background:white; border-radius:26px; box-shadow:0 10px 28px rgba(47,74,31,.09); padding:1.6vh 1.3vw; display:flex; flex-direction:column; min-height:0; overflow:hidden; position:relative; }
 .mg-karte h2{ margin:0 0 .8vh; font:900 clamp(15px,min(1.5vw,2.6vh),28px) "Nunito",sans-serif; text-transform:uppercase; letter-spacing:.05em; color:#8a7a60; }
 .mg-spalte .mg-karte{ flex:1; }
 /* Datum */
@@ -235,7 +235,7 @@ body{ background:#f6f2ea; }
 .mg-kopfzeile{ display:flex; align-items:center; justify-content:space-between; }
 .mg-pfeil{ border:0; background:#f3efe6; border-radius:50%; width:44px; height:44px; font:900 26px/1 "Nunito",sans-serif; color:#8a7a60; cursor:pointer; }
 .mg-wtag{ font:900 clamp(30px,min(4.4vw,7.4vh),84px)/1.05 "Nunito",sans-serif; color:var(--tf); }
-.mg-tagzahl{ font:800 clamp(18px,min(2.2vw,3.8vh),42px) "Nunito",sans-serif; color:#16324a; margin-top:.6vh; }
+.mg-tagzahl{ font:800 clamp(18px,min(2.2vw,3.8vh),42px) "Nunito",sans-serif; color:#2f4a1f; margin-top:.6vh; }
 .mg-tagzahl b{ font-size:1.5em; }
 .mg-info{ margin-top:.8vh; font-weight:800; color:#7c8a85; font-size:clamp(13px,min(1.2vw,2vh),22px); }
 .mg-woche{ display:flex; justify-content:center; gap:.4vw; margin-top:1vh; }
@@ -254,7 +254,7 @@ body{ background:#f6f2ea; }
 .mg-wetter.kompakt .mg-wtext{ align-self:end; } .mg-wetter.kompakt .mg-kleidung{ margin-top:.4vh; }
 .mg-bdw-bild{ display:flex; flex-direction:column; align-items:center; }
 .mg-bdw-bild span{ font-size:clamp(34px,min(4.2vw,7vh),84px); line-height:1.1; }
-.mg-bdw-bild b{ font:800 clamp(15px,min(1.6vw,2.7vh),30px) "Nunito",sans-serif; color:#16324a; }
+.mg-bdw-bild b{ font:800 clamp(15px,min(1.6vw,2.7vh),30px) "Nunito",sans-serif; color:#2f4a1f; }
 .mg-bdw-bild em{ font-style:normal; color:#e2574c; text-decoration:underline; text-decoration-thickness:3px; text-underline-offset:3px; }
 .mg-spalte .mg-datum{ flex:0 1 auto; }
 .mg-bdw-teil{ display:flex; align-items:center; gap:.8vw; cursor:pointer; }
@@ -291,10 +291,10 @@ body{ background:#f6f2ea; }
 .mg-sdw{ display:flex; align-items:center; gap:.6vw; background:linear-gradient(135deg,#fff3c4,#ffe08a); border-radius:22px; padding:.4em 1em .4em .6em; box-shadow:0 6px 18px rgba(200,140,0,.18); }
 .mg-sdw span{ font-size:clamp(26px,min(3vw,5vh),54px); animation:mgSonne 8s linear infinite; display:inline-block; }
 .mg-sdw small{ display:block; font:800 clamp(11px,min(1vw,1.7vh),18px) "Nunito",sans-serif; color:#8a5a00; text-transform:uppercase; letter-spacing:.05em; }
-.mg-sdw b{ display:block; font:900 clamp(20px,min(2.4vw,4vh),44px)/1.05 "Nunito",sans-serif; color:#16324a; }
+.mg-sdw b{ display:block; font:900 clamp(20px,min(2.4vw,4vh),44px)/1.05 "Nunito",sans-serif; color:#2f4a1f; }
 .mg-schluss{ margin-top:1vh; border-top:2px dashed #eee6d6; padding-top:.8vh; display:flex; flex-direction:column; gap:.6vh; }
 .mg-schluss h3{ margin:0; font:900 clamp(13px,min(1.2vw,2vh),22px) "Nunito",sans-serif; text-transform:uppercase; letter-spacing:.05em; color:#c0392b; }
-.mg-check{ display:flex; align-items:center; gap:.6vw; text-align:left; border:3px solid #f0ebe0; background:#fffdf8; border-radius:14px; padding:.5vh .7vw; font:800 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#16324a; cursor:pointer; }
+.mg-check{ display:flex; align-items:center; gap:.6vw; text-align:left; border:3px solid #f0ebe0; background:#fffdf8; border-radius:14px; padding:.5vh .7vw; font:800 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#2f4a1f; cursor:pointer; }
 .mg-check span{ font-size:1.4em; }
 .mg-check.ok{ border-color:#2e9e5b; background:#e9f7ee; text-decoration:line-through; color:#5d7a68; }
 .mg-dienste{ flex:none !important; overflow:visible; }   /* Dienste immer ganz sichtbar – „Das brauche ich“ nimmt den Rest */
@@ -303,10 +303,10 @@ body{ background:#f6f2ea; }
 .mg-dienst{ display:flex; align-items:center; gap:.5vw; background:#f8f6f1; border-radius:14px; padding:.4vh .6vw; min-width:0; }
 .mg-dienst span{ font-size:clamp(20px,min(2.2vw,3.6vh),40px); }
 .mg-dienst small{ display:block; font:800 clamp(10px,min(.95vw,1.6vh),17px) "Nunito",sans-serif; color:#8a7a60; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.mg-dienst b{ display:block; font:900 clamp(13px,min(1.35vw,2.3vh),25px) "Nunito",sans-serif; color:#16324a; line-height:1.15; overflow-wrap:anywhere; }
+.mg-dienst b{ display:block; font:900 clamp(13px,min(1.35vw,2.3vh),25px) "Nunito",sans-serif; color:#2f4a1f; line-height:1.15; overflow-wrap:anywhere; }
 .mg-dienst div{ min-width:0; }
 .mg-achtung.weg{ display:none; }
-.mg-schalter{ display:flex !important; align-items:center; gap:8px; text-transform:none !important; letter-spacing:0 !important; font-size:15px !important; color:#16324a !important; cursor:pointer; }
+.mg-schalter{ display:flex !important; align-items:center; gap:8px; text-transform:none !important; letter-spacing:0 !important; font-size:15px !important; color:#2f4a1f !important; cursor:pointer; }
 .mg-schalter input{ width:20px !important; height:20px; }
 #morgen.vollbild .mg-leiste, #morgen.vollbild [data-aendern]{ display:none; }
 #morgen.vollbild #mgInhalt{ padding-top:1.6vh; }
@@ -332,9 +332,9 @@ body{ background:#f6f2ea; }
 .mg-wetter{ text-align:center; cursor:pointer; align-items:center; justify-content:center; }
 .mg-wetter h2{ align-self:stretch; text-align:left; }
 .mg-wbild{ font-size:clamp(46px,min(6.5vw,11vh),130px); line-height:1.1; }
-.mg-wtext{ font:900 clamp(18px,min(2vw,3.4vh),38px) "Nunito",sans-serif; color:#16324a; }
-.mg-temp{ font:800 clamp(15px,min(1.5vw,2.6vh),28px) "Nunito",sans-serif; color:#3d7ea6; margin-top:.4vh; }
-.mg-kleidung{ margin-top:.8vh; background:#eef6fb; border-radius:999px; padding:.3em .9em; font:800 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#16324a; }
+.mg-wtext{ font:900 clamp(18px,min(2vw,3.4vh),38px) "Nunito",sans-serif; color:#2f4a1f; }
+.mg-temp{ font:800 clamp(15px,min(1.5vw,2.6vh),28px) "Nunito",sans-serif; color:#557428; margin-top:.4vh; }
+.mg-kleidung{ margin-top:.8vh; background:#eef6fb; border-radius:999px; padding:.3em .9em; font:800 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#2f4a1f; }
 .mg-tipp{ color:#9aa5ad; font-weight:700; font-size:14px; }
 /* Stundenplan */
 .mg-stunden{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.9vh; flex:1; min-height:0; justify-content:flex-start; }
@@ -342,7 +342,7 @@ body{ background:#f6f2ea; }
 .mg-nr{ font:900 clamp(15px,min(1.5vw,2.6vh),28px) "Nunito",sans-serif; color:#9aa5ad; width:1.4em; text-align:center; }
 .mg-fe{ font-size:clamp(26px,min(3vw,5vh),56px); line-height:1; }
 .mg-fach{ flex:1; display:flex; flex-direction:column; }
-.mg-fach b{ font:900 clamp(18px,min(2.1vw,3.6vh),40px)/1.1 "Nunito",sans-serif; color:#16324a; }
+.mg-fach b{ font:900 clamp(18px,min(2.1vw,3.6vh),40px)/1.1 "Nunito",sans-serif; color:#2f4a1f; }
 .mg-fach small{ font:700 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#7c8a85; }
 .mg-zeit{ font:800 clamp(13px,min(1.3vw,2.2vh),24px) "Nunito",sans-serif; color:#7c8a85; font-variant-numeric:tabular-nums; }
 .mg-stunden li.jetzt{ background:white; box-shadow:0 0 0 4px var(--ff), 0 8px 20px rgba(0,0,0,.12); transform:scale(1.02); }
@@ -356,7 +356,7 @@ body{ background:#f6f2ea; }
 .mg-dinge{ display:grid; grid-template-columns:repeat(auto-fill,minmax(clamp(80px,8.5vw,160px),1fr)); gap:.8vw; align-content:start; }
 .mg-ding{ border:3px solid #f0ebe0; background:#fffdf8; border-radius:18px; padding:.6vh .3vw; display:flex; flex-direction:column; align-items:center; gap:.2vh; cursor:pointer; font-family:"Nunito",sans-serif; position:relative; }
 .mg-ding span{ font-size:clamp(28px,min(3.2vw,5.4vh),60px); line-height:1.15; }
-.mg-ding b{ font:800 clamp(12px,min(1.15vw,2vh),22px) "Nunito",sans-serif; color:#16324a; }
+.mg-ding b{ font:800 clamp(12px,min(1.15vw,2vh),22px) "Nunito",sans-serif; color:#2f4a1f; }
 .mg-ding.ok{ border-color:#2e9e5b; background:#e9f7ee; }
 .mg-ding.ok::after{ content:"✓"; position:absolute; top:-8px; right:-6px; background:#2e9e5b; color:white; border-radius:50%; width:28px; height:28px; font:900 18px/28px "Nunito",sans-serif; }
 /* Beachten */
@@ -367,16 +367,16 @@ body{ background:#f6f2ea; }
 .mg-dinge.viele{ grid-template-columns:repeat(4,minmax(0,1fr)); gap:.5vw; } .mg-dinge.viele .mg-ding span{ font-size:clamp(22px,min(2.4vw,4vh),46px); } .mg-dinge.viele .mg-ding b{ font-size:clamp(11px,min(.95vw,1.7vh),18px); }
 .mg-dinge.sehr-viele{ grid-template-columns:repeat(5,minmax(0,1fr)); gap:.4vw; } .mg-dinge.sehr-viele .mg-ding span{ font-size:clamp(18px,min(2vw,3.3vh),40px); } .mg-dinge.sehr-viele .mg-ding b{ font-size:clamp(10px,min(.85vw,1.5vh),16px); }
 .mg-hinweise{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.9vh; }
-.mg-hinweise li{ display:flex; gap:.7vw; align-items:center; background:white; border-radius:16px; padding:.7vh .8vw; font:800 clamp(15px,min(1.6vw,2.7vh),30px)/1.2 "Nunito",sans-serif; color:#16324a; }
+.mg-hinweise li{ display:flex; gap:.7vw; align-items:center; background:white; border-radius:16px; padding:.7vh .8vw; font:800 clamp(15px,min(1.6vw,2.7vh),30px)/1.2 "Nunito",sans-serif; color:#2f4a1f; }
 .mg-hinweise li span{ font-size:1.5em; }
 .mg-leer{ margin:auto; text-align:center; font:800 clamp(16px,min(1.6vw,2.7vh),30px)/1.4 "Nunito",sans-serif; color:#9aa5ad; }
 .mg-leer.klein{ font-size:clamp(14px,min(1.3vw,2.2vh),24px); }
 /* Dialoge und Editor */
-.mg-k{ font:800 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:9px 16px; background:#16324a; color:white; cursor:pointer; min-height:42px; }
-.mg-k.hell{ background:#f1ece2; color:#16324a; } .mg-k.rot{ background:#fdecea; color:#a3261c; margin-top:16px; }
-.mg-overlay{ position:absolute; inset:0; background:rgba(22,50,74,.45); display:flex; align-items:center; justify-content:center; z-index:20; }
+.mg-k{ font:800 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:9px 16px; background:#2f4a1f; color:white; cursor:pointer; min-height:42px; }
+.mg-k.hell{ background:#f1ece2; color:#2f4a1f; } .mg-k.rot{ background:#fdecea; color:#a3261c; margin-top:16px; }
+.mg-overlay{ position:absolute; inset:0; background:rgba(47,74,31,.45); display:flex; align-items:center; justify-content:center; z-index:20; }
 .mg-dialog{ background:white; border-radius:26px; padding:24px 28px; max-width:min(900px,94vw); box-shadow:0 20px 60px rgba(0,0,0,.3); }
-.mg-dialog h2{ margin:0 0 14px; font:900 28px "Nunito",sans-serif; color:#16324a; }
+.mg-dialog h2{ margin:0 0 14px; font:900 28px "Nunito",sans-serif; color:#2f4a1f; }
 .mg-wwahl{ display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:14px; }
 .mg-wwahl button{ border:3px solid #eef1f4; background:#fafcfd; border-radius:18px; padding:10px 6px; font:800 16px "Nunito",sans-serif; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px; }
 .mg-wwahl button span{ font-size:48px; }
@@ -386,14 +386,14 @@ body{ background:#f6f2ea; }
 .mg-ed-kopf{ display:flex; gap:10px; align-items:center; padding:12px 18px; background:white; box-shadow:0 4px 14px rgba(0,0,0,.06); flex-wrap:wrap; }
 .mg-reiter{ display:flex; gap:6px; flex-wrap:wrap; flex:1; }
 .mg-reiter button{ border:0; background:#f1ece2; border-radius:999px; padding:10px 16px; font:800 15px "Nunito",sans-serif; cursor:pointer; }
-.mg-reiter button.an{ background:#16324a; color:white; }
+.mg-reiter button.an{ background:#2f4a1f; color:white; }
 .mg-status{ font-weight:800; color:#2e9e5b; font-size:14px; }
 .mg-ed-inhalt{ flex:1; overflow:auto; padding:18px 22px 40px; max-width:1300px; width:100%; margin:0 auto; }
 .mg-ed-inhalt label{ display:block; font-weight:900; font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:#8a7a60; margin:16px 0 6px; }
 .mg-ed-inhalt input, .mg-ed-inhalt select{ font:700 15px "Nunito",sans-serif; padding:8px 10px; border:2px solid #e2ddd2; border-radius:10px; background:white; width:100%; }
 .mg-felder{ display:grid; grid-template-columns:1fr 1fr; gap:4px 18px; }
 .mg-chip{ border:2px solid #e2ddd2; background:white; border-radius:999px; padding:8px 16px; font:800 15px "Nunito",sans-serif; cursor:pointer; }
-.mg-chip.an{ background:#16324a; color:white; border-color:#16324a; }
+.mg-chip.an{ background:#2f4a1f; color:white; border-color:#2f4a1f; }
 .mg-hilfe{ color:#7c8a85; font-weight:700; font-size:14px; }
 .mg-tabelle{ overflow-x:auto; }
 .mg-tabelle table{ border-collapse:separate; border-spacing:6px; width:100%; }
@@ -407,7 +407,7 @@ body{ background:#f6f2ea; }
 .mg-mat b{ display:block; margin-bottom:6px; }
 .mg-mini{ border:2px solid #eee; background:white; border-radius:12px; width:78px; min-height:68px; margin:2px; cursor:pointer; opacity:.5; display:inline-flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:4px 2px; vertical-align:top; }
 .mg-mini span{ font-size:24px; line-height:1; height:28px; display:flex; align-items:center; }
-.mg-mini small{ font:800 10.5px/1.1 "Nunito",sans-serif; color:#16324a; text-align:center; }
+.mg-mini small{ font:800 10.5px/1.1 "Nunito",sans-serif; color:#2f4a1f; text-align:center; }
 .mg-mini .mg-ordner, .mg-vorschau .mg-ordner{ width:30px; height:26px; }
 .mg-ding .mg-ordner{ width:1.15em; height:1em; }
 .mg-chips{ display:flex; flex-wrap:wrap; gap:2px; }
@@ -416,7 +416,7 @@ body{ background:#f6f2ea; }
 .mg-eintrag{ background:white; border-radius:12px; padding:6px 10px; }
 .mg-eintrag input[type=color]{ width:48px; height:38px; padding:2px; }
 .mg-vorschau{ font-size:26px; width:40px; text-align:center; }
-.mg-farbwahl{ display:flex !important; align-items:center; gap:4px; margin:0 !important; text-transform:none !important; letter-spacing:0 !important; font-size:14px !important; color:#16324a !important; }
+.mg-farbwahl{ display:flex !important; align-items:center; gap:4px; margin:0 !important; text-transform:none !important; letter-spacing:0 !important; font-size:14px !important; color:#2f4a1f !important; }
 .mg-farbwahl input{ width:auto !important; }
 .mg-mini.an{ opacity:1; border-color:#2e9e5b; background:#e9f7ee; }
 .mg-neuhinweis{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:white; padding:12px; border-radius:14px; }
@@ -490,7 +490,7 @@ body{ background:#f6f2ea; }
 .mg-dialog.gross{ max-width:min(1200px,96vw); width:96vw; }
 .mg-sg h2{ font-size:clamp(28px,4vw,56px) !important; text-align:center; }
 .mg-sg-liste{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; margin-bottom:16px; }
-.mg-sg-punkt{ display:flex; align-items:center; gap:14px; border:4px solid #e9eef2; background:#fff; border-radius:22px; padding:16px 18px; font:900 clamp(20px,2.3vw,36px) "Nunito",sans-serif; color:#16324a; cursor:pointer; text-align:left; }
+.mg-sg-punkt{ display:flex; align-items:center; gap:14px; border:4px solid #e9eef2; background:#fff; border-radius:22px; padding:16px 18px; font:900 clamp(20px,2.3vw,36px) "Nunito",sans-serif; color:#2f4a1f; cursor:pointer; text-align:left; }
 .mg-sg-punkt span{ font-size:1.6em; flex:none; }
 .mg-sg-punkt b{ flex:1; min-width:0; overflow-wrap:anywhere; hyphens:auto; }
 .mg-sg-punkt i{ flex:none; font-style:normal; width:1.3em; height:1.3em; border-radius:50%; border:3px solid #cfd8de; display:flex; align-items:center; justify-content:center; color:transparent; }
@@ -508,34 +508,34 @@ body{ background:#f6f2ea; }
 .mg-dialog .mg-farbwahl{ display:inline-flex; align-items:center; gap:6px; font:700 14px "Nunito",sans-serif; }
 
 .mg-iconbtn{ width:64px; height:52px; border:2px solid #e3e8ec; background:white; border-radius:14px; font-size:28px; cursor:pointer; flex:none; }
-.mg-iconbtn:hover{ border-color:#3d7ea6; }
+.mg-iconbtn:hover{ border-color:#557428; }
 .mg-iw-reiter{ margin-bottom:10px; }
 .mg-iw{ display:grid; grid-template-columns:repeat(auto-fill,minmax(52px,1fr)); gap:6px; max-height:44vh; overflow:auto; }
 .mg-iw button{ font-size:30px; height:54px; border:2px solid transparent; background:#f7f8f9; border-radius:12px; cursor:pointer; }
-.mg-iw button:hover, .mg-iw button.an{ border-color:#3d7ea6; background:#e7f1fb; }
-.mg-mini-neu{ opacity:1 !important; border-style:dashed !important; color:#3d7ea6; }
+.mg-iw button:hover, .mg-iw button.an{ border-color:#557428; background:#e7f1fb; }
+.mg-mini-neu{ opacity:1 !important; border-style:dashed !important; color:#557428; }
 .mg-mini-neu span{ font-size:26px; font-weight:900; }
 .mg-wrap{ flex-wrap:wrap; }
 .k-start{ background:linear-gradient(135deg,#e6f7ec,#fff3d1); gap:10px; flex-direction:column; }
-.k-start .mini-pause{ font:900 22px "Nunito",sans-serif; color:#16324a; display:flex; align-items:center; gap:8px; }
+.k-start .mini-pause{ font:900 22px "Nunito",sans-serif; color:#2f4a1f; display:flex; align-items:center; gap:8px; }
 .k-start .mini-pause span{ font-size:30px; }
 .k-start .mini-raster{ display:flex; gap:8px; }
-.k-start .mini-raster i{ width:52px; height:46px; background:white; border-radius:10px; box-shadow:0 3px 8px rgba(22,50,74,.08); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:22px; }
+.k-start .mini-raster i{ width:52px; height:46px; background:white; border-radius:10px; box-shadow:0 3px 8px rgba(47,74,31,.08); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:22px; }
 .k-ee{ background:linear-gradient(135deg,#fff3d1,#e2f0ff); }
 .tb-gruppe{ grid-column:1/-1; font:900 14px "Nunito",sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#8a7a60; margin:6px 0 -8px 4px; }
-.tb-gruppe:not(.klein){ font-size:19px; color:#16324a; margin-top:22px; padding-bottom:6px; border-bottom:3px solid #e5dccb; }
+.tb-gruppe:not(.klein){ font-size:19px; color:#2f4a1f; margin-top:22px; padding-bottom:6px; border-bottom:3px solid #e5dccb; }
 .tb-gruppe.klein{ font-size:12.5px; margin-top:4px; }
 .k-br{ background:linear-gradient(135deg,#e7eef6,#f4f6f9); }
 .mini-br{ display:flex; align-items:center; gap:22px; }
 .mini-br svg{ width:104px; height:104px; }
-.mini-bz{ display:flex; align-items:center; gap:4px; font:900 46px "Nunito",sans-serif; color:#16324a; }
+.mini-bz{ display:flex; align-items:center; gap:4px; font:900 46px "Nunito",sans-serif; color:#2f4a1f; }
 .mini-bz > span{ display:flex; flex-direction:column; align-items:center; font-size:30px; line-height:1.05; }
 .mini-bz i{ font-style:normal; padding:0 4px; }
-.mini-bz i:first-child{ border-bottom:4px solid #16324a; }
-.mini-ee{ display:grid; grid-template-columns:repeat(4, 34px); grid-auto-rows:28px; gap:3px; background:#c9d6e3; border:3px solid #16324a; border-radius:10px; overflow:hidden; font:900 15px "Nunito",sans-serif; }
+.mini-bz i:first-child{ border-bottom:4px solid #2f4a1f; }
+.mini-ee{ display:grid; grid-template-columns:repeat(4, 34px); grid-auto-rows:28px; gap:3px; background:#c9d6e3; border:3px solid #2f4a1f; border-radius:10px; overflow:hidden; font:900 15px "Nunito",sans-serif; }
 .mini-ee b, .mini-ee i{ display:flex; align-items:center; justify-content:center; font-style:normal; }
-.mini-ee b{ background:#16324a; color:#ffd77a; } .mini-ee b:first-child{ background:#f2a93b; color:#16324a; }
-.mini-ee i{ background:white; color:#16324a; } .mini-ee i.w{ background:#f2a93b; }
+.mini-ee b{ background:#2f4a1f; color:#ffd77a; } .mini-ee b:first-child{ background:#d9a23f; color:#2f4a1f; }
+.mini-ee i{ background:white; color:#2f4a1f; } .mini-ee i.w{ background:#d9a23f; }
 @media (max-width:900px){ .mg-sg-liste{ grid-template-columns:1fr; } .mg-iw{ grid-template-columns:repeat(auto-fill,minmax(46px,1fr)); } }
 </style>
 <?php if ($TAFEL_APP && !$TB_B): ?><style>#uebersicht{ display:none !important; } #morgen .mg-leiste > .tb-k.rund:first-child{ display:none; }</style><?php endif; ?>
@@ -543,9 +543,10 @@ body{ background:#f6f2ea; }
 /* Tafel-App mit einem Tafelbild: Übersicht zeigt nur dieses eine (wenn man es schließt) */
 #uebersicht .tb-gruppe, #uebersicht .kachel.tb-fremd, #uebersicht .zurueck{ display:none !important; }
 #morgen .mg-leiste > .tb-k.rund:first-child{ display:none; }
-.tb-app-inst{ position:fixed; left:12px; bottom:12px; z-index:60; font:900 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:10px 16px; background:#16324a; color:#fff; box-shadow:0 6px 18px rgba(0,0,0,.25); cursor:pointer; opacity:.85; }
+.tb-app-inst{ position:fixed; left:12px; bottom:12px; z-index:60; font:900 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:10px 16px; background:#2f4a1f; color:#fff; box-shadow:0 6px 18px rgba(0,0,0,.25); cursor:pointer; opacity:.85; }
 .tb-app-inst:hover{ opacity:1; }
 </style><?php endif; ?>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body<?= $TAFEL_APP ? ' class="tafel-app"' : '' ?>>
 
@@ -624,25 +625,25 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "brueche")): ?>
         <button class="kachel" type="button" onclick="tafelBrueche.oeffnen()">
-            <div class="k-buehne k-br"><div class="mini-br"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="#fff" stroke="#16324a" stroke-width="5"/><path d="M60 60 L60 8 A52 52 0 1 1 8 60 Z" fill="#3d7ea6" stroke="#16324a" stroke-width="4" stroke-linejoin="round"/><line x1="60" y1="8" x2="60" y2="112" stroke="#16324a" stroke-width="4"/><line x1="8" y1="60" x2="112" y2="60" stroke="#16324a" stroke-width="4"/></svg><span class="mini-bz"><b>2</b><span><i>3</i><i>4</i></span></span></div></div>
+            <div class="k-buehne k-br"><div class="mini-br"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="#fff" stroke="#2f4a1f" stroke-width="5"/><path d="M60 60 L60 8 A52 52 0 1 1 8 60 Z" fill="#557428" stroke="#2f4a1f" stroke-width="4" stroke-linejoin="round"/><line x1="60" y1="8" x2="60" y2="112" stroke="#2f4a1f" stroke-width="4"/><line x1="8" y1="60" x2="112" y2="60" stroke="#2f4a1f" stroke-width="4"/></svg><span class="mini-bz"><b>2</b><span><i>3</i><i>4</i></span></span></div></div>
             <div class="k-text"><h2>Brüche</h2><p>Erklär-Tafel mit Bild und Rechenweg zum Aufdecken: Was ist ein Bruch, gemischte Zahlen, Erweitern &amp; Kürzen, Vergleichen, Zahlenstrahl, Plus/Minus, Mal/Geteilt.</p><div class="k-tags"><span>Mathe</span><span>Kl. 5/6</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
         <button class="kachel" type="button" onclick="tafelMathe.prozent.oeffnen()">
-            <div class="k-buehne" style="background:linear-gradient(135deg,#dcefee,#a9d8d3);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">¾ = 75 %</div></div>
+            <div class="k-buehne" style="background:linear-gradient(135deg,#dcefee,#a9d8d3);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#2f4a1f;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">¾ = 75 %</div></div>
             <div class="k-text"><h2>Prozent & Dezimalzahlen</h2><p>Hunderterfeld, Bruch → Dezimalzahl → Prozent, Prozent von … am Prozentstreifen und „Wie viel Prozent?“.</p><div class="k-tags"><span>Mathe</span><span>Kl. 6–8</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
         <button class="kachel" type="button" onclick="tafelMathe.groessen.oeffnen()">
-            <div class="k-buehne" style="background:linear-gradient(135deg,#e8e0f5,#c9b8ea);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">km → m</div></div>
+            <div class="k-buehne" style="background:linear-gradient(135deg,#e8e0f5,#c9b8ea);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#2f4a1f;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">km → m</div></div>
             <div class="k-text"><h2>Größen umrechnen</h2><p>Einheitentreppe für Längen, Gewichte, Hohlmaße, Geld und Zeit – mit ganzen Zahlen oder Kommazahlen.</p><div class="k-tags"><span>Mathe</span><span>Kl. 4–8</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
         <button class="kachel" type="button" onclick="tafelMathe.schriftlich.oeffnen()">
-            <div class="k-buehne" style="background:linear-gradient(135deg,#dbe9f4,#b9d3ea);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">4738<br>+2595</div></div>
+            <div class="k-buehne" style="background:linear-gradient(135deg,#dbe9f4,#b9d3ea);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#2f4a1f;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">4738<br>+2595</div></div>
             <div class="k-text"><h2>Schriftlich rechnen</h2><p>Plus, Minus (Ergänzen oder Abziehen), Mal und Geteilt – Stelle für Stelle mit Übertrag zum Aufdecken, eigene Aufgaben eintippen.</p><div class="k-tags"><span>Mathe</span><span>Kl. 3–6</span></div></div>
         </button>
 <?php endif; ?>
@@ -651,7 +652,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "wortarten")): ?>
         <button class="kachel" type="button" onclick="tafelDeutsch.wortarten.oeffnen()">
-            <div class="k-buehne" style="background:linear-gradient(135deg,#fbe3e1,#f4b9b3);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">Nomen · Verb</div></div>
+            <div class="k-buehne" style="background:linear-gradient(135deg,#fbe3e1,#f4b9b3);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#2f4a1f;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">Nomen · Verb</div></div>
             <div class="k-text"><h2>Wortarten & Satzglieder</h2><p>Wörter antippen und einfärben, Prüffragen aufdecken, Satzglieder mit Umstellprobe – Kl. 3/4 einfach, Kl. 5–7 alle Wortarten und Satzglieder.</p><div class="k-tags"><span>Deutsch</span><span>Kl. 3–7</span></div></div>
         </button>
 <?php endif; ?>
@@ -729,13 +730,13 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
         <button class="kachel" type="button" onclick="tafelMathe.uhr.oeffnen()">
-            <div class="k-buehne" style="background:linear-gradient(135deg,#e3f1e0,#b9dcae);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">🕗 8:15</div></div>
+            <div class="k-buehne" style="background:linear-gradient(135deg,#e3f1e0,#b9dcae);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#2f4a1f;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">🕗 8:15</div></div>
             <div class="k-text"><h2>Uhr & Zeit</h2><p>Lernuhr mit Zeiger zum Drehen, digital und gesprochen („Viertel nach acht“ oder „viertel neun“), Zeitspannen am Zeitstrahl.</p><div class="k-tags"><span>Mathe</span><span>Kl. 1–4</span></div></div>
         </button>
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
         <button class="kachel" type="button" onclick="tafelMathe.stellen.oeffnen()">
-            <div class="k-buehne" style="background:linear-gradient(135deg,#fde7c8,#f7c98a);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">H&nbsp;Z&nbsp;E</div></div>
+            <div class="k-buehne" style="background:linear-gradient(135deg,#fde7c8,#f7c98a);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#2f4a1f;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">H&nbsp;Z&nbsp;E</div></div>
             <div class="k-text"><h2>Stellenwerttafel</h2><p>Zahlen mit Plättchen darstellen, Zahlwort, Bündeln & Entbündeln, Kommazahlen mit Zehnteln und Hundertsteln.</p><div class="k-tags"><span>Mathe</span><span>Kl. 1–6</span></div></div>
         </button>
 <?php endif; ?>
@@ -747,7 +748,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "mathe")): ?>
         <button class="kachel" type="button" onclick="tafelMathe.schriftlich.oeffnen()">
-            <div class="k-buehne" style="background:linear-gradient(135deg,#dbe9f4,#b9d3ea);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">4738<br>+2595</div></div>
+            <div class="k-buehne" style="background:linear-gradient(135deg,#dbe9f4,#b9d3ea);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#2f4a1f;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">4738<br>+2595</div></div>
             <div class="k-text"><h2>Schriftlich rechnen</h2><p>Plus, Minus (Ergänzen oder Abziehen), Mal und Geteilt – Stelle für Stelle mit Übertrag zum Aufdecken, eigene Aufgaben eintippen.</p><div class="k-tags"><span>Mathe</span><span>Kl. 3–6</span></div></div>
         </button>
 <?php endif; ?>
@@ -768,7 +769,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
 <?php endif; ?>
 <?php if (!$LT_GAST || lt_gastDarf($LT_GAST, "wortarten")): ?>
         <button class="kachel" type="button" onclick="tafelDeutsch.wortarten.oeffnen()">
-            <div class="k-buehne" style="background:linear-gradient(135deg,#fbe3e1,#f4b9b3);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#16324a;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">Nomen · Verb</div></div>
+            <div class="k-buehne" style="background:linear-gradient(135deg,#fbe3e1,#f4b9b3);display:flex;align-items:center;justify-content:center;"><div style="background:#fff;color:#2f4a1f;border-radius:18px;padding:10px 18px;font:900 34px Nunito,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.15)">Nomen · Verb</div></div>
             <div class="k-text"><h2>Wortarten & Satzglieder</h2><p>Wörter antippen und einfärben, Prüffragen aufdecken, Satzglieder mit Umstellprobe – Kl. 3/4 einfach, Kl. 5–7 alle Wortarten und Satzglieder.</p><div class="k-tags"><span>Deutsch</span><span>Kl. 3–7</span></div></div>
         </button>
 <?php endif; ?>
@@ -849,7 +850,7 @@ async function tafelSperren(id){ if (!confirm("Diese Tafel sperren? Alle Tafelbi
             <button class="tb-farbe an" style="background:#1d5fbf" data-farbe="#1d5fbf" title="Blau"></button>
             <button class="tb-farbe" style="background:#d1342b" data-farbe="#d1342b" title="Rot"></button>
             <button class="tb-farbe" style="background:#1f8a4c" data-farbe="#1f8a4c" title="Grün"></button>
-            <button class="tb-farbe" style="background:#f2a93b" data-farbe="#f2a93b" title="Orange"></button>
+            <button class="tb-farbe" style="background:#d9a23f" data-farbe="#d9a23f" title="Orange"></button>
             <button class="tb-farbe" style="background:#222" data-farbe="#222222" title="Schwarz"></button>
             <span class="tb-trenn"></span>
             <button class="tb-k" id="kDicke" onclick="dickeWechseln()" title="Stiftdicke"><i class="fa-solid fa-pen"></i> dick</button>
@@ -1050,7 +1051,7 @@ const gross = z => z === "ß" ? null : z.toUpperCase();
 const NS = "http://www.w3.org/2000/svg";
 function farben(){
     return E.hg === "gruen"
-        ? { linie: "rgba(255,255,255,.45)", grund: "rgba(255,255,255,.85)", oben: "rgba(255,255,255,0)", band: "rgba(255,255,255,.08)", unten: "rgba(255,255,255,0)", vorlage: "#ffffff", spur: "rgba(255,255,255,.6)", grau: "rgba(255,255,255,.22)", start: "#7ee2a8", nr: "#16324a" }
+        ? { linie: "rgba(255,255,255,.45)", grund: "rgba(255,255,255,.85)", oben: "rgba(255,255,255,0)", band: "rgba(255,255,255,.08)", unten: "rgba(255,255,255,0)", vorlage: "#ffffff", spur: "rgba(255,255,255,.6)", grau: "rgba(255,255,255,.22)", start: "#7ee2a8", nr: "#2f4a1f" }
         : { linie: "#a9bccd", grund: "#2f5d86", oben: "#f1f7fd", band: "#fff3c4", unten: "#eef6e8", vorlage: "#1e4f8c", spur: "#8ea3b8", grau: "#d6dee6", start: "#2e9e5b", nr: "#ffffff" };
 }
 function wegeVon(g){ return g.s; }

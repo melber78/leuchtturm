@@ -15,10 +15,11 @@ $k = (is_array($k) ? $k : []) + ["owner" => "", "repo" => "leuchtturm", "token" 
 function fehlerSeite($text){
     http_response_code(502);
     header("Content-Type: text/html; charset=utf-8");
-    echo '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Widget-App</title></head>'
-       . '<body style="font-family:system-ui,sans-serif;background:#f4f6f4;color:#16324a;padding:24px;max-width:560px;margin:auto">'
+    echo '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Widget-App</title><link rel="stylesheet" href="marke/mewe.css">
+</head>'
+       . '<body style="font-family:system-ui,sans-serif;background:#f7f4ec;color:#2f4a1f;padding:24px;max-width:560px;margin:auto">'
        . '<h2>Die App konnte nicht geladen werden</h2><p style="font-weight:600">' . htmlspecialchars($text) . '</p>'
-       . '<p><a href="tagesplan.php#stundenplan" style="color:#3d7ea6;font-weight:700">← zurück zu Mein Tag</a></p></body></html>';
+       . '<p><a href="tagesplan.php#stundenplan" style="color:#557428;font-weight:700">← zurück zu Mein Tag</a></p></body></html>';
     exit;
 }
 function holen($k, $datei){

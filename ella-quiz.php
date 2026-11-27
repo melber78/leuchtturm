@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,13 +24,13 @@
   wird nur im Browser dieses Geräts gemerkt – keine Namen, nichts wird gesendet.
 -->
 <style>
-:root{ --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --gruen:#2e9e5b; --rot:#d64541; --text:#1f2d36; --grau:#7c8a85; --fach:#3d7ea6; }
+:root{ --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --gruen:#2e9e5b; --rot:#d64541; --text:#1f2d36; --grau:#7c8a85; --fach:#557428; }
 *{ box-sizing:border-box; }
 html, body{ min-height:100%; }
 body{ margin:0; background:linear-gradient(160deg,#fbf7ee,#eaf3f9); color:var(--text); font-family:"Nunito",sans-serif; }
 button{ font-family:inherit; }
 .kopf{ display:flex; align-items:center; gap:10px; padding:12px 18px; flex-wrap:wrap; }
-.kopf a, .k{ font:800 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:10px 16px; background:white; color:var(--nacht); cursor:pointer; display:inline-flex; gap:8px; align-items:center; text-decoration:none; box-shadow:0 3px 10px rgba(22,50,74,.08); }
+.kopf a, .k{ font:800 15px "Nunito",sans-serif; border:0; border-radius:999px; padding:10px 16px; background:white; color:var(--nacht); cursor:pointer; display:inline-flex; gap:8px; align-items:center; text-decoration:none; box-shadow:0 3px 10px rgba(47,74,31,.08); }
 .k.rund{ width:44px; height:44px; padding:0; justify-content:center; }
 .k.gold{ background:var(--gold); color:var(--nacht); }
 .k.dunkel{ background:var(--nacht); color:white; }
@@ -40,11 +40,11 @@ main{ max-width:1180px; margin:0 auto; padding:0 18px 40px; }
 /* Auswahl */
 .zeile{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:14px 0 8px; }
 .zeile > b{ font:900 13px "Nunito",sans-serif; text-transform:uppercase; letter-spacing:.05em; color:#8a7a60; margin-right:6px; min-width:80px; }
-.chip{ border:3px solid transparent; background:white; border-radius:999px; padding:10px 18px; font:900 17px "Nunito",sans-serif; color:var(--nacht); cursor:pointer; box-shadow:0 3px 10px rgba(22,50,74,.07); }
+.chip{ border:3px solid transparent; background:white; border-radius:999px; padding:10px 18px; font:900 17px "Nunito",sans-serif; color:var(--nacht); cursor:pointer; box-shadow:0 3px 10px rgba(47,74,31,.07); }
 .chip.an{ background:var(--nacht); color:white; }
 .chip.fach.an{ background:var(--fc); border-color:var(--fc); }
 .themen{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-top:16px; }
-.thema{ border:0; background:white; border-radius:22px; padding:18px 14px 14px; text-align:left; cursor:pointer; box-shadow:0 8px 22px rgba(22,50,74,.08); display:flex; flex-direction:column; gap:6px; border-top:6px solid var(--fach); transition:transform .15s; }
+.thema{ border:0; background:white; border-radius:22px; padding:18px 14px 14px; text-align:left; cursor:pointer; box-shadow:0 8px 22px rgba(47,74,31,.08); display:flex; flex-direction:column; gap:6px; border-top:6px solid var(--fach); transition:transform .15s; }
 .thema:hover{ transform:translateY(-3px); }
 .thema .em{ font-size:38px; line-height:1; }
 .thema b{ font:900 18px "Nunito",sans-serif; color:var(--nacht); }
@@ -58,11 +58,11 @@ main{ max-width:1180px; margin:0 auto; padding:0 18px 40px; }
 body.spielt #quiz{ display:flex; }
 body.spielt #wahl{ display:none; }
 .q-leiste{ display:flex; align-items:center; gap:10px; padding:12px 18px; }
-.q-fort{ flex:1; height:14px; background:rgba(22,50,74,.08); border-radius:999px; overflow:hidden; }
+.q-fort{ flex:1; height:14px; background:rgba(47,74,31,.08); border-radius:999px; overflow:hidden; }
 .q-fort i{ display:block; height:100%; width:0; background:var(--fach); border-radius:999px; transition:width .4s; }
 .q-nr{ font:900 16px "Nunito",sans-serif; color:var(--nacht); min-width:62px; text-align:center; }
 .q-stand{ display:flex; gap:8px; }
-.q-stand span{ white-space:nowrap; background:white; border-radius:999px; padding:8px 14px; font:900 17px "Nunito",sans-serif; box-shadow:0 3px 10px rgba(22,50,74,.08); }
+.q-stand span{ white-space:nowrap; background:white; border-radius:999px; padding:8px 14px; font:900 17px "Nunito",sans-serif; box-shadow:0 3px 10px rgba(47,74,31,.08); }
 .q-stand .kl{ color:var(--gruen); } .q-stand .el{ color:#8e44ad; }
 .q-buehne{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.2vh; padding:1vh 4vw 3vh; }
 .q-frage{ font:900 clamp(24px,min(4.2vw,6.4vh),62px)/1.2 "Andika","Nunito",sans-serif; color:var(--nacht); text-align:center; max-width:1100px; }
@@ -75,7 +75,7 @@ body.spielt #wahl{ display:none; }
 .q-ant{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; width:min(1000px,100%); }
 .q-ant.drei{ grid-template-columns:repeat(3,minmax(0,1fr)); }
 .q-ant.bilder{ grid-template-columns:repeat(3,minmax(0,1fr)); }
-.q-ant button{ border:4px solid #e7ecef; background:white; border-radius:24px; padding:18px 14px; min-height:84px; font:900 clamp(20px,min(3vw,4.6vh),40px) "Andika","Nunito",sans-serif; color:var(--nacht); cursor:pointer; box-shadow:0 6px 16px rgba(22,50,74,.07); display:flex; align-items:center; justify-content:center; gap:10px; position:relative; transition:transform .1s; }
+.q-ant button{ border:4px solid #e7ecef; background:white; border-radius:24px; padding:18px 14px; min-height:84px; font:900 clamp(20px,min(3vw,4.6vh),40px) "Andika","Nunito",sans-serif; color:var(--nacht); cursor:pointer; box-shadow:0 6px 16px rgba(47,74,31,.07); display:flex; align-items:center; justify-content:center; gap:10px; position:relative; transition:transform .1s; }
 .q-ant button:hover:not(:disabled){ transform:translateY(-2px); border-color:var(--fach); }
 .q-ant button .nr{ position:absolute; left:12px; top:8px; font:900 15px "Nunito",sans-serif; color:#b8c3ca; }
 .q-ant button svg{ width:clamp(80px,15vh,150px); height:auto; }
@@ -95,7 +95,7 @@ body.spielt #wahl{ display:none; }
 .erg .gross-sterne{ font-size:clamp(44px,8vh,80px); letter-spacing:6px; color:#e0a500; }
 .erg .gross-sterne .leer{ color:#dde3e7; }
 .erg p{ font:800 clamp(18px,2.4vw,28px) "Nunito",sans-serif; color:#3a5566; margin:0; }
-.erg .fehlerliste{ background:white; border-radius:18px; padding:12px 18px; text-align:left; max-width:760px; width:100%; box-shadow:0 6px 16px rgba(22,50,74,.07); }
+.erg .fehlerliste{ background:white; border-radius:18px; padding:12px 18px; text-align:left; max-width:760px; width:100%; box-shadow:0 6px 16px rgba(47,74,31,.07); }
 .erg .fehlerliste div{ padding:6px 0; border-bottom:1px solid #eef1f4; font-weight:700; }
 .erg .fehlerliste div:last-child{ border:0; }
 .erg .fehlerliste .mini{ display:inline-flex; vertical-align:middle; margin-right:6px; }
@@ -119,6 +119,7 @@ body.spielt #wahl{ display:none; }
   .q-nr{ margin-right:auto; }
 }
 </style>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 <div id="wahl">
@@ -161,7 +162,7 @@ let E = { klasse: "1", fach: "Deutsch", anzahl: 10, modus: "allein", auto: true 
 try { Object.assign(E, JSON.parse(localStorage.getItem("ella_quiz_einst") || "{}")); } catch (x) {}
 let STERNE = {}; try { STERNE = JSON.parse(localStorage.getItem("ella_quiz_sterne") || "{}"); } catch (x) {}
 const merken = () => { try { localStorage.setItem("ella_quiz_einst", JSON.stringify(E)); localStorage.setItem("ella_quiz_sterne", JSON.stringify(STERNE)); } catch (x) {} };
-const fachFarbe = f => (window.QUIZ_FACH[f] || ["", "#3d7ea6"])[1];
+const fachFarbe = f => (window.QUIZ_FACH[f] || ["", "#557428"])[1];
 const sterneHtml = n => [1, 2, 3].map(i => `<span class="${i <= n ? "" : "leer"}">★</span>`).join("");
 
 /* ---------- Auswahl ---------- */

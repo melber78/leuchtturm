@@ -8,8 +8,8 @@ echo json_encode([
     "start_url" => "index.php",
     "scope" => "./",
     "display" => "standalone",
-    "background_color" => "#f4f6f4",
-    "theme_color" => "#16324a",
+    "background_color" => "#f7f4ec",
+    "theme_color" => "#2f4a1f",
     "lang" => "de",
     "icons" => [
         ["src" => "app-icon-192.png", "sizes" => "192x192", "type" => "image/png", "purpose" => "any"],

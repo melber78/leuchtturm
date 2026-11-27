@@ -12,64 +12,64 @@ const CSS = `
 #br.an{ display:flex; }
 #br.kreide{ background:#24403a; color:#f3efe3; }
 .br-leiste{ display:flex; gap:8px; align-items:center; padding:8px 14px 6px; flex-wrap:wrap; }
-.br-titel{ font-weight:900; font-size:19px; color:#16324a; margin-right:4px; }
+.br-titel{ font-weight:900; font-size:19px; color:#2f4a1f; margin-right:4px; }
 .br-titel small{ font-weight:800; color:#7c8a96; font-size:14px; margin-left:4px; }
 #br.kreide .br-titel{ color:#f3efe3; } #br.kreide .br-titel small{ color:#b9c9bf; }
 #br.kreide .tb-k{ background:rgba(255,255,255,.12); color:#f3efe3; }
-#br .tb-k.an{ background:#16324a !important; color:#fff !important; }
+#br .tb-k.an{ background:#2f4a1f !important; color:#fff !important; }
 #br.kreide .tb-k.an{ background:#f3efe3 !important; color:#24403a !important; }
 .br-tabs{ display:flex; gap:6px; overflow-x:auto; padding:0 14px 10px; scrollbar-width:none; flex:none; }
 .br-tabs::-webkit-scrollbar{ display:none; }
-.br-tab{ font:800 15px "Nunito",sans-serif; border:2px solid #d6dee6; background:white; color:#16324a; border-radius:999px; padding:8px 15px; cursor:pointer; white-space:nowrap; min-height:44px; }
-.br-tab.an{ background:#16324a; border-color:#16324a; color:white; }
+.br-tab{ font:800 15px "Nunito",sans-serif; border:2px solid #d6dee6; background:white; color:#2f4a1f; border-radius:999px; padding:8px 15px; cursor:pointer; white-space:nowrap; min-height:44px; }
+.br-tab.an{ background:#2f4a1f; border-color:#2f4a1f; color:white; }
 #br.kreide .br-tab{ background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.2); color:#f3efe3; }
 #br.kreide .br-tab.an{ background:#f3efe3; color:#24403a; border-color:#f3efe3; }
 .br-haupt{ flex:1; min-height:0; display:flex; gap:2vmin; padding:0 2vmin 2vmin; }
-.br-buehne{ flex:1.35; min-width:0; background:white; border-radius:22px; box-shadow:0 6px 24px rgba(22,50,74,.08); display:flex; flex-direction:column; padding:2.2vmin 2.4vmin; gap:1.5vmin; }
+.br-buehne{ flex:1.35; min-width:0; background:white; border-radius:22px; box-shadow:0 6px 24px rgba(47,74,31,.08); display:flex; flex-direction:column; padding:2.2vmin 2.4vmin; gap:1.5vmin; }
 #br.kreide .br-buehne, #br.kreide .br-panel{ background:rgba(255,255,255,.06); box-shadow:none; }
 .br-frage{ text-align:center; font-weight:800; color:#6b7a86; font-size:clamp(15px,2.2vmin,24px); }
 #br.kreide .br-frage{ color:#c9d8cd; }
-.br-aufgabe{ font-size:clamp(30px,6.4vmin,90px); font-weight:900; display:flex; align-items:center; justify-content:center; gap:.3em; flex-wrap:wrap; color:#16324a; line-height:1.1; font-variant-numeric:tabular-nums; }
+.br-aufgabe{ font-size:clamp(30px,6.4vmin,90px); font-weight:900; display:flex; align-items:center; justify-content:center; gap:.3em; flex-wrap:wrap; color:#2f4a1f; line-height:1.1; font-variant-numeric:tabular-nums; }
 #br.kreide .br-aufgabe{ color:#fdfaf1; }
 .br-aufgabe .op{ color:#7c8a96; font-weight:800; }
 .br-bild{ flex:1; min-height:0; display:flex; align-items:center; justify-content:center; }
 .br-bild svg{ width:100%; height:100%; max-height:100%; overflow:visible; }
 .br-bild .br-ohne{ color:#9aa8b4; font-weight:800; font-size:clamp(15px,2vmin,22px); text-align:center; }
-.br-panel{ flex:1; max-width:660px; min-width:300px; background:white; border-radius:22px; box-shadow:0 6px 24px rgba(22,50,74,.08); padding:2.2vmin 2.4vmin; display:flex; flex-direction:column; gap:1.5vmin; overflow:auto; }
-.br-merke{ background:#eaf2f9; border-left:6px solid #3d7ea6; border-radius:12px; padding:1.1vmin 1.5vmin; font-size:clamp(15px,1.95vmin,21px); line-height:1.4; font-weight:700; }
-.br-merke b:first-child{ display:block; font-size:.72em; letter-spacing:.08em; text-transform:uppercase; color:#3d7ea6; margin-bottom:2px; }
+.br-panel{ flex:1; max-width:660px; min-width:300px; background:white; border-radius:22px; box-shadow:0 6px 24px rgba(47,74,31,.08); padding:2.2vmin 2.4vmin; display:flex; flex-direction:column; gap:1.5vmin; overflow:auto; }
+.br-merke{ background:#eaf2f9; border-left:6px solid #557428; border-radius:12px; padding:1.1vmin 1.5vmin; font-size:clamp(15px,1.95vmin,21px); line-height:1.4; font-weight:700; }
+.br-merke b:first-child{ display:block; font-size:.72em; letter-spacing:.08em; text-transform:uppercase; color:#557428; margin-bottom:2px; }
 #br.kreide .br-merke{ background:rgba(255,255,255,.08); border-left-color:#f2c14e; }
 #br.kreide .br-merke b:first-child{ color:#f2c14e; }
 .br-regler{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
 .br-st{ display:inline-flex; align-items:center; gap:4px; background:#eef2f6; border-radius:999px; padding:4px 4px 4px 12px; font-weight:800; font-size:14px; color:#52606b; }
-.br-st b{ min-width:1.7em; text-align:center; font-size:20px; color:#16324a; font-variant-numeric:tabular-nums; }
-.br-st button, .br-wahl button{ font:900 18px "Nunito",sans-serif; border:0; background:white; color:#16324a; width:38px; height:38px; border-radius:50%; cursor:pointer; box-shadow:0 2px 6px rgba(22,50,74,.1); }
+.br-st b{ min-width:1.7em; text-align:center; font-size:20px; color:#2f4a1f; font-variant-numeric:tabular-nums; }
+.br-st button, .br-wahl button{ font:900 18px "Nunito",sans-serif; border:0; background:white; color:#2f4a1f; width:38px; height:38px; border-radius:50%; cursor:pointer; box-shadow:0 2px 6px rgba(47,74,31,.1); }
 .br-wahl{ display:inline-flex; background:#eef2f6; border-radius:999px; padding:4px; gap:3px; }
 .br-wahl button{ width:auto; border-radius:999px; padding:0 13px; font-size:15px; font-weight:800; box-shadow:none; background:transparent; }
-.br-wahl button.an{ background:#16324a; color:white; }
+.br-wahl button.an{ background:#2f4a1f; color:white; }
 #br.kreide .br-st, #br.kreide .br-wahl{ background:rgba(255,255,255,.1); color:#d8e3da; }
 #br.kreide .br-st b{ color:#fdfaf1; }
 #br.kreide .br-st button{ background:rgba(255,255,255,.16); color:#fdfaf1; box-shadow:none; }
 #br.kreide .br-wahl button{ color:#f3efe3; }
 #br.kreide .br-wahl button.an{ background:#f3efe3; color:#24403a; }
 .br-eingabe{ display:flex; gap:6px; width:100%; }
-.br-eingabe input{ flex:1; min-width:0; font:800 17px "Nunito",sans-serif; border:2px solid #d6dee6; border-radius:12px; padding:9px 12px; color:#16324a; background:white; }
-.br-eingabe button{ font:900 15px "Nunito",sans-serif; border:0; border-radius:12px; background:#3d7ea6; color:white; padding:0 16px; cursor:pointer; }
+.br-eingabe input{ flex:1; min-width:0; font:800 17px "Nunito",sans-serif; border:2px solid #d6dee6; border-radius:12px; padding:9px 12px; color:#2f4a1f; background:white; }
+.br-eingabe button{ font:900 15px "Nunito",sans-serif; border:0; border-radius:12px; background:#557428; color:white; padding:0 16px; cursor:pointer; }
 .br-fehler{ color:#d1342b; font-weight:800; font-size:14px; width:100%; }
 .br-h{ font-size:13px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; color:#7c8a96; margin:2px 0 -4px; }
 #br.kreide .br-h{ color:#b9c9bf; }
 .br-schritte{ display:flex; flex-direction:column; gap:1.1vmin; }
 .br-s{ display:grid; grid-template-columns:auto 1fr; gap:.5vmin 1.2vmin; align-items:start; }
-.br-s .nr{ width:clamp(26px,3.4vmin,38px); height:clamp(26px,3.4vmin,38px); border-radius:50%; background:#16324a; color:white; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:clamp(14px,1.9vmin,20px); grid-row:span 2; }
+.br-s .nr{ width:clamp(26px,3.4vmin,38px); height:clamp(26px,3.4vmin,38px); border-radius:50%; background:#2f4a1f; color:white; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:clamp(14px,1.9vmin,20px); grid-row:span 2; }
 #br.kreide .br-s .nr{ background:#f3efe3; color:#24403a; }
 .br-s .f{ font-size:clamp(15px,2vmin,22px); font-weight:800; line-height:1.3; padding-top:.15em; }
-.br-s .a{ font-size:clamp(20px,3.1vmin,38px); font-weight:900; color:#16324a; line-height:1.15; font-variant-numeric:tabular-nums; }
+.br-s .a{ font-size:clamp(20px,3.1vmin,38px); font-weight:900; color:#2f4a1f; line-height:1.15; font-variant-numeric:tabular-nums; }
 #br.kreide .br-s .a{ color:#fdfaf1; }
 .br-s .a small{ font-size:.55em; font-weight:800; color:#52606b; }
 #br.kreide .br-s .a small{ color:#d8e3da; }
 .br-knoepfe{ display:flex; gap:8px; flex-wrap:wrap; margin-top:auto; padding-top:.6vmin; }
-.br-knoepfe button{ font:900 clamp(15px,1.9vmin,19px) "Nunito",sans-serif; border:0; border-radius:999px; padding:11px 18px; cursor:pointer; background:#eef2f6; color:#16324a; display:inline-flex; gap:8px; align-items:center; min-height:46px; }
-.br-knoepfe .haupt{ background:#16324a; color:white; }
+.br-knoepfe button{ font:900 clamp(15px,1.9vmin,19px) "Nunito",sans-serif; border:0; border-radius:999px; padding:11px 18px; cursor:pointer; background:#eef2f6; color:#2f4a1f; display:inline-flex; gap:8px; align-items:center; min-height:46px; }
+.br-knoepfe .haupt{ background:#2f4a1f; color:white; }
 .br-knoepfe .neu{ background:#e08a2c; color:white; }
 #br.kreide .br-knoepfe button{ background:rgba(255,255,255,.12); color:#f3efe3; }
 #br.kreide .br-knoepfe .haupt{ background:#f3efe3; color:#24403a; }
@@ -91,29 +91,29 @@ const CSS = `
 #br.kreide .lsg.zu::after{ color:rgba(255,255,255,.45); }
 .lsg.neu{ animation:brAuf .7s ease; }
 @keyframes brAuf{ 0%{ background:#ffe39a; } 100%{ background:transparent; } }
-.rot{ color:#d1342b; } .blau{ color:#3d7ea6; } .orange{ color:#d17a1c; }
+.rot{ color:#d1342b; } .blau{ color:#557428; } .orange{ color:#d17a1c; }
 #br.kreide .rot{ color:#ff9b8f; } #br.kreide .blau{ color:#9fd0f0; } #br.kreide .orange{ color:#ffc27a; }
 
 /* Farben im Bild */
-#br svg .st{ stroke:#16324a; } #br.kreide svg .st{ stroke:#f3efe3; }
-#br svg .tx{ fill:#16324a; } #br.kreide svg .tx{ fill:#f3efe3; }
+#br svg .st{ stroke:#2f4a1f; } #br.kreide svg .st{ stroke:#f3efe3; }
+#br svg .tx{ fill:#2f4a1f; } #br.kreide svg .tx{ fill:#f3efe3; }
 #br svg .txg{ fill:#7c8a96; } #br.kreide svg .txg{ fill:#b9c9bf; }
 #br svg .f0{ fill:#ffffff; } #br.kreide svg .f0{ fill:rgba(255,255,255,.05); }
-#br svg .fa{ fill:#3d7ea6; } #br svg .fb{ fill:#e08a2c; } #br svg .fab{ fill:#6a4c93; }
+#br svg .fa{ fill:#557428; } #br svg .fb{ fill:#e08a2c; } #br svg .fab{ fill:#6a4c93; }
 #br svg .fa2{ fill:#cfe3f1; } #br svg .fb2{ fill:#f8dcb8; }
 #br.kreide svg .fa{ fill:#5ea6d6; } #br.kreide svg .fa2{ fill:rgba(94,166,214,.3); } #br.kreide svg .fb2{ fill:rgba(224,138,44,.32); }
 #br svg .fr{ fill:url(#brSchraffur); }
-#br svg .txa{ fill:#3d7ea6; } #br svg .txb{ fill:#d17a1c; } #br svg .txr{ fill:#d1342b; }
+#br svg .txa{ fill:#557428; } #br svg .txb{ fill:#d17a1c; } #br svg .txr{ fill:#d1342b; }
 #br.kreide svg .txa{ fill:#9fd0f0; } #br.kreide svg .txb{ fill:#ffc27a; } #br.kreide svg .txr{ fill:#ff9b8f; }
-#br svg .la{ stroke:#3d7ea6; } #br svg .lb{ stroke:#d17a1c; } #br svg .lr{ stroke:#d1342b; }
+#br svg .la{ stroke:#557428; } #br svg .lb{ stroke:#d17a1c; } #br svg .lr{ stroke:#d1342b; }
 #br.kreide svg .la{ stroke:#9fd0f0; } #br.kreide svg .lb{ stroke:#ffc27a; } #br.kreide svg .lr{ stroke:#ff9b8f; }
 
-.br-menue{ position:absolute; top:62px; right:14px; background:white; color:#16324a; border-radius:18px; box-shadow:0 12px 40px rgba(22,50,74,.2); padding:14px; display:none; flex-direction:column; gap:8px; z-index:6; min-width:240px; }
+.br-menue{ position:absolute; top:62px; right:14px; background:white; color:#2f4a1f; border-radius:18px; box-shadow:0 12px 40px rgba(47,74,31,.2); padding:14px; display:none; flex-direction:column; gap:8px; z-index:6; min-width:240px; }
 .br-menue.an{ display:flex; }
 .br-menue h4{ margin:4px 0 0; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:#7c8a96; }
 .br-menue .reihe{ display:flex; gap:6px; flex-wrap:wrap; }
-.br-menue button{ font:800 15px "Nunito",sans-serif; border:2px solid #e3e8ee; background:#f7f9fb; color:#16324a; border-radius:12px; padding:8px 12px; cursor:pointer; }
-.br-menue button.an{ background:#16324a; border-color:#16324a; color:white; }
+.br-menue button{ font:800 15px "Nunito",sans-serif; border:2px solid #e3e8ee; background:#f7f9fb; color:#2f4a1f; border-radius:12px; padding:8px 12px; cursor:pointer; }
+.br-menue button.an{ background:#2f4a1f; border-color:#2f4a1f; color:white; }
 
 @media (max-width:900px), (orientation:portrait){
   #br{ overflow-y:auto; -webkit-overflow-scrolling:touch; }

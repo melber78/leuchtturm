@@ -31,11 +31,11 @@ const gz = x => String(x).replace(/\B(?=(\d{3})+(?!\d))/g, " ");   // 21 128 –
 /* ---------- Bilder: Uhr, Mengen, Rechteck ---------- */
 function uhrSvg(h, m){
     const w = (m / 60) * 360, s = ((h % 12) + m / 60) * 30;
-    const zahl = i => { const a = (i * 30 - 90) * Math.PI / 180; return `<text x="${50 + 36 * Math.cos(a)}" y="${54 + 36 * Math.sin(a)}" text-anchor="middle" font-size="11" font-weight="700" font-family="Nunito,Arial" fill="#16324a">${i}</text>`; };
-    const strich = i => { const a = (i * 6) * Math.PI / 180, r1 = i % 5 ? 44 : 41; return `<line x1="${50 + r1 * Math.sin(a)}" y1="${50 - r1 * Math.cos(a)}" x2="${50 + 46 * Math.sin(a)}" y2="${50 - 46 * Math.cos(a)}" stroke="#16324a" stroke-width="${i % 5 ? .8 : 1.8}"/>`; };
-    return `<svg viewBox="0 0 100 100" class="q-uhr"><circle cx="50" cy="50" r="48" fill="#fff" stroke="#16324a" stroke-width="3"/>${Array.from({ length: 60 }, (_, i) => strich(i)).join("")}${Array.from({ length: 12 }, (_, i) => zahl(i + 1)).join("")}
+    const zahl = i => { const a = (i * 30 - 90) * Math.PI / 180; return `<text x="${50 + 36 * Math.cos(a)}" y="${54 + 36 * Math.sin(a)}" text-anchor="middle" font-size="11" font-weight="700" font-family="Nunito,Arial" fill="#2f4a1f">${i}</text>`; };
+    const strich = i => { const a = (i * 6) * Math.PI / 180, r1 = i % 5 ? 44 : 41; return `<line x1="${50 + r1 * Math.sin(a)}" y1="${50 - r1 * Math.cos(a)}" x2="${50 + 46 * Math.sin(a)}" y2="${50 - 46 * Math.cos(a)}" stroke="#2f4a1f" stroke-width="${i % 5 ? .8 : 1.8}"/>`; };
+    return `<svg viewBox="0 0 100 100" class="q-uhr"><circle cx="50" cy="50" r="48" fill="#fff" stroke="#2f4a1f" stroke-width="3"/>${Array.from({ length: 60 }, (_, i) => strich(i)).join("")}${Array.from({ length: 12 }, (_, i) => zahl(i + 1)).join("")}
         <line x1="50" y1="50" x2="${50 + 22 * Math.sin(s * Math.PI / 180)}" y2="${50 - 22 * Math.cos(s * Math.PI / 180)}" stroke="#e2574c" stroke-width="5" stroke-linecap="round"/>
-        <line x1="50" y1="50" x2="${50 + 34 * Math.sin(w * Math.PI / 180)}" y2="${50 - 34 * Math.cos(w * Math.PI / 180)}" stroke="#16324a" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="3" fill="#16324a"/></svg>`;
+        <line x1="50" y1="50" x2="${50 + 34 * Math.sin(w * Math.PI / 180)}" y2="${50 - 34 * Math.cos(w * Math.PI / 180)}" stroke="#2f4a1f" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="3" fill="#2f4a1f"/></svg>`;
 }
 const menge = (e, k) => `<div class="q-menge">${Array.from({ length: k }, () => `<span>${e}</span>`).join("")}</div>`;
 const zeit = (h, m) => h + ":" + String(m).padStart(2, "0") + " Uhr";
@@ -278,6 +278,6 @@ window.QUIZ = {
 };
 // Lernen lernen in allen Klassen
 Object.values(window.QUIZ).forEach(k => { k["Lernen lernen"] = [T("lernen", "Clever lernen", "🦉", L.lernen)]; });
-window.QUIZ_FACH = { "Deutsch": ["📖", "#e2574c"], "Mathe": ["🔢", "#3d7ea6"], "Sachunterricht": ["🌱", "#3f9a5a"], "Lernen lernen": ["🦉", "#8e7cc3"] };
+window.QUIZ_FACH = { "Deutsch": ["📖", "#e2574c"], "Mathe": ["🔢", "#557428"], "Sachunterricht": ["🌱", "#3f9a5a"], "Lernen lernen": ["🦉", "#8e7cc3"] };
 window.QUIZ_UHR = uhrSvg;
 })();

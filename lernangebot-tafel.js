@@ -64,7 +64,7 @@ function zwanzigerSvg(n, bis){
         s += `<rect x="${x}" y="${y}" width="${w}" height="${w}" fill="none" stroke="#9fb4c4" stroke-width="2"/>`;
         if (k < n) s += `<circle cx="${x + w / 2}" cy="${y + w / 2}" r="${r}" fill="${i < 5 ? "#e74c3c" : "#2f80c4"}"/>`;
     }
-    s += `<line x1="${10 + 5 * w}" y1="6" x2="${10 + 5 * w}" y2="${zeilen * w + 14}" stroke="#16324a" stroke-width="4"/>`;
+    s += `<line x1="${10 + 5 * w}" y1="6" x2="${10 + 5 * w}" y2="${zeilen * w + 14}" stroke="#2f4a1f" stroke-width="4"/>`;
     return s + "</svg>";
 }
 W.zwanzigerfeld = {
@@ -92,9 +92,9 @@ W.zahlenstrahl = {
         const fein = bis === 20 ? 1 : bis === 100 ? 5 : 50, grob = bis === 20 ? 5 : bis === 100 ? 10 : 100;
         const n = bis === 20 ? z(1, 19) : bis === 100 ? z(1, 99) : z(1, 99) * 10;
         const X = v => 30 + v / bis * 940;
-        let s = `<svg viewBox="0 0 1000 170" class="lt-svg"><line x1="20" y1="100" x2="985" y2="100" stroke="#16324a" stroke-width="4"/><polygon points="985,92 1000,100 985,108" fill="#16324a"/>`;
-        for (let v = 0; v <= bis; v += fein) { const g = v % grob === 0; s += `<line x1="${X(v)}" y1="${g ? 82 : 90}" x2="${X(v)}" y2="${g ? 118 : 110}" stroke="#16324a" stroke-width="${g ? 3 : 2}"/>`; if (g) s += `<text x="${X(v)}" y="148" text-anchor="middle" font-size="22" font-weight="800" fill="#16324a">${zahl(v)}</text>`; }
-        s += `<polygon points="${X(n) - 14},20 ${X(n) + 14},20 ${X(n)},70" fill="#f2a93b"/></svg>`;
+        let s = `<svg viewBox="0 0 1000 170" class="lt-svg"><line x1="20" y1="100" x2="985" y2="100" stroke="#2f4a1f" stroke-width="4"/><polygon points="985,92 1000,100 985,108" fill="#2f4a1f"/>`;
+        for (let v = 0; v <= bis; v += fein) { const g = v % grob === 0; s += `<line x1="${X(v)}" y1="${g ? 82 : 90}" x2="${X(v)}" y2="${g ? 118 : 110}" stroke="#2f4a1f" stroke-width="${g ? 3 : 2}"/>`; if (g) s += `<text x="${X(v)}" y="148" text-anchor="middle" font-size="22" font-weight="800" fill="#2f4a1f">${zahl(v)}</text>`; }
+        s += `<polygon points="${X(n) - 14},20 ${X(n) + 14},20 ${X(n)},70" fill="#d9a23f"/></svg>`;
         return { html: `<div class="lt-breit">${s}</div><div class="lt-frage">Welche Zahl ist das?</div>`, loesung: `<span class="lt-loes-zahl">${zahl(n)}</span>` };
     }
 };
@@ -122,12 +122,12 @@ W.stellenwert = {
 
 const STUNDEN = ["zwölf", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf"];
 function uhrSvg(h, m){
-    let s = `<svg viewBox="0 0 300 300" class="lt-svg lt-uhr"><circle cx="150" cy="150" r="140" fill="#fff" stroke="#16324a" stroke-width="8"/>`;
-    for (let i = 0; i < 60; i++) { const w = i * 6 * Math.PI / 180, g = i % 5 === 0; s += `<line x1="${150 + Math.sin(w) * (g ? 118 : 126)}" y1="${150 - Math.cos(w) * (g ? 118 : 126)}" x2="${150 + Math.sin(w) * 132}" y2="${150 - Math.cos(w) * 132}" stroke="#16324a" stroke-width="${g ? 4 : 1.5}"/>`; }
-    for (let i = 1; i <= 12; i++) { const w = i * 30 * Math.PI / 180; s += `<text x="${150 + Math.sin(w) * 98}" y="${150 - Math.cos(w) * 98 + 11}" text-anchor="middle" font-size="30" font-weight="900" fill="#16324a">${i}</text>`; }
+    let s = `<svg viewBox="0 0 300 300" class="lt-svg lt-uhr"><circle cx="150" cy="150" r="140" fill="#fff" stroke="#2f4a1f" stroke-width="8"/>`;
+    for (let i = 0; i < 60; i++) { const w = i * 6 * Math.PI / 180, g = i % 5 === 0; s += `<line x1="${150 + Math.sin(w) * (g ? 118 : 126)}" y1="${150 - Math.cos(w) * (g ? 118 : 126)}" x2="${150 + Math.sin(w) * 132}" y2="${150 - Math.cos(w) * 132}" stroke="#2f4a1f" stroke-width="${g ? 4 : 1.5}"/>`; }
+    for (let i = 1; i <= 12; i++) { const w = i * 30 * Math.PI / 180; s += `<text x="${150 + Math.sin(w) * 98}" y="${150 - Math.cos(w) * 98 + 11}" text-anchor="middle" font-size="30" font-weight="900" fill="#2f4a1f">${i}</text>`; }
     const wh = ((h % 12) + m / 60) * 30 * Math.PI / 180, wm = m * 6 * Math.PI / 180;
     s += `<line x1="150" y1="150" x2="${150 + Math.sin(wh) * 62}" y2="${150 - Math.cos(wh) * 62}" stroke="#e74c3c" stroke-width="11" stroke-linecap="round"/>`;
-    s += `<line x1="150" y1="150" x2="${150 + Math.sin(wm) * 104}" y2="${150 - Math.cos(wm) * 104}" stroke="#2f80c4" stroke-width="7" stroke-linecap="round"/><circle cx="150" cy="150" r="9" fill="#16324a"/></svg>`;
+    s += `<line x1="150" y1="150" x2="${150 + Math.sin(wm) * 104}" y2="${150 - Math.cos(wm) * 104}" stroke="#2f80c4" stroke-width="7" stroke-linecap="round"/><circle cx="150" cy="150" r="9" fill="#2f4a1f"/></svg>`;
     return s;
 }
 function uhrText(h, m){
@@ -196,7 +196,7 @@ W.formen = {
         };
         const namen = e.stufe === "34" ? Object.keys(F) : ["Kreis", "Dreieck", "Quadrat", "Rechteck"];
         const r = wahl(namen), o = optionen(r, namen, e.stufe === "34" ? 4 : 3);
-        return { html: `<svg viewBox="0 0 200 200" class="lt-svg lt-form" fill="#cfe5f7" stroke="#16324a" stroke-width="5" stroke-linejoin="round">${F[r]}</svg><div class="lt-frage">Welche Form ist das?</div>`, ...o, loesung: `<b>${r}</b>` };
+        return { html: `<svg viewBox="0 0 200 200" class="lt-svg lt-form" fill="#cfe5f7" stroke="#2f4a1f" stroke-width="5" stroke-linejoin="round">${F[r]}</svg><div class="lt-frage">Welche Form ist das?</div>`, ...o, loesung: `<b>${r}</b>` };
     }
 };
 
@@ -343,7 +343,7 @@ W.kim = {
 };
 
 const AUGEN = { 1: [[50, 50]], 2: [[28, 28], [72, 72]], 3: [[28, 28], [50, 50], [72, 72]], 4: [[28, 28], [72, 28], [28, 72], [72, 72]], 5: [[28, 28], [72, 28], [50, 50], [28, 72], [72, 72]], 6: [[28, 26], [72, 26], [28, 50], [72, 50], [28, 74], [72, 74]] };
-const wuerfelSvg = n => `<svg viewBox="0 0 100 100" class="lt-wuerfel"><rect x="4" y="4" width="92" height="92" rx="18" fill="#fff" stroke="#16324a" stroke-width="5"/>${AUGEN[n].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="9" fill="#16324a"/>`).join("")}</svg>`;
+const wuerfelSvg = n => `<svg viewBox="0 0 100 100" class="lt-wuerfel"><rect x="4" y="4" width="92" height="92" rx="18" fill="#fff" stroke="#2f4a1f" stroke-width="5"/>${AUGEN[n].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="9" fill="#2f4a1f"/>`).join("")}</svg>`;
 W.wuerfel = {
     titel: "Würfel", emoji: "🎲", gruppe: "Allgemein",
     text: "Ein oder zwei große Würfel – für Rechenspiele, Bewegung oder „Wer ist dran?“.",
@@ -982,10 +982,10 @@ W.gluecksrad = {
             : e.art === "eigen" ? (() => { let t = ""; try { t = localStorage.getItem("lt-rad-felder") || ""; } catch (x) {} t = prompt("Felder, durch Komma getrennt (keine Namen von Kindern nötig – Platznummern gehen auch):", t || "Rot, Blau, Grün, Gelb") || t; try { localStorage.setItem("lt-rad-felder", t); } catch (x) {} return t.split(",").map(s => s.trim()).filter(Boolean); })()
             : ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
         if (felder.length < 2) felder = ["1", "2"];
-        const FARBEN = ["#3d7ea6", "#f2a93b", "#2e8b57", "#c0399b", "#e67e22", "#16324a", "#17a2b8", "#e74c3c", "#7f8c8d"];
+        const FARBEN = ["#557428", "#d9a23f", "#2e8b57", "#c0399b", "#e67e22", "#2f4a1f", "#17a2b8", "#e74c3c", "#7f8c8d"];
         const n = felder.length, w = 360 / n;
         const pfad = i => { const a1 = (i * w - 90) * Math.PI / 180, a2 = ((i + 1) * w - 90) * Math.PI / 180; return `M150 150 L${150 + 140 * Math.cos(a1)} ${150 + 140 * Math.sin(a1)} A140 140 0 ${w > 180 ? 1 : 0} 1 ${150 + 140 * Math.cos(a2)} ${150 + 140 * Math.sin(a2)} Z`; };
-        el.innerHTML = `<div class="lt-rad-box"><svg viewBox="0 0 300 300" class="lt-rad"><g class="lt-rad-dreh">${felder.map((f, i) => { const m = ((i + .5) * w - 90) * Math.PI / 180; return `<path d="${pfad(i)}" fill="${FARBEN[i % FARBEN.length]}" stroke="#fff" stroke-width="3"/><text x="${150 + 92 * Math.cos(m)}" y="${150 + 92 * Math.sin(m) + 8}" text-anchor="middle" font-size="${n > 8 ? 18 : 22}" font-weight="900" fill="#fff">${esc(String(f).slice(0, 10))}</text>`; }).join("")}</g><circle cx="150" cy="150" r="20" fill="#fff" stroke="#16324a" stroke-width="4"/></svg><div class="lt-rad-zeiger">▼</div></div>`;
+        el.innerHTML = `<div class="lt-rad-box"><svg viewBox="0 0 300 300" class="lt-rad"><g class="lt-rad-dreh">${felder.map((f, i) => { const m = ((i + .5) * w - 90) * Math.PI / 180; return `<path d="${pfad(i)}" fill="${FARBEN[i % FARBEN.length]}" stroke="#fff" stroke-width="3"/><text x="${150 + 92 * Math.cos(m)}" y="${150 + 92 * Math.sin(m) + 8}" text-anchor="middle" font-size="${n > 8 ? 18 : 22}" font-weight="900" fill="#fff">${esc(String(f).slice(0, 10))}</text>`; }).join("")}</g><circle cx="150" cy="150" r="20" fill="#fff" stroke="#2f4a1f" stroke-width="4"/></svg><div class="lt-rad-zeiger">▼</div></div>`;
         const g = el.querySelector(".lt-rad-dreh"); let winkel = 0;
         const drehen = () => {
             const ziel = z(0, n - 1); winkel += 360 * 5 + (360 - (ziel + .5) * w) - (winkel % 360);
@@ -1136,7 +1136,7 @@ const CSS = `
 .lt-abc{ letter-spacing:.25em; }
 .lt-auftraege{ display:flex; flex-direction:column; gap:1.6vh; text-align:left; font-size:clamp(26px,min(4.2vw,6.4vh),64px); font-weight:800; background:rgba(255,255,255,.08); border-radius:24px; padding:2.4vh 3vw; }
 .lt-auftraege.klein{ font-size:clamp(18px,min(2.4vw,3.6vh),36px); padding:1vh 2vw; }
-.lt-nr{ display:inline-flex; align-items:center; justify-content:center; width:1.4em; height:1.4em; border-radius:50%; background:#f2a93b; color:#16324a; font-weight:900; margin-right:.5em; font-size:.8em; vertical-align:middle; }
+.lt-nr{ display:inline-flex; align-items:center; justify-content:center; width:1.4em; height:1.4em; border-radius:50%; background:#d9a23f; color:#2f4a1f; font-weight:900; margin-right:.5em; font-size:.8em; vertical-align:middle; }
 .lt-antworten{ display:flex; gap:1.6vw; flex-wrap:wrap; justify-content:center; }
 .lt-antwort{ border:4px solid rgba(255,255,255,.75); background:rgba(255,255,255,.06); color:#fff; border-radius:16px 26px 18px 30px; padding:1.4vh 2.4vw; font:400 clamp(24px,min(3.6vw,5.2vh),56px) "Patrick Hand","Andika",sans-serif; cursor:pointer; display:flex; align-items:center; gap:.5em; transition:.15s; }
 .lt-antwort .nr{ background:#ffe066; color:#1d4634; border-radius:12px; width:1.4em; height:1.4em; display:inline-flex; align-items:center; justify-content:center; font-size:.8em; }
@@ -1157,11 +1157,11 @@ const CSS = `
 .lt-muenze.kupfer{ background:radial-gradient(circle at 35% 30%, #f0b08a, #b86b3f); }
 .lt-muenze.gold{ background:radial-gradient(circle at 35% 30%, #ffe7a3, #d6a93b); }
 .lt-muenze.euro{ background:radial-gradient(circle at 50% 50%, #ffe39a 0 46%, #d9dde0 47% 100%); }
-.lt-schein{ display:inline-flex; align-items:center; justify-content:center; width:clamp(150px,18vw,300px); height:clamp(78px,9vw,150px); border-radius:12px; font-weight:900; font-size:clamp(26px,3.4vw,56px); color:#16324a; box-shadow:0 6px 14px rgba(0,0,0,.3); border:4px solid rgba(255,255,255,.6); }
+.lt-schein{ display:inline-flex; align-items:center; justify-content:center; width:clamp(150px,18vw,300px); height:clamp(78px,9vw,150px); border-radius:12px; font-weight:900; font-size:clamp(26px,3.4vw,56px); color:#2f4a1f; box-shadow:0 6px 14px rgba(0,0,0,.3); border:4px solid rgba(255,255,255,.6); }
 .lt-kim{ display:grid; grid-template-columns:repeat(var(--n),auto); gap:2vw; }
 .lt-kim-feld{ background:#fff; border-radius:22px; padding:1.4vh; display:flex; align-items:center; justify-content:center; width:clamp(90px,min(15vw,22vh),220px); height:clamp(90px,min(15vw,22vh),220px); }
 .lt-kim-feld .lt-bild{ width:100%; height:100%; }
-.lt-kim-feld .lt-luecke{ color:#16324a; }
+.lt-kim-feld .lt-luecke{ color:#2f4a1f; }
 .lt-wuerfel-reihe{ display:flex; gap:3vw; }
 .lt-wuerfel{ width:clamp(120px,min(22vw,36vh),340px); }
 .lt-timer{ position:relative; width:min(60vh,70vw); }
@@ -1174,16 +1174,16 @@ const CSS = `
 #praes .lt-voll .lt-leiste h2{ margin:0; font:400 clamp(22px,2.6vw,34px) "Patrick Hand","Andika",sans-serif; color:#ffe066; text-shadow:none; line-height:1.2; }
 #praes .lt-voll.lt-meer .lt-leiste h2{ font-family:"Nunito",sans-serif; font-weight:900; color:#f2c97b; }
 /* Leise-Meer (Sozialtraining & Vertretung): Leuchtturm-Welt */
-.lt-voll.lt-meer{ background:#16324a; font-family:"Nunito",sans-serif; }
+.lt-voll.lt-meer{ background:#2f4a1f; font-family:"Nunito",sans-serif; }
 .lt-meer .lt-leiste h2{ font-family:"Nunito",sans-serif; font-weight:900; color:#f2c97b; }
 .lt-meer .lt-leiste h2 svg{ display:none; }
-.lt-meer .lt-leiste select{ background:#fff; color:#16324a; font-family:"Nunito",sans-serif; }
+.lt-meer .lt-leiste select{ background:#fff; color:#2f4a1f; font-family:"Nunito",sans-serif; }
 .lt-meer .lt-x, .lt-meer .lt-knopf{ background:rgba(255,255,255,.14); color:#fff; box-shadow:none; font-family:"Nunito",sans-serif; font-weight:900; border-radius:16px; }
-.lt-meer .lt-knopf.gold{ background:#f2a93b; color:#16324a; }
-.lt-meer .lt-buehne{ box-shadow:none; background:radial-gradient(circle at 50% 30%, #23507a, #16324a 70%); }
+.lt-meer .lt-knopf.gold{ background:#d9a23f; color:#2f4a1f; }
+.lt-meer .lt-buehne{ box-shadow:none; background:radial-gradient(circle at 50% 30%, #23507a, #2f4a1f 70%); }
 .lt-meer .lt-frage, .lt-meer .lw-zahl, .lt-meer .lw-regler{ font-family:"Nunito",sans-serif; font-weight:800; }
 .lt-meer .lt-frage, .lt-meer .lw-zahl{ color:#f2c97b; }
-.lt-meer .lw-blase{ font-family:"Nunito",sans-serif; font-weight:900; color:#16324a; }
+.lt-meer .lw-blase{ font-family:"Nunito",sans-serif; font-weight:900; color:#2f4a1f; }
 
 /* Szene (Wald und Meer) */
 .lw-szene{ position:relative; width:min(94vw,1400px); height:min(58vh,620px); overflow:hidden; border-radius:22px; background:linear-gradient(#9fd3f0, #cfe9f7 45%, #b9dc9c 46%, #6fa04a); }
@@ -1195,7 +1195,7 @@ const CSS = `
 .lw-held-bild{ width:min(34vh,26vw); height:min(34vh,26vw); filter:drop-shadow(0 12px 22px rgba(0,0,0,.3)); }
 .lw-held.da .lw-held-bild{ animation:lwHeldHuepf 1.4s ease-in-out 1.2s infinite; }
 .lw-held-bild .lt-bild, .lw-held-bild svg{ width:100% !important; height:100% !important; display:block; }
-.lw-held-blase{ background:#fff; color:#16324a; font:900 clamp(16px,2.1vw,30px) "Nunito",sans-serif; border-radius:22px; padding:.5em .9em; box-shadow:0 8px 24px rgba(0,0,0,.18); margin-bottom:.6em; max-width:min(70vw,760px); text-align:center; position:relative; animation:lwPop .5s cubic-bezier(.2,1.6,.4,1); }
+.lw-held-blase{ background:#fff; color:#2f4a1f; font:900 clamp(16px,2.1vw,30px) "Nunito",sans-serif; border-radius:22px; padding:.5em .9em; box-shadow:0 8px 24px rgba(0,0,0,.18); margin-bottom:.6em; max-width:min(70vw,760px); text-align:center; position:relative; animation:lwPop .5s cubic-bezier(.2,1.6,.4,1); }
 .lw-held-blase::after{ content:""; position:absolute; left:50%; bottom:-14px; transform:translateX(-50%); border:14px solid transparent; border-bottom:0; border-top-color:#fff; }
 .lw-ruf{ position:absolute; left:50%; top:6%; transform:translateX(-50%) scale(0); font:900 clamp(40px,8vw,130px) "Nunito",sans-serif; color:#ffd23f; -webkit-text-stroke:4px #7a3e00; text-shadow:0 8px 0 rgba(0,0,0,.2); white-space:nowrap; opacity:0; }
 .lw-ruf.an{ animation:lwRuf 1.8s cubic-bezier(.2,1.6,.4,1) forwards; }
@@ -1310,7 +1310,7 @@ const CSS = `
 .lw-wolke2 svg{ width:100%; display:block; }
 .lw-szene.still *, .lw-szene.still{ animation-play-state:paused !important; }
 .lw-ruhe{ position:absolute; inset:0; z-index:20; display:flex; align-items:center; justify-content:center; background:rgba(240,248,236,.35); backdrop-filter:blur(9px) saturate(1.05); -webkit-backdrop-filter:blur(9px); color:#1d4634; text-align:center; transition:opacity 1.4s; }
-.lw-ruhe.meer{ background:rgba(225,240,248,.4); color:#16324a; }
+.lw-ruhe.meer{ background:rgba(225,240,248,.4); color:#2f4a1f; }
 .lw-r-karte{ background:rgba(255,253,245,.9); border-radius:36px; padding:3vh 4vw 3.4vh; box-shadow:0 20px 50px rgba(30,60,40,.18); display:flex; flex-direction:column; align-items:center; gap:1.2vh; max-width:86%; }
 .lw-r-symbol{ font-size:clamp(40px,min(5vw,8vh),90px); line-height:1; }
 .lw-r-reihe{ display:flex; align-items:center; gap:3vw; }
@@ -1547,7 +1547,7 @@ const CSS = `
 /* Übersicht im Leuchtturm */
 .lt-uebersicht h3{ font-size:15px; font-weight:900; color:#7c8a85; text-transform:uppercase; letter-spacing:.04em; margin:22px 0 10px; }
 .lt-karten{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
-.lt-karte{ background:#fff; border-radius:18px; box-shadow:0 6px 24px rgba(22,50,74,.1); padding:16px 18px; display:flex; flex-direction:column; gap:8px; cursor:pointer; border:2px solid transparent; text-align:left; font:inherit; color:inherit; }
+.lt-karte{ background:#fff; border-radius:18px; box-shadow:0 6px 24px rgba(47,74,31,.1); padding:16px 18px; display:flex; flex-direction:column; gap:8px; cursor:pointer; border:2px solid transparent; text-align:left; font:inherit; color:inherit; }
 .lt-karte:hover{ border-color:#e7f1fb; transform:translateY(-2px); }
 .lt-karte .em{ font-size:34px; line-height:1; }
 .lt-karte b{ font-size:17px; font-weight:900; }

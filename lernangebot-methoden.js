@@ -110,15 +110,15 @@ const CSS = `
 .mp-filter input[type=search]{ flex:1 1 200px; width:auto; }
 .mp-filter select{ flex:0 1 170px; width:auto; }
 .mp-karten{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
-.mp-karte{ background:#fff; border-radius:16px; box-shadow:0 4px 18px rgba(22,50,74,.08); padding:14px 16px; display:flex; flex-direction:column; gap:7px; border:2px solid transparent; }
+.mp-karte{ background:#fff; border-radius:16px; box-shadow:0 4px 18px rgba(47,74,31,.08); padding:14px 16px; display:flex; flex-direction:column; gap:7px; border:2px solid transparent; }
 .mp-karte.drin{ border-color:#f6dfa6; background:#fffdf6; }
 .mp-karte h4{ margin:0; font-size:16px; font-weight:900; display:flex; gap:8px; align-items:center; }
 .mp-karte p{ margin:0; font-size:13.5px; color:#55636a; line-height:1.45; }
 .mp-karte .mp-tipp{ background:#f3f8f3; border-radius:8px; padding:5px 9px; font-size:12.5px; }
 .mp-karte .chips{ display:flex; gap:5px; flex-wrap:wrap; }
 .mp-knoepfe{ display:flex; gap:6px; flex-wrap:wrap; margin-top:auto; }
-.mp-planer{ position:sticky; top:12px; background:#fff; border-radius:20px; box-shadow:0 6px 24px rgba(22,50,74,.1); padding:18px; max-height:calc(100vh - 24px); overflow:auto; }
-.mp-planer h2{ margin:0 0 10px; font-size:19px; font-weight:900; color:#16324a; }
+.mp-planer{ position:sticky; top:12px; background:#fff; border-radius:20px; box-shadow:0 6px 24px rgba(47,74,31,.1); padding:18px; max-height:calc(100vh - 24px); overflow:auto; }
+.mp-planer h2{ margin:0 0 10px; font-size:19px; font-weight:900; color:#2f4a1f; }
 .mp-phase{ border-top:2px solid #e3e9ee; padding:8px 0 4px; }
 .mp-phase-kopf{ display:flex; justify-content:space-between; font-weight:900; font-size:14px; color:#7c8a85; text-transform:uppercase; letter-spacing:.03em; }
 .mp-baustein{ display:flex; align-items:center; gap:6px; background:#f6f9fb; border-radius:10px; padding:6px 8px; margin:5px 0; font-weight:800; font-size:14px; }
@@ -132,7 +132,7 @@ const CSS = `
 .mp-balken span{ display:block; height:100%; }
 `;
 function cssLaden(){ if (!document.getElementById("lernMethodenCss")) { const s = document.createElement("style"); s.id = "lernMethodenCss"; s.textContent = CSS; document.head.appendChild(s); } }
-const PFARBE = { Ankommen: "#3d7ea6", Einstieg: "#c0399b", "Übung": "#f2a93b", Arbeitsphase: "#2e8b57", Abschluss: "#16324a" };
+const PFARBE = { Ankommen: "#557428", Einstieg: "#c0399b", "Übung": "#d9a23f", Arbeitsphase: "#2e8b57", Abschluss: "#2f4a1f" };
 
 /* ---------------- Ansicht ---------------- */
 let ziel = null;

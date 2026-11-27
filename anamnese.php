@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <style>
 /* =================== Bildschirm (Leuchtturm-Stil) =================== */
-:root{ --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4; --text:#1f2d36; --schatten:0 6px 24px rgba(22,50,74,.1); }
+:root{ --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --schaum:#f7f4ec; --text:#1f2d36; --schatten:0 6px 24px rgba(47,74,31,.1); }
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; line-height:1.5; }
 .wrap{ width:min(900px, calc(100% - 32px)); margin:24px auto 90px; }
@@ -68,7 +68,7 @@ textarea{ min-height:84px; resize:vertical; font-weight:500; }
 .ziel{ border:2px solid #eef1f3; border-radius:14px; padding:12px; margin-bottom:10px; }
 .ziel-kopf{ font-weight:900; color:var(--meer); margin-bottom:6px; }
 
-.leiste{ position:sticky; bottom:12px; z-index:5; background:var(--nacht); border-radius:18px; padding:10px; display:flex; gap:8px; flex-wrap:wrap; box-shadow:0 10px 30px rgba(22,50,74,.35); }
+.leiste{ position:sticky; bottom:12px; z-index:5; background:var(--nacht); border-radius:18px; padding:10px; display:flex; gap:8px; flex-wrap:wrap; box-shadow:0 10px 30px rgba(47,74,31,.35); }
 .btn{ border:none; border-radius:12px; background:var(--meer); color:#fff; font:800 14px "Nunito",sans-serif; padding:11px 16px; cursor:pointer; display:inline-flex; gap:8px; align-items:center; text-decoration:none; }
 .btn.gold{ background:var(--gold); color:#3b2a00; }
 .btn.hell{ background:rgba(255,255,255,.14); }
@@ -101,7 +101,7 @@ textarea{ min-height:84px; resize:vertical; font-weight:500; }
   .wrap{ display:none !important; }
   #druck{ display:block; }
 }
-#druck{ font-family:Inter, "Nunito", sans-serif; color:#1b1f24; font-size:9.4pt; line-height:1.35; --ac:#1f3a5f; --ac2:#5b7ea6; --tint:#eef3f8; --ln:#b9c6d6; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+#druck{ font-family:Inter, "Nunito", sans-serif; color:#1b1f24; font-size:9.4pt; line-height:1.35; --ac:#2f4a1f; --ac2:#557428; --tint:#eef3e6; --ln:#c9d4b8; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 #druck .page{ width:210mm; height:297mm; padding:10mm 13mm 14mm; position:relative; overflow:hidden; page-break-after:always; break-after:page; display:flex; flex-direction:column; }
 #druck .page:last-child{ page-break-after:auto; break-after:auto; }
 #druck .top{ display:flex; justify-content:space-between; align-items:flex-end; padding-bottom:3mm; border-bottom:2pt solid var(--ac); margin-bottom:1mm; }
@@ -163,6 +163,7 @@ textarea{ min-height:84px; resize:vertical; font-weight:500; }
 #druck .sign i{ display:block; border-bottom:.8pt solid #222; height:6mm; margin-bottom:1mm; font-style:normal; font-size:9.4pt; color:#111; }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 <div class="wrap">

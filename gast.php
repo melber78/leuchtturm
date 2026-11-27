@@ -62,7 +62,7 @@ $INFO = [
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- App (Home-Bildschirm) -->
 <link rel="manifest" href="manifest.php">
-<meta name="theme-color" content="#16324a">
+<meta name="theme-color" content="#2f4a1f">
 <link rel="apple-touch-icon" href="app-icon-192.png">
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -75,7 +75,7 @@ $INFO = [
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <style>
-:root{ --nacht:#16324a; --meer:#3d7ea6; --gold:#f2a93b; --schaum:#f4f6f4; --text:#1f2d36; --schatten:0 6px 24px rgba(22,50,74,.1); }
+:root{ --nacht:#2f4a1f; --meer:#557428; --gold:#d9a23f; --schaum:#f7f4ec; --text:#1f2d36; --schatten:0 6px 24px rgba(47,74,31,.1); }
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--schaum); color:var(--text); font-family:"Nunito",sans-serif; }
 .portal{ width:min(860px,94%); margin:44px auto; }
@@ -100,6 +100,7 @@ button{ margin-top:14px; width:100%; font:900 17px "Nunito",sans-serif; backgrou
 .fuss{ text-align:center; margin-top:28px; font-weight:800; }
 .fuss a{ color:var(--meer); }
 </style>
+<link rel="stylesheet" href="marke/mewe.css">
 </head>
 <body>
 <div class="portal">

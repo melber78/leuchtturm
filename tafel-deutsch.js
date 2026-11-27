@@ -11,7 +11,7 @@ const nimm = l => l[Math.floor(Math.random() * l.length)];
 
 /* ---------- Wortarten ---------- */
 const WA = {
-    N:  { n: "Nomen", f: "#3d7ea6", frage: "Kann ich <i>der, die, das</i> davorsetzen? Gibt es eine Mehrzahl?", stufe: 1 },
+    N:  { n: "Nomen", f: "#557428", frage: "Kann ich <i>der, die, das</i> davorsetzen? Gibt es eine Mehrzahl?", stufe: 1 },
     V:  { n: "Verb", f: "#d1342b", frage: "Kann ich <i>ich, du, er</i> davorsetzen? Was tut jemand?", stufe: 1 },
     A:  { n: "Adjektiv", f: "#2e9e5b", frage: "<i>Wie</i> ist etwas? Kann ich steigern (groß – größer – am größten)?", stufe: 1 },
     Ar: { n: "Artikel", f: "#e0a800", frage: "Begleiter des Nomens: <i>der, die, das, ein, eine</i> …", stufe: 1 },
@@ -43,7 +43,7 @@ const SAETZE = [
 
 /* ---------- Satzglieder ---------- */
 const SG = {
-    S:    { n: "Subjekt", kurz: "Subjekt", f: "#3d7ea6", frage: "Wer oder was …?" },
+    S:    { n: "Subjekt", kurz: "Subjekt", f: "#557428", frage: "Wer oder was …?" },
     P:    { n: "Prädikat", kurz: "Prädikat", f: "#d1342b", frage: "Was tut / geschieht?" },
     AO:   { n: "Akkusativobjekt", kurz: "Akk.-Objekt", f: "#2e9e5b", frage: "Wen oder was …?" },
     DO:   { n: "Dativobjekt", kurz: "Dat.-Objekt", f: "#16a085", frage: "Wem …?" },
@@ -81,7 +81,7 @@ const CSS = `
 .wa-w.andere{ opacity:.55; cursor:default; }
 .ek-tasten .t-weg{ background:#9aa8b4; }
 .sg-satz{ display:flex; flex-wrap:wrap; gap:clamp(10px,1.8vmin,22px); justify-content:center; align-content:center; height:100%; padding:1vmin; }
-.sg-b{ position:relative; font-family:"Andika","Nunito",sans-serif; font-weight:700; font-size:clamp(24px,4.8vmin,60px); padding:.14em .4em .62em; border-radius:.35em; background:#fff; border:3px solid #16324a; cursor:pointer; transition:transform .5s, background .25s; line-height:1.1; }
+.sg-b{ position:relative; font-family:"Andika","Nunito",sans-serif; font-weight:700; font-size:clamp(24px,4.8vmin,60px); padding:.14em .4em .62em; border-radius:.35em; background:#fff; border:3px solid #2f4a1f; cursor:pointer; transition:transform .5s, background .25s; line-height:1.1; }
 .ek.kreide .sg-b{ background:rgba(255,255,255,.08); border-color:#f3efe3; color:#fdfaf1; }
 .sg-b .lab{ position:absolute; left:0; right:0; bottom:.1em; text-align:center; font-family:"Nunito",sans-serif; font-size:.28em; font-weight:900; }
 .sg-b.gefaerbt{ color:#fff !important; border-color:transparent; }

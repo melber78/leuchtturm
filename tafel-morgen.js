@@ -27,7 +27,7 @@ zeitAbgleichen(); setInterval(zeitAbgleichen, 15 * 60 * 1000);
 // Vorgaben – werden beim ersten Öffnen in die gespeicherten Daten übernommen und sind danach frei bearbeitbar
 const DEF_FAECHER = {
     deutsch:   { n: "Deutsch", e: "📖", f: "#e2574c", m: ["fibel", "heft"] },
-    mathe:     { n: "Mathe", e: "🔢", f: "#3d7ea6", m: ["mathebuch", "heft", "lineal"] },
+    mathe:     { n: "Mathe", e: "🔢", f: "#557428", m: ["mathebuch", "heft", "lineal"] },
     sachunterricht: { n: "Sachunterricht", e: "🌱", f: "#3f9a5a", m: [] },
     englisch:  { n: "Englisch", e: "🇬🇧", f: "#6c5ce7", m: ["heft"] },
     kunst:     { n: "Kunst", e: "🎨", f: "#e67e22", m: ["malkasten", "schere", "kleber"] },
@@ -107,7 +107,7 @@ const grossK = b => b === "ß" ? "" : b.charAt(0).toUpperCase() + b.slice(1);
 function wortMarkiert(wort, b){ const i = wort.toLowerCase().indexOf(b); return i < 0 ? esc(wort) : esc(wort.slice(0, i)) + `<em>${esc(wort.slice(i, i + b.length))}</em>` + esc(wort.slice(i + b.length)); }
 const HINWEIS_ICONS = ["📢", "⚠️", "🎂", "✉️", "📝", "🏃", "🍎", "🎉", "🧑‍🏫", "🏫", "🚌", "⏰", "💡", "❤️"];
 const TAGE = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
-const TAGE_FARBE = ["#e2574c", "#3d7ea6", "#e67e22", "#3f9a5a", "#8e44ad", "#d4a017", "#e2574c"];
+const TAGE_FARBE = ["#e2574c", "#557428", "#e67e22", "#3f9a5a", "#8e44ad", "#d4a017", "#e2574c"];
 const MONATE = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 const JAHRESZEIT = m => m <= 1 || m === 11 ? ["⛄", "Winter"] : m <= 4 ? ["🌷", "Frühling"] : m <= 7 ? ["🌻", "Sommer"] : ["🍂", "Herbst"];
 // Unterrichtszeiten der Schule (Vorgabe für neue Klassen)
@@ -538,7 +538,7 @@ function materialNeu(ziel){
     const k = klasse();
     const o = overlay(`<h2>🎒 Neues Material</h2>
         <div class="mg-felder"><div><label>Name</label><input data-mnn maxlength="30" placeholder="z. B. Blauer Ordner, Knete, Leseheft"></div>
-        <div><label>Bild</label><div class="mg-reihe"><input class="mg-emoji" data-mne value="📦" maxlength="8"><label class="mg-farbwahl"><input type="checkbox" data-mno> als farbiger Ordner</label><input type="color" data-mnf value="#3d7ea6" hidden></div></div></div>
+        <div><label>Bild</label><div class="mg-reihe"><input class="mg-emoji" data-mne value="📦" maxlength="8"><label class="mg-farbwahl"><input type="checkbox" data-mno> als farbiger Ordner</label><input type="color" data-mnf value="#557428" hidden></div></div></div>
         <label>Gleich eintragen bei</label>
         <div class="mg-reihe mg-wrap"><label class="mg-schalter"><input type="checkbox" data-mnz="immer" ${ziel && ziel.immer ? "checked" : ""}> jeden Tag</label>
         ${Object.entries(FAECHER).filter(([fk]) => fk !== "frei").map(([fk, f]) => `<label class="mg-schalter"><input type="checkbox" data-mnz="f|${fk}" ${ziel && ziel.fach === fk ? "checked" : ""}> ${esc(f.e)} ${esc(f.n)}</label>`).join("")}
@@ -680,7 +680,7 @@ function bearbeiten(r){
           <div><label>Buchstaben der Woche (leer = Feld ausblenden)</label><div class="mg-reihe"><input data-feld="buchstabe" value="${esc(k.buchstabe || "")}" maxlength="24" placeholder="z. B. m, a" style="flex:1">${kursBuchstabe() ? `<button class="mg-k hell" data-ausKurs>+ aus dem Buchstabenkurs: ${esc(kursBuchstabe())}</button>` : ""}</div><small class="mg-hilfe">Mehrere mit Komma trennen (bis zu 4), z. B. „m, a“ oder „ei, sch“. Antippen eines Buchstabens auf der Tafel öffnet ihn im Buchstabenkurs.</small></div>
           <div><label>Ort fürs Wetter</label><div class="mg-reihe"><input data-ort value="${esc((k.ort || {}).name || "")}" style="flex:1"><button class="mg-k hell" data-ortsuche>suchen</button></div><small class="mg-hilfe" id="mgOrt">${k.ort && k.ort.lat ? `📍 ${esc(k.ort.name)} (${(+k.ort.lat).toFixed(2)}, ${(+k.ort.lon).toFixed(2)})` : ""}</small></div>
         </div>
-        ${window.TAFEL_LINKS_ERLAUBT ? `<div class="mg-info-box" style="margin-top:14px; background:#eef4fb; color:#16324a;">📺 <b>Auf der Tafel installieren</b> – die Tafel zeigt dann <b>nur diese Morgentafel</b> (Klasse ${esc(k.name)}), ohne Login und ohne Zugriff auf den Rest des Leuchtturms. Termine und Hinweise, die du am Handy einträgst, erscheinen dort automatisch.
+        ${window.TAFEL_LINKS_ERLAUBT ? `<div class="mg-info-box" style="margin-top:14px; background:#eef4fb; color:#2f4a1f;">📺 <b>Auf der Tafel installieren</b> – die Tafel zeigt dann <b>nur diese Morgentafel</b> (Klasse ${esc(k.name)}), ohne Login und ohne Zugriff auf den Rest des Leuchtturms. Termine und Hinweise, die du am Handy einträgst, erscheinen dort automatisch.
             <div class="mg-reihe" style="margin-top:8px"><input data-tafelname placeholder="Name der Tafel, z. B. Raum 204" maxlength="40" style="flex:1"><button class="mg-k" data-tafelneu>Tafel-Link erstellen</button></div>
             <div data-tafelausgabe></div><div data-tafelliste style="margin-top:8px"></div></div>` : ""}
         ${D.klassen.length > 1 ? `<button class="mg-k rot" data-loeschen>🗑 Klasse ${esc(k.name)} löschen</button>` : ""}`;
@@ -819,7 +819,7 @@ function editorAktivieren(p, k){
     p.querySelectorAll("[data-immer]").forEach(b => b.addEventListener("click", () => { const m = b.dataset.immer, l = k.immer = k.immer || []; const i = l.indexOf(m); i >= 0 ? l.splice(i, 1) : l.push(m); b.classList.toggle("an"); speichern(); }));
     p.querySelectorAll("[data-mname]").forEach(i => i.addEventListener("change", () => { MATERIAL[i.dataset.mname].n = i.value.trim() || MATERIAL[i.dataset.mname].n; neu(); }));
     p.querySelectorAll("[data-memoji]").forEach(i => i.addEventListener("change", () => { MATERIAL[i.dataset.memoji].e = i.value.trim() || "❔"; neu(); }));
-    p.querySelectorAll("[data-mordner]").forEach(i => i.addEventListener("change", () => { const x = MATERIAL[i.dataset.mordner]; if (i.checked) x.farbe = x.farbe || "#3d7ea6"; else delete x.farbe; neu(); }));
+    p.querySelectorAll("[data-mordner]").forEach(i => i.addEventListener("change", () => { const x = MATERIAL[i.dataset.mordner]; if (i.checked) x.farbe = x.farbe || "#557428"; else delete x.farbe; neu(); }));
     p.querySelectorAll("[data-mfarbe]").forEach(i => i.addEventListener("change", () => { MATERIAL[i.dataset.mfarbe].farbe = i.value; neu(); }));
     p.querySelectorAll("[data-mweg]").forEach(b => b.addEventListener("click", () => { const m = b.dataset.mweg; if (!confirm(`„${MATERIAL[m].n}“ aus der Liste löschen? Es verschwindet auch bei allen Fächern.`)) return;
         delete MATERIAL[m]; D.klassen.forEach(x => { x.immer = (x.immer || []).filter(y => y !== m); Object.keys(x.material).forEach(f => x.material[f] = x.material[f].filter(y => y !== m)); Object.keys(x.extra).forEach(t => x.extra[t] = x.extra[t].filter(y => y !== m)); });
@@ -855,7 +855,7 @@ async function installieren(){
     if (installAngebot) { installAngebot.prompt(); try { await installAngebot.userChoice; } catch (x) {} installAngebot = null; return; }
     const ua = navigator.userAgent, edge = /Edg\//.test(ua), android = /Android/.test(ua), chrome = /Chrome\//.test(ua) && !edge;
     overlay(`<h2>📲 Morgentafel auf der Tafel einrichten</h2>
-        <div class="mg-info-box" style="background:#eef4fb;color:#16324a">Je nach Tafel heißt der Menüpunkt etwas anders. Wichtig ist nur: Die Seite soll als Symbol auf der Tafel liegen.</div>
+        <div class="mg-info-box" style="background:#eef4fb;color:#2f4a1f">Je nach Tafel heißt der Menüpunkt etwas anders. Wichtig ist nur: Die Seite soll als Symbol auf der Tafel liegen.</div>
         <div class="mg-anl ${edge ? "an" : ""}"><b>Microsoft Edge</b> (Windows): oben rechts <b>⋯</b> → <b>Apps</b> → <b>„Diese Website als App installieren“</b> → Installieren.</div>
         <div class="mg-anl ${chrome && !android ? "an" : ""}"><b>Google Chrome</b> (Windows): oben rechts <b>⋮</b> → <b>„Streamen, speichern und teilen“</b> → <b>„Seite als App installieren …“</b> (in älteren Versionen direkt: „Guten Morgen installieren“).</div>
         <div class="mg-anl ${android ? "an" : ""}"><b>Android-Tafel</b> (z. B. mit eigenem Tafel-Browser oder Chrome): Menü <b>⋮</b> → <b>„Zum Startbildschirm hinzufügen“</b> bzw. <b>„App installieren“</b>. Fehlt der Punkt: als <b>Lesezeichen</b> speichern oder die Seite als <b>Startseite</b> des Browsers festlegen.</div>
