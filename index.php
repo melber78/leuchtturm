@@ -52,6 +52,8 @@ body{
     box-shadow:var(--schatten);
 }
 .portal-header h1{ font-size:32px; font-weight:900; margin:0 0 6px; }
+.portal-logo{ margin:0 0 10px !important; line-height:0; }
+.portal-logo img{ width:min(300px, 70vw); height:auto; }
 .portal-header p{ color:#7c8a85; font-weight:700; margin:0; }
 
 .portal-grid{
@@ -137,8 +139,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <div class="portal">
 
 <header class="portal-header">
-<div class="portal-icon"><i class="fa-solid fa-tower-observation"></i></div>
-<h1>Leuchtturm</h1>
+<h1 class="portal-logo"><img src="marke/mewe-leuchtturm.png" alt="MeWe Leuchtturm" width="700" height="436"></h1>
 <p>Orientierung &amp; Material für LRS-Förderung, Sozialtraining, Lernangebot und Vertretung</p>
 </header>
 
