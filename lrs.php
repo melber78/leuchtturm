@@ -398,6 +398,15 @@ table.paare th{ font-size:14px; text-transform:none; color:#4A5866; font-weight:
 /* Arbeitsblätter randlos auf genau eine A4-Seite (der Seitenrand steckt im Blatt selbst) */
 @page lt-blatt{ size:A4; margin:0; }
 
+
+.std-spontan{ background:linear-gradient(120deg, #fff6df, #fdf0cf); border:2px solid #f0dca6; border-radius:20px; padding:14px 16px; margin-bottom:18px; }
+.std-spontan.blink{ animation:sp-blink 1.2s 2; } @keyframes sp-blink{ 50%{ box-shadow:0 0 0 8px rgba(217,162,63,.35); } }
+.std-spontan-kopf{ display:flex; gap:12px; align-items:center; margin-bottom:10px; } .std-spontan-ico{ font-size:30px; }
+.std-spontan-kopf b{ display:block; font-size:18px; color:#2f4a1f; } .std-spontan-kopf small{ color:#6b5427; font-weight:700; font-size:13.5px; }
+.std-spontan-zeile{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; } .std-spontan-zeile select{ flex:1 1 160px; width:auto; }
+.std-spontan-dauer{ display:flex; gap:6px; } .std-spontan-dauer button{ border:2px solid #e8d3a0; background:#fff; border-radius:999px; padding:8px 12px; font:inherit; font-weight:800; cursor:pointer; color:#2d3530; }
+.std-spontan-dauer button.an{ background:#2f4a1f; border-color:#2f4a1f; color:#fff; }
+.std-spontan-rest{ margin-top:10px; font-size:13.5px; font-weight:700; color:#6b5427; } .std-spontan-rest a{ color:#2f4a1f; font-weight:900; }
 </style>
 
 <!-- Gestaltung der Worterarbeitungs-Serie (wird auch für den Druck wiederverwendet) -->
@@ -1876,6 +1885,15 @@ function ws_schriftSetzen(w){
 
 <div class="bereich" id="bereich-stunde">
     <div class="karte">
+        <div class="std-spontan" id="std-spontan">
+            <div class="std-spontan-kopf"><span class="std-spontan-ico">⚡</span><div><b>Spontanstunde</b><small>Kind steht ungeplant vor dir? Ein Klick – fertige Stunde passend zur Akte.</small></div></div>
+            <div class="std-spontan-zeile">
+                <select id="sp-kind" aria-label="Kind"></select>
+                <div class="std-spontan-dauer" id="sp-dauer"><button type="button" data-d="20">20 Min</button><button type="button" data-d="30">30 Min</button><button type="button" data-d="40" class="an">40 Min</button></div>
+                <button class="btn" type="button" id="sp-los" style="margin:0"><i class="fa-solid fa-bolt"></i> Stunde sofort erstellen</button>
+            </div>
+            <div class="std-spontan-rest">Nur noch 10 Minuten übrig? <a href="lrs-spiele.php">🎮 Lernspiel</a> · <a href="lrs-spiele.php" id="sp-welt">🗺️ Weltenreise</a> · <a href="trainingshefte.php" id="sp-test">📖 Lesetempo messen</a></div>
+        </div>
         <h2 class="titel">Stunde zusammenstellen</h2>
         <p class="beschreibung">Eine komplette Fördereinheit nach dem AFS-Aufbau: Aufmerksamkeit zum Einstieg · Funktionstraining · Symptomtraining · Abschluss – dazu dein Ablaufplan mit Feldern für den Lernverlauf.</p>
         <div class="zeile zwei">
@@ -11606,6 +11624,31 @@ async function std_inAkte(aendern){
     } catch (e){ st.textContent = "⚠️ " + e.message; }
 }
 // Kind gewählt: Klasse und Schwerpunkte aus der Akte vorschlagen
+/* ---------- Spontanstunde: ein Klick, Stunde passend zur Akte ---------- */
+function std_spontanAufbauen(){
+    const sel = document.getElementById("sp-kind"); if (!sel) return;
+    sel.innerHTML = `<option value="">Kind wählen …</option>` + LRS_KINDER.map(c => `<option value="${ws_esc(c)}">${ws_esc(c)}${LRS_AKTEN[c]?.klasse ? " · Kl. " + ws_esc(LRS_AKTEN[c].klasse) : ""}</option>`).join("");
+    let dauer = 40;
+    try { dauer = parseInt(localStorage.getItem("lt_sp_dauer"), 10) || 40; } catch (e){}
+    const knoepfe = [...document.querySelectorAll("#sp-dauer button")];
+    const setz = d => { dauer = d; knoepfe.forEach(b => b.classList.toggle("an", +b.dataset.d === d)); try { localStorage.setItem("lt_sp_dauer", d); } catch (e){} };
+    setz(dauer);
+    knoepfe.forEach(b => b.onclick = () => setz(+b.dataset.d));
+    sel.onchange = () => { const c = sel.value; document.getElementById("sp-test").href = c ? "trainingshefte.php?" + new URLSearchParams({ kind: c, tab: "lernstand" }) : "trainingshefte.php"; };
+    document.getElementById("sp-los").onclick = async () => {
+        const c = sel.value;
+        if (!c && LRS_KINDER.length){ sel.focus(); sel.classList.add("fehlt"); setTimeout(() => sel.classList.remove("fehlt"), 1200); return; }
+        // Spontanstunde immer als Einzel-Förderstunde mit frischer Auswahl
+        if (document.getElementById("std-kind2")){ document.getElementById("std-kind2").value = ""; std_zweiZeigen(); }
+        const art = document.getElementById("std-art"); if (art.value !== "foerder"){ art.value = "foerder"; std_artWechsel(); }
+        const k = document.getElementById("std-kind"); k.value = c; k.dispatchEvent(new Event("change"));
+        const d = document.getElementById("std-dauer"); d.value = String(dauer); std_dauerWechsel();
+        const a = document.getElementById("std-aufm"); if (a.querySelector('option[value="zufall"]')) a.value = "zufall";
+        ["std-plan", "std-rueck"].forEach(id => { const x = document.getElementById(id); if (x) x.checked = true; });
+        await fs_erstellen("stunde");
+    };
+    if (new URLSearchParams(location.search).has("spontan")){ const b = document.getElementById("std-spontan"); setTimeout(() => { b.scrollIntoView({ block: "center" }); b.classList.add("blink"); }, 400); }
+}
 function std_ausAkte(code){
     const akte = LRS_AKTEN[code];
     if (!akte) return;
@@ -13768,6 +13811,7 @@ document.getElementById("g-klasse").addEventListener("change", () => {
 });
 silben_laden();
 std_auswahlAufbauen();
+std_spontanAufbauen();
 fp_auswahlAufbauen();
 lt_init();
 ["std-kind", "std-kind2", "fp-kind", "ws-kt-kind"].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = kt_kindOptionen(id === "ws-kt-kind" ? "— Kürzel —" : "— ohne —"); });

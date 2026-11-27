@@ -221,6 +221,7 @@ $BEREICHE = [
         ["Kinder &amp; Stunden", [
             ["trainingshefte.php", "fa-user-graduate", "Kinder-Akten", "Pro Kind (nur Kürzel): Förderplan, Trainingsheft, Lernbox &amp; Stunden", true],
             ["lrs.php#stunde", "fa-layer-group", "Stunde planen", "Stundenplanung für 1 oder 2 Kinder mit allen Blättern"],
+            ["lrs.php?spontan=1#stunde", "fa-bolt", "Spontanstunde", "Ein Klick – fertige Stunde passend zur Akte"],
             ["lrs-timer.php", "fa-stopwatch", "Stunden-Timer", "Phasen der LRS-Stunde mit Zeit im Blick"],
             ["lrs-spiele.php", "fa-seedling", "Lernspiele", "Weltenreise, Action-Spiele & ruhiges Üben"],
             ["lrs-schreiben.php", "fa-envelope-open-text", "Schreiben & Vorlagen", "Nachteilsausgleich, Elternbriefe, Übungstipps"],
