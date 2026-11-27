@@ -1220,7 +1220,7 @@ html:not(.lt-sek):not(.lt-druckschrift) .ws-seite.ws-info.ws-kindblatt{ --ws-sch
 /* Kopf: Keimling + Reihe/Blatt + Samenpunkte, rechts Name */
 .ws-kopf, .fs-reif .ws-kopf{ align-items:center; font-size:13px; padding:0 0 2px; border:none; font-family:var(--klein); }
 .ws-pille, .fs-reif .ws-pille{ display:inline-flex !important; align-items:center; gap:7px; background:none !important; color:var(--holz) !important; padding:0 !important; border-radius:0 !important; font:700 11.5px var(--klein) !important; letter-spacing:.13em; text-transform:uppercase; }
-.ws-pille::before{ content:""; width:66px; height:36px; flex:none; background:url("marke/mewe-leuchtturm.png") left center/contain no-repeat; margin-right:4px; }
+.ws-pille::before{ content:""; width:66px; height:36px; flex:none; background:url("marke/mewe-leuchtturm.svg") left center/contain no-repeat; margin-right:4px; }
 .ws-pille{ white-space:nowrap; min-width:0; overflow:hidden; }
 .ws-kopf{ gap:14px; }
 .ws-saat{ display:inline-flex; gap:5px; margin-left:4px; flex:none; }
