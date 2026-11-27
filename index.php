@@ -147,6 +147,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-27", "Schreiben & Vorlagen", "Empfehlung zum Nachteilsausgleich zum Ankreuzen, Einladung zum Gespräch, Rückmeldung an die Eltern, Übungstipps für zu Hause (passend zu den Schwerpunkten, ohne Technik) und Elterninfo zum Start – druckfertig im MeWe-Design.", "lrs-schreiben.php"],
     ["2026-11-27", "Weltenreise", "Abenteuerspiel in den Lernspielen: 8 Welten von Zauberwald bis Wolkenschloss – mit Geschichte, Begleitfigur, Abenteuern (Springen, Suchen, Bauen) und einem Wächter-Kampf. Sterne, Schätze und Münzen; geübt wird der Schwerpunkt des Kindes.", "lrs-spiele.php"],
     ["2026-11-27", "Lernstand & Förderbericht", "Neuer Reiter in der Kinder-Akte: Lesetempo-Test (1 Minute), Mini-Diktat und Buchstabentest mit festen Listen, Verlauf als Grafik – und ein Förderbericht auf Knopfdruck für Konferenz und Elterngespräch.", "trainingshefte.php"],
     ["2026-11-27", "Eigenes Drucklayout „Wachsen“", "Mit deinem MeWe-Logo im Kopf: Grün, Salbei und Holz, Überschriften in Fraunces, am Rand wächst ein Stängel mit den Aufgaben als Blätter, Samenpunkte zeigen das Blatt der Reihe, unten sanfte Hügel.", "lrs.php"],
@@ -221,7 +222,8 @@ $BEREICHE = [
             ["trainingshefte.php", "fa-user-graduate", "Kinder-Akten", "Pro Kind (nur Kürzel): Förderplan, Trainingsheft, Lernbox &amp; Stunden", true],
             ["lrs.php#stunde", "fa-layer-group", "Stunde planen", "Stundenplanung für 1 oder 2 Kinder mit allen Blättern"],
             ["lrs-timer.php", "fa-stopwatch", "Stunden-Timer", "Phasen der LRS-Stunde mit Zeit im Blick"],
-            ["lrs-spiele.php", "fa-seedling", "Lernspiele", "Entspannt üben am iPad – passend zum Kind"],
+            ["lrs-spiele.php", "fa-seedling", "Lernspiele", "Weltenreise, Action-Spiele & ruhiges Üben"],
+            ["lrs-schreiben.php", "fa-envelope-open-text", "Schreiben & Vorlagen", "Nachteilsausgleich, Elternbriefe, Übungstipps"],
             ["stundenplan.php", "fa-table-cells", "Stundenplan mit Namen", "Wochenplan der LRS-Kinder (nur lokal)"],
         ]],
         ["Arbeitsblätter", [
