@@ -1,0 +1,26 @@
+/* ===================================================================
+   MeWe-Drucklayout „Wachsen“ für alle Leuchtturm-Blätter außerhalb der
+   LRS-Förderung (Sozialtraining, Lernangebot, Vertretung, Urkunden …).
+   Moos · Salbei · Holz · Creme, Fraunces für Titel, Blatt als Nummer.
+   =================================================================== */
+@font-face{ font-family:"Fraunces"; font-weight:600; font-display:block; src:url("../schriften/fraunces-600.woff2") format("woff2"); }
+@font-face{ font-family:"Fraunces"; font-weight:700; font-display:block; src:url("../schriften/fraunces-700.woff2") format("woff2"); }
+@font-face{ font-family:"Nunito LT"; font-weight:700; src:url("../schriften/nunito-700.woff2") format("woff2"); }
+@font-face{ font-family:"Nunito LT"; font-weight:800; src:url("../schriften/nunito-800.woff2") format("woff2"); }
+.blatt{ --ink:#2d3530; --moos:#557428; --salbei:#b3c69a; --salbeih:#edf2e3; --holz:#8a6a4b; --creme:#f8f4ec; color:var(--ink) !important; }
+/* Kopf: Logo · Titel · Bereich */
+.blatt .blatt-kopf, .blatt .b-kopf{ align-items:center !important; gap:4mm !important; border-bottom:.4mm solid var(--salbei) !important; padding-bottom:2.2mm !important; }
+.blatt .blatt-kopf::before, .blatt .b-kopf::before{ content:""; flex:0 0 17mm; height:10mm; background:url("mewe-leuchtturm.svg") left center/contain no-repeat; order:-1; }
+.blatt .blatt-titel, .blatt .b-titel{ flex:1 1 auto; font-family:"Fraunces", Georgia, serif !important; font-weight:600 !important; color:var(--moos) !important; letter-spacing:-.012em; }
+.blatt .blatt-meta, .blatt .b-meta{ font-family:"Nunito LT", Nunito, sans-serif !important; color:var(--holz) !important; letter-spacing:.09em; text-transform:uppercase; font-size:7pt !important; }
+.blatt .blatt-meta i, .blatt .b-meta i{ color:var(--salbei) !important; }
+/* Nummern als Blätter */
+.blatt .af-nr, .blatt .b-auftrag .nr, .blatt .lese-nr, .blatt .skd h3 .n{
+    width:2em !important; height:1.5em !important; border-radius:0 !important; background:url("mewe-blatt.png") center/contain no-repeat !important;
+    color:#fff !important; font-family:"Fraunces", Georgia, serif !important; font-weight:700 !important; padding:.12em 0 0 .3em; box-sizing:border-box; }
+/* Flächen und Linien */
+.blatt .lese-fragen, .blatt .md blockquote{ background:var(--salbeih) !important; border:none !important; border-radius:3mm !important; }
+.blatt table.tab th, .blatt .skd th{ background:var(--salbeih) !important; border-color:var(--salbei) !important; color:var(--moos); }
+.blatt table.tab td, .blatt .skd td{ border-color:#cfd9c3 !important; }
+.blatt .wortspeicher{ border-color:var(--salbei) !important; } .blatt .wortspeicher span{ background:var(--creme) !important; border-color:var(--salbeih) !important; }
+.blatt .blatt-fuss, .blatt .b-fuss{ border-top:.25mm solid var(--salbeih) !important; color:var(--holz) !important; font-family:"Nunito LT", Nunito, sans-serif !important; letter-spacing:.04em; }

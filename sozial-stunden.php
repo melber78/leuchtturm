@@ -484,6 +484,7 @@ body.freigabe .reiter, body.freigabe .detail-kopf .knopfleiste, body.freigabe .d
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 <link rel="stylesheet" href="marke/mewe.css">
+<link rel="stylesheet" href="marke/druck-wachsen.css">
 </head>
 <body class="<?= !empty($LT_FREIGABE) ? "freigabe" : "" ?>">
 
