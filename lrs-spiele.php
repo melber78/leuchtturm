@@ -566,9 +566,12 @@ function spieleZeigen(){
     const liste = SPIELE.filter(s => sek() ? s.sek : s.gs);
     $("#spiele").innerHTML = liste.map(s => `<button class="spiel" data-spiel="${s.id}"><div class="ico"><i class="fa-solid ${s.ico}"></i></div><div><b>${esc(s.titel)}</b><span>${esc(s.text)}${s.rs ? ` <br><em>Schwerpunkt: ${esc(SP_RS[S.rs].name)}</em>` : ""}</span></div></button>`).join("");
     $("#spiele").querySelectorAll("[data-spiel]").forEach(b => b.onclick = () => rundeStarten(SPIELE.find(s => s.id === b.dataset.spiel)));
+    if (window.arKarten) arKarten();
 }
 const _rsZeigen = rsZeigen; rsZeigen = function(){ _rsZeigen(); spieleZeigen(); };
 kindSetzen();
 </script>
+<script src="lrs-arcade.js"></script>
+<script>arKarten();</script>
 </body>
 </html>
