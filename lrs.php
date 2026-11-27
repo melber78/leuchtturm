@@ -1241,24 +1241,24 @@ html:not(.lt-sek):not(.lt-druckschrift) .ws-seite.ws-info.ws-kindblatt{ --ws-sch
 /* Flächen */
 .ws-auftrag, .anweisung, .fs-ziel, .fs-reif .fs-ziel,
 .ws-merkbox, .rs-regel, .rs-merksatz, .vs-beispiel, .fs-merk, .rsl-merksatz, .rsl-tipp, .rsl-muster, .sp-motto, .ws-ziel, .ws-bilanz, .st-protokoll, .ws-schlange{
-    background:var(--salbeih) !important; border:none !important; border-radius:16px 4px 16px 4px !important; color:var(--ink); }
+    background:var(--salbeih) !important; border:none !important; border-radius:10px !important; color:var(--ink); }
 .fs-ziel, .fs-reif .fs-ziel{ justify-content:flex-start; padding:9px 16px; font-size:17px; }
 /* Reihen: weiche Blattform, abwechselnd Creme */
 .fs-karte, .fs-reif .fs-karte, .fs-reihe-inhalt, .fs-reif .fs-reihe-inhalt, .ws-wortzeile, .fs-muster-reihe, .fs-kachel-reihe{
-    border:none !important; border-radius:18px 4px 18px 4px !important; background:var(--creme); box-shadow:none; }
+    border:none !important; border-radius:10px !important; background:var(--creme); box-shadow:none; }
 .fs-karte:nth-of-type(even), .ws-wortzeile:nth-of-type(even), .fs-muster-reihe:nth-of-type(even), .fs-kachel-reihe:nth-of-type(even){ background:#fff; box-shadow:inset 0 0 0 1.5px var(--salbeih); }
 .fs-reihe-nr{ color:var(--salbei); font:800 12px var(--klein); }
 /* Antwortfelder */
-.fs-box, .fs-zaehl, .fs-nrbox, .fs-reif .fs-box, .fs-reif .fs-zaehl, .fs-reif .fs-nrbox, .ws-kasten, .fs-lm{ background:#fff !important; border:1.8px solid var(--moos) !important; border-radius:12px 3px 12px 3px !important; }
+.fs-box, .fs-zaehl, .fs-nrbox, .fs-reif .fs-box, .fs-reif .fs-zaehl, .fs-reif .fs-nrbox, .ws-kasten{ background:#fff !important; border:1.8px solid var(--moos) !important; border-radius:8px !important; }
 .ws-suchreihe, .ws-auswahl3 > div, .ws-kreiswahl > div, .ws-teppich, .ws-blitz, .fs-wortgitter > div, .rs-beispiele > div, .rsl-ordnen > div, .rsl-zuordnen > div, .fs-tafel > div, .fs-punkte-paar img, .fs-kachel{
-    border:1.5px solid var(--salbeih) !important; border-radius:12px 3px 12px 3px !important; background:#fff !important; }
-.ws-gitter, .fs-bild-gitter, .vs-merkbox, .rsl-kasten, .rsl-wz, .rsa-wz, .rsa-routine, .rsl-auswertung, .rsa-duell{ border:1.8px solid var(--moos) !important; border-radius:16px 4px 16px 4px !important; }
+    border:1.5px solid var(--salbeih) !important; border-radius:8px !important; background:#fff !important; }
+.ws-gitter, .fs-bild-gitter, .vs-merkbox, .rsl-kasten, .rsl-wz, .rsa-wz, .rsa-routine, .rsl-auswertung, .rsa-duell{ border:1.8px solid var(--moos) !important; border-radius:10px !important; }
 .rsa-key{ background:var(--moos) !important; border-radius:0 !important; }
-.fs-chip > .fs-chiptext, .fs-code span, .ws-chip, .bs-zielchip{ border:1.5px solid var(--salbei) !important; border-radius:10px 3px 10px 3px !important; background:#fff !important; color:var(--ink) !important; }
-.ws-malbox, .st-malbox, .rs-wortbank, .rsl-klapp, .fs-ansage{ border:1.5px dashed var(--salbei) !important; border-radius:12px 3px 12px 3px !important; }
+.fs-chip > .fs-chiptext, .fs-code span, .ws-chip, .bs-zielchip{ border:1.5px solid var(--salbei) !important; border-radius:6px !important; background:#fff !important; color:var(--ink) !important; }
+.ws-malbox, .st-malbox, .rs-wortbank, .rsl-klapp, .fs-ansage{ border:1.5px dashed var(--salbei) !important; border-radius:8px !important; }
 .ws-kreis{ border-width:1.8px; border-color:var(--moos); }
-.ws-silbe-l, .ws-silbe-r{ border-width:1.8px; border-radius:14px 4px 14px 4px; background:#fff !important; }
-.rsl-leiste span:not(.rsl-weg){ border-radius:10px 3px 10px 3px !important; }
+.ws-silbe-l, .ws-silbe-r{ border-width:1.8px; border-radius:8px; background:#fff !important; }
+.rsl-leiste span:not(.rsl-weg){ border-radius:6px !important; }
 .ws-laut-tabelle td:first-child, .fs-vergleich td:first-child{ border-radius:0 !important; }
 /* Tabellen */
 .rs-tabelle th{ background:none !important; border:none !important; border-bottom:2px solid var(--moos) !important; color:var(--holz); font:800 13px var(--klein); letter-spacing:0; padding:6px 8px; }
@@ -1272,7 +1272,7 @@ html:not(.lt-sek):not(.lt-druckschrift) .ws-seite.ws-info.ws-kindblatt{ --ws-sch
 .ws-fuss{ border:none; padding-top:4px; font:600 10.5px var(--klein); color:#7d857c; letter-spacing:.02em; }
 .ws-seite::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:17mm; background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20800%2070%22%20preserveAspectRatio%3D%22none%22%3E%3Cpath%20d%3D%22M0%2050%20C150%2020%20300%2060%20450%2038%20S700%2025%20800%2045%20L800%2070%20L0%2070Z%22%20fill%3D%22%23eef3e9%22/%3E%3Cpath%20d%3D%22M0%2060%20C200%2040%20380%2070%20560%2052%20S760%2048%20800%2058%20L800%2070%20L0%2070Z%22%20fill%3D%22%23e0e9d8%22/%3E%3C/svg%3E") center bottom/100% 100% no-repeat; z-index:0; pointer-events:none; }
 /* Buchstabenkurs */
-.bk-feld{ border:1.5px solid var(--salbeih); border-radius:14px 4px 14px 4px; }
+.bk-feld{ border:1.5px solid var(--salbeih); border-radius:8px; }
 .bk-feld.ok{ background:var(--salbeih); border-color:var(--salbei); } .bk-feld.ok i{ color:var(--moos); }
 .bk-feld.jetzt{ border:2px solid var(--holz); background:var(--creme); } .bk-feld.jetzt i{ color:var(--holz); }
 .bk-zt{ color:var(--holz); font:800 11.5px var(--klein); letter-spacing:.1em; text-transform:uppercase; }
