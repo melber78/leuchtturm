@@ -39,21 +39,24 @@ const ZUSATZ_CSS = `
 .sr .tl{ color:#e08a2c; }
 .sr .strich{ border-top:.07em solid currentColor; height:.18em; }
 .sr .alt{ text-decoration:line-through; text-decoration-color:#d1342b; text-decoration-thickness:.08em; opacity:.7; }
-.ek-bild .sr .frei.zu-s:not(.auf-s){ opacity:1; color:transparent; cursor:pointer; }
-.ek-bild .sr .frei.zu-s:not(.auf-s)::before{ content:""; position:absolute; inset:.08em .04em; border:.045em dashed #b3c69a; border-radius:.14em; background:rgba(179,198,154,.12); }
-.ek.kreide .ek-bild .sr .frei.zu-s:not(.auf-s)::before{ border-color:rgba(255,255,255,.4); background:rgba(255,255,255,.06); }
-.ek-bild .sr .frei.wahl::before{ border-style:solid !important; border-color:#e08a2c !important; background:rgba(224,138,44,.15) !important; }
-.ek-bild .sr .falsch::before{ animation:srW .35s; border-color:#d1342b !important; }
+.ek-bild .sr .ziel.jetzt:not(.auf-s){ opacity:1; color:transparent; }
+.ek-bild .sr .ziel.jetzt:not(.auf-s)::before{ content:""; position:absolute; inset:.06em .03em; border:.06em solid #e08a2c; border-radius:.14em; background:rgba(224,138,44,.16); animation:srPuls 1.4s infinite; }
+@keyframes srPuls{ 50%{ background:rgba(224,138,44,.32); } }
+.ek-bild .sr .falsch::before{ animation:srW .35s !important; border-color:#d1342b !important; }
 .ek-bild .sr .getroffen{ animation:srOk .7s; }
 @keyframes srW{ 25%{ transform:translateX(-4px); } 75%{ transform:translateX(4px); } }
 @keyframes srOk{ 0%{ transform:scale(1.35); } 100%{ transform:scale(1); } }
-.sr-pad{ position:fixed; z-index:100; display:none; grid-template-columns:repeat(11, 1fr); gap:6px; padding:8px 10px calc(8px + env(safe-area-inset-bottom)); background:#fff; border-radius:20px 20px 0 0; box-shadow:0 -8px 30px rgba(0,0,0,.2); left:50%; bottom:0; transform:translateX(-50%); width:min(760px, 100vw); }
-@media (max-width:600px){ .sr-pad{ grid-template-columns:repeat(6, 1fr); } }
+.ek-bild:has(> .sr){ flex-direction:column; justify-content:flex-start; height:auto !important; min-height:0; overflow:visible; }
+.ek-bild:has(> .sr) .sr{ margin:0 auto; }
+.sr-jetzt{ width:100%; flex:0 0 auto; box-sizing:border-box; background:#fff6df; border:2px solid #f0dca6; color:#5b4a22; border-radius:16px; padding:.5em .9em; font-weight:800; font-size:clamp(16px,2.4vmin,26px); margin:0 auto 1.2vmin; max-width:min(680px, 100%); text-align:center; line-height:1.35; }
+.sr-jetzt b{ color:#2f4a1f; } .sr-jetzt.nochmal{ animation:srW .35s; border-color:#e6b0a0; }
+.ek.kreide .sr-jetzt{ background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.25); color:#f3efe3; } .ek.kreide .sr-jetzt b{ color:#ffe08a; }
+.sr-pad{ position:fixed; z-index:100; display:none; grid-template-columns:repeat(10, 1fr); gap:6px; padding:8px 10px calc(8px + env(safe-area-inset-bottom)); background:#fff; border-radius:20px 20px 0 0; box-shadow:0 -8px 30px rgba(0,0,0,.2); left:50%; bottom:0; transform:translateX(-50%); width:min(760px, 100vw); }
+@media (max-width:600px){ .sr-pad{ grid-template-columns:repeat(5, 1fr); } }
 .sr-pad.an{ display:grid; } .sr-pad.kreide{ background:#24403a; }
-.sr-pad button{ font:900 clamp(24px,4vmin,34px) "Nunito",sans-serif; border:0; border-radius:14px; height:clamp(52px,8vmin,66px); background:#eef3e6; color:#2f4a1f; cursor:pointer; }
+.sr-pad button{ font:900 clamp(24px,4vmin,34px) "Nunito",sans-serif; border:0; border-radius:14px; height:clamp(50px,8vmin,64px); background:#eef3e6; color:#2f4a1f; cursor:pointer; }
 .sr-pad.kreide button{ background:rgba(255,255,255,.12); color:#f3efe3; }
-.sr-pad button[data-z="✕"]{ background:#fbe9e4; color:#b5583f; }
-.sr-pad.wackeln button{ animation:srW .35s; }
+.ek.mit-pad{ padding-bottom:150px !important; }
 .sr .kopf{ font-size:.42em; color:#7c8a96; align-items:center; }
 .swt{ display:grid; gap:10px; width:100%; height:100%; align-content:center; }
 .swt-k{ background:#f4f7fa; border-radius:16px; padding:8px 6px 10px; display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0; }
@@ -83,7 +86,8 @@ function css(){ if (cssDa) return; const s = document.createElement("style"); s.
 function raster(rows, C){
     return `<div class="sr" style="grid-template-columns:repeat(${C}, auto)">${rows.map(r => r.map(z => {
         if (!z) return `<span></span>`;
-        return `<span class="${z.c || ""}"${z.s !== undefined ? ` data-s="${z.s}"` : ""}>${z.t ?? ""}</span>`;
+        const at = (z.s !== undefined ? ` data-s="${z.s}"` : "") + (z.o !== undefined ? ` data-o="${z.o}"` : "") + (z.f ? ` data-f="${String(z.f).replace(/"/g, "&quot;")}"` : "") + (z.vor !== undefined ? ` data-vor="${z.vor}"` : "") + (z.nach !== undefined ? ` data-nach="${z.nach}"` : "");
+        return `<span class="${z.c || ""}"${at}>${z.t ?? ""}</span>`;
     }).join("")).join("")}</div>`;
 }
 const leer = C => Array(C).fill(null);
@@ -106,13 +110,13 @@ SK.plus = () => {
     const schritte = []; let u = 0;
     for (let i = 0; i < n; i++){
         const x = A[i] || 0, y = Bz[i] || 0, z = x + y + u, col = C - 1 - i;
-        re[col] = { t: z % 10, c: "er", s: i };
+        re[col] = { t: z % 10, c: "er", s: i, o: 10 * i, f: `<b>${STELLE[i]}:</b> ${x} + ${y}${u ? ` + <span class="rot">${u}</span>` : ""} = ? – schreib ${i ? "die letzte Ziffer" : "die Einer-Ziffer"} hin.` };
         const neuU = Math.floor(z / 10);
-        if (neuU){ ru[col - 1] = { t: neuU, c: "kl", s: i }; }
+        if (neuU){ ru[col - 1] = { t: neuU, c: "kl", s: i, nach: 10 * i }; }
         schritte.push([`<b>${STELLE[i]}:</b> ${x} + ${y}${u ? ` + <span class="rot">${u}</span>` : ""} = ?`, z >= 10 ? `${z} → schreibe <b>${z % 10}</b>, merke <span class="rot">${neuU}</span>` : `${z} → schreibe <b>${z}</b>`]);
         u = neuU;
     }
-    if (u){ re[C - 1 - n] = { t: u, c: "er", s: n }; schritte.push([`Der Übertrag <span class="rot">${u}</span> kommt nach vorn.`, `schreibe <b>${u}</b>`]); }
+    if (u){ re[C - 1 - n] = { t: u, c: "er", s: n, o: 10 * n, f: `Der Übertrag <span class="rot">${u}</span> kommt nach vorn – schreib ihn hin.` }; schritte.push([`Der Übertrag <span class="rot">${u}</span> kommt nach vorn.`, `schreibe <b>${u}</b>`]); }
     schritte.push(["Ergebnis", `${fz(a)} + ${fz(b)} = <b>${fz(s)}</b>`]);
     return { frage: "Rechne schriftlich – von rechts nach links, Stelle für Stelle.", aufgabe: `${fz(a)} + ${fz(b)} = ${L(fz(s))}`,
         bild: raster([kopfzeile(C, n), r0, r1, ru, rs, re], C),
@@ -137,8 +141,8 @@ SK.minus = () => {
             let z, neuU;
             if (w <= o){ z = o - w; neuU = 0; schritte.push([`<b>${STELLE[i]}:</b> ${y}${u ? ` + <span class="rot">${u}</span>` : ""} + ? = ${o}`, `${z} → schreibe <b>${z}</b>`]); }
             else { z = o + 10 - w; neuU = 1; schritte.push([`<b>${STELLE[i]}:</b> ${w} + ? = ${o} geht nicht.<br>${w} + ? = ${o + 10}`, `${z} → schreibe <b>${z}</b>, Übertrag <span class="rot">1</span>`]); }
-            if (i < ergebnis.length || z) re[col] = { t: z, c: "er", s: i };
-            if (neuU && i + 1 < n) ru[col - 1] = { t: 1, c: "kl", s: i };
+            if (i < ergebnis.length || z) re[col] = { t: z, c: "er", s: i, o: 10 * i, f: schritte[schritte.length - 1][0] + " – schreib die Ziffer hin." };
+            if (neuU && i + 1 < n) ru[col - 1] = { t: 1, c: "kl", s: i, nach: 10 * i };
             u = neuU;
         }
     } else {
@@ -150,11 +154,11 @@ SK.minus = () => {
                 let j = i + 1; while (M[j] === 0) j++;
                 const vorher = M.slice();
                 M[j]--; for (let k = j - 1; k > i; k--) M[k] = 9; M[i] += 10;
-                for (let k = i; k <= j; k++){ rk[C - 1 - k] = { t: M[k], c: "kl", s: i }; }
+                for (let k = i; k <= j; k++){ rk[C - 1 - k] = { t: M[k], c: "kl", s: i, vor: 10 * i }; }
                 text = `<b>${STELLE[i]}:</b> ${vorher[i]} − ${y} geht nicht → entbündeln:<br>1 ${STELLE[j].replace(/er$/, "er")} wird zu 10 ${STELLE[j - 1]}${j - 1 > i ? " usw." : ""}. Jetzt ${M[i]} − ${y}`;
             }
             const z = M[i] - y;
-            if (i < ergebnis.length || z) re[col] = { t: z, c: "er", s: i };
+            if (i < ergebnis.length || z) re[col] = { t: z, c: "er", s: i, o: 10 * i, f: `<b>${STELLE[i]}:</b> ${M[i]} − ${y} = ?` + (text.includes("entbündeln") ? ` <small>(entbündelt – siehe die kleinen roten Ziffern)</small>` : "") };
             schritte.push([text, `${z} → schreibe <b>${z}</b>`]);
         }
     }
@@ -180,10 +184,11 @@ SK.mal = () => {
         const A = ziff(a).reverse(), re = leer(C), ru = leer(C); let u = 0;
         for (let i = 0; i < A.length; i++){
             const p = A[i] * b + u, col = ende - i, neuU = Math.floor(p / 10);
-            re[col] = { t: p % 10, c: "er", s: i };
-            if (neuU && i < A.length - 1) ru[col - 1] = { t: neuU, c: "kl", s: i };
+            const letzte = i === A.length - 1;
+            re[col] = { t: p % 10, c: "er", s: i, o: 10 * i, f: `<b>${STELLE[i]}:</b> ${A[i]} · ${b}${u ? ` + <span class="rot">${u}</span>` : ""} = ? – schreib ${letzte && neuU ? "die Einer-Ziffer" : i ? "die letzte Ziffer" : "die Einer-Ziffer"} hin.` };
+            if (neuU && i < A.length - 1) ru[col - 1] = { t: neuU, c: "kl", s: i, nach: 10 * i };
             schritte.push([`<b>${STELLE[i]}:</b> ${A[i]} · ${b}${u ? ` + <span class="rot">${u}</span>` : ""} = ?`, p >= 10 && i < A.length - 1 ? `${p} → schreibe <b>${p % 10}</b>, merke <span class="rot">${neuU}</span>` : i === A.length - 1 && p >= 10 ? `schreibe <b>${p}</b>` : `schreibe <b>${p}</b>`]);
-            if (i === A.length - 1 && neuU) re[col - 1] = { t: neuU, c: "er", s: i };
+            if (i === A.length - 1 && neuU) re[col - 1] = { t: neuU, c: "er", s: i, o: 10 * i + 5, f: `Ganz vorn: schreib die <b>${neuU}</b> aus ${p} davor.` };
             u = neuU;
         }
         rows.push(ru, re);
@@ -192,11 +197,13 @@ SK.mal = () => {
         M.forEach((m, j) => {
             const p = a * m, col = ende - (lb - 1 - j), r = leer(C);
             setze(r, col, p, j ? "er" : "tl", j);
+            const lp = String(p).length;
+            for (let k = 0; k < lp; k++){ const z = r[col - k]; z.o = 100 * j + k; z.f = `${fz(a)} · <b>${m}</b> = ? – von rechts nach links. Die letzte Ziffer steht genau unter der <b>${m}</b>.`; }
             rows.push(r);
             schritte.push([`${fz(a)} · <b>${m}</b> ${j === 0 ? `(die ${m} steht bei den ${STELLE[lb - 1 - j]}n – das Ergebnis endet unter der ${m})` : "(endet unter der " + m + ")"}`, `<b>${fz(p)}</b>`]);
         });
         rows.push(strich());
-        const r = leer(C); setze(r, ende, a * b, "er", lb); rows.push(r);
+        const r = leer(C); setze(r, ende, a * b, "er", lb); { const lp = String(a * b).length; for (let k = 0; k < lp; k++){ const z = r[ende - k]; z.o = 100 * lb + k; z.f = `Teilergebnisse addieren – ${STELLE[k] || "nächste Stelle"}: Stelle für Stelle von rechts.`; } } rows.push(r);
         schritte.push(["Teilergebnisse addieren", `<b>${fz(a * b)}</b>`]);
     }
     schritte.push(["Ergebnis", `${fz(a)} · ${fz(b)} = <b>${fz(a * b)}</b>`]);
@@ -213,16 +220,22 @@ SK.geteilt = () => {
     let start = 1; while (start < n && Number(String(a).slice(0, start)) < b) start++;
     const Q = String(q), o = 1, C = o + n + 3 + Q.length + (rest ? 3 : 0) + 1;
     const r0 = leer(C); setze(r0, o + n - 1, a); r0[o + n] = { t: ":", c: "op" }; r0[o + n + 1] = { t: b }; r0[o + n + 2] = { t: "=", c: "op" };
-    Q.split("").forEach((z, i) => { r0[o + n + 3 + i] = { t: z, c: "er", s: i }; });
-    if (rest){ r0[o + n + 3 + Q.length] = { t: "R", c: "op", s: Q.length - 1 }; r0[o + n + 4 + Q.length] = { t: rest, c: "er", s: Q.length - 1 }; }
+    Q.split("").forEach((z, i) => { r0[o + n + 3 + i] = { t: z, c: "er", s: i, o: 100 * i }; });
+    if (rest){ r0[o + n + 3 + Q.length] = { t: "R", c: "op", s: Q.length - 1, vor: 100 * (Q.length - 1) + 40 }; r0[o + n + 4 + Q.length] = { t: rest, c: "er", s: Q.length - 1, o: 100 * (Q.length - 1) + 40, f: `Es geht nicht mehr weiter. Was bleibt übrig? Schreib den <span class="rot">Rest</span> hinter das R.` }; }
     const rows = [r0], schritte = [];
     let cur = Number(String(a).slice(0, start)), pos = o + start - 1;
     Q.split("").forEach((qz, i) => {
         const qq = Number(qz), prod = qq * b, r = cur - prod;
-        const rp = leer(C); setze(rp, pos, prod, "", i); rp[pos - String(prod).length] = { t: "−", c: "op", s: i }; rows.push(rp);
-        const rs = leer(C); for (let k = pos - Math.max(String(cur).length, String(prod).length) + 1; k <= pos; k++) rs[k] = { c: "strich", s: i }; rows.push(rs);
+        r0[o + n + 3 + i].f = `<b>Wie oft passt ${b} in ${cur}?</b> Schreib die Zahl ins Ergebnis.`;
+        const rp = leer(C); setze(rp, pos, prod, "", i); rp[pos - String(prod).length] = { t: "−", c: "op", s: i, vor: 100 * i + 10 };
+        String(prod).split("").forEach((_, k) => { const z = rp[pos - String(prod).length + 1 + k]; z.o = 100 * i + 10 + k; z.f = `<b>Rechne zurück:</b> ${qq} · ${b} = ? – schreib es unter die ${cur}.`; });
+        rows.push(rp);
+        const rs = leer(C); for (let k = pos - Math.max(String(cur).length, String(prod).length) + 1; k <= pos; k++) rs[k] = { c: "strich", s: i, vor: 100 * i + 20 }; rows.push(rs);
         const weiter = pos + 1 < o + n, naechste = A[pos + 1 - o];
-        const rr = leer(C); setze(rr, pos, r, "", i); if (weiter) rr[pos + 1] = { t: naechste, c: "tl", s: i }; rows.push(rr);
+        const rr = leer(C); setze(rr, pos, r, "", i);
+        String(r).split("").forEach((_, k) => { const z = rr[pos - String(r).length + 1 + k]; z.o = 100 * i + 20 + k; z.f = `<b>Zieh ab:</b> ${cur} − ${prod} = ?`; });
+        if (weiter) rr[pos + 1] = { t: naechste, c: "tl", s: i, o: 100 * i + 30, f: `<b>Hol die nächste Ziffer herunter.</b> Welche Ziffer kommt als Nächstes dran?` };
+        rows.push(rr);
         schritte.push([`<b>${cur} : ${b}</b> = ?`, `<b>${qq}</b>, denn ${qq} · ${b} = ${prod}. Rest: ${cur} − ${prod} = ${r}${weiter ? `. Die ${naechste} herunterholen → ${r * 10 + naechste}` : ""}`]);
         if (weiter){ cur = r * 10 + naechste; pos++; }
     });
@@ -250,51 +263,55 @@ const zahlLesen = t => Number(String(t).replace(/[\s. ]/g, ""));
     };
 });
 
-/* Direkt an der Tafel rechnen: leere Ziffernfelder antippen und die Ziffer eintragen.
-   Stimmt sie, bleibt sie stehen; ist ein Schritt komplett, wird er im Rechenweg aufgedeckt. */
-let srPad = null, srZiel = null, srApi = null;
-function srPadZeigen(zelle){
-    if (!srPad){
-        srPad = document.createElement("div"); srPad.className = "sr-pad";
-        srPad.innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, "✕"].map(z => `<button data-z="${z}">${z}</button>`).join("");
-        document.body.appendChild(srPad);
-        srPad.addEventListener("click", e => { const b = e.target.closest("[data-z]"); if (!b) return; e.stopPropagation(); if (b.dataset.z === "✕") return srPadZu(); srEingabe(b.dataset.z); });
-        document.addEventListener("pointerdown", e => { if (srPad.classList.contains("an") && !e.target.closest(".sr-pad, .sr .frei")) srPadZu(); });
-    }
-    document.querySelectorAll(".sr .frei.wahl").forEach(x => x.classList.remove("wahl"));
-    srZiel = zelle; zelle.classList.add("wahl");
-    const host = zelle.closest(".ek"); if (srPad.parentElement !== host) host.appendChild(srPad);
-    srPad.classList.toggle("kreide", host.classList.contains("kreide"));
-    srPad.classList.add("an");
-    // Ziffernblock unten am Rand – so bleibt die Rechnung sichtbar; das Feld wird bei Bedarf nach oben gescrollt
-    const r = zelle.getBoundingClientRect(), ph = srPad.offsetHeight;
-    if (r.bottom > innerHeight - ph - 16) { const sc = zelle.closest(".ek-bild, .ek-haupt, .ek") ; window.scrollBy(0, r.bottom - (innerHeight - ph - 24)); zelle.scrollIntoView({ block: "center" }); }
+/* Direkt an der Tafel rechnen – geführt in Mini-Schritten:
+   immer nur EIN Kästchen ist dran, darüber steht die Frage dazu („Wie oft passt 3 in 8?“).
+   Minuszeichen und Striche erscheinen erst, wenn sie gebraucht werden; Überträge nach dem Rechnen. */
+let srPad = null, srApi = null, srEl = null;
+function srPadBauen(){
+    if (srPad) return;
+    srPad = document.createElement("div"); srPad.className = "sr-pad";
+    srPad.innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map(z => `<button data-z="${z}">${z}</button>`).join("");
+    srPad.addEventListener("click", e => { const b = e.target.closest("[data-z]"); if (!b) return; e.stopPropagation(); srEingabe(b.dataset.z); });
 }
-function srPadZu(){ if (srPad) srPad.classList.remove("an"); document.querySelectorAll(".sr .frei.wahl").forEach(x => x.classList.remove("wahl")); srZiel = null; }
+function srZiele(){ return srEl ? [...srEl.querySelectorAll(".ek-bild .sr [data-o]")].sort((a, b) => a.dataset.o - b.dataset.o) : []; }
+function srAktuell(){ return srZiele().find(c => !c.classList.contains("auf-s")); }
+function srAuffrischen(){
+    if (!srEl || !srEl.classList.contains("an") || !srEl.querySelector(".ek-bild .sr")) { if (srPad) srPad.classList.remove("an"); return; }
+    const c = srAktuell(), bild = srEl.querySelector(".ek-bild");
+    srEl.querySelectorAll(".sr .jetzt").forEach(x => x.classList.remove("jetzt"));
+    const o = c ? +c.dataset.o : Infinity;
+    srEl.querySelectorAll(".ek-bild .sr [data-vor]").forEach(x => { if (+x.dataset.vor <= o) x.classList.add("auf-s"); });
+    srEl.querySelectorAll(".ek-bild .sr [data-nach]").forEach(x => { if (+x.dataset.nach < o) x.classList.add("auf-s"); });
+    let bar = bild.querySelector(".sr-jetzt"); if (!bar){ bar = document.createElement("div"); bar.className = "sr-jetzt"; bild.prepend(bar); }
+    srPadBauen(); if (srPad.parentElement !== srEl) srEl.appendChild(srPad);
+    srPad.classList.toggle("kreide", srEl.classList.contains("kreide"));
+    if (c){ c.classList.add("jetzt"); bar.innerHTML = `👉 ${c.dataset.f || "Trag die nächste Ziffer ein."}`; srPad.classList.add("an"); srEl.classList.add("mit-pad"); }
+    else { bar.innerHTML = `🎉 <b>Geschafft!</b> Alles richtig gerechnet.`; srPad.classList.remove("an"); srEl.classList.remove("mit-pad"); }
+}
 function srEingabe(z){
-    const c = srZiel; if (!c) return;
+    const c = srAktuell(); if (!c) return;
     if (c.textContent.trim() === String(z)){
-        c.classList.remove("wahl", "frei"); c.classList.add("auf-s", "getroffen"); setTimeout(() => c.classList.remove("getroffen"), 700);
-        const s = c.dataset.s, ek = c.closest(".ek");
-        if (![...ek.querySelectorAll(`.ek-bild .ziel[data-s="${s}"]`)].some(x => !x.classList.contains("auf-s"))){
-            const l = ek.querySelector(`.ek-panel .lsg.zu[data-i="${s}"]`); if (l && srApi) srApi.aufdecken(l);
-            // alles gerechnet? Dann auch den Ergebnis-Schritt aufdecken
-            if (![...ek.querySelectorAll(".ek-bild .sr .ziel")].some(x => !x.classList.contains("auf-s"))) ek.querySelectorAll(".ek-panel .lsg.zu").forEach(x => srApi && srApi.aufdecken(x));
+        c.classList.add("auf-s", "getroffen"); setTimeout(() => c.classList.remove("getroffen"), 700);
+        const s = c.dataset.s, o = +c.dataset.o;
+        srEl.querySelectorAll(`.ek-bild .sr [data-nach="${o}"]`).forEach(x => x.classList.add("auf-s"));
+        if (s !== undefined && !srZiele().some(x => x.dataset.s === s && !x.classList.contains("auf-s"))){
+            const l = srEl.querySelector(`.ek-panel .lsg.zu[data-i="${s}"]`); if (l && srApi) srApi.aufdecken(l);
         }
-        srPadZu();
-        // nächstes leeres Feld derselben Spalte oder weiter links vorschlagen
+        if (!srAktuell()) srEl.querySelectorAll(".ek-panel .lsg.zu").forEach(x => srApi && srApi.aufdecken(x));
+        srAuffrischen();
     } else {
         c.classList.remove("falsch"); void c.offsetWidth; c.classList.add("falsch");
-        srPad.classList.remove("wackeln"); void srPad.offsetWidth; srPad.classList.add("wackeln");
+        const bar = srEl.querySelector(".sr-jetzt"); if (bar){ bar.classList.remove("nochmal"); void bar.offsetWidth; bar.classList.add("nochmal"); }
     }
 }
 function tafelRechnen(el, api){
-    srApi = api; srPadZu();
-    // Überträge (kleine rote Ziffern) erscheinen von selbst, sobald die Stelle gerechnet ist – sonst würden leere Kästchen verraten, wo einer kommt
-    el.querySelectorAll(".ek-bild .sr [data-s]").forEach(c => { if (/^\d$/.test(c.textContent.trim()) && !c.classList.contains("kl")){ c.classList.add("frei", "ziel"); c.onclick = e => { e.stopPropagation(); if (c.classList.contains("frei")) srPadZeigen(c); }; } });
+    srApi = api; srEl = el;
+    if (!el._srHaken){ el._srHaken = true; el.addEventListener("click", () => setTimeout(srAuffrischen, 30)); }
+    el.querySelectorAll(".ek-bild .sr [data-o]").forEach(c => c.classList.add("ziel"));
+    setTimeout(srAuffrischen, 0);
 }
 ["plus", "minus", "mal", "geteilt"].forEach(k => { const orig = SK[k]; SK[k] = Object.assign(() => { const d = orig(); d.nachher = tafelRechnen;
-    d.frage = (d.frage || "") + ` <span style="font-size:.8em;opacity:.75">– tippe auf ein leeres Feld und trag die Ziffer ein.</span>`; return d; }, orig); });
+    return d; }, orig); });
 
 const schriftlich = ET.neu({ id: "schriftlich", titel: "Schriftlich rechnen", unter: "Klasse 3–6", hash: "schriftlich", speicher: "lt-schriftlich", merkeZu: true,
     kapitel: [["plus", "Plus"], ["minus", "Minus"], ["mal", "Mal"], ["geteilt", "Geteilt"]], K: SK, S: SR, aufgebaut: css });

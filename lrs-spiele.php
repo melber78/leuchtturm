@@ -68,6 +68,7 @@ select{ font:inherit; font-weight:700; padding:10px 12px; border-radius:12px; bo
 #buehne{ position:fixed; inset:0; background:var(--creme); display:none; flex-direction:column; z-index:50; }
 #buehne.an{ display:flex; }
 .b-kopf{ display:flex; align-items:center; gap:12px; padding:12px 16px; padding-top:max(12px, env(safe-area-inset-top)); }
+.b-energie{ font-weight:900; color:#b07a12; background:#fff6df; border-radius:999px; padding:8px 14px; }
 .b-kopf .runde{ flex:1; font-weight:800; color:#68745f; }
 .rund{ width:48px; height:48px; border-radius:50%; border:0; background:#fff; box-shadow:0 3px 12px rgba(47,74,31,.1); font-size:19px; color:var(--nacht); flex:0 0 auto; }
 .b-mitte{ flex:1; display:flex; gap:24px; align-items:center; justify-content:center; padding:10px 18px 24px; overflow:auto; }
@@ -129,11 +130,13 @@ html.sek .wort{ letter-spacing:.04em; }
         </div>
         <p class="hilfe" id="kind-info">Wählst du ein Kind, passen sich die Spiele an: bekannte Buchstaben, Schwerpunkte aus dem Förderplan und Fehlerwörter aus der Förderkartei.</p>
         <div id="garten" class="garten" style="margin-top:8px"></div>
+        <label class="hilfe" style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="freispiel"> Action-Spiele ohne Energie freigeben (Freispiel)</label>
+        <label class="hilfe" style="display:flex;gap:8px;align-items:center;margin-top:4px"><input type="checkbox" id="alle-welten"> Weltenreise: alle Welten offen</label>
     </div>
     <div class="karte" id="rs-karte">
         <h2>Rechtschreib-Schwerpunkt</h2>
         <div class="zeile" id="rs-wahl"></div>
-        <p class="hilfe">Für „Wörter sortieren“ und „Lückenwörter“.</p>
+        <p class="hilfe">Für die Rechtschreib-Strategie und die Weltenreise. ★ = im Förderplan.</p>
     </div>
     <div class="spiele" id="spiele"></div>
 </main>
@@ -142,6 +145,7 @@ html.sek .wort{ letter-spacing:.04em; }
     <div class="b-kopf">
         <button class="rund" id="b-zu" title="Zurück zur Auswahl"><i class="fa-solid fa-xmark"></i></button>
         <div class="runde" id="b-titel"></div>
+        <div class="b-energie" id="b-energie">⚡ 0</div>
         <button class="rund" id="b-ton" title="Töne an/aus"><i class="fa-solid fa-volume-high"></i></button>
         <button class="rund" id="b-voll" title="Vollbild"><i class="fa-solid fa-expand"></i></button>
     </div>
@@ -196,6 +200,8 @@ function kindSetzen(){
     schriftSetzen(); rsZeigen(); spieleZeigen(); gartenZeigen();
 }
 $("#kind").onchange = kindSetzen;
+$("#freispiel").checked = laden("sp-freispiel", false); $("#freispiel").onchange = () => merken("sp-freispiel", $("#freispiel").checked);
+$("#alle-welten").checked = laden("sp-alle-welten", false); $("#alle-welten").onchange = () => { merken("sp-alle-welten", $("#alle-welten").checked); if (window.arKarten) arKarten(); };
 $("#klasse").onchange = () => { S.klasse = parseInt($("#klasse").value, 10); schriftSetzen(); spieleZeigen(); };
 $("#schrift").onchange = () => { merken("lt-ws-schrift-spiele", $("#schrift").value); schriftSetzen(); };
 function rsZeigen(){
@@ -270,13 +276,16 @@ function pflanze(n, max){
         <path d="M60 204 C ${56} ${204 - h / 3}, ${64} ${204 - h * 2 / 3}, 60 ${top}" stroke="#557428" stroke-width="5" fill="none" stroke-linecap="round"/>${blaetter}${bluete}</svg>`;
 }
 
-/* ---------- Spiel-Ablauf ---------- */
+/* ---------- Spiel-Ablauf (ohne Zeitdruck, Fehler → Tipp → zweiter Versuch) ---------- */
 let R = null;   // laufende Runde
+function energie(){ return laden("sp-energie-" + (S.kind?.code || "_"), 0); }
+function energieDazu(n){ const e = Math.min(99, energie() + n); merken("sp-energie-" + (S.kind?.code || "_"), e); const el = $("#b-energie"); if (el) el.textContent = "⚡ " + e; return e; }
 function rundeStarten(spiel){
     const aufgaben = spiel.machen();
     if (!aufgaben.length){ alert("Dafür gibt es gerade nicht genug passende Wörter. Wähle einen anderen Schwerpunkt oder trage mehr bekannte Buchstaben ein."); return; }
-    R = { spiel, warte: aufgaben, max: aufgaben.length, gut: 0, ersterVersuch: 0, nochmal: [], wiederholt: new Set() };
+    R = { spiel, warte: aufgaben, max: aufgaben.length, gut: 0, ersterVersuch: 0, nochmal: [], wiederholt: new Set(), energie: 0 };
     $("#buehne").classList.add("an"); document.body.style.overflow = "hidden";
+    $("#b-energie").textContent = "⚡ " + energie();
     naechste();
 }
 function naechste(){
@@ -284,17 +293,16 @@ function naechste(){
     $("#b-titel").textContent = R.max > 1 ? `${R.spiel.titel} · ${R.gut} von ${R.max}` : R.spiel.titel;
     if (!R.warte.length) return ende();
     const a = R.warte.shift();
-    R.fehler = false;
-    R.spiel.zeigen(a, $("#feld"), (richtig, zeigeLoesung) => {
-        if (richtig){
-            ton(true); R.gut++; if (!R.fehler) R.ersterVersuch++;
-            $("#pflanze").innerHTML = pflanze(R.gut, R.max);
-            setTimeout(naechste, R.spiel.pause ?? 900);
-        } else {
-            ton(false);
-            if (!R.fehler){ R.fehler = true; const t = a.anzeige || a.w; if (t && !R.wiederholt.has(t)){ R.nochmal.push(t); R.wiederholt.add(t); } }
-        }
-    });
+    if (a.typ === "memory"){
+        return memoryZeigen(a, $("#feld"), () => { ton(true); R.gut++; R.ersterVersuch++; R.energie += 4; energieDazu(4); setTimeout(naechste, 700); });
+    }
+    AG.zeigen($("#feld"), a, r => {
+        ton(true); R.gut++;
+        const e = r.erst ? 2 : 1; R.energie += e; energieDazu(e);
+        if (r.erst) R.ersterVersuch++;
+        else if (!R.wiederholt.has(a.w)){ R.wiederholt.add(a.w); R.nochmal.push(a.w); R.warte.push({ ...a }); R.max++; }   // kommt später noch einmal
+        naechste();
+    }, { beiFehler: () => ton(false) });
 }
 function ende(){
     const n = laden("sp-garten-" + (S.kind?.code || "_"), 0) + 1;
@@ -302,9 +310,9 @@ function ende(){
     $("#b-titel").textContent = R.spiel.titel;
     $("#feld").innerHTML = `<div class="ende">
         <h2>${sek() ? "Runde geschafft." : "Deine Pflanze blüht!"}</h2>
-        <p class="hilfe" style="font-size:18px">${R.ersterVersuch} von ${R.max} gleich beim ersten Mal${sek() ? "" : " 🌼"}</p>
-        ${R.nochmal.length ? `<p class="hilfe" style="margin-top:14px">Diese schauen wir uns noch mal an:</p><div class="liste">${R.nochmal.map(esc).join(" · ")}</div>` : ""}
-        <div class="zeile" style="justify-content:center;margin-top:22px"><button class="weiter" id="e-nochmal">Noch eine Runde</button><button class="antwort klein" style="flex:0 0 auto" id="e-zu">Anderes Spiel</button></div></div>`;
+        <p class="hilfe" style="font-size:18px">${R.ersterVersuch} von ${R.max} gleich beim ersten Mal · <b style="color:#b07a12">⚡ +${R.energie} Energie</b></p>
+        ${R.nochmal.length ? `<p class="hilfe" style="margin-top:14px">Die haben wir zweimal geübt:</p><div class="liste">${R.nochmal.map(esc).join(" · ")}</div>` : ""}
+        <div class="zeile" style="justify-content:center;margin-top:22px"><button class="weiter" id="e-nochmal">Noch eine Runde</button><button class="antwort klein" style="flex:0 0 auto" id="e-zu">Fertig</button></div></div>`;
     $("#e-nochmal").onclick = () => rundeStarten(R.spiel);
     $("#e-zu").onclick = schliessen;
     gartenZeigen();
@@ -314,22 +322,6 @@ $("#b-zu").onclick = schliessen;
 $("#b-ton").onclick = () => { S.ton = !S.ton; merken("sp-ton", S.ton); $("#b-ton").innerHTML = `<i class="fa-solid fa-volume-${S.ton ? "high" : "xmark"}"></i>`; };
 $("#b-ton").innerHTML = `<i class="fa-solid fa-volume-${S.ton ? "high" : "xmark"}"></i>`;
 $("#b-voll").onclick = () => { const e = document.documentElement; if (document.fullscreenElement) document.exitFullscreen(); else if (e.requestFullscreen) e.requestFullscreen().catch(() => {}); };
-
-// Antwort-Knöpfe: falsche wackeln, richtige werden grün; danach geht's weiter
-function knoepfe(feld, optionen, richtig, fertig, opt = {}){
-    const box = document.createElement("div"); box.className = "antworten";
-    optionen.forEach(o => {
-        const b = document.createElement("button"); b.className = "antwort" + (opt.klein ? " klein" : ""); b.innerHTML = opt.html ? opt.html(o) : esc(o);
-        b.onclick = () => {
-            if (box.dataset.fertig) return;
-            if (o === richtig){ box.dataset.fertig = 1; b.classList.add("ok"); opt.beiRichtig && opt.beiRichtig(); fertig(true); }
-            else { b.classList.remove("nein"); void b.offsetWidth; b.classList.add("nein"); opt.beiFalsch && opt.beiFalsch(o); fertig(false); }
-        };
-        box.appendChild(b);
-    });
-    feld.appendChild(box); return box;
-}
-function hinweis(feld, html){ let h = feld.querySelector(".hinweis"); if (!h){ h = document.createElement("div"); h.className = "hinweis"; feld.appendChild(h); } h.innerHTML = html; }
 
 /* ---------- Rechtschreibung: Lücken ---------- */
 function cut(w, i, len, opts){ const r = len ? w.substr(i, len) : "–"; return { vor: w.slice(0, i), richtig: r, nach: w.slice(i + len), opts: [...new Set(opts.includes(r) ? opts : [r, ...opts])] }; }
@@ -360,53 +352,6 @@ const LUECKE = {
     grossklein: s => { const m = /\*([^*]+)\*/.exec(s); if (!m) return null; const t = s.replace(/\*/g, ""), i = m.index, c = m[1][0];
         return { vor: t.slice(0, i), richtig: c, nach: t.slice(i + 1), opts: [c.toUpperCase(), c.toLowerCase()], satz: true }; },
 };
-function lueckenAufgaben(k, n){
-    const d = SP_RS[k], f = LUECKE[k];
-    const quelle = [...kindWoerter(k), ...d.treffer, ...d.kontrast].filter(w => w && w !== "–");
-    const gesehen = new Set(), liste = [];
-    // Fehlerwörter des Kindes zuerst, dann gemischt
-    const eigene = kindWoerter(k), rest = mischen(quelle.filter(w => !eigene.includes(w)));
-    for (const w of [...mischen(eigene), ...rest]){ if (gesehen.has(w)) continue; gesehen.add(w); const l = f(w); if (l) liste.push({ ...l, w, anzeige: w.replace(/\*/g, "") }); if (liste.length >= n) break; }
-    return mischen(liste);
-}
-function lueckeZeigen(a, feld, fertig){
-    const k = S.rs, d = SP_RS[k];
-    const html = r => `${esc(a.vor)}<span class="luecke${r ? " ok" : ""}">${r ? (a.richtig === "–" ? "✓" : esc(a.richtig)) : "&nbsp;&nbsp;"}</span>${esc(a.nach)}`;
-    feld.innerHTML = `<div class="${a.satz ? "satz" : "wort"}" id="l-wort">${html(false)}</div>`;
-    knoepfe(feld, a.opts, a.richtig, fertig, {
-        beiRichtig: () => { $("#l-wort").innerHTML = html(true); },
-        beiFalsch: () => hinweis(feld, `💡 ${hilfe(k, a.w) ? hilfe(k, a.w) + " · " : ""}${esc(d.merksatz)}`),
-    });
-    if (!a.satz && !sek()) feld.insertAdjacentHTML("afterbegin", `<button class="vorlesen" title="Vorlesen"><i class="fa-solid fa-volume-high"></i></button>`), feld.querySelector(".vorlesen").onclick = () => sprechen(a.w);
-}
-
-/* ---------- Rechtschreibung: Sortieren ---------- */
-function sortSpalte(k, w, ausTreffer){
-    if (k === "sss") return /ß/.test(w) ? 1 : /ss/.test(w) ? 0 : 2;
-    if (k === "chsx") return /chs/i.test(w) ? 0 : /x/i.test(w) ? 1 : 2;
-    if (k === "auslaut"){ const c = w.slice(-1); return "bdg".includes(c) ? 0 : "ptk".includes(c) ? 1 : null; }
-    if (k === "aeau") return w === "–" ? null : /ä/i.test(w) ? 0 : 1;
-    if (k === "iglich") return /lich/.test(w) ? 1 : /ig/.test(w) ? 0 : null;
-    return ausTreffer ? 0 : 1;
-}
-function sortAufgaben(k, n){
-    const d = SP_RS[k], liste = [];
-    d.treffer.forEach(w => liste.push({ w, s: sortSpalte(k, w, true) }));
-    d.kontrast.forEach(w => liste.push({ w, s: sortSpalte(k, w, false) }));
-    return mischen(liste.filter(x => x.s !== null && x.w && x.w !== "–")).slice(0, n)
-        .map(x => ({ ...x, anzeige: x.w.replace(/\*/g, "") }));
-}
-function sortZeigen(a, feld, fertig){
-    const k = S.rs, d = SP_RS[k];
-    let anzeige = esc(a.w);
-    if (k === "dasdass") anzeige = esc(a.w).replace(/\*[^*]+\*/, '<span class="luecke">&nbsp;&nbsp;&nbsp;</span>');
-    else if (k === "grossklein") anzeige = esc(a.w).replace(/\*([^*]+)\*/, (x, y) => `<span class="luecke">${y.toLowerCase()}</span>`);
-    const satz = /\s/.test(a.w);
-    feld.innerHTML = `<div class="${satz ? "satz" : "wort"}">${anzeige}</div>`;
-    knoepfe(feld, d.spalten.map((x, i) => i), a.s, fertig, { klein: true, html: i => esc(d.spalten[i]), beiFalsch: () => hinweis(feld, `💡 ${hilfe(k, a.w) ? hilfe(k, a.w) + " · " : ""}${esc(d.merksatz)}`) });
-    if (!satz && !sek()) feld.insertAdjacentHTML("afterbegin", `<button class="vorlesen" title="Vorlesen"><i class="fa-solid fa-volume-high"></i></button>`), feld.querySelector(".vorlesen").onclick = () => sprechen(a.w);
-}
-
 /* ---------- Anlaut ---------- */
 function anlaut(w){ const g = grapheme(w)[0].toLowerCase(); return g; }
 function anlautAufgaben(n){
@@ -419,15 +364,6 @@ function anlautAufgaben(n){
         return { ...b, richtig: r, opts: mischen([r, ...andere]), anzeige: b.w };
     });
 }
-function anlautZeigen(a, feld, fertig){
-    const gk = z => z[0].toUpperCase() + z.slice(1) + " " + z;
-    feld.innerHTML = `<div class="bild">${a.svg}</div><button class="vorlesen" title="Vorlesen"><i class="fa-solid fa-volume-high"></i></button><div class="wort" id="a-wort" style="min-height:1.4em"></div>`;
-    feld.querySelector(".vorlesen").onclick = () => sprechen(a.w);
-    setTimeout(() => sprechen(a.w), 250);
-    knoepfe(feld, a.opts, a.richtig, fertig, { html: gk, beiRichtig: () => { $("#a-wort").innerHTML = `<span class="luecke ok">${esc(a.w.slice(0, a.richtig.length))}</span>${esc(a.w.slice(a.richtig.length))}`; },
-        beiFalsch: () => sprechen(a.w) });
-}
-
 /* ---------- Silben-Puzzle ---------- */
 function silbenAufgaben(n){
     let pool;
@@ -435,89 +371,6 @@ function silbenAufgaben(n){
     else pool = mischen(bilder().filter(b => silben(b.w).length >= 2 && lesbar(b.w)));
     const set = new Set(); return pool.filter(x => !set.has(x.w) && set.add(x.w)).slice(0, n).map(x => ({ ...x, teile: silben(x.w), anzeige: x.w }));
 }
-function silbenZeigen(a, feld, fertig){
-    let pos = 0;
-    feld.innerHTML = `${a.svg ? `<div class="bild">${a.svg}</div>` : ""}<button class="vorlesen" title="Vorlesen"><i class="fa-solid fa-volume-high"></i></button>
-        <div class="ziel silben" id="s-ziel">${a.teile.map(() => `<div class="platz"></div>`).join("")}</div><div class="kacheln" id="s-k"></div>`;
-    feld.querySelector(".vorlesen").onclick = () => sprechen(a.w);
-    let reihe = mischen(a.teile.map((t, i) => ({ t, i })));
-    if (reihe.every((x, i) => x.i === i) && reihe.length > 1) reihe = reihe.reverse();
-    reihe.forEach(x => { const b = document.createElement("button"); b.className = "kachel"; b.textContent = x.t;
-        b.onclick = () => {
-            if (a.teile[pos] === x.t){ const p = $("#s-ziel").children[pos]; p.textContent = x.t; p.classList.add("voll"); b.classList.add("weg"); pos++;
-                if (pos === a.teile.length){ sprechen(a.w); fertig(true); } }
-            else { b.classList.remove("nein"); void b.offsetWidth; b.classList.add("nein"); fertig(false); }
-        };
-        $("#s-k").appendChild(b); });
-}
-
-/* ---------- Wort-Baumeister ---------- */
-const VERWECHSLER = { b: "d", d: "b", p: "b", m: "n", n: "m", e: "i", i: "e", t: "d", g: "k", k: "g", ie: "ei", ei: "ie", s: "ss", ss: "s", ck: "k", tz: "z", f: "v", v: "f", h: "", ä: "e", eu: "äu" };
-function baumeisterAufgaben(n){
-    let pool = mischen(kindWoerter());
-    const sk = sek() ? mischen(rsWoerter(S.rs)) : [];
-    const bl = sek() ? [] : mischen(bilder().filter(b => lesbar(b.w) && b.w.length <= 7).map(b => b.w));
-    pool = [...pool, ...sk, ...bl].filter(w => /^[A-Za-zÄÖÜäöüß]+$/.test(w) && w.length >= 3 && w.length <= (sek() ? 12 : 8));
-    const set = new Set(); return pool.filter(w => !set.has(w) && set.add(w)).slice(0, n).map(w => ({ w, anzeige: w }));
-}
-function baumeisterZeigen(a, feld, fertig){
-    const teile = grapheme(a.w);
-    feld.innerHTML = `<p class="hilfe" style="font-size:17px">Schau dir das Wort genau an und merk es dir.</p><div class="wort">${esc(a.w)}</div>
-        <button class="weiter" id="bm-ok">Ich hab's mir gemerkt</button>`;
-    if (!sek()) sprechen(a.w);
-    const los = () => {
-        let pos = 0;
-        let kacheln = teile.map((t, i) => ({ t, i }));
-        if (sek()){ const extra = teile.map(t => VERWECHSLER[t.toLowerCase()]).filter(x => x); mischen(extra).slice(0, 2).forEach(x => kacheln.push({ t: x, i: -1 })); }
-        kacheln = mischen(kacheln);
-        feld.innerHTML = `<p class="hilfe" style="font-size:17px">Bau das Wort wieder zusammen.</p>
-            <div class="ziel" id="bm-ziel">${teile.map(() => `<div class="platz"></div>`).join("")}</div><div class="kacheln" id="bm-k"></div>
-            <button class="antwort klein" style="flex:0 0 auto;max-width:260px" id="bm-zeig"><i class="fa-solid fa-eye"></i> Noch mal ansehen</button>`;
-        kacheln.forEach(x => { const b = document.createElement("button"); b.className = "kachel"; b.textContent = x.t;
-            b.onclick = () => {
-                if (teile[pos] === x.t){ const p = $("#bm-ziel").children[pos]; p.textContent = x.t; p.classList.add("voll"); b.classList.add("weg"); pos++; if (pos === teile.length) fertig(true); }
-                else { b.classList.remove("nein"); void b.offsetWidth; b.classList.add("nein"); fertig(false); }
-            };
-            $("#bm-k").appendChild(b); });
-        $("#bm-zeig").onclick = () => { const z = $("#bm-ziel"); const alt = z.innerHTML; z.innerHTML = `<div class="wort" style="font-size:44px">${esc(a.w)}</div>`; setTimeout(() => { z.innerHTML = alt; }, 1500); };
-    };
-    $("#bm-ok").onclick = los;
-}
-
-/* ---------- Lese-Blitz ---------- */
-const TAUSCH = [["b", "d"], ["d", "b"], ["p", "b"], ["m", "n"], ["n", "m"], ["ei", "ie"], ["ie", "ei"], ["u", "n"], ["e", "i"], ["t", "d"], ["g", "k"], ["k", "g"], ["o", "a"], ["ch", "sch"], ["au", "ua"], ["r", "l"], ["l", "r"]];
-function aehnlich(w){
-    const v = new Set();
-    const p = SP_MINIMAL.find(x => x[0] === w || x[1] === w); if (p) v.add(p[0] === w ? p[1] : p[0]);
-    TAUSCH.forEach(([a, b]) => { let i = w.indexOf(a, 1); if (i < 0 && a !== w[0]?.toLowerCase()) i = w.indexOf(a); if (i >= 0) v.add(w.slice(0, i) + b + w.slice(i + a.length)); });
-    for (let i = 1; i < w.length - 1; i++) v.add(w.slice(0, i) + w[i + 1] + w[i] + w.slice(i + 2));
-    for (let i = 1; i < w.length; i++) if (w.length > 3) v.add(w.slice(0, i) + w.slice(i + 1));
-    v.delete(w);
-    return [...v].filter(x => x.length >= 2 && x[0] === w[0]);
-}
-function blitzAufgaben(n){
-    let pool;
-    if (sek()) pool = [...kindWoerter(), ...SP_MINIMAL.flat(), ...Object.keys(SP_RS).flatMap(rsWoerter)];
-    else pool = [...kindWoerter(), ...bilder().map(b => b.w).filter(lesbar), ...SP_MINIMAL.flat().filter(lesbar)];
-    const set = new Set();
-    return mischen(pool.filter(w => /^[A-Za-zÄÖÜäöüß]+$/.test(w) && w.length >= 3)).filter(w => !set.has(w) && set.add(w)).map(w => {
-        const v = mischen(aehnlich(w)).slice(0, 2); return v.length === 2 ? { w, anzeige: w, opts: mischen([w, ...v]) } : null;
-    }).filter(Boolean).slice(0, n);
-}
-function blitzZeigen(a, feld, fertig){
-    const ms = laden("sp-blitz", sek() ? 500 : 1200);
-    feld.innerHTML = `<div class="einst">Zeit: <button id="bz-m">−</button><span id="bz-z">${(ms / 1000).toFixed(1).replace(".", ",")} s</span><button id="bz-p">+</button></div>
-        <div class="blitz wort" id="bz"><span class="punkt"></span></div><button class="weiter" id="bz-los">Zeig das Wort</button>`;
-    const z = d => { const v = Math.max(200, Math.min(4000, laden("sp-blitz", ms) + d)); merken("sp-blitz", v); $("#bz-z").textContent = (v / 1000).toFixed(1).replace(".", ",") + " s"; };
-    $("#bz-m").onclick = () => z(-100); $("#bz-p").onclick = () => z(100);
-    $("#bz-los").onclick = () => {
-        $("#bz-los").remove();
-        $("#bz").textContent = a.w;
-        setTimeout(() => { $("#bz").innerHTML = '<span class="punkt"></span>';
-            knoepfe(feld, a.opts, a.w, fertig, { beiRichtig: () => { $("#bz").textContent = a.w; } }); }, laden("sp-blitz", ms));
-    };
-}
-
 /* ---------- Memory ---------- */
 function memoryAufgaben(art){
     let paare = [];
@@ -525,7 +378,7 @@ function memoryAufgaben(art){
         paare = mischen(lb).slice(0, 6).map(z => [z.toUpperCase(), z]); }
     if (art === "reim") paare = mischen(SP_REIME.filter(p => p.every(lesbar))).slice(0, 6);
     if (art === "bild") paare = mischen(bilder().filter(b => lesbar(b.w) && b.w.length <= 7)).slice(0, 6).map(b => [{ svg: b.svg, w: b.w }, b.w]);
-    return paare.length >= 3 ? [{ paare, w: "" }] : [];
+    return paare.length >= 3 ? [{ typ: "memory", paare, w: "" }] : [];
 }
 function memoryZeigen(a, feld, fertig){
     const karten = mischen(a.paare.flatMap((p, i) => [{ p: i, inhalt: p[0] }, { p: i, inhalt: p[1] }]));
@@ -552,15 +405,16 @@ function memoryZeigen(a, feld, fertig){
 
 /* ---------- Spieleliste ---------- */
 const SPIELE = [
-    { id: "luecke", titel: "Lückenwörter", ico: "fa-puzzle-piece", text: "Welcher Baustein fehlt? Mit dem Merksatz als Hilfe.", gs: true, sek: true, rs: true, machen: () => lueckenAufgaben(S.rs, 10), zeigen: lueckeZeigen },
-    { id: "sortieren", titel: "Wörter sortieren", ico: "fa-layer-group", text: "Jedes Wort in die richtige Gruppe – Strategie anwenden.", gs: true, sek: true, rs: true, machen: () => sortAufgaben(S.rs, 10), zeigen: sortZeigen },
-    { id: "baumeister", titel: "Wort-Baumeister", ico: "fa-cubes", text: "Wort ansehen, merken, aus Bausteinen wieder bauen. Mit den Fehlerwörtern des Kindes.", gs: true, sek: true, machen: () => baumeisterAufgaben(8), zeigen: baumeisterZeigen, pause: 1100 },
-    { id: "blitz", titel: "Lese-Blitz", ico: "fa-bolt", text: "Das Wort blitzt kurz auf – welches war es? Genau lesen statt raten.", gs: true, sek: true, machen: () => blitzAufgaben(10), zeigen: blitzZeigen },
-    { id: "silben", titel: "Silben-Puzzle", ico: "fa-shoe-prints", text: "Silben in die richtige Reihenfolge legen und mitschwingen.", gs: true, sek: true, machen: () => silbenAufgaben(8), zeigen: silbenZeigen, pause: 1300 },
-    { id: "anlaut", titel: "Anlaut finden", ico: "fa-ear-listen", text: "Bild ansehen, Wort hören: Mit welchem Laut fängt es an? Nur mit bekannten Buchstaben.", gs: true, machen: () => anlautAufgaben(10), zeigen: anlautZeigen },
-    { id: "mem-gk", titel: "Memory: Groß & klein", ico: "fa-clone", text: "Großbuchstabe und Kleinbuchstabe finden zusammen.", gs: true, machen: () => memoryAufgaben("gk"), zeigen: memoryZeigen },
-    { id: "mem-bild", titel: "Memory: Bild & Wort", ico: "fa-image", text: "Wort lesen und das passende Bild finden.", gs: true, machen: () => memoryAufgaben("bild"), zeigen: memoryZeigen },
-    { id: "mem-reim", titel: "Memory: Reime", ico: "fa-music", text: "Welche Wörter reimen sich?", gs: true, machen: () => memoryAufgaben("reim"), zeigen: memoryZeigen },
+    { id: "strategie", titel: "Rechtschreib-Strategie", ico: "fa-route", text: "Hören, Strategie anwenden, Lücke füllen – mit Tipp, wenn es hakt.", gs: true, sek: true, rs: true, machen: () => AG.rsAufgaben(S.rs, 10) },
+    { id: "merk", titel: "Merk- & Fehlerwörter", ico: "fa-eye", text: "Wortbild ansehen, abdecken, aufbauen. Mit den Fehlerwörtern aus der Förderkartei.", gs: true, sek: true, machen: () => AG.merkAufgaben(8) },
+    { id: "silben", titel: "Silben-Puzzle", ico: "fa-shoe-prints", text: "Silben in die richtige Reihenfolge legen und mitschwingen.", gs: true, sek: true, machen: () => AG.silbenAufg(8) },
+    { id: "bildwort", titel: "Bild & Wort", ico: "fa-image", text: "Genau lesen: Welches Wort passt zum Bild? Nur echte Wörter.", gs: true, machen: () => AG.bildWortAufg(10) },
+    { id: "blitz", titel: "Blitzlesen", ico: "fa-bolt", text: "Das Wort blitzt kurz auf – welches Bild gehört dazu?", gs: true, machen: () => AG.blitzAufg(10) },
+    { id: "anlaut", titel: "Anlaut finden", ico: "fa-ear-listen", text: "Bild ansehen, Wort hören: Mit welchem Laut fängt es an?", gs: true, machen: () => AG.anlautAufg(10) },
+    { id: "reim", titel: "Reimwörter", ico: "fa-music", text: "Was reimt sich? Laut sprechen und aufs Ende hören.", gs: true, machen: () => AG.reimAufg(8) },
+    { id: "mem-gk", titel: "Memory: Groß & klein", ico: "fa-clone", text: "Großbuchstabe und Kleinbuchstabe finden zusammen.", gs: true, machen: () => memoryAufgaben("gk") },
+    { id: "mem-bild", titel: "Memory: Bild & Wort", ico: "fa-images", text: "Wort lesen und das passende Bild finden.", gs: true, machen: () => memoryAufgaben("bild") },
+    { id: "mem-reim", titel: "Memory: Reime", ico: "fa-music", text: "Welche Wörter reimen sich?", gs: true, machen: () => memoryAufgaben("reim") },
 ];
 function spieleZeigen(){
     const liste = SPIELE.filter(s => sek() ? s.sek : s.gs);
@@ -571,6 +425,7 @@ function spieleZeigen(){
 const _rsZeigen = rsZeigen; rsZeigen = function(){ _rsZeigen(); spieleZeigen(); };
 kindSetzen();
 </script>
+<script src="lrs-aufgaben.js"></script>
 <script src="lrs-arcade.js"></script>
 <script>arKarten();</script>
 <script src="lrs-welten.js"></script>

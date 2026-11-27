@@ -7,9 +7,9 @@
    ============================================================ */
 (function(){
 const AR_SPIELE = {
-    runner:  { titel: "Wort-Runner", emoji: "🏃", text: "Renn durch das richtige Tor! Je weiter, desto schneller.", gs: true, sek: true },
-    weltall: { titel: "Asteroiden-Jagd", emoji: "🚀", text: "Schieß nur die passenden Wörter ab – Mission für Mission.", gs: true, sek: true },
-    monster: { titel: "Monster füttern", emoji: "👾", text: "Das Monster frisst nur bestimmte Wörter. Füttere es richtig!", gs: true, sek: false },
+    runner:  { titel: "Runner", emoji: "🏃", text: "Weich den Hindernissen aus und sammle Münzen. Es wird immer schneller!", gs: true, sek: true },
+    weltall: { titel: "Asteroiden-Jagd", emoji: "🚀", text: "Schieß die Asteroiden ab – aber nie die Bomben!", gs: true, sek: true },
+    monster: { titel: "Monster füttern", emoji: "👾", text: "Füttere das Monster mit Leckerem. Bloß keine Chilis!", gs: true, sek: false },
 };
 const AR_FIGUREN = {
     runner: [["🦊", 0], ["🐱", 40], ["🐶", 80], ["🐸", 120], ["🦄", 200], ["🐼", 260], ["🦖", 350], ["🤖", 500]],
@@ -43,54 +43,11 @@ function sfx(art){
     } catch (e){}
 }
 
-/* ---------- Lerninhalt ---------- */
-const QUELLEN = {
-    rs: () => `Rechtschreibung: ${SP_RS[S.rs].name}`,
-    lesen: () => sek() ? "Richtig geschrieben?" : "Genau lesen",
-    anlaut: () => "Anlaute",
-};
-function quellenFuer(id){
-    const q = ["rs", "lesen"];
-    if (!sek()) q.push("anlaut");
-    if (id !== "runner" && ["dasdass", "grossklein"].includes(S.rs)) q.shift();   // Sätze passen nicht auf Asteroiden
-    return q;
-}
-// Wortvorrat zum Lesen
-function lesePool(){
-    const p = sek() ? [...kindWoerter(), ...rsWoerter(S.rs), ...SP_MINIMAL.flat()] : [...kindWoerter(), ...bilder().filter(b => lesbar(b.w)).map(b => b.w)];
-    return [...new Set(p.filter(w => /^[A-Za-zÄÖÜäöüß]+$/.test(w) && w.length >= 3))];
-}
-const bildVon = w => bilder().find(b => b.w === w);
-
-// Runner: Frage mit 2–3 Antworten
-function runnerAufgaben(q){
-    if (q === "rs") return lueckenAufgaben(S.rs, 40).map(a => { const falsch = mischen(a.opts.filter(o => o !== a.richtig)).slice(0, 2);
-        return { html: `${esc(a.vor)}<span class="ar-luecke">?</span>${esc(a.nach)}`, satz: !!a.satz, opts: mischen([a.richtig, ...falsch]), richtig: a.richtig, loesung: a.vor + (a.richtig === "–" ? "" : a.richtig) + a.nach }; });
-    if (q === "anlaut") return anlautAufgaben(40).map(a => ({ svg: a.svg, sag: a.w, opts: a.opts.map(z => z[0].toUpperCase() + z.slice(1)), richtig: a.richtig[0].toUpperCase() + a.richtig.slice(1), loesung: a.w }));
-    return mischen(lesePool()).map(w => { const v = mischen(aehnlich(w)).slice(0, 2); if (v.length < 2) return null; const b = sek() ? null : bildVon(w);
-        return { svg: b?.svg, sag: w, html: b ? "" : `<span class="ar-hoer">🔊 Hör genau hin</span>`, opts: mischen([w, ...v]), richtig: w, loesung: w, woerter: true }; }).filter(Boolean).slice(0, 40);
-}
-// Asteroiden & Monster: eine Regel und ein Strom aus passenden und unpassenden Wörtern
-function regelMachen(q){
-    if (q === "rs"){
-        const k = S.rs, d = SP_RS[k], alle = sortAufgaben(k, 400);
-        const spalten = d.spalten.map((x, i) => i).filter(i => alle.filter(a => a.s === i).length >= 4);
-        const t = spalten[Math.floor(Math.random() * spalten.length)] ?? 0;
-        return { text: d.spalten[t].replace(/\s*\(.*\)\s*/, ""), beispiel: (d.spalten[t].match(/\((.*)\)/) || [])[1] || "",
-            gut: mischen(alle.filter(a => a.s === t)).map(a => ({ text: a.w })), schlecht: mischen(alle.filter(a => a.s !== t)).map(a => ({ text: a.w })) };
-    }
-    if (q === "anlaut"){
-        const lb = buchstaben(), erlaubt = new Set(lb || BK_REIHE);
-        const pool = bilder().filter(b => !/^(sp|st|ch|qu|c|y|x|v)/i.test(b.w) && erlaubt.has(anlaut(b.w)));
-        const zaehl = {}; pool.forEach(b => { const a = anlaut(b.w); zaehl[a] = (zaehl[a] || 0) + 1; });
-        const ziele = Object.keys(zaehl).filter(z => zaehl[z] >= 3); const z = ziele[Math.floor(Math.random() * ziele.length)] || "m";
-        return { text: `Wörter mit ${z[0].toUpperCase() + z.slice(1)} ${z} am Anfang`, sag: `Wörter mit ${z} am Anfang`,
-            gut: mischen(pool.filter(b => anlaut(b.w) === z)).map(b => ({ text: b.w, svg: b.svg })), schlecht: mischen(pool.filter(b => anlaut(b.w) !== z)).map(b => ({ text: b.w, svg: b.svg })) };
-    }
-    const pool = mischen(lesePool()), gut = [], schlecht = [];
-    pool.forEach(w => { const b = sek() ? null : bildVon(w); gut.push({ text: w, svg: b?.svg }); const v = aehnlich(w); if (v.length) schlecht.push({ text: mischen(v)[0], svg: b?.svg }); });
-    return { text: sek() ? "Nur richtig geschriebene Wörter" : "Nur Wörter, die zum Bild passen", gut, schlecht };
-}
+/* ---------- Energie: wird beim ruhigen Üben gesammelt, eine Action-Runde kostet sie ---------- */
+const KOSTEN = 10;
+const eKey = () => "sp-energie-" + (S.kind?.code || "_");
+function energie(){ return laden(eKey(), 0); }
+function freispiel(){ return !!laden("sp-freispiel", false); }
 
 /* ---------- Oberfläche ---------- */
 const css = `
@@ -151,6 +108,9 @@ const css = `
 .ar-tor.nein{ background:#ffb4a0; border-color:#b5583f; }
 .ar-muenze{ position:absolute; z-index:2; font-size:38px; transform:translateX(-50%); }
 
+.ar-reihe .ar-zelle{ flex:1; margin:0 6px; height:76px; display:grid; place-items:center; font-size:54px; filter:drop-shadow(0 6px 4px rgba(0,0,0,.35)); }
+.ar-ding{ position:absolute; z-index:2; transform:translate(-50%, -50%); font-size:clamp(46px, 10vw, 64px); cursor:pointer; filter:drop-shadow(0 6px 6px rgba(0,0,0,.3)); line-height:1; padding:8px; }
+.ar-ding.fels{ font-size:var(--g); }
 /* Weltall & Monster */
 .ar-weltall{ background:radial-gradient(ellipse at 50% 120%, #22365e, #070b1a 70%); }
 .ar-stern{ position:absolute; width:2px; height:2px; background:#fff; border-radius:50%; }
@@ -192,36 +152,39 @@ function monsterSvg(c, mund = "auf"){
 }
 
 /* ---------- Startbildschirm ---------- */
-function startZeigen(id, quelle){
+const STARTER = () => ({ runner: runnerStart, weltall: fallStart, monster: fallStart });
+function startZeigen(id){
     stopp();
-    const sp = AR_SPIELE[id], k = konto(), qs = quellenFuer(id);
-    quelle = qs.includes(quelle) ? quelle : (S.kind && buchstaben() && !sek() && !S.kind.r.length ? (qs.includes("anlaut") ? "anlaut" : qs[0]) : qs[0]);
+    const sp = AR_SPIELE[id], k = konto(), e = energie(), frei = freispiel(), genug = frei || e >= KOSTEN;
     const liste = figurenListe(id), aktivKey = id + (sek() ? "S" : ""), aktiv = k.aktiv[aktivKey] ?? 0;
     const zeigeFig = (f, i) => {
-        const frei = i === 0 || (k.frei[aktivKey] || []).includes(i);
+        const offen = i === 0 || (k.frei[aktivKey] || []).includes(i);
         const inhalt = id === "runner" ? f[0] : id === "weltall" ? `<div style="width:46px;height:52px">${schiffSvg(f[0])}</div>` : `<div style="width:52px;height:46px">${monsterSvg(f[0], "zu")}</div>`;
-        return `<button class="ar-fig${i === aktiv ? " an" : ""}${frei ? "" : " zu"}" data-fig="${i}">${inhalt}${frei ? "" : `<small>🪙 ${f[1]}</small>`}</button>`;
+        return `<button class="ar-fig${i === aktiv ? " an" : ""}${offen ? "" : " zu"}" data-fig="${i}">${inhalt}${offen ? "" : `<small>🪙 ${f[1]}</small>`}</button>`;
     };
     box.innerHTML = `<button class="ar-zu" id="ar-zu">✕</button><div class="ar-start">
         <div class="gross">${sp.emoji}</div><h2>${esc(sp.titel)}</h2>
-        <div class="ar-werte"><div class="ar-wert">🪙 ${k.muenzen}</div><div class="ar-wert">🏆 Rekord ${k.best[id] || 0}</div></div>
-        <div class="ar-chips">${qs.map(q => `<button class="ar-chip${q === quelle ? " an" : ""}" data-q="${q}">${esc(QUELLEN[q]())}</button>`).join("")}</div>
+        <div class="ar-werte"><div class="ar-wert">⚡ ${e} Energie</div><div class="ar-wert">🪙 ${k.muenzen}</div><div class="ar-wert">🏆 Rekord ${k.best[id] || 0}</div></div>
+        <div style="font-weight:800;opacity:.85;max-width:520px">${frei ? "Freispiel – heute ohne Energie." : `Eine Runde kostet <b style="color:#ffe08a">⚡ ${KOSTEN}</b>. Energie gibt es fürs Üben – in der Weltenreise und bei den ruhigen Spielen.`}</div>
         <div style="font-weight:800;opacity:.75">Deine Figur – mit Münzen freischalten:</div>
         <div class="ar-figuren">${liste.map(zeigeFig).join("")}</div>
-        <button class="ar-los" id="ar-los">Los geht's!</button></div>`;
+        <button class="ar-los" id="ar-los"${genug ? "" : ' style="filter:grayscale(1);opacity:.6"'}>${genug ? "Los geht's!" : `Noch ⚡ ${KOSTEN - e} sammeln`}</button></div>`;
     box.querySelector("#ar-zu").onclick = schliessenAr;
-    box.querySelectorAll("[data-q]").forEach(b => b.onclick = () => startZeigen(id, b.dataset.q));
     box.querySelectorAll("[data-fig]").forEach(b => b.onclick = () => {
-        const i = +b.dataset.fig, kk = konto(), frei = kk.frei[aktivKey] || [];
-        if (i !== 0 && !frei.includes(i)){
+        const i = +b.dataset.fig, kk = konto(), fr = kk.frei[aktivKey] || [];
+        if (i !== 0 && !fr.includes(i)){
             const preis = liste[i][1];
             if (kk.muenzen < preis){ b.classList.remove("ar-schuettel"); void b.offsetWidth; b.classList.add("ar-schuettel"); sfx("au"); return; }
-            kk.muenzen -= preis; kk.frei[aktivKey] = [...frei, i]; sfx("level");
+            kk.muenzen -= preis; kk.frei[aktivKey] = [...fr, i]; sfx("level");
         } else sfx("muenze");
-        kk.aktiv[aktivKey] = i; kontoSpeichern(kk); startZeigen(id, quelle);
+        kk.aktiv[aktivKey] = i; kontoSpeichern(kk); startZeigen(id);
     });
-    box.querySelector("#ar-los").onclick = () => { try { const e = document.documentElement; if (!document.fullscreenElement && e.requestFullscreen && matchMedia("(pointer:coarse)").matches) e.requestFullscreen().catch(() => {}); } catch (x){}
-        ({ runner: runnerStart, weltall: fallStart, monster: fallStart })[id](id, quelle); };
+    box.querySelector("#ar-los").onclick = () => {
+        if (!genug){ sfx("au"); banner("Erst üben ⚡"); return; }
+        if (!frei) merken(eKey(), energie() - KOSTEN);
+        try { const el = document.documentElement; if (!document.fullscreenElement && el.requestFullscreen && matchMedia("(pointer:coarse)").matches) el.requestFullscreen().catch(() => {}); } catch (x){}
+        STARTER()[id](id);
+    };
 }
 function hud(id, extra = ""){
     return `<button class="ar-zu" id="ar-zu">✕</button><div class="ar-hud"><div class="ar-wert" id="ar-herzen"></div><div class="ar-wert" id="ar-punkte">⭐ 0</div><div class="ar-wert" id="ar-muenzen">🪙 0</div>${extra}</div>`;
@@ -229,134 +192,95 @@ function hud(id, extra = ""){
 function herzen(n){ const e = box.querySelector("#ar-herzen"); if (e) e.textContent = "❤️".repeat(Math.max(0, n)) + "🖤".repeat(Math.max(0, 3 - n)); }
 function banner(t){ const b = document.createElement("div"); b.className = "ar-banner"; b.textContent = t; box.appendChild(b); setTimeout(() => b.remove(), 1500); }
 function plus(x, y, t){ const p = document.createElement("div"); p.className = "ar-plus"; p.style.left = x + "px"; p.style.top = y + "px"; p.textContent = t; box.appendChild(p); setTimeout(() => p.remove(), 950); }
-function spielEnde(id, quelle, punkte, muenzen, fehler){
+function spielEnde(id, punkte, muenzen){
     stopp();
     const k = konto(), rekord = punkte > (k.best[id] || 0);
     if (rekord) k.best[id] = punkte;
     k.muenzen += muenzen; kontoSpeichern(k);
     const e = document.createElement("div"); e.className = "ar-ende";
-    e.innerHTML = `<h2>${punkte >= 50 ? "Stark!" : "Geschafft!"}</h2>${rekord && punkte ? `<div class="rekord">🏆 Neuer Rekord!</div>` : ""}
+    e.innerHTML = `<h2>${punkte >= 150 ? "Wahnsinn!" : punkte >= 60 ? "Stark!" : "Geschafft!"}</h2>${rekord && punkte ? `<div class="rekord">🏆 Neuer Rekord!</div>` : ""}
         <div class="ar-werte"><div class="ar-wert">⭐ ${punkte} Punkte</div><div class="ar-wert">🪙 +${muenzen}</div><div class="ar-wert">🏆 ${k.best[id] || 0}</div></div>
-        ${fehler.length ? `<div style="font-weight:800;opacity:.85;margin-top:6px">Die merken wir uns:</div><div style="font-family:var(--wort);font-size:26px;max-width:640px">${[...new Set(fehler)].slice(0, 10).map(esc).join(" · ")}</div>` : ""}
-        <div class="ar-chips" style="margin-top:12px"><button class="ar-los" id="ar-nochmal">Nochmal!</button><button class="ar-chip" id="ar-menue" style="font-size:18px">Figuren & Münzen</button></div>`;
+        <div class="ar-chips" style="margin-top:12px"><button class="ar-los" id="ar-nochmal">Nochmal${freispiel() ? "" : ` (⚡ ${KOSTEN})`}</button><button class="ar-chip" id="ar-menue" style="font-size:18px">Figuren & Münzen</button></div>`;
     box.appendChild(e);
     if (rekord && punkte) sfx("level");
-    e.querySelector("#ar-nochmal").onclick = () => ({ runner: runnerStart, weltall: fallStart, monster: fallStart })[id](id, quelle);
-    e.querySelector("#ar-menue").onclick = () => startZeigen(id, quelle);
+    e.querySelector("#ar-nochmal").onclick = () => startZeigen(id);
+    e.querySelector("#ar-menue").onclick = () => startZeigen(id);
 }
 
-/* ---------- Wort-Runner ---------- */
-function runnerStart(id, quelle){
+/* ---------- Runner: ausweichen und Münzen sammeln (reines Belohnungsspiel) ---------- */
+function runnerStart(id){
     stopp();
-    let aufgaben = runnerAufgaben(quelle);
-    if (aufgaben.length < 3){ alert("Dafür gibt es gerade zu wenig passende Wörter – wähle einen anderen Schwerpunkt."); return startZeigen(id, quelle); }
     const L = LAUF = { aus: false };
     box.innerHTML = hud(id) + `<div class="ar-feld ar-runner" id="ar-feld"><div class="ar-strasse"></div><div class="ar-spieler lauf" id="ar-sp">${aktiveFigur("runner")}</div></div>`;
     box.querySelector("#ar-zu").onclick = schliessenAr;
     const feld = box.querySelector("#ar-feld"), spieler = box.querySelector("#ar-sp"), strasse = feld.querySelector(".ar-strasse");
-    let spur = 1, leben = 3, punkte = 0, muenzen = 0, richtigeInFolge = 0, tempo = 20, fehler = [], i = 0, warten = 0;
-    let tore = null, aufgabe = null, frageEl = null, ty = 0, pause = false, muenzeEl = null, my = 0, mspur = 0, roll = 0;
+    let spur = 1, leben = 3, punkte = 0, muenzen = 0, tempo = 26, reihen = [], bis = .6, roll = 0, geschafft = 0, unverwundbar = 0;
+    const HINDERNIS = ["🪨", "🌵", "🪵", "🚧"];
     const baeume = [];
     for (let b = 0; b < 8; b++){ const e = document.createElement("div"); e.className = "ar-baum"; e.textContent = ["🌲", "🌳", "🌲", "🌿"][b % 4]; e.style.left = (b % 2 ? 93 : 1) + "%"; feld.appendChild(e); baeume.push({ e, y: b * 14 }); }
     const spurX = s => { const r = strasse.getBoundingClientRect(), f = feld.getBoundingClientRect(); return r.left - f.left + r.width * (s + .5) / 3; };
     const setzSpur = s => { spur = Math.max(0, Math.min(2, s)); spieler.style.left = spurX(spur) + "px"; };
-    setzSpur(1);
-    herzen(leben);
-    const neueFrage = () => {
-        if (i >= aufgaben.length){ aufgaben = mischen(aufgaben); i = 0; }
-        aufgabe = aufgaben[i++];
-        frageEl?.remove();
-        frageEl = document.createElement("div"); frageEl.className = "ar-frage" + (aufgabe.satz ? " satz" : "");
-        frageEl.innerHTML = `${aufgabe.svg || ""}${aufgabe.sag ? `<button class="ar-sag">🔊</button>` : ""}${aufgabe.html ? `<span>${aufgabe.html}</span>` : ""}`;
-        box.appendChild(frageEl);
-        const sag = frageEl.querySelector(".ar-sag"); if (sag){ sag.onpointerdown = ev => { ev.stopPropagation(); sprechen(aufgabe.sag); }; sprechen(aufgabe.sag); }
-        tore?.remove();
-        tore = document.createElement("div"); tore.className = "ar-tore";
-        const opts = aufgabe.opts.slice(0, 3); while (opts.length < 3) opts.splice(Math.floor(Math.random() * (opts.length + 1)), 0, "🪨");
-        aufgabe.lanes = opts;
-        tore.innerHTML = opts.map(o => `<div class="ar-tor">${o === "🪨" ? "🪨" : esc(o)}</div>`).join("");
-        feld.appendChild(tore); ty = 12;
+    setzSpur(1); herzen(leben);
+    const neueReihe = () => {
+        const zwei = geschafft > 12 && Math.random() < .45, frei = Math.floor(Math.random() * 3);
+        const zellen = [0, 1, 2].map(x => x === frei ? (Math.random() < .55 ? "🪙" : "") : (zwei || x === (frei + 1 + Math.floor(Math.random() * 2)) % 3 ? HINDERNIS[Math.floor(Math.random() * HINDERNIS.length)] : (Math.random() < .2 ? "🪙" : "")));
+        const e = document.createElement("div"); e.className = "ar-tore ar-reihe";
+        e.innerHTML = zellen.map(z => `<div class="ar-zelle">${z}</div>`).join("");
+        feld.appendChild(e); reihen.push({ e, y: -12, zellen, geprueft: false });
     };
-    const muenzeSetzen = () => { muenzeEl?.remove(); muenzeEl = document.createElement("div"); muenzeEl.className = "ar-muenze"; muenzeEl.textContent = "🪙"; mspur = Math.floor(Math.random() * 3); my = -30; feld.appendChild(muenzeEl); };
-    neueFrage();
-    // Steuerung: dorthin tippen, wohin die Figur laufen soll · Wischen · Pfeiltasten
     let startX = null;
-    feld.onpointerdown = ev => { startX = ev.clientX; const r = strasse.getBoundingClientRect(); const s = Math.floor((ev.clientX - r.left) / r.width * 3); if (s >= 0 && s <= 2) setzSpur(s); else setzSpur(spur + (ev.clientX < r.left ? -1 : 1)); };
+    feld.onpointerdown = ev => { startX = ev.clientX; const r = strasse.getBoundingClientRect(); const s2 = Math.floor((ev.clientX - r.left) / r.width * 3); setzSpur(s2 >= 0 && s2 <= 2 ? s2 : spur + (ev.clientX < r.left ? -1 : 1)); };
+    feld.onpointermove = ev => { if (ev.buttons || ev.pointerType === "touch"){ const r = strasse.getBoundingClientRect(); const s2 = Math.floor((ev.clientX - r.left) / r.width * 3); if (s2 >= 0 && s2 <= 2 && s2 !== spur) setzSpur(s2); } };
     const taste = ev => { if (L.aus) return document.removeEventListener("keydown", taste); if (ev.key === "ArrowLeft") setzSpur(spur - 1); if (ev.key === "ArrowRight") setzSpur(spur + 1); };
     document.addEventListener("keydown", taste);
-    window.addEventListener("resize", () => setzSpur(spur));
     let alt = performance.now();
     const schritt = jetzt => {
         if (L.aus) return;
         const dt = Math.min(.05, (jetzt - alt) / 1000); alt = jetzt;
-        if (!pause){
-            const fh = feld.clientHeight, pyPct = 100 - 12 - 64 / fh * 100;   // Höhe der Figur in %
-            roll = (roll + tempo * 4.6 * dt) % 92; strasse.style.backgroundPosition = `center ${roll}px`;
-            baeume.forEach(b => { b.y += tempo * dt; if (b.y > 105) b.y -= 112; b.e.style.top = b.y + "%"; });
-            ty += tempo * dt; tore.style.top = ty + "%";
-            if (muenzeEl){ my += tempo * dt; muenzeEl.style.top = my + "%"; muenzeEl.style.left = spurX(mspur) + "px";
-                if (my > pyPct - 2 && my < pyPct + 6 && mspur === spur){ muenzen++; sfx("muenze"); plus(spurX(mspur), fh * my / 100, "🪙+1"); muenzeEl.remove(); muenzeEl = null; box.querySelector("#ar-muenzen").textContent = "🪙 " + muenzen; }
-                else if (my > 110){ muenzeEl.remove(); muenzeEl = null; } }
-            else if (Math.random() < dt * .5 && ty > 30 && ty < 60) muenzeSetzen();
-            if (ty + 76 / fh * 100 >= pyPct + 4){
-                const gewaehlt = aufgabe.lanes[spur], torEl = tore.children[spur];
-                if (gewaehlt === aufgabe.richtig){
-                    torEl.classList.add("ok"); sfx("gut"); richtigeInFolge++;
-                    const p = 10 + Math.min(20, richtigeInFolge * 2); punkte += p; plus(spurX(spur), fh * .6, "+" + p); box.querySelector("#ar-punkte").textContent = "⭐ " + punkte;
-                    if (richtigeInFolge % 5 === 0){ tempo = Math.min(46, tempo + 3); muenzen += 3; box.querySelector("#ar-muenzen").textContent = "🪙 " + muenzen; banner(richtigeInFolge >= 10 ? "Unaufhaltsam! 🔥" : "Schneller! ⚡"); sfx("level"); }
-                    pause = true; L.t = setTimeout(() => { pause = false; neueFrage(); }, 380);
-                } else {
-                    torEl.classList.add("nein"); [...tore.children][aufgabe.lanes.indexOf(aufgabe.richtig)]?.classList.add("ok");
-                    sfx("au"); leben--; herzen(leben); richtigeInFolge = 0; fehler.push(aufgabe.loesung);
-                    feld.classList.remove("ar-schuettel"); void feld.offsetWidth; feld.classList.add("ar-schuettel");
-                    const l = document.createElement("div"); l.className = "ar-loesung"; l.textContent = aufgabe.loesung; box.appendChild(l);
-                    if (aufgabe.sag) sprechen(aufgabe.sag);
-                    pause = true; spieler.classList.remove("lauf");
-                    L.t = setTimeout(() => { l.remove(); if (leben <= 0) return spielEnde(id, quelle, punkte, muenzen, fehler); pause = false; spieler.classList.add("lauf"); aufgaben.splice(i + 2, 0, aufgabe); neueFrage(); }, 1900);
-                }
+        const fh = feld.clientHeight, py = 100 - 12 - 64 / fh * 100;
+        roll = (roll + tempo * 4.6 * dt) % 92; strasse.style.backgroundPosition = `center ${roll}px`;
+        baeume.forEach(b => { b.y += tempo * dt; if (b.y > 105) b.y -= 112; b.e.style.top = b.y + "%"; });
+        bis -= dt; if (bis <= 0){ neueReihe(); bis = Math.max(.55, 1.25 - geschafft * .012) * (26 / tempo) * 1.2; }
+        unverwundbar = Math.max(0, unverwundbar - dt); spieler.style.opacity = unverwundbar > 0 ? (Math.floor(jetzt / 90) % 2 ? .4 : 1) : 1;
+        for (let n = reihen.length - 1; n >= 0; n--){
+            const r = reihen[n]; r.y += tempo * dt; r.e.style.top = r.y + "%";
+            if (!r.geprueft && r.y + 76 / fh * 100 >= py + 4){
+                r.geprueft = true; const z = r.zellen[spur], zel = r.e.children[spur];
+                if (z === "🪙"){ muenzen++; punkte += 5; sfx("muenze"); plus(spurX(spur), fh * .7, "🪙+1"); zel.textContent = ""; }
+                else if (z && unverwundbar <= 0){ leben--; herzen(leben); sfx("au"); unverwundbar = 1.2; feld.classList.remove("ar-schuettel"); void feld.offsetWidth; feld.classList.add("ar-schuettel");
+                    if (leben <= 0){ spieler.classList.remove("lauf"); return (L.t = setTimeout(() => spielEnde(id, punkte, muenzen), 700)); } }
+                if (!z || z === "🪙"){ geschafft++; punkte += 2; box.querySelector("#ar-punkte").textContent = "⭐ " + punkte; box.querySelector("#ar-muenzen").textContent = "🪙 " + muenzen;
+                    if (geschafft % 15 === 0){ tempo = Math.min(55, tempo + 4); banner(geschafft >= 45 ? "Unaufhaltsam! 🔥" : "Schneller! ⚡"); sfx("level"); } }
             }
+            if (r.y > 112){ r.e.remove(); reihen.splice(n, 1); }
         }
         L.raf = requestAnimationFrame(schritt);
     };
     L.raf = requestAnimationFrame(schritt);
 }
 
-/* ---------- Asteroiden-Jagd & Monster füttern ---------- */
-function fallStart(id, quelle){
+/* ---------- Asteroiden-Jagd & Monster füttern (reine Belohnungsspiele) ---------- */
+function fallStart(id){
     stopp();
     const monster = id === "monster";
-    let regel = regelMachen(quelle);
-    if (regel.gut.length < 3 || regel.schlecht.length < 3){ alert("Dafür gibt es gerade zu wenig passende Wörter – wähle etwas anderes."); return startZeigen(id, quelle); }
     const L = LAUF = { aus: false };
     const figur = aktiveFigur(id);
-    box.innerHTML = hud(id) + `<div class="ar-feld ${monster ? "ar-monsterwelt" : "ar-weltall"}" id="ar-feld">${monster ? `<div class="ar-monster" id="ar-mo">${monsterSvg(figur)}</div>` : `<div class="ar-schiff" id="ar-schiff" style="--farbe:${figur}">${schiffSvg(figur)}</div>`}</div>`;
+    box.innerHTML = hud(id, `<div class="ar-wert" id="ar-zeit">⏱ 60</div>`) + `<div class="ar-feld ${monster ? "ar-monsterwelt" : "ar-weltall"}" id="ar-feld">${monster ? `<div class="ar-monster" id="ar-mo">${monsterSvg(figur)}</div>` : `<div class="ar-schiff" id="ar-schiff">${schiffSvg(figur)}</div>`}</div>`;
     box.querySelector("#ar-zu").onclick = schliessenAr;
     const feld = box.querySelector("#ar-feld");
     if (!monster) for (let s = 0; s < 70; s++){ const e = document.createElement("div"); e.className = "ar-stern"; e.style.left = Math.random() * 100 + "%"; e.style.top = Math.random() * 100 + "%"; e.style.opacity = .3 + Math.random() * .7; feld.appendChild(e); }
-    let leben = 3, punkte = 0, muenzen = 0, treffer = 0, serie = 0, tempo = 9, takt = 1.9, naechster = .4, mission = 1, fehler = [], gi = 0, si = 0;
+    let leben = 3, punkte = 0, muenzen = 0, serie = 0, tempo = 12, takt = 1.0, naechster = .3, zeit = 60, gesamt = 0;
+    const GUT = monster ? ["🍎", "🍌", "🍓", "🥕", "🍪", "🧁", "🍉", "🍐", "🥨"] : ["🪨"], SCHLECHT = monster ? ["🌶️", "🧦", "🪨"] : ["💣"], BONUS = "⭐";
     const steine = [];
     herzen(leben);
-    let regelEl = null;
-    const regelZeigen = () => {
-        regelEl?.remove(); regelEl = document.createElement("div"); regelEl.className = "ar-regel";
-        regelEl.innerHTML = `${regel.sag || !sek() ? `<button class="ar-sag">🔊</button>` : ""}<div>${monster ? "Ich fresse nur:" : `Mission ${mission}: Triff nur`}<br>${esc(regel.text)}${regel.beispiel ? `<small>z. B. ${esc(regel.beispiel)}</small>` : ""}</div>`;
-        box.appendChild(regelEl);
-        const sag = regelEl.querySelector(".ar-sag"); if (sag) sag.onpointerdown = ev => { ev.stopPropagation(); sprechen((monster ? "Ich fresse nur " : "Triff nur ") + (regel.sag || regel.text)); };
-    };
-    regelZeigen(); banner(monster ? "Hunger! 😋" : `Mission ${mission}`);
-    const naechstesWort = () => {
-        const gut = Math.random() < .5;
-        const quelleL = gut ? regel.gut : regel.schlecht;
-        const idx = gut ? gi++ : si++;
-        return { ...quelleL[idx % quelleL.length], gut };
-    };
+    banner(monster ? "Hunger! 😋" : "Los geht's! 🚀");
     const spawn = () => {
-        const w = naechstesWort();
-        if (steine.some(s => s.text === w.text)) return;
-        const e = document.createElement("div"); e.className = "ar-ast";
-        e.innerHTML = `${w.svg && !sek() && quelle !== "rs" ? w.svg : ""}${esc(w.text)}`;
-        const s = { ...w, e, x: 12 + Math.random() * 76, y: 20, vy: tempo * (.8 + Math.random() * .4), rot: (Math.random() - .5) * 30, weg: false };
-        e.style.left = s.x + "%"; e.style.top = s.y + "%"; e.animate([{ opacity: 0, transform: "translate(-50%,-50%) scale(.5)" }, { opacity: 1, transform: "translate(-50%,-50%) scale(1)" }], { duration: 350 });
+        const r = Math.random(), art = r < .18 ? "schlecht" : r < .26 ? "bonus" : "gut";
+        const zeichen = art === "gut" ? GUT[Math.floor(Math.random() * GUT.length)] : art === "bonus" ? BONUS : SCHLECHT[Math.floor(Math.random() * SCHLECHT.length)];
+        const e = document.createElement("div"); e.className = "ar-ding"; e.textContent = zeichen;
+        if (!monster && art === "gut"){ e.classList.add("fels"); e.style.setProperty("--g", (54 + Math.random() * 36) + "px"); }
+        const s = { art, e, x: 10 + Math.random() * 80, y: 14, vy: tempo * (.8 + Math.random() * .5), rot: (Math.random() - .5) * 120, weg: false };
+        e.style.left = s.x + "%"; e.style.top = s.y + "%";
         e.onpointerdown = ev => { ev.stopPropagation(); treffen(s); };
         feld.appendChild(e); steine.push(s);
     };
@@ -374,38 +298,35 @@ function fallStart(id, quelle){
             box.querySelector("#ar-schiff").style.transform = `rotate(${Math.atan2(dx, -dy)}rad)`;
         }
         s.weg = true;
-        if (s.gut){
-            treffer++; serie++;
-            const p = 10 + Math.min(25, serie * 3); punkte += p; box.querySelector("#ar-punkte").textContent = "⭐ " + punkte; plus(zx, zy, "+" + p);
-            if (serie % 4 === 0){ muenzen += 2; box.querySelector("#ar-muenzen").textContent = "🪙 " + muenzen; }
+        if (s.art !== "schlecht"){
+            serie++; const p = s.art === "bonus" ? 25 : 10 + Math.min(20, serie * 2); punkte += p; plus(zx, zy, "+" + p);
+            if (s.art === "bonus" || serie % 5 === 0){ muenzen++; box.querySelector("#ar-muenzen").textContent = "🪙 " + muenzen; sfx("muenze"); }
+            box.querySelector("#ar-punkte").textContent = "⭐ " + punkte;
             if (monster){
                 sfx("mampf"); const mo = box.querySelector("#ar-mo"), mr = mo.getBoundingClientRect();
-                s.e.animate([{ left: s.e.style.left, top: s.e.style.top, transform: "translate(-50%,-50%) scale(1)" }, { left: (mr.left - fr.left + mr.width / 2) + "px", top: (mr.top - fr.top + mr.height * .68) + "px", transform: "translate(-50%,-50%) scale(.1)" }], { duration: 380, easing: "ease-in", fill: "forwards" });
-                setTimeout(() => { s.e.remove(); mo.innerHTML = monsterSvg(figur, "zu"); setTimeout(() => { if (!L.aus) mo.innerHTML = monsterSvg(figur); }, 260);
-                    const g = Math.min(240, 170 + treffer * 3); mo.style.width = g + "px"; mo.style.height = g * .88 + "px"; }, 380);
+                s.e.animate([{ left: s.e.style.left, top: s.e.style.top, transform: "translate(-50%,-50%) scale(1)" }, { left: (mr.left - fr.left + mr.width / 2) + "px", top: (mr.top - fr.top + mr.height * .68) + "px", transform: "translate(-50%,-50%) scale(.1)" }], { duration: 360, easing: "ease-in", fill: "forwards" });
+                setTimeout(() => { s.e.remove(); mo.innerHTML = monsterSvg(figur, "zu"); setTimeout(() => { if (!L.aus) mo.innerHTML = monsterSvg(figur); }, 240); }, 360);
             } else { sfx("boom"); funken(zx, zy, "#ffd166"); funken(zx, zy, "#ff8f5a"); s.e.remove(); }
-            if (treffer % 8 === 0){
-                mission++; tempo = Math.min(22, tempo + 1.6); takt = Math.max(.9, takt - .15); muenzen += 5; box.querySelector("#ar-muenzen").textContent = "🪙 " + muenzen;
-                regel = regelMachen(quelle); gi = si = 0; regelZeigen(); sfx("level"); banner(monster ? "Noch mehr Hunger! 😋" : `Mission ${mission} 🚀`);
-            }
         } else {
-            sfx("au"); leben--; herzen(leben); serie = 0; fehler.push(s.text);
+            sfx("au"); leben--; herzen(leben); serie = 0;
             feld.classList.remove("ar-schuettel"); void feld.offsetWidth; feld.classList.add("ar-schuettel");
             if (monster){ const mo = box.querySelector("#ar-mo"); mo.innerHTML = monsterSvg(figur, "bah"); mo.classList.remove("bah"); void mo.offsetWidth; mo.classList.add("bah"); setTimeout(() => { if (!L.aus) mo.innerHTML = monsterSvg(figur); }, 700); }
-            s.e.style.background = "#b5583f"; s.e.style.color = "#fff";
-            s.e.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 700, fill: "forwards" }); setTimeout(() => s.e.remove(), 700);
-            if (leben <= 0) L.t = setTimeout(() => spielEnde(id, quelle, punkte, muenzen, fehler), 800);
+            else funken(zx, zy, "#ff4d4d");
+            s.e.animate([{ opacity: 1 }, { opacity: 0, transform: "translate(-50%,-50%) scale(1.6)" }], { duration: 500, fill: "forwards" }); setTimeout(() => s.e.remove(), 500);
+            if (leben <= 0) L.t = setTimeout(() => spielEnde(id, punkte, muenzen), 700);
         }
     };
     let alt = performance.now();
     const schritt = jetzt => {
         if (L.aus) return;
         const dt = Math.min(.05, (jetzt - alt) / 1000); alt = jetzt;
-        naechster -= dt; if (naechster <= 0 && leben > 0){ spawn(); naechster = takt * (.75 + Math.random() * .5); }
+        gesamt += dt; const rest = Math.max(0, Math.ceil(60 - gesamt)); if (rest !== zeit){ zeit = rest; box.querySelector("#ar-zeit").textContent = "⏱ " + zeit; if (zeit === 0) return spielEnde(id, punkte, muenzen + 2); }
+        tempo = 12 + gesamt * .18; takt = Math.max(.45, 1 - gesamt * .009);
+        naechster -= dt; if (naechster <= 0 && leben > 0){ spawn(); naechster = takt * (.7 + Math.random() * .5); }
         for (let n = steine.length - 1; n >= 0; n--){
             const s = steine[n]; if (s.weg){ steine.splice(n, 1); continue; }
-            s.y += s.vy * dt; s.e.style.top = s.y + "%"; if (!monster) s.e.style.transform = `translate(-50%,-50%) rotate(${s.rot * Math.sin(s.y / 20)}deg)`;
-            if (s.y > (monster ? 70 : 92)){ if (s.gut) serie = 0; s.e.remove(); steine.splice(n, 1); }
+            s.y += s.vy * dt; s.e.style.top = s.y + "%"; s.e.style.transform = `translate(-50%,-50%) rotate(${s.rot * s.y / 100}deg)`;
+            if (s.y > (monster ? 72 : 94)){ if (s.art === "gut") serie = 0; s.e.remove(); steine.splice(n, 1); }
         }
         L.raf = requestAnimationFrame(schritt);
     };
@@ -416,8 +337,8 @@ function fallStart(id, quelle){
 function arKarten(){
     let ziel = document.getElementById("arcade-spiele");
     if (!ziel){
-        document.getElementById("spiele").insertAdjacentHTML("beforebegin", `<div class="karte ar-karte"><div class="zeile" style="justify-content:space-between"><h2 style="margin:0">Action-Spiele</h2><div class="ar-konto" id="ar-konto"></div></div>
-            <p class="hilfe" style="margin-bottom:12px">Münzen sammeln, Rekord knacken, neue Figuren freischalten – geübt wird nebenbei.</p><div class="spiele" id="arcade-spiele"></div></div>
+        document.getElementById("spiele").insertAdjacentHTML("beforebegin", `<div class="karte ar-karte"><div class="zeile" style="justify-content:space-between"><h2 style="margin:0">Weltenreise & Belohnung</h2><div class="ar-konto" id="ar-konto"></div></div>
+            <p class="hilfe" style="margin-bottom:12px">Erst in Ruhe üben und ⚡ Energie sammeln – dann gibt es eine Runde Action als Belohnung. Mit Münzen werden neue Figuren freigeschaltet.</p><div class="spiele" id="arcade-spiele"></div></div>
             <h2 style="font-family:Fraunces,Georgia,serif;color:var(--nacht);margin:6px 4px 12px;font-size:21px">Ruhig üben</h2>`);
         const s = document.createElement("style"); s.textContent = `.ar-karte{ background:linear-gradient(135deg, #2f4a1f, #1d3015); color:#fff; } .ar-karte h2{ color:#ffe08a !important; } .ar-karte .hilfe{ color:#d8e4c8; }
             .ar-karte .spiel{ background:rgba(255,255,255,.08); box-shadow:none; color:#fff; } .ar-karte .spiel b{ color:#ffe08a; } .ar-karte .spiel span{ color:#d8e4c8; }
@@ -426,10 +347,10 @@ function arKarten(){
         ziel = document.getElementById("arcade-spiele");
     }
     const k = konto();
-    document.getElementById("ar-konto").textContent = `🪙 ${k.muenzen}`;
-    ziel.innerHTML = Object.entries(AR_SPIELE).filter(([, s]) => sek() ? s.sek : s.gs).map(([id, s]) => `<button class="spiel" data-ar="${id}"><div class="ico">${s.emoji}</div><div><b>${esc(s.titel)}</b><span>${esc(s.text)}<br><em>🏆 Rekord: ${k.best[id] || 0}</em></span></div></button>`).join("");
+    document.getElementById("ar-konto").textContent = `⚡ ${energie()}  ·  🪙 ${k.muenzen}`;
+    ziel.innerHTML = Object.entries(AR_SPIELE).filter(([, s]) => sek() ? s.sek : s.gs).map(([id, s]) => `<button class="spiel" data-ar="${id}"><div class="ico">${s.emoji}</div><div><b>${esc(s.titel)}</b><span>${esc(s.text)}<br><em>${freispiel() ? "Freispiel" : `⚡ ${KOSTEN} pro Runde`} · 🏆 ${k.best[id] || 0}</em></span></div></button>`).join("");
     ziel.querySelectorAll("[data-ar]").forEach(b => b.onclick = () => { box.classList.add("an"); document.body.style.overflow = "hidden"; startZeigen(b.dataset.ar); });
 }
 window.arKarten = arKarten;
-window.AR = { konto, kontoSpeichern, aktiveFigur, sfx, runnerAufgaben, regelMachen, quellenFuer, QUELLEN };
+window.AR = { konto, kontoSpeichern, aktiveFigur, sfx, energie };
 })();
