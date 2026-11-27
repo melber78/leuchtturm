@@ -245,6 +245,7 @@ $BEREICHE = [
             ["sozial-stunden.php", "fa-calendar-week", "Sozialtraining-Stunden", "36 fertige Stunden mit Präsentation – Kl. 1/2 und 3/4", true],
             ["sozial-stunden.php#jahresplan", "fa-calendar-days", "Jahresplan", "Welche Stunde wann – für beide Gruppen"],
             ["sozial-stunden.php#rituale", "fa-hands-holding-circle", "Rituale", "Anfang und Abschluss jeder Stunde"],
+            ["sozial-stunden.php#konflikte", "fa-handshake-angle", "Konflikte lösen", "Streitschlichtung an der Tafel, Reflexions- & Beobachtungsbogen"],
             ["sozialtraining.php", "fa-lightbulb", "Sozialtraining-Generator", "Methodenpool &amp; Vorlagen"],
         ]],
     ]],
