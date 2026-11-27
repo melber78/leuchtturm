@@ -85,7 +85,7 @@ function deutsch(kl, b){
     }
     if (b === "silben"){
         const w = nimm(W.filter(x => x.n <= 4));
-        return { art: "wahl", frage: "Wie viele Silben hat das Wort? Klatscht mit!", bild: w.b, wort: mitBild ? null : w.w, antwort: String(w.n), optionen: ["1", "2", "3", "4"], sprech: mitBild ? `Wie viele Silben hat ${w.w}?` : "Wie viele Silben hat das Wort?", loesung: w.s.replace(/-/g, " – ") };
+        return { art: "wahl", keineSilbenfarben: true, frage: "Wie viele Silben hat das Wort? Klatscht mit!", bild: w.b, wort: mitBild ? null : w.w, antwort: String(w.n), optionen: ["1", "2", "3", "4"], sprech: mitBild ? `Wie viele Silben hat ${w.w}?` : "Wie viele Silben hat das Wort?", loesung: w.s.replace(/-/g, " – ") };
     }
     if (b === "reim"){
         const R = D().reime.filter(([x, y]) => BILD(x) && BILD(y)); if (!R.length) return deutsch(kl, "silben");
@@ -208,6 +208,8 @@ const CSS = `
 .bt-steuer{ display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; }
 .bt-steuer button{ font:900 clamp(24px,4.6vmin,44px) "Nunito",sans-serif; border:0; border-radius:20px; min-width:2.6em; height:1.8em; padding:0 .6em; background:#4a3f8f; color:#fff; box-shadow:0 5px 0 #2e2766; cursor:pointer; }
 .bt-steuer button.los{ background:#e08a2c; box-shadow:0 5px 0 #a35f16; font-size:clamp(20px,3.6vmin,34px); }
+.bt-sb.b{ color:#1d4fd8; } .bt-sb.r{ color:#c62828; } .bt-sw{ white-space:nowrap; }
+#bt.sammeln{ touch-action:none; }
 .bt-spritzer{ position:absolute; z-index:3; pointer-events:none; font-size:clamp(30px,6vmin,70px); animation:btSpritz .9s ease-out forwards; }
 @keyframes btSpritz{ from{ transform:translate(-50%,-50%) scale(.4); opacity:1; } to{ transform:translate(-50%,-140%) scale(1.5); opacity:0; } }
 `;
@@ -245,7 +247,7 @@ const TONNE = `<svg viewBox="0 0 100 90" aria-hidden="true"><path d="M20 30 L80 
 const WELLE = (f, o) => `<svg viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60 ${Array.from({ length: 12 }, (_, i) => `Q${i * 100 + 50} ${i % 2 ? 30 : 90} ${i * 100 + 100} 60`).join(" ")} V120 H0Z" fill="${f}" opacity="${o}"/></svg>`;
 
 /* ---------------- Ablauf ---------------- */
-const E = { fach: "mathe", kl: 2, bereich: "mix", laenge: 10, modus: "tafel", ton: true, art: "sammeln", tempo: "warten" };
+const E = { fach: "mathe", kl: 2, bereich: "mix", laenge: 10, modus: "tafel", ton: true, art: "sammeln", tempo: "warten", silbenfarben: false };
 try { Object.assign(E, JSON.parse(localStorage.getItem("lt-boot") || "{}")); } catch (x) {}
 const merken = () => { try { localStorage.setItem("lt-boot", JSON.stringify(E)); } catch (x) {} };
 let el, A = null, nr = 0, versuch = 0, ergebnisse = [], punkte = { k: 0, e: 0 }, eingabe = "", ctx = null, gesperrt = false;
@@ -255,12 +257,29 @@ function ton(f, d = .15, typ = "sine"){
     try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); const o = ctx.createOscillator(), g = ctx.createGain(); o.type = typ; o.frequency.value = f; g.gain.setValueAtTime(.0001, ctx.currentTime); g.gain.exponentialRampToValueAtTime(.15, ctx.currentTime + .02); g.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + d + .25); o.connect(g).connect(ctx.destination); o.start(); o.stop(ctx.currentTime + d + .3); } catch (x) {}
 }
 function vorlesen(t){ try { if (!window.speechSynthesis || !t) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = "de-DE"; u.rate = .9; speechSynthesis.speak(u); } catch (x) {} }
+/* Silbenfarben (optional): blau/rot im Wechsel – nicht bei „Wie viele Silben?“, sonst verrät die Farbe die Lösung */
+function silbenTeilen(w){
+    const d = (D().woerter || []).find(x => x.w.toLowerCase() === w.toLowerCase()); if (d && d.s) return d.s.split("-").map((t, i) => i === 0 && w[0] !== d.s[0] ? (w[0] + t.slice(1)) : t);
+    const V = "aeiouäöüyAEIOUÄÖÜY", EH = ["sch", "ch", "ck", "ph", "qu"], t = []; let i = 0;
+    while (i < w.length){ const r = w.slice(i).toLowerCase(), e = EH.find(x => r.startsWith(x)); if (e){ t.push({ s: w.substr(i, e.length), v: false }); i += e.length; } else { t.push({ s: w[i], v: V.includes(w[i]) }); i++; } }
+    const k = []; for (let a = 0; a < t.length; a++){ if (!t[a].v) continue; let e = a; while (e + 1 < t.length && t[e + 1].v && !/^(ei|au|eu|äu|ie|aa|ee|oo)$/i.test(t[e].s + t[e + 1].s) === false) e++; k.push([a, e]); a = e; }
+    if (k.length < 2) return [w];
+    const sch = []; for (let n = 0; n < k.length - 1; n++){ const ko = k[n + 1][0] - k[n][1] - 1; sch.push(ko <= 1 ? k[n][1] + 1 : k[n + 1][0] - 1); }
+    const out = []; let st = 0; sch.forEach(x => { out.push(t.slice(st, x).map(y => y.s).join("")); st = x; }); out.push(t.slice(st).map(y => y.s).join("")); return out;
+}
+function sf(text){
+    if (!E.silbenfarben || !A || A.keineSilbenfarben || typeof text !== "string" || !/[a-zäöüß]{2}/i.test(text) || /[<>=?0-9]/.test(text)) return text;
+    let n = 0;
+    return text.split(" ").map(w => `<span class="bt-sw">${silbenTeilen(w).map(sb => `<span class="bt-sb ${(n++) % 2 ? "r" : "b"}">${sb}</span>`).join("")}</span>`).join(" ");
+}
 const seiten = () => (window.tbSeiten && window.tbSeiten()) || ["Klasse", "🦉 Ella"];
 
 function aufbauen(){
-    document.addEventListener("pointerdown", e => { if (!el || !el.classList.contains("sammeln") || !A || SM.phase === "fertig" || !e.target.closest(".bt-szene, .bt-antwort") || e.target.closest("button")) return; SM.halten = true; fingerZiel(e); });
-    document.addEventListener("pointermove", e => { if (SM.halten) fingerZiel(e); });
-    ["pointerup", "pointercancel"].forEach(t => document.addEventListener(t, () => { SM.halten = false; }));
+    // Steuerung wie bei der Taschenlampe: Finger irgendwo aufs Bild legen – das Boot folgt dem Finger direkt
+    document.addEventListener("pointerdown", e => { if (!el || !el.classList.contains("sammeln") || !A || SM.phase === "fertig" || !e.target.closest("#bt") || e.target.closest("button, .bt-kopf, .bt-start, .bt-ende")) return;
+        SM.halten = true; SM.pid = e.pointerId; try { el.setPointerCapture(e.pointerId); } catch (x) {} fingerZiel(e); e.preventDefault(); });
+    document.addEventListener("pointermove", e => { if (SM.halten && (SM.pid === undefined || e.pointerId === SM.pid)) fingerZiel(e); });
+    ["pointerup", "pointercancel", "lostpointercapture"].forEach(t => document.addEventListener(t, e => { if (SM.pid === undefined || e.pointerId === SM.pid){ SM.halten = false; SM.pid = undefined; } }));
     if (el) return;
     const st = document.createElement("style"); st.textContent = CSS; document.head.appendChild(st);
     el = document.createElement("div"); el.id = "bt"; document.body.appendChild(el);
@@ -280,6 +299,7 @@ function startZeigen(){
       <h4>Fach</h4><div class="bt-reihe">${[["mathe", "🔢 Mathe"], ["deutsch", "🔤 Deutsch"]].map(([k, t]) => `<button data-e="fach=${k}" class="${E.fach === k ? "an" : ""}">${t}</button>`).join("")}</div>
       <h4>Klasse</h4><div class="bt-reihe">${[1, 2, 3, 4].map(k => `<button data-e="kl=${k}" class="${E.kl === k ? "an" : ""}">Klasse ${k}</button>`).join("")}</div>
       <h4>Aufgaben</h4><div class="bt-reihe">${ber.map(([k, t]) => `<button data-e="bereich=${k}" class="${E.bereich === k ? "an" : ""}">${t}</button>`).join("")}</div>
+      ${E.fach === "deutsch" ? `<h4>Silbenfarben</h4><div class="bt-reihe"><button data-e="silbenfarben=0" class="${!E.silbenfarben ? "an" : ""}">aus</button><button data-e="silbenfarben=1" class="${E.silbenfarben ? "an" : ""}"><span style="color:#1d4fd8">Sil</span><span style="color:#c62828">ben</span> farbig</button></div>` : ""}
       <h4>Wie weit?</h4><div class="bt-reihe">${[5, 10, 15, 20].map(k => `<button data-e="laenge=${k}" class="${E.laenge === k ? "an" : ""}">${k} Bojen</button>`).join("")}</div>
       <h4>Spielart</h4><div class="bt-reihe"><button data-e="art=sammeln" class="${E.art === "sammeln" ? "an" : ""}">⛵ Boot steuern & Boje einsammeln</button><button data-e="art=tippen" class="${E.art === "tippen" ? "an" : ""}">👆 Antwort antippen</button></div>
       ${E.art === "sammeln" ? `<h4>Tempo</h4><div class="bt-reihe">${[["warten", "ohne Zeitdruck – Bojen warten"], ["langsam", "langsam"], ["schnell", "schnell"]].map(([k, t]) => `<button data-e="tempo=${k}" class="${E.tempo === k ? "an" : ""}">${t}</button>`).join("")}</div>` : ""}
@@ -335,7 +355,7 @@ function naechste(){
     b.className = "bt-boje kommt";
     const schild = A.art === "zahl"
         ? `<div class="bt-schild">${A.text}${E.modus === "allein" ? "" : " = ?"}</div>`
-        : `<div class="bt-schild"><div class="frage">${A.frage}</div>${A.bild ? `<div class="bild">${BILD(A.bild)}</div>` : ""}${A.wort ? `<div class="wort">${A.wort}</div>` : ""}</div>`;
+        : `<div class="bt-schild"><div class="frage">${A.frage}</div>${A.bild ? `<div class="bild">${BILD(A.bild)}</div>` : ""}${A.wort ? `<div class="wort">${sf(A.wort)}</div>` : ""}</div>`;
     b.innerHTML = `${schild}<div class="bt-pfahl"></div><div class="bt-tonne">${TONNE}</div>`;
     requestAnimationFrame(() => requestAnimationFrame(() => b.classList.remove("kommt")));
     antwortFeld();
@@ -350,7 +370,7 @@ function antwortFeld(hinweis){
           <div class="bt-tasten">${["1", "2", "3", "4", "5", "6", "7", "8", "9", "weg", "0", "ok"].map(t => `<button data-t="${t}" class="${t === "ok" ? "ok" : t === "weg" ? "weg" : ""}">${t === "ok" ? "✓" : t === "weg" ? "⌫" : t}</button>`).join("")}</div>
           <div class="bt-hinweis">${hinweis || ""}</div>`;
     } else {
-        f.innerHTML = `<div class="bt-wahl">${A.optionen.map(o => A.bilder ? `<button class="bild" data-o="${o}">${BILD(o)}</button>` : `<button data-o="${o}" class="${/[a-zäöüß]/i.test(o) && o.length > 3 ? "wort" : ""}">${o}</button>`).join("")}</div><div class="bt-hinweis">${hinweis || ""}</div>`;
+        f.innerHTML = `<div class="bt-wahl">${A.optionen.map(o => A.bilder ? `<button class="bild" data-o="${o}">${BILD(o)}</button>` : `<button data-o="${o}" class="${/[a-zäöüß]/i.test(o) && o.length > 3 ? "wort" : ""}">${sf(o)}</button>`).join("")}</div><div class="bt-hinweis">${hinweis || ""}</div>`;
     }
 }
 
@@ -419,13 +439,13 @@ function sammelnStarten(neuMischen){
     if (neuMischen) A.optionen = mischen(A.optionen);
     const n = A.optionen.length;
     el.querySelector(".bt-aufgabe").innerHTML = A.art === "zahl" ? `<div class="bt-schild">${A.text} = ?</div>`
-        : `<div class="bt-schild"><div class="frage">${A.frage}</div>${A.bild ? `<div class="bild">${BILD(A.bild)}</div>` : ""}${A.wort ? `<div class="wort">${A.wort}</div>` : ""}</div>`;
-    el.querySelector(".bt-bojen").innerHTML = A.optionen.map((o, i) => `<div class="bt-b" data-b="${i}"><div class="schild${A.bilder ? " bild" : /[a-zäöüß]/i.test(o) ? " wort" : ""}">${A.bilder ? BILD(o) : o}</div><div class="pfahl"></div><div class="tonne">${TONNE}</div></div>`).join("");
+        : `<div class="bt-schild"><div class="frage">${A.frage}</div>${A.bild ? `<div class="bild">${BILD(A.bild)}</div>` : ""}${A.wort ? `<div class="wort">${sf(A.wort)}</div>` : ""}</div>`;
+    el.querySelector(".bt-bojen").innerHTML = A.optionen.map((o, i) => `<div class="bt-b" data-b="${i}"><div class="schild${A.bilder ? " bild" : /[a-zäöüß]/i.test(o) ? " wort" : ""}">${A.bilder ? BILD(o) : sf(o)}</div><div class="pfahl"></div><div class="tonne">${TONNE}</div></div>`).join("");
     SM.d = 0; SM.phase = "kommt"; SM.halten = false; SM.wx = SM.zx = 50; SM.bojenAn = 0;
     const boot = el.querySelector(".bt-boot"); boot.style.opacity = 0; setTimeout(() => boot.style.opacity = 1, 60);
     const f = el.querySelector(".bt-antwort");
     const warten = E.tempo === "warten";
-    f.innerHTML = `<div class="bt-steuer"><button data-s="-1" aria-label="nach links">◀</button><button class="los" data-s="los">${warten ? "Losfahren!" : "Schneller!"}</button><button data-s="1" aria-label="nach rechts">▶</button></div><div class="bt-hinweis">${warten ? "Finger auf das Wasser legen und hinschieben – die leuchtende Boje wird eingesammelt." : "Finger hinschieben – die leuchtende Boje wird eingesammelt."}</div>`;
+    f.innerHTML = `<div class="bt-steuer"><button data-s="-1" aria-label="nach links">◀</button><button class="los" data-s="los">${warten ? "Losfahren!" : "Schneller!"}</button><button data-s="1" aria-label="nach rechts">▶</button></div><div class="bt-hinweis">${warten ? "Finger irgendwo aufs Bild legen und ziehen – das Boot folgt deinem Finger. Die leuchtende Boje wird eingesammelt." : "Finger hinschieben – die leuchtende Boje wird eingesammelt."}</div>`;
     standZeigen();
     if (E.kl === 1 && E.modus === "allein") setTimeout(() => vorlesen(A.sprech), 600);
     cancelAnimationFrame(SM.raf); SM.letzte = performance.now(); SM.raf = requestAnimationFrame(sammelnSchritt);
@@ -434,9 +454,8 @@ function bootStellen(){}
 function fingerZiel(e){
     const sz = el.querySelector(".bt-szene"); if (!sz || !A) return; const r = sz.getBoundingClientRect(), n = A.optionen.length;
     const fx = (e.clientX - r.left) / r.width * 100, wx = 50 + (fx - 50) / tiefeFaktor(SM.d);
-    // Magnet: in der Nähe einer Boje rastet das Ziel auf diese Boje ein
-    let best = 0; for (let i = 1; i < n; i++) if (Math.abs(spurX(i, n) - wx) < Math.abs(spurX(best, n) - wx)) best = i;
-    SM.zx = spurX(best, n);
+    // direkt unter dem Finger (kein Einrasten) – nur am Rand begrenzt; eingesammelt wird die nächstgelegene Boje
+    SM.zx = Math.max(spurX(0, n) - 10, Math.min(spurX(n - 1, n) + 10, wx));
 }
 function steuern(d){ if (!A || SM.phase === "fertig") return; const n = A.optionen.length, i = Math.max(0, Math.min(n - 1, naechsteSpur() + d)); SM.zx = spurX(i, n); ton(520 + i * 60, .05); }
 function losFahren(spur){
@@ -451,7 +470,7 @@ function sammelnSchritt(jetzt){
     if (SM.phase === "kommt" && (!warten || SM.halten)) SM.d = Math.min(1, SM.d + dt / TEMPO[E.tempo]);
     else if (SM.phase === "faehrt") SM.d = Math.min(1, SM.d + dt / 1.1);
     // weich hinter dem Ziel herlenken
-    const alt = SM.wx; SM.wx += (SM.zx - SM.wx) * Math.min(1, dt * 9); SM.vx = SM.vx * .85 + (SM.wx - alt) / Math.max(dt, .001) * .15;
+    const alt = SM.wx; SM.wx += (SM.zx - SM.wx) * Math.min(1, dt * (SM.halten ? 22 : 9)); SM.vx = SM.vx * .85 + (SM.wx - alt) / Math.max(dt, .001) * .15;
     const sz = el.querySelector(".bt-szene"), H = sz.clientHeight, W = sz.clientWidth;
     SM.bojenAn = Math.min(1, SM.bojenAn + dt * 1.5);
     const ziel = SM.phase === "fertig" ? -1 : naechsteSpur();
@@ -524,7 +543,7 @@ function klick(e){
     const bo = e.target.closest(".bt-b"); if (bo && E.art === "sammeln"){ losFahren(+bo.dataset.b); return; }
     const t = e.target.closest("button"); if (!t) return;
     if (t.dataset.s){ if (t.dataset.s === "los") losFahren(); else steuern(+t.dataset.s); return; }
-    if (t.dataset.e){ const [k, v] = t.dataset.e.split("="); E[k] = ["kl", "laenge"].includes(k) ? +v : v; if (k === "fach" || k === "kl") E.bereich = "mix"; merken(); return startZeigen(); }
+    if (t.dataset.e){ const [k, v] = t.dataset.e.split("="); E[k] = ["kl", "laenge"].includes(k) ? +v : k === "silbenfarben" ? v === "1" : v; if (k === "fach" || k === "kl") E.bereich = "mix"; merken(); return startZeigen(); }
     if (t.dataset.o !== undefined) return pruefen(t.dataset.o, t);
     if (t.dataset.t) return taste(t.dataset.t);
     const a = t.dataset.a;
