@@ -953,6 +953,31 @@ html:not(.lt-sek):not(.lt-druckschrift) .ws-seite.ws-info.ws-kindblatt{ --ws-sch
 .eb-rueck{ border:2px dashed #8FA3B8; border-radius:14px; padding:10px 14px; font-size:14.5px; display:flex; flex-direction:column; gap:10px; }
 .eb-rueck .linie{ border-bottom:1.5px solid #8FA3B8; height:18px; }
 .std-tabelle{ width:100%; border-collapse:collapse; }
+
+/* Stundenplanung: drei Schritte */
+.std-schritt{ border:2px solid #e6ecdc; border-radius:20px; padding:14px 16px; margin-top:14px; background:#fff; }
+.std-schritt-kopf{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+.std-schritt-kopf .nr{ width:30px; height:30px; border-radius:50%; background:#2f4a1f; color:#fff; display:grid; place-items:center; font-weight:900; flex:0 0 auto; }
+.std-schritt-kopf b{ font-family:Fraunces, Georgia, serif; font-size:18px; color:#2f4a1f; } .std-schritt-kopf small{ color:#7c8a72; font-weight:700; }
+.std-raster{ display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:10px; } .std-raster.zwei{ grid-template-columns:repeat(2, minmax(0, 1fr)); } .std-raster.drei{ grid-template-columns:2fr 2fr 1fr; }
+@media (max-width:760px){ .std-raster, .std-raster.drei{ grid-template-columns:1fr 1fr; } .std-raster.zwei{ grid-template-columns:1fr; } }
+.std-raster label, .std-bk label{ margin-top:0; }
+.std-phasen{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:12px; } .std-phasen.zwei{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+@media (max-width:900px){ .std-phasen, .std-phasen.zwei{ grid-template-columns:1fr; } }
+.std-phase{ border-radius:16px; padding:12px; display:flex; flex-direction:column; gap:8px; background:#f6f8f2; border-top:5px solid #b3c69a; }
+.std-phase.aufm{ border-top-color:#d9a23f; } .std-phase.funk{ border-top-color:#557428; } .std-phase.sym{ border-top-color:#8a6a4b; }
+.std-phase-kopf{ font-weight:900; color:#2f4a1f; font-size:15px; } .std-phase-kopf small{ color:#7c8a72; font-weight:700; }
+.std-phase select{ width:100%; } .std-phase-fuss{ display:flex; justify-content:space-between; align-items:center; gap:8px; } .std-phase-fuss .std-anzahl{ width:auto; }
+.std-mehr{ margin-top:12px; } .std-mehr summary{ cursor:pointer; font-weight:800; color:#557428; font-size:14px; list-style:none; } .std-mehr summary::-webkit-details-marker{ display:none; }
+.std-akte-info{ margin-top:10px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; } .std-akte-info:empty{ display:none; }
+.std-akte-info .chip{ background:#edf2e3; color:#2f4a1f; border-radius:999px; padding:4px 10px; font-size:12.5px; font-weight:800; }
+.std-akte-info .chip.gold{ background:#fff3d6; color:#7a5d00; }
+.std-akte-info a.knopf-n{ background:#d9a23f; color:#3b2a06; border-radius:999px; padding:6px 12px; font-size:13px; font-weight:900; text-decoration:none; }
+.std-schritt-mitbringen:not(:has(.std-heft:not([style*="display: none"]))){ display:none; }
+@media (max-width:760px){ .std-los{ position:static !important; } .std-los .fp-wahl{ font-size:13px; } }
+.std-los{ position:sticky; bottom:0; z-index:5; background:rgba(255,255,255,.97); border:2px solid #e6ecdc; border-radius:20px; padding:12px 16px; margin-top:14px; box-shadow:0 -6px 20px rgba(47,74,31,.08); }
+.std-los-knoepfe{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+.std-los .fp-wahl{ margin:0; }
 #bereich-stunde.std-erstmodus .std-nur-foerder{ display:none !important; }
 #bereich-stunde:not(.std-erstmodus) .std-nur-erst{ display:none !important; }
 .es-stufe{ border-top:2px dashed #C9D6E3; padding-top:8px; }
@@ -1895,85 +1920,100 @@ function ws_schriftSetzen(w){
             <div class="std-spontan-rest">Nur noch 10 Minuten übrig? <a href="lrs-spiele.php">🎮 Lernspiel</a> · <a href="lrs-spiele.php" id="sp-welt">🗺️ Weltenreise</a> · <a href="trainingshefte.php" id="sp-test">📖 Lesetempo messen</a></div>
         </div>
         <h2 class="titel">Stunde zusammenstellen</h2>
-        <p class="beschreibung">Eine komplette Fördereinheit nach dem AFS-Aufbau: Aufmerksamkeit zum Einstieg · Funktionstraining · Symptomtraining · Abschluss – dazu dein Ablaufplan mit Feldern für den Lernverlauf.</p>
-        <div class="zeile zwei">
-            <div><label>Kind (Kürzel, optional)</label><select id="std-kind"></select></div>
-            <div><label>Dauer der Stunde</label><div style="display:flex; gap:8px;"><select id="std-dauer" onchange="std_dauerWechsel()" style="flex:1;"><option value="20">20 Minuten</option><option value="25">25 Minuten</option><option value="30">30 Minuten</option><option value="35">35 Minuten</option><option value="40" selected>40 Minuten</option><option value="45">45 Minuten</option><option value="50">50 Minuten</option><option value="60">60 Minuten</option><option value="75">75 Minuten</option><option value="90">90 Minuten</option><option value="eigen">andere Dauer …</option></select><input type="number" id="std-dauer-eigen" min="10" max="180" step="5" value="40" style="display:none; width:90px;" onchange="std_dauerWechsel()" title="Minuten"></div></div>
-        </div>
-        <div class="zeile zwei std-nur-foerder" style="margin-top:12px;">
-            <div><label>Zweites Kind (optional – zwei Kinder in einer Stunde)</label><select id="std-kind2"></select></div>
-            <div><p class="beschreibung" style="margin:24px 0 0;">Aufmerksamkeit machen beide gemeinsam. Funktions- und Symptomtraining stellst du unten für Kind 2 auf „gleich wie Kind 1“ oder auf etwas Eigenes.</p></div>
-        </div>
-        <div class="zeile zwei" style="margin-top:12px;">
-            <div><label>Art der Stunde</label><select id="std-art" onchange="std_artWechsel()"><option value="foerder">Förderstunde (AFS-Aufbau)</option><option value="erst">Erststunde – Kennenlernen &amp; Lese-Schnappschuss</option></select></div>
-            <div class="std-nur-erst"><label>Lesetext-Darstellung</label><select id="std-erst-silben"><option value="farbig">mit Silbenfarben</option><option value="boegen">mit Silbenbögen</option><option value="normal">ohne Silbenhilfe</option></select></div>
-        </div>
-        <p class="beschreibung std-nur-erst" style="margin:6px 0 0;">Für den ersten Termin mit einem neuen Kind: Kennenlernen, ein Aufmerksamkeitsblatt, ein Lese-Schnappschuss mit Schülerblatt (Text, darunter Wörter, Silben und Buchstaben als Rückfallstufen) und Lehrerexemplar mit Beobachtungsbogen, Wahrnehmungsspiele und ein Abschluss mit Erfolgserlebnis.</p>
-        <div class="zeile zwei" style="margin-top:12px;">
-            <div><label>Klassenstufe</label><select id="std-klasse"><option value="1">Klasse 1</option><option value="2">Klasse 2</option><option value="3">Klasse 3</option><option value="4">Klasse 4</option><option value="5">Klasse 5</option><option value="6">Klasse 6</option><option value="7">Klasse 7</option><option value="8">Klasse 8</option><option value="9">Klasse 9</option></select></div>
-            <div><label>Schwierigkeit</label><select id="std-schwierigkeit"><option value="leicht">leicht</option><option value="mittel">mittel</option><option value="schwer">schwer</option><option value="profi">Profi (sehr schwer)</option></select></div>
-        </div>
-        <p class="beschreibung std-nur-foerder" style="margin:6px 0 0;">Die Funktionsbereiche passen Umfang und Komplexität an drei Altersstufen an: Klasse 2–4, 5–6 und 7–9. „Schwierigkeit“ senkt oder erhöht die Aufgabenstufe innerhalb des Altersbands.</p>
-        <div class="zeile std-anz-zeile" style="margin-top:12px;">
-            <div><label>Aufmerksamkeit (Einstieg)</label><select id="std-aufm"></select></div>
-            <div class="std-leer"></div>
-            <div><label>Anzahl</label><select id="std-aufm-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option></select></div>
-        </div>
-        <div class="zeile std-anz-zeile std-nur-foerder" style="margin-top:12px;">
-            <div><label>Funktionstraining</label><select id="std-funktion"></select></div>
-            <div><label>Blatt</label><select id="std-funktion-blatt"></select></div>
-            <div><label>Anzahl</label><select id="std-funktion-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
-        </div>
-        <div class="zeile std-anz-zeile std-nur-foerder" style="margin-top:12px;">
-            <div><label>Symptomtraining</label><select id="std-symptom"></select></div>
-            <div><label>Blatt</label><select id="std-symptom-blatt"></select></div>
-            <div><label>Anzahl</label><select id="std-symptom-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
-        </div>
-        <div class="std-bk std-nur-foerder" id="std-bk" style="display:none;">
-            <div class="zeile zwei"><div><label><i class="fa-solid fa-font"></i> Buchstabe im Kurs</label><select id="std-bk-zeichen" onchange="bk_infoZeigen()"></select></div><div class="std-bk-info" id="std-bk-info"></div></div>
-            <p class="beschreibung" style="margin:6px 0 0;">Reihenfolge wie in der Fibel: m a l i o e s n r t u d h ei w k au b f g sch p z ch ä ö ü eu j v ie pf st sp qu x y c. Die Blätter 7–9 lesen nur Silben und Wörter aus Buchstaben, die das Kind schon kann (plus dem neuen). „Anzahl“ nimmt die nächsten Blätter der Reihe dazu.</p>
-        </div>
-        <p class="beschreibung std-nur-foerder" style="margin:6px 0 0;">Für gut lesende Kinder mit großen Schreibproblemen: „Vom Lesen zum Schreiben“ trainiert das sichere Verschriften Schritt für Schritt. Wenn Regeln bekannt sind, beim Schreiben aber nicht angewendet werden, nutze „Rechtschreibung anwenden“ mit Signalstellen, Werkzeugwahl, Begründung und Transfer in eigene Texte.</p>
-        <div class="zeile std-anz-zeile std-nur-foerder" style="margin-top:12px;">
-            <div><label>Zusätzlich: Vom Lesen zum Schreiben</label><select id="std-vs"><option value="">– nichts zusätzlich –</option></select></div>
-            <div><label>Stufe</label><select id="std-vs-stufe"><option value="">passend zur Klasse</option><option value="A">A – offene Silben</option><option value="B">B – geschlossene Silben</option><option value="C">C – Mitlaut-Häufungen</option><option value="D">D – lange Wörter</option><option value="AC">A bis C gemischt</option></select></div>
-            <div><label>Anzahl</label><select id="std-vs-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option></select></div>
-        </div>
-        <div class="std-zwei std-nur-foerder" id="std-zwei" style="display:none;">
-            <div class="std-zwei-kopf"><i class="fa-solid fa-user-group"></i> Kind 2: <b id="std-zwei-name"></b></div>
-            <div class="zeile std-anz-zeile">
-                <div><label>Funktionstraining Kind 2</label><select id="std-funktion2"></select></div>
-                <div><label>Blatt</label><select id="std-funktion2-blatt"></select></div>
-                <div><label>Anzahl</label><select id="std-funktion2-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
+        <p class="beschreibung">AFS-Aufbau: Aufmerksamkeit · Funktionstraining · Symptomtraining · Abschluss – mit Ablaufplan für dich.</p>
+
+        <div class="std-schritt">
+            <div class="std-schritt-kopf"><span class="nr">1</span><b>Wer & wie lange?</b></div>
+            <div class="std-raster">
+                <div><label>Kind</label><select id="std-kind"></select></div>
+                <div><label>Dauer</label><div style="display:flex; gap:8px;"><select id="std-dauer" onchange="std_dauerWechsel()" style="flex:1;"><option value="20">20 Minuten</option><option value="25">25 Minuten</option><option value="30">30 Minuten</option><option value="35">35 Minuten</option><option value="40" selected>40 Minuten</option><option value="45">45 Minuten</option><option value="50">50 Minuten</option><option value="60">60 Minuten</option><option value="75">75 Minuten</option><option value="90">90 Minuten</option><option value="eigen">andere Dauer …</option></select><input type="number" id="std-dauer-eigen" min="10" max="180" step="5" value="40" style="display:none; width:90px;" onchange="std_dauerWechsel()" title="Minuten"></div></div>
+                <div><label>Klasse</label><select id="std-klasse"><option value="1">Klasse 1</option><option value="2">Klasse 2</option><option value="3">Klasse 3</option><option value="4">Klasse 4</option><option value="5">Klasse 5</option><option value="6">Klasse 6</option><option value="7">Klasse 7</option><option value="8">Klasse 8</option><option value="9">Klasse 9</option></select></div>
+                <div><label>Schwierigkeit</label><select id="std-schwierigkeit"><option value="leicht">leicht</option><option value="mittel">mittel</option><option value="schwer">schwer</option><option value="profi">Profi (sehr schwer)</option></select></div>
             </div>
-            <div class="zeile std-anz-zeile" style="margin-top:10px;">
-                <div><label>Symptomtraining Kind 2</label><select id="std-symptom2"></select></div>
-                <div><label>Blatt</label><select id="std-symptom2-blatt"></select></div>
-                <div><label>Anzahl</label><select id="std-symptom2-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
+            <div class="std-akte-info" id="std-akte-info"></div>
+            <div class="std-raster zwei" style="margin-top:10px;">
+                <div><label>Art der Stunde</label><select id="std-art" onchange="std_artWechsel()"><option value="foerder">Förderstunde (AFS-Aufbau)</option><option value="erst">Erststunde – Kennenlernen &amp; Lese-Schnappschuss</option></select></div>
+                <div class="std-nur-foerder"><label>Zweites Kind (optional)</label><select id="std-kind2"></select></div>
+                <div class="std-nur-erst"><label>Lesetext-Darstellung</label><select id="std-erst-silben"><option value="farbig">mit Silbenfarben</option><option value="boegen">mit Silbenbögen</option><option value="normal">ohne Silbenhilfe</option></select></div>
             </div>
-            <p class="beschreibung" style="margin:6px 0 0;">„Gleich wie Kind 1“: beide bekommen dieselbe Art Blatt – Fehlerwörter aus der Kartei trotzdem jeweils die eigenen. Jedes Blatt trägt oben das Kürzel. Den Ablaufplan gibt es einmal, den Rückblick für jedes Kind.</p>
+            <p class="beschreibung std-nur-erst" style="margin:6px 0 0;">Für den ersten Termin mit einem neuen Kind: Kennenlernen, ein Aufmerksamkeitsblatt, ein Lese-Schnappschuss mit Schülerblatt (Text, darunter Wörter, Silben und Buchstaben als Rückfallstufen) und Lehrerexemplar mit Beobachtungsbogen, Wahrnehmungsspiele und ein Abschluss mit Erfolgserlebnis.</p>
         </div>
-        <p class="beschreibung std-nur-foerder" id="std-hinweis" style="margin:6px 0 0;"></p>
-        <div class="std-heft std-nur-foerder" id="std-heft" style="display:none;">
-            <label style="margin-top:12px;"><i class="fa-solid fa-book-bookmark"></i> Aus dem Trainingsheft</label>
-            <div class="std-heft-liste" id="std-heft-liste"></div>
-            <p class="beschreibung" id="std-heft-hinweis" style="margin:6px 0 0;"></p>
+
+        <div class="std-schritt">
+            <div class="std-schritt-kopf"><span class="nr">2</span><b>Was kommt dran?</b><small class="std-nur-foerder">Vorauswahl aus dem Förderplan – nur ändern, wenn du willst.</small></div>
+            <div class="std-phasen">
+                <div class="std-phase aufm">
+                    <div class="std-phase-kopf">🎯 Aufmerksamkeit <small>Einstieg</small></div>
+                    <select id="std-aufm"></select>
+                    <div class="std-phase-fuss"><span></span><select id="std-aufm-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option></select></div>
+                </div>
+                <div class="std-phase funk std-nur-foerder">
+                    <div class="std-phase-kopf">👁️ Funktionstraining <small>Wahrnehmung</small></div>
+                    <select id="std-funktion"></select>
+                    <select id="std-funktion-blatt" class="std-blattwahl"></select>
+                    <div class="std-phase-fuss"><span></span><select id="std-funktion-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
+                </div>
+                <div class="std-phase sym std-nur-foerder">
+                    <div class="std-phase-kopf">✏️ Symptomtraining <small>Lesen & Schreiben</small></div>
+                    <select id="std-symptom"></select>
+                    <select id="std-symptom-blatt" class="std-blattwahl"></select>
+                    <div class="std-bk" id="std-bk" style="display:none;">
+                        <label><i class="fa-solid fa-font"></i> Buchstabe im Kurs</label><select id="std-bk-zeichen" onchange="bk_infoZeigen()"></select><div class="std-bk-info" id="std-bk-info"></div>
+                    </div>
+                    <div class="std-phase-fuss"><span></span><select id="std-symptom-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div>
+                </div>
+            </div>
+            <details class="std-mehr std-nur-foerder">
+                <summary>➕ Zusätzlich: Vom Lesen zum Schreiben</summary>
+                <div class="std-raster drei" style="margin-top:8px;">
+                    <div><label>Blatt</label><select id="std-vs"><option value="">– nichts zusätzlich –</option></select></div>
+                    <div><label>Stufe</label><select id="std-vs-stufe"><option value="">passend zur Klasse</option><option value="A">A – offene Silben</option><option value="B">B – geschlossene Silben</option><option value="C">C – Mitlaut-Häufungen</option><option value="D">D – lange Wörter</option><option value="AC">A bis C gemischt</option></select></div>
+                    <div><label>Anzahl</label><select id="std-vs-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option></select></div>
+                </div>
+                <p class="beschreibung" style="margin:6px 0 0;">Für gut lesende Kinder mit großen Schreibproblemen: „Vom Lesen zum Schreiben“ trainiert das sichere Verschriften Schritt für Schritt. Wenn Regeln bekannt sind, beim Schreiben aber nicht angewendet werden, nutze „Rechtschreibung anwenden“ mit Signalstellen, Werkzeugwahl, Begründung und Transfer in eigene Texte.</p>
+            </details>
+            <div class="std-zwei std-nur-foerder" id="std-zwei" style="display:none;">
+                <div class="std-zwei-kopf"><i class="fa-solid fa-user-group"></i> Kind 2: <b id="std-zwei-name"></b> <small>– Aufmerksamkeit machen beide gemeinsam</small></div>
+                <div class="std-phasen zwei">
+                    <div class="std-phase funk"><div class="std-phase-kopf">👁️ Funktionstraining Kind 2</div><select id="std-funktion2"></select><select id="std-funktion2-blatt" class="std-blattwahl"></select>
+                        <div class="std-phase-fuss"><span></span><select id="std-funktion2-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div></div>
+                    <div class="std-phase sym"><div class="std-phase-kopf">✏️ Symptomtraining Kind 2</div><select id="std-symptom2"></select><select id="std-symptom2-blatt" class="std-blattwahl"></select>
+                        <div class="std-phase-fuss"><span></span><select id="std-symptom2-anzahl" class="std-anzahl"><option value="1">1 Blatt</option><option value="2">2 Blätter</option><option value="3">3 Blätter</option><option value="4">4 Blätter</option></select></div></div>
+                </div>
+                <p class="beschreibung" style="margin:6px 0 0;">„Gleich wie Kind 1“: beide bekommen dieselbe Art Blatt – Fehlerwörter trotzdem jeweils die eigenen. Den Ablaufplan gibt es einmal, den Rückblick für jedes Kind.</p>
+            </div>
+            <p class="beschreibung std-nur-foerder" id="std-hinweis" style="margin:6px 0 0;"></p>
         </div>
-        <div class="std-heft std-nur-foerder" id="std-weiter" style="display:none;">
-            <label style="margin-top:12px;"><i class="fa-solid fa-forward"></i> Nicht geschafft – aus früheren Stunden</label>
-            <div class="std-weiter-liste" id="std-weiter-liste"></div>
-            <p class="beschreibung" style="margin:6px 0 0;">Angehakte Blätter kommen in diese Stunde (Weiterarbeiten am alten Blatt). Sie werden nicht neu gedruckt – bei Bedarf in der Blattliste unten wieder anhaken.</p>
+
+        <div class="std-schritt std-nur-foerder std-schritt-mitbringen" id="std-schritt-mit">
+            <div class="std-schritt-kopf"><span class="nr">3</span><b>Mitnehmen aus Heft & letzten Stunden</b></div>
+            <div class="std-heft" id="std-heft" style="display:none;">
+                <label><i class="fa-solid fa-book-bookmark"></i> Aus dem Trainingsheft</label>
+                <div class="std-heft-liste" id="std-heft-liste"></div>
+                <p class="beschreibung" id="std-heft-hinweis" style="margin:6px 0 0;"></p>
+            </div>
+            <div class="std-heft" id="std-weiter" style="display:none;">
+                <label style="margin-top:8px;"><i class="fa-solid fa-forward"></i> Nicht geschafft – aus früheren Stunden</label>
+                <div class="std-weiter-liste" id="std-weiter-liste"></div>
+                <p class="beschreibung" style="margin:6px 0 0;">Angehakte Blätter kommen in diese Stunde (Weiterarbeiten am alten Blatt) und werden nicht neu gedruckt.</p>
+            </div>
         </div>
-        <p class="beschreibung std-nur-foerder" style="margin:4px 0 0;">„Anzahl“: Das gewählte Blatt kommt zuerst, weitere Blätter derselben Reihe werden passend ergänzt – die Zeiten im Ablaufplan verteilen sich automatisch neu.</p>
-        <p class="beschreibung std-nur-foerder" style="margin:4px 0 0;">Bei zufälliger Auswahl werden kürzlich verwendete Aufmerksamkeits-Übungstypen möglichst übersprungen. Die Zahlen, Zeichen, Formen und Auftragsdaten werden bei jeder Erstellung neu erzeugt.</p>
-        <label style="margin-top:12px;">Dazu</label>
-        <div class="fp-wahl">
-            <label><input type="checkbox" id="std-plan" checked> Ablaufplan (für dich)</label>
-            <label><input type="checkbox" id="std-rueck" checked> Stunden-Rückblick fürs Kind (Kl. 1–4 kindgerecht, ab Kl. 5 Reflexion)</label>
-            <label><input type="checkbox" id="std-eltern"> Wochenhausaufgabe für die Eltern (Übungen für den Alltag)</label>
+
+        <div class="std-los">
+            <div class="fp-wahl">
+                <label><input type="checkbox" id="std-plan" checked> Ablaufplan</label>
+                <label><input type="checkbox" id="std-rueck" checked> Rückblick fürs Kind</label>
+                <label><input type="checkbox" id="std-eltern"> Wochenhausaufgabe für die Eltern</label>
+            </div>
+            <div class="std-los-knoepfe">
+                <button class="btn" onclick="fs_erstellen('stunde')" style="margin:0"><i class="fa-solid fa-layer-group"></i> Stunde zusammenstellen</button>
+                <button class="btn sekundaer" type="button" onclick="std_timerOeffnen()" style="margin:0" title="Timer mit den Phasen und Minuten der Stunde"><i class="fa-solid fa-stopwatch"></i> Timer</button>
+            </div>
+        <details class="std-mehr"><summary>ℹ️ Wie die Auswahl funktioniert</summary>
+                <p class="beschreibung">Die Funktionsbereiche passen Umfang und Komplexität an drei Altersstufen an (Kl. 2–4, 5–6, 7–9); „Schwierigkeit“ verschiebt innerhalb des Altersbands. „Anzahl“: Das gewählte Blatt kommt zuerst, weitere Blätter derselben Reihe werden ergänzt – die Zeiten verteilen sich neu. Bei zufälliger Aufmerksamkeit werden kürzlich genutzte Übungstypen übersprungen; Zahlen, Zeichen und Formen sind jedes Mal neu.</p>
+                <p class="beschreibung" style="margin:6px 0 0;">Reihenfolge wie in der Fibel: m a l i o e s n r t u d h ei w k au b f g sch p z ch ä ö ü eu j v ie pf st sp qu x y c. Die Blätter 7–9 lesen nur Silben und Wörter aus Buchstaben, die das Kind schon kann (plus dem neuen). „Anzahl“ nimmt die nächsten Blätter der Reihe dazu.</p>
+        </details>
         </div>
-        <button class="btn" onclick="fs_erstellen('stunde')"><i class="fa-solid fa-layer-group"></i> Stunde zusammenstellen</button>
-        <button class="btn sekundaer" type="button" onclick="std_timerOeffnen()" title="Timer mit den Phasen und Minuten der Stunde"><i class="fa-solid fa-stopwatch"></i> Timer für die Stunde</button>
         <div class="std-akte" id="std-akte"></div>
         <div class="std-teilen" id="std-teilen" style="display:none;"></div>
         <div class="std-editor" id="std-editor" style="display:none;"></div>
@@ -10423,10 +10463,28 @@ function std_auswahlAufbauen(){
         std_blattListen();
         std_heftZeigen();
         std_weiterZeigen();
+        std_akteInfo();
     });
     std_heftZeigen();
     std_weiterZeigen();
     std_blattListen();
+    std_akteInfo();
+}
+// Kurzinfo aus der Akte unter „Wer & wie lange?“ – mit dem Knopf für die Fortsetzung der letzten Stunde
+function std_akteInfo(){
+    const el = document.getElementById("std-akte-info"); if (!el) return;
+    const c = lt_wert("std-kind"), a = LRS_AKTEN[c];
+    if (!c || !a){ el.innerHTML = ""; return; }
+    const sp = [...(a.f || []).map(k => FS_SERIEN[k] ? FS_SERIEN[k].label : k), ...(a.r || []).filter(k => RS_SCHWERPUNKTE[k]).map(k => RS_SCHWERPUNKTE[k].name)];
+    const fw = kt_woerter(c).length;
+    const letzte = (LRS_STUNDEN[c] || []).find(x => x.rezept && x.rezept.items && x.rezept.items.length && x.status !== "offen" && !x.rezept.erst);
+    const bew = letzte ? letzte.rezept.items.filter(x => x.e || x.ng).length : 0;
+    el.innerHTML = (sp.length ? sp.slice(0, 4).map(x => `<span class="chip">${ws_esc(x)}</span>`).join("") : `<span class="chip">noch kein Förderplan</span>`)
+        + (fw ? `<span class="chip">📦 ${fw} Fehlerwörter</span>` : "")
+        + (a.lb ? `<span class="chip">🔤 ${ws_esc(a.lb.split(/\s+/).length)} Buchstaben</span>` : "")
+        + (letzte ? `<span class="chip gold">Letzte Stunde ${std_datumKurz(letzte.datum)}${bew ? ` · ${bew} bewertet` : " · noch kein Abschluss"}</span><a class="knopf-n" href="#" id="std-fortsetzen">✨ Daran anknüpfen</a>` : "");
+    const f = el.querySelector("#std-fortsetzen");
+    if (f) f.onclick = ev => { ev.preventDefault(); silben_laden().then(() => std_naechsteOeffnen(c, letzte.id)); };
 }
 // Zweites Kind: Bereich zeigen und Blatt-Listen füllen
 function std_zweiZeigen(){
