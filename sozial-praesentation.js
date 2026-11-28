@@ -78,6 +78,18 @@ const CSS = `
 #praes .p-frage.aufgabe{ background:#fff7e6; }
 #praes .p-frage.aufgabe:not(.an):not(.war){ visibility:hidden; }
 #praes .p-chip.zusatz{ background:#eef1f3; color:#6b7880; }
+/* Sozialtraining: Was passiert jetzt? · Rückblick · Selbst-Check */
+#praes .p-szene{ font-family:"Andika","Nunito",sans-serif; font-size:clamp(19px,min(2.5vw,4vh),40px); line-height:1.35; max-width:34em; background:white; border-radius:22px; padding:.5em 1em; box-shadow:0 6px 22px rgba(47,74,31,.1); border-left:8px solid #d9a23f; text-align:left; }
+#praes .p-wege{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.4vw; width:min(100%,1500px); margin-top:2.2vh; }
+#praes .p-weg{ position:relative; background:#fdfaf3; border:3px solid #2f4a1f; border-radius:20px; padding:.6em .8em 2.2em; text-align:left; cursor:pointer; font-family:"Andika","Nunito",sans-serif; font-size:clamp(16px,min(1.9vw,3.2vh),32px); line-height:1.3; transition:transform .12s; }
+#praes .p-weg:active{ transform:scale(.97); }
+#praes .p-weg .p-buchst{ display:inline-flex; width:1.7em; height:1.7em; border-radius:50%; background:#2f4a1f; color:#fff; align-items:center; justify-content:center; font-family:"Nunito",sans-serif; font-weight:900; margin-right:.4em; }
+#praes .p-weg .p-folge{ margin-top:.6em; padding-top:.5em; border-top:2px dashed #d9a23f; color:#7a4e10; font-weight:700; animation:pRein .4s; }
+#praes .p-weg .p-anz{ position:absolute; left:.8em; bottom:.5em; font-family:"Nunito",sans-serif; font-weight:900; color:#557428; font-size:.85em; }
+#praes .p-weg .p-anz button{ border:0; background:none; color:#a0aaa6; font:inherit; cursor:pointer; margin-left:.4em; }
+#praes .p-merksatz{ font-family:"Andika","Nunito",sans-serif; font-weight:700; font-size:clamp(24px,min(3.8vw,6vh),60px); line-height:1.25; max-width:22em; background:#fff7e6; border:4px solid #d9a23f; border-radius:26px; padding:.5em 1em; box-shadow:0 8px 30px rgba(217,162,63,.25); }
+#praes .p-kompakt .p-saeule{ height:12vh; } #praes .p-kompakt .p-symbol{ width:clamp(60px,8vw,120px); height:clamp(60px,8vw,120px); font-size:clamp(34px,5vw,72px); }
+@media (max-width:700px){ #praes .p-wege{ grid-template-columns:1fr; } }
 #praes .p-loes{ margin-top:1.4vh; background:#e9f7ee; color:#1d6b3a; border-radius:16px; padding:.4em 1em; font-weight:800; font-size:clamp(18px,min(2.4vw,4vh),38px); }
 #praes.lern .p-loes{ background:rgba(120,220,150,.15); color:#bff5cf; }
 #praes .p-liste .zu{ filter:blur(9px); opacity:.55; cursor:pointer; user-select:none; }
@@ -761,11 +773,19 @@ function folienBauenLern(e, stufe){
     f.forEach((x, i) => { if (x.typ === "challenge" && x.u.zusatz) { let j = i + 1; while (j < f.length && (f[j].typ === "quiz" || f[j].typ === "raetsel") && f[j].u === x.u) j++; x.weiter = j; } });
     return f;
 }
+/* ---------- Sozialtraining: Merksatz, Rückblick, Mini-Ziel ---------- */
+function merkeFuer(e){ const M = window.STUNDEN_MERKE || {}; const m = M[e.ersetzt || e.id] || M[e.id]; return Array.isArray(m) && m.length ? m : null; }
+function zielSaetze(m){ return m.slice(1).filter(t => !/_{3,}/.test(t)).slice(0, 4); }
+function rueckLaden(stufe){ try { const r = JSON.parse(localStorage.getItem("lt-soz-rueck-" + stufe)); return r && r.id && Date.now() - (r.zeit || 0) < 45 * 864e5 ? r : null; } catch (x) { return null; } }
+function rueckMerken(stufe, daten){ try { localStorage.setItem("lt-soz-rueck-" + stufe, JSON.stringify(Object.assign({ zeit: Date.now() }, daten))); } catch (x) {} }
 function folienBauen(e, stufe){
     if (LERN()) return folienBauenLern(e, stufe);
     const f = [];
     f.push({ typ: "titel" });
-    if (!(window.BEREICH && (window.BEREICH.key === "vertretung" || window.BEREICH.key === "lernangebot"))) f.push({ typ: "barometer" });
+    const SOZ = !(window.BEREICH && (window.BEREICH.key === "vertretung" || window.BEREICH.key === "lernangebot"));
+    if (SOZ) f.push({ typ: "barometer" });
+    const merke = SOZ ? merkeFuer(e) : null, szene = SOZ ? (window.SOZIAL_SZENEN || {})[e.ersetzt || e.id] || (window.SOZIAL_SZENEN || {})[e.id] : null;
+    if (SOZ) { const r = rueckLaden(stufe); if (r && r.id !== e.id && r.id !== e.ersetzt) f.push({ typ: "rueckblick", r }); }
     const lt = stufe === "34" ? e.lerntext34 : e.lerntext12;
     const { erz, nach } = geschichteZerlegen(lt && lt.text);
     erz.forEach((a, i) => f.push({ typ: "geschichte", titel: lt.titel, text: a, nr: i + 1, von: erz.length }));
@@ -773,6 +793,7 @@ function folienBauen(e, stufe){
     if (fragen.length) f.push({ typ: "fragen", titel: lt.titel, fragen });
     const medien = medienFuer(e);
     if (medien.length) f.push({ typ: "film", medien });
+    if (szene) f.push({ typ: "wasjetzt", sz: szene });
     const ueListe = window.uebungenFuer ? window.uebungenFuer(e, stufe) : (e.uebungen || []);   // Kern zuerst, dann Zusatz
     ueListe.forEach(u0 => {
         // Klassen sind getrennt: nur Übungen dieser Stufe, Text passend zur Stufe
@@ -790,7 +811,9 @@ function folienBauen(e, stufe){
             punkte.forEach((p, i) => f.push({ typ: "abstimmung", u, art, aussage: p, nr: i + 1, von: punkte.length, loesung: loes[i] ? String(loes[i]).split(/[,\s]+/).map(Number).filter(Boolean) : [] }));
         }
     });
+    if (merke) f.push({ typ: "merke", m: merke });
     f.push({ typ: "arbeitsblatt" });
+    if (merke) { f.push({ typ: "selbstcheck", m: merke }); if (zielSaetze(merke).length >= 2) f.push({ typ: "miniziel", m: merke }); }
     f.push({ typ: "abschluss" });
     // „Überspringen“ bei Zusatz-Übungen: zur nächsten Folie, die nicht mehr zu dieser Übung gehört
     f.forEach((x, i) => { if (x.typ === "uebung" && x.u.zusatz) { let j = i + 1; while (j < f.length && (f[j].typ === "karte" || f[j].typ === "abstimmung") && f[j].u === x.u) j++; x.weiter = j; } });
@@ -1160,6 +1183,38 @@ function folieHtml(f, e){
         case "karte": { const kt = karteTeilen(f.aussage);
             return `<div class="p-klein">${esc(f.u.titel)} · ${f.nr} / ${f.von}</div><div class="p-aussage">${inline(kt.text)}</div>${loesKnopf(f.u, kt.loes)}${f.u.frage ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,2.2vw,34px)">${md(f.u.frage)}</div>` : ""}
                 <div class="p-reihe" style="margin-top:2vh">${anhoerenKnopf()}<button class="p-knopf hell" data-p="rad">🎡 Wer ist dran?</button></div>`; }
+        case "rueckblick": {
+            const r = f.r;
+            return `<div class="p-klein">RÜCKBLICK · LETZTE STUNDE: ${esc(String(r.titel || "").toUpperCase())}</div><h2>🔁 Weißt du noch?</h2>
+                ${r.merksatz ? `<div class="p-merksatz" style="font-size:clamp(20px,min(3vw,4.8vh),46px)">💡 ${inline(r.merksatz)}</div>` : ""}
+                ${r.ziel ? `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,min(2.3vw,3.8vh),36px)">Euer Satz für die Woche: <b>„${inline(r.ziel)}“</b><br>Hat das bei dir geklappt?</div>` : `<div class="p-text" style="margin-top:2vh;font-size:clamp(18px,min(2.3vw,3.8vh),36px)">Hast du das seitdem ausprobiert?</div>`}
+                <div class="p-kompakt">${stimmenHtml("rueck", [{ wert: "ja", name: "hat geklappt", art: "emoji", zeichen: "👍" }, { wert: "manchmal", name: "manchmal", art: "emoji", zeichen: "🤏" }, { wert: "nein", name: "noch nicht", art: "emoji", zeichen: "👎" }])}</div>
+                <div class="p-klein" style="margin-top:1vh">Wer erzählt ein Beispiel? (🎡 unten in der Leiste)</div>`;
+        }
+        case "wasjetzt": {
+            const sz = f.sz, st = zustand.stimmen["wege"] || {};
+            return `<div class="p-klein">WAS PASSIERT JETZT?</div><h2 style="margin-bottom:.3em">⏸️ Stopp! Wie geht es weiter?</h2>
+                <div class="p-szene">${inline(sz.s)}</div>
+                <div class="p-klein" style="margin-top:1.6vh">Tippe auf den Weg, den du wählen würdest – jeder Tipp ist eine Stimme.</div>
+                <div class="p-wege">${sz.w.map((w, k) => `<div class="p-weg" data-weg="${k}"><span class="p-buchst">${"ABC"[k]}</span>${inline(w[0])}<div class="p-folge" hidden>➜ ${inline(w[1])}</div>
+                    <div class="p-anz">${st[k] ? "✋ " + st[k] : ""}${st[k] ? '<button data-wegminus="1" title="Eine Stimme zurück">↩</button>' : ""}</div></div>`).join("")}</div>
+                <div class="p-reihe"><button class="p-knopf" data-folgen="1">🔍 Was passiert dann?</button><button class="p-knopf hell" data-p="rad">🎡 Wer sagt seine Meinung?</button></div>
+                ${sz.f ? `<div class="p-loes" data-wegfrage="1" hidden>💬 ${inline(sz.f)} · Welcher Weg ist für alle gut – und warum?</div>` : ""}`;
+        }
+        case "merke":
+            return `<div class="p-klein">DAS MERKE ICH MIR</div><h2>💡 Unser Merksatz</h2><div class="p-merksatz">${inline(f.m[0])}</div>
+                ${f.m.length > 1 ? `<div class="p-liste" style="flex-direction:column;align-items:center">${f.m.slice(1).map(x => `<div class="zu">${inline(x)}</div>`).join("")}</div><div class="p-klein" style="margin-top:1vh">Was wissen wir noch? Erst sammeln – dann antippen und aufdecken.</div>` : ""}`;
+        case "selbstcheck":
+            return `<div class="p-klein">SELBST-CHECK · JEDER FÜR SICH</div><h2>Wie gut klappt das bei mir schon?</h2><div class="p-merksatz" style="font-size:clamp(20px,min(3vw,4.8vh),46px)">${inline(f.m[0])}</div>
+                <div class="p-klein" style="margin-top:1.4vh">Ehrlich sein ist wichtiger als gut aussehen. Augen zu, dann zeigen!</div>
+                <div class="p-kompakt">${stimmenHtml("selbst", [{ wert: "noch", name: "übe ich noch", art: "emoji", zeichen: "🌱" }, { wert: "manchmal", name: "klappt manchmal", art: "emoji", zeichen: "🌿" }, { wert: "gut", name: "klappt schon gut", art: "emoji", zeichen: "🌳" }])}</div>
+                <div class="p-klein" style="margin-top:1vh">Wann hat es bei dir schon geklappt?</div>`;
+        case "miniziel": {
+            const z = zielSaetze(f.m);
+            return `<div class="p-klein">MEIN SATZ FÜR DIE WOCHE</div><h2>🎯 Welcher Satz soll dir diese Woche helfen?</h2>
+                <div class="p-wege" style="grid-template-columns:repeat(${z.length === 4 ? 2 : z.length},minmax(0,1fr))">${z.map((t, k) => `<div class="p-weg" data-ziel="${k}"><span class="p-buchst">${k + 1}</span>${inline(t)}<div class="p-anz">${(zustand.stimmen["ziel"] || {})[k] ? "✋ " + zustand.stimmen["ziel"][k] : ""}</div></div>`).join("")}</div>
+                <div class="p-klein" style="margin-top:1.6vh">Jedes Kind tippt seinen Satz an. Der Satz mit den meisten Stimmen kommt nächste Stunde im Rückblick wieder.</div>`;
+        }
         case "arbeitsblatt":
             return `<div class="p-bilder">${ltBild("stift")}${ltBild("heft")}</div><h2>Bearbeite jetzt leise dein Arbeitsblatt.</h2>
                 <div class="p-text" style="font-size:clamp(20px,2.6vw,40px)">🤫 Wenn du fertig bist, drehst du dein Blatt um und wartest leise.</div>
@@ -1257,6 +1312,28 @@ function folieAktivieren(el, f){
         const erkl = el.querySelector("[data-erkl]"); if (erkl) erkl.hidden = false;
     }));
     el.querySelectorAll("[data-springen]").forEach(b => b.addEventListener("click", () => zeigen(+b.dataset.springen)));
+    // Was passiert jetzt? – Stimmen pro Weg, dann Folgen aufdecken
+    if (f.typ === "wasjetzt" || f.typ === "miniziel") {
+        const schl = f.typ === "wasjetzt" ? "wege" : "ziel", attr = f.typ === "wasjetzt" ? "weg" : "ziel";
+        const s = zustand.stimmen[schl] = zustand.stimmen[schl] || {};
+        const merkenZiel = () => {
+            if (f.typ !== "miniziel") return;
+            const z = zielSaetze(f.m), best = Object.keys(s).filter(k => s[k] > 0).sort((a, b) => s[b] - s[a])[0];
+            rueckMerken(zustand.stufe, { id: zustand.e.ersetzt || zustand.e.id, titel: zustand.e.titel, merksatz: f.m[0], ziel: best != null ? z[+best] : "" });
+        };
+        el.querySelectorAll(".p-weg").forEach(w => w.addEventListener("click", ev => {
+            const k = w.dataset[attr];
+            if (ev.target.closest("[data-wegminus]")) s[k] = Math.max(0, (s[k] || 0) - 1); else { s[k] = (s[k] || 0) + 1; plopp(1 + k * .12); }
+            const a = w.querySelector(".p-anz"); a.innerHTML = s[k] ? "✋ " + s[k] + (f.typ === "wasjetzt" ? '<button data-wegminus="1" title="Eine Stimme zurück">↩</button>' : "") : "";
+            merkenZiel();
+        }));
+        merkenZiel();
+        const fb = el.querySelector("[data-folgen]");
+        if (fb) fb.addEventListener("click", () => { el.querySelectorAll(".p-folge").forEach(x => x.hidden = false); const q = el.querySelector("[data-wegfrage]"); if (q) q.hidden = false; fb.remove(); });
+    }
+    if (f.typ === "abschluss" && zustand.folien.some(x => x.typ === "merke") && !zustand.folien.some(x => x.typ === "miniziel")) {
+        const m = merkeFuer(zustand.e); if (m) rueckMerken(zustand.stufe, { id: zustand.e.ersetzt || zustand.e.id, titel: zustand.e.titel, merksatz: m[0], ziel: "" });
+    }
     el.querySelectorAll("[data-vorlesen]").forEach(b => b.addEventListener("click", () => vorlesen(f.text, b, istEnglisch(zustand.e))));
     // Englisch: Wort oder Satz anhören (Wortkarte: das fett gedruckte Wort aus der Lösung)
     el.querySelectorAll("[data-anhoeren]").forEach(b => b.addEventListener("click", () => {

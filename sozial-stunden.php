@@ -534,6 +534,7 @@ body.freigabe .reiter, body.freigabe .detail-kopf .knopfleiste, body.freigabe .d
 
 <script src="bilder.js?v=<?= @filemtime(__DIR__ . "/bilder.js") ?: 1 ?>"></script>
 <script src="stunden-merke.js?v=<?= @filemtime(__DIR__ . "/stunden-merke.js") ?: 1 ?>"></script>
+<script src="sozial-szenen.js?v=<?= @filemtime(__DIR__ . "/sozial-szenen.js") ?: 1 ?>"></script>
 <script src="stunden-werkzeuge.js?v=<?= @filemtime(__DIR__ . "/stunden-werkzeuge.js") ?: 1 ?>"></script>
 <?php foreach ($vorlagenDateien as $vd): ?>
 <script src="<?= htmlspecialchars(basename($vd)) ?>?v=<?= @filemtime($vd) ?: 1 ?>"></script>
