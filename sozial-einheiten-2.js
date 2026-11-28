@@ -256,7 +256,7 @@ Auf der Heimfahrt sagt Mila: „Mutig sein heißt nicht, keine Angst zu haben. M
           emoji: "📊",
           warum: "Jeder hat vor anderen Dingen Angst. Wir zeigen, wie viel." },
         { titel: "Mutmacher-Satz", fuer: "alle", dauer: "4 Min",
-          text: "Sammelt Mutmacher-Sätze an der Tafel („Ich schaff das!“, „Eins nach dem anderen“, „Ich darf es versuchen“). Jedes Kind sucht sich einen aus, steht am Platz auf und sagt ihn mit starker Stimme. Die anderen antworten: „Ja, das schaffst du!“",
+          text: "Die Mutmacher-Sätze stehen an der Tafel. Jedes Kind sucht sich einen aus, steht am Platz auf und sagt ihn mit starker Stimme. Die anderen antworten: „Ja, das schaffst du!“\n\n- Ich schaff das!\n- Eins nach dem anderen.\n- Ich darf es versuchen.\n- Fehler sind erlaubt.\n- Ich atme tief durch – dann geht es los.\n- Ich bin mutiger, als ich denke.\n- Ich kann um Hilfe bitten.\n- Schritt für Schritt komme ich ans Ziel.",
           folie: "Welcher Satz macht dir **Mut**?\n\nSuch dir einen aus, steh auf und sag ihn mit starker Stimme. 💪",
           quiz: "liste",
           kern: ["12"],
