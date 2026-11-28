@@ -15,6 +15,10 @@ const KAT_TYP = {
     "Gemischt: Deutsch & Mathe": "raetsel", "Englisch (Kl. 3/4)": "englisch"
 };
 const MATERIAL = /Arbeitsblatt|Zettel|Schere|Kleber|Würfel|Papierstreifen|ausdrucken|Karten verteilen/i;
+// Aufgaben, bei denen die Lehrkraft selbst etwas vormachen, flüstern, klatschen, malen … müsste → nicht übernehmen
+const SELBST_MACHEN = /vormach|Vormachen|machst es vor|machst (sie|das) vor|zeigst .{0,20}vor|flüsterst|flüstern dir|klatschst|\bDu (schreibst|denkst|malst|zeichnest|hältst|deutest|beginnst|gibst|wählst|bestimmst|spielst|machst)\b|Zeige den|Ich denke an|Frag mich|Ich sehe was|diktierst|dein Zeichen|\bDu (zeigst|tust)\b|spielt .{0,40}\bvor\b/;
+// Aufgaben, bei denen die Lehrkraft etwas sagt oder vorliest → nur mit Aufgaben an der Tafel (🔊)
+const TAFEL_SAGT = /\b(Du|du) (sagst|rufst|nennst|fragst|liest|stellst)\b|\bLies\b|Zeige das Bild/;
 const ohneMd = t => String(t || "").replace(/\*\*/g, "").trim();
 const punkte = t => String(t || "").split("\n").filter(z => /^\s*[-•]\s+/.test(z)).map(z => z.replace(/^\s*[-•]\s+/, "").trim());
 const ohnePunkte = t => String(t || "").split("\n").filter(z => !/^\s*[-•]\s+/.test(z)).join("\n").trim();
@@ -23,7 +27,6 @@ const ohnePunkte = t => String(t || "").split("\n").filter(z => !/^\s*[-•]\s+/
 function lkSatz(text, typ){
     const t = ohneMd(ohnePunkte(text)).replace(/\s+/g, " ");
     if (typ === "englisch" && /Wort zeigen|sprichst/.test(t)) return "Tippe auf „Lösung“ und dann auf 🔊 – die Tafel spricht das Wort vor, die Klasse spricht im Chor nach.";
-    if (/(machst|zeigst) (es|sie|das)? ?vor|und machst es vor/.test(t)) return "Die Bewegung steht an der Tafel – die Kinder machen sie am Platz. Du musst nichts vormachen.";
     let satz = (t.match(/^.*?[.!?](\s|$)/) || [t])[0].trim();
     if (satz.length > 190) satz = satz.slice(0, 185).replace(/\s\S*$/, "") + " …";
     if (/\b(liest|lies|Lies)\b.*\bvor\b/.test(satz)) satz += " (Oder 🔊 antippen – die Tafel liest vor.)";
@@ -70,8 +73,16 @@ window.VK_UMBAU = function(vorlagen){
                 if (MATERIAL.test(text)) return;
                 const folie = u["folie" + stufe] || u.folie || ohnePunkte(text);
                 const items = itemsAus(u, text);
+                // Die Lehrkraft macht NICHTS vor und spielt keine Rolle – alles kommt von der Tafel.
+                if (SELBST_MACHEN.test(text) || SELBST_MACHEN.test(folie)) return;
+                let lk = lkSatz(text, typ);
+                if (TAFEL_SAGT.test(text) || /\b(Lies|lies|liest)\b/.test(lk)) {
+                    if (items.length < 2) return;          // ohne Aufgaben an der Tafel müsste die Lehrkraft es selbst sagen
+                    lk = typ === "englisch" ? "Die Wörter und Sätze erscheinen nacheinander an der Tafel – mit 🔊 spricht die Tafel sie auf Englisch vor."
+                                            : "Die Aufgaben erscheinen nacheinander an der Tafel – mit 🔊 liest die Tafel sie vor, die Kinder reagieren.";
+                }
                 out.push({ id: "alt-" + e.id + "-" + k + "-" + stufe, typ, stufe, titel: u.titel, quelle: e.titel,
-                    lk: lkSatz(text, typ), auftrag: folie, items, dauer: u.dauer || "", lang: typ === "englisch" ? "en" : "" });
+                    lk, auftrag: folie, items, dauer: u.dauer || "", lang: typ === "englisch" ? "en" : "" });
             });
         });
     });

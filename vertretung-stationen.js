@@ -16,7 +16,7 @@ const st = o => S.push(o);
 
 /* ============================== BEWEGUNG ============================== */
 st({ id: "b-wer", typ: "bewegung", stufe: "alle", titel: "Wer …, steht auf!",
-  lk: "Lies jeden Satz vor – wer gemeint ist, steht kurz auf und setzt sich wieder hin.",
+  lk: "Die Sätze erscheinen nacheinander an der Tafel (🔊 liest vor) – wer gemeint ist, steht kurz auf und setzt sich wieder hin.",
   auftrag: "Hört genau hin: Wer gemeint ist, steht auf – und setzt sich wieder.",
   items: [
     { f: "Wer ein Haustier hat, steht auf." },
@@ -43,7 +43,7 @@ st({ id: "b-waldtiere", typ: "bewegung", stufe: "12", titel: "Waldtiere am Platz
   ]});
 
 st({ id: "b-stopp", typ: "bewegung", stufe: "alle", titel: "Lauf und Stopp",
-  lk: "Alle laufen auf der Stelle – wenn du „Stopp!“ rufst, frieren alle ein; wer wackelt, lacht nur mit.",
+  lk: "Das Kommando steht an der Tafel, mit 🔊 ruft die Tafel es – auch das „Stopp!“; dann frieren alle ein.",
   auftrag: "Lauft auf der Stelle. Bei „Stopp!“ friert ihr ein wie Eiszapfen.",
   items: [
     { f: "Ganz normal auf der Stelle laufen … Stopp!" },
@@ -55,7 +55,7 @@ st({ id: "b-stopp", typ: "bewegung", stufe: "alle", titel: "Lauf und Stopp",
   ]});
 
 st({ id: "b-stimmt-steh", typ: "bewegung", stufe: "12", titel: "Stimmt? Dann steh auf!",
-  lk: "Lies den Satz vor: Wer meint, er stimmt, steht auf – wer meint, das ist Quatsch, bleibt sitzen; dann deckst du auf.",
+  lk: "Der Satz steht an der Tafel (🔊 liest vor): Wer meint, er stimmt, steht auf – sonst bleibt man sitzen; dann tippst du auf „Lösung zeigen“.",
   auftrag: "Stimmt der Satz? Dann steh auf. Quatsch? Dann bleib sitzen.",
   items: [
     { f: "Eine Woche hat sieben Tage.", a: "Stimmt! Montag bis Sonntag – das sind 7 Tage." },
@@ -67,7 +67,7 @@ st({ id: "b-stimmt-steh", typ: "bewegung", stufe: "12", titel: "Stimmt? Dann ste
   ]});
 
 st({ id: "b-stimmt-steh34", typ: "bewegung", stufe: "34", titel: "Stimmt? Dann steh auf!",
-  lk: "Lies den Satz vor: Wer meint, er stimmt, steht auf – wer meint, das ist Quatsch, bleibt sitzen; dann deckst du auf.",
+  lk: "Der Satz steht an der Tafel (🔊 liest vor): Wer meint, er stimmt, steht auf – sonst bleibt man sitzen; dann tippst du auf „Lösung zeigen“.",
   auftrag: "Stimmt der Satz? Dann steh auf. Quatsch? Dann bleib sitzen.",
   items: [
     { f: "Ein Jahr hat 52 Wochen.", a: "Stimmt! Genauer: 52 Wochen und 1 Tag (im Schaltjahr 2 Tage)." },
@@ -79,7 +79,7 @@ st({ id: "b-stimmt-steh34", typ: "bewegung", stufe: "34", titel: "Stimmt? Dann s
   ]});
 
 st({ id: "b-zaehlen12", typ: "bewegung", stufe: "12", titel: "Zähl-Hüpfer",
-  lk: "Alle stehen am Platz und zählen gemeinsam laut – bei den Zahlen an der Tafel wird gehüpft statt gesprochen.",
+  lk: "Die Regel steht an der Tafel – die Kinder zählen gemeinsam und hüpfen bei den genannten Zahlen.",
   auftrag: "Zählt zusammen. Bei diesen Zahlen hüpft ihr nur – ohne etwas zu sagen!",
   items: [
     { f: "Zählt bis 10. Bei 5 und 10 hüpfen." },
@@ -99,7 +99,7 @@ st({ id: "b-zaehlen34", typ: "bewegung", stufe: "34", titel: "Zähl-Klatscher",
   ]});
 
 st({ id: "b-spiegel", typ: "bewegung", stufe: "alle", titel: "Tafel-Kommando",
-  lk: "Lies jeden Auftrag vor (oder tippe auf 🔊) – die Kinder machen ihn am Platz, du musst nichts vormachen.",
+  lk: "Die Aufträge stehen an der Tafel (🔊 liest vor) – die Kinder machen sie am Platz.",
   auftrag: "Die Tafel gibt das Kommando: Macht genau das, was hier steht – am Platz.",
   items: [
     { f: "Beide Arme langsam hoch – und wieder runter." },
@@ -116,7 +116,7 @@ st({ id: "s-atem", typ: "stille", stufe: "alle", titel: "Atem-Lichtung", art: "a
   auftrag: "Setzt euch bequem hin. Atmet mit dem Kreis: Wird er groß – einatmen. Wird er klein – ausatmen." });
 
 st({ id: "s-lauschen", typ: "stille", stufe: "alle", titel: "Lausch-Station",
-  lk: "Alle schließen die Augen und lauschen, bis du „Augen auf“ sagst – danach sammelt ihr, was die Kinder gehört haben.",
+  lk: "Alle schließen die Augen und lauschen – nach etwa einer Minute tippst du auf „Lösung zeigen“, dort steht „Augen auf!“.",
   auftrag: "Augen zu. Ganz still sein. Wie viele Geräusche könnt ihr hören?",
   items: [
     { f: "Augen zu … und lauschen. 👂", a: "Augen auf! Welche Geräusche habt ihr gehört? Was war am leisesten?" },
@@ -124,7 +124,7 @@ st({ id: "s-lauschen", typ: "stille", stufe: "alle", titel: "Lausch-Station",
   ]});
 
 st({ id: "s-wald", typ: "stille", stufe: "12", titel: "Im Moos-Wald", art: "text",
-  lk: "Lies den Text langsam und leise vor, die Kinder legen den Kopf auf die Arme und hören nur zu.",
+  lk: "Tippe auf „Vorlesen lassen“ – die Tafel liest die Reise vor, die Kinder legen den Kopf auf die Arme und hören zu.",
   auftrag: "Legt den Kopf auf die Arme. Augen zu. Hört nur zu.",
   text:
 `Stell dir vor, du gehst ganz langsam in einen Wald.
@@ -139,7 +139,7 @@ Du bleibst noch einen Moment sitzen. Ganz ruhig.
 Und jetzt kommst du langsam zurück in die Klasse. Du bewegst deine Finger … deine Füße … und öffnest die Augen.` });
 
 st({ id: "s-zeitlupe", typ: "stille", stufe: "12", titel: "Schnecken-Zeitlupe",
-  lk: "Alle machen die Aufgabe so langsam wie möglich und ohne ein Geräusch – wer am leisesten ist, ist Schnecken-König.",
+  lk: "Die Aufträge stehen an der Tafel – alle machen sie so langsam und leise wie möglich.",
   auftrag: "Alles in Zeitlupe – so langsam wie eine Schnecke und so leise wie eine Feder.",
   items: [
     { f: "Steht so langsam auf, wie ihr könnt." },
@@ -150,7 +150,7 @@ st({ id: "s-zeitlupe", typ: "stille", stufe: "12", titel: "Schnecken-Zeitlupe",
   ]});
 
 st({ id: "s-stillezahl", typ: "stille", stufe: "alle", titel: "Stille-Zahlen",
-  lk: "Alle zählen nur in Gedanken mit geschlossenen Augen bis zur Zahl an der Tafel und öffnen dann leise die Augen – wer zu früh ist, macht beim nächsten Mal mit.",
+  lk: "Die Zahl steht an der Tafel – alle zählen mit geschlossenen Augen in Gedanken und öffnen dann leise die Augen.",
   auftrag: "Augen zu. Zählt in Gedanken bis zur Zahl – dann öffnet ihr ganz leise die Augen.",
   items: [
     { f: "Zählt in Gedanken bis 10." },
@@ -161,7 +161,7 @@ st({ id: "s-stillezahl", typ: "stille", stufe: "alle", titel: "Stille-Zahlen",
 
 /* ============================== RÄTSEL ============================== */
 st({ id: "r-dinge12", typ: "raetsel", stufe: "12", titel: "Rätsel-Höhle",
-  lk: "Lies das Rätsel vor, die Kinder melden sich – erst wenn drei Ideen genannt sind, deckst du auf.",
+  lk: "Das Rätsel steht an der Tafel (🔊 liest vor) – erst wenn drei Ideen genannt sind, tippst du auf „Lösung zeigen“.",
   auftrag: "Was bin ich? Hört gut zu – und meldet euch.",
   items: [
     { f: "Ich habe Zähne, aber ich beiße nicht. Ich mache deine Haare ordentlich.", a: "Der Kamm" },
@@ -173,7 +173,7 @@ st({ id: "r-dinge12", typ: "raetsel", stufe: "12", titel: "Rätsel-Höhle",
   ]});
 
 st({ id: "r-natur12", typ: "raetsel", stufe: "12", titel: "Wald-Rätsel",
-  lk: "Lies das Rätsel vor, die Kinder melden sich – erst wenn drei Ideen genannt sind, deckst du auf.",
+  lk: "Das Rätsel steht an der Tafel (🔊 liest vor) – erst wenn drei Ideen genannt sind, tippst du auf „Lösung zeigen“.",
   auftrag: "Wer oder was bin ich? Hört gut zu!",
   items: [
     { f: "Ich bin klein und stachelig. Im Winter schlafe ich unter einem Laubhaufen.", a: "Der Igel" },
@@ -185,7 +185,7 @@ st({ id: "r-natur12", typ: "raetsel", stufe: "12", titel: "Wald-Rätsel",
   ]});
 
 st({ id: "r-knobel34", typ: "raetsel", stufe: "34", titel: "Knobel-Höhle",
-  lk: "Lies das Rätsel vor und lass die Kinder erst flüstern und dann Ideen sagen – deck erst danach auf.",
+  lk: "Das Rätsel steht an der Tafel (🔊 liest vor) – erst flüstern die Kinder mit dem Nachbarn, dann tippst du auf „Lösung zeigen“.",
   auftrag: "Knobelt! Erst mit dem Nachbarn flüstern – dann melden.",
   items: [
     { f: "Was hat Städte ohne Häuser, Wälder ohne Bäume und Flüsse ohne Wasser?", a: "Eine Landkarte" },
@@ -197,7 +197,7 @@ st({ id: "r-knobel34", typ: "raetsel", stufe: "34", titel: "Knobel-Höhle",
   ]});
 
 st({ id: "r-logik34", typ: "raetsel", stufe: "34", titel: "Denk-Höhle",
-  lk: "Lies die Aufgabe zweimal vor – wer eine Lösung hat, muss auch sagen, warum.",
+  lk: "Die Aufgabe steht an der Tafel (🔊 liest vor) – wer eine Lösung hat, sagt auch, warum.",
   auftrag: "Genau zuhören, genau denken! Wer eine Lösung hat, sagt auch, warum.",
   items: [
     { f: "Ein Bauer hat 7 Schafe. Alle bis auf 3 laufen weg. Wie viele Schafe hat er noch?", a: "3 – „alle bis auf 3“ heißt: 3 bleiben da." },
@@ -214,7 +214,7 @@ st({ id: "m-schatz", typ: "rechnen", stufe: "alle", titel: "Zahlen-Mühle", gen:
   auftrag: "Die Mühle dreht sich nur, wenn ihr richtig rechnet. Im Kopf rechnen – dann melden!" });
 
 st({ id: "m-detektiv", typ: "rechnen", stufe: "alle", titel: "Zahlen-Detektiv", gen: "detektiv",
-  lk: "Lies die Hinweise einzeln vor – die Kinder sagen nach jedem Hinweis, welche Zahlen noch gehen.",
+  lk: "Die Hinweise stehen an der Tafel (🔊 liest vor) – die Kinder sagen, welche Zahlen noch gehen.",
   auftrag: "Ich denke mir eine Zahl. Findet sie mit den Hinweisen!" });
 
 st({ id: "m-muster", typ: "rechnen", stufe: "alle", titel: "Zahlen-Pfad", gen: "muster",
@@ -222,7 +222,7 @@ st({ id: "m-muster", typ: "rechnen", stufe: "alle", titel: "Zahlen-Pfad", gen: "
   auftrag: "Auf dem Pfad liegen Zahlensteine. Wie geht es weiter? Und welche Regel steckt dahinter?" });
 
 st({ id: "m-sach", typ: "rechnen", stufe: "alle", titel: "Rechen-Wiese", gen: "sachaufgaben",
-  lk: "Lies die Aufgabe vor, die Kinder rechnen im Kopf und sagen den Rechenweg.",
+  lk: "Die Aufgabe steht an der Tafel (🔊 liest vor) – die Kinder rechnen im Kopf und sagen den Rechenweg.",
   auftrag: "Rechengeschichten von der Wiese: Erst überlegen, dann rechnen, dann den Rechenweg sagen." });
 
 /* ============================== LESEN ============================== */
@@ -336,7 +336,7 @@ st({ id: "w-salat", typ: "woerter", stufe: "alle", titel: "Buchstaben-Brücke", 
   auftrag: "Der Wind hat die Buchstaben durcheinander gepustet. Welches Wort ist es?" });
 
 st({ id: "w-bau12", typ: "woerter", stufe: "12", titel: "Wörter-Werkstatt",
-  lk: "Lies die Frage vor – die Kinder bauen aus zwei Wörtern ein neues Wort.",
+  lk: "Die Frage steht an der Tafel (🔊 liest vor) – die Kinder bauen aus zwei Wörtern ein neues Wort.",
   auftrag: "Aus zwei Wörtern wird ein neues Wort. Wie heißt es?",
   items: [
     { f: "Ein Mann aus Schnee ist ein …", a: "Schneemann" },
@@ -408,7 +408,7 @@ st({ id: "w-kette34", typ: "woerter", stufe: "34", titel: "Wort-Kette",
 
 /* ============================== WISSEN (Sachunterricht) ============================== */
 st({ id: "k-wald12", typ: "wissen", stufe: "12", titel: "Forscher-Hügel",
-  lk: "Lies den Satz vor: Daumen hoch für „stimmt“, Daumen runter für „Quatsch“ – dann deckst du auf.",
+  lk: "Der Satz steht an der Tafel (🔊 liest vor): Daumen hoch für „stimmt“, runter für „Quatsch“ – dann tippst du auf „Lösung zeigen“.",
   auftrag: "Stimmt das – oder ist es Quatsch? Zeigt es mit dem Daumen! 👍 👎",
   items: [
     { f: "Igel halten im Winter einen Winterschlaf.", a: "Stimmt! Sie schlafen von etwa November bis März in einem Laubhaufen." },
@@ -420,7 +420,7 @@ st({ id: "k-wald12", typ: "wissen", stufe: "12", titel: "Forscher-Hügel",
   ]});
 
 st({ id: "k-himmel12", typ: "wissen", stufe: "12", titel: "Forscher-Hügel",
-  lk: "Lies den Satz vor: Daumen hoch für „stimmt“, Daumen runter für „Quatsch“ – dann deckst du auf.",
+  lk: "Der Satz steht an der Tafel (🔊 liest vor): Daumen hoch für „stimmt“, runter für „Quatsch“ – dann tippst du auf „Lösung zeigen“.",
   auftrag: "Stimmt das – oder ist es Quatsch? Zeigt es mit dem Daumen! 👍 👎",
   items: [
     { f: "Der Mond leuchtet selbst wie eine Lampe.", a: "Quatsch! Der Mond wird von der Sonne angestrahlt." },
@@ -432,7 +432,7 @@ st({ id: "k-himmel12", typ: "wissen", stufe: "12", titel: "Forscher-Hügel",
   ]});
 
 st({ id: "k-natur34", typ: "wissen", stufe: "34", titel: "Forscher-Hügel",
-  lk: "Lies den Satz vor: Daumen hoch für „stimmt“, Daumen runter für „Quatsch“ – erst wenn ein Kind begründet hat, deckst du auf.",
+  lk: "Der Satz steht an der Tafel (🔊 liest vor): Daumen hoch oder runter – erst wenn ein Kind begründet hat, tippst du auf „Lösung zeigen“.",
   auftrag: "Stimmt das – oder ist es Quatsch? Daumen zeigen – und begründen! 👍 👎",
   items: [
     { f: "Schnecken haben Zähne.", a: "Stimmt! Auf ihrer Raspelzunge sitzen tausende winzige Zähnchen." },
@@ -444,7 +444,7 @@ st({ id: "k-natur34", typ: "wissen", stufe: "34", titel: "Forscher-Hügel",
   ]});
 
 st({ id: "k-erde34", typ: "wissen", stufe: "34", titel: "Forscher-Hügel",
-  lk: "Lies den Satz vor: Daumen hoch für „stimmt“, Daumen runter für „Quatsch“ – erst wenn ein Kind begründet hat, deckst du auf.",
+  lk: "Der Satz steht an der Tafel (🔊 liest vor): Daumen hoch oder runter – erst wenn ein Kind begründet hat, tippst du auf „Lösung zeigen“.",
   auftrag: "Stimmt das – oder ist es Quatsch? Daumen zeigen – und begründen! 👍 👎",
   items: [
     { f: "Die Sonne geht im Westen auf.", a: "Quatsch! Sie geht im Osten auf und im Westen unter." },
