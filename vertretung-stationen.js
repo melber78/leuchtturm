@@ -29,7 +29,7 @@ st({ id: "b-wer", typ: "bewegung", stufe: "alle", titel: "Wer …, steht auf!",
     { f: "Wer heute schon gelacht hat, steht auf – und alle anderen auch!" }
   ]});
 
-st({ id: "b-waldtiere", typ: "bewegung", stufe: "alle", titel: "Waldtiere am Platz",
+st({ id: "b-waldtiere", typ: "bewegung", stufe: "12", titel: "Waldtiere am Platz",
   lk: "Alle stehen hinter ihrem Stuhl und machen das Tier nach – ohne Geräusche, ohne herumzulaufen.",
   auftrag: "Stellt euch hinter euren Stuhl. Bewegt euch wie …",
   items: [
@@ -123,7 +123,7 @@ st({ id: "s-lauschen", typ: "stille", stufe: "alle", titel: "Lausch-Station",
     { f: "Noch einmal: Augen zu. Jetzt hört ihr nur auf Geräusche von draußen.", a: "Was war draußen zu hören? Wer hat etwas gehört, das sonst niemand bemerkt hat?" }
   ]});
 
-st({ id: "s-wald", typ: "stille", stufe: "alle", titel: "Im Moos-Wald", art: "text",
+st({ id: "s-wald", typ: "stille", stufe: "12", titel: "Im Moos-Wald", art: "text",
   lk: "Lies den Text langsam und leise vor, die Kinder legen den Kopf auf die Arme und hören nur zu.",
   auftrag: "Legt den Kopf auf die Arme. Augen zu. Hört nur zu.",
   text:
@@ -138,7 +138,7 @@ Dann huscht er davon.
 Du bleibst noch einen Moment sitzen. Ganz ruhig.
 Und jetzt kommst du langsam zurück in die Klasse. Du bewegst deine Finger … deine Füße … und öffnest die Augen.` });
 
-st({ id: "s-zeitlupe", typ: "stille", stufe: "alle", titel: "Schnecken-Zeitlupe",
+st({ id: "s-zeitlupe", typ: "stille", stufe: "12", titel: "Schnecken-Zeitlupe",
   lk: "Alle machen die Aufgabe so langsam wie möglich und ohne ein Geräusch – wer am leisesten ist, ist Schnecken-König.",
   auftrag: "Alles in Zeitlupe – so langsam wie eine Schnecke und so leise wie eine Feder.",
   items: [
@@ -285,7 +285,7 @@ Mia sagt: „Wir bauen morgen ein Holzboot für dich.“`,
     { f: "Was will Mia morgen machen?", a: "Mit Ben ein Holzboot für ihn bauen" }
   ]});
 
-st({ id: "l-karte34", typ: "lesen", stufe: "34", titel: "Lese-Baum",
+st({ id: "l-karte34", typ: "lesen", stufe: "aus", titel: "Lese-Baum",
   lk: "Kinder lesen reihum je einen Satz laut vor – bei den Fragen müssen sie die Stelle im Text zeigen können.",
   auftrag: "Lest den Text genau. Bei jeder Antwort: Wo steht das im Text?",
   text:

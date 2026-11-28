@@ -37,7 +37,7 @@ $INFO = [
     "sozial"      => ["sozial-stunden.php", "fa-people-group", "Sozialtraining-Stunden", "Fertige Stunden, Jahresplan, Präsentation &amp; Material – Kl. 1/2 und 3/4"],
     "lernangebot" => ["sozial-stunden.php?bereich=lernangebot", "fa-seedling", "Lernangebot", "40-Minuten-Stunden Deutsch, Mathe &amp; Lernen lernen – Planer, Tafel &amp; Arbeitsblätter"],
     "quiz" => ["ella-quiz.php", "fa-graduation-cap", "Ella-Quiz", "Üben nach Klasse 1–4, Fach und Thema – allein oder an der Tafel"],
-    "vertretung"  => ["sozial-stunden.php?bereich=vertretung", "fa-shuffle", "Vertretungsstunden", "Fertige Stunden für Kl. 1–4 mit Zufallsauswahl"],
+    "vertretung"  => ["vertretung-karte.php", "fa-shuffle", "Vertretung", "Ohne Vorbereitung: Schatzkarte (Kl. 1/2) und Escape-Fall (Kl. 3/4)"],
     "morgen"      => ["tafelbilder.php#morgen", "fa-sun", "Guten Morgen!", "Tagesstart an der Tafel: Datum, Wetter, Stundenplan, Auspacken, Hinweise"],
     "einmaleins"  => ["tafelbilder.php#einmaleins", "fa-table-cells", "Das große 1×1", "Die 1×1-Tabelle zum Antippen – Reihen, Rechentricks, Blitzrechnen Klasse gegen Ella"],
     "boot" => ["tafelbilder.php#boot", "fa-sailboat", "Bootsfahrt zum Leuchtturm", "Lernspiel Mathe & Deutsch für Kl. 1–4"],

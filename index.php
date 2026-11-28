@@ -148,6 +148,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-28", "Vertretung ganz neu: Schatzkarte & Escape-Fall", "Kl. 1/2 gehen auf Schatzsuche, Kl. 3/4 lösen einen Escape-Fall: Fallakte, jeder gelöste Hinweis bringt eine Ziffer, am Ende wird an der Tafel das Zahlenschloss geknackt. Alle bisherigen Vertretungsstunden (auch Englisch und deine eigenen) stecken jetzt als Aufgaben darin – ohne Material, alles an der Tafel.", "vertretung-karte.php"],
     ["2026-11-28", "Lernangebot wird zum Trainingsplatz", "Neuer Ablauf an der Tafel: 🏃 Aufwärmen → 🦉 Ella erklärt → 🤝 kurz gemeinsam üben → 💪 Training, jedes Kind wählt seine Stufe (⭐ Grundlage, ⭐⭐ Training, ⭐⭐⭐ Profi mit Profi-Aufgabe) → ✅ Check mit dem Nachbarn, unklare Aufgaben groß an der Tafel → ⚡ Blitzrunde gegen Ella. Ohne Drucken: „Ohne Blatt“ zeigt die Aufgaben an der Tafel, die Kinder schreiben ins Heft.", "sozial-stunden.php?bereich=lernangebot"],
     ["2026-11-28", "Sozialtraining: mehr Lernen und Nachdenken", "Gleicher Ablauf wie immer, dazu neu in jeder Stunde: „Was passiert jetzt?“ (Alltagsszene stoppt, die Klasse wählt Weg A, B oder C und sieht die Folgen), der Merksatz zum Aufdecken, ein ehrlicher Selbst-Check (🌱 🌿 🌳) und ein Satz für die Woche – der kommt in der nächsten Stunde im Rückblick „Weißt du noch?“ wieder.", "sozial-stunden.php"],
     ["2026-11-28", "Die Schatzkarte: Vertretung neu gedacht", "Vertretung ohne Vorbereitung für Kl. 1–4: Klasse, verbleibende Zeit und Stimmung der Klasse antippen – daraus entsteht eine Wanderkarte mit 3 bis 6 Stationen (Bewegen, Ruhe, Rätseln, Lesen, Deutsch, Mathe, Sachunterricht). Jede Station lichtet den Nebel, am Ende wird unter der alten Eiche der Schatz gehoben. Nichts drucken, alles an der Tafel.", "vertretung-karte.php"],
@@ -258,8 +259,7 @@ $BEREICHE = [
     ["gs", "fa-people-group", "Grundschule", [
         ["Stunden", [
             ["sozial-stunden.php?bereich=lernangebot", "fa-seedling", "Lernangebot", "40-Minuten-Stunden Deutsch, Mathe &amp; Lernen lernen", true],
-            ["sozial-stunden.php?bereich=vertretung", "fa-shuffle", "Vertretungsstunden", "Fertige Stunden für Kl. 1–4, auch Englisch"],
-            ["vertretung-karte.php", "fa-map", "Die Schatzkarte", "Vertretung ohne Vorbereitung – Stationen an der Tafel"],
+            ["vertretung-karte.php", "fa-shuffle", "Vertretung", "Ohne Vorbereitung: Kl. 1/2 Schatzkarte, Kl. 3/4 Escape-Fall"],
         ]],
         ["Werkzeuge", [
             ["ella-quiz.php", "fa-graduation-cap", "Ella-Quiz", "Üben nach Klasse, Fach und Thema – auch an der Tafel"],

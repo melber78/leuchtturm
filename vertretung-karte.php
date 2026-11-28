@@ -1,4 +1,11 @@
-<?php $LT_GAST_BEREICH = "vertretung"; require __DIR__ . "/gast-zugang.php"; ?>
+<?php $LT_GAST_BEREICH = "vertretung"; require __DIR__ . "/gast-zugang.php";
+// Bisherige Vertretungsstunden (Vorlagen + eigene) werden im Browser zu Stationen umgebaut
+$vtDateien = glob(__DIR__ . "/vertretung-einheiten*.js") ?: [];
+usort($vtDateien, fn($a, $b) => (basename($a) === "vertretung-einheiten.js" ? -1 : (basename($b) === "vertretung-einheiten.js" ? 1 : strnatcmp($a, $b))));
+$vtEigen = ($LT_GAST ? lt_gastOrdner($LT_GAST) : __DIR__ . "/material-daten") . "/vertretung.json";
+$vtEigeneStunden = [];
+if (file_exists($vtEigen)) { $d = json_decode((string)file_get_contents($vtEigen), true); if (is_array($d) && is_array($d["einheiten"] ?? null)) $vtEigeneStunden = array_values($d["einheiten"]); }
+?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -18,18 +25,22 @@
 <link rel="icon" type="image/png" href="app-icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<title>Die Schatzkarte · Vertretung · Leuchtturm</title>
-<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Patrick+Hand&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<title>Vertretung · Leuchtturm</title>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Patrick+Hand&family=Special+Elite&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <script src="marke/stimme.js"></script>
+<?php foreach ($vtDateien as $f): ?><script src="<?= basename($f) ?>?v=<?= @filemtime($f) ?>"></script>
+<?php endforeach; ?>
+<script>window.VK_EIGENE = <?= json_encode($vtEigeneStunden, JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) ?>;</script>
 <script src="vertretung-stationen.js?v=<?= @filemtime(__DIR__ . "/vertretung-stationen.js") ?>"></script>
+<script src="vertretung-umbau.js?v=<?= @filemtime(__DIR__ . "/vertretung-umbau.js") ?>"></script>
 <style>
 :root{
     --papier:#f3e8cc; --papier2:#e9dab4; --tinte:#3f3322; --tinte2:#6b5a40;
     --gruen:#2f4a1f; --gruen2:#5f8a36; --moos:#a9c07a; --fuchs:#d9772b; --gold:#c9962b; --himmel:#8fb8c9;
 }
 *{ box-sizing:border-box; }
-html,body{ margin:0; height:100%; }
+html,body{ margin:0; min-height:100%; } body{ min-height:100vh; }
 body{
     font-family:"Nunito",system-ui,sans-serif; color:var(--tinte);
     background:
@@ -147,6 +158,62 @@ button{ font:inherit; color:inherit; cursor:pointer; }
 .liste-stationen li b{ display:inline-block; width:1.6em; height:1.6em; line-height:1.6em; border-radius:50%; background:var(--fuchs); color:#fff; margin-right:6px; }
 
 .leise-link{ color:var(--tinte2); font-weight:800; }
+/* ================= Escape-Fall (Kl. 3/4) ================= */
+body.fall{ background-attachment:fixed !important; color:#efe7d4; background:radial-gradient(ellipse at 20% 0%, #2f4247 0%, transparent 60%), radial-gradient(ellipse at 100% 100%, #2a2f24 0%, transparent 55%), #1b2427; }
+.fall .kopf h1, .fall .blatt h2, .fall .st-kopf h2, .fall .hand{ font-family:"Special Elite","Courier New",monospace; letter-spacing:.02em; }
+.fall .kopf h1 small, .fall .karten-info, .fall .hinweis-lk{ color:#b9b19c; }
+.fall .knopf-klein{ border-color:#efe7d4; color:#efe7d4; background:rgba(255,255,255,.06); }
+.fall .blatt{ background:linear-gradient(180deg,#f3e9cf,#e8dab6); color:#2a2520; border:0; border-radius:3px; box-shadow:0 1px 0 #c9b98f, 8px 10px 0 rgba(0,0,0,.35); }
+.fall .blatt::before{ content:""; position:absolute; top:-14px; right:42px; width:20px; height:52px; border:4px solid #8b9095; border-radius:12px; border-bottom-color:transparent; transform:rotate(8deg); }
+.fall .blatt .hinweis-lk{ color:#5b5040; }
+.fall .liste-stationen li b{ background:#a8322b; }
+.fall .blatt .knopf-klein{ border-color:#2a2520; color:#2a2520; }
+.fall .knopf{ background:#a8322b; color:#fff; border-color:#1a1a1a; box-shadow:3px 4px 0 #1a1a1a; }
+.fall .knopf.hell{ background:#faf4e4; color:#2a2520; }
+.fall .knopf.gold{ background:#d8a63e; color:#1a1a1a; }
+.fall .chip{ background:#faf4e4; color:#2a2520; border-color:#2a2520; }
+.fall .chip.an{ background:#2a2520; color:#faf4e4; box-shadow:inset 0 0 0 3px #faf4e4; }
+.fall .lk{ background:#fffaf0; border-color:#a8322b; }
+.fall .aufgabe .a{ background:#fffaf0; color:#7a1f1a; border-color:#a8322b; }
+.fall .punkte i.an{ background:#a8322b; }
+.fall-icon{ width:64px; height:64px; flex:none; border-radius:50%; border:3px solid #2a2520; display:flex; align-items:center; justify-content:center; font-size:28px; background:#fffaf0; color:#2a2520; }
+.stempel{ display:inline-block; border:4px solid #a8322b; color:#a8322b; font-family:"Special Elite",monospace; font-size:clamp(1rem,2.4vw,1.5rem); padding:2px 12px; transform:rotate(-6deg); border-radius:6px; letter-spacing:.1em; }
+.akte{ max-width:1200px; margin:0 auto; padding:0 14px 30px; }
+.akte-kopf{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.akte-kopf h2{ font-family:"Special Elite",monospace; font-weight:400; margin:0; font-size:clamp(1.3rem,3.4vw,2.1rem); }
+.akte-kopf small{ display:block; font-family:"Nunito",sans-serif; font-weight:800; color:#b9b19c; font-size:.85rem; letter-spacing:.08em; }
+.codeleiste{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.codeleiste span.z{ width:clamp(42px,6vw,64px); height:clamp(52px,7.5vw,78px); border:3px solid #efe7d4; border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:"Special Elite",monospace; font-size:clamp(1.6rem,4vw,2.6rem); background:rgba(0,0,0,.25); }
+.codeleiste span.z.frei{ background:#efe7d4; color:#1b2427; }
+.codeleiste i{ font-size:1.6rem; margin-right:4px; }
+.akte-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr)); gap:16px; }
+.hinweis{ position:relative; text-align:left; background:linear-gradient(180deg,#f3e9cf,#e5d6ae); color:#2a2520; border:0; border-radius:3px; padding:16px 16px 18px; min-height:150px; box-shadow:5px 6px 0 rgba(0,0,0,.35); font:inherit; cursor:pointer; display:flex; flex-direction:column; gap:6px; transition:transform .15s; }
+.hinweis:nth-child(odd){ transform:rotate(-.7deg); } .hinweis:nth-child(even){ transform:rotate(.6deg); }
+.hinweis .nr{ font-family:"Special Elite",monospace; font-size:1rem; letter-spacing:.12em; color:#6b5f4a; }
+.hinweis .was{ font-weight:900; font-size:clamp(1.05rem,2.2vw,1.35rem); display:flex; gap:10px; align-items:center; }
+.hinweis .was i{ font-size:1.4em; }
+.hinweis .zustand{ margin-top:auto; font-weight:800; font-size:.9rem; color:#6b5f4a; }
+.hinweis.gesperrt{ filter:grayscale(1) brightness(.62); cursor:default; }
+.hinweis.jetzt{ outline:4px solid #d8a63e; outline-offset:4px; animation:puls 1.8s ease-in-out infinite; }
+@keyframes puls{ 50%{ outline-color:rgba(216,166,62,.25); } }
+.hinweis .ziffer{ position:absolute; right:14px; bottom:10px; font-family:"Special Elite",monospace; font-size:3.2rem; color:#a8322b; transform:rotate(-8deg); line-height:1; }
+.hinweis.geloest .zustand{ color:#a8322b; }
+.akte-fuss{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:center; margin-top:22px; }
+/* Zahlenschloss */
+.schloss{ display:flex; flex-direction:column; align-items:center; gap:18px; }
+.schloss svg{ width:clamp(130px,22vw,210px); height:auto; overflow:visible; }
+.schloss .buegel{ transition:transform .9s cubic-bezier(.3,1.6,.5,1); transform-box:fill-box; transform-origin:85% 100%; }
+.schloss.offen .buegel{ transform:translateY(-26px) rotate(-28deg); }
+.raeder{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+.rad{ display:flex; flex-direction:column; align-items:center; gap:6px; }
+.rad button{ width:clamp(48px,7vw,72px); height:40px; border:2px solid #2a2520; border-radius:10px; background:#faf4e4; font-size:1.2rem; }
+.rad b{ width:clamp(48px,7vw,72px); height:clamp(62px,9vw,90px); display:flex; align-items:center; justify-content:center; background:#2a2520; color:#efe7d4; border-radius:10px; font-family:"Special Elite",monospace; font-size:clamp(2rem,5vw,3.2rem); }
+.rad small{ font-weight:800; color:#6b5f4a; }
+.schuetteln{ animation:schuettel .45s; }
+@keyframes schuettel{ 20%,60%{ transform:translateX(-10px); } 40%,80%{ transform:translateX(10px); } }
+@media (max-width:600px){ .hinweis{ min-height:92px; padding:12px 14px; } .hinweis .ziffer{ font-size:2.4rem; } }
+.fall .stueck{ background:rgba(27,36,39,.9); color:#efe7d4; }
+
 @media (max-width:600px){
     .kopf{ padding:8px 10px; } .knopf-klein span{ display:none; }
     .chip{ flex:1 1 calc(50% - 10px); min-width:0; }
@@ -160,7 +227,9 @@ button{ font:inherit; color:inherit; cursor:pointer; }
 <script>
 (function(){
 "use strict";
-const S = window.VK_STATIONEN || [], GEN = window.VK_GEN || {};
+const GEN = window.VK_GEN || {};
+const S = (window.VK_STATIONEN || []).concat(window.VK_UMBAU ? window.VK_UMBAU((window.SOZIAL_VORLAGEN || []).concat(window.VK_EIGENE || [])) : []);
+const FAELLE = window.VK_FAELLE || [];
 const app = document.getElementById("app");
 const KEY = "lt-vk-reise";
 const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -169,16 +238,21 @@ const misch = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { con
 const laden = () => { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return null; } };
 const merken = () => { try { localStorage.setItem(KEY, JSON.stringify(R)); } catch (e) {} };
 const lkAus = () => { try { return localStorage.getItem("lt-vk-lk") === "aus"; } catch (e) { return false; } };
-const sprich = t => { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(String(t).replace(/\*\*/g, "").replace(/▢/g, "Lücke")); u.lang = "de-DE"; u.rate = .85; speechSynthesis.speak(u); } catch (e) {} };
+const sprich = (t, en) => { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(String(t).replace(/\*\*/g, "").replace(/▢/g, "Lücke").replace(/\p{Extended_Pictographic}/gu, "")); u.lang = en ? "en-GB" : "de-DE"; u.rate = en ? .8 : .85; speechSynthesis.speak(u); } catch (e) {} };
 const still = () => { try { speechSynthesis.cancel(); } catch (e) {} };
 
 /* ---------- Orte ---------- */
 const ORTE = {
     bewegung: ["Hüpf-Wiese", "Toben-Tal"], stille: ["Stiller Teich", "Moos-Lichtung"], raetsel: ["Rätsel-Höhle", "Knobel-Felsen"],
     rechnen: ["Zahlen-Mühle", "Rechen-Mühle"], lesen: ["Lese-Baum", "Geschichten-Linde"], woerter: ["Wort-Brücke", "Buchstaben-Steg"],
-    wissen: ["Forscher-Hügel", "Entdecker-Berg"]
+    wissen: ["Forscher-Hügel", "Entdecker-Berg"], kreativ: ["Mal-Atelier", "Ideen-Werkstatt"], englisch: ["English Corner", "English Corner"]
 };
-const ART = { bewegung: "Bewegen", stille: "Ruhe", raetsel: "Rätseln", rechnen: "Mathe", lesen: "Lesen", woerter: "Deutsch", wissen: "Sachunterricht" };
+// Escape-Fall: Name und Symbol je Hinweis-Art
+const FALL_ART = { bewegung: ["Fitness-Test", "fa-person-running"], stille: ["Konzentrations-Test", "fa-brain"], raetsel: ["Denkaufgabe", "fa-puzzle-piece"],
+    rechnen: ["Zahlencode", "fa-calculator"], lesen: ["Akte lesen", "fa-folder-open"], woerter: ["Geheimschrift", "fa-font"], wissen: ["Labortest", "fa-flask"],
+    kreativ: ["Phantombild", "fa-pen-nib"], englisch: ["Funkspruch (Englisch)", "fa-tower-broadcast"] };
+const istFall = () => R && R.stufe === "34";
+const ART = { bewegung: "Bewegen", stille: "Ruhe", raetsel: "Rätseln", rechnen: "Mathe", lesen: "Lesen", woerter: "Deutsch", wissen: "Sachunterricht", kreativ: "Kreativ", englisch: "Englisch" };
 
 /* ---------- Route bauen ---------- */
 const MUSTER = {
@@ -193,12 +267,15 @@ function fachTypen(schwerpunkt, n){
     if (schwerpunkt === "deutsch") for (let i = 0; i < n; i++) out.push(i % 2 ? "woerter" : "lesen");
     else if (schwerpunkt === "mathe") for (let i = 0; i < n; i++) out.push("rechnen");
     else if (schwerpunkt === "sach") for (let i = 0; i < n; i++) out.push(i % 2 ? "woerter" : "wissen");
+    else if (schwerpunkt === "englisch") for (let i = 0; i < n; i++) out.push("englisch");
     else { const r = misch(["deutsch", "mathe", "sach"]); for (let i = 0; i < n; i++){ const f = r[i % 3]; out.push(f === "mathe" ? "rechnen" : f === "sach" ? "wissen" : (i < 3 ? "lesen" : "woerter")); } }
     return out;
 }
 function stationHolen(typ, stufe, benutzt){
-    let pool = S.filter(s => s.typ === typ && passt(s, stufe) && !benutzt.includes(s.id));
-    if (!pool.length) pool = S.filter(s => s.typ === typ && passt(s, stufe));
+    const typen = typ === "raetsel" ? ["raetsel", "kreativ"] : [typ];
+    let pool = S.filter(s => typen.includes(s.typ) && passt(s, stufe) && !benutzt.includes(s.id) && !benutzt.includes("q:" + (s.quelle || s.id)));
+    if (!pool.length) pool = S.filter(s => typen.includes(s.typ) && passt(s, stufe) && !benutzt.includes(s.id));
+    if (!pool.length) pool = S.filter(s => typen.includes(s.typ) && passt(s, stufe));
     const s = JSON.parse(JSON.stringify(misch(pool)[0]));
     if (s.gen && GEN[s.gen]) s.items = GEN[s.gen](stufe);
     return s;
@@ -210,12 +287,14 @@ function routeBauen(c){
     const benutzt = [], zaehl = {};
     const stationen = slots.map(t => {
         const typ = t === "fach" ? fach.shift() : t;
-        const s = stationHolen(typ, c.stufe, benutzt); benutzt.push(s.id);
+        const s = stationHolen(typ, c.stufe, benutzt); benutzt.push(s.id); if (s.quelle) benutzt.push("q:" + s.quelle);
         zaehl[typ] = (zaehl[typ] || 0) + 1;
         s.ort = ORTE[typ][(zaehl[typ] - 1) % 2];
         return s;
     });
-    return { ...c, stationen, pos: 0, fertig: false, start: Date.now() };
+    const fall = c.stufe === "34" ? FAELLE[Math.floor(Math.random() * FAELLE.length)] : null;
+    const code = stationen.map(() => 1 + Math.floor(Math.random() * 9));
+    return { ...c, stationen, pos: 0, fertig: false, start: Date.now(), fall: fall && fall.id, code };
 }
 
 /* ---------- Zeichnungen (selbst gezeichnet, Tintenstil) ---------- */
@@ -247,6 +326,9 @@ function zeichnung(typ){
     case "wissen": return `<path d="M-48 26 Q-16 -36 14 -20 Q34 -8 48 26 Z" fill="#c9b986" ${T}/>
         <path d="M-4 -30 v-26" fill="none" ${T}/><path d="M-4 -56 l22 7 l-22 7 Z" fill="#d9772b" ${T}/>
         <path d="M16 6 l18 -12 l4 6 l-18 12 Z" fill="#6b5a40" ${T}/><path d="M24 8 l-6 16 M26 6 l8 16" fill="none" ${T}/>`;
+    case "kreativ": return `<path d="M-24 30 L-6 -30 M24 30 L6 -30 M0 -30 L0 30" fill="none" ${T}/><rect x="-30" y="-30" width="60" height="42" rx="3" fill="#fffaf0" ${T}/>
+        <circle cx="-12" cy="-12" r="7" fill="#e98b8b" ${T}/><path d="M2 2 q8 -18 20 -6" fill="none" stroke="#5f8a36" stroke-width="4" stroke-linecap="round"/><circle cx="14" cy="-18" r="5" fill="#f2c94c" ${T}/>`;
+    case "englisch": return `<rect x="-34" y="-28" width="68" height="44" rx="4" fill="#fffaf0" ${T}/><text x="0" y="2" font-family="Patrick Hand" font-size="22" text-anchor="middle" fill="#3f3322">Hello!</text>`;
     case "start": return `<path d="M-40 22 Q-30 -16 0 -18 Q30 -16 40 22 Z" fill="#a9c07a" ${T}/><path d="M-14 22 Q-14 -2 0 -2 Q14 -2 14 22 Z" fill="#3f3322"/>
         <path d="M-30 -2 l-4 -10 M28 0 l5 -10" fill="none" ${T}/>`;
     case "eiche": return `<path d="M-10 30 L-8 -6 L8 -6 L10 30 Z" fill="#8a5a32" ${T}/><path d="M-8 4 l-14 -10 M8 0 l14 -12" fill="none" ${T}/>
@@ -370,10 +452,14 @@ let R = laden();
 let wahl = { stufe: "12", zeit: 40, stimmung: "normal", fach: "gemischt" };
 try { const w = JSON.parse(localStorage.getItem("lt-vk-wahl")); if (w) wahl = { ...wahl, ...w }; } catch (e) {}
 
+function welt(){ document.body.classList.toggle("fall", (R ? R.stufe : wahl.stufe) === "34"); }
+function fallDaten(){ return FAELLE.find(f => f.id === (R && R.fall)) || FAELLE[0]; }
 function kopf(unter){
-    return `<div class="kopf"><h1>Die Schatzkarte<small>${esc(unter)}</small></h1>
+    welt();
+    const titel = istFall() ? "Escape-Fall" : R && R.stufe === "12" ? "Die Schatzkarte" : "Vertretung";
+    return `<div class="kopf"><h1>${titel}<small>${esc(unter)}</small></h1>
         <button class="knopf-klein" id="vollbild" title="Vollbild"><i class="fa-solid fa-expand"></i><span>Vollbild</span></button>
-        <a class="knopf-klein nur-normal" href="sozial-stunden.php?bereich=vertretung" title="Zu den Vertretungsstunden"><i class="fa-solid fa-arrow-left"></i><span>Vertretung</span></a></div>`;
+        <a class="knopf-klein nur-normal" href="index.php" title="Zum Leuchtturm"><i class="fa-solid fa-house"></i><span>Leuchtturm</span></a></div>`;
 }
 function kopfAktiv(){
     const b = document.getElementById("vollbild");
@@ -385,55 +471,134 @@ function chips(name, opts){
 function zeigeStart(){
     still();
     const offen = R && !R.fertig && R.stationen && R.pos < R.stationen.length + 1;
+    const alt = R; R = null;
+    const fall = wahl.stufe === "34";
+    if (wahl.stufe === "12" && wahl.fach === "englisch") wahl.fach = "gemischt";
     app.innerHTML = kopf("Vertretung ohne Vorbereitung · Kl. 1–4") + `<div class="start"><div class="blatt">
         <h2>Kurzer Start-Check</h2>
-        <p class="hinweis-lk">Für dich als Lehrkraft: vier Mal antippen, schon steht die Karte. Du brauchst nichts zu drucken und kein Material.</p>
-        <div class="frage">Welche Klasse?</div>${chips("stufe", [["12", "Klasse 1/2"], ["34", "Klasse 3/4"]])}
-        <div class="frage">Wie viel Zeit ist noch?</div>${chips("zeit", [[15, "15 Min", "3 Stationen"], [25, "25 Min", "4 Stationen"], [40, "40 Min", "6 Stationen"]])}
+        <p class="hinweis-lk">Für dich als Lehrkraft: vier Mal antippen – nichts drucken, kein Material. <b>Kl. 1/2</b> gehen auf Schatzsuche, <b>Kl. 3/4</b> lösen einen Escape-Fall.</p>
+        <div class="frage">Welche Klasse?</div>${chips("stufe", [["12", "Klasse 1/2", "Schatzkarte"], ["34", "Klasse 3/4", "Escape-Fall"]])}
+        <div class="frage">Wie viel Zeit ist noch?</div>${chips("zeit", [[15, "15 Min", fall ? "3 Hinweise" : "3 Stationen"], [25, "25 Min", fall ? "4 Hinweise" : "4 Stationen"], [40, "40 Min", fall ? "6 Hinweise" : "6 Stationen"]])}
         <div class="frage">Wie ist die Klasse gerade drauf?</div>${chips("stimmung", [["unruhig", "🌪️ unruhig", "mehr Bewegung & Ruhe"], ["normal", "🙂 normal", "bunt gemischt"], ["muede", "😴 müde", "erst wach machen"]])}
-        <div class="frage">Schwerpunkt?</div>${chips("fach", [["gemischt", "Gemischt"], ["deutsch", "Deutsch"], ["mathe", "Mathe"], ["sach", "Sachunterricht"]])}
+        <div class="frage">Schwerpunkt?</div>${chips("fach", [["gemischt", "Gemischt"], ["deutsch", "Deutsch"], ["mathe", "Mathe"], ["sach", "Sachunterricht"]].concat(fall ? [["englisch", "Englisch"]] : []))}
         <div class="weiter-zeile">
-            <button class="knopf" id="los"><i class="fa-solid fa-map"></i> Karte zeichnen</button>
-            ${offen ? `<button class="knopf hell" id="weiter"><i class="fa-solid fa-shoe-prints"></i> Weiterreisen (Station ${Math.min(R.pos + 1, R.stationen.length)} von ${R.stationen.length})</button>` : ""}
+            <button class="knopf" id="los"><i class="fa-solid ${fall ? "fa-folder-open" : "fa-map"}"></i> ${fall ? "Fall öffnen" : "Karte zeichnen"}</button>
+            ${offen ? `<button class="knopf hell" id="weiter"><i class="fa-solid fa-shoe-prints"></i> Weitermachen (${alt.stufe === "34" ? "Hinweis" : "Station"} ${Math.min(alt.pos + 1, alt.stationen.length)} von ${alt.stationen.length})</button>` : ""}
         </div>
-        <p class="hinweis-lk" style="margin-top:16px">So läuft es: <b>Ort antippen → Aufgabe → Lösung zeigen → weiter.</b> Bei jeder Station steht genau ein Satz für dich. Mit 🎲 tauschst du eine Station gegen eine andere.</p>
+        <p class="hinweis-lk" style="margin-top:16px">So läuft es: <b>antippen → Aufgabe → Lösung zeigen → weiter.</b> Bei jeder Aufgabe steht genau ein Satz für dich. Mit 🎲 tauschst du eine Aufgabe, die nicht passt.</p>
+        <p class="hinweis-lk"><a class="leise-link" href="sozial-stunden.php?bereich=vertretung&amp;liste=1">Eigene Vertretungsstunden anlegen oder bearbeiten</a> – sie erscheinen danach automatisch als Aufgaben.</p>
     </div></div>`;
-    kopfAktiv();
+    R = alt;
+    kopfAktiv(); document.body.classList.toggle("fall", fall);
     app.querySelectorAll(".chips").forEach(c => c.onclick = e => {
         const b = e.target.closest(".chip"); if (!b) return;
         const v = b.dataset.w; wahl[c.dataset.name] = c.dataset.name === "zeit" ? +v : v;
-        c.querySelectorAll(".chip").forEach(x => x.classList.toggle("an", x === b));
         try { localStorage.setItem("lt-vk-wahl", JSON.stringify(wahl)); } catch (x) {}
+        if (c.dataset.name === "stufe") { zeigeStart(); return; }
+        c.querySelectorAll(".chip").forEach(x => x.classList.toggle("an", x === b));
     });
     document.getElementById("los").onclick = () => { R = routeBauen(wahl); merken(); zeigeGeschichte(); };
     const w = document.getElementById("weiter"); if (w) w.onclick = () => zeigeKarte();
 }
 function zeigeGeschichte(){
-    const n = R.stationen.length, k12 = R.stufe === "12";
+    const n = R.stationen.length;
+    if (istFall()){
+        const F = fallDaten();
+        app.innerHTML = kopf("Fallakte Nr. " + F.nr) + `<div class="geschichte"><div class="blatt" style="text-align:left">
+            <div class="stempel">VERTRAULICH</div>
+            <h2 style="margin-top:12px">Fall ${esc(F.nr)}: ${esc(F.titel)}</h2>
+            <p>${esc(F.intro)}</p>
+            <p><b>Euer Auftrag:</b> ${n} Hinweise lösen – jeder bringt eine Ziffer. Mit allen ${n} Ziffern knackt ihr am Ende das Zahlenschloss.</p>
+            <ul class="regeln"><li><i class="fa-solid fa-people-group"></i> Wir ermitteln als Team.</li><li><i class="fa-solid fa-hand"></i> Wer etwas weiß, meldet sich.</li><li><i class="fa-solid fa-volume-xmark"></i> Bei Konzentrations-Tests ist es ganz still.</li></ul>
+            <div style="text-align:center"><button class="knopf" id="los"><i class="fa-solid fa-magnifying-glass"></i> Ermittlung starten</button></div>
+        </div></div>`;
+        kopfAktiv(); document.getElementById("los").onclick = () => zeigeKarte(); return;
+    }
     app.innerHTML = kopf("Die Geschichte") + `<div class="geschichte"><div class="blatt">
         <svg viewBox="-40 -40 80 70" width="120" height="105" style="display:block;margin:0 auto">${fuchs()}</svg>
         <h2>Fuchs Fritz braucht eure Hilfe!</h2>
-        ${k12 ? `<p>Fritz hatte eine Schatz-Karte.</p><p>Doch der Wind hat sie zerrissen.</p><p>Die ${n} Stücke liegen überall im Wald.</p><p>Findet ihr sie zusammen?</p>`
-              : `<p>Fuchs Fritz zeichnet seit Jahren Karten vom Wald. Auf seiner wichtigsten ist der Weg zu einem alten Schatz.</p><p>Doch eine Windböe hat die Karte in ${n} Stücke zerrissen. Jedes Stück liegt an einem anderen Ort.</p><p>Nur wenn ihr als Klasse zusammenarbeitet, wird die Karte wieder ganz.</p>`}
+        <p>Fritz hatte eine Schatz-Karte.</p><p>Doch der Wind hat sie zerrissen.</p><p>Die ${n} Stücke liegen überall im Wald.</p><p>Findet ihr sie zusammen?</p>
         <ul class="regeln"><li>🤝 Wir lösen alles zusammen.</li><li>✋ Wer etwas weiß, meldet sich.</li><li>🤫 An den Ruhe-Orten ist es ganz still.</li></ul>
         <div><button class="knopf fuchs" id="los"><i class="fa-solid fa-shoe-prints"></i> Los geht's!</button></div>
     </div></div>`;
     kopfAktiv();
     document.getElementById("los").onclick = () => zeigeKarte();
 }
+function neuStarten(e){ if (e) e.preventDefault(); if (confirm(istFall() ? "Neuen Fall beginnen? Dieser Fall wird verworfen." : "Neue Reise beginnen? Die jetzige Karte wird verworfen.")) { R = null; try { localStorage.removeItem(KEY); } catch (x) {} zeigeStart(); } }
+/* ---------- Fallakte (Kl. 3/4) ---------- */
+function zeigeAkte(neu){
+    still();
+    const n = R.stationen.length, F = fallDaten(), alle = R.pos >= n;
+    app.innerHTML = kopf(`Fall ${F.nr} · ${R.pos} von ${n} Hinweisen gelöst`) + `<div class="akte">
+        <div class="akte-kopf"><h2><small>FALLAKTE NR. ${esc(F.nr)}</small>${esc(F.titel)}</h2>
+            <div class="codeleiste"><i class="fa-solid fa-lock"></i>${R.code.map((z, i) => `<span class="z${i < R.pos ? " frei" : ""}">${i < R.pos ? z : "?"}</span>`).join("")}</div></div>
+        <div class="akte-grid">${R.stationen.map((s, i) => {
+            const [name, icon] = FALL_ART[s.typ] || ["Hinweis", "fa-file"];
+            const st = i < R.pos ? "geloest" : i === R.pos ? "jetzt" : "gesperrt";
+            return `<button class="hinweis ${st}" data-i="${i}"><span class="nr">HINWEIS ${i + 1}</span><span class="was"><i class="fa-solid ${icon}"></i>${esc(name)}</span>
+                <span class="zustand">${st === "geloest" ? "entschlüsselt" : st === "jetzt" ? "▶ jetzt lösen" : "🔒 gesperrt"}</span>${st === "geloest" ? `<span class="ziffer">${R.code[i]}</span>` : ""}</button>`;
+        }).join("")}</div>
+        <div class="akte-fuss">${alle ? `<button class="knopf gold" id="schloss"><i class="fa-solid fa-lock-open"></i> Zahlenschloss knacken</button>` : `<span class="karten-info">Tippt auf Hinweis ${R.pos + 1}.</span>`}
+            <a class="leise-link" href="#" id="neu" style="color:#b9b19c">Neuer Fall</a></div>
+    </div>`;
+    kopfAktiv();
+    document.getElementById("neu").onclick = neuStarten;
+    const sb = document.getElementById("schloss"); if (sb) sb.onclick = zeigeSchloss;
+    app.querySelectorAll(".hinweis").forEach(h => h.onclick = () => {
+        const i = +h.dataset.i;
+        if (i === R.pos) zeigeStation(i); else if (i < R.pos) hinweis("Diesen Hinweis habt ihr schon entschlüsselt: Ziffer " + R.code[i] + "."); else hinweis("Noch gesperrt – erst Hinweis " + (R.pos + 1) + "!");
+    });
+    if (neu != null){ const z = app.querySelectorAll(".codeleiste .z")[neu]; if (z) { z.animate([{ transform: "scale(1.6)", background: "#d8a63e" }, { transform: "scale(1)" }], { duration: 900, easing: "ease-out" }); } }
+}
+function zeigeSchloss(){
+    const n = R.stationen.length, F = fallDaten();
+    const wahlZ = R.stationen.map(() => 0);
+    app.innerHTML = kopf(`Fall ${F.nr} · Zahlenschloss`) + `<div class="schatz"><div class="blatt">
+        <h2>Das Zahlenschloss</h2>
+        <p class="auftrag" style="text-align:center">Stellt die Ziffern in der Reihenfolge der Hinweise ein: Hinweis 1, Hinweis 2 … – dann „Öffnen“.</p>
+        <div class="schloss" id="schloss">
+          <svg viewBox="-70 -110 140 170"><path class="buegel" d="M-38 -10 V-50 A38 38 0 0 1 38 -50 V-10" fill="none" stroke="#5b6066" stroke-width="16" stroke-linecap="round"/>
+            <rect x="-60" y="-14" width="120" height="74" rx="12" fill="#c9962b" stroke="#2a2520" stroke-width="4"/><circle cx="0" cy="18" r="9" fill="#2a2520"/><rect x="-3" y="18" width="6" height="22" fill="#2a2520"/></svg>
+          <div class="raeder">${R.stationen.map((_, i) => `<div class="rad"><small>Hinweis ${i + 1}</small><button data-hoch="${i}" aria-label="höher">▲</button><b data-z="${i}">0</b><button data-runter="${i}" aria-label="niedriger">▼</button></div>`).join("")}</div>
+          <div class="knoepfe"><button class="knopf" id="oeffnen"><i class="fa-solid fa-key"></i> Öffnen</button><button class="knopf hell" id="akte"><i class="fa-solid fa-folder-open"></i> Zur Akte</button></div>
+          <p class="hinweis-lk" id="meldung" style="text-align:center;font-weight:800"></p>
+        </div>
+        <div id="geloest" hidden style="text-align:center">
+          <div class="stempel" style="font-size:2rem">FALL GELÖST</div>
+          <p class="auftrag" style="margin-top:14px">${esc(F.geloest)}</p>
+          <p class="frage">Nachbesprechung: Welcher Hinweis war am kniffligsten – und wie habt ihr ihn geknackt? Zeigt die Nummer mit den Fingern.</p>
+          <ul class="liste-stationen">${R.stationen.map((s, i) => `<li><b>${i + 1}</b>${esc((FALL_ART[s.typ] || ["Hinweis"])[0])}</li>`).join("")}</ul>
+          <div class="knoepfe"><button class="knopf" id="neuFall"><i class="fa-solid fa-rotate"></i> Neuer Fall</button></div>
+        </div>
+    </div></div>`;
+    kopfAktiv();
+    const zeig = i => app.querySelector(`[data-z="${i}"]`).textContent = wahlZ[i];
+    app.querySelectorAll("[data-hoch]").forEach(b => b.onclick = () => { const i = +b.dataset.hoch; wahlZ[i] = (wahlZ[i] + 1) % 10; zeig(i); });
+    app.querySelectorAll("[data-runter]").forEach(b => b.onclick = () => { const i = +b.dataset.runter; wahlZ[i] = (wahlZ[i] + 9) % 10; zeig(i); });
+    document.getElementById("akte").onclick = () => zeigeKarte();
+    document.getElementById("oeffnen").onclick = () => {
+        const ok = wahlZ.every((z, i) => z === R.code[i]), sch = document.getElementById("schloss");
+        if (!ok){ sch.classList.remove("schuetteln"); void sch.offsetWidth; sch.classList.add("schuetteln"); document.getElementById("meldung").textContent = "Klemmt! Prüft die Ziffern in der Akte noch einmal."; return; }
+        R.fertig = true; merken();
+        sch.querySelectorAll(".knoepfe, .raeder button").forEach(x => x.remove());
+        sch.classList.add("offen");
+        setTimeout(() => { document.getElementById("geloest").hidden = false; document.getElementById("geloest").scrollIntoView({ behavior: "smooth", block: "start" }); }, 1000);
+    };
+    document.getElementById("neuFall").onclick = () => { R = null; try { localStorage.removeItem(KEY); } catch (x) {} zeigeStart(); };
+}
 function zeigeKarte(lauf){
+    if (istFall()) { zeigeAkte(lauf ? lauf.von : null); return; }
     still();
     const n = R.stationen.length;
     const info = R.pos >= n ? "Alle Kartenstücke gefunden! Tippt auf die alte Eiche. 🌳" : `Tippt auf Station ${R.pos + 1}: ${R.stationen[R.pos].ort}`;
     app.innerHTML = kopf(`${R.pos} von ${n} Kartenstücken`) + `<div class="karten-wrap">${karteZeichnen()}<p class="karten-info">${esc(info)}
         · <a class="leise-link" href="#" id="neu">Neue Reise</a></p></div>`;
     kopfAktiv();
-    document.getElementById("neu").onclick = e => { e.preventDefault(); if (confirm("Neue Reise beginnen? Die jetzige Karte wird verworfen.")) { R = null; try { localStorage.removeItem(KEY); } catch (x) {} zeigeStart(); } };
+    document.getElementById("neu").onclick = neuStarten;
     if (lauf){
         const g = document.getElementById("fuchs");
         const { P } = punkteBerechnen(n, innerWidth < innerHeight * .95);
         g.setAttribute("transform", `translate(${P[lauf.von].x} ${P[lauf.von].y - (lauf.von === 0 ? 30 : 64)})`);
-        // Nebel der neuen Station erst nach kurzer Pause heben
         const neb = app.querySelector(`.nebel[data-n="${R.pos + 1}"]`); if (neb) neb.classList.remove("weg");
         setTimeout(() => fuchsLaufen(lauf.von, lauf.nach, () => { if (neb) neb.classList.add("weg"); }), 350);
     }
@@ -456,16 +621,19 @@ function hinweis(t){
 
 /* ---------- Station ---------- */
 function zeigeStation(k){
-    const s = R.stationen[k], n = R.stationen.length;
-    let idx = 0, phase = s.typ === "lesen" ? "text" : "items", gezeigt = false, atemTimer = null;
+    const s = R.stationen[k], n = R.stationen.length, fall = istFall(), en = s.lang === "en";
+    let idx = 0, phase = s.typ === "lesen" ? "text" : "items", gezeigt = false, atemTimer = null, uhr = null;
     const items = s.items || [];
-    const rahmen = inner => kopf(`Station ${k + 1} von ${n} · ${ART[s.typ]}`) + `<div class="station"><div class="blatt">
-        <div class="st-kopf">${ortsbild(s.typ)}<h2>${esc(s.ort)}${s.titel !== s.ort ? `<small>${esc(s.titel)}</small>` : ""}</h2>
-            <button class="knopf-klein" id="tausch" title="Andere Aufgabe für diese Station"><i class="fa-solid fa-dice"></i><span>andere Aufgabe</span></button>
-            <button class="knopf-klein" id="zurKarte" title="Zur Karte"><i class="fa-solid fa-map"></i><span>Karte</span></button></div>
+    const [fName, fIcon] = FALL_ART[s.typ] || ["Hinweis", "fa-file"];
+    const symbol = fall ? `<span class="fall-icon"><i class="fa-solid ${fIcon}"></i></span>` : ortsbild(s.typ);
+    const ueber = fall ? fName : s.ort, unter = (fall ? s.quelle : true) && s.titel !== ueber ? s.titel : "";
+    const rahmen = inner => kopf(fall ? `Hinweis ${k + 1} von ${n} · ${fName}` : `Station ${k + 1} von ${n} · ${ART[s.typ]}`) + `<div class="station"><div class="blatt">
+        <div class="st-kopf">${symbol}<h2>${esc(ueber)}${unter ? `<small>${esc(unter)}</small>` : ""}</h2>
+            <button class="knopf-klein" id="tausch" title="Andere Aufgabe"><i class="fa-solid fa-dice"></i><span>andere Aufgabe</span></button>
+            <button class="knopf-klein" id="zurKarte" title="${fall ? "Zur Akte" : "Zur Karte"}"><i class="fa-solid ${fall ? "fa-folder-open" : "fa-map"}"></i><span>${fall ? "Akte" : "Karte"}</span></button></div>
         ${lkAus() ? "" : `<div class="lk"><b>👩‍🏫 Für dich:</b><span>${md(s.lk)}</span><button id="lkWeg" title="Ausblenden">✕</button></div>`}
-        <p class="auftrag">${md(s.auftrag)}</p>${inner}</div></div>`;
-    const fertigKnopf = `<button class="knopf gold" id="einsammeln">🧩 Kartenstück einsammeln</button>`;
+        <p class="auftrag" style="white-space:pre-line">${md(s.auftrag)}</p>${inner}</div></div>`;
+    const fertigKnopf = fall ? `<button class="knopf gold" id="einsammeln"><i class="fa-solid fa-key"></i> Hinweis gelöst</button>` : `<button class="knopf gold" id="einsammeln">🧩 Kartenstück einsammeln</button>`;
     function zeichnen(){
         clearInterval(atemTimer);
         let inner = "";
@@ -477,6 +645,10 @@ function zeigeStation(k){
         } else if (phase === "text"){
             inner = `<div class="text-box">${md(s.text)}</div><div class="knoepfe"><button class="knopf hell" id="vorlesen"><i class="fa-solid fa-volume-high"></i> Vorlesen</button>
                 <button class="knopf" id="zuFragen">Zu den Fragen <i class="fa-solid fa-arrow-right"></i></button></div>`;
+        } else if (!items.length){
+            const min = parseInt(s.dauer, 10) || 0;
+            inner = `<div class="knoepfe" style="margin-top:20px">${min ? `<button class="knopf hell" id="uhr"><i class="fa-solid fa-stopwatch"></i> <span id="uhrText">${min} Minuten</span></button>` : ""}
+                <button class="knopf hell" id="sprichA" title="Vorlesen"><i class="fa-solid fa-volume-high"></i></button>${fertigKnopf}</div>`;
         } else {
             const it = items[idx] || { f: "" };
             const zahl = s.typ === "rechnen" && (s.gen === "schatzrechnen" || s.gen === "muster");
@@ -485,29 +657,35 @@ function zeigeStation(k){
                 <div class="aufgabe"><div class="f${zahl ? " zahl" : ""}${s.gen === "salat" ? " salat" : ""}">${md(it.f)}</div>${gezeigt && it.a ? `<div class="a">${md(it.a)}</div>` : ""}</div>
                 <div class="knoepfe">
                     ${s.typ === "lesen" ? `<button class="knopf hell" id="zumText"><i class="fa-solid fa-book-open"></i> Text</button>` : ""}
-                    ${["lesen", "woerter", "wissen"].includes(s.typ) || R.stufe === "12" ? `<button class="knopf hell" id="sprich" title="Vorlesen"><i class="fa-solid fa-volume-high"></i></button>` : ""}
-                    ${it.a && !gezeigt ? `<button class="knopf" id="loesung"><i class="fa-solid fa-eye"></i> Lösung zeigen</button>` : ""}
+                    <button class="knopf hell" id="sprich" title="Vorlesen"><i class="fa-solid fa-volume-high"></i></button>
+                    ${it.a && !gezeigt ? `<button class="knopf" id="loesung"><i class="fa-solid fa-eye"></i> ${en ? "Wort zeigen" : "Lösung zeigen"}</button>` : ""}
                     ${(!it.a || gezeigt) && !letzte ? `<button class="knopf" id="naechste">Weiter <i class="fa-solid fa-arrow-right"></i></button>` : ""}
-                    ${letzte && (!it.a || gezeigt) ? fertigKnopf : `<button class="knopf hell" id="einsammeln" title="Station beenden">Station fertig</button>`}
+                    ${letzte && (!it.a || gezeigt) ? fertigKnopf : `<button class="knopf hell" id="einsammeln" title="Aufgabe beenden">${fall ? "Hinweis fertig" : "Station fertig"}</button>`}
                 </div>`;
         }
         app.innerHTML = rahmen(inner);
         kopfAktiv();
         const on = (id, f) => { const el = document.getElementById(id); if (el) el.onclick = f; };
-        on("zurKarte", () => zeigeKarte());
+        on("zurKarte", () => { clearInterval(uhr); zeigeKarte(); });
         on("lkWeg", () => { try { localStorage.setItem("lt-vk-lk", "aus"); } catch (e) {} zeichnen(); });
         on("tausch", () => {
-            if (!confirm("Diese Station gegen eine andere Aufgabe tauschen?")) return;
+            if (!confirm("Diese Aufgabe gegen eine andere tauschen?")) return;
             const benutzt = R.stationen.map(x => x.id);
             const neu = stationHolen(s.typ, R.stufe, benutzt); neu.ort = s.ort;
-            R.stationen[k] = neu; merken(); zeigeStation(k);
+            R.stationen[k] = neu; merken(); clearInterval(uhr); zeigeStation(k);
         });
-        on("loesung", () => { gezeigt = true; zeichnen(); });
+        on("loesung", () => { gezeigt = true; zeichnen(); if (en) { const a = (items[idx] || {}).a || ""; const w = (a.match(/\*\*(.+?)\*\*/) || [])[1] || a.split(/[–(·]/)[0]; sprich(w, true); } });
         on("naechste", () => { idx++; gezeigt = false; still(); zeichnen(); });
         on("zuFragen", () => { phase = "items"; still(); zeichnen(); });
         on("zumText", () => { phase = "text"; zeichnen(); });
         on("vorlesen", () => sprich(s.text));
-        on("sprich", () => sprich((items[idx] || {}).f + (gezeigt && items[idx].a ? ". " + items[idx].a : "")));
+        on("sprichA", () => sprich(s.auftrag));
+        on("sprich", () => { const it = items[idx] || {}; if (en) sprich(gezeigt && it.a ? ((it.a.match(/\*\*(.+?)\*\*/) || [])[1] || it.f) : it.f, /^[A-Za-z]/.test(String(it.f).replace(/\p{Extended_Pictographic}|\s/gu, ""))); else sprich(it.f + (gezeigt && it.a ? ". " + it.a : "")); });
+        on("uhr", () => {
+            clearInterval(uhr); let rest = (parseInt(s.dauer, 10) || 1) * 60; const t = document.getElementById("uhrText");
+            const tick = () => { if (!t.isConnected) { clearInterval(uhr); return; } t.textContent = rest > 0 ? "noch " + Math.ceil(rest / 60) + " Min" : "Zeit ist um!"; rest -= 5; if (rest < -5) clearInterval(uhr); };
+            tick(); uhr = setInterval(tick, 5000);
+        });
         on("einsammeln", einsammeln);
         on("atemLos", () => {
             const kreis = document.getElementById("kreis"), wort = document.getElementById("wort"), runden = document.querySelectorAll("#runden i");
@@ -515,7 +693,7 @@ function zeigeStation(k){
             let schritt = 0;
             const takt = () => {
                 const ein = schritt % 2 === 0, r = Math.floor(schritt / 2);
-                if (r >= 5){ clearInterval(atemTimer); kreis.classList.remove("gross"); wort.textContent = "Wunderbar ruhig. 🌿"; return; }
+                if (r >= 5){ clearInterval(atemTimer); kreis.classList.remove("gross"); wort.textContent = fall ? "Fokus da." : "Wunderbar ruhig. 🌿"; return; }
                 kreis.classList.toggle("gross", ein); wort.textContent = ein ? "Einatmen …" : "Ausatmen …";
                 if (!ein) runden[r].classList.add("an");
                 schritt++;
@@ -524,23 +702,23 @@ function zeigeStation(k){
         });
     }
     function einsammeln(){
-        clearInterval(atemTimer); still();
+        clearInterval(atemTimer); clearInterval(uhr); still();
         const von = R.pos; R.pos = Math.max(R.pos, k + 1); merken();
         const o = document.createElement("div"); o.className = "stueck";
-        o.innerHTML = `<div>${puzzle()}<br>Kartenstück ${k + 1} gefunden!</div>`;
+        o.innerHTML = fall ? `<div><div class="stempel" style="font-size:1.4rem;background:#faf4e4">ENTSCHLÜSSELT</div><br>Hinweis ${k + 1} · Ziffer <b style="font-size:1.6em;color:#d8a63e">${R.code[k]}</b></div>`
+                           : `<div>${puzzle()}<br>Kartenstück ${k + 1} gefunden!</div>`;
         document.body.appendChild(o);
-        setTimeout(() => { o.remove(); zeigeKarte({ von, nach: R.pos }); }, 1800);
+        setTimeout(() => { o.remove(); zeigeKarte({ von: fall ? k : von, nach: R.pos }); }, fall ? 2200 : 1800);
     }
     zeichnen();
 }
 
-/* ---------- Schatz ---------- */
+/* ---------- Schatz (Kl. 1/2) ---------- */
 function zeigeSchatz(){
     R.fertig = true; merken();
-    const k12 = R.stufe === "12";
     app.innerHTML = kopf("Geschafft!") + `<div class="schatz"><div class="blatt">
         <h2>Die Karte ist wieder ganz!</h2>
-        <p class="auftrag" style="text-align:center">${k12 ? "Fritz gräbt unter der alten Eiche … und findet die Kiste!" : "Fritz folgt dem Weg auf der Karte bis zur alten Eiche – und gräbt. Da: eine Kiste!"}</p>
+        <p class="auftrag" style="text-align:center">Fritz gräbt unter der alten Eiche … und findet die Kiste!</p>
         <svg class="kiste" viewBox="-90 -110 180 170" id="kiste">
           <g class="glanz"><path d="M-60 -20 L-90 -100 M0 -30 L0 -110 M60 -20 L90 -100 M-30 -26 L-48 -96 M30 -26 L48 -96" stroke="#f2c94c" stroke-width="6" stroke-linecap="round"/>
             <circle cx="-26" cy="-16" r="10" fill="#f2c94c" ${T}/><circle cx="2" cy="-22" r="10" fill="#f2c94c" ${T}/><circle cx="28" cy="-14" r="10" fill="#f2c94c" ${T}/>
@@ -549,7 +727,7 @@ function zeigeSchatz(){
           <g class="deckel"><path d="M-72 -10 Q-72 -52 0 -52 Q72 -52 72 -10 Z" fill="#c98a4a" ${T}/><path d="M-40 -10 Q-40 -48 0 -50 M40 -10 Q40 -48 0 -50" fill="none" ${T}/></g>
           <rect x="-10" y="-4" width="20" height="22" rx="3" fill="#f2c94c" ${T}/>
         </svg>
-        <p class="auftrag" style="text-align:center;margin-top:10px">Der Schatz: <b>der goldene Schatzsucher-Stern für die ganze Klasse!</b> ⭐<br>${k12 ? "Ihr habt das zusammen geschafft." : "Den hat jede und jeder von euch mitverdient."}</p>
+        <p class="auftrag" style="text-align:center;margin-top:10px">Der Schatz: <b>der goldene Schatzsucher-Stern für die ganze Klasse!</b> ⭐<br>Ihr habt das zusammen geschafft.</p>
         <p class="frage" style="text-align:center">Zum Schluss: Welche Station hat euch am besten gefallen? Zeigt die Nummer mit den Fingern!</p>
         <ul class="liste-stationen">${R.stationen.map((s, i) => `<li><b>${i + 1}</b>${esc(s.ort)}</li>`).join("")}</ul>
         <p style="text-align:center;font-weight:800">Und dann: eine große Applauswelle für die Schatzsucher-Klasse! 👏</p>
@@ -564,7 +742,8 @@ function zeigeSchatz(){
 let altHoch = innerWidth < innerHeight * .95;
 addEventListener("resize", () => { const h = innerWidth < innerHeight * .95; if (h !== altHoch && app.querySelector(".karte")){ altHoch = h; zeigeKarte(); } altHoch = h; });
 
-if (R && !R.fertig && Array.isArray(R.stationen)) zeigeStart(); else { R = null; zeigeStart(); }
+if (!(R && !R.fertig && Array.isArray(R.stationen) && Array.isArray(R.code))) R = null;
+zeigeStart();
 })();
 </script>
 </body>

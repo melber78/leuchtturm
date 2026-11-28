@@ -58,6 +58,8 @@ usort($vorlagenDateien, fn($a, $b) => (basename($a) === $basisDatei ? -1 : (base
 <script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});</script>
 
 <title><?= htmlspecialchars($B_INFO["titel"]) ?> – Leuchtturm</title>
+<?php if ($BEREICH === "vertretung" && !isset($_GET["liste"]) && empty($LT_FREIGABE)): ?><script>/* Vertretung läuft jetzt über Schatzkarte / Escape-Fall – direkte Links zu einer Stunde (#stunde/…) bleiben */
+if (!/^#(stunde|bearbeiten|neu)/.test(location.hash)) location.replace("vertretung-karte.php");</script><?php endif; ?>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
