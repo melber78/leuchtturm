@@ -119,6 +119,11 @@ button{ font:inherit; color:inherit; cursor:pointer; }
 .lk button{ margin-left:auto; border:0; background:none; font-weight:800; color:var(--tinte2); padding:0 4px; }
 .auftrag{ font-family:"Andika",sans-serif; font-weight:700; font-size:clamp(1.15rem,2.8vw,1.7rem); margin:0 0 14px; line-height:1.35; }
 .aufgabe{ min-height:clamp(180px,34vh,360px); display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:18px 10px; }
+.zweier{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; width:100%; }
+.zweier > div{ border:2.5px solid var(--tinte); border-radius:16px; padding:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:#fffaf0; }
+.zweier .kl{ font-weight:900; font-size:.95rem; background:var(--tinte); color:#fff; border-radius:99px; padding:2px 12px; }
+.zweier .f{ font-size:clamp(1.3rem,3.6vw,2.6rem) !important; }
+@media (max-width:600px){ .zweier{ grid-template-columns:1fr; } }
 .aufgabe .f{ font-family:"Andika",sans-serif; font-size:clamp(1.5rem,4.4vw,3rem); line-height:1.3; white-space:pre-line; max-width:30ch; }
 .aufgabe .f.zahl{ font-family:"Patrick Hand",cursive; font-size:clamp(2.2rem,8vw,5rem); letter-spacing:.04em; }
 .aufgabe .f.salat{ font-family:"Patrick Hand",cursive; letter-spacing:.12em; }
@@ -294,7 +299,7 @@ const MUSTER = {
     muede:   { 3: ["bewegung", "raetsel", "fach"], 4: ["bewegung", "fach", "raetsel", "fach"], 6: ["bewegung", "raetsel", "fach", "bewegung", "fach", "fach"] }
 };
 const ANZAHL = { 15: 3, 25: 4, 40: 6 };
-const passt = (s, stufe) => (s.stufe === "alle" || s.stufe === stufe || (s.stufe === "12" && (stufe === "1" || stufe === "2"))) && !(stufe === "1" && s.nichtKl1);
+const passt = (s, stufe) => (s.stufe === "alle" || s.stufe === stufe || (s.stufe === "12" && (stufe === "1" || stufe === "2"))) && !((stufe === "1" || stufe === "12") && s.nichtKl1);
 function fachTypen(schwerpunkt, n){
     const out = [];
     if (schwerpunkt === "deutsch") for (let i = 0; i < n; i++) out.push(i % 2 ? "woerter" : "lesen");
@@ -312,7 +317,10 @@ function stationHolen(typ, stufe, benutzt){
     if (!pool.length) pool = S.filter(s => typen.includes(s.typ) && passt(s, stufe) && !benutzt.includes(s.id));
     if (!pool.length) pool = S.filter(s => typen.includes(s.typ) && passt(s, stufe));
     const s = JSON.parse(JSON.stringify(misch(pool)[0]));
-    if (s.gen && GEN[s.gen]) s.items = GEN[s.gen](stufe);
+    if (s.gen && GEN[s.gen]) {
+        if (stufe === "12") { s.items = GEN[s.gen]("1"); s.items2 = GEN[s.gen]("2"); }   // gemischte Klasse: je Klasse eine eigene Aufgabe
+        else s.items = GEN[s.gen](stufe);
+    }
     return s;
 }
 function routeBauen(c){
@@ -486,7 +494,7 @@ function fuchsLaufen(von, nach, fertig){
 let R = laden();
 let wahl = { stufe: "2", zeit: 40, stimmung: "normal", fach: "gemischt" };
 try { const w = JSON.parse(localStorage.getItem("lt-vk-wahl")); if (w) wahl = { ...wahl, ...w }; } catch (e) {}
-if (wahl.stufe === "12") wahl.stufe = "2";
+
 
 function welt(){ document.body.classList.toggle("fall", (R ? R.stufe : wahl.stufe) === "34"); }
 function fallDaten(){ return FAELLE.find(f => f.id === (R && R.fall)) || FAELLE[0]; }
@@ -513,7 +521,7 @@ function zeigeStart(){
     app.innerHTML = kopf("Vertretung ohne Vorbereitung · Kl. 1–4") + `<div class="start"><div class="blatt">
         <h2>Kurzer Start-Check</h2>
         <p class="hinweis-lk">Für dich als Lehrkraft: vier Mal antippen – nichts drucken, kein Material. <b>Kl. 1/2</b> gehen auf Schatzsuche, <b>Kl. 3/4</b> lösen einen Escape-Fall.</p>
-        <div class="frage">Welche Klasse?</div>${chips("stufe", [["1", "Klasse 1", "Schatzkarte"], ["2", "Klasse 2", "Schatzkarte"], ["34", "Klasse 3/4", "Escape-Fall"]])}
+        <div class="frage">Welche Klasse?</div>${chips("stufe", [["1", "Klasse 1", "Schatzkarte"], ["2", "Klasse 2", "Schatzkarte"], ["12", "Klasse 1/2 gemischt", "je Klasse eine Aufgabe"], ["34", "Klasse 3/4", "Escape-Fall"]])}
         <div class="frage">Wie viel Zeit ist noch?</div>${chips("zeit", [[15, "15 Min", fall ? "3 Hinweise" : "3 Stationen"], [25, "25 Min", fall ? "4 Hinweise" : "4 Stationen"], [40, "40 Min", fall ? "6 Hinweise" : "6 Stationen"]])}
         <div class="frage">Wie ist die Klasse gerade drauf?</div>${chips("stimmung", [["unruhig", "🌪️ unruhig", "mehr Bewegung & Ruhe"], ["normal", "🙂 normal", "bunt gemischt"], ["muede", "😴 müde", "erst wach machen"]])}
         <div class="frage">Schwerpunkt?</div>${chips("fach", [["gemischt", "Gemischt"], ["deutsch", "Deutsch"], ["mathe", "Mathe"], ["sach", "Sachunterricht"]].concat(fall ? [["englisch", "Englisch"]] : []))}
@@ -690,11 +698,15 @@ function zeigeStation(k){
             inner = `<div class="knoepfe" style="margin-top:20px">${min ? `<button class="knopf hell" id="uhr"><i class="fa-solid fa-stopwatch"></i> <span id="uhrText">${min} Minuten</span></button>` : ""}
                 <button class="knopf hell" id="sprichA" title="Vorlesen"><i class="fa-solid fa-volume-high"></i></button>${fertigKnopf}</div>`;
         } else {
-            const it = items[idx] || { f: "" };
+            const it = items[idx] || { f: "" }, it2 = s.items2 ? s.items2[idx] : null;
             const zahl = s.typ === "rechnen" && (s.gen === "schatzrechnen" || s.gen === "muster");
             const letzte = idx >= items.length - 1;
+            const fk = `f${zahl ? " zahl" : ""}${s.gen === "salat" ? " salat" : ""}`;
             inner = `<div class="punkte">${items.map((_, i) => `<i class="${i <= idx ? "an" : ""}"></i>`).join("")}</div>
-                <div class="aufgabe"><div class="f${zahl ? " zahl" : ""}${s.gen === "salat" ? " salat" : ""}">${md(it.f)}</div>${gezeigt && it.a ? `<div class="a">${md(it.a)}</div>` : ""}</div>
+                ${it2 ? `<div class="aufgabe"><div class="zweier">
+                    <div><span class="kl">Klasse 1</span><div class="${fk}">${md(it.f)}</div>${gezeigt && it.a ? `<div class="a">${md(it.a)}</div>` : ""}</div>
+                    <div><span class="kl">Klasse 2</span><div class="${fk}">${md(it2.f)}</div>${gezeigt && it2.a ? `<div class="a">${md(it2.a)}</div>` : ""}</div></div></div>`
+                : `<div class="aufgabe"><div class="${fk}">${md(it.f)}</div>${gezeigt && it.a ? `<div class="a">${md(it.a)}</div>` : ""}</div>`}
                 <div class="knoepfe">
                     ${s.typ === "lesen" ? `<button class="knopf hell" id="zumText"><i class="fa-solid fa-book-open"></i> Text</button>` : ""}
                     <button class="knopf hell" id="sprich" title="Vorlesen"><i class="fa-solid fa-volume-high"></i></button>
@@ -720,7 +732,7 @@ function zeigeStation(k){
         on("zumText", () => { phase = "text"; zeichnen(); });
         on("vorlesen", () => sprich(s.text));
         on("sprichA", () => sprich(s.auftrag));
-        on("sprich", () => { const it = items[idx] || {}; if (en) sprich(gezeigt && it.a ? ((it.a.match(/\*\*(.+?)\*\*/) || [])[1] || it.f) : it.f, /^[A-Za-z]/.test(String(it.f).replace(/\p{Extended_Pictographic}|\s/gu, ""))); else sprich(it.f + (gezeigt && it.a ? ". " + it.a : "")); });
+        on("sprich", () => { const it = items[idx] || {}; if (en) sprich(gezeigt && it.a ? ((it.a.match(/\*\*(.+?)\*\*/) || [])[1] || it.f) : it.f, /^[A-Za-z]/.test(String(it.f).replace(/\p{Extended_Pictographic}|\s/gu, ""))); else { const it2 = s.items2 ? s.items2[idx] : null; sprich((it2 ? "Klasse 1: " : "") + it.f + (gezeigt && it.a ? ". " + it.a : "") + (it2 ? ". Klasse 2: " + it2.f + (gezeigt && it2.a ? ". " + it2.a : "") : "")); } });
         on("uhr", () => {
             clearInterval(uhr); let rest = (parseInt(s.dauer, 10) || 1) * 60; const t = document.getElementById("uhrText");
             const tick = () => { if (!t.isConnected) { clearInterval(uhr); return; } t.textContent = rest > 0 ? "noch " + Math.ceil(rest / 60) + " Min" : "Zeit ist um!"; rest -= 5; if (rest < -5) clearInterval(uhr); };
@@ -755,14 +767,16 @@ function zeigeStation(k){
 
 /* ---------- Drucken (wenn Zeit zur Vorbereitung ist) ---------- */
 function druckenZeigen(){
-    const fall = istFall(), k1 = R.stufe === "1", F = fall ? fallDaten() : null, n = R.stationen.length;
+    const fall = istFall(), F = fall ? fallDaten() : null, n = R.stationen.length;
     const name = (s, i) => fall ? `Hinweis ${i + 1}: ${(FALL_ART[s.typ] || ["Hinweis"])[0]}` : `Station ${i + 1}: ${s.ort}`;
     const schreibbar = s => ["rechnen", "raetsel", "wissen", "woerter", "lesen", "englisch"].includes(s.typ) && (s.items || []).length;
+    const blatt = (k1, schluessel, zusatz) => {
     // Blatt für die Kinder
     const boxen = R.stationen.map((s, i) => {
-        const it = (s.items || []).slice(0, k1 ? 0 : s.typ === "rechnen" ? 6 : 4);
+        const kurz = x => !/\n/.test(x.f) && String(x.f).length < 22;
+        const it = (s[schluessel] || s.items || []).filter(x => !k1 || kurz(x)).slice(0, k1 ? (s.typ === "rechnen" ? 4 : 0) : s.typ === "rechnen" ? 6 : 4);
         let koerper;
-        if (k1) koerper = `<div class="geschafft"><span></span> geschafft!</div>${s.typ === "raetsel" || s.typ === "lesen" ? '<div class="malfeld"></div>' : ""}`;
+        if (k1 && !it.length) koerper = `<div class="geschafft"><span></span> geschafft!</div>${s.typ === "raetsel" || s.typ === "lesen" ? '<div class="malfeld"></div>' : ""}`;
         else if (schreibbar(s) && it.length) {
             const rf = x => String(x.f).replace(/\*\*/g, "").replace(/\s*=\s*\?$/, "");
             const lang = s.typ === "rechnen" && it.some(x => rf(x).length > 18);
@@ -772,18 +786,20 @@ function druckenZeigen(){
         return `<div class="box"><h2><b>${i + 1}</b>${esc(name(s, i))}${fall ? '<span class="ziffer"></span>' : ""}</h2>${koerper}</div>`;
     }).join("");
     const kind = `<div class="a4 ${R.stufe === "34" ? "" : "gs"}${fall ? " fallblatt" : ""}">
-        <h1>${fall ? "Ermittlungsprotokoll · Fall " + esc(F.nr) : "Meine Schatzkarte"}</h1>
+        <h1>${fall ? "Ermittlungsprotokoll · Fall " + esc(F.nr) : "Meine Schatzkarte" + (zusatz ? " · " + zusatz : "")}</h1>
         <div class="kopfzeile"><span>Name:</span>${k1 ? "" : "<span>Datum:</span>"}</div>
         ${fall ? `<p class="lk-zeile"><b>${esc(F.titel)}</b> – Trage bei jedem Hinweis deine Ziffer ins Kästchen ein. Zum Schluss knackt ihr damit das Zahlenschloss.</p>` : ""}
         <div class="inhalt">${boxen}
             <div class="box" style="flex:0 0 auto"><h2>${k1 ? "Das hat mir am besten gefallen – male es:" : "Am besten war Nummer ___, weil …"}</h2>${k1 ? '<div class="malfeld" style="min-height:28mm"></div>' : '<div class="zeilen" style="grid-template-columns:1fr"><div class="zeile"><i></i></div><div class="zeile"><i></i></div></div>'}</div>
         </div></div>`;
+    return kind; };
+    const kind = R.stufe === "12" ? blatt(true, "items", "Klasse 1") + blatt(false, "items2", "Klasse 2") : blatt(R.stufe === "1", "items", "");
     // Ablauf für die Lehrkraft mit Lösungen
     const quellen = [...new Map(R.stationen.filter(s => s.quelleId).map(s => [s.quelleId, s.quelle])).entries()];
     const lehr = `<div class="a4"><h1>Ablauf · ${fall ? "Escape-Fall " + esc(F.nr) : "Schatzkarte"}</h1>
-        <p class="lk-zeile">Klasse ${R.stufe === "34" ? "3/4" : R.stufe} · ${R.zeit} Min · ${n} ${fall ? "Hinweise" : "Stationen"}${fall ? ` · <b>Code: ${R.code.join(" ")}</b>` : ""}</p>
+        <p class="lk-zeile">Klasse ${R.stufe === "34" ? "3/4" : R.stufe === "12" ? "1/2 gemischt" : R.stufe} · ${R.zeit} Min · ${n} ${fall ? "Hinweise" : "Stationen"}${fall ? ` · <b>Code: ${R.code.join(" ")}</b>` : ""}</p>
         <div class="inhalt" style="gap:2mm">${R.stationen.map((s, i) => `<div class="box" style="flex:0 1 auto"><h2><b>${i + 1}</b>${esc(name(s, i))}${s.titel && s.titel !== s.ort ? " – " + esc(s.titel) : ""}${fall ? ` <span style="margin-left:auto">Ziffer ${R.code[i]}</span>` : ""}</h2>
-            <p class="lk-zeile">${md(s.lk || "")}</p>${(s.items || []).length ? `<ol class="lk-liste">${s.items.slice(0, 10).map(x => `<li>${md(x.f)}${x.a ? ` → <b>${md(x.a)}</b>` : ""}</li>`).join("")}</ol>` : ""}</div>`).join("")}
+            <p class="lk-zeile">${md(s.lk || "")}</p>${(s.items || []).length ? `${s.items2 ? "<p class='lk-zeile'><b>Klasse 1:</b></p>" : ""}<ol class="lk-liste">${s.items.slice(0, 10).map(x => `<li>${md(x.f)}${x.a ? ` → <b>${md(x.a)}</b>` : ""}</li>`).join("")}</ol>` : ""}${s.items2 ? `<p class="lk-zeile"><b>Klasse 2:</b></p><ol class="lk-liste">${s.items2.slice(0, 10).map(x => `<li>${md(x.f)}${x.a ? ` → <b>${md(x.a)}</b>` : ""}</li>`).join("")}</ol>` : ""}</div>`).join("")}
             ${quellen.length ? `<p class="lk-zeile" style="margin-top:auto">Passende Arbeitsblätter aus den Stunden: ${quellen.map(q => "„" + esc(q[1]) + "“").join(", ")} – über die Knöpfe unter der Vorschau.</p>` : ""}
         </div></div>`;
     let d = document.getElementById("druck"); if (!d) { d = document.createElement("div"); d.id = "druck"; document.body.appendChild(d); }
@@ -791,7 +807,7 @@ function druckenZeigen(){
     const o = document.createElement("div"); o.className = "druck-ansicht";
     o.innerHTML = `<div class="druck-leiste"><button class="knopf" id="dDruck"><i class="fa-solid fa-print"></i> Drucken</button><button class="knopf hell" id="dZu">Schließen</button>
         ${quellen.map(q => `<a class="knopf hell" style="text-decoration:none" target="_blank" href="sozial-stunden.php?bereich=vertretung&amp;liste=1#stunde/${encodeURIComponent(q[0])}"><i class="fa-solid fa-file-lines"></i> AB „${esc(q[1])}“</a>`).join("")}</div>
-        <p style="text-align:center;color:#eee;font-weight:800;margin:4px 12px">Seite 1: Blatt für jedes Kind · Seite 2: Ablauf mit Lösungen für dich</p>${kind}${lehr}`;
+        <p style="text-align:center;color:#eee;font-weight:800;margin:4px 12px">${R.stufe === "12" ? "Seite 1: Blatt für Kl. 1 · Seite 2: Blatt für Kl. 2 · Seite 3" : "Seite 1: Blatt für jedes Kind · Seite 2"}: Ablauf mit Lösungen für dich</p>${kind}${lehr}`;
     document.body.appendChild(o);
     // jede Seite passt auf genau eine A4-Seite: Schrift verkleinern, bis nichts mehr übersteht
     const passen = wurzel => wurzel.querySelectorAll(".a4").forEach(a => {
