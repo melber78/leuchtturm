@@ -120,6 +120,7 @@ body.spielt #wahl{ display:none; }
 }
 </style>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 <div id="wahl">

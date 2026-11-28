@@ -124,6 +124,7 @@ table.sp-tabelle textarea:focus{ outline:2px solid var(--meer); outline-offset:-
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 

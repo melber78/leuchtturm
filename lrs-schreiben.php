@@ -20,6 +20,7 @@ foreach (swJson(lt_daten("kinder.json")) as $k) { $c = (string)($k["code"] ?? ""
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 <style>
 @font-face{ font-family:"Fraunces"; font-weight:600; src:url("schriften/fraunces-600.woff2") format("woff2"); }
 @font-face{ font-family:"Fraunces"; font-weight:700; src:url("schriften/fraunces-700.woff2") format("woff2"); }

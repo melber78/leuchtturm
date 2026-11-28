@@ -101,6 +101,7 @@ button{ margin-top:14px; width:100%; font:900 17px "Nunito",sans-serif; backgrou
 .fuss a{ color:var(--meer); }
 </style>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 <div class="portal">

@@ -330,6 +330,7 @@ table.dr-woche .zelle b{ color:var(--f); display:block; font-size:8pt; }
 <style id="druckSeite">@page{ size:A4 portrait; margin:12mm; }</style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 

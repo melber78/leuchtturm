@@ -164,6 +164,7 @@ textarea{ min-height:84px; resize:vertical; font-weight:500; }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 <div class="wrap">

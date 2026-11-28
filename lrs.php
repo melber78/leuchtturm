@@ -1338,6 +1338,7 @@ document.addEventListener("DOMContentLoaded", ws_vorschauSkalieren);
 ws_vorschauSkalieren();
 </script>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 

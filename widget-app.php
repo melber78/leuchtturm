@@ -16,6 +16,7 @@ function fehlerSeite($text){
     http_response_code(502);
     header("Content-Type: text/html; charset=utf-8");
     echo '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Widget-App</title><link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>'
        . '<body style="font-family:system-ui,sans-serif;background:#f7f4ec;color:#2f4a1f;padding:24px;max-width:560px;margin:auto">'
        . '<h2>Die App konnte nicht geladen werden</h2><p style="font-weight:600">' . htmlspecialchars($text) . '</p>'

@@ -67,6 +67,7 @@ if ($f) {
 <html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Link nicht gültig · Leuchtturm</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 <style>body{ margin:0; background:#f7f4ec; font-family:Nunito, sans-serif; color:#2d3530; display:flex; min-height:100vh; align-items:center; justify-content:center; padding:24px; box-sizing:border-box; }
 .k{ background:#fff; border-radius:22px; padding:28px; max-width:420px; text-align:center; box-shadow:0 6px 24px rgba(47,74,31,.1); } img{ width:200px; } h1{ font-family:Fraunces, Georgia, serif; color:#2f4a1f; font-size:24px; } p{ color:#56664a; }</style></head>
 <body><div class="k"><img src="marke/mewe-leuchtturm.svg" alt="MeWe Leuchtturm"><h1>Dieser Link ist nicht mehr gültig</h1><p>Er ist abgelaufen oder wurde gelöscht. Bitte frag nach einem neuen Link.</p></div></body></html>

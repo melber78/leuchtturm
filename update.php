@@ -219,6 +219,7 @@ td, th{ padding:7px 8px; border-bottom:1px solid #edf1f4; text-align:left; }
 code{ background:#eef2f5; padding:1px 6px; border-radius:6px; }
 </style>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 <div class="wrap">

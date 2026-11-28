@@ -330,6 +330,7 @@ textarea{ min-height:60px; resize:vertical; font-weight:400; }
 .leer{ text-align:center; padding:40px; color:#a0a0a0; font-weight:700; }
 </style>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 

@@ -89,6 +89,7 @@ body.vorbei .hinweis{ cursor:pointer; text-decoration:underline; text-underline-
 @media (max-width:700px){ .leiste{ flex-wrap:wrap; } .seg{ flex:1 1 30% !important; } .kopf h1{ display:none; } }
 </style>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 <div class="kopf">

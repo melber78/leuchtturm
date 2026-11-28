@@ -123,6 +123,7 @@ textarea{ width:100%; font:600 14px/1.5 "Nunito",sans-serif; border:2px solid #d
 .hilfe{ color:var(--grau); font-weight:700; font-size:14px; line-height:1.5; margin:10px 0 0; }
 </style>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 <main class="seite">

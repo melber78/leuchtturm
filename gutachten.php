@@ -77,6 +77,7 @@ textarea{ min-height:90px; resize:vertical; font-weight:400; line-height:1.5; }
 .klein-hinweis{ font-size:11px; color:#9aa5ab; margin-top:4px; }
 </style>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 

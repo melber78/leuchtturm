@@ -94,6 +94,7 @@ table.tab td{ border:.3mm solid #9aa9b2; height:2.2em; padding:.2em .4em; }
 </style>
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 <link rel="stylesheet" href="marke/druck-wachsen.css">
 </head>
 <body>

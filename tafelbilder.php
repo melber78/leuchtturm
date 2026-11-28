@@ -547,6 +547,7 @@ body{ background:#f6f2ea; }
 .tb-app-inst:hover{ opacity:1; }
 </style><?php endif; ?>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body<?= $TAFEL_APP ? ' class="tafel-app"' : '' ?>>
 

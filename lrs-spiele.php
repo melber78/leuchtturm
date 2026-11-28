@@ -33,6 +33,7 @@ $JSON = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP;
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Andika:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 <style>
 @font-face{ font-family:"Playwrite DE Grund"; font-weight:400; font-display:block; src:url("schriften/playwrite-de-grund-400.woff2") format("woff2"); }
 @font-face{ font-family:"Fraunces"; font-weight:600; font-display:swap; src:url("schriften/fraunces-600.woff2") format("woff2"); }
@@ -138,7 +139,8 @@ html.sek .wort{ letter-spacing:.04em; }
         <div id="garten" class="garten" style="margin-top:8px"></div>
         <details class="einst-lk"><summary>⚙️ Einstellungen für dich</summary>
         <label class="hilfe" style="display:flex;gap:8px;align-items:center;margin-top:8px"><input type="checkbox" id="freispiel"> Action-Spiele ohne Energie freigeben (Freispiel)</label>
-        <label class="hilfe" style="display:flex;gap:8px;align-items:center;margin-top:4px"><input type="checkbox" id="alle-welten"> Weltenreise: alle Welten offen</label></details>
+        <label class="hilfe" style="display:flex;gap:8px;align-items:center;margin-top:4px"><input type="checkbox" id="alle-welten"> Weltenreise: alle Welten offen</label>
+        <div id="stimme-wahl"></div></details>
     </div>
     <details class="karte rs-kurz" id="rs-karte">
         <summary><span>✏️ Schwerpunkt: <b id="rs-name"></b></span><span class="rs-aendern">ändern</span></summary>
@@ -449,6 +451,7 @@ function spieleZeigen(){
 }
 const _rsZeigen = rsZeigen; rsZeigen = function(){ _rsZeigen(); spieleZeigen(); };
 kindSetzen();
+if (window.LT_STIMME) LT_STIMME.auswahl($("#stimme-wahl"));
 </script>
 <script src="lrs-aufgaben.js"></script>
 <script src="lrs-arcade.js"></script>

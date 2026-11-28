@@ -323,6 +323,7 @@ table.liste td select{ padding:5px 8px; font-size:13px; }
 <style id="lt-druckschutz">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}</style>
 <script>try { if (localStorage.getItem("lt-ws-schrift") === "druck") document.documentElement.classList.add("lt-druckschrift"); } catch (e){}</script>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 <div class="wrap">

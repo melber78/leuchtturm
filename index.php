@@ -134,6 +134,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 @media (max-width:520px){ .kacheln{ grid-template-columns:1fr 1fr; gap:8px; } .kachel{ flex-direction:column; align-items:flex-start; gap:6px; padding:10px 12px; } .kachel small{ display:none; } .kachel b{ font-size:14px; line-height:1.2; } .neu-eintrag span{ display:none; } .neu-eintrag{ padding:8px 12px; } .portal-header p{ display:none; } details.bereich > summary{ padding:14px 16px; font-size:17px; } .untergruppe{ padding:0 14px 12px; } }
 </style>
 <link rel="stylesheet" href="marke/mewe.css">
+<script src="marke/stimme.js"></script>
 </head>
 <body>
 
@@ -147,6 +148,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-28", "Bessere Vorlesestimme", "Der Leuchtturm sucht jetzt automatisch die natürlichste deutsche Stimme auf dem Gerät. Unter Lernspiele → ⚙️ Einstellungen kannst du die Stimme selbst wählen (mit Hörprobe) und das Tempo einstellen – gilt für alle Seiten.", "lrs-spiele.php"],
     ["2026-11-27", "Lernspiele für Anfänger – ganz ohne Lesen", "Reime hören, Silben klatschen, Anfangslaute hören, Robo-Sprache (Silben zusammenziehen), Laut-Detektiv und Reim-Memory: nur Bilder und Vorlesen. Lesestand „liest noch nicht“ wählen – dann gibt es auch in der Weltenreise den Hörpfad.", "lrs-spiele.php"],
     ["2026-11-27", "Konflikte lösen im Sozialtraining", "Neuer Reiter „Konflikte“: Streitschlichtung an der Tafel in 6 Schritten (Atmen, Redestein mit Redezeit, Gefühle, Ich-Botschaft, Lösungen, Abmachung) und Druckvorlagen: Reflexionsbogen Kl. 1/2 und 3/4, Abmachung, Ich-Botschaft-Karten, Beobachtungsbogen.", "sozial-stunden.php#konflikte"],
     ["2026-11-27", "Stunden-Abschluss & nächste Stunde per Knopfdruck", "In der Kinder-Akte jede Stunde Blatt für Blatt abschließen: ✓ klappt · ◐ teilweise · ✗ noch nicht · ⏸ nicht geschafft, Fehlerwörter direkt in die Lernbox, „weiter mit …“. Daraus stellt der Leuchtturm die nächste Stunde zusammen – auch die Spontanstunde knüpft daran an.", "trainingshefte.php"],
