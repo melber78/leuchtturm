@@ -56,6 +56,10 @@ select{ font:inherit; font-weight:700; padding:10px 12px; border-radius:12px; bo
 .chip{ border:2px solid #dfe6d4; background:#fff; border-radius:999px; padding:8px 14px; font-weight:800; font-size:14.5px; }
 .chip.an{ background:var(--moos); border-color:var(--moos); color:#fff; }
 .spiele{ display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:14px; }
+.rs-kurz{ padding:12px 18px; } .rs-kurz summary > span:first-child{ font-size:15.5px; }
+.einst-lk{ margin-top:10px; } .einst-lk summary{ cursor:pointer; font-weight:800; color:#8a6a4b; font-size:14px; list-style:none; } .einst-lk summary::-webkit-details-marker{ display:none; } .rs-kurz summary{ list-style:none; cursor:pointer; display:flex; justify-content:space-between; gap:10px; align-items:center; font-weight:800; color:var(--nacht); }
+.rs-kurz summary::-webkit-details-marker{ display:none; } .rs-kurz .rs-aendern{ color:#8a6a4b; text-decoration:underline; font-size:14px; flex:0 0 auto; }
+.rs-kurz[open] .rs-aendern{ visibility:hidden; }
 .sp-gruppe{ font-family:Fraunces, Georgia, serif; color:var(--nacht); font-size:20px; margin:18px 4px 10px; }
 .spiel{ text-align:left; border:0; background:#fff; border-radius:22px; padding:18px; box-shadow:0 4px 18px rgba(47,74,31,.07); display:flex; gap:14px; align-items:flex-start; transition:transform .15s; }
 .spiel:hover{ transform:translateY(-2px); }
@@ -132,14 +136,15 @@ html.sek .wort{ letter-spacing:.04em; }
         </div>
         <p class="hilfe" id="kind-info">Wählst du ein Kind, passen sich die Spiele an: bekannte Buchstaben, Schwerpunkte aus dem Förderplan und Fehlerwörter aus der Förderkartei.</p>
         <div id="garten" class="garten" style="margin-top:8px"></div>
-        <label class="hilfe" style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="freispiel"> Action-Spiele ohne Energie freigeben (Freispiel)</label>
-        <label class="hilfe" style="display:flex;gap:8px;align-items:center;margin-top:4px"><input type="checkbox" id="alle-welten"> Weltenreise: alle Welten offen</label>
+        <details class="einst-lk"><summary>⚙️ Einstellungen für dich</summary>
+        <label class="hilfe" style="display:flex;gap:8px;align-items:center;margin-top:8px"><input type="checkbox" id="freispiel"> Action-Spiele ohne Energie freigeben (Freispiel)</label>
+        <label class="hilfe" style="display:flex;gap:8px;align-items:center;margin-top:4px"><input type="checkbox" id="alle-welten"> Weltenreise: alle Welten offen</label></details>
     </div>
-    <div class="karte" id="rs-karte">
-        <h2>Rechtschreib-Schwerpunkt</h2>
-        <div class="zeile" id="rs-wahl"></div>
-        <p class="hilfe">Für die Rechtschreib-Strategie und die Weltenreise. ★ = im Förderplan.</p>
-    </div>
+    <details class="karte rs-kurz" id="rs-karte">
+        <summary><span>✏️ Schwerpunkt: <b id="rs-name"></b></span><span class="rs-aendern">ändern</span></summary>
+        <div class="zeile" id="rs-wahl" style="margin-top:12px"></div>
+        <p class="hilfe">Kommt automatisch aus dem Förderplan (★). Nur ändern, wenn heute etwas anderes dran ist.</p>
+    </details>
     <div id="spiele"></div>
 </main>
 
@@ -195,9 +200,7 @@ function kindSetzen(){
     if (S.kind && S.kind.r.length){ const r = S.kind.r.find(x => SP_RS[x]); if (r) S.rs = r; }
     const lb = buchstaben();
     $("#kind-info").textContent = S.kind
-        ? [lb ? `Bekannte Buchstaben: ${lb.join(" ")}` : "Noch keine Buchstaben eingetragen – es wird mit allen gespielt.",
-           S.kind.r.length ? `Schwerpunkte: ${S.kind.r.filter(x => SP_RS[x]).map(x => SP_RS[x].name).join(", ")}` : "",
-           S.kind.woerter.length ? `${S.kind.woerter.length} Fehlerwörter aus der Förderkartei` : ""].filter(Boolean).join(" · ")
+        ? [lb ? `🔤 ${lb.length} Buchstaben` : "", S.kind.woerter.length ? `📦 ${S.kind.woerter.length} Fehlerwörter` : "", S.kind.r.length ? `★ ${S.kind.r.filter(x => SP_RS[x]).length} Schwerpunkte` : ""].filter(Boolean).join(" · ") || "Passt sich an Klasse und Förderplan an."
         : "Wählst du ein Kind, passen sich die Spiele an: bekannte Buchstaben, Schwerpunkte aus dem Förderplan und Fehlerwörter aus der Förderkartei.";
     $("#lesestand").value = laden("sp-lesestand-" + (S.kind?.code || "_"), "auto"); $("#lesestand").style.display = sek() ? "none" : "";
     schriftSetzen(); rsZeigen(); spieleZeigen(); gartenZeigen();
@@ -206,7 +209,7 @@ $("#kind").onchange = kindSetzen;
 // Lesestand: „liest noch nicht“ → Hör- und Bildspiele zuerst, Weltenreise auf dem Hörpfad
 function vorleser(){ const v = laden("sp-lesestand-" + (S.kind?.code || "_"), "auto"); if (v !== "auto") return v === "vor";
     if (sek()) return false; const lb = buchstaben(); return S.klasse <= 1 && (!lb || lb.length < 8) || (!!S.kind && !S.kind.r.length && (!lb || lb.length < 5) && S.klasse <= 2); }
-$("#lesestand").onchange = () => { merken("sp-lesestand-" + (S.kind?.code || "_"), $("#lesestand").value); spieleZeigen(); };
+$("#lesestand").onchange = () => { merken("sp-lesestand-" + (S.kind?.code || "_"), $("#lesestand").value); rsZeigen(); };
 $("#freispiel").checked = laden("sp-freispiel", false); $("#freispiel").onchange = () => merken("sp-freispiel", $("#freispiel").checked);
 $("#alle-welten").checked = laden("sp-alle-welten", false); $("#alle-welten").onchange = () => { merken("sp-alle-welten", $("#alle-welten").checked); if (window.arKarten) arKarten(); };
 $("#klasse").onchange = () => { S.klasse = parseInt($("#klasse").value, 10); schriftSetzen(); spieleZeigen(); };
@@ -215,7 +218,10 @@ function rsZeigen(){
     const eigene = S.kind ? S.kind.r.filter(x => SP_RS[x]) : [];
     const keys = [...eigene, ...Object.keys(SP_RS).filter(k => !eigene.includes(k))];
     $("#rs-wahl").innerHTML = keys.map(k => `<button class="chip${k === S.rs ? " an" : ""}" data-rs="${k}">${eigene.includes(k) ? "★ " : ""}${esc(SP_RS[k].name)}</button>`).join("");
-    $("#rs-wahl").querySelectorAll("[data-rs]").forEach(b => b.onclick = () => { S.rs = b.dataset.rs; rsZeigen(); });
+    $("#rs-wahl").querySelectorAll("[data-rs]").forEach(b => b.onclick = () => { S.rs = b.dataset.rs; $("#rs-karte").open = false; rsZeigen(); });
+    $("#rs-name").textContent = (eigene.includes(S.rs) ? "★ " : "") + SP_RS[S.rs].name;
+    // für Anfänger ohne Lesen spielt der Schwerpunkt keine Rolle
+    $("#rs-karte").style.display = typeof vorleser === "function" && vorleser() ? "none" : "";
 }
 function gartenZeigen(){
     const n = laden("sp-garten-" + (S.kind?.code || "_"), 0);
