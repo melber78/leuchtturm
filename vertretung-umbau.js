@@ -15,10 +15,9 @@ const KAT_TYP = {
     "Gemischt: Deutsch & Mathe": "raetsel", "Englisch (Kl. 3/4)": "englisch"
 };
 const MATERIAL = /Arbeitsblatt|Zettel|Schere|Kleber|Würfel|Papierstreifen|ausdrucken|Karten verteilen/i;
-// Aufgaben, bei denen die Lehrkraft selbst etwas vormachen, flüstern, klatschen, malen … müsste → nicht übernehmen
-const SELBST_MACHEN = /vormach|Vormachen|machst es vor|machst (sie|das) vor|zeigst .{0,20}vor|flüsterst|flüstern dir|klatschst|\bDu (schreibst|denkst|malst|zeichnest|hältst|deutest|beginnst|gibst|wählst|bestimmst|spielst|machst)\b|Zeige den|Ich denke an|Frag mich|Ich sehe was|diktierst|dein Zeichen|\bDu (zeigst|tust)\b|spielt .{0,40}\bvor\b/;
-// Aufgaben, bei denen die Lehrkraft etwas sagt oder vorliest → nur mit Aufgaben an der Tafel (🔊)
-const TAFEL_SAGT = /\b(Du|du) (sagst|rufst|nennst|fragst|liest|stellst)\b|\bLies\b|Zeige das Bild/;
+// Aufgaben, bei denen die Lehrkraft eine Bewegung, Übung oder Szene selbst vormachen/vorspielen müsste → nicht übernehmen.
+// Vorlesen, sagen, fragen, an die Tafel schreiben ist in Ordnung.
+const SELBST_MACHEN = /vormach|Vormachen|machst (es|sie|das|die Bewegung)? ?vor|zeigst .{0,25}\bvor\b|Zeige den Trick|klatschst|\bDu (spielst|tanzt|turnst)\b/;
 const ohneMd = t => String(t || "").replace(/\*\*/g, "").trim();
 const punkte = t => String(t || "").split("\n").filter(z => /^\s*[-•]\s+/.test(z)).map(z => z.replace(/^\s*[-•]\s+/, "").trim());
 const ohnePunkte = t => String(t || "").split("\n").filter(z => !/^\s*[-•]\s+/.test(z)).join("\n").trim();
@@ -74,13 +73,9 @@ window.VK_UMBAU = function(vorlagen){
                 const folie = u["folie" + stufe] || u.folie || ohnePunkte(text);
                 const items = itemsAus(u, text);
                 // Die Lehrkraft macht NICHTS vor und spielt keine Rolle – alles kommt von der Tafel.
-                if (SELBST_MACHEN.test(text) || SELBST_MACHEN.test(folie)) return;
-                let lk = lkSatz(text, typ);
-                if (TAFEL_SAGT.test(text) || /\b(Lies|lies|liest)\b/.test(lk)) {
-                    if (items.length < 2) return;          // ohne Aufgaben an der Tafel müsste die Lehrkraft es selbst sagen
-                    lk = typ === "englisch" ? "Die Wörter und Sätze erscheinen nacheinander an der Tafel – mit 🔊 spricht die Tafel sie auf Englisch vor."
-                                            : "Die Aufgaben erscheinen nacheinander an der Tafel – mit 🔊 liest die Tafel sie vor, die Kinder reagieren.";
-                }
+                const nurLk = t => String(t).replace(/[^.!?\n]*\b(dürfen|darf|Kinder|Kind)\b[^.!?\n]*vormachen[^.!?\n]*[.!?]?/g, "");   // Kinder dürfen vormachen – das ist okay
+                if (SELBST_MACHEN.test(nurLk(text)) || SELBST_MACHEN.test(nurLk(folie))) return;
+                const lk = lkSatz(text, typ);
                 out.push({ id: "alt-" + e.id + "-" + k + "-" + stufe, typ, stufe, titel: u.titel, quelle: e.titel,
                     lk, auftrag: folie, items, dauer: u.dauer || "", lang: typ === "englisch" ? "en" : "" });
             });
