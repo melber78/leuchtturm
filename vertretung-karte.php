@@ -219,7 +219,40 @@ body.fall{ background-attachment:fixed !important; color:#efe7d4; background:rad
     .chip{ flex:1 1 calc(50% - 10px); min-width:0; }
     .lk{ font-size:.85rem; }
 }
-@media print{ body{ display:none; } }
+/* ---------- Druck (Vorbereitung) ---------- */
+#druck{ display:none; }
+@page{ size:A4; margin:0; }
+@media print{
+    body{ background:#fff !important; }
+    body > *:not(#druck){ display:none !important; }
+    #druck{ display:block !important; }
+    .a4{ box-shadow:none !important; margin:0 !important; page-break-after:always; break-after:page; }
+}
+.druck-ansicht{ position:fixed; inset:0; z-index:80; background:rgba(40,40,40,.85); overflow:auto; padding:14px 0 40px; }
+.druck-leiste{ position:sticky; top:0; display:flex; gap:10px; flex-wrap:wrap; justify-content:center; padding:8px; z-index:2; }
+.a4{ width:210mm; height:297mm; overflow:hidden; background:#fff; color:#222; margin:14px auto; box-shadow:0 6px 30px rgba(0,0,0,.4); padding:14mm 14mm 12mm; font-family:"Nunito",sans-serif; display:flex; flex-direction:column; position:relative; }
+.a4.gs{ font-family:"Andika","Nunito",sans-serif; }
+.a4 h1{ font-family:"Patrick Hand",cursive; font-weight:400; font-size:calc(28pt * var(--f,1)); margin:0 0 2mm; line-height:1.05; }
+.a4.fallblatt h1{ font-family:"Special Elite",monospace; font-size:calc(22pt * var(--f,1)); }
+.a4 .kopfzeile{ display:flex; justify-content:space-between; gap:6mm; font-size:calc(11pt * var(--f,1)); margin-bottom:4mm; }
+.a4 .kopfzeile span{ flex:1; border-bottom:1.5px solid #555; padding-bottom:1mm; }
+.a4 .inhalt{ flex:1; display:flex; flex-direction:column; gap:3mm; min-height:0; }
+.a4 .box{ border:2px solid #333; border-radius:3mm; padding:2.5mm 4mm; flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
+.a4.fallblatt .box{ border-radius:0; border-style:solid; }
+.a4 .box h2{ font-size:calc(13pt * var(--f,1)); margin:0 0 1.5mm; display:flex; gap:3mm; align-items:center; }
+.a4 .box h2 b{ display:inline-flex; width:8mm; height:8mm; border-radius:50%; background:#333; color:#fff; align-items:center; justify-content:center; font-size:calc(11pt * var(--f,1)); }
+.a4 .box .ziffer{ margin-left:auto; width:12mm; height:12mm; border:2px solid #333; border-radius:2mm; }
+.a4 .zeilen{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.5mm 6mm; flex:1; align-content:space-evenly; }
+.a4 .zeile{ font-size:calc(12pt * var(--f,1)); display:flex; gap:2mm; align-items:flex-end; }
+.a4 .zeile i{ flex:1; border-bottom:1.5px solid #777; min-width:12mm; height:6mm; }
+.a4 .geschafft{ font-size:calc(12pt * var(--f,1)); display:flex; gap:3mm; align-items:center; }
+.a4 .geschafft span{ width:7mm; height:7mm; border:2px solid #333; border-radius:1.5mm; display:inline-block; }
+.a4 .malfeld{ flex:1; border:1.5px dashed #999; border-radius:2mm; min-height:20mm; }
+.a4 .lk-zeile{ font-size:calc(9.5pt * var(--f,1)); margin:0 0 1mm; }
+.a4 .lk-liste{ font-size:calc(9.5pt * var(--f,1)); margin:0; padding-left:5mm; columns:2; column-gap:6mm; }
+.a4 .lk-liste li{ break-inside:avoid; margin-bottom:.6mm; }
+.a4 .fuss{ font-size:8pt; color:#888; margin-top:2mm; text-align:right; }
+
 </style>
 </head>
 <body>
@@ -261,7 +294,7 @@ const MUSTER = {
     muede:   { 3: ["bewegung", "raetsel", "fach"], 4: ["bewegung", "fach", "raetsel", "fach"], 6: ["bewegung", "raetsel", "fach", "bewegung", "fach", "fach"] }
 };
 const ANZAHL = { 15: 3, 25: 4, 40: 6 };
-const passt = (s, stufe) => s.stufe === "alle" || s.stufe === stufe || (s.stufe === "12" && (stufe === "1" || stufe === "2"));
+const passt = (s, stufe) => (s.stufe === "alle" || s.stufe === stufe || (s.stufe === "12" && (stufe === "1" || stufe === "2"))) && !(stufe === "1" && s.nichtKl1);
 function fachTypen(schwerpunkt, n){
     const out = [];
     if (schwerpunkt === "deutsch") for (let i = 0; i < n; i++) out.push(i % 2 ? "woerter" : "lesen");
@@ -488,7 +521,8 @@ function zeigeStart(){
             <button class="knopf" id="los"><i class="fa-solid ${fall ? "fa-folder-open" : "fa-map"}"></i> ${fall ? "Fall öffnen" : "Karte zeichnen"}</button>
             ${offen ? `<button class="knopf hell" id="weiter"><i class="fa-solid fa-shoe-prints"></i> Weitermachen (${alt.stufe === "34" ? "Hinweis" : "Station"} ${Math.min(alt.pos + 1, alt.stationen.length)} von ${alt.stationen.length})</button>` : ""}
         </div>
-        <p class="hinweis-lk" style="margin-top:16px">So läuft es: <b>antippen → Aufgabe → Lösung zeigen → weiter.</b> Bei jeder Aufgabe steht genau ein Satz für dich. Mit 🎲 tauschst du eine Aufgabe, die nicht passt.</p>
+        <p class="hinweis-lk" style="margin-top:16px"><b>Spontan</b> geht alles an der Tafel. <b>Mit etwas Zeit</b> druckst du nach dem Start über „Material drucken“ ein Blatt für jedes Kind und den Ablauf mit Lösungen für dich.</p>
+        <p class="hinweis-lk">So läuft es: <b>antippen → Aufgabe → Lösung zeigen → weiter.</b> Bei jeder Aufgabe steht genau ein Satz für dich. Mit 🎲 tauschst du eine Aufgabe, die nicht passt.</p>
         <p class="hinweis-lk"><a class="leise-link" href="sozial-stunden.php?bereich=vertretung&amp;liste=1">Eigene Vertretungsstunden anlegen oder bearbeiten</a> – sie erscheinen danach automatisch als Aufgaben.</p>
     </div></div>`;
     R = alt;
@@ -542,10 +576,12 @@ function zeigeAkte(neu){
                 <span class="zustand">${st === "geloest" ? "entschlüsselt" : st === "jetzt" ? "▶ jetzt lösen" : "🔒 gesperrt"}</span>${st === "geloest" ? `<span class="ziffer">${R.code[i]}</span>` : ""}</button>`;
         }).join("")}</div>
         <div class="akte-fuss">${alle ? `<button class="knopf gold" id="schloss"><i class="fa-solid fa-lock-open"></i> Zahlenschloss knacken</button>` : `<span class="karten-info">Tippt auf Hinweis ${R.pos + 1}.</span>`}
+            <button class="knopf-klein nur-normal" id="drucken" style="color:#efe7d4;border-color:#efe7d4"><i class="fa-solid fa-print"></i> Material drucken</button>
             <a class="leise-link" href="#" id="neu" style="color:#b9b19c">Neuer Fall</a></div>
     </div>`;
     kopfAktiv();
     document.getElementById("neu").onclick = neuStarten;
+    document.getElementById("drucken").onclick = druckenZeigen;
     const sb = document.getElementById("schloss"); if (sb) sb.onclick = zeigeSchloss;
     app.querySelectorAll(".hinweis").forEach(h => h.onclick = () => {
         const i = +h.dataset.i;
@@ -595,9 +631,10 @@ function zeigeKarte(lauf){
     const n = R.stationen.length;
     const info = R.pos >= n ? "Alle Kartenstücke gefunden! Tippt auf die alte Eiche. 🌳" : `Tippt auf Station ${R.pos + 1}: ${R.stationen[R.pos].ort}`;
     app.innerHTML = kopf(`${R.pos} von ${n} Kartenstücken`) + `<div class="karten-wrap">${karteZeichnen()}<p class="karten-info">${esc(info)}
-        · <a class="leise-link" href="#" id="neu">Neue Reise</a></p></div>`;
+        · <a class="leise-link nur-normal" href="#" id="drucken"><i class="fa-solid fa-print"></i> Material drucken</a> · <a class="leise-link" href="#" id="neu">Neue Reise</a></p></div>`;
     kopfAktiv();
     document.getElementById("neu").onclick = neuStarten;
+    document.getElementById("drucken").onclick = e => { e.preventDefault(); druckenZeigen(); };
     if (lauf){
         const g = document.getElementById("fuchs");
         const { P } = punkteBerechnen(n, innerWidth < innerHeight * .95);
@@ -714,6 +751,59 @@ function zeigeStation(k){
         setTimeout(() => { o.remove(); zeigeKarte({ von: fall ? k : von, nach: R.pos }); }, fall ? 2200 : 1800);
     }
     zeichnen();
+}
+
+/* ---------- Drucken (wenn Zeit zur Vorbereitung ist) ---------- */
+function druckenZeigen(){
+    const fall = istFall(), k1 = R.stufe === "1", F = fall ? fallDaten() : null, n = R.stationen.length;
+    const name = (s, i) => fall ? `Hinweis ${i + 1}: ${(FALL_ART[s.typ] || ["Hinweis"])[0]}` : `Station ${i + 1}: ${s.ort}`;
+    const schreibbar = s => ["rechnen", "raetsel", "wissen", "woerter", "lesen", "englisch"].includes(s.typ) && (s.items || []).length;
+    // Blatt für die Kinder
+    const boxen = R.stationen.map((s, i) => {
+        const it = (s.items || []).slice(0, k1 ? 0 : s.typ === "rechnen" ? 6 : 4);
+        let koerper;
+        if (k1) koerper = `<div class="geschafft"><span></span> geschafft!</div>${s.typ === "raetsel" || s.typ === "lesen" ? '<div class="malfeld"></div>' : ""}`;
+        else if (schreibbar(s) && it.length) {
+            const rf = x => String(x.f).replace(/\*\*/g, "").replace(/\s*=\s*\?$/, "");
+            const lang = s.typ === "rechnen" && it.some(x => rf(x).length > 18);
+            koerper = `<div class="zeilen"${lang ? ' style="grid-template-columns:1fr"' : ""}>${it.map((x, k) => `<div class="zeile">${k + 1})&nbsp;${s.typ === "rechnen" && !/\n/.test(x.f) && rf(x).length < 60 ? esc(rf(x)) + (/[?▢]/.test(rf(x)) ? "" : " =") : ""}<i></i></div>`).join("")}</div>`;
+        }
+        else koerper = `<div class="geschafft"><span></span> geschafft!</div>`;
+        return `<div class="box"><h2><b>${i + 1}</b>${esc(name(s, i))}${fall ? '<span class="ziffer"></span>' : ""}</h2>${koerper}</div>`;
+    }).join("");
+    const kind = `<div class="a4 ${R.stufe === "34" ? "" : "gs"}${fall ? " fallblatt" : ""}">
+        <h1>${fall ? "Ermittlungsprotokoll · Fall " + esc(F.nr) : "Meine Schatzkarte"}</h1>
+        <div class="kopfzeile"><span>Name:</span>${k1 ? "" : "<span>Datum:</span>"}</div>
+        ${fall ? `<p class="lk-zeile"><b>${esc(F.titel)}</b> – Trage bei jedem Hinweis deine Ziffer ins Kästchen ein. Zum Schluss knackt ihr damit das Zahlenschloss.</p>` : ""}
+        <div class="inhalt">${boxen}
+            <div class="box" style="flex:0 0 auto"><h2>${k1 ? "Das hat mir am besten gefallen – male es:" : "Am besten war Nummer ___, weil …"}</h2>${k1 ? '<div class="malfeld" style="min-height:28mm"></div>' : '<div class="zeilen" style="grid-template-columns:1fr"><div class="zeile"><i></i></div><div class="zeile"><i></i></div></div>'}</div>
+        </div></div>`;
+    // Ablauf für die Lehrkraft mit Lösungen
+    const quellen = [...new Map(R.stationen.filter(s => s.quelleId).map(s => [s.quelleId, s.quelle])).entries()];
+    const lehr = `<div class="a4"><h1>Ablauf · ${fall ? "Escape-Fall " + esc(F.nr) : "Schatzkarte"}</h1>
+        <p class="lk-zeile">Klasse ${R.stufe === "34" ? "3/4" : R.stufe} · ${R.zeit} Min · ${n} ${fall ? "Hinweise" : "Stationen"}${fall ? ` · <b>Code: ${R.code.join(" ")}</b>` : ""}</p>
+        <div class="inhalt" style="gap:2mm">${R.stationen.map((s, i) => `<div class="box" style="flex:0 1 auto"><h2><b>${i + 1}</b>${esc(name(s, i))}${s.titel && s.titel !== s.ort ? " – " + esc(s.titel) : ""}${fall ? ` <span style="margin-left:auto">Ziffer ${R.code[i]}</span>` : ""}</h2>
+            <p class="lk-zeile">${md(s.lk || "")}</p>${(s.items || []).length ? `<ol class="lk-liste">${s.items.slice(0, 10).map(x => `<li>${md(x.f)}${x.a ? ` → <b>${md(x.a)}</b>` : ""}</li>`).join("")}</ol>` : ""}</div>`).join("")}
+            ${quellen.length ? `<p class="lk-zeile" style="margin-top:auto">Passende Arbeitsblätter aus den Stunden: ${quellen.map(q => "„" + esc(q[1]) + "“").join(", ")} – über die Knöpfe unter der Vorschau.</p>` : ""}
+        </div></div>`;
+    let d = document.getElementById("druck"); if (!d) { d = document.createElement("div"); d.id = "druck"; document.body.appendChild(d); }
+    d.innerHTML = kind + lehr;
+    const o = document.createElement("div"); o.className = "druck-ansicht";
+    o.innerHTML = `<div class="druck-leiste"><button class="knopf" id="dDruck"><i class="fa-solid fa-print"></i> Drucken</button><button class="knopf hell" id="dZu">Schließen</button>
+        ${quellen.map(q => `<a class="knopf hell" style="text-decoration:none" target="_blank" href="sozial-stunden.php?bereich=vertretung&amp;liste=1#stunde/${encodeURIComponent(q[0])}"><i class="fa-solid fa-file-lines"></i> AB „${esc(q[1])}“</a>`).join("")}</div>
+        <p style="text-align:center;color:#eee;font-weight:800;margin:4px 12px">Seite 1: Blatt für jedes Kind · Seite 2: Ablauf mit Lösungen für dich</p>${kind}${lehr}`;
+    document.body.appendChild(o);
+    // jede Seite passt auf genau eine A4-Seite: Schrift verkleinern, bis nichts mehr übersteht
+    const passen = wurzel => wurzel.querySelectorAll(".a4").forEach(a => {
+        const ueber = () => a.scrollHeight > a.clientHeight + 1 || [...a.querySelectorAll(".box")].some(b => b.scrollHeight > b.clientHeight + 2);
+        let f = 1; a.style.setProperty("--f", f);
+        while (ueber() && f > .5) { f = Math.round((f - .05) * 100) / 100; a.style.setProperty("--f", f); }
+    });
+    requestAnimationFrame(() => { passen(o); passen(d);
+        // Vorschau am Handy: Seiten verkleinert zeigen (gedruckt wird immer A4)
+        const z = Math.min(1, (innerWidth - 16) / 794); if (z < 1) o.querySelectorAll(".a4").forEach(a => a.style.zoom = z.toFixed(3)); });
+    o.querySelector("#dZu").onclick = () => o.remove();
+    o.querySelector("#dDruck").onclick = () => { d.innerHTML = kind + lehr; requestAnimationFrame(() => { passen(d); window.print(); }); };
 }
 
 /* ---------- Schatz (Kl. 1/2) ---------- */

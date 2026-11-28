@@ -39,7 +39,23 @@ function listeAus(text, stufe){
     if (!zeilen.length) return [];
     const kl = zeilen.find(z => stufe === "34" ? /Kl\.\s*3\/4/.test(z) : /Kl\.\s*1\/2/.test(z)) || zeilen.find(z => !/Kl\.\s*\d\/\d/.test(z));
     if (!kl) return [];
-    return kl.replace(/^.*?Kl\.\s*\d\/\d\s*:?\s*/, "").split("·").map(x => ohneMd(x).replace(/^[„"]|[“"]$/g, "")).filter(x => x && x.length < 80).slice(0, 12).map(f => ({ f }));
+    let t = kl.replace(/^.*?Kl\.\s*\d\/\d\s*:?\s*/, "").split(" · ").map(x => x.trim()).filter(Boolean);
+    // „Was ist 7 · 8? (56)“ wurde beim Trennen zerteilt → wieder zusammenfügen, bis die Klammer zu ist
+    if (t.some(x => /\)$/.test(x))) { const neu = []; let puffer = ""; t.forEach(x => { puffer = puffer ? puffer + " · " + x : x; if (/\)$/.test(x)) { neu.push(puffer); puffer = ""; } }); if (puffer) neu.push(puffer); t = neu; }
+    // Rechenliste mit Malaufgaben „6 · 7 · 8 · 4 · 48 : 6“ → Paare reiner Zahlen sind Malaufgaben
+    else if (t.some(x => /\d\s*[+−\-:]\s*\d/.test(x))) { const neu = []; for (let i = 0; i < t.length; i++) { if (/^\d+$/.test(t[i]) && /^\d+$/.test(t[i + 1] || "")) { neu.push(t[i] + " · " + t[i + 1]); i++; } else neu.push(t[i]); } t = neu; }
+    return t.slice(0, 12).map(x => {
+        const k = /^(.*?)\s*\(([^()]+)\)\s*$/.exec(x), f = ohneMd(k ? k[1] : x).replace(/^[„"]|[“"]$/g, "");
+        const a = k ? k[2] : rechne(f);
+        return a ? { f, a } : { f };
+    }).filter(x => x.f && x.f.length < 90);
+}
+// einfache Rechenaufgabe → Ergebnis (für „Lösung zeigen“)
+function rechne(f){
+    const m = /^(\d+)\s*([+−\-·:])\s*(\d+)$/.exec(String(f).trim()); if (!m) return "";
+    const a = +m[1], b = +m[3], op = m[2];
+    const r = op === "+" ? a + b : op === "·" ? a * b : op === ":" ? (b ? a / b : NaN) : a - b;
+    return Number.isInteger(r) ? String(r) : "";
 }
 function itemsAus(u, text, stufe){
     const p = punkte(text);
@@ -63,7 +79,7 @@ function leseStation(e, stufe){
         const q = m[1].trim(), k = /^(.*?)\s*\(([^()]+)\)\s*$/.exec(q);
         return k ? { f: k[1], a: k[2] } : { f: q };
     });
-    return { id: "alt-" + e.id + "-lesen-" + stufe, typ: "lesen", stufe, titel: lt.titel || e.titel, quelle: e.titel,
+    return { id: "alt-" + e.id + "-lesen-" + stufe, typ: "lesen", stufe, titel: lt.titel || e.titel, quelle: e.titel, quelleId: e.id,
         lk: stufe === "12" ? "Lies die Geschichte vor oder tippe auf 🔊 – danach kommen die Fragen." : "Kinder lesen reihum je einen Satz laut vor – danach kommen die Fragen.",
         auftrag: stufe === "12" ? "Hört gut zu. Danach beantwortet ihr die Fragen." : "Lest den Text genau. Danach beantwortet ihr die Fragen.",
         text, items: fragen.length ? fragen : [{ f: "Worum ging es in der Geschichte?" }] };
@@ -91,8 +107,10 @@ window.VK_UMBAU = function(vorlagen){
                 // Offene Aufgabe ohne Einzelschritte: nur, wenn nichts vorbereitet oder gezeichnet werden muss
                 if (!items.length && VORBEREITUNG.test(text + "\n" + folie)) return;
                 const lk = lkSatz(text, typ);
-                out.push({ id: "alt-" + e.id + "-" + k + "-" + stufe, typ, stufe, titel: u.titel, quelle: e.titel,
-                    lk, auftrag: folie, items, dauer: u.dauer || "", lang: typ === "englisch" ? "en" : "" });
+                const alles = [folie, ...items.map(x => x.f + " " + (x.a || ""))].join(" ");
+                const nichtKl1 = stufe === "12" && (/\bgerade\b|ungerade|Doppelte|Hälfte|\d\s*·\s*\d|\d\s*€|Euro|Rest\b|Mehrzahl/.test(alles) || (alles.match(/\b\d+\b/g) || []).some(n => +n > 10 && +n < 1900));
+                out.push({ id: "alt-" + e.id + "-" + k + "-" + stufe, typ, stufe, titel: u.titel, quelle: e.titel, quelleId: e.id,
+                    lk, auftrag: folie, items, dauer: u.dauer || "", lang: typ === "englisch" ? "en" : "", nichtKl1 });
             });
         });
     });
