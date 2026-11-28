@@ -303,6 +303,20 @@ const CSS = `
 #praes .l-auftragskarte{ background:#fffdf5; color:#1d4634; font:400 clamp(20px,2.6vw,42px)/1.2 "Patrick Hand","Andika",sans-serif; padding:.4em 1em; border-radius:6px; transform:rotate(-1.2deg); box-shadow:0 8px 0 rgba(0,0,0,.18); position:relative; max-width:min(80vw,1100px); }
 #praes .l-auftragskarte::before{ content:""; position:absolute; top:-12px; left:50%; width:90px; height:24px; margin-left:-45px; background:rgba(255,224,102,.75); transform:rotate(3deg); }
 #praes .l-auftragskarte small{ display:block; font-size:.6em; color:#2f6b50; letter-spacing:.08em; text-transform:uppercase; }
+#praes .l-stufen{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.6vw; width:min(100%,1200px); margin:2vh 0; }
+#praes .l-stufe{ border:3px solid rgba(255,255,255,.8); border-radius:18px 26px 20px 28px; padding:.6em .4em; display:flex; flex-direction:column; align-items:center; gap:.15em; background:rgba(255,255,255,.06); }
+#praes .l-stufe b{ font-size:clamp(26px,4vw,60px); line-height:1.1; }
+#praes .l-stufe span{ font-family:"Patrick Hand","Andika",sans-serif; font-size:clamp(22px,2.8vw,44px); }
+#praes .l-stufe small{ font-size:clamp(14px,1.5vw,24px); opacity:.85; font-weight:800; text-align:center; }
+#praes .l-afliste{ display:flex; flex-wrap:wrap; gap:.8vw; justify-content:center; margin-top:2vh; max-width:min(1300px,96vw); }
+#praes .l-afknopf{ border:3px solid rgba(255,255,255,.75); background:rgba(255,255,255,.06); color:inherit; border-radius:16px; padding:.4em .8em; font:inherit; font-family:"Andika",sans-serif; font-size:clamp(15px,1.6vw,26px); cursor:pointer; text-align:left; max-width:30em; }
+#praes .l-afknopf b{ display:inline-flex; width:1.6em; height:1.6em; border-radius:50%; background:#ffe27a; color:#1d4634; align-items:center; justify-content:center; margin-right:.4em; }
+#praes .l-heftmodus{ display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start; overflow:auto; background:rgba(20,30,20,.88); padding:1.5vh 2vw; }
+#praes .l-heft-kopf{ display:flex; gap:1em; align-items:center; justify-content:space-between; color:#fff; font-size:clamp(15px,1.7vw,26px); margin-bottom:1vh; position:sticky; top:0; }
+#praes .l-heft-blatt{ display:flex; justify-content:center; }
+#praes .l-heft-blatt .blatt{ background:#fff; color:#1f2d36; box-shadow:0 10px 40px rgba(0,0,0,.4); margin:0 auto; }
+#praes .l-heft-aufgabe{ background:#fff; color:#1f2d36; border-radius:14px; padding:1em; text-align:left; font-size:clamp(16px,1.8vw,28px); width:min(100%,1100px); }
+@media (max-width:700px){ #praes .l-stufen{ grid-template-columns:1fr; } }
 #praes .l-karte{ display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:.4vw; margin:3vh 0 1vh; }
 #praes .l-ort{ display:flex; flex-direction:column; align-items:center; gap:.2em; font-family:"Patrick Hand","Andika",sans-serif; }
 #praes .l-ort span{ width:clamp(48px,7vh,90px); height:clamp(48px,7vh,90px); border:3px solid rgba(255,255,255,.8); border-radius:50% 46% 52% 48%; display:flex; align-items:center; justify-content:center; font-size:clamp(24px,4vh,46px); background:rgba(255,255,255,.06); }
@@ -455,8 +469,8 @@ const eule = (klein) => klein ? EULE.replace('class="l-eule"', 'class="l-eule kl
 const KRITZEL = () => `<div class="l-kritzel">${[["1+2", 6, 12], ["ABC", 82, 10], ["★", 14, 70], ["7·8", 78, 72], ["a e i", 40, 86], ["✓", 92, 44], ["Aa", 4, 40], ["=", 60, 6]].map(([t, x, y], k) => `<span style="left:${x}%;top:${y}%;animation-delay:${k * .7}s">${t}</span>`).join("")}</div>`;
 // Lernpfad: welche Station gehört zu welcher Folie?
 /* Lernpfad: welche Stationen es gibt, ergibt sich aus den Folien – jede Stunde kann anders ablaufen */
-const STATION = { ankommen: ["😊", "Ankommen"], mission: ["🗺️", "Mission"], kopf: ["🧠", "Kopf-Start"], geschichte: ["📖", "Geschichte"], knobel: ["🧩", "Knobel-Rätsel"], erklaert: ["🦉", "Ella erklärt"], fehler: ["🔎", "Fehler-Detektiv"], challenge: ["🏆", "Challenges"], arbeiten: ["✏️", "Arbeiten"], ziel: ["⭐", "Ziel"] };
-const TYP_STATION = { barometer: "ankommen", mission: "mission", kopfstart: "kopf", fall: "geschichte", film: "geschichte", denkrunde: "geschichte", knobel: "knobel", erklaert: "erklaert", mitmachen: "erklaert", fehler: "fehler", arbeitsblatt: "arbeiten", abschluss: "ziel" };
+const STATION = { ankommen: ["😊", "Ankommen"], mission: ["🗺️", "Mission"], kopf: ["🏃", "Aufwärmen"], geschichte: ["📖", "Geschichte"], knobel: ["🧩", "Knobel-Rätsel"], erklaert: ["🦉", "Ella erklärt"], fehler: ["🔎", "Fehler-Detektiv"], challenge: ["🤝", "Gemeinsam üben"], arbeiten: ["✏️", "Arbeiten"], training: ["💪", "Training"], check: ["✅", "Check"], blitz: ["⚡", "Blitzrunde"], ziel: ["⭐", "Ziel"] };
+const TYP_STATION = { barometer: "ankommen", mission: "mission", kopfstart: "kopf", fall: "geschichte", film: "geschichte", denkrunde: "geschichte", knobel: "knobel", erklaert: "erklaert", mitmachen: "erklaert", fehler: "fehler", arbeitsblatt: "arbeiten", training: "training", check: "check", abschluss: "ziel" };
 function stationVon(f){ return f.st || (f.u && f.u.kopf ? "kopf" : "") || TYP_STATION[f.typ] || "challenge"; }
 function missionNr(){ return zustand ? Math.max(0, zustand.folien.findIndex(x => x.typ === "mission")) : 0; }
 function pfadVon(folien){ return [...new Set(folien.map(stationVon))]; }
@@ -692,6 +706,37 @@ function tafelStarten(f){ if (!window.lernTafel || !f.tafel) return; f.gestartet
 function lernD(){ return window.lernDauer ? window.lernDauer() : 40; }
 function lernMin(min){ return window.lernMinuten ? window.lernMinuten(min, zustand && zustand.e) : min; }
 function kopfMin(){ return lernD() <= 25 ? 2 : 3; }
+// Trainingsplatz: Aufgaben des Arbeitsblatts (gleiche Auswahl wie beim Druck) – für Stufen, Heft-Modus und Check
+function trainingsStufe(){ return zustand.stufe === "34" ? "34" : (klasseAktuell() === "2" ? "2" : "1"); }
+function trainingsAufgaben(e){
+    const st = trainingsStufe(), ab = (st === "34" ? e.ab34 : e.ab12) || { aufgaben: [] };
+    const fuer = window.aufgabeFuer || (a => a.nur || "");
+    return (ab.aufgaben || []).filter(a => String(a.text || "").trim() && (st === "34" || !fuer(a) || fuer(a) === st));
+}
+function heftZeigen(e){
+    if (!window.blattBauen) return;
+    const o = document.createElement("div"); o.className = "p-overlay l-heftmodus";
+    const b = window.blattBauen(e, trainingsStufe());
+    o.innerHTML = `<div class="l-heft-kopf"><b>📓 Ohne Blatt: Schreibt ins Heft – Überschrift, Datum, Aufgabennummer.</b><button class="p-knopf hell" data-zu="1">Schließen</button></div><div class="l-heft-blatt"></div>`;
+    o.querySelector(".l-heft-blatt").appendChild(b);
+    o.addEventListener("click", ev => { if (ev.target === o || ev.target.closest("[data-zu]")) o.remove(); });
+    zustand.buehne.appendChild(o);
+    const pass = () => { const w = b.offsetWidth || 794; b.style.zoom = Math.min(1.6, (o.clientWidth * .94) / w).toFixed(3); };
+    requestAnimationFrame(pass);
+}
+function profiZeigen(e, f){
+    const u = f.profi, inf = f.tafel && window.lernTafel && window.lernTafel.info(f.tafel.werkzeug);
+    const text = u ? (u.folie || String(u.text || "").split(/\n\s*\n/)[0]) : "Erfinde selbst zwei Aufgaben zum heutigen Thema – mit Lösung auf der Rückseite. Tausche sie mit einem anderen Profi.";
+    const o = overlay(`<div class="l-level bonus">PROFI-AUFGABE ⭐⭐⭐</div>${u ? `<h2>${u.emoji ? esc(u.emoji) + " " : ""}${esc(u.titel)}</h2>` : ""}<div class="p-text" style="font-size:clamp(18px,min(2.4vw,4vh),36px)">${md(text)}</div>
+        ${inf ? `<div class="p-reihe"><button class="p-knopf gold" data-profitafel="1">${inf.emoji || "▶"} ${esc(f.tafel.titel || inf.titel)} an der Tafel</button></div>` : ""}`);
+    const t = o.querySelector("[data-profitafel]"); if (t) t.addEventListener("click", () => { o.remove(); tafelStarten({ tafel: f.tafel }); });
+}
+function aufgabeGross(e, k){
+    const a = trainingsAufgaben(e)[k]; if (!a || !window.aufgabeHtml) return;
+    const o = overlay(`<div class="l-level">AUFGABE ${k + 1}</div><h2 style="font-size:clamp(22px,3vw,44px)">${inline(a.text || "")}</h2><div class="l-heft-aufgabe">${window.aufgabeHtml(a, trainingsStufe())}</div>
+        <div class="p-reihe"><button class="p-knopf gold" data-p="rad">🎡 Wer löst an der Tafel?</button></div>`);
+    o.querySelector(".p-dialog").style.maxWidth = "min(1200px,96vw)";
+}
 function folienBauenLern(e, stufe){
     const f = [];
     const tafel = (e.tafel || []).filter(t => t && t.werkzeug && (!t.fuer || t.fuer === "alle" || t.fuer === stufe));
@@ -707,13 +752,13 @@ function folienBauenLern(e, stufe){
     if (kbsp && kbsp.opt) {
         const ku = { titel: "Kopf-Start: " + kbsp.frage.replace(/\s*👍.*$/, ""), emoji: "🧠", kopf: true };
         const n = lernD() <= 25 ? 4 : 6;
-        kbsp.liste.slice(0, n).forEach((x, i) => f.push({ typ: "quiz", u: ku, art: "duell", aussage: x.t, opt: kbsp.opt, nr: i + 1, von: Math.min(n, kbsp.liste.length), loesung: [x.r + 1] }));
+        kbsp.liste.slice(0, n).forEach((x, i) => f.push({ typ: "quiz", u: ku, art: "duell", ohnePunkte: true, aussage: x.t, opt: kbsp.opt, nr: i + 1, von: Math.min(n, kbsp.liste.length), loesung: [x.r + 1] }));
     }
     const ein = window.lernEinstieg ? window.lernEinstieg(e, stufe) : { art: "geschichte" };
     if (ein.art === "knobel") f.push({ typ: "knobel", d: ein });
     else if (ein.art === "erklaert") { f.push({ typ: "erklaert", d: ein });
         // Mitmach-Aufgabe mit Antworten (opt, richtige zuerst) → an der Tafel antippen, Punkt für Klasse oder Ella
-        if (ein.aufgabe && Array.isArray(ein.opt) && window.lernMischen) { const m = window.lernMischen(ein.aufgabe, ein.opt); f.push({ typ: "quiz", u: { titel: "Jetzt ihr!", emoji: "🖐️" }, art: "duell", aussage: m.f || ein.aufgabe, opt: m.a, nr: 1, von: 1, loesung: [m.r + 1] }); }
+        if (ein.aufgabe && Array.isArray(ein.opt) && window.lernMischen) { const m = window.lernMischen(ein.aufgabe, ein.opt); f.push({ typ: "quiz", u: { titel: "Jetzt ihr!", emoji: "🖐️" }, art: "duell", ohnePunkte: true, aussage: m.f || ein.aufgabe, opt: m.a, nr: 1, von: 1, loesung: [m.r + 1] }); }
         else if (ein.aufgabe) f.push({ typ: "mitmachen", d: ein }); }
     else if (ein.art !== "fehler") {
     const lt = stufe === "34" ? e.lerntext34 : e.lerntext12;
@@ -736,10 +781,16 @@ function folienBauenLern(e, stufe){
         .filter(u0 => !(duell && (duell.ersetzt || []).includes(u0.titel)));
     let nr = 0;
     const dauer = lernD();
+    // Trainingsplatz: gemeinsam üben nur kurz (1 Übung, ab 45 Min. 2) – das eigentliche Üben passiert im Training in Stufen
+    const maxGemeinsam = dauer <= 20 ? 0 : dauer >= 45 ? 2 : 1;
+    const blitzPool = [];
+    let profi = null;
     ueListe.forEach(u0 => {
         const u = uebungStufe(e, u0, stufe);
-        if (dauer <= 30 && u.zusatz) return;           // kurze Stunde: ohne Bonus-Level
-        if (dauer <= 20 && !u.zusatz && nr >= 2) return; // sehr kurz: nur zwei Challenges
+        const fr0 = u0["fragen" + stufe] || u0.fragen;
+        if (Array.isArray(fr0)) fr0.slice(4).forEach(q => blitzPool.push(q));
+        if (u.zusatz) { if (!profi) profi = u; return; }   // Bonus-Level wird zur Profi-Aufgabe im Training
+        if (nr >= maxGemeinsam) { if (Array.isArray(fr0)) fr0.slice(0, 4).forEach(q => blitzPool.push(q)); if (!profi) profi = u; return; }
         const punkte = aufzaehlung(u.text).slice(0, 10).map(p => p.split(/\s+→\s+/)[0]);
         const art = u.quiz || quizArt(u.text);
         if (art === "liste" && punkte.length) u.liste = punkte; if (art === "aufdecken" && punkte.length) { u.liste = punkte; u.aufdecken = true; }
@@ -747,8 +798,8 @@ function folienBauenLern(e, stufe){
         // fragen: ["Frage", ["richtig", "falsch", …], { h: Hörtext, b: Bild }] → antippen an der Tafel, Punkt für Klasse oder Ella
         const fr = u0["fragen" + stufe] || u0.fragen;
         if (Array.isArray(fr) && fr.length && window.lernMischen) {
-            const n = Math.min(fr.length, dauer <= 20 ? 4 : dauer <= 30 ? 5 : 8);
-            fr.slice(0, n).forEach(([fq, ant, x], i) => { const m = window.lernMischen(fq, ant); f.push({ typ: "quiz", u, art: "duell", aussage: m.f || fq, opt: m.a, hoeren: (x && x.h) || "", bild: (x && x.b) || "", nr: i + 1, von: n, loesung: [m.r + 1] }); });
+            const n = Math.min(fr.length, 4);
+            fr.slice(0, n).forEach(([fq, ant, x], i) => { const m = window.lernMischen(fq, ant); f.push({ typ: "quiz", u, art: "duell", ohnePunkte: true, aussage: m.f || fq, opt: m.a, hoeren: (x && x.h) || "", bild: (x && x.b) || "", nr: i + 1, von: n, loesung: [m.r + 1] }); });
             return;
         }
         if (punkte.length >= 2 && art === "karten") punkte.forEach((p, i) => f.push({ typ: "raetsel", u, aussage: p, nr: i + 1, von: punkte.length }));
@@ -757,18 +808,23 @@ function folienBauenLern(e, stufe){
             punkte.forEach((p, i) => f.push({ typ: "quiz", u, art, aussage: p, nr: i + 1, von: punkte.length, loesung: loes[i] ? String(loes[i]).split(/[,\s]+/).map(Number).filter(Boolean) : [] }));
         }
     });
-    if (duell && duell.fragen && duell.fragen.length) {
-        const fr = duell.fragen.slice(0, dauer <= 20 ? 4 : dauer <= 30 ? 5 : 6);
-        const u = { titel: duell.titel || "Ella-Duell", emoji: duell.emoji || "🦉", folie: duell.folie || "Ella fordert euch heraus! 🦉\n\nTippt die richtige Antwort an der Tafel an. Richtig: Punkt für euch – daneben: Punkt für Ella.", dauer: fr.length + " Min", duell: true };
-        f.push({ typ: "challenge", u, nr: ++nr });
-        fr.forEach((q, i) => f.push({ typ: "quiz", u, art: "duell", aussage: q.f, opt: q.a, hoeren: q.h || "", bild: q.b || "", nr: i + 1, von: fr.length, loesung: [q.r + 1] }));
-    }
-    if (dauer > 30) tafel.slice(1).forEach(t => f.push({ typ: "tafelchallenge", tafel: t }));
-    if (ein.art === "fehler") {   // Profi-Check nach dem Üben
+    if (ein.art === "fehler") {   // Fehler-Detektiv nach dem gemeinsamen Üben
         f.push({ typ: "fehler", d: ein });
         if (ein.frage) f.push({ typ: "denkrunde", titel: "Fehler-Detektiv", frage: ein.frage, nr: 1, von: 1, st: "fehler" });
     }
-    f.push({ typ: "arbeitsblatt" });
+    // Training in Stufen (Blatt oder Heft) und Check
+    f.push({ typ: "training", profi, tafel: tafel[1] || tafel[0] || null });
+    f.push({ typ: "check" });
+    // Blitzrunde: Klasse gegen Ella – kurz, am Ende
+    const nBlitz = dauer <= 30 ? 3 : 5;
+    let blitz = [];
+    if (duell && duell.fragen && duell.fragen.length) blitz = duell.fragen.slice(0, nBlitz).map(q => ({ f: q.f, a: q.a, h: q.h, b: q.b, r: q.r }));
+    else if (window.lernMischen) blitz = blitzPool.slice(0, nBlitz).map(([fq, ant, x]) => { const m = window.lernMischen(fq, ant); return { f: m.f || fq, a: m.a, h: x && x.h, b: x && x.b, r: m.r }; });
+    if (blitz.length) {
+        const u = { titel: "Blitzrunde", emoji: "⚡", folie: "Zum Schluss fordert Ella euch heraus! 🦉\n\nTippt die richtige Antwort an der Tafel an. Richtig: Punkt für euch – daneben: Punkt für Ella.", dauer: blitz.length + " Min", duell: true };
+        f.push({ typ: "challenge", u, nr: 0, st: "blitz", blitz: true });
+        blitz.forEach((q, i) => f.push({ typ: "quiz", u, art: "duell", st: "blitz", blitz: true, aussage: q.f, opt: q.a, hoeren: q.h || "", bild: q.b || "", nr: i + 1, von: blitz.length, loesung: [q.r + 1] }));
+    }
     f.push({ typ: "abschluss" });
     f.forEach((x, i) => { if (x.typ === "challenge" && x.u.zusatz) { let j = i + 1; while (j < f.length && (f[j].typ === "quiz" || f[j].typ === "raetsel") && f[j].u === x.u) j++; x.weiter = j; } });
     return f;
@@ -981,7 +1037,7 @@ function zeigen(i, rueckwaerts){
     if (z.silben) silbenLaden().then(() => { if (el.isConnected) silbenAnwenden(el); });
     z.wurzel.querySelector(".p-pos").textContent = (i + 1) + " / " + z.folien.length;
     if (LERN()) {
-        scoreZeichnen(false, f.typ === "mission" || f.typ === "abschluss" || f.typ === "barometer");
+        scoreZeichnen(false, !f.blitz);
         const pfad = pfadVon(z.folien), jetzt = pfad.indexOf(stationVon(f));
         z.wurzel.querySelector(".p-punkte").className = "p-punkte l-pfad";
         z.wurzel.querySelector(".p-punkte").innerHTML = pfad.map((key, k) => { const [sym, name] = STATION[key], ziel = z.folien.findIndex(x => stationVon(x) === key);
@@ -1023,14 +1079,14 @@ function folieHtml(f, e){
     if (LERN()) {
         const zielText = zustand.stufe === "34" ? e.ziel34 : (e.ziel12 || e.ziel34);
         const groesse = (t, a, b2) => String(t || "").length > a ? "clamp(15px,min(1.7vw,2.9vh),28px)" : String(t || "").length > b2 ? "clamp(18px,min(2.2vw,3.7vh),34px)" : "clamp(22px,min(2.8vw,4.6vh),42px)";
-        const punktKnoepfe = `<button class="p-knopf l-pk" data-punkt="klasse">🧒 Punkt für die Klasse</button><button class="p-knopf hell l-pk" data-punkt="eule">🦉 Punkt für Ella</button>`;
+        const punktKnoepfe = f.blitz ? `<button class="p-knopf l-pk" data-punkt="klasse">🧒 Punkt für die Klasse</button><button class="p-knopf hell l-pk" data-punkt="eule">🦉 Punkt für Ella</button>` : "";
         if (f.typ === "mission") {
             const n = zustand.folien.filter(x => x.typ === "challenge" && !x.u.zusatz).length + zustand.folien.filter(x => x.typ === "tafelchallenge").length;
-            const orte = pfadVon(zustand.folien).filter(k => k !== "mission" && k !== "ankommen").map(k => k === "challenge" ? ["🏆", n + " Challenge" + (n === 1 ? "" : "s")] : STATION[k]);
-            return `${KRITZEL()}<div class="l-stempel">MISSION · ${esc(String(e.kategorie || "").replace(/:.*/, "").toUpperCase())}</div><h2 class="l-mtitel">${esc(e.titel)}</h2>
-                <div class="l-auftragskarte"><small>Eure Mission:</small>${esc(zielText || e.titel)}</div>
+            const orte = pfadVon(zustand.folien).filter(k => k !== "mission" && k !== "ankommen").map(k => STATION[k]);
+            return `${KRITZEL()}<div class="l-stempel">TRAININGSPLATZ · ${esc(String(e.kategorie || "").replace(/:.*/, "").toUpperCase())}</div><h2 class="l-mtitel">${esc(e.titel)}</h2>
+                <div class="l-auftragskarte"><small>Heute trainieren wir:</small>${esc(zielText || e.titel)}</div>
                 <div class="l-karte">${orte.map(([sym, name], k) => (k ? '<span class="l-kpfeil"></span>' : "") + `<div class="l-ort"><span>${sym}</span><b>${esc(name)}</b></div>`).join("")}</div>
-                <div class="l-duell">${eule(true)}<div><b>Klasse gegen Eule Ella!</b><br>Richtig gelöst? Punkt für euch. Daneben? Punkt für Ella.</div></div>
+                <div class="l-duell">${eule(true)}<div><b>Ella erklärt – ihr trainiert.</b><br>Jeder wählt seine Stufe: ⭐ ⭐⭐ ⭐⭐⭐. Zum Schluss: Blitzrunde gegen Ella!</div></div>
                 <div class="p-wahl">${e.nur34 ? "" : `<button class="p-knopf ${zustand.stufe === "12" ? "" : "hell"}" data-stufe="12">Klasse 1/2</button>`}<button class="p-knopf ${zustand.stufe === "34" ? "" : "hell"}" data-stufe="34">Klasse 3/4</button></div>
                 ${(() => { const g = gruppenFuer(zustand.stufe), a = gruppeAktuell(); const kl = klasseAktuell(), ks = zustand.stufe === "34" ? ["3", "4"] : ["1", "2"];
                     return `<div class="l-wahlzeile">` + (g.length > 1 ? `<div class="l-gruppen"><span>Unsere Gruppe:</span>${g.map(x => `<button class="l-gr ${x.id === a.id ? "an" : ""}" data-gruppe="${esc(x.id)}">${esc(x.name)}</button>`).join("")}</div>` : "")
@@ -1038,13 +1094,13 @@ function folieHtml(f, e){
         }
         if (f.typ === "kopfstart") {
             const inf = f.tafel && window.lernTafel && window.lernTafel.info(f.tafel.werkzeug);
-            return `<div class="l-stempel">KOPF-START · ${kopfMin()} MINUTEN</div><h2>🧠 Gehirn einschalten!</h2>
+            return `<div class="l-stempel">AUFWÄRMEN · ${kopfMin()} MINUTEN</div><h2>🏃 Aufwärmen: Gehirn einschalten!</h2>
                 <div class="l-zettel${f.bsp || f.fragen ? " klein" : ""}">${inline(f.warmup || "Blitzrunde: Ich frage – ihr antwortet blitzschnell!")}</div>
-                ${f.fragen ? `<div class="l-bsp-frage" style="margin-top:3vh">👉 Gleich kommen ${f.fragen} Fragen: Ein Kind tippt die Antwort an der Tafel an.<br>Richtig = Punkt für euch · falsch = Punkt für Ella 🦉</div><div class="p-reihe"><button class="p-knopf l-los" data-p="weiter">▶ Los geht’s!</button></div>` : ""}
+                ${f.fragen ? `<div class="l-bsp-frage" style="margin-top:3vh">👉 Gleich kommen ${f.fragen} Fragen zum Aufwärmen: Ein Kind tippt die Antwort an der Tafel an.</div><div class="p-reihe"><button class="p-knopf l-los" data-p="weiter">▶ Los geht’s!</button></div>` : ""}
                 ${f.bsp ? `<div class="l-bsp"><div class="l-bsp-frage">${esc(f.bsp.frage)}</div>
                     <div class="l-bsp-zeile"><button class="p-knopf hell" data-bsp="-1" aria-label="Zurück">◀</button><div class="l-bsp-text"></div><button class="p-knopf hell" data-bsp="1" aria-label="Weiter">▶</button></div>
                     <div class="l-bsp-fuss"><span class="l-bsp-nr"></span><button class="p-knopf hell" data-bsploes hidden>💡 Lösung</button><span class="l-bsp-loes" hidden></span></div>
-                    <div class="p-reihe l-bsp-punkte"><button class="p-knopf l-pk" data-bsppunkt="klasse">🧒 Richtig – Punkt für euch</button><button class="p-knopf hell l-pk" data-bsppunkt="eule">🦉 Daneben – Punkt für Ella</button></div></div>` : ""}
+                    </div>` : ""}
                 <div class="p-reihe">${inf ? `<button class="p-knopf ${f.warm ? "l-los" : ""}" data-tafel="1">${inf.emoji || "▶"} ${esc(f.warm ? inf.titel + (tafelEinstellung(f.tafel).bis ? " bis " + tafelEinstellung(f.tafel).bis : "") + " starten" : (f.tafel.titel || inf.titel) + " an der Tafel")}</button>` : ""}<button class="p-knopf hell" data-start="${kopfMin()}">⏱ ${kopfMin()} Minuten</button></div>`;
         }
         if (f.typ === "fall") {
@@ -1121,6 +1177,27 @@ function folieHtml(f, e){
                 ${inf.text ? `<div class="p-text" style="font-size:clamp(20px,min(2.4vw,4vh),38px)">${esc(inf.text)}</div>` : ""}
                 <div class="p-reihe"><button class="p-knopf" data-tafel="1">▶ An der Tafel starten</button></div><div class="p-reihe l-pkreihe">${punktKnoepfe}</div>`;
         }
+        if (f.typ === "training") {
+            const min = Math.max(3, lernMin(12)), n = trainingsAufgaben(e).length;
+            const start = k => Math.min(k, Math.max(1, n));
+            return `${KRITZEL()}<div class="l-stempel">TRAINING · ${min} MINUTEN</div><h2>💪 Wähle deine Stufe!</h2>
+                <div class="l-stufen">
+                    <div class="l-stufe"><b>⭐</b><span>Grundlage</span><small>Start bei Aufgabe ${start(1)}</small></div>
+                    <div class="l-stufe"><b>⭐⭐</b><span>Training</span><small>Start bei Aufgabe ${start(2)}</small></div>
+                    <div class="l-stufe"><b>⭐⭐⭐</b><span>Profi</span><small>Start bei Aufgabe ${start(3)} · dann Profi-Aufgabe</small></div>
+                </div>
+                <div class="l-duell">${eule(true)}<div>Nimm die Stufe, bei der du ein bisschen schwitzt – nicht zu leicht, nicht zu schwer.<br><b>Fertig?</b> Weiter mit der nächsten Aufgabe – oder die Profi-Aufgabe.</div></div>
+                <div class="p-reihe"><button class="p-knopf" data-start="${min}">⏱ ${min} Minuten</button>${window.lernTafel ? `<button class="p-knopf gold" data-p="leise" data-min="${min}">🌳 Leise-Wald an</button>` : ""}
+                    <button class="p-knopf hell" data-heft="1" title="Ohne Drucken: Die Aufgaben stehen an der Tafel, die Kinder schreiben ins Heft">📓 Ohne Blatt: Aufgaben an der Tafel</button>
+                    <button class="p-knopf hell" data-profi="1">⭐⭐⭐ Profi-Aufgabe</button></div>`;
+        }
+        if (f.typ === "check") {
+            const af = trainingsAufgaben(e);
+            return `${KRITZEL()}<div class="l-stempel">CHECK</div><h2>✅ Checkt euer Training!</h2>
+                <div class="l-check klein"><div><b>1</b> Mit dem Nachbarn vergleichen</div><div><b>2</b> Anders? Zusammen nachdenken</div><div><b>3</b> Noch unklar? Aufgabe antippen – ein Kind löst sie an der Tafel</div></div>
+                ${af.length ? `<div class="l-afliste">${af.map((a, k) => `<button class="l-afknopf" data-aufg="${k}"><b>${k + 1}</b>${inline(String(a.text || "").replace(/\*\*/g, "").slice(0, 60))}${String(a.text || "").length > 60 ? " …" : ""}</button>`).join("")}</div>` : ""}
+                <div class="p-reihe"><button class="p-knopf hell" data-p="rad">🎡 Wer löst an der Tafel?</button></div>`;
+        }
         if (f.typ === "arbeitsblatt") return `${KRITZEL()}<div class="l-stempel">ARBEITSPHASE · 11 MINUTEN</div><h2>✏️ Jetzt bist du dran!</h2>
             <div class="l-check klein"><div><b>1</b> Name schreiben</div><div><b>2</b> Aufgabe genau lesen</div><div><b>3</b> Los geht’s!</div><div><b>✓</b> Fertig? Kontrollieren!</div></div>
             <div class="l-duell">${eule(true)}<div>Feststecken? <b>Hilfe-Treppe:</b> 👀 nochmal lesen · 🧰 Hilfsmittel · 🤫 Nachbarn fragen · 🙋 Hand heben<br>Je leiser ihr arbeitet, desto mehr Tiere kommen in den Leise-Wald!</div></div>
@@ -1129,7 +1206,7 @@ function folieHtml(f, e){
             const gr = gruppeAktuell(), G = glas(gr.id), P = zustand.punkte, gespielt = P.klasse + P.eule > 0;
             const sieg = P.klasse > P.eule ? "Ihr habt Eule Ella geschlagen! 🎉 Bonus-Stern!" : P.klasse === P.eule ? "Unentschieden – stark!" : "Diesmal gewinnt Ella – nächstes Mal schlagt ihr sie!";
             return `${gespielt ? `<div class="l-endstand"><div class="l-es k">🧒 Klasse<b>${P.klasse}</b></div><div class="l-es-mitte">:</div><div class="l-es e">🦉 Ella<b>${P.eule}</b></div></div><div class="p-klein">${sieg}</div>` : ""}
-                <h2 style="font-size:clamp(26px,3.6vw,54px)">Wie gut kannst du das jetzt?</h2><div class="l-zwei">
+                <h2 style="font-size:clamp(26px,3.6vw,54px)">Feierabend! Wie gut kannst du das jetzt?</h2><div class="p-klein">Was hast du heute geschafft – und was wackelt noch?</div><div class="l-zwei">
                 ${stimmenHtml("lerndaumen", [{ wert: "sicher", name: "kann ich sicher", art: "emoji", zeichen: "👍" }, { wert: "bisschen", name: "ein bisschen", art: "emoji", zeichen: "👉" }, { wert: "noch", name: "übe ich noch", art: "emoji", zeichen: "👎" }])}
                 <div class="l-glasbox">${eule(true)}<div><div class="l-glas" id="lGlas"></div><div class="l-glas-zahl">Sternenglas ${esc(gr.name)}: <b id="lZahl"></b></div><div class="l-glas-rest" id="lRest"></div></div></div></div>
                 <div class="p-reihe"><button class="p-knopf" data-stern="1">⭐ Stern ins Glas!</button><button class="p-knopf hell l-pk" data-stern="-1" title="Aus Versehen? Einen Stern wieder herausnehmen.">↩</button><button class="p-knopf hell l-pk" data-ziel="1">🎯 Ziel</button><button class="p-knopf gold l-pk" data-leeren="1" hidden>🫙 Glas leeren</button><button class="p-knopf hell" data-p="rad">🎡 Wer erzählt?</button></div>
@@ -1312,6 +1389,9 @@ function folieAktivieren(el, f){
         const erkl = el.querySelector("[data-erkl]"); if (erkl) erkl.hidden = false;
     }));
     el.querySelectorAll("[data-springen]").forEach(b => b.addEventListener("click", () => zeigen(+b.dataset.springen)));
+    el.querySelectorAll("[data-heft]").forEach(b => b.addEventListener("click", () => heftZeigen(zustand.e)));
+    el.querySelectorAll("[data-profi]").forEach(b => b.addEventListener("click", () => profiZeigen(zustand.e, f)));
+    el.querySelectorAll("[data-aufg]").forEach(b => b.addEventListener("click", () => aufgabeGross(zustand.e, +b.dataset.aufg)));
     // Was passiert jetzt? – Stimmen pro Weg, dann Folgen aufdecken
     if (f.typ === "wasjetzt" || f.typ === "miniziel") {
         const schl = f.typ === "wasjetzt" ? "wege" : "ziel", attr = f.typ === "wasjetzt" ? "weg" : "ziel";
@@ -1398,22 +1478,23 @@ function folieAktivieren(el, f){
         const richtig = f.loesung || [], ok = richtig.includes(k);
         el.querySelectorAll("[data-wahl]").forEach(o => { const n = +o.dataset.wahl; o.disabled = true; o.classList.toggle("richtig", richtig.includes(n)); o.classList.toggle("falsch", !richtig.includes(n) && n !== k); o.classList.toggle("getippt", n === k); o.classList.toggle("daneben", n === k && !ok); });
         const erg = el.querySelector(".l-ergebnis"), opt = abstimmOptionen(f.art, f.u, f), rName = richtig.map(n => opt[n - 1] ? (opt[n - 1].zeichen + " " + opt[n - 1].name).trim() : n).join(" / ");
-        if (erg) { erg.hidden = false; erg.className = "l-ergebnis " + (ok ? "gut" : "ella"); erg.innerHTML = ok ? "🎉 Richtig! Punkt für euch!" : `🦉 Hu-hu! Punkt für Ella.<small>Richtig ist: ${inline(rName)}</small>`; }
+        if (erg) { erg.hidden = false; erg.className = "l-ergebnis " + (ok ? "gut" : "ella"); erg.innerHTML = f.ohnePunkte ? (ok ? "🎉 Richtig!" : `🤔 Nicht ganz.<small>Richtig ist: ${inline(rName)}</small>`) : ok ? "🎉 Richtig! Punkt für euch!" : `🦉 Hu-hu! Punkt für Ella.<small>Richtig ist: ${inline(rName)}</small>`; }
         const nm = el.querySelector("[data-nochmal]"); if (nm) nm.hidden = false;
         el.querySelectorAll(".l-tippreihe [data-countdown], .l-tippreihe [data-p=\"rad\"]").forEach(b => { b.hidden = true; });
         const th = el.querySelector(".l-tipphinweis"); if (th) th.hidden = true;
-        if (mitTon) { if (ok) { fanfare(); konfetti(zustand.buehne); } else euleRuf(); }
+        if (mitTon) { if (ok) { fanfare(); if (!f.ohnePunkte) konfetti(zustand.buehne); } else if (!f.ohnePunkte) euleRuf(); }
     };
     el.querySelectorAll("[data-wahl]").forEach(o => o.addEventListener("click", () => {
         const i = zustand.i, P = zustand.punkte; if (zustand.gewertet[i]) return;
         const k = +o.dataset.wahl, wer = (f.loesung || []).includes(k) ? "klasse" : "eule";
-        zustand.gewertet[i] = wer; (zustand.gewaehlt = zustand.gewaehlt || {})[i] = k; P[wer]++;
-        wahlZeigen(k, true); scoreZeichnen(true);
+        zustand.gewertet[i] = wer; (zustand.gewaehlt = zustand.gewaehlt || {})[i] = k;
+        if (!f.ohnePunkte) P[wer]++;
+        wahlZeigen(k, true); if (!f.ohnePunkte) scoreZeichnen(true);
     }));
     if (zustand.gewaehlt && zustand.gewaehlt[zustand.i] && el.querySelector("[data-wahl]")) wahlZeigen(zustand.gewaehlt[zustand.i], false);
     el.querySelectorAll("[data-nochmal]").forEach(b => b.addEventListener("click", () => {
         const i = zustand.i, alt = zustand.gewertet[i];
-        if (alt) zustand.punkte[alt] = Math.max(0, zustand.punkte[alt] - 1);
+        if (alt && !f.ohnePunkte) zustand.punkte[alt] = Math.max(0, zustand.punkte[alt] - 1);
         delete zustand.gewertet[i]; if (zustand.gewaehlt) delete zustand.gewaehlt[i];
         scoreZeichnen(true); zeigen(i);
     }));
