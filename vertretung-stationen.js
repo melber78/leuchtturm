@@ -98,9 +98,9 @@ st({ id: "b-zaehlen34", typ: "bewegung", stufe: "34", titel: "Zähl-Klatscher",
     { f: "Zählt rückwärts von 50 in 5er-Schritten. Bei 0 alle Arme hoch!" }
   ]});
 
-st({ id: "b-spiegel", typ: "bewegung", stufe: "alle", titel: "Spiegel-Station",
-  lk: "Du machst langsam eine Bewegung vor, alle machen sie wie ein Spiegel nach – Vorschläge stehen an der Tafel.",
-  auftrag: "Ihr seid ein Spiegel: Macht genau das nach, was vorne vorgemacht wird.",
+st({ id: "b-spiegel", typ: "bewegung", stufe: "alle", titel: "Tafel-Kommando",
+  lk: "Lies jeden Auftrag vor (oder tippe auf 🔊) – die Kinder machen ihn am Platz, du musst nichts vormachen.",
+  auftrag: "Die Tafel gibt das Kommando: Macht genau das, was hier steht – am Platz.",
   items: [
     { f: "Beide Arme langsam hoch – und wieder runter." },
     { f: "Mit dem Kopf „Ja“ nicken, dann „Nein“ schütteln." },
