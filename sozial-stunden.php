@@ -1514,6 +1514,7 @@ function zeigeBibliothek(){
     const kats = [...new Set([...KATEGORIEN, ...alleEinheiten().map(e => e.kategorie).filter(Boolean)])];
     inhalt.innerHTML = `
         <div id="dieseWoche"></div>
+        ${window.BEREICH.key === "vertretung" ? `<a href="vertretung-karte.php" class="hinweis" style="display:flex;gap:14px;align-items:center;text-decoration:none;color:inherit;background:#f3e8cc;border:2px solid #3f3322"><span style="font-size:2.2rem">🗺️</span><span style="flex:1"><b style="font-size:1.15rem">Die Schatzkarte – Vertretung ganz ohne Vorbereitung</b><br>Klasse, Zeit und Stimmung antippen – die Karte mit Stationen entsteht von selbst. Nichts drucken, alles an der Tafel.</span><i class="fa-solid fa-arrow-right"></i></a>` : ""}
         ${window.BEREICH.key === "lernangebot" && !(DATEN.jahresplan && Object.keys(DATEN.jahresplan.wochen || {}).length) ? `<div class="hinweis" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span style="flex:1 1 300px"><i class="fa-solid fa-seedling"></i> <b>So geht’s:</b> Fertige Stunde wählen und in den <a href="#jahresplan">Jahresplan</a> eintragen – oder im <a href="#methoden">Planer</a> eine eigene Stunde aus Methoden bauen. Für zwischendurch: <a href="#tafel">Tafel-Übungen</a> und der <a href="lernangebot-generator.php">Arbeitsblatt-Generator</a>.</span></div>` : ""}
         <div class="werkzeug">
             <input type="search" id="suche" placeholder="Stunde suchen …" value="${esc(filterText)}">

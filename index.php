@@ -148,6 +148,7 @@ details.bereich[open] .pfeil{ transform:rotate(180deg); }
 <?php
 // Neu im Leuchtturm: wird nach Updates kurz oben angezeigt (Einträge der letzten 3 Wochen)
 $NEU = [
+    ["2026-11-28", "Die Schatzkarte: Vertretung neu gedacht", "Vertretung ohne Vorbereitung für Kl. 1–4: Klasse, verbleibende Zeit und Stimmung der Klasse antippen – daraus entsteht eine Wanderkarte mit 3 bis 6 Stationen (Bewegen, Ruhe, Rätseln, Lesen, Deutsch, Mathe, Sachunterricht). Jede Station lichtet den Nebel, am Ende wird unter der alten Eiche der Schatz gehoben. Nichts drucken, alles an der Tafel.", "vertretung-karte.php"],
     ["2026-11-28", "Bessere Vorlesestimme", "Der Leuchtturm sucht jetzt automatisch die natürlichste deutsche Stimme auf dem Gerät. Unter Lernspiele → ⚙️ Einstellungen kannst du die Stimme selbst wählen (mit Hörprobe) und das Tempo einstellen – gilt für alle Seiten.", "lrs-spiele.php"],
     ["2026-11-27", "Lernspiele für Anfänger – ganz ohne Lesen", "Reime hören, Silben klatschen, Anfangslaute hören, Robo-Sprache (Silben zusammenziehen), Laut-Detektiv und Reim-Memory: nur Bilder und Vorlesen. Lesestand „liest noch nicht“ wählen – dann gibt es auch in der Weltenreise den Hörpfad.", "lrs-spiele.php"],
     ["2026-11-27", "Konflikte lösen im Sozialtraining", "Neuer Reiter „Konflikte“: Streitschlichtung an der Tafel in 6 Schritten (Atmen, Redestein mit Redezeit, Gefühle, Ich-Botschaft, Lösungen, Abmachung) und Druckvorlagen: Reflexionsbogen Kl. 1/2 und 3/4, Abmachung, Ich-Botschaft-Karten, Beobachtungsbogen.", "sozial-stunden.php#konflikte"],
@@ -256,6 +257,7 @@ $BEREICHE = [
         ["Stunden", [
             ["sozial-stunden.php?bereich=lernangebot", "fa-seedling", "Lernangebot", "40-Minuten-Stunden Deutsch, Mathe &amp; Lernen lernen", true],
             ["sozial-stunden.php?bereich=vertretung", "fa-shuffle", "Vertretungsstunden", "Fertige Stunden für Kl. 1–4, auch Englisch"],
+            ["vertretung-karte.php", "fa-map", "Die Schatzkarte", "Vertretung ohne Vorbereitung – Stationen an der Tafel"],
         ]],
         ["Werkzeuge", [
             ["ella-quiz.php", "fa-graduation-cap", "Ella-Quiz", "Üben nach Klasse, Fach und Thema – auch an der Tafel"],
