@@ -464,7 +464,12 @@ const GEN = {
         const it = [], schon = new Set();
         while (it.length < 6){
             let f, a;
-            if (stufe === "12"){
+            if (stufe === "1"){   // Kl. 1: Zahlenraum bis 10
+                const art = it.length % 3;
+                if (art === 0){ const x = z(1, 6), y = z(1, 10 - x); f = `${x} + ${y}`; a = x + y; }
+                else if (art === 1){ const x = z(4, 10), y = z(1, x - 1); f = `${x} − ${y}`; a = x - y; }
+                else { const x = z(1, 5), y = z(1, 5); f = `${x} + ▢ = ${x + y}`; a = y; }
+            } else if (stufe !== "34"){
                 const art = it.length % 3;
                 if (art === 0){ const x = z(3, 12), y = z(2, 20 - x); f = `${x} + ${y}`; a = x + y; }
                 else if (art === 1){ const x = z(8, 20), y = z(2, x - 1); f = `${x} − ${y}`; a = x - y; }
@@ -483,13 +488,14 @@ const GEN = {
     detektiv(stufe){
         const it = [];
         for (let n = 0; n < 3; n++){
-            const max = stufe === "12" ? 20 : 100;
-            const zahl = z(stufe === "12" ? 5 : 15, max - 2);
-            const lo = Math.max(1, zahl - z(2, stufe === "12" ? 4 : 12)), hi = Math.min(max, zahl + z(2, stufe === "12" ? 4 : 12));
+            const k1 = stufe === "1", klein = stufe !== "34";
+            const max = k1 ? 10 : klein ? 20 : 100;
+            const zahl = z(k1 ? 2 : klein ? 5 : 15, max - (k1 ? 1 : 2));
+            const lo = Math.max(k1 ? 0 : 1, zahl - z(2, k1 ? 2 : klein ? 4 : 12)), hi = Math.min(max, zahl + z(2, k1 ? 2 : klein ? 4 : 12));
             const tipps = [`Meine Zahl ist größer als ${lo} und kleiner als ${hi}.`];
             let kand = []; for (let k = lo + 1; k < hi; k++) kand.push(k);
-            const gerade = zahl % 2 === 0;
-            tipps.push(`Meine Zahl ist ${gerade ? "gerade" : "ungerade"}.`); kand = kand.filter(k => (k % 2 === 0) === gerade);
+            if (!k1){ const gerade = zahl % 2 === 0;
+                tipps.push(`Meine Zahl ist ${gerade ? "gerade" : "ungerade"}.`); kand = kand.filter(k => (k % 2 === 0) === gerade); }
             if (stufe === "34" && kand.length > 1){
                 const qs = String(zahl).split("").reduce((s, c) => s + +c, 0);
                 tipps.push(`Wenn man ihre Ziffern zusammenzählt, kommt ${qs} heraus.`);
@@ -506,7 +512,9 @@ const GEN = {
     },
     muster(stufe){
         const it = [];
-        const regeln = stufe === "12"
+        const regeln = stufe === "1"
+            ? [() => [z(1, 4), 1, "immer + 1"], () => [z(0, 2), 2, "immer + 2"], () => [z(9, 10), -1, "immer − 1"], () => [z(1, 3), 1, "immer + 1"]]
+            : stufe !== "34"
             ? [() => { const s = z(1, 6), d = 2; return [s, d, `immer + ${d}`]; }, () => { const s = z(0, 5), d = 5; return [s, d, `immer + ${d}`]; },
                () => { const s = z(15, 20), d = -1; return [s, d, "immer − 1"]; }, () => { const s = z(1, 4), d = 3; return [s, d, "immer + 3"]; },
                () => { const s = z(20, 24), d = -2; return [s, d, "immer − 2"]; }]
@@ -542,10 +550,18 @@ const GEN = {
             () => { const n = z(2, 6) * 6 + z(1, 5); const b = Math.ceil(n / 6); return [`${n} Kinder fahren mit Autos zum Wald. In jedes Auto passen 6 Kinder. Wie viele Autos brauchen sie?`, `${n} : 6 = ${Math.floor(n / 6)} Rest ${n % 6} – also ${b} Autos, damit niemand zurückbleibt!`]; },
             () => { const a = z(120, 380), b = z(110, 400); return [`Fritz läuft am Vormittag ${a} m und am Nachmittag ${b} m. Wie weit ist er insgesamt gelaufen? Ist das mehr als ein Kilometer?`, `${a} + ${b} = ${a + b} m – ${a + b > 1000 ? "ja, mehr als 1 km" : "nein, weniger als 1 km (1 km = 1000 m)"}`]; }
         ];
-        return misch(stufe === "12" ? A12 : A34).slice(0, 4).map(g => { const [f, a] = g(); return { f, a }; });
+        const A1 = [
+            () => { const a = z(2, 5), b = z(1, 4); return [`Fritz findet ${a} Pilze. Dann findet er noch ${b}. Wie viele Pilze hat er jetzt?`, `${a} + ${b} = ${a + b} Pilze`]; },
+            () => { const a = z(5, 9), b = z(1, 4); return [`Auf der Wiese sitzen ${a} Vögel. ${b} fliegen weg. Wie viele sitzen noch da?`, `${a} − ${b} = ${a - b} Vögel`]; },
+            () => { const a = z(3, 6); return [`Im Korb liegen ${a} Äpfel. Mama legt noch 2 dazu. Wie viele Äpfel sind jetzt im Korb?`, `${a} + 2 = ${a + 2} Äpfel`]; },
+            () => { const a = z(6, 10); return [`${a} Kinder spielen Fangen. 3 Kinder gehen nach Hause. Wie viele spielen noch?`, `${a} − 3 = ${a - 3} Kinder`]; }
+        ];
+        return misch(stufe === "1" ? A1 : stufe !== "34" ? A12 : A34).slice(0, 4).map(g => { const [f, a] = g(); return { f, a }; });
     },
     salat(stufe){
-        const W = stufe === "12"
+        const W = stufe === "1"
+            ? [["OMA", "👵"], ["OPA", "👴"], ["EIS", "🍦"], ["AUTO", "🚗"], ["MAUS", "🐭"], ["HUND", "🐶"], ["BALL", "⚽"], ["NASE", "👃"], ["BAUM", "🌳"], ["SONNE", "☀️"]]
+            : stufe !== "34"
             ? [["BAUM", "im Wald"], ["HASE", "ein Tier"], ["MAUS", "ein Tier"], ["NASE", "im Gesicht"], ["ROSE", "eine Blume"], ["SONNE", "am Himmel"], ["BALL", "zum Spielen"], ["FUCHS", "ein Tier"], ["WALD", "viele Bäume"], ["HAND", "am Körper"]]
             : [["SCHATZ", "liegt in der Kiste"], ["WIESE", "voller Blumen"], ["BRÜCKE", "über den Bach"], ["KOMPASS", "zeigt die Richtung"], ["HÖHLE", "dunkel und im Fels"], ["EICHHÖRNCHEN", "ein Tier im Baum"], ["WANDERN", "ein Tun-Wort"], ["SCHMETTERLING", "fliegt bunt"], ["LANDKARTE", "zeigt den Weg"], ["SPECHT", "klopft am Baum"]];
         return misch(W).slice(0, 5).map(([w, h]) => {

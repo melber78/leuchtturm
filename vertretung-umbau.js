@@ -18,6 +18,8 @@ const MATERIAL = /Arbeitsblatt|Zettel|Schere|Kleber|Würfel|Papierstreifen|ausdr
 // Aufgaben, bei denen die Lehrkraft eine Bewegung, Übung oder Szene selbst vormachen/vorspielen müsste → nicht übernehmen.
 // Vorlesen, sagen, fragen, an die Tafel schreiben ist in Ordnung.
 const SELBST_MACHEN = /vormach|Vormachen|machst (es|sie|das|die Bewegung)? ?vor|zeigst .{0,25}\bvor\b|Zeige den Trick|klatschst|\bDu (spielst|tanzt|turnst)\b/;
+const VORBEREITUNG = /An der Tafel (steht|stehen|sind)|Bilder an der Tafel|an die Tafel (malen|zeichnen|schreiben)|Kästen|Vorlese-Kino|Nach dem Vorlesen|flüster|Dirigent|vorlesen|liest .{0,30}vor|Bild hoch|ihr Bild|dein Bild|Zeig dein/i;
+const SAGT = /\b(Du|du) (sagst|rufst|nennst|fragst|liest|stellst|diktierst|denkst)\b|\bLies\b|Zeige das Bild|Ich sehe was/;
 const ohneMd = t => String(t || "").replace(/\*\*/g, "").trim();
 const punkte = t => String(t || "").split("\n").filter(z => /^\s*[-•]\s+/.test(z)).map(z => z.replace(/^\s*[-•]\s+/, "").trim());
 const ohnePunkte = t => String(t || "").split("\n").filter(z => !/^\s*[-•]\s+/.test(z)).join("\n").trim();
@@ -31,8 +33,17 @@ function lkSatz(text, typ){
     if (/\b(liest|lies|Lies)\b.*\bvor\b/.test(satz)) satz += " (Oder 🔊 antippen – die Tafel liest vor.)";
     return satz;
 }
-function itemsAus(u, text){
+// Zahlen-/Wortlisten im Text („Kl. 1/2: 4 · 7 · 10 …“) → je Eintrag eine Aufgabe an der Tafel
+function listeAus(text, stufe){
+    const zeilen = String(text || "").split("\n").filter(z => (z.match(/·/g) || []).length >= 2);
+    if (!zeilen.length) return [];
+    const kl = zeilen.find(z => stufe === "34" ? /Kl\.\s*3\/4/.test(z) : /Kl\.\s*1\/2/.test(z)) || zeilen.find(z => !/Kl\.\s*\d\/\d/.test(z));
+    if (!kl) return [];
+    return kl.replace(/^.*?Kl\.\s*\d\/\d\s*:?\s*/, "").split("·").map(x => ohneMd(x).replace(/^[„"]|[“"]$/g, "")).filter(x => x && x.length < 80).slice(0, 12).map(f => ({ f }));
+}
+function itemsAus(u, text, stufe){
     const p = punkte(text);
+    if (!p.length) return listeAus(text, stufe);
     const ant = Array.isArray(u.antworten) ? u.antworten.map(a => String(a).replace(/^\S+\s+/, "")) : null;
     const loes = u.loesungen || [];
     return p.slice(0, 10).map((z, i) => {
@@ -71,10 +82,14 @@ window.VK_UMBAU = function(vorlagen){
                 const text = u["text" + stufe] || u.text || "";
                 if (MATERIAL.test(text)) return;
                 const folie = u["folie" + stufe] || u.folie || ohnePunkte(text);
-                const items = itemsAus(u, text);
+                const items = itemsAus(u, text, stufe);
                 // Die Lehrkraft macht NICHTS vor und spielt keine Rolle – alles kommt von der Tafel.
                 const nurLk = t => String(t).replace(/[^.!?\n]*\b(dürfen|darf|Kinder|Kind)\b[^.!?\n]*vormachen[^.!?\n]*[.!?]?/g, "");   // Kinder dürfen vormachen – das ist okay
                 if (SELBST_MACHEN.test(nurLk(text)) || SELBST_MACHEN.test(nurLk(folie))) return;
+                // Was die Lehrkraft sagen/vorlesen soll, muss an der Tafel stehen – sonst fehlt der Inhalt
+                if (SAGT.test(text) && items.length < 2) return;
+                // Offene Aufgabe ohne Einzelschritte: nur, wenn nichts vorbereitet oder gezeichnet werden muss
+                if (!items.length && VORBEREITUNG.test(text + "\n" + folie)) return;
                 const lk = lkSatz(text, typ);
                 out.push({ id: "alt-" + e.id + "-" + k + "-" + stufe, typ, stufe, titel: u.titel, quelle: e.titel,
                     lk, auftrag: folie, items, dauer: u.dauer || "", lang: typ === "englisch" ? "en" : "" });

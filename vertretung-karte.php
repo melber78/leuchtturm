@@ -261,7 +261,7 @@ const MUSTER = {
     muede:   { 3: ["bewegung", "raetsel", "fach"], 4: ["bewegung", "fach", "raetsel", "fach"], 6: ["bewegung", "raetsel", "fach", "bewegung", "fach", "fach"] }
 };
 const ANZAHL = { 15: 3, 25: 4, 40: 6 };
-const passt = (s, stufe) => s.stufe === "alle" || s.stufe === stufe;
+const passt = (s, stufe) => s.stufe === "alle" || s.stufe === stufe || (s.stufe === "12" && (stufe === "1" || stufe === "2"));
 function fachTypen(schwerpunkt, n){
     const out = [];
     if (schwerpunkt === "deutsch") for (let i = 0; i < n; i++) out.push(i % 2 ? "woerter" : "lesen");
@@ -274,6 +274,8 @@ function fachTypen(schwerpunkt, n){
 function stationHolen(typ, stufe, benutzt){
     const typen = typ === "raetsel" ? ["raetsel", "kreativ"] : [typ];
     let pool = S.filter(s => typen.includes(s.typ) && passt(s, stufe) && !benutzt.includes(s.id) && !benutzt.includes("q:" + (s.quelle || s.id)));
+    // Hälfte der Ziehungen: zuerst die eigens geschriebenen Stationen (mit Lösungen zum Aufdecken)
+    const eigen = pool.filter(s => !s.quelle); if (eigen.length && Math.random() < .5) pool = eigen;
     if (!pool.length) pool = S.filter(s => typen.includes(s.typ) && passt(s, stufe) && !benutzt.includes(s.id));
     if (!pool.length) pool = S.filter(s => typen.includes(s.typ) && passt(s, stufe));
     const s = JSON.parse(JSON.stringify(misch(pool)[0]));
@@ -449,14 +451,15 @@ function fuchsLaufen(von, nach, fertig){
 
 /* ---------- Ansichten ---------- */
 let R = laden();
-let wahl = { stufe: "12", zeit: 40, stimmung: "normal", fach: "gemischt" };
+let wahl = { stufe: "2", zeit: 40, stimmung: "normal", fach: "gemischt" };
 try { const w = JSON.parse(localStorage.getItem("lt-vk-wahl")); if (w) wahl = { ...wahl, ...w }; } catch (e) {}
+if (wahl.stufe === "12") wahl.stufe = "2";
 
 function welt(){ document.body.classList.toggle("fall", (R ? R.stufe : wahl.stufe) === "34"); }
 function fallDaten(){ return FAELLE.find(f => f.id === (R && R.fall)) || FAELLE[0]; }
 function kopf(unter){
     welt();
-    const titel = istFall() ? "Escape-Fall" : R && R.stufe === "12" ? "Die Schatzkarte" : "Vertretung";
+    const titel = istFall() ? "Escape-Fall" : R ? "Die Schatzkarte" : "Vertretung";
     return `<div class="kopf"><h1>${titel}<small>${esc(unter)}</small></h1>
         <button class="knopf-klein" id="vollbild" title="Vollbild"><i class="fa-solid fa-expand"></i><span>Vollbild</span></button>
         <a class="knopf-klein nur-normal" href="index.php" title="Zum Leuchtturm"><i class="fa-solid fa-house"></i><span>Leuchtturm</span></a></div>`;
@@ -473,11 +476,11 @@ function zeigeStart(){
     const offen = R && !R.fertig && R.stationen && R.pos < R.stationen.length + 1;
     const alt = R; R = null;
     const fall = wahl.stufe === "34";
-    if (wahl.stufe === "12" && wahl.fach === "englisch") wahl.fach = "gemischt";
+    if (wahl.stufe !== "34" && wahl.fach === "englisch") wahl.fach = "gemischt";
     app.innerHTML = kopf("Vertretung ohne Vorbereitung · Kl. 1–4") + `<div class="start"><div class="blatt">
         <h2>Kurzer Start-Check</h2>
         <p class="hinweis-lk">Für dich als Lehrkraft: vier Mal antippen – nichts drucken, kein Material. <b>Kl. 1/2</b> gehen auf Schatzsuche, <b>Kl. 3/4</b> lösen einen Escape-Fall.</p>
-        <div class="frage">Welche Klasse?</div>${chips("stufe", [["12", "Klasse 1/2", "Schatzkarte"], ["34", "Klasse 3/4", "Escape-Fall"]])}
+        <div class="frage">Welche Klasse?</div>${chips("stufe", [["1", "Klasse 1", "Schatzkarte"], ["2", "Klasse 2", "Schatzkarte"], ["34", "Klasse 3/4", "Escape-Fall"]])}
         <div class="frage">Wie viel Zeit ist noch?</div>${chips("zeit", [[15, "15 Min", fall ? "3 Hinweise" : "3 Stationen"], [25, "25 Min", fall ? "4 Hinweise" : "4 Stationen"], [40, "40 Min", fall ? "6 Hinweise" : "6 Stationen"]])}
         <div class="frage">Wie ist die Klasse gerade drauf?</div>${chips("stimmung", [["unruhig", "🌪️ unruhig", "mehr Bewegung & Ruhe"], ["normal", "🙂 normal", "bunt gemischt"], ["muede", "😴 müde", "erst wach machen"]])}
         <div class="frage">Schwerpunkt?</div>${chips("fach", [["gemischt", "Gemischt"], ["deutsch", "Deutsch"], ["mathe", "Mathe"], ["sach", "Sachunterricht"]].concat(fall ? [["englisch", "Englisch"]] : []))}
