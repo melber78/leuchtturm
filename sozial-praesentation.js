@@ -88,6 +88,7 @@ const CSS = `
 #praes .p-weg .p-anz{ position:absolute; left:.8em; bottom:.5em; font-family:"Nunito",sans-serif; font-weight:900; color:#3d7ea6; font-size:.85em; }
 #praes .p-weg .p-anz button{ border:0; background:none; color:#a0aaa6; font:inherit; cursor:pointer; margin-left:.4em; }
 #praes .p-merksatz{ font-family:"Andika","Nunito",sans-serif; font-weight:700; font-size:clamp(24px,min(3.8vw,6vh),60px); line-height:1.25; max-width:22em; background:#fff7e6; border:4px solid #d9a23f; border-radius:26px; padding:.5em 1em; box-shadow:0 8px 30px rgba(217,162,63,.25); }
+#praes .p-wege.p-untereinander{ grid-template-columns:1fr; width:min(100%,1100px); gap:1.2vh; } #praes .p-untereinander .p-weg{ padding:.5em .9em .5em; display:flex; align-items:center; gap:.4em; } #praes .p-untereinander .p-weg-text{ flex:1; min-width:0; } #praes .p-untereinander .p-weg .p-anz{ position:static; margin-left:auto; white-space:nowrap; }
 #praes .p-kompakt .p-saeule{ height:12vh; } #praes .p-kompakt .p-symbol{ width:clamp(60px,8vw,120px); height:clamp(60px,8vw,120px); font-size:clamp(34px,5vw,72px); }
 @media (max-width:700px){ #praes .p-wege{ grid-template-columns:1fr; } }
 #praes .p-loes{ margin-top:1.4vh; background:#e9f7ee; color:#1d6b3a; border-radius:16px; padding:.4em 1em; font-weight:800; font-size:clamp(18px,min(2.4vw,4vh),38px); }
@@ -1273,7 +1274,7 @@ function folieHtml(f, e){
             return `<div class="p-klein">WAS PASSIERT JETZT?</div><h2 style="margin-bottom:.3em">⏸️ Stopp! Wie geht es weiter?</h2>
                 <div class="p-szene">${inline(sz.s)}</div>
                 <div class="p-klein" style="margin-top:1.6vh">Tippe auf den Weg, den du wählen würdest – jeder Tipp ist eine Stimme.</div>
-                <div class="p-wege">${sz.w.map((w, k) => `<div class="p-weg" data-weg="${k}"><span class="p-buchst">${"ABC"[k]}</span>${inline(w[0])}<div class="p-folge" hidden>➜ ${inline(w[1])}</div>
+                <div class="p-wege">${sz.w.map((w, k) => `<div class="p-weg" data-weg="${k}"><span class="p-buchst">${"ABC"[k]}</span><span class="p-weg-text">${inline(w[0])}</span><div class="p-folge" hidden>➜ ${inline(w[1])}</div>
                     <div class="p-anz">${st[k] ? "✋ " + st[k] : ""}${st[k] ? '<button data-wegminus="1" title="Eine Stimme zurück">↩</button>' : ""}</div></div>`).join("")}</div>
                 <div class="p-reihe"><button class="p-knopf" data-folgen="1">🔍 Was passiert dann?</button><button class="p-knopf hell" data-p="rad">🎡 Wer sagt seine Meinung?</button></div>
                 ${sz.f ? `<div class="p-loes" data-wegfrage="1" hidden>💬 ${inline(sz.f)} · Welcher Weg ist für alle gut – und warum?</div>` : ""}`;
@@ -1289,7 +1290,7 @@ function folieHtml(f, e){
         case "miniziel": {
             const z = zielSaetze(f.m);
             return `<div class="p-klein">MEIN SATZ FÜR DIE WOCHE</div><h2>🎯 Welcher Satz soll dir diese Woche helfen?</h2>
-                <div class="p-wege" style="grid-template-columns:repeat(${z.length === 4 ? 2 : z.length},minmax(0,1fr))">${z.map((t, k) => `<div class="p-weg" data-ziel="${k}"><span class="p-buchst">${k + 1}</span>${inline(t)}<div class="p-anz">${(zustand.stimmen["ziel"] || {})[k] ? "✋ " + zustand.stimmen["ziel"][k] : ""}</div></div>`).join("")}</div>
+                <div class="p-wege p-untereinander">${z.map((t, k) => `<div class="p-weg" data-ziel="${k}"><span class="p-buchst">${k + 1}</span><span class="p-weg-text">${inline(t)}</span><div class="p-anz">${(zustand.stimmen["ziel"] || {})[k] ? "✋ " + zustand.stimmen["ziel"][k] : ""}</div></div>`).join("")}</div>
                 <div class="p-klein" style="margin-top:1.6vh">Jedes Kind tippt seinen Satz an. Der Satz mit den meisten Stimmen kommt nächste Stunde im Rückblick wieder.</div>`;
         }
         case "arbeitsblatt":
@@ -1647,7 +1648,7 @@ function silbenTrennen(wort){
 }
 // färbt alle Wörter in Lesetext, Aussagen, Fragen und Übungstext – Knöpfe und Titel bleiben unverändert
 function silbenAnwenden(wurzel){
-    wurzel.querySelectorAll(".p-text, .p-aussage, .p-frage span:not(.nr)").forEach(bereich => {
+    wurzel.querySelectorAll(".p-text, .p-aussage, .p-frage span:not(.nr), .p-szene, .p-weg-text, .p-folge, .p-merksatz, .p-liste div, .p-loes, .p-weg-text").forEach(bereich => {
         if (bereich.dataset.silben) return;
         bereich.dataset.silben = "1";
         const knoten = [], gang = document.createTreeWalker(bereich, NodeFilter.SHOW_TEXT);
